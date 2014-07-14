@@ -1,0 +1,117 @@
+
+routes:
+  story: "/on/:story_id"
+  timer: "timer=:viewed_at"
+
+  messages: "/:event_id/messages/:message_ids/"
+  news:     "/:event_id/:mode_id/news/:row/"
+  all:      "/:event_id/:mode_id/all/"
+  page:     "/:event_id/:mode_id/:page.of.:row/"
+
+  hides:  "/hides/:hide_ids"
+  search: "/search/:search"
+
+  potof: "/potof/:potofs_order"
+  css: "/css.:theme.:width.:layout.:font"
+
+search:
+  - story
+  - timer
+hash:
+  - messages
+  - news
+  - all
+  - page
+
+  - hides
+  - search
+
+  - potof
+  - css
+cookie:
+  - css
+
+options:
+  search:
+    type: String
+    current: ""
+  theme:
+    type: String
+    current: cinema
+  width:
+    type: String
+    current: normal
+  layout:
+    type: String
+    current: center
+  font:
+    type: String
+    current: std
+  layout:
+    type: String
+    current: stat_type
+  viewed_at:
+    type: Parse.Date
+    current: 10000
+
+  story_id:
+    type: String
+    current:
+  event_id:
+    type: String
+    current:
+  mode_id:
+    type: String
+    current: talk
+
+  potofs_order:
+    type: String
+    current: stat_type
+
+  page:
+    type: Number
+    current: 1
+  row:
+    type: Number
+    current: 50
+
+  hide_ids:
+    type: Parse.Array
+    current: []
+  message_ids:
+    type: Parse.Array
+    current: []
+
+  roletable:
+    type: String
+    current: ALL
+
+  rating:
+    type: String
+    current: ALL
+
+  game_rule:
+    type: String
+    current: ALL
+
+  potof_size:
+    type: String
+    current: ALL
+
+  card_win:
+    type: String
+    current: ALL
+  card_role:
+    type: String
+    current: ALL
+  card_event:
+    type: String
+    current: ALL
+
+  upd_time:
+    type: String
+    current: ALL
+  upd_interval:
+    type: String
+    current: ALL
+

@@ -1,0 +1,9 @@
+<%
+%i[DELAY LOCATION].each do |const|
+  if Kernel.constants.member?(const)
+ %>
+this.<%= const %> = <%= JSON.generate Kernel.const_get( const ) %> ;
+<%
+  end
+end
+%>
