@@ -27,10 +27,270 @@
         this.HoganTemplates || (this.HoganTemplates = {});
         this.HoganTemplates["sow/village_info"] = new Hogan.Template({code: function (c,p,i) { var t=this;t.b(i=i||"");t.b("<div class=\"message_filter\" template=\"sow/village_info\"></div>");return t.fl(); },partials: {}, subs: {  }}, "", Hogan, {});
 
-this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,"option":{"pc":{"presto":50,"animato":200,"andante":800,"lento":2000},"mobile":{"presto":100,"animato":400,"andante":1600,"lento":4000},"simple":{"presto":200,"animato":1000,"andante":2000,"lento":5000}}} ;
+this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,"presto":100,"animato":400,"andante":1600,"lento":4000} ;
 
 this.LOCATION = {"routes":{"story":"/on/:story_id","timer":"timer=:viewed_at","messages":"/:event_id/messages/:message_ids/","news":"/:event_id/:mode_id/news/:row/","all":"/:event_id/:mode_id/all/","page":"/:event_id/:mode_id/:page.of.:row/","hides":"/hides/:hide_ids","search":"/search/:search","potof":"/potof/:potofs_order","css":"/css.:theme.:width.:layout.:font"},"search":["story","timer"],"hash":["messages","news","all","page","hides","search","potof","css"],"cookie":["css"],"options":{"search":{"type":"String","current":""},"theme":{"type":"String","current":"cinema"},"width":{"type":"String","current":"normal"},"layout":{"type":"String","current":"stat_type"},"font":{"type":"String","current":"std"},"viewed_at":{"type":"Parse.Date","current":10000},"story_id":{"type":"String","current":null},"event_id":{"type":"String","current":null},"mode_id":{"type":"String","current":"talk"},"potofs_order":{"type":"String","current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Parse.Array","current":[]},"message_ids":{"type":"Parse.Array","current":[]},"roletable":{"type":"String","current":"ALL"},"rating":{"type":"String","current":"ALL"},"game_rule":{"type":"String","current":"ALL"},"potof_size":{"type":"String","current":"ALL"},"card_win":{"type":"String","current":"ALL"},"card_role":{"type":"String","current":"ALL"},"card_event":{"type":"String","current":"ALL"},"upd_time":{"type":"String","current":"ALL"},"upd_interval":{"type":"String","current":"ALL"}}} ;
 
+var FixedBox, win;
+
+win = {
+  "do": {
+    resize: function(e) {
+      var cb, _i, _len, _ref, _results;
+      win.height = window.innerHeight || $(window).height();
+      win.width = window.innerWidth || $(window).width();
+      win.max = {
+        top: $('body').height() - win.height,
+        left: $('body').width() - win.width
+      };
+      _ref = win.on.resize;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        cb = _ref[_i];
+        _results.push(cb());
+      }
+      return _results;
+    },
+    scroll: function(e) {
+      var cb, _i, _len, _ref, _results;
+      win.left = window.pageXOffset;
+      win.top = window.pageYOffset;
+      if (win.max.left < win.left) {
+        win.left = win.max.left;
+      }
+      if (win.max.top < win.top) {
+        win.top = win.max.top;
+      }
+      if (win.left < 0) {
+        win.left = 0;
+      }
+      if (win.top < 0) {
+        win.top = 0;
+      }
+      _ref = win.on.scroll;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        cb = _ref[_i];
+        _results.push(cb());
+      }
+      return _results;
+    },
+    gesture: function(e) {
+      var cb, _i, _len, _ref, _results;
+      _ref = win.on.gesture;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        cb = _ref[_i];
+        _results.push(cb());
+      }
+      return _results;
+    },
+    motion: function(e) {
+      var cb, _i, _len, _ref, _results;
+      win.accel = e.originalEvent.acceleration;
+      win.gravity = e.originalEvent.accelerationIncludingGravity;
+      win.rotate = e.originalEvent.rotationRate;
+      _ref = win.on.motion;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        cb = _ref[_i];
+        _results.push(cb());
+      }
+      return _results;
+    },
+    start: function(e) {
+      var cb, _i, _len, _ref, _results;
+      win.is_tap = true;
+      _ref = win.on.start;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        cb = _ref[_i];
+        _results.push(cb());
+      }
+      return _results;
+    },
+    move: function(e) {
+      var cb, _i, _j, _len, _len1, _ref, _ref1, _results, _results1;
+      if (win.is_tap) {
+        _ref = win.on.drag;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          cb = _ref[_i];
+          _results.push(cb());
+        }
+        return _results;
+      } else {
+        _ref1 = win.on.move;
+        _results1 = [];
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          cb = _ref1[_j];
+          _results1.push(cb());
+        }
+        return _results1;
+      }
+    },
+    end: function(e) {
+      var cb, _i, _len, _ref, _results;
+      win.is_tap = false;
+      _ref = win.on.end;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        cb = _ref[_i];
+        _results.push(cb());
+      }
+      return _results;
+    }
+  },
+  on: {
+    resize: [],
+    scroll: [],
+    gesture: [],
+    motion: [],
+    start: [],
+    move: [],
+    drag: [],
+    end: []
+  },
+  top: 0,
+  left: 0,
+  width: 0,
+  height: 0,
+  accel: 0,
+  gravity: 0,
+  rotate: 0,
+  is_tap: false,
+  max: {
+    top: 0,
+    left: 0
+  }
+};
+
+if ("onorientationchange" in window) {
+  $(window).on('orientationchange', _.throttle(win["do"].resize, DELAY.presto));
+  $(window).on('orientationchange', _.throttle(win["do"].scroll, DELAY.lento));
+} else {
+  $(window).on('resize', _.throttle(win["do"].resize, DELAY.presto));
+  $(window).on('resize', _.throttle(win["do"].scroll, DELAY.lento));
+}
+
+$(window).on('scroll', _.throttle(win["do"].scroll, DELAY.presto));
+
+$(window).on('scroll', _.throttle(win["do"].resize, DELAY.lento));
+
+if ("ondevicemotion" in window) {
+  $(window).on('devicemotion', _.throttle(win["do"].motion, DELAY.presto));
+}
+
+if ("ongesturestart" in window) {
+  $(window).on('gesturestart', _.throttle(win["do"].start, DELAY.presto));
+  $(window).on('gesturechange', _.throttle(win["do"].move, DELAY.presto));
+  $(window).on('gestureend', _.throttle(win["do"].end, DELAY.presto));
+}
+
+if ("ontouchstart" in window) {
+  $(window).on('touchstart', _.throttle(win["do"].start, DELAY.presto));
+  $(window).on('touchmove', _.throttle(win["do"].move, DELAY.presto));
+  $(window).on('touchend', _.throttle(win["do"].end, DELAY.presto));
+} else {
+  $(window).on('mousedown', _.throttle(win["do"].start, DELAY.presto));
+  $(window).on('mousemove', _.throttle(win["do"].move, DELAY.presto));
+  $(window).on('mouseup', _.throttle(win["do"].end, DELAY.presto));
+}
+
+FixedBox = (function() {
+  FixedBox.list = {};
+
+  FixedBox.push = function($, dx, dy, key) {
+    var _base;
+    return (_base = this.list)[key] || (_base[key] = new FixedBox(dx, dy, $(key)));
+  };
+
+  function FixedBox(dx, dy, fixed_box) {
+    this.dx = dx;
+    this.dy = dy;
+    this.box = fixed_box;
+    if (this.box) {
+      win.on.resize.push((function(_this) {
+        return function() {
+          return _this.resize();
+        };
+      })(this));
+      win.on.scroll.push((function(_this) {
+        return function() {
+          return _this.scroll();
+        };
+      })(this));
+    }
+  }
+
+  FixedBox.prototype.resize = function() {
+    var height, width;
+    if (!this.box) {
+      return;
+    }
+    width = win.width - this.box.width();
+    height = win.height - this.box.height();
+    if (this.dx < 0) {
+      this.left = this.dx + width;
+    }
+    if (0 < this.dx) {
+      this.left = this.dx;
+    }
+    if (this.dy < 0) {
+      this.top = this.dy + height;
+    }
+    if (0 < this.dy) {
+      return this.top = this.dy;
+    }
+  };
+
+  FixedBox.prototype.scroll = function() {
+    var left, top;
+    if (!(this.box && head.browser.power !== "simple")) {
+      return;
+    }
+    this.box.css({
+      "z-index": (new Date).getTime(),
+      position: "fixed"
+    });
+    if (0 === this.dx) {
+      this.box.css({
+        top: 0,
+        left: "",
+        width: this.box.parent().width()
+      });
+    } else {
+      this.box.css({
+        top: 0,
+        left: 0
+      });
+    }
+    left = this.left + win.left;
+    top = this.top;
+    return this.translate(left, top);
+  };
+
+  FixedBox.prototype.translate = function(left, top) {
+    var transform;
+    transform = "translate(" + left + "px, " + top + "px)";
+    if (head.browser.webkit) {
+      this.box.css("-webkit-transform", transform);
+    }
+    if (head.browser.mozilla) {
+      this.box.css("-moz-transform", transform);
+    }
+    if (head.browser.ie) {
+      this.box.css("-ms-transform", transform);
+    }
+    if (head.browser.opera) {
+      this.box.css("-o-transform", transform);
+    }
+    return this.box.css("transform", transform);
+  };
+
+  return FixedBox;
+
+})();
 var Parse, Url, key, val, _ref;
 
 Parse = {
@@ -118,10 +378,13 @@ Url = (function() {
   };
 
   Url.prototype.pushstate = function(path) {
-    if (this.match) {
-      return path.replace(this.scanner, function(_, key) {
-        return Url.value(key);
-      });
+    var link;
+    link = location.href;
+    link.replace(this.scanner, function(_, key) {
+      return Url.value(key);
+    });
+    if (typeof history !== "undefined" && history !== null) {
+      return history.pushState("pushstate", null, link);
     }
   };
 
@@ -135,20 +398,20 @@ for (key in _ref) {
   LOCATION.routes[key] = new Url(val);
 }
 
-window.onhashchange = function(event) {
+$(window).on("hashchange", function(event) {
   if (event.clipboardData) {
     return console.log(event);
   } else {
     return Url.popstate();
   }
-};
+});
 
-window.onpopstate = function(event) {
+$(window).on("popstate", function(event) {
   if (event.clipboardData) {
     return console.log(event);
   } else {
     return Url.popstate();
   }
-};
+});
 
 

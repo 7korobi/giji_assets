@@ -19,10 +19,12 @@ class Url
     if location.hash
       for url_key in LOCATION.hash
         LOCATION.routes[url_key].popstate(location.hash)
+
   @change = (key, value)->
     obj =  LOCATION.options[key]
     obj.value = eval(obj.type) value
     console.log [key, obj.value]
+
   @value  = (key)->
     console.log [key, "set"]
     obj =  LOCATION.options[key]
@@ -44,20 +46,22 @@ class Url
           Url.change(key, value)
 
   pushstate: (path)->
-    if @match
-      path.replace @scanner, (_, key)->
-        Url.value(key)
+    link = location.href
+    link.replace @scanner, (_, key)->
+      Url.value(key)
+    if history?
+      history.pushState("pushstate", null, link)
 
 for key, val of LOCATION.routes
   LOCATION.routes[key] = new Url(val)
 
-window.onhashchange = (event)->
+$(window).on "hashchange", (event)->
   if event.clipboardData
     console.log event
   else
     Url.popstate()
 
-window.onpopstate = (event)->
+$(window).on "popstate", (event)->
   if event.clipboardData
     console.log event
   else
