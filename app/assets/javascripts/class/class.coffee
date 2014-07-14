@@ -51,6 +51,12 @@ class Url
 for key, val of LOCATION.routes
   LOCATION.routes[key] = new Url(val)
 
+window.onhashchange = (event)->
+  if event.clipboardData
+    console.log event
+  else
+    Url.popstate()
+
 window.onpopstate = (event)->
   if event.clipboardData
     console.log event

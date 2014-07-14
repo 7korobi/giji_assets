@@ -135,6 +135,14 @@ for (key in _ref) {
   LOCATION.routes[key] = new Url(val);
 }
 
+window.onhashchange = function(event) {
+  if (event.clipboardData) {
+    return console.log(event);
+  } else {
+    return Url.popstate();
+  }
+};
+
 window.onpopstate = function(event) {
   if (event.clipboardData) {
     return console.log(event);
