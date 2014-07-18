@@ -24,6 +24,7 @@ module GijiAssets
       base.js
       class.js
       spec.js
+      spec.css
     )
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.

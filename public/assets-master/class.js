@@ -293,6 +293,54 @@ FixedBox = (function() {
 })();
 var Parse, Url, key, val, _ref;
 
+Vue.config({
+  debug: true
+});
+
+Vue.directive('href', {
+  bind: function(value) {
+    return this.el.addEventListener('click', (function(_this) {
+      return function() {
+        return _this.vm[_this.key];
+      };
+    })(this));
+  },
+  update: function(value) {
+    return $(this.el).attr('href', Url.link(value));
+  },
+  unbind: function() {
+    return this.el.removeEventListener('click', (function(_this) {
+      return function() {
+        return console.log('unbind');
+      };
+    })(this));
+  }
+});
+
+
+/*
+      $(this.el).tokenfield();
+      $(this.el).on('tokenfield:editedtoken',function (e) {
+        self.vm.$set(self.key,$(this).tokenfield("getTokensList", ','));
+      }).on('tokenfield:createdtoken', function(e){
+        self.vm.$set(self.key,$(this).tokenfield("getTokensList", ','));
+      }).on('tokenfield:removedtoken', function(e){
+        self.vm.$set(self.key,$(this).tokenfield("getTokensList", ','));
+      });
+    },
+    update: function(value){
+      $(this.el).tokenfield('setTokens',value);
+    }
+
+el: the element the directive is bound to.
+key: the keypath of the binding, excluding arguments and filters.
+arg: the argument, if present.
+expression: the raw, unparsed expression.
+vm: the context ViewModel that owns this directive.
+value: the current binding value.
+ * <div v-href=""></div>
+ */
+
 Parse = {
   Array: function(val) {
     if (val.split != null) {

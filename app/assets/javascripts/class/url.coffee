@@ -1,3 +1,41 @@
+Vue.config
+  debug: true
+
+Vue.directive 'href',
+  bind: (value) ->
+    @el.addEventListener 'click', =>
+      @vm[@key]
+
+  update: (value)->
+    $(@el).attr 'href', Url.link value
+
+  unbind: ->
+    @el.removeEventListener 'click', =>
+      console.log 'unbind'
+
+###
+      $(this.el).tokenfield();
+      $(this.el).on('tokenfield:editedtoken',function (e) {
+        self.vm.$set(self.key,$(this).tokenfield("getTokensList", ','));
+      }).on('tokenfield:createdtoken', function(e){
+        self.vm.$set(self.key,$(this).tokenfield("getTokensList", ','));
+      }).on('tokenfield:removedtoken', function(e){
+        self.vm.$set(self.key,$(this).tokenfield("getTokensList", ','));
+      });
+    },
+    update: function(value){
+      $(this.el).tokenfield('setTokens',value);
+    }
+
+el: the element the directive is bound to.
+key: the keypath of the binding, excluding arguments and filters.
+arg: the argument, if present.
+expression: the raw, unparsed expression.
+vm: the context ViewModel that owns this directive.
+value: the current binding value.
+# <div v-href=""></div>
+###
+
 Parse =
   Array: (val)->
     if val.split?
