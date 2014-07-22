@@ -1,12 +1,79 @@
 <!DOCTYPE HTML>
-<html>
+<html class="{{style}}">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link data-turbolinks-track="true" href="assets-master/application.css" media="screen" rel="stylesheet" type="text/css">
   <title>testing</title>
 </head>
 
 <body>
+<div class="outframe" id="outframe">
+  <div class="contentframe" id="contentframe">
+    <h1><a href="/"><img ng-cloak="" ng-src="{{h1.path}}" /></a></h1>
+    <div class="inframe">
+      <div class="toppage">
+        <div class="login" template="navi/headline"><p style="color: green"></p><p style="color: red"></p></div>
+        <div class="choice css_changer" theme="giji"></div>
+        <div class="paginavi" template="theme/style_navi"></div>
+        <hr class="invisible_hr" />
+        <h2>ログイン</h2>
+        <div class="paragraph"></div>
+        <h2>ようこそ！</h2>
+        <div class="paragraph">
+          <ul>
+            <li>いままでの<a href="https://github.com/7korobi/giji_rails/commits/show-fix">更新履歴</a>はこちら。</li>
+            <li><a href="/map_reduce/faces">集計ページ</a>に、人狼議事のキャラクターたちの活躍をまとめてある。</li>
+          </ul>
+        </div>
+        <h3>開始待ちの村 / 進行中の村</h3>
+        <div class="message_filter" logs="messages"></div>
+      </div>
+    </div>
+    <div class="inframe">
+      <address>人狼議事キャラセット by りりんら<br />管理<code> sol・la</code><code><a href="mailto:7korobi@gmail.com" taborder="-1">ななころび</a></code><br /><code style="display:inline-block;">下記の場所以外では、人狼議事内キャラチップ<br />の利用を許諾しておりません。ご了承ください。</code><br /><code style="display:inline-block;text-align:left;">議事総合トップ<br />人狼議事lobby<br />人狼議事morphe<br />人狼議事cafe<br />人狼議事perjury<br />人狼議事xebec<br />人狼議事crazy<br />人狼議事ciel<br /><br />SoyBean<br />Sangria<br />@7korobi</code></address>
+    </div>
+  </div>
+  <div id="footer"></div>
+  <div id="tab" ng-cloak="">
+    <div id="topviewer" ng-cloak="">
+      <div class="drag" id="topframe">
+        <div class="contentframe"></div>
+      </div>
+    </div>
+    <div adjust="left" class="sayfilter" id="sayfilter">
+      <div class="sayfilter_heading"></div>
+      <div class="insayfilter" name="接続" navi="login">
+        <div class="paragraph">
+          <div class="sayfilter_caption_enable">Choice open id</div>
+          <div class="sayfilter_content">
+            <table id="follow"><tr><td><a href="/users/auth/twitter"><img alt="Twitter" class="twitter" src="/images/auth/twitter.png" /></a></td><td><a href="/users/auth/facebook"><img alt="Facebook" class="facebook" src="/images/auth/facebook.png" /></a></td></tr><tr><td> Twitter</td><td>Facebook</td></tr></table>
+            <li><label class="label"><a href="/users/auth/mixi">mixi</a></label></li>
+            <li><label class="label"><a href="/users/auth/google">google</a></label></li>
+            <li><label class="label"><a href="/users/auth/yahoo">yahoo</a></label></li>
+          </div>
+        </div>
+      </div>
+      <div class="sayfilter_heading bottom"></div>
+    </div>
+    <div id="buttons">
+      <nav>
+        <span><a class="btn btn-default click glyphicon glyphicon-search" ng-click="go.search()"></a></span>
+        <span><a class="btn btn-default click glyphicon glyphicon-pencil" ng-click="go.form()"></a></span>
+        <span ng-repeat="o in navi.select"><a class="btn" ng-class="o.class" ng-click="navi.move(o.val)">{{o.name}}</a></span>
+        <span><a class="btn btn-default" ng-click="navi.blank()">✗</a></span>
+      </nav>
+    </div>
+  </div>
+</div>
 </body>
+
 <script type="text/javascript" src="assets-master/base.js"></script>
 <script type="text/javascript" src="assets-master/class.js"></script>
+<script type="text/javascript">
+//<![CDATA[
+window.gon={};gon.messages=[{"template":"message/action","mestype":"VSAY","name":"人狼議事ロビー14 【事件】こちら議事公園前派出所 ","style":"","updated_at":2000000000000,"log":"開始が楽しみだ。"},{"template":"message/action","mestype":"VSAY","name":"人狼議事ロビー11 みんなで、村建て相談所！","style":"","updated_at":2000000000000,"log":"開始が楽しみだ。"},{"template":"message/action","mestype":"VSAY","name":"人狼議事ロビー16 新仕様を 触って／試して みる村 ☆２","style":"","updated_at":1384917852000,"log":"開始が楽しみだ。"},{"template":"message/action","mestype":"VSAY","name":"人狼議事RP:Bx186 夏なんです【Sheeps' monologue project】","style":"","updated_at":1405742329000,"log":"開始が楽しみだ。"},{"template":"message/action","mestype":"VSAY","name":"人狼議事RP:Cp226 デュエルバトル！プリンシパルカード！！","style":"","updated_at":1405698648000,"log":"開始が楽しみだ。"},{"template":"message/action","mestype":"XSAY","name":"人狼議事RP:Cp225 【身内RP】泡沫の村","style":"","updated_at":1405605518000,"log":"進行中だ。"},{"template":"message/action","mestype":"XSAY","name":"人狼議事RP:Bx183 Starlight kingdom","style":"","updated_at":1404392331000,"log":"進行中だ。"},{"template":"message/action","mestype":"XSAY","name":"人狼議事RP:Cc12 【完全RP】赤い糸を辿る村【突発誰歓】","style":"","updated_at":1404123361000,"log":"進行中だ。"},{"template":"message/action","mestype":"XSAY","name":"人狼議事RP:Bc127 【完全RP村】P.S Episode2","style":"","updated_at":1404598719000,"log":"進行中だ。"},{"template":"message/action","mestype":"XSAY","name":"人狼議事RP:Bc128 終世に降る雨/ﾂｲﾉｾﾆﾌﾙｱﾒ","style":"","updated_at":1404748767000,"log":"進行中だ。"},{"template":"message/action","mestype":"XSAY","name":"人狼議事RP:Bx185 【突発村】恋愛ラボ――橘の咲く頃に――","style":"","updated_at":1405011905000,"log":"進行中だ。"}];
+//]]>
+</script>
+<script>$(function(){$('.progress_log').hide()});</script>
 </html>
+

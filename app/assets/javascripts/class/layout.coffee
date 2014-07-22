@@ -7,7 +7,7 @@ win =
         top:  $('body').height() - win.height
         left: $('body').width()  - win.width
       #console.log ["resize", e]
-      cb() for cb in win.on.resize
+      cb(e) for cb in win.on.resize
 
     scroll: (e)->
       win.left = window.pageXOffset
@@ -18,36 +18,36 @@ win =
       win.top  = 0            if                win.top   < 0
 
       #console.log ["scroll", e]
-      cb() for cb in win.on.scroll
+      cb(e) for cb in win.on.scroll
 
     gesture: (e)->
       #console.log ["touch-gesture", e]
-      cb() for cb in win.on.gesture
+      cb(e) for cb in win.on.gesture
 
     motion: (e)->
       win.accel   = e.originalEvent.acceleration
       win.gravity = e.originalEvent.accelerationIncludingGravity
       win.rotate  = e.originalEvent.rotationRate
       #console.log ["touch-motion", e]
-      cb() for cb in win.on.motion
+      cb(e) for cb in win.on.motion
 
     start: (e)->
       win.is_tap = true
       #console.log ["touch-start", e]
-      cb() for cb in win.on.start
+      cb(e) for cb in win.on.start
 
     move: (e)->
       if win.is_tap
         #console.log ["touch-drag", e]
-        cb() for cb in win.on.drag
+        cb(e) for cb in win.on.drag
       else
         #console.log ["touch-move", e]
-        cb() for cb in win.on.move
+        cb(e) for cb in win.on.move
 
     end: (e)->
       win.is_tap = false
       #console.log ["touch-end", e]
-      cb() for cb in win.on.end
+      cb(e) for cb in win.on.end
 
   on:
     resize: []

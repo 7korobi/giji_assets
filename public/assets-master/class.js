@@ -29,7 +29,7 @@
 
 this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,"presto":100,"animato":400,"andante":1600,"lento":4000} ;
 
-this.LOCATION = {"routes":{"story":"/on/:story_id","timer":"timer=:viewed_at","messages":"/:event_id/messages/:message_ids/","news":"/:event_id/:mode_id/news/:row/","all":"/:event_id/:mode_id/all/","page":"/:event_id/:mode_id/:page.of.:row/","hides":"/hides/:hide_ids","search":"/search/:search","potof":"/potof/:potofs_order","css":"/css.:theme.:width.:layout.:font"},"search":["story","timer"],"hash":["messages","news","all","page","hides","search","potof","css"],"cookie":["css"],"options":{"search":{"type":"String","current":""},"theme":{"type":"String","current":"cinema"},"width":{"type":"String","current":"normal"},"layout":{"type":"String","current":"stat_type"},"font":{"type":"String","current":"std"},"viewed_at":{"type":"Parse.Date","current":10000},"story_id":{"type":"String","current":null},"event_id":{"type":"String","current":null},"mode_id":{"type":"String","current":"talk"},"potofs_order":{"type":"String","current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Parse.Array","current":[]},"message_ids":{"type":"Parse.Array","current":[]},"roletable":{"type":"String","current":"ALL"},"rating":{"type":"String","current":"ALL"},"game_rule":{"type":"String","current":"ALL"},"potof_size":{"type":"String","current":"ALL"},"card_win":{"type":"String","current":"ALL"},"card_role":{"type":"String","current":"ALL"},"card_event":{"type":"String","current":"ALL"},"upd_time":{"type":"String","current":"ALL"},"upd_interval":{"type":"String","current":"ALL"}}} ;
+this.LOCATION = {"search":["story","timer"],"hash":["messages","news","all","page","hides","search","potof","css"],"cookie":["css"],"options":{"search":null,"width":{"current":"normal"},"layout":{"current":"stat_type"},"font":{"current":"std"},"viewed_at":{"type":"Parse.Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Parse.Array","current":[]},"message_ids":{"type":"Parse.Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
 var FixedBox, win;
 
@@ -47,7 +47,7 @@ win = {
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         cb = _ref[_i];
-        _results.push(cb());
+        _results.push(cb(e));
       }
       return _results;
     },
@@ -71,7 +71,7 @@ win = {
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         cb = _ref[_i];
-        _results.push(cb());
+        _results.push(cb(e));
       }
       return _results;
     },
@@ -81,7 +81,7 @@ win = {
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         cb = _ref[_i];
-        _results.push(cb());
+        _results.push(cb(e));
       }
       return _results;
     },
@@ -94,7 +94,7 @@ win = {
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         cb = _ref[_i];
-        _results.push(cb());
+        _results.push(cb(e));
       }
       return _results;
     },
@@ -105,7 +105,7 @@ win = {
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         cb = _ref[_i];
-        _results.push(cb());
+        _results.push(cb(e));
       }
       return _results;
     },
@@ -116,7 +116,7 @@ win = {
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           cb = _ref[_i];
-          _results.push(cb());
+          _results.push(cb(e));
         }
         return _results;
       } else {
@@ -124,7 +124,7 @@ win = {
         _results1 = [];
         for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
           cb = _ref1[_j];
-          _results1.push(cb());
+          _results1.push(cb(e));
         }
         return _results1;
       }
@@ -136,7 +136,7 @@ win = {
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         cb = _ref[_i];
-        _results.push(cb());
+        _results.push(cb(e));
       }
       return _results;
     }
@@ -291,7 +291,191 @@ FixedBox = (function() {
   return FixedBox;
 
 })();
-var Parse, Url, key, val, _ref;
+var Parse, Url, bind, binds, key, val, _i, _len, _ref, _ref1;
+
+Parse = {
+  Array: function(val) {
+    if (val.split != null) {
+      return val.split(",");
+    } else {
+      return val;
+    }
+  },
+  Date: function(val) {
+    return new Date(Number(val));
+  }
+};
+
+Url = (function() {
+  Url.routes = {};
+
+  Url.data = {};
+
+  Url.popstate = function() {
+    var data, target, targets, url_key, _results;
+    targets = {
+      cookie: document.cookies,
+      search: location.search,
+      hash: location.hash
+    };
+    _results = [];
+    for (target in targets) {
+      data = targets[target];
+      if (data) {
+        _results.push((function() {
+          var _i, _len, _ref, _results1;
+          _ref = LOCATION[target];
+          _results1 = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            url_key = _ref[_i];
+            _results1.push(Url.routes[url_key].popstate(data, target));
+          }
+          return _results1;
+        })());
+      } else {
+        _results.push(void 0);
+      }
+    }
+    return _results;
+  };
+
+  Url.boot = function() {
+    $(window).on("hashchange", function(event) {
+      if (event.clipboardData) {
+        return console.log(event);
+      } else {
+        return Url.popstate();
+      }
+    });
+    return $(window).on("popstate", function(event) {
+      if (event.clipboardData) {
+        return console.log(event);
+      } else {
+        return Url.popstate();
+      }
+    });
+  };
+
+  function Url(path, vue) {
+    if (vue == null) {
+      vue = {};
+    }
+    this.keys = [null];
+    this.scanner = new RegExp(path.replace(/:([a-z_]+)/ig, (function(_this) {
+      return function(_, key) {
+        _this.keys.push(key);
+        switch (LOCATION.options[key].type) {
+          case Number:
+            return "([\\.0-9]+)";
+          default:
+            return "([^\\/\\-\\=\\.]+)";
+        }
+      };
+    })(this), "i"));
+    this.vue = new Vue(_.merge(vue, {
+      data: {
+        url: {},
+        params: []
+      }
+    }));
+    this.vue.$watch('url', (function(_this) {
+      return function(url) {
+        _this.pushstate();
+        return _this.target;
+      };
+    })(this));
+  }
+
+  Url.prototype.popstate = function(path, target) {
+    var i, key, value, _i, _len, _ref;
+    this.target = target;
+    this.match = this.scanner.exec(path);
+    this.params = [];
+    if (this.match) {
+      _ref = this.keys;
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        key = _ref[i];
+        if (key) {
+          value = this.match[i];
+          this.change(key, value);
+        }
+      }
+    }
+    this.vue.$set("url", Url.data);
+    return this.vue.$set("params", this.params);
+  };
+
+  Url.prototype.pushstate = function(path) {
+    var link;
+    link = location.href;
+    if ((location[this.target] != null) && (typeof history !== "undefined" && history !== null)) {
+      link.replace(this.scanner, (function(_this) {
+        return function(_, key) {
+          return _this.value(key);
+        };
+      })(this));
+      return history.pushState("pushstate", null, link);
+    }
+  };
+
+  Url.prototype.change = function(key, value) {
+    var subkey, subval, _ref, _results;
+    this.params.push(key);
+    Url.data[key] = LOCATION.options[key].type(value);
+    if (LOCATION.bind[key] != null) {
+      _ref = LOCATION.bind[key][Url.data[key]];
+      _results = [];
+      for (subkey in _ref) {
+        subval = _ref[subkey];
+        if (key !== subkey) {
+          _results.push(this.change(subkey, subval));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    }
+  };
+
+  Url.prototype.value = function(key) {
+    console.log([key, Url.data[key], LOCATION.options[key]]);
+    return Url.data[key] | LOCATION.options[key].current;
+  };
+
+  return Url;
+
+})();
+
+_ref = LOCATION.options;
+for (key in _ref) {
+  val = _ref[key];
+  val || (val = {});
+  LOCATION.options[key] = {
+    type: eval(val.type || "String"),
+    current: val.current || null
+  };
+}
+
+_ref1 = LOCATION.bind;
+for (key in _ref1) {
+  binds = _ref1[key];
+  LOCATION.bind[key] = {};
+  for (_i = 0, _len = binds.length; _i < _len; _i++) {
+    bind = binds[_i];
+    LOCATION.bind[key][bind[key]] = bind;
+  }
+}
+
+
+/*
+el: the element the directive is bound to.
+key: the keypath of the binding, excluding arguments and filters.
+arg: the argument, if present.
+expression: the raw, unparsed expression.
+vm: the context ViewModel that owns this directive.
+value: the current binding value.
+ * <div v-href=""></div>
+ */
 
 Vue.config({
   debug: true
@@ -317,149 +501,36 @@ Vue.directive('href', {
   }
 });
 
-
-/*
-      $(this.el).tokenfield();
-      $(this.el).on('tokenfield:editedtoken',function (e) {
-        self.vm.$set(self.key,$(this).tokenfield("getTokensList", ','));
-      }).on('tokenfield:createdtoken', function(e){
-        self.vm.$set(self.key,$(this).tokenfield("getTokensList", ','));
-      }).on('tokenfield:removedtoken', function(e){
-        self.vm.$set(self.key,$(this).tokenfield("getTokensList", ','));
-      });
-    },
-    update: function(value){
-      $(this.el).tokenfield('setTokens',value);
+Url.routes = {
+  story: new Url("/on/:story_id"),
+  timer: new Url("timer=:viewed_at"),
+  messages: new Url("/:event_id/messages/:message_ids/"),
+  news: new Url("/:event_id/:mode_id/news/:row/"),
+  all: new Url("/:event_id/:mode_id/all/"),
+  page: new Url("/:event_id/:mode_id/:page.of.:row/"),
+  hides: new Url("/hides/:hide_ids"),
+  search: new Url("/search/:search"),
+  potof: new Url("/potof/:potofs_order"),
+  css: new Url("/css.:theme.:width.:layout.:font", {
+    el: "html",
+    computed: {
+      style: function() {
+        var h, _j, _len1, _ref2;
+        h = {};
+        _ref2 = this.params;
+        for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+          key = _ref2[_j];
+          val = this.url[key];
+          if ((key != null) && (val != null) && String === LOCATION.options[key].type) {
+            h["" + val + "-" + key] = true;
+          }
+        }
+        return Object.keys(h).join(" ");
+      }
     }
-
-el: the element the directive is bound to.
-key: the keypath of the binding, excluding arguments and filters.
-arg: the argument, if present.
-expression: the raw, unparsed expression.
-vm: the context ViewModel that owns this directive.
-value: the current binding value.
- * <div v-href=""></div>
- */
-
-Parse = {
-  Array: function(val) {
-    if (val.split != null) {
-      return val.split(",");
-    } else {
-      return val;
-    }
-  },
-  Date: function(val) {
-    return new Date(Number(val));
-  }
+  })
 };
 
-Url = (function() {
-  Url.popstate = function() {
-    var url_key, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _results;
-    if (document.cookies) {
-      _ref = LOCATION.cookie;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        url_key = _ref[_i];
-        LOCATION.routes[url_key].popstate(document.cookies);
-      }
-    }
-    if (location.search) {
-      _ref1 = LOCATION.search;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        url_key = _ref1[_j];
-        LOCATION.routes[url_key].popstate(location.search);
-      }
-    }
-    if (location.hash) {
-      _ref2 = LOCATION.hash;
-      _results = [];
-      for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-        url_key = _ref2[_k];
-        _results.push(LOCATION.routes[url_key].popstate(location.hash));
-      }
-      return _results;
-    }
-  };
-
-  Url.change = function(key, value) {
-    var obj;
-    obj = LOCATION.options[key];
-    obj.value = eval(obj.type)(value);
-    return console.log([key, obj.value]);
-  };
-
-  Url.value = function(key) {
-    var obj;
-    console.log([key, "set"]);
-    obj = LOCATION.options[key];
-    return obj.value | obj.current;
-  };
-
-  function Url(path) {
-    this.keys = [null];
-    this.scanner = new RegExp(path.replace(/:([a-z_]+)/ig, (function(_this) {
-      return function(_, key) {
-        _this.keys.push(key);
-        return "([^\\/\\-\\=\\.]+)";
-      };
-    })(this), "i"));
-  }
-
-  Url.prototype.popstate = function(path) {
-    var i, key, value, _i, _len, _ref, _results;
-    this.match = this.scanner.exec(path);
-    if (this.match) {
-      _ref = this.keys;
-      _results = [];
-      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
-        key = _ref[i];
-        if (key) {
-          value = this.match[i];
-          _results.push(Url.change(key, value));
-        } else {
-          _results.push(void 0);
-        }
-      }
-      return _results;
-    }
-  };
-
-  Url.prototype.pushstate = function(path) {
-    var link;
-    link = location.href;
-    link.replace(this.scanner, function(_, key) {
-      return Url.value(key);
-    });
-    if (typeof history !== "undefined" && history !== null) {
-      return history.pushState("pushstate", null, link);
-    }
-  };
-
-  return Url;
-
-})();
-
-_ref = LOCATION.routes;
-for (key in _ref) {
-  val = _ref[key];
-  LOCATION.routes[key] = new Url(val);
-}
-
-$(window).on("hashchange", function(event) {
-  if (event.clipboardData) {
-    return console.log(event);
-  } else {
-    return Url.popstate();
-  }
-});
-
-$(window).on("popstate", function(event) {
-  if (event.clipboardData) {
-    return console.log(event);
-  } else {
-    return Url.popstate();
-  }
-});
+Url.boot();
 
 

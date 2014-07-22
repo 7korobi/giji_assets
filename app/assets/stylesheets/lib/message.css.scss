@@ -142,7 +142,7 @@ h6 {
   background: #000 !important;
 }
 
-.black {
+.black-color {
   .mono,
   .mes_text_monospace {
     background-image: url("../images/bg/grid_blue.gif");
@@ -199,7 +199,7 @@ h6 {
   .XSAY,    .mes_pixi  { @include msg-color(#9f9, rgba( 30,  0, 30, 0.33)); border-color: #583 #9f9; }
 }
 
-.white {
+.white-color {
   .mono,
   .mes_text_monospace {
     background-image: url("../images/bg/grid.gif");
