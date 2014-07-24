@@ -1,779 +1,3 @@
-describe("Player", function() {
-  var player;
-  var song;
-
-  beforeEach(function() {
-    player = new Player();
-    song = new Song();
-  });
-
-  it("should be able to play a Song", function() {
-    player.play(song);
-    expect(player.currentlyPlayingSong).toEqual(song);
-
-    //demonstrates use of custom matcher
-    expect(player).toBePlaying(song);
-  });
-
-  describe("when song has been paused", function() {
-    beforeEach(function() {
-      player.play(song);
-      player.pause();
-    });
-
-    it("should indicate that the song is currently paused", function() {
-      expect(player.isPlaying).toBeFalsy();
-
-      // demonstrates use of 'not' with a custom matcher
-      expect(player).not.toBePlaying(song);
-    });
-
-    it("should be possible to resume", function() {
-      player.resume();
-      expect(player.isPlaying).toBeTruthy();
-      expect(player.currentlyPlayingSong).toEqual(song);
-    });
-  });
-
-  // demonstrates use of spies to intercept and test method calls
-  it("tells the current song if the user has made it a favorite", function() {
-    spyOn(song, 'persistFavoriteStatus');
-
-    player.play(song);
-    player.makeFavorite();
-
-    expect(song.persistFavoriteStatus).toHaveBeenCalledWith(true);
-  });
-
-  //demonstrates use of expected exceptions
-  describe("#resume", function() {
-    it("should throw an exception if song is already playing", function() {
-      player.play(song);
-
-      expect(function() {
-        player.resume();
-      }).toThrowError("song is already playing");
-    });
-  });
-});
-beforeEach(function () {
-  jasmine.addMatchers({
-    toBePlaying: function () {
-      return {
-        compare: function (actual, expected) {
-          var player = actual;
-
-          return {
-            pass: player.currentlyPlayingSong === expected && player.isPlaying
-          }
-        }
-      };
-    }
-  });
-});
-/**
- Starting with version 2.0, this file "boots" Jasmine, performing all of the necessary initialization before executing the loaded environment and all of a project's specs. This file should be loaded after `jasmine.js`, but before any project source files or spec files are loaded. Thus this file can also be used to customize Jasmine for a project.
-
- If a project is using Jasmine via the standalone distribution, this file can be customized directly. If a project is using Jasmine via the [Ruby gem][jasmine-gem], this file can be copied into the support directory via `jasmine copy_boot_js`. Other environments (e.g., Python) will have different mechanisms.
-
- The location of `boot.js` can be specified and/or overridden in `jasmine.yml`.
-
- [jasmine-gem]: http://github.com/pivotal/jasmine-gem
- */
-
-
-(function() {
-
-  /**
-   * ## Require &amp; Instantiate
-   *
-   * Require Jasmine's core files. Specifically, this requires and attaches all of Jasmine's code to the `jasmine` reference.
-   */
-  window.jasmine = jasmineRequire.core(jasmineRequire);
-
-  /**
-   * Since this is being run in a browser and the results should populate to an HTML page, require the HTML-specific Jasmine code, injecting the same reference.
-   */
-  jasmineRequire.html(jasmine);
-
-  /**
-   * Create the Jasmine environment. This is used to run all specs in a project.
-   */
-  var env = jasmine.getEnv();
-
-  /**
-   * ## The Global Interface
-   *
-   * Build up the functions that will be exposed as the Jasmine public interface. A project can customize, rename or alias any of these functions as desired, provided the implementation remains unchanged.
-   */
-  var jasmineInterface = {
-    describe: function(description, specDefinitions) {
-      return env.describe(description, specDefinitions);
-    },
-
-    xdescribe: function(description, specDefinitions) {
-      return env.xdescribe(description, specDefinitions);
-    },
-
-    it: function(desc, func) {
-      return env.it(desc, func);
-    },
-
-    xit: function(desc, func) {
-      return env.xit(desc, func);
-    },
-
-    beforeEach: function(beforeEachFunction) {
-      return env.beforeEach(beforeEachFunction);
-    },
-
-    afterEach: function(afterEachFunction) {
-      return env.afterEach(afterEachFunction);
-    },
-
-    expect: function(actual) {
-      return env.expect(actual);
-    },
-
-    pending: function() {
-      return env.pending();
-    },
-
-    spyOn: function(obj, methodName) {
-      return env.spyOn(obj, methodName);
-    },
-
-    jsApiReporter: new jasmine.JsApiReporter({
-      timer: new jasmine.Timer()
-    })
-  };
-
-  /**
-   * Add all of the Jasmine global/public interface to the proper global, so a project can use the public interface directly. For example, calling `describe` in specs instead of `jasmine.getEnv().describe`.
-   */
-  if (typeof window == "undefined" && typeof exports == "object") {
-    extend(exports, jasmineInterface);
-  } else {
-    extend(window, jasmineInterface);
-  }
-
-  /**
-   * Expose the interface for adding custom equality testers.
-   */
-  jasmine.addCustomEqualityTester = function(tester) {
-    env.addCustomEqualityTester(tester);
-  };
-
-  /**
-   * Expose the interface for adding custom expectation matchers
-   */
-  jasmine.addMatchers = function(matchers) {
-    return env.addMatchers(matchers);
-  };
-
-  /**
-   * Expose the mock interface for the JavaScript timeout functions
-   */
-  jasmine.clock = function() {
-    return env.clock;
-  };
-
-  /**
-   * ## Runner Parameters
-   *
-   * More browser specific code - wrap the query string in an object and to allow for getting/setting parameters from the runner user interface.
-   */
-
-  var queryString = new jasmine.QueryString({
-    getWindowLocation: function() { return window.location; }
-  });
-
-  var catchingExceptions = queryString.getParam("catch");
-  env.catchExceptions(typeof catchingExceptions === "undefined" ? true : catchingExceptions);
-
-  /**
-   * ## Reporters
-   * The `HtmlReporter` builds all of the HTML UI for the runner page. This reporter paints the dots, stars, and x's for specs, as well as all spec names and all failures (if any).
-   */
-  var htmlReporter = new jasmine.HtmlReporter({
-    env: env,
-    onRaiseExceptionsClick: function() { queryString.setParam("catch", !env.catchingExceptions()); },
-    getContainer: function() { return document.body; },
-    createElement: function() { return document.createElement.apply(document, arguments); },
-    createTextNode: function() { return document.createTextNode.apply(document, arguments); },
-    timer: new jasmine.Timer()
-  });
-
-  /**
-   * The `jsApiReporter` also receives spec results, and is used by any environment that needs to extract the results  from JavaScript.
-   */
-  env.addReporter(jasmineInterface.jsApiReporter);
-  env.addReporter(htmlReporter);
-
-  /**
-   * Filter which specs will be run by matching the start of the full name against the `spec` query param.
-   */
-  var specFilter = new jasmine.HtmlSpecFilter({
-    filterString: function() { return queryString.getParam("spec"); }
-  });
-
-  env.specFilter = function(spec) {
-    return specFilter.matches(spec.getFullName());
-  };
-
-  /**
-   * Setting up timing functions to be able to be overridden. Certain browsers (Safari, IE 8, phantomjs) require this hack.
-   */
-  window.setTimeout = window.setTimeout;
-  window.setInterval = window.setInterval;
-  window.clearTimeout = window.clearTimeout;
-  window.clearInterval = window.clearInterval;
-
-  /**
-   * ## Execution
-   *
-   * Replace the browser window's `onload`, ensure it's called, and then run all of the loaded specs. This includes initializing the `HtmlReporter` instance and then executing the loaded Jasmine environment. All of this will happen after all of the specs are loaded.
-   */
-  var currentWindowOnload = window.onload;
-
-  window.onload = function() {
-    if (currentWindowOnload) {
-      currentWindowOnload();
-    }
-    htmlReporter.initialize();
-    env.execute();
-  };
-
-  /**
-   * Helper function for readability above.
-   */
-  function extend(destination, source) {
-    for (var property in source) destination[property] = source[property];
-    return destination;
-  }
-
-}());
-/*
-Copyright (c) 2008-2013 Pivotal Labs
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-function getJasmineRequireObj() {
-  if (typeof module !== "undefined" && module.exports) {
-    return exports;
-  } else {
-    window.jasmineRequire = window.jasmineRequire || {};
-    return window.jasmineRequire;
-  }
-}
-
-getJasmineRequireObj().console = function(jRequire, j$) {
-  j$.ConsoleReporter = jRequire.ConsoleReporter();
-};
-
-getJasmineRequireObj().ConsoleReporter = function() {
-
-  var noopTimer = {
-    start: function(){},
-    elapsed: function(){ return 0; }
-  };
-
-  function ConsoleReporter(options) {
-    var print = options.print,
-      showColors = options.showColors || false,
-      onComplete = options.onComplete || function() {},
-      timer = options.timer || noopTimer,
-      specCount,
-      failureCount,
-      failedSpecs = [],
-      pendingCount,
-      ansi = {
-        green: '\x1B[32m',
-        red: '\x1B[31m',
-        yellow: '\x1B[33m',
-        none: '\x1B[0m'
-      };
-
-    this.jasmineStarted = function() {
-      specCount = 0;
-      failureCount = 0;
-      pendingCount = 0;
-      print("Started");
-      printNewline();
-      timer.start();
-    };
-
-    this.jasmineDone = function() {
-      printNewline();
-      for (var i = 0; i < failedSpecs.length; i++) {
-        specFailureDetails(failedSpecs[i]);
-      }
-
-      printNewline();
-      var specCounts = specCount + " " + plural("spec", specCount) + ", " +
-        failureCount + " " + plural("failure", failureCount);
-
-      if (pendingCount) {
-        specCounts += ", " + pendingCount + " pending " + plural("spec", pendingCount);
-      }
-
-      print(specCounts);
-
-      printNewline();
-      var seconds = timer.elapsed() / 1000;
-      print("Finished in " + seconds + " " + plural("second", seconds));
-
-      printNewline();
-
-      onComplete(failureCount === 0);
-    };
-
-    this.specDone = function(result) {
-      specCount++;
-
-      if (result.status == "pending") {
-        pendingCount++;
-        print(colored("yellow", "*"));
-        return;
-      }
-
-      if (result.status == "passed") {
-        print(colored("green", '.'));
-        return;
-      }
-
-      if (result.status == "failed") {
-        failureCount++;
-        failedSpecs.push(result);
-        print(colored("red", 'F'));
-      }
-    };
-
-    return this;
-
-    function printNewline() {
-      print("\n");
-    }
-
-    function colored(color, str) {
-      return showColors ? (ansi[color] + str + ansi.none) : str;
-    }
-
-    function plural(str, count) {
-      return count == 1 ? str : str + "s";
-    }
-
-    function repeat(thing, times) {
-      var arr = [];
-      for (var i = 0; i < times; i++) {
-        arr.push(thing);
-      }
-      return arr;
-    }
-
-    function indent(str, spaces) {
-      var lines = (str || '').split("\n");
-      var newArr = [];
-      for (var i = 0; i < lines.length; i++) {
-        newArr.push(repeat(" ", spaces).join("") + lines[i]);
-      }
-      return newArr.join("\n");
-    }
-
-    function specFailureDetails(result) {
-      printNewline();
-      print(result.fullName);
-
-      for (var i = 0; i < result.failedExpectations.length; i++) {
-        var failedExpectation = result.failedExpectations[i];
-        printNewline();
-        print(indent(failedExpectation.stack, 2));
-      }
-
-      printNewline();
-    }
-  }
-
-  return ConsoleReporter;
-};
-/*
-Copyright (c) 2008-2013 Pivotal Labs
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-*/
-
-jasmineRequire.html = function(j$) {
-  j$.ResultsNode = jasmineRequire.ResultsNode();
-  j$.HtmlReporter = jasmineRequire.HtmlReporter(j$);
-  j$.QueryString = jasmineRequire.QueryString();
-  j$.HtmlSpecFilter = jasmineRequire.HtmlSpecFilter();
-};
-
-jasmineRequire.HtmlReporter = function(j$) {
-
-  var noopTimer = {
-    start: function() {},
-    elapsed: function() { return 0; }
-  };
-
-  function HtmlReporter(options) {
-    var env = options.env || {},
-      getContainer = options.getContainer,
-      createElement = options.createElement,
-      createTextNode = options.createTextNode,
-      onRaiseExceptionsClick = options.onRaiseExceptionsClick || function() {},
-      timer = options.timer || noopTimer,
-      results = [],
-      specsExecuted = 0,
-      failureCount = 0,
-      pendingSpecCount = 0,
-      htmlReporterMain,
-      symbols;
-
-    this.initialize = function() {
-      htmlReporterMain = createDom("div", {className: "html-reporter"},
-        createDom("div", {className: "banner"},
-          createDom("span", {className: "title"}, "Jasmine"),
-          createDom("span", {className: "version"}, j$.version)
-        ),
-        createDom("ul", {className: "symbol-summary"}),
-        createDom("div", {className: "alert"}),
-        createDom("div", {className: "results"},
-          createDom("div", {className: "failures"})
-        )
-      );
-      getContainer().appendChild(htmlReporterMain);
-
-      symbols = find(".symbol-summary");
-    };
-
-    var totalSpecsDefined;
-    this.jasmineStarted = function(options) {
-      totalSpecsDefined = options.totalSpecsDefined || 0;
-      timer.start();
-    };
-
-    var summary = createDom("div", {className: "summary"});
-
-    var topResults = new j$.ResultsNode({}, "", null),
-      currentParent = topResults;
-
-    this.suiteStarted = function(result) {
-      currentParent.addChild(result, "suite");
-      currentParent = currentParent.last();
-    };
-
-    this.suiteDone = function(result) {
-      if (currentParent == topResults) {
-        return;
-      }
-
-      currentParent = currentParent.parent;
-    };
-
-    this.specStarted = function(result) {
-      currentParent.addChild(result, "spec");
-    };
-
-    var failures = [];
-    this.specDone = function(result) {
-      if (result.status != "disabled") {
-        specsExecuted++;
-      }
-
-      symbols.appendChild(createDom("li", {
-          className: result.status,
-          id: "spec_" + result.id,
-          title: result.fullName
-        }
-      ));
-
-      if (result.status == "failed") {
-        failureCount++;
-
-        var failure =
-          createDom("div", {className: "spec-detail failed"},
-            createDom("div", {className: "description"},
-              createDom("a", {title: result.fullName, href: specHref(result)}, result.fullName)
-            ),
-            createDom("div", {className: "messages"})
-          );
-        var messages = failure.childNodes[1];
-
-        for (var i = 0; i < result.failedExpectations.length; i++) {
-          var expectation = result.failedExpectations[i];
-          messages.appendChild(createDom("div", {className: "result-message"}, expectation.message));
-          messages.appendChild(createDom("div", {className: "stack-trace"}, expectation.stack));
-        }
-
-        failures.push(failure);
-      }
-
-      if (result.status == "pending") {
-        pendingSpecCount++;
-      }
-    };
-
-    this.jasmineDone = function() {
-      var banner = find(".banner");
-      banner.appendChild(createDom("span", {className: "duration"}, "finished in " + timer.elapsed() / 1000 + "s"));
-
-      var alert = find(".alert");
-
-      alert.appendChild(createDom("span", { className: "exceptions" },
-        createDom("label", { className: "label", 'for': "raise-exceptions" }, "raise exceptions"),
-        createDom("input", {
-          className: "raise",
-          id: "raise-exceptions",
-          type: "checkbox"
-        })
-      ));
-      var checkbox = find("input");
-
-      checkbox.checked = !env.catchingExceptions();
-      checkbox.onclick = onRaiseExceptionsClick;
-
-      if (specsExecuted < totalSpecsDefined) {
-        var skippedMessage = "Ran " + specsExecuted + " of " + totalSpecsDefined + " specs - run all";
-        alert.appendChild(
-          createDom("span", {className: "bar skipped"},
-            createDom("a", {href: "?", title: "Run all specs"}, skippedMessage)
-          )
-        );
-      }
-      var statusBarMessage = "" + pluralize("spec", specsExecuted) + ", " + pluralize("failure", failureCount);
-      if (pendingSpecCount) { statusBarMessage += ", " + pluralize("pending spec", pendingSpecCount); }
-
-      var statusBarClassName = "bar " + ((failureCount > 0) ? "failed" : "passed");
-      alert.appendChild(createDom("span", {className: statusBarClassName}, statusBarMessage));
-
-      var results = find(".results");
-      results.appendChild(summary);
-
-      summaryList(topResults, summary);
-
-      function summaryList(resultsTree, domParent) {
-        var specListNode;
-        for (var i = 0; i < resultsTree.children.length; i++) {
-          var resultNode = resultsTree.children[i];
-          if (resultNode.type == "suite") {
-            var suiteListNode = createDom("ul", {className: "suite", id: "suite-" + resultNode.result.id},
-              createDom("li", {className: "suite-detail"},
-                createDom("a", {href: specHref(resultNode.result)}, resultNode.result.description)
-              )
-            );
-
-            summaryList(resultNode, suiteListNode);
-            domParent.appendChild(suiteListNode);
-          }
-          if (resultNode.type == "spec") {
-            if (domParent.getAttribute("class") != "specs") {
-              specListNode = createDom("ul", {className: "specs"});
-              domParent.appendChild(specListNode);
-            }
-            specListNode.appendChild(
-              createDom("li", {
-                  className: resultNode.result.status,
-                  id: "spec-" + resultNode.result.id
-                },
-                createDom("a", {href: specHref(resultNode.result)}, resultNode.result.description)
-              )
-            );
-          }
-        }
-      }
-
-      if (failures.length) {
-        alert.appendChild(
-          createDom('span', {className: "menu bar spec-list"},
-            createDom("span", {}, "Spec List | "),
-            createDom('a', {className: "failures-menu", href: "#"}, "Failures")));
-        alert.appendChild(
-          createDom('span', {className: "menu bar failure-list"},
-            createDom('a', {className: "spec-list-menu", href: "#"}, "Spec List"),
-            createDom("span", {}, " | Failures ")));
-
-        find(".failures-menu").onclick = function() {
-          setMenuModeTo('failure-list');
-        };
-        find(".spec-list-menu").onclick = function() {
-          setMenuModeTo('spec-list');
-        };
-
-        setMenuModeTo('failure-list');
-
-        var failureNode = find(".failures");
-        for (var i = 0; i < failures.length; i++) {
-          failureNode.appendChild(failures[i]);
-        }
-      }
-    };
-
-    return this;
-
-    function find(selector) {
-      return getContainer().querySelector(selector);
-    }
-
-    function createDom(type, attrs, childrenVarArgs) {
-      var el = createElement(type);
-
-      for (var i = 2; i < arguments.length; i++) {
-        var child = arguments[i];
-
-        if (typeof child === 'string') {
-          el.appendChild(createTextNode(child));
-        } else {
-          if (child) {
-            el.appendChild(child);
-          }
-        }
-      }
-
-      for (var attr in attrs) {
-        if (attr == "className") {
-          el[attr] = attrs[attr];
-        } else {
-          el.setAttribute(attr, attrs[attr]);
-        }
-      }
-
-      return el;
-    }
-
-    function pluralize(singular, count) {
-      var word = (count == 1 ? singular : singular + "s");
-
-      return "" + count + " " + word;
-    }
-
-    function specHref(result) {
-      return "?spec=" + encodeURIComponent(result.fullName);
-    }
-
-    function setMenuModeTo(mode) {
-      htmlReporterMain.setAttribute("class", "html-reporter " + mode);
-    }
-  }
-
-  return HtmlReporter;
-};
-
-jasmineRequire.HtmlSpecFilter = function() {
-  function HtmlSpecFilter(options) {
-    var filterString = options && options.filterString() && options.filterString().replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-    var filterPattern = new RegExp(filterString);
-
-    this.matches = function(specName) {
-      return filterPattern.test(specName);
-    };
-  }
-
-  return HtmlSpecFilter;
-};
-
-jasmineRequire.ResultsNode = function() {
-  function ResultsNode(result, type, parent) {
-    this.result = result;
-    this.type = type;
-    this.parent = parent;
-
-    this.children = [];
-
-    this.addChild = function(result, type) {
-      this.children.push(new ResultsNode(result, type, this));
-    };
-
-    this.last = function() {
-      return this.children[this.children.length - 1];
-    };
-  }
-
-  return ResultsNode;
-};
-
-jasmineRequire.QueryString = function() {
-  function QueryString(options) {
-
-    this.setParam = function(key, value) {
-      var paramMap = queryStringToParamMap();
-      paramMap[key] = value;
-      options.getWindowLocation().search = toQueryString(paramMap);
-    };
-
-    this.getParam = function(key) {
-      return queryStringToParamMap()[key];
-    };
-
-    return this;
-
-    function toQueryString(paramMap) {
-      var qStrPairs = [];
-      for (var prop in paramMap) {
-        qStrPairs.push(encodeURIComponent(prop) + "=" + encodeURIComponent(paramMap[prop]));
-      }
-      return "?" + qStrPairs.join('&');
-    }
-
-    function queryStringToParamMap() {
-      var paramStr = options.getWindowLocation().search.substring(1),
-        params = [],
-        paramMap = {};
-
-      if (paramStr.length > 0) {
-        params = paramStr.split('&');
-        for (var i = 0; i < params.length; i++) {
-          var p = params[i].split('=');
-          var value = decodeURIComponent(p[1]);
-          if (value === "true" || value === "false") {
-            value = JSON.parse(value);
-          }
-          paramMap[decodeURIComponent(p[0])] = value;
-        }
-      }
-
-      return paramMap;
-    }
-
-  }
-
-  return QueryString;
-};
 /*
 Copyright (c) 2008-2013 Pivotal Labs
 
@@ -3177,3 +2401,598 @@ getJasmineRequireObj().toThrowError = function(j$) {
 getJasmineRequireObj().version = function() {
   return "2.0.0";
 };
+/*
+Copyright (c) 2008-2013 Pivotal Labs
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+jasmineRequire.html = function(j$) {
+  j$.ResultsNode = jasmineRequire.ResultsNode();
+  j$.HtmlReporter = jasmineRequire.HtmlReporter(j$);
+  j$.QueryString = jasmineRequire.QueryString();
+  j$.HtmlSpecFilter = jasmineRequire.HtmlSpecFilter();
+};
+
+jasmineRequire.HtmlReporter = function(j$) {
+
+  var noopTimer = {
+    start: function() {},
+    elapsed: function() { return 0; }
+  };
+
+  function HtmlReporter(options) {
+    var env = options.env || {},
+      getContainer = options.getContainer,
+      createElement = options.createElement,
+      createTextNode = options.createTextNode,
+      onRaiseExceptionsClick = options.onRaiseExceptionsClick || function() {},
+      timer = options.timer || noopTimer,
+      results = [],
+      specsExecuted = 0,
+      failureCount = 0,
+      pendingSpecCount = 0,
+      htmlReporterMain,
+      symbols;
+
+    this.initialize = function() {
+      htmlReporterMain = createDom("div", {className: "html-reporter"},
+        createDom("div", {className: "banner"},
+          createDom("span", {className: "title"}, "Jasmine"),
+          createDom("span", {className: "version"}, j$.version)
+        ),
+        createDom("ul", {className: "symbol-summary"}),
+        createDom("div", {className: "alert"}),
+        createDom("div", {className: "results"},
+          createDom("div", {className: "failures"})
+        )
+      );
+      getContainer().appendChild(htmlReporterMain);
+
+      symbols = find(".symbol-summary");
+    };
+
+    var totalSpecsDefined;
+    this.jasmineStarted = function(options) {
+      totalSpecsDefined = options.totalSpecsDefined || 0;
+      timer.start();
+    };
+
+    var summary = createDom("div", {className: "summary"});
+
+    var topResults = new j$.ResultsNode({}, "", null),
+      currentParent = topResults;
+
+    this.suiteStarted = function(result) {
+      currentParent.addChild(result, "suite");
+      currentParent = currentParent.last();
+    };
+
+    this.suiteDone = function(result) {
+      if (currentParent == topResults) {
+        return;
+      }
+
+      currentParent = currentParent.parent;
+    };
+
+    this.specStarted = function(result) {
+      currentParent.addChild(result, "spec");
+    };
+
+    var failures = [];
+    this.specDone = function(result) {
+      if (result.status != "disabled") {
+        specsExecuted++;
+      }
+
+      symbols.appendChild(createDom("li", {
+          className: result.status,
+          id: "spec_" + result.id,
+          title: result.fullName
+        }
+      ));
+
+      if (result.status == "failed") {
+        failureCount++;
+
+        var failure =
+          createDom("div", {className: "spec-detail failed"},
+            createDom("div", {className: "description"},
+              createDom("a", {title: result.fullName, href: specHref(result)}, result.fullName)
+            ),
+            createDom("div", {className: "messages"})
+          );
+        var messages = failure.childNodes[1];
+
+        for (var i = 0; i < result.failedExpectations.length; i++) {
+          var expectation = result.failedExpectations[i];
+          messages.appendChild(createDom("div", {className: "result-message"}, expectation.message));
+          messages.appendChild(createDom("div", {className: "stack-trace"}, expectation.stack));
+        }
+
+        failures.push(failure);
+      }
+
+      if (result.status == "pending") {
+        pendingSpecCount++;
+      }
+    };
+
+    this.jasmineDone = function() {
+      var banner = find(".banner");
+      banner.appendChild(createDom("span", {className: "duration"}, "finished in " + timer.elapsed() / 1000 + "s"));
+
+      var alert = find(".alert");
+
+      alert.appendChild(createDom("span", { className: "exceptions" },
+        createDom("label", { className: "label", 'for': "raise-exceptions" }, "raise exceptions"),
+        createDom("input", {
+          className: "raise",
+          id: "raise-exceptions",
+          type: "checkbox"
+        })
+      ));
+      var checkbox = find("input");
+
+      checkbox.checked = !env.catchingExceptions();
+      checkbox.onclick = onRaiseExceptionsClick;
+
+      if (specsExecuted < totalSpecsDefined) {
+        var skippedMessage = "Ran " + specsExecuted + " of " + totalSpecsDefined + " specs - run all";
+        alert.appendChild(
+          createDom("span", {className: "bar skipped"},
+            createDom("a", {href: "?", title: "Run all specs"}, skippedMessage)
+          )
+        );
+      }
+      var statusBarMessage = "" + pluralize("spec", specsExecuted) + ", " + pluralize("failure", failureCount);
+      if (pendingSpecCount) { statusBarMessage += ", " + pluralize("pending spec", pendingSpecCount); }
+
+      var statusBarClassName = "bar " + ((failureCount > 0) ? "failed" : "passed");
+      alert.appendChild(createDom("span", {className: statusBarClassName}, statusBarMessage));
+
+      var results = find(".results");
+      results.appendChild(summary);
+
+      summaryList(topResults, summary);
+
+      function summaryList(resultsTree, domParent) {
+        var specListNode;
+        for (var i = 0; i < resultsTree.children.length; i++) {
+          var resultNode = resultsTree.children[i];
+          if (resultNode.type == "suite") {
+            var suiteListNode = createDom("ul", {className: "suite", id: "suite-" + resultNode.result.id},
+              createDom("li", {className: "suite-detail"},
+                createDom("a", {href: specHref(resultNode.result)}, resultNode.result.description)
+              )
+            );
+
+            summaryList(resultNode, suiteListNode);
+            domParent.appendChild(suiteListNode);
+          }
+          if (resultNode.type == "spec") {
+            if (domParent.getAttribute("class") != "specs") {
+              specListNode = createDom("ul", {className: "specs"});
+              domParent.appendChild(specListNode);
+            }
+            specListNode.appendChild(
+              createDom("li", {
+                  className: resultNode.result.status,
+                  id: "spec-" + resultNode.result.id
+                },
+                createDom("a", {href: specHref(resultNode.result)}, resultNode.result.description)
+              )
+            );
+          }
+        }
+      }
+
+      if (failures.length) {
+        alert.appendChild(
+          createDom('span', {className: "menu bar spec-list"},
+            createDom("span", {}, "Spec List | "),
+            createDom('a', {className: "failures-menu", href: "#"}, "Failures")));
+        alert.appendChild(
+          createDom('span', {className: "menu bar failure-list"},
+            createDom('a', {className: "spec-list-menu", href: "#"}, "Spec List"),
+            createDom("span", {}, " | Failures ")));
+
+        find(".failures-menu").onclick = function() {
+          setMenuModeTo('failure-list');
+        };
+        find(".spec-list-menu").onclick = function() {
+          setMenuModeTo('spec-list');
+        };
+
+        setMenuModeTo('failure-list');
+
+        var failureNode = find(".failures");
+        for (var i = 0; i < failures.length; i++) {
+          failureNode.appendChild(failures[i]);
+        }
+      }
+    };
+
+    return this;
+
+    function find(selector) {
+      return getContainer().querySelector(selector);
+    }
+
+    function createDom(type, attrs, childrenVarArgs) {
+      var el = createElement(type);
+
+      for (var i = 2; i < arguments.length; i++) {
+        var child = arguments[i];
+
+        if (typeof child === 'string') {
+          el.appendChild(createTextNode(child));
+        } else {
+          if (child) {
+            el.appendChild(child);
+          }
+        }
+      }
+
+      for (var attr in attrs) {
+        if (attr == "className") {
+          el[attr] = attrs[attr];
+        } else {
+          el.setAttribute(attr, attrs[attr]);
+        }
+      }
+
+      return el;
+    }
+
+    function pluralize(singular, count) {
+      var word = (count == 1 ? singular : singular + "s");
+
+      return "" + count + " " + word;
+    }
+
+    function specHref(result) {
+      return "?spec=" + encodeURIComponent(result.fullName);
+    }
+
+    function setMenuModeTo(mode) {
+      htmlReporterMain.setAttribute("class", "html-reporter " + mode);
+    }
+  }
+
+  return HtmlReporter;
+};
+
+jasmineRequire.HtmlSpecFilter = function() {
+  function HtmlSpecFilter(options) {
+    var filterString = options && options.filterString() && options.filterString().replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+    var filterPattern = new RegExp(filterString);
+
+    this.matches = function(specName) {
+      return filterPattern.test(specName);
+    };
+  }
+
+  return HtmlSpecFilter;
+};
+
+jasmineRequire.ResultsNode = function() {
+  function ResultsNode(result, type, parent) {
+    this.result = result;
+    this.type = type;
+    this.parent = parent;
+
+    this.children = [];
+
+    this.addChild = function(result, type) {
+      this.children.push(new ResultsNode(result, type, this));
+    };
+
+    this.last = function() {
+      return this.children[this.children.length - 1];
+    };
+  }
+
+  return ResultsNode;
+};
+
+jasmineRequire.QueryString = function() {
+  function QueryString(options) {
+
+    this.setParam = function(key, value) {
+      var paramMap = queryStringToParamMap();
+      paramMap[key] = value;
+      options.getWindowLocation().search = toQueryString(paramMap);
+    };
+
+    this.getParam = function(key) {
+      return queryStringToParamMap()[key];
+    };
+
+    return this;
+
+    function toQueryString(paramMap) {
+      var qStrPairs = [];
+      for (var prop in paramMap) {
+        qStrPairs.push(encodeURIComponent(prop) + "=" + encodeURIComponent(paramMap[prop]));
+      }
+      return "?" + qStrPairs.join('&');
+    }
+
+    function queryStringToParamMap() {
+      var paramStr = options.getWindowLocation().search.substring(1),
+        params = [],
+        paramMap = {};
+
+      if (paramStr.length > 0) {
+        params = paramStr.split('&');
+        for (var i = 0; i < params.length; i++) {
+          var p = params[i].split('=');
+          var value = decodeURIComponent(p[1]);
+          if (value === "true" || value === "false") {
+            value = JSON.parse(value);
+          }
+          paramMap[decodeURIComponent(p[0])] = value;
+        }
+      }
+
+      return paramMap;
+    }
+
+  }
+
+  return QueryString;
+};
+/**
+ Starting with version 2.0, this file "boots" Jasmine, performing all of the necessary initialization before executing the loaded environment and all of a project's specs. This file should be loaded after `jasmine.js`, but before any project source files or spec files are loaded. Thus this file can also be used to customize Jasmine for a project.
+
+ If a project is using Jasmine via the standalone distribution, this file can be customized directly. If a project is using Jasmine via the [Ruby gem][jasmine-gem], this file can be copied into the support directory via `jasmine copy_boot_js`. Other environments (e.g., Python) will have different mechanisms.
+
+ The location of `boot.js` can be specified and/or overridden in `jasmine.yml`.
+
+ [jasmine-gem]: http://github.com/pivotal/jasmine-gem
+ */
+
+
+(function() {
+
+  /**
+   * ## Require &amp; Instantiate
+   *
+   * Require Jasmine's core files. Specifically, this requires and attaches all of Jasmine's code to the `jasmine` reference.
+   */
+  window.jasmine = jasmineRequire.core(jasmineRequire);
+
+  /**
+   * Since this is being run in a browser and the results should populate to an HTML page, require the HTML-specific Jasmine code, injecting the same reference.
+   */
+  jasmineRequire.html(jasmine);
+
+  /**
+   * Create the Jasmine environment. This is used to run all specs in a project.
+   */
+  var env = jasmine.getEnv();
+
+  /**
+   * ## The Global Interface
+   *
+   * Build up the functions that will be exposed as the Jasmine public interface. A project can customize, rename or alias any of these functions as desired, provided the implementation remains unchanged.
+   */
+  var jasmineInterface = {
+    describe: function(description, specDefinitions) {
+      return env.describe(description, specDefinitions);
+    },
+
+    xdescribe: function(description, specDefinitions) {
+      return env.xdescribe(description, specDefinitions);
+    },
+
+    it: function(desc, func) {
+      return env.it(desc, func);
+    },
+
+    xit: function(desc, func) {
+      return env.xit(desc, func);
+    },
+
+    beforeEach: function(beforeEachFunction) {
+      return env.beforeEach(beforeEachFunction);
+    },
+
+    afterEach: function(afterEachFunction) {
+      return env.afterEach(afterEachFunction);
+    },
+
+    expect: function(actual) {
+      return env.expect(actual);
+    },
+
+    pending: function() {
+      return env.pending();
+    },
+
+    spyOn: function(obj, methodName) {
+      return env.spyOn(obj, methodName);
+    },
+
+    jsApiReporter: new jasmine.JsApiReporter({
+      timer: new jasmine.Timer()
+    })
+  };
+
+  /**
+   * Add all of the Jasmine global/public interface to the proper global, so a project can use the public interface directly. For example, calling `describe` in specs instead of `jasmine.getEnv().describe`.
+   */
+  if (typeof window == "undefined" && typeof exports == "object") {
+    extend(exports, jasmineInterface);
+  } else {
+    extend(window, jasmineInterface);
+  }
+
+  /**
+   * Expose the interface for adding custom equality testers.
+   */
+  jasmine.addCustomEqualityTester = function(tester) {
+    env.addCustomEqualityTester(tester);
+  };
+
+  /**
+   * Expose the interface for adding custom expectation matchers
+   */
+  jasmine.addMatchers = function(matchers) {
+    return env.addMatchers(matchers);
+  };
+
+  /**
+   * Expose the mock interface for the JavaScript timeout functions
+   */
+  jasmine.clock = function() {
+    return env.clock;
+  };
+
+  /**
+   * ## Runner Parameters
+   *
+   * More browser specific code - wrap the query string in an object and to allow for getting/setting parameters from the runner user interface.
+   */
+
+  var queryString = new jasmine.QueryString({
+    getWindowLocation: function() { return window.location; }
+  });
+
+  var catchingExceptions = queryString.getParam("catch");
+  env.catchExceptions(typeof catchingExceptions === "undefined" ? true : catchingExceptions);
+
+  /**
+   * ## Reporters
+   * The `HtmlReporter` builds all of the HTML UI for the runner page. This reporter paints the dots, stars, and x's for specs, as well as all spec names and all failures (if any).
+   */
+  var htmlReporter = new jasmine.HtmlReporter({
+    env: env,
+    onRaiseExceptionsClick: function() { queryString.setParam("catch", !env.catchingExceptions()); },
+    getContainer: function() { return document.body; },
+    createElement: function() { return document.createElement.apply(document, arguments); },
+    createTextNode: function() { return document.createTextNode.apply(document, arguments); },
+    timer: new jasmine.Timer()
+  });
+
+  /**
+   * The `jsApiReporter` also receives spec results, and is used by any environment that needs to extract the results  from JavaScript.
+   */
+  env.addReporter(jasmineInterface.jsApiReporter);
+  env.addReporter(htmlReporter);
+
+  /**
+   * Filter which specs will be run by matching the start of the full name against the `spec` query param.
+   */
+  var specFilter = new jasmine.HtmlSpecFilter({
+    filterString: function() { return queryString.getParam("spec"); }
+  });
+
+  env.specFilter = function(spec) {
+    return specFilter.matches(spec.getFullName());
+  };
+
+  /**
+   * Setting up timing functions to be able to be overridden. Certain browsers (Safari, IE 8, phantomjs) require this hack.
+   */
+  window.setTimeout = window.setTimeout;
+  window.setInterval = window.setInterval;
+  window.clearTimeout = window.clearTimeout;
+  window.clearInterval = window.clearInterval;
+
+  /**
+   * ## Execution
+   *
+   * Replace the browser window's `onload`, ensure it's called, and then run all of the loaded specs. This includes initializing the `HtmlReporter` instance and then executing the loaded Jasmine environment. All of this will happen after all of the specs are loaded.
+   */
+  var currentWindowOnload = window.onload;
+
+  window.onload = function() {
+    if (currentWindowOnload) {
+      currentWindowOnload();
+    }
+    htmlReporter.initialize();
+    env.execute();
+  };
+
+  /**
+   * Helper function for readability above.
+   */
+  function extend(destination, source) {
+    for (var property in source) destination[property] = source[property];
+    return destination;
+  }
+
+}());
+beforeEach(function () {
+  jasmine.addMatchers({
+    toBePlaying: function () {
+      return {
+        compare: function (actual, expected) {
+          var player = actual;
+
+          return {
+            pass: player.currentlyPlayingSong === expected && player.isPlaying
+          }
+        }
+      };
+    }
+  });
+});
+describe("Url", function() {
+  var url;
+  url = "";
+  beforeEach(function() {
+    return url = new Url("/:event_id.html/");
+  });
+  return describe("when other", function() {
+    return it("spec spec", function() {
+      expect(1).toEqual(1);
+      expect(true).toBeTruthy();
+      expect(1).not.toBeFalsy();
+      expect(0).toBeFalsy();
+      expect(null).toBeFalsy();
+      return expect(false).toBeFalsy();
+    });
+  });
+});
+
+
+/*
+  it "spec spec", ->
+    spyOn(url, 'value').andReturn true
+    expect(url.value "event_id").toEqual true
+
+  it "spec spec", ->
+    spyOn(url, 'value').andThrow "bad"
+    expect(url.value).toThrow "good"
+
+  it "spec spec", ->
+    expect ->
+      throw "Error"
+    .toThrowError "bad"
+ */
+;
+
+
+
+

@@ -75,10 +75,10 @@ class Url
     if @match
       @match.shift()
       for key, i in @keys
-        if key
-          value = @match[i]
-          @params_in_url.push key
-          @change key, value
+        value = @match[i]
+        @params_in_url.push key
+        @change key, value
+
     @vue.$set "url", Url.vue.$data
     @vue.$set "params", @params
 

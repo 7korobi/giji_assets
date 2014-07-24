@@ -430,11 +430,9 @@ Url = (function() {
       _ref = this.keys;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         key = _ref[i];
-        if (key) {
-          value = this.match[i];
-          this.params_in_url.push(key);
-          this.change(key, value);
-        }
+        value = this.match[i];
+        this.params_in_url.push(key);
+        this.change(key, value);
       }
     }
     this.vue.$set("url", Url.vue.$data);
