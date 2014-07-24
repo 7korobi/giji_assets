@@ -307,27 +307,30 @@ Parse = {
 };
 
 Url = (function() {
-  Url.routes = {};
+  var pushstate;
 
-  Url.data = {};
-
-  Url.popstate = function() {
-    var data, target, targets, url_key, _results;
-    targets = {
+  Url.targets = function() {
+    var hash;
+    return hash = {
       cookie: document.cookies,
       search: location.search,
       hash: location.hash
     };
+  };
+
+  Url.popstate = function() {
+    var data, target, url_key, _ref, _results;
+    _ref = Url.targets();
     _results = [];
-    for (target in targets) {
-      data = targets[target];
+    for (target in _ref) {
+      data = _ref[target];
       if (data) {
         _results.push((function() {
-          var _i, _len, _ref, _results1;
-          _ref = LOCATION[target];
+          var _i, _len, _ref1, _results1;
+          _ref1 = LOCATION[target];
           _results1 = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            url_key = _ref[_i];
+          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+            url_key = _ref1[_i];
             _results1.push(Url.routes[url_key].popstate(data, target));
           }
           return _results1;
@@ -338,6 +341,41 @@ Url = (function() {
     }
     return _results;
   };
+
+  pushstate = function() {
+    var data, link, target, url_key, _i, _len, _ref, _ref1;
+    link = location.href;
+    if (typeof history !== "undefined" && history !== null) {
+      _ref = Url.targets();
+      for (target in _ref) {
+        data = _ref[target];
+        if (data) {
+          _ref1 = LOCATION[target];
+          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+            url_key = _ref1[_i];
+            link = Url.routes[url_key].pushstate(link);
+          }
+        }
+      }
+    }
+    if (location.href !== link) {
+      return history.pushState("pushstate", null, link);
+    }
+  };
+
+  Url.pushstate = _.debounce(pushstate, DELAY.presto, {
+    leading: false,
+    trailing: true
+  });
+
+  Url.vue = new Vue({
+    data: {},
+    ready: function() {
+      return this.$watch('$data', Url.pushstate);
+    }
+  });
+
+  Url.routes = {};
 
   Url.boot = function() {
     $(window).on("hashchange", function(event) {
@@ -356,12 +394,13 @@ Url = (function() {
     });
   };
 
-  function Url(path, vue) {
+  function Url(format, vue) {
+    this.format = format;
     if (vue == null) {
       vue = {};
     }
-    this.keys = [null];
-    this.scanner = new RegExp(path.replace(/:([a-z_]+)/ig, (function(_this) {
+    this.keys = [];
+    this.scanner = new RegExp(this.format.replace(/:([a-z_]+)/ig, (function(_this) {
       return function(_, key) {
         _this.keys.push(key);
         switch (LOCATION.options[key].type) {
@@ -374,56 +413,54 @@ Url = (function() {
     })(this), "i"));
     this.vue = new Vue(_.merge(vue, {
       data: {
-        url: {},
+        url: Url.vue.$data,
         params: []
       }
     }));
-    this.vue.$watch('url', (function(_this) {
-      return function(url) {
-        _this.pushstate();
-        return _this.target;
-      };
-    })(this));
   }
 
   Url.prototype.popstate = function(path, target) {
     var i, key, value, _i, _len, _ref;
     this.target = target;
-    this.match = this.scanner.exec(path);
+    this.params_in_url = [];
     this.params = [];
+    this.match = this.scanner.exec(path);
     if (this.match) {
+      this.match.shift();
       _ref = this.keys;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         key = _ref[i];
         if (key) {
           value = this.match[i];
+          this.params_in_url.push(key);
           this.change(key, value);
         }
       }
     }
-    this.vue.$set("url", Url.data);
+    this.vue.$set("url", Url.vue.$data);
     return this.vue.$set("params", this.params);
   };
 
-  Url.prototype.pushstate = function(path) {
-    var link;
-    link = location.href;
-    if ((location[this.target] != null) && (typeof history !== "undefined" && history !== null)) {
-      link.replace(this.scanner, (function(_this) {
-        return function(_, key) {
-          return _this.value(key);
-        };
-      })(this));
-      return history.pushState("pushstate", null, link);
+  Url.prototype.pushstate = function(link) {
+    var key, path, _i, _len, _ref;
+    if (location[this.target] == null) {
+      return link;
     }
+    path = this.format;
+    _ref = this.params_in_url;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      key = _ref[_i];
+      path = path.replace(RegExp(":" + key, "ig"), this.value(key));
+    }
+    return link.replace(this.scanner, path);
   };
 
   Url.prototype.change = function(key, value) {
     var subkey, subval, _ref, _results;
     this.params.push(key);
-    Url.data[key] = LOCATION.options[key].type(value);
+    Url.vue.$data[key] = LOCATION.options[key].type(value);
     if (LOCATION.bind[key] != null) {
-      _ref = LOCATION.bind[key][Url.data[key]];
+      _ref = LOCATION.bind[key][Url.vue.$data[key]];
       _results = [];
       for (subkey in _ref) {
         subval = _ref[subkey];
@@ -438,8 +475,13 @@ Url = (function() {
   };
 
   Url.prototype.value = function(key) {
-    console.log([key, Url.data[key], LOCATION.options[key]]);
-    return Url.data[key] | LOCATION.options[key].current;
+    var value;
+    value = Url.vue.$data[key];
+    if (value != null) {
+      return value;
+    } else {
+      return LOCATION.options[key].current;
+    }
   };
 
   return Url;
@@ -513,6 +555,18 @@ Url.routes = {
   potof: new Url("/potof/:potofs_order"),
   css: new Url("/css.:theme.:width.:layout.:font", {
     el: "html",
+    ready: function() {
+      var style_p;
+      style_p = "";
+      return this.$watch('url', (function(_this) {
+        return function() {
+          var html;
+          html = document.documentElement;
+          html.className = html.className.replace(style_p, _this.style);
+          return style_p = _this.style;
+        };
+      })(this));
+    },
     computed: {
       style: function() {
         var h, _j, _len1, _ref2;

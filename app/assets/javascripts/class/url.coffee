@@ -9,18 +9,35 @@ Parse =
     new Date Number val
 
 class Url
-  @routes = {}
-  @data = {}
-
-  @popstate = ->
-    targets =
+  @targets = ->
+    hash =
       cookie: document.cookies
       search: location.search
       hash:   location.hash
-    for target, data of targets
+  @popstate = ->
+    for target, data of Url.targets()
       if data
         for url_key in LOCATION[target]
           Url.routes[url_key].popstate data, target
+
+  pushstate = ->
+    link = location.href
+    if history?
+      for target, data of Url.targets()
+        if data
+          for url_key in LOCATION[target]
+            link = Url.routes[url_key].pushstate link
+    if location.href != link
+      history.pushState "pushstate", null, link
+  @pushstate = _.debounce pushstate, DELAY.presto,
+    leading: false
+    trailing: true
+
+  @vue = new Vue
+    data: {}
+    ready: ->
+      @$watch '$data', Url.pushstate
+  @routes = {}
 
   @boot = ->
     $(window).on "hashchange", (event)->
@@ -35,9 +52,9 @@ class Url
       else
         Url.popstate()
 
-  constructor: (path, vue = {})->
-    @keys = [null]
-    @scanner = new RegExp path.replace /:([a-z_]+)/ig, (_, key)=>
+  constructor: (@format, vue = {})->
+    @keys = []
+    @scanner = new RegExp @format.replace /:([a-z_]+)/ig, (_, key)=>
       @keys.push key
       switch LOCATION.options[key].type
         when Number
@@ -48,41 +65,43 @@ class Url
 
     @vue = new Vue _.merge vue,
       data:
-        url: {}
+        url: Url.vue.$data
         params: []
-    @vue.$watch 'url', (url)=>
-      @pushstate()
-      @target
 
   popstate: (path, @target)->
-    @match = @scanner.exec(path)
+    @params_in_url = []
     @params = []
+    @match = @scanner.exec(path)
     if @match
+      @match.shift()
       for key, i in @keys
         if key
           value = @match[i]
+          @params_in_url.push key
           @change key, value
-    @vue.$set "url", Url.data
+    @vue.$set "url", Url.vue.$data
     @vue.$set "params", @params
 
-  pushstate: (path)->
-    link = location.href
-    if location[@target]? && history?
-      link.replace @scanner, (_, key)=> @value key
-      history.pushState "pushstate", null, link
+  pushstate: (link)->
+    return link unless location[@target]?
+    path = @format
+    for key in @params_in_url
+      path = path.replace ///:#{key}///ig, @value key
+    link.replace @scanner, path
 
   change: (key, value)->
     @params.push key
-    Url.data[key] = LOCATION.options[key].type value
+    Url.vue.$data[key] = LOCATION.options[key].type value
     if LOCATION.bind[key]?
-      for subkey, subval of LOCATION.bind[key][Url.data[key]]
+      for subkey, subval of LOCATION.bind[key][Url.vue.$data[key]]
         @change subkey, subval if key != subkey
 
   value: (key)->
-    console.log [key, Url.data[key], LOCATION.options[key]]
-    Url.data[key] | LOCATION.options[key].current
-
-
+    value = Url.vue.$data[key]
+    if value?
+      value
+    else
+      LOCATION.options[key].current
 
 for key, val of LOCATION.options
   val ||= {}
@@ -138,6 +157,12 @@ Url.routes =
 
   css: new Url "/css.:theme.:width.:layout.:font",
     el: "html"
+    ready: ->
+      style_p = ""
+      @$watch 'url', =>
+        html = document.documentElement
+        html.className = html.className.replace style_p, @style
+        style_p = @style
     computed:
       style: ->
         h = {}
