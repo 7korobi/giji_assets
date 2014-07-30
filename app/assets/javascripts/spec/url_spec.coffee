@@ -40,69 +40,48 @@ Url.routes =
   param: new Url "param=:aaa.:bbb.:ccc.:ddd"
   file:  new Url "/:fname.:ext"
 
-if "onhashchange" of window
-  $(window).on "hashchange", (event)->
-    if event.clipboardData
-      console.log event
-    else
-      Url.popstate()
-
-if "onpopstate" of window
-  $(window).on "popstate", (event)->
-    if event.clipboardData
-      console.log event
-    else
-      Url.popstate()
-
-  unless head.browser.safari
-    Url.popstate()
-
-
 describe "Url", ->
   beforeEach (done)->
     setTimeout ->
       done()
-    , DELAY.presto
-
+    , 1
   describe "should capture file name", ->
     it "(global)", (done)->
-      done()
+      Url.popstate()
       expect(Url.vue.$data.fname).toEqual "jasmine"
       expect(Url.vue.$data.ext).toEqual "html"
+      done()
 
     it "file", (done)->
-      done()
+      Url.popstate()
       expect(Url.routes.file.vue.$data.url.fname).toEqual "jasmine"
       expect(Url.routes.file.vue.$data.url.ext).toEqual "html"
-
-  describe "change call pushstate", ->
-    it "location with space", (done)->
-      spyOn(Url, "pushstate")
-      Url.routes.file.vue.$data.url.fname = "new file name"
-      done()
-
-    it "location", (done)->
-      spyOn(Url, "pushstate")
-      Url.routes.file.vue.$data.url.fname = "other"
       done()
 
   describe "bind variable", (done)->
-    it "location basic", (done)->
-      done()
-      expect(Url.routes.file.vue.$data.url.title).toEqual "特別"
-
     it "location other", (done)->
+      Url.popstate()
       Url.routes.file.vue.$data.url.fname = "other"
+      Url.pushstate()
+      expect(Url.routes.file.vue.$data.url.title).toEqual "変更"
       done()
-      expect(Url.routes.file.vue.$data.url.title).toEqual "特別"
 
-  it "basic", ->
+    it "location basic", (done)->
+      Url.popstate()
+      Url.routes.file.vue.$data.url.fname = "jasmine"
+      Url.pushstate()
+      expect(Url.routes.file.vue.$data.url.title).toEqual "基本"
+      done()
+
+
+  it "basic", (done)->
     expect(true).toBeTruthy()
 
     expect(1).not.toBeFalsy()
     expect(0).toBeFalsy()
     expect(null).toBeFalsy()
     expect(false).toBeFalsy()
+    done()
 
 ###
   it "spec spec", ->
