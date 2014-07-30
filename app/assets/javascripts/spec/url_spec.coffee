@@ -78,12 +78,18 @@ describe "Url", ->
       done()
 
   it "basic", (done)->
+    jasmine.clock().install();
+
     expect(true).toBeTruthy()
+
+    jasmine.clock().tick(1000);
 
     expect(1).not.toBeFalsy()
     expect(0).toBeFalsy()
     expect(null).toBeFalsy()
     expect(false).toBeFalsy()
+
+    jasmine.clock().uninstall();
     done()
 
 ###
