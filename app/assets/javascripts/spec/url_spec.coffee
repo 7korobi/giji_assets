@@ -48,33 +48,34 @@ describe "Url", ->
   describe "should capture file name", ->
     it "(global)", (done)->
       Url.popstate()
+      done()
       expect(Url.vue.$data.fname).toEqual "jasmine"
       expect(Url.vue.$data.ext).toEqual "html"
-      done()
 
     it "file", (done)->
       Url.popstate()
+      done()
       expect(Url.routes.file.vue.$data.url.fname).toEqual "jasmine"
       expect(Url.routes.file.vue.$data.url.ext).toEqual "html"
-      done()
 
   describe "bind variable", (done)->
+    beforeEach (done)->
+      setTimeout ->
+        done()
+      , 1
     it "location other", (done)->
       Url.popstate()
       Url.routes.file.vue.$data.url.fname = "other"
-      Url.pushstate()
-      Url.popstate()
+      Url.routes.file.change "fname", "other"
       expect(Url.routes.file.vue.$data.url.title).toEqual "変更"
       done()
 
     it "location basic", (done)->
+      done()
       Url.popstate()
       Url.routes.file.vue.$data.url.fname = "jasmine"
-      Url.pushstate()
-      Url.popstate()
+      Url.routes.file.change "fname", "jasmine"
       expect(Url.routes.file.vue.$data.url.title).toEqual "基本"
-      done()
-
 
   it "basic", (done)->
     expect(true).toBeTruthy()

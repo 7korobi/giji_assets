@@ -3184,33 +3184,36 @@ describe("Url", function() {
   describe("should capture file name", function() {
     it("(global)", function(done) {
       Url.popstate();
+      done();
       expect(Url.vue.$data.fname).toEqual("jasmine");
-      expect(Url.vue.$data.ext).toEqual("html");
-      return done();
+      return expect(Url.vue.$data.ext).toEqual("html");
     });
     return it("file", function(done) {
       Url.popstate();
+      done();
       expect(Url.routes.file.vue.$data.url.fname).toEqual("jasmine");
-      expect(Url.routes.file.vue.$data.url.ext).toEqual("html");
-      return done();
+      return expect(Url.routes.file.vue.$data.url.ext).toEqual("html");
     });
   });
   describe("bind variable", function(done) {
+    beforeEach(function(done) {
+      return setTimeout(function() {
+        return done();
+      }, 1);
+    });
     it("location other", function(done) {
       Url.popstate();
       Url.routes.file.vue.$data.url.fname = "other";
-      Url.pushstate();
-      Url.popstate();
+      Url.routes.file.change("fname", "other");
       expect(Url.routes.file.vue.$data.url.title).toEqual("変更");
       return done();
     });
     return it("location basic", function(done) {
+      done();
       Url.popstate();
       Url.routes.file.vue.$data.url.fname = "jasmine";
-      Url.pushstate();
-      Url.popstate();
-      expect(Url.routes.file.vue.$data.url.title).toEqual("基本");
-      return done();
+      Url.routes.file.change("fname", "jasmine");
+      return expect(Url.routes.file.vue.$data.url.title).toEqual("基本");
     });
   });
   return it("basic", function(done) {
