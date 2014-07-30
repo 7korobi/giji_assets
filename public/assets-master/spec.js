@@ -3209,11 +3209,11 @@ describe("Url", function() {
       return done();
     });
     return it("location basic", function(done) {
-      done();
       Url.popstate();
       Url.routes.file.vue.$data.url.fname = "jasmine";
       Url.routes.file.change("fname", "jasmine");
-      return expect(Url.routes.file.vue.$data.url.title).toEqual("基本");
+      expect(Url.routes.file.vue.$data.url.title).toEqual("基本");
+      return done();
     });
   });
   return it("basic", function(done) {

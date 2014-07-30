@@ -71,11 +71,11 @@ describe "Url", ->
       done()
 
     it "location basic", (done)->
-      done()
       Url.popstate()
       Url.routes.file.vue.$data.url.fname = "jasmine"
       Url.routes.file.change "fname", "jasmine"
       expect(Url.routes.file.vue.$data.url.title).toEqual "基本"
+      done()
 
   it "basic", (done)->
     expect(true).toBeTruthy()
