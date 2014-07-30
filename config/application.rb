@@ -22,7 +22,8 @@ module GijiAssets
     config.assets.paths.push "./app/views/hogan"
     config.assets.precompile += %w(
       base.js
-      class.js
+      scratch.js
+      sow.js
       spec.js
       spec.css
     )

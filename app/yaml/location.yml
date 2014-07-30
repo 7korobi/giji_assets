@@ -1,21 +1,3 @@
-
-search:
-  - story
-  - timer
-hash:
-  - messages
-  - news
-  - all
-  - page
-
-  - hides
-  - search
-
-  - potof
-  - css
-cookie:
-  - css
-
 options:
   search:
   width:

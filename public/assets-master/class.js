@@ -29,7 +29,7 @@
 
 this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,"presto":100,"animato":400,"andante":1600,"lento":4000} ;
 
-this.LOCATION = {"search":["story","timer"],"hash":["messages","news","all","page","hides","search","potof","css"],"cookie":["css"],"options":{"search":null,"width":{"current":"normal"},"layout":{"current":"stat_type"},"font":{"current":"std"},"viewed_at":{"type":"Parse.Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Parse.Array","current":[]},"message_ids":{"type":"Parse.Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
+this.LOCATION = {"pathname":[],"search":["story","timer"],"hash":["messages","news","all","page","hides","search","potof","css"],"cookie":["css"],"options":{"search":null,"width":{"current":"normal"},"layout":{"current":"stat_type"},"font":{"current":"std"},"viewed_at":{"type":"Parse.Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Parse.Array","current":[]},"message_ids":{"type":"Parse.Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
 var FixedBox, win;
 
@@ -313,6 +313,7 @@ Url = (function() {
     var hash;
     return hash = {
       cookie: document.cookies,
+      pathname: location.pathname,
       search: location.search,
       hash: location.hash
     };
@@ -385,13 +386,16 @@ Url = (function() {
         return Url.popstate();
       }
     });
-    return $(window).on("popstate", function(event) {
+    $(window).on("popstate", function(event) {
       if (event.clipboardData) {
         return console.log(event);
       } else {
         return Url.popstate();
       }
     });
+    if (!head.browser.safari) {
+      return Url.popstate();
+    }
   };
 
   function Url(format, vue) {
@@ -400,7 +404,9 @@ Url = (function() {
       vue = {};
     }
     this.keys = [];
-    this.scanner = new RegExp(this.format.replace(/:([a-z_]+)/ig, (function(_this) {
+    this.scanner = new RegExp(this.format.replace(/[.]/ig, function(key) {
+      return "\\" + key;
+    }).replace(/:([a-z_]+)/ig, (function(_this) {
       return function(_, key) {
         _this.keys.push(key);
         switch (LOCATION.options[key].type) {

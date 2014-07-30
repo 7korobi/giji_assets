@@ -11,9 +11,10 @@ Parse =
 class Url
   @targets = ->
     hash =
-      cookie: document.cookies
-      search: location.search
-      hash:   location.hash
+      cookie:   document.cookies
+      pathname: location.pathname
+      search:   location.search
+      hash:     location.hash
   @popstate = ->
     for target, data of Url.targets()
       if data
@@ -39,22 +40,9 @@ class Url
       @$watch '$data', Url.pushstate
   @routes = {}
 
-  @boot = ->
-    $(window).on "hashchange", (event)->
-      if event.clipboardData
-        console.log event
-      else
-        Url.popstate()
-
-    $(window).on "popstate", (event)->
-      if event.clipboardData
-        console.log event
-      else
-        Url.popstate()
-
   constructor: (@format, vue = {})->
     @keys = []
-    @scanner = new RegExp @format.replace /:([a-z_]+)/ig, (_, key)=>
+    @scanner = new RegExp @format.replace(/[.]/ig,(key)-> "\\#{key}" ).replace /:([a-z_]+)/ig, (_, key)=>
       @keys.push key
       switch LOCATION.options[key].type
         when Number
@@ -103,17 +91,6 @@ class Url
     else
       LOCATION.options[key].current
 
-for key, val of LOCATION.options
-  val ||= {}
-  LOCATION.options[key] =
-    type: eval(val.type || "String")
-    current: val.current || null
-
-for key, binds of LOCATION.bind
-  LOCATION.bind[key] = {}
-  for bind in binds
-    LOCATION.bind[key][bind[key]] = bind
-
 
 ###
 el: the element the directive is bound to.
@@ -125,9 +102,6 @@ value: the current binding value.
 # <div v-href=""></div>
 ###
 
-
-Vue.config
-  debug: true
 
 Vue.directive 'href',
   bind: (value) ->
@@ -141,37 +115,6 @@ Vue.directive 'href',
     @el.removeEventListener 'click', =>
       console.log 'unbind'
 
-Url.routes =
-  story: new Url "/on/:story_id"
-  timer: new Url "timer=:viewed_at"
-
-  messages: new Url "/:event_id/messages/:message_ids/"
-  news:     new Url "/:event_id/:mode_id/news/:row/"
-  all:      new Url "/:event_id/:mode_id/all/"
-  page:     new Url "/:event_id/:mode_id/:page.of.:row/"
-
-  hides:  new Url "/hides/:hide_ids"
-  search: new Url "/search/:search"
-
-  potof: new Url "/potof/:potofs_order"
-
-  css: new Url "/css.:theme.:width.:layout.:font",
-    el: "html"
-    ready: ->
-      style_p = ""
-      @$watch 'url', =>
-        html = document.documentElement
-        html.className = html.className.replace style_p, @style
-        style_p = @style
-    computed:
-      style: ->
-        h = {}
-        for key in @params
-          val = @url[key]
-          h["#{val}-#{key}"] = true if key? && val? && String == LOCATION.options[key].type
-        Object.keys(h).join(" ")
-
-Url.boot()
 
 
 
