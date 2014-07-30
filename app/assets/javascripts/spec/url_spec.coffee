@@ -63,6 +63,7 @@ describe "Url", ->
       Url.popstate()
       Url.routes.file.vue.$data.url.fname = "other"
       Url.pushstate()
+      Url.popstate()
       expect(Url.routes.file.vue.$data.url.title).toEqual "変更"
       done()
 
@@ -70,6 +71,7 @@ describe "Url", ->
       Url.popstate()
       Url.routes.file.vue.$data.url.fname = "jasmine"
       Url.pushstate()
+      Url.popstate()
       expect(Url.routes.file.vue.$data.url.title).toEqual "基本"
       done()
 

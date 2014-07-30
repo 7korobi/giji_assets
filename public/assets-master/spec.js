@@ -3200,6 +3200,7 @@ describe("Url", function() {
       Url.popstate();
       Url.routes.file.vue.$data.url.fname = "other";
       Url.pushstate();
+      Url.popstate();
       expect(Url.routes.file.vue.$data.url.title).toEqual("変更");
       return done();
     });
@@ -3207,6 +3208,7 @@ describe("Url", function() {
       Url.popstate();
       Url.routes.file.vue.$data.url.fname = "jasmine";
       Url.pushstate();
+      Url.popstate();
       expect(Url.routes.file.vue.$data.url.title).toEqual("基本");
       return done();
     });
