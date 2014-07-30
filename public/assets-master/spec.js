@@ -3175,76 +3175,49 @@ Url.routes = {
   file: new Url("/:fname.:ext")
 };
 
-if ("onhashchange" in window) {
-  $(window).on("hashchange", function(event) {
-    if (event.clipboardData) {
-      return console.log(event);
-    } else {
-      return Url.popstate();
-    }
-  });
-}
-
-if ("onpopstate" in window) {
-  $(window).on("popstate", function(event) {
-    if (event.clipboardData) {
-      return console.log(event);
-    } else {
-      return Url.popstate();
-    }
-  });
-  if (!head.browser.safari) {
-    Url.popstate();
-  }
-}
-
 describe("Url", function() {
   beforeEach(function(done) {
     return setTimeout(function() {
       return done();
-    }, DELAY.presto);
+    }, 1);
   });
   describe("should capture file name", function() {
     it("(global)", function(done) {
-      done();
+      Url.popstate();
       expect(Url.vue.$data.fname).toEqual("jasmine");
-      return expect(Url.vue.$data.ext).toEqual("html");
-    });
-    return it("file", function(done) {
-      done();
-      expect(Url.routes.file.vue.$data.url.fname).toEqual("jasmine");
-      return expect(Url.routes.file.vue.$data.url.ext).toEqual("html");
-    });
-  });
-  describe("change call pushstate", function() {
-    it("location with space", function(done) {
-      spyOn(Url, "pushstate");
-      Url.routes.file.vue.$data.url.fname = "new file name";
+      expect(Url.vue.$data.ext).toEqual("html");
       return done();
     });
-    return it("location", function(done) {
-      spyOn(Url, "pushstate");
-      Url.routes.file.vue.$data.url.fname = "other";
+    return it("file", function(done) {
+      Url.popstate();
+      expect(Url.routes.file.vue.$data.url.fname).toEqual("jasmine");
+      expect(Url.routes.file.vue.$data.url.ext).toEqual("html");
       return done();
     });
   });
   describe("bind variable", function(done) {
-    it("location basic", function(done) {
-      done();
-      return expect(Url.routes.file.vue.$data.url.title).toEqual("特別");
-    });
-    return it("location other", function(done) {
+    it("location other", function(done) {
+      Url.popstate();
       Url.routes.file.vue.$data.url.fname = "other";
-      done();
-      return expect(Url.routes.file.vue.$data.url.title).toEqual("特別");
+      Url.pushstate();
+      expect(Url.routes.file.vue.$data.url.title).toEqual("変更");
+      return done();
+    });
+    return it("location basic", function(done) {
+      Url.popstate();
+      Url.routes.file.vue.$data.url.fname = "jasmine";
+      Url.pushstate();
+      expect(Url.routes.file.vue.$data.url.title).toEqual("基本");
+      return done();
     });
   });
-  return it("basic", function() {
+  return it("basic", function(done) {
     expect(true).toBeTruthy();
     expect(1).not.toBeFalsy();
     expect(0).toBeFalsy();
     expect(null).toBeFalsy();
-    return expect(false).toBeFalsy();
+    expect(false).toBeFalsy();
+    return done();
   });
 });
 

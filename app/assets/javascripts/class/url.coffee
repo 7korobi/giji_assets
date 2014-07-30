@@ -30,6 +30,8 @@ class Url
             link = Url.routes[url_key].pushstate link
     if location.href != link
       history.pushState "pushstate", null, link
+      Url.popstate()
+
   @pushstate = _.debounce pushstate, DELAY.presto,
     leading: false
     trailing: true
@@ -37,10 +39,12 @@ class Url
   @vue = new Vue
     data: {}
     ready: ->
-      @$watch '$data', Url.pushstate
+      @$watch '$data', (value)->
+        Url.pushstate()
   @routes = {}
 
   constructor: (@format, vue = {})->
+    self = @
     @keys = []
     @scanner = new RegExp @format.replace(/[.]/ig,(key)-> "\\#{key}" ).replace /:([a-z_]+)/ig, (_, key)=>
       @keys.push key
@@ -50,7 +54,6 @@ class Url
         else
           "([^\\/\\-\\=\\.]+)"
     , "i"
-
     @vue = new Vue _.merge vue,
       data:
         url: Url.vue.$data

@@ -44,16 +44,20 @@ Url.routes = {
   css: new Url("/css.:theme.:width.:layout.:font", {
     el: "html",
     ready: function() {
-      var style_p;
+      var style_change, style_p;
       style_p = "";
-      return this.$watch('url', (function(_this) {
+      style_change = (function(_this) {
         return function() {
           var html;
           html = document.documentElement;
           html.className = html.className.replace(style_p, _this.style);
           return style_p = _this.style;
         };
-      })(this));
+      })(this);
+      return this.$watch('url', _.debounce(style_change, DELAY.presto, {
+        leading: false,
+        trailing: true
+      }));
     },
     computed: {
       style: function() {
@@ -125,6 +129,36 @@ if ("onpopstate" in window) {
   if (!head.browser.safari) {
     Url.popstate();
   }
+}
+
+if ("onhaschange" in window) {
+  $(window).on("haschange", function(event) {
+    return console.log("on haschange");
+  });
+}
+
+if ("onmessage" in window) {
+  $(window).on("message", function(event) {
+    return console.log("on message");
+  });
+}
+
+if ("onoffline" in window) {
+  $(window).on("offline", function(event) {
+    return console.log("on offline");
+  });
+}
+
+if ("ononline" in window) {
+  $(window).on("online", function(event) {
+    return console.log("on online");
+  });
+}
+
+if ("onstorage" in window) {
+  $(window).on("storage", function(event) {
+    return console.log("on storage");
+  });
 }
 ;
 

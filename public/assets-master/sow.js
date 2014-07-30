@@ -117,6 +117,36 @@ if ("onpopstate" in window) {
     Url.popstate();
   }
 }
+
+if ("onhaschange" in window) {
+  $(window).on("haschange", function(event) {
+    return console.log("on haschange");
+  });
+}
+
+if ("onmessage" in window) {
+  $(window).on("message", function(event) {
+    return console.log("on message");
+  });
+}
+
+if ("onoffline" in window) {
+  $(window).on("offline", function(event) {
+    return console.log("on offline");
+  });
+}
+
+if ("ononline" in window) {
+  $(window).on("online", function(event) {
+    return console.log("on online");
+  });
+}
+
+if ("onstorage" in window) {
+  $(window).on("storage", function(event) {
+    return console.log("on storage");
+  });
+}
 ;
 
 

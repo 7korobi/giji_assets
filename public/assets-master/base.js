@@ -1150,7 +1150,8 @@ Url = (function() {
       }
     }
     if (location.href !== link) {
-      return history.pushState("pushstate", null, link);
+      history.pushState("pushstate", null, link);
+      return Url.popstate();
     }
   };
 
@@ -1162,17 +1163,21 @@ Url = (function() {
   Url.vue = new Vue({
     data: {},
     ready: function() {
-      return this.$watch('$data', Url.pushstate);
+      return this.$watch('$data', function(value) {
+        return Url.pushstate();
+      });
     }
   });
 
   Url.routes = {};
 
   function Url(format, vue) {
+    var self;
     this.format = format;
     if (vue == null) {
       vue = {};
     }
+    self = this;
     this.keys = [];
     this.scanner = new RegExp(this.format.replace(/[.]/ig, function(key) {
       return "\\" + key;

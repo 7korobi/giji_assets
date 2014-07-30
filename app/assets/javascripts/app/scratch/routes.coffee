@@ -21,10 +21,14 @@ Url.routes =
     el: "html"
     ready: ->
       style_p = ""
-      @$watch 'url', =>
+      style_change = =>
         html = document.documentElement
         html.className = html.className.replace style_p, @style
         style_p = @style
+      @$watch 'url', _.debounce style_change, DELAY.presto,
+        leading: false
+        trailing: true
+
     computed:
       style: ->
         h = {}
