@@ -42,3 +42,22 @@ if "onpopstate" of window
   unless head.browser.safari
     Url.popstate()
 
+if "onhaschange" of window
+  $(window).on "haschange", (event)->
+    console.log "on haschange"
+
+if "onmessage" of window
+  $(window).on "message", (event)->
+    console.log "on message"
+
+if "onoffline" of window
+  $(window).on "offline", (event)->
+    console.log "on offline"
+
+if "ononline" of window
+  $(window).on "online", (event)->
+    console.log "on online"
+
+if "onstorage" of window
+  $(window).on "storage", (event)->
+    console.log "on storage"
