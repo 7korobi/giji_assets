@@ -9,7 +9,7 @@ options:
   layout:
     current: stat_type
   viewed_at:
-    type: Parse.Date
+    type: Date
     current: 10000
 
   theme:
@@ -34,10 +34,10 @@ options:
     current: 50
 
   hide_ids:
-    type: Parse.Array
+    type: Array
     current: []
   message_ids:
-    type: Parse.Array
+    type: Array
     current: []
 
   roletable:
