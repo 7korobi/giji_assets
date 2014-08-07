@@ -1,7 +1,6 @@
-LOCATION.pathname = []
-LOCATION.cookie = []
-LOCATION.search = []
-LOCATION.hash = ["css"]
+Url.hash = ["css"]
+Url.options = LOCATION.options
+Url.bind = LOCATION.bind
 
 Url.routes =
   css: new Url "/css.:theme.:width.:layout.:font",

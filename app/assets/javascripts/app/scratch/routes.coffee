@@ -1,7 +1,8 @@
-LOCATION.pathname = []
-LOCATION.cookie = ["css"]
-LOCATION.search = ["story", "timer"]
-LOCATION.hash = ["messages", "news", "all", "page", "hides", "search", "potof", "css"]
+Url.cookie = ["css"]
+Url.search = ["story", "timer"]
+Url.hash = ["messages", "news", "all", "page", "hides", "search", "potof", "css"]
+Url.options = LOCATION.options
+Url.bind = LOCATION.bind
 
 Url.routes =
   story: new Url "/on/:story_id"
@@ -17,7 +18,7 @@ Url.routes =
 
   potof: new Url "/potof/:potofs_order"
 
-  css: new Url "/css.:theme.:width.:layout.:font",
+  css: new Url "/css-:theme-:width-:layout-:font",
     el: "html"
     ready: ->
       style_p = ""
@@ -34,5 +35,5 @@ Url.routes =
         h = {}
         for key in @params
           val = @url[key]
-          h["#{val}-#{key}"] = true if key? && val? && String == LOCATION.options[key].type
+          h["#{val}-#{key}"] = true if key? && val? && "String" == ((Url.options[key]?.type) || "String")
         Object.keys(h).join(" ")
