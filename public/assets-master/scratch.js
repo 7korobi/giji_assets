@@ -1,18 +1,8 @@
-var bind, binds, key, val, _i, _len, _ref, _ref1;
+var bind, binds, key, _i, _len, _ref;
 
-_ref = LOCATION.options;
+_ref = LOCATION.bind;
 for (key in _ref) {
-  val = _ref[key];
-  val || (val = {});
-  LOCATION.options[key] = {
-    type: eval(val.type || "String"),
-    current: val.current || null
-  };
-}
-
-_ref1 = LOCATION.bind;
-for (key in _ref1) {
-  binds = _ref1[key];
+  binds = _ref[key];
   LOCATION.bind[key] = {};
   for (_i = 0, _len = binds.length; _i < _len; _i++) {
     bind = binds[_i];
@@ -23,13 +13,15 @@ for (key in _ref1) {
 Vue.config({
   debug: true
 });
-LOCATION.pathname = [];
+Url.cookie = ["css"];
 
-LOCATION.cookie = ["css"];
+Url.search = ["story", "timer"];
 
-LOCATION.search = ["story", "timer"];
+Url.hash = ["messages", "news", "all", "page", "hides", "search", "potof", "css"];
 
-LOCATION.hash = ["messages", "news", "all", "page", "hides", "search", "potof", "css"];
+Url.options = LOCATION.options;
+
+Url.bind = LOCATION.bind;
 
 Url.routes = {
   story: new Url("/on/:story_id"),
@@ -41,7 +33,7 @@ Url.routes = {
   hides: new Url("/hides/:hide_ids"),
   search: new Url("/search/:search"),
   potof: new Url("/potof/:potofs_order"),
-  css: new Url("/css.:theme.:width.:layout.:font", {
+  css: new Url("/css-:theme-:width-:layout-:font", {
     el: "html",
     ready: function() {
       var style_change, style_p;
@@ -61,13 +53,13 @@ Url.routes = {
     },
     computed: {
       style: function() {
-        var h, key, val, _i, _len, _ref;
+        var h, key, val, _i, _len, _ref, _ref1;
         h = {};
         _ref = this.params;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           key = _ref[_i];
           val = this.url[key];
-          if ((key != null) && (val != null) && String === LOCATION.options[key].type) {
+          if ((key != null) && (val != null) && "String" === (((_ref1 = Url.options[key]) != null ? _ref1.type : void 0) || "String")) {
             h["" + val + "-" + key] = true;
           }
         }

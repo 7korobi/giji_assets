@@ -1,18 +1,8 @@
-var bind, binds, key, val, _i, _len, _ref, _ref1;
+var bind, binds, key, _i, _len, _ref;
 
-_ref = LOCATION.options;
+_ref = LOCATION.bind;
 for (key in _ref) {
-  val = _ref[key];
-  val || (val = {});
-  LOCATION.options[key] = {
-    type: eval(val.type || "String"),
-    current: val.current || null
-  };
-}
-
-_ref1 = LOCATION.bind;
-for (key in _ref1) {
-  binds = _ref1[key];
+  binds = _ref[key];
   LOCATION.bind[key] = {};
   for (_i = 0, _len = binds.length; _i < _len; _i++) {
     bind = binds[_i];
@@ -23,13 +13,11 @@ for (key in _ref1) {
 Vue.config({
   debug: true
 });
-LOCATION.pathname = [];
+Url.hash = ["css"];
 
-LOCATION.cookie = [];
+Url.options = LOCATION.options;
 
-LOCATION.search = [];
-
-LOCATION.hash = ["css"];
+Url.bind = LOCATION.bind;
 
 Url.routes = {
   css: new Url("/css.:theme.:width.:layout.:font", {

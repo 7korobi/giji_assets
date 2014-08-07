@@ -3119,59 +3119,56 @@ beforeEach(function() {
     }
   });
 });
-var LOCATION;
-
-LOCATION = {
-  pathname: ["file"],
-  cookie: ["file"],
-  search: [],
-  hash: [],
-  bind: {
-    fname: {
-      jasmine: {
-        fname: "jasmine",
-        title: "基本"
-      },
-      other: {
-        fname: "other",
-        title: "変更"
-      }
-    }
-  },
-  options: {
-    aaa: {
-      current: null,
-      type: Number
+Url.bind = {
+  fname: {
+    jasmine: {
+      fname: "jasmine",
+      title: "基本"
     },
-    bbb: {
-      current: null,
-      type: String
-    },
-    ccc: {
-      current: null,
-      type: String
-    },
-    ddd: {
-      current: null,
-      type: Parse.Date
-    },
-    fname: {
-      current: null,
-      type: String
-    },
-    ext: {
-      current: null,
-      type: String
-    },
-    title: {
-      current: null,
-      type: String
+    other: {
+      fname: "other",
+      title: "変更"
     }
   }
 };
 
+Url.options = {
+  aaa: {
+    current: null,
+    type: "Number"
+  },
+  bbb: {
+    current: null,
+    type: "String"
+  },
+  ccc: {
+    current: null,
+    type: "String"
+  },
+  ddd: {
+    current: null,
+    type: "Date"
+  },
+  fname: {
+    current: null,
+    type: "String"
+  },
+  ext: {
+    current: null,
+    type: "String"
+  },
+  title: {
+    current: null,
+    type: "String"
+  }
+};
+
+Url.pathname = ["file"];
+
+Url.cookie = ["file"];
+
 Url.routes = {
-  param: new Url("param=:aaa.:bbb.:ccc.:ddd"),
+  param: new Url("param=:aaa-:bbb-:ccc-:ddd"),
   file: new Url("/:fname.:ext")
 };
 

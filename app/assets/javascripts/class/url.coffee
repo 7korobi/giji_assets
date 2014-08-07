@@ -1,98 +1,137 @@
-Parse =
-  Array: (val)->
-    if val.split?
-      val.split ","
-    else
-      val
-
-  Date: (val)->
-    new Date Number val
 
 class Url
-  @targets = ->
-    hash =
-      cookie:   document.cookies
+  @pathname = []
+  @cookie = []
+  @search = []
+  @hash = []
+  @routes = {}
+
+  @data = {}
+
+
+  @parse = 
+    Array: (val)->
+      if val.split?
+        val.split ","
+      else
+        val
+
+    Date: (val)->
+      new Date Number val
+
+    String: String
+    Number: Number
+
+
+  @regexp = (type)->
+    switch type
+      when "Number"
+        "([\\.0-9]+)"
+      else
+        "([^\\/\\-\\=\\.]+)"
+
+
+  @each = (cb)->
+    targets = 
+      cookie:   document.cookie
       pathname: location.pathname
       search:   location.search
       hash:     location.hash
-  @popstate = ->
-    for target, data of Url.targets()
-      if data
-        for url_key in LOCATION[target]
-          Url.routes[url_key].popstate data, target
 
-  pushstate = ->
+    for target, data of targets
+      if data
+        for url_key in Url[target]
+          route = Url.routes[url_key]
+          cb(route, data, target)
+
+
+  @popstate = ->
+    Url.each (route, data, target)->
+      route.popstate data, target
+
+
+  @pushstate = ->
     link = location.href
     if history?
-      for target, data of Url.targets()
-        if data
-          for url_key in LOCATION[target]
-            link = Url.routes[url_key].pushstate link
+      Url.each (route, data, target, target_is_cookie)->
+        link = route.pushstate link
+
     if location.href != link
       history.pushState "pushstate", null, link
       Url.popstate()
 
-  @pushstate = _.debounce pushstate, DELAY.presto,
-    leading: false
-    trailing: true
 
   @vue = new Vue
-    data: {}
+    data: Url.data
     ready: ->
-      @$watch '$data', (value)->
-        Url.pushstate()
-  @routes = {}
+      pushstate = _.debounce Url.pushstate, DELAY.presto,
+        leading: false
+        trailing: true
+      @$watch '$data', pushstate
+
 
   constructor: (@format, vue = {})->
-    self = @
     @keys = []
+    @params_in_url = []
     @scanner = new RegExp @format.replace(/[.]/ig,(key)-> "\\#{key}" ).replace /:([a-z_]+)/ig, (_, key)=>
+      type = (Url.options[key]?.type) || "String"
       @keys.push key
-      switch LOCATION.options[key].type
-        when Number
-          "([\\.0-9]+)"
-        else
-          "([^\\/\\-\\=\\.]+)"
+      @params_in_url.push key
+
+      Url.regexp(type)
     , "i"
     @vue = new Vue _.merge vue,
       data:
         url: Url.vue.$data
         params: []
 
+
   popstate: (path, @target)->
-    @params_in_url = []
     @params = []
     @match = @scanner.exec(path)
     if @match
       @match.shift()
       for key, i in @keys
-        value = @match[i]
-        @params_in_url.push key
-        @change key, value
+        @change key, @match[i]
 
     @vue.$set "url", Url.vue.$data
     @vue.$set "params", @params
 
+
   pushstate: (link)->
-    return link unless location[@target]?
+    # TODO: cookie & href each targets.
+    switch @target 
+      when "cookie"
+        document.cookie = @serialize()
+      else
+        return link unless location[@target]?
+        link.replace @scanner, @serialize()
+
+
+  serialize: ->
     path = @format
     for key in @params_in_url
       path = path.replace ///:#{key}///ig, @value key
-    link.replace @scanner, path
+    path
+
 
   change: (key, value)->
+    type = (Url.options[key]?.type) || "String"
+    value  = Url.parse[type] value
+
     @params.push key
-    Url.vue.$data[key] = LOCATION.options[key].type value
-    if LOCATION.bind[key]?
-      for subkey, subval of LOCATION.bind[key][Url.vue.$data[key]]
+    Url.vue.$data[key] = value
+    if Url.bind[key]?
+      for subkey, subval of Url.bind[key][value]
         @change subkey, subval if key != subkey
+
 
   value: (key)->
     value = Url.vue.$data[key]
     if value?
       value
     else
-      LOCATION.options[key].current
+      (Url.options[key]?.current) || null
 
 
 ###
@@ -111,8 +150,10 @@ Vue.directive 'href',
     @el.addEventListener 'click', =>
       @vm[@key]
 
+
   update: (value)->
     $(@el).attr 'href', Url.link value
+
 
   unbind: ->
     @el.removeEventListener 'click', =>

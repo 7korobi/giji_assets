@@ -851,7 +851,7 @@ var Hogan = {};
 
 this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,"presto":100,"animato":400,"andante":1600,"lento":4000} ;
 
-this.LOCATION = {"options":{"search":null,"width":{"current":"normal"},"layout":{"current":"stat_type"},"font":{"current":"std"},"viewed_at":{"type":"Parse.Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Parse.Array","current":[]},"message_ids":{"type":"Parse.Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
+this.LOCATION = {"options":{"search":null,"width":{"current":"normal"},"layout":{"current":"stat_type"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
 var FixedBox, win;
 
@@ -1081,48 +1081,65 @@ FixedBox = (function() {
   return FixedBox;
 
 })();
-var Parse, Url;
-
-Parse = {
-  Array: function(val) {
-    if (val.split != null) {
-      return val.split(",");
-    } else {
-      return val;
-    }
-  },
-  Date: function(val) {
-    return new Date(Number(val));
-  }
-};
+var Url;
 
 Url = (function() {
-  var pushstate;
+  Url.pathname = [];
 
-  Url.targets = function() {
-    var hash;
-    return hash = {
-      cookie: document.cookies,
+  Url.cookie = [];
+
+  Url.search = [];
+
+  Url.hash = [];
+
+  Url.routes = {};
+
+  Url.data = {};
+
+  Url.parse = {
+    Array: function(val) {
+      if (val.split != null) {
+        return val.split(",");
+      } else {
+        return val;
+      }
+    },
+    Date: function(val) {
+      return new Date(Number(val));
+    },
+    String: String,
+    Number: Number
+  };
+
+  Url.regexp = function(type) {
+    switch (type) {
+      case "Number":
+        return "([\\.0-9]+)";
+      default:
+        return "([^\\/\\-\\=\\.]+)";
+    }
+  };
+
+  Url.each = function(cb) {
+    var data, route, target, targets, url_key, _results;
+    targets = {
+      cookie: document.cookie,
       pathname: location.pathname,
       search: location.search,
       hash: location.hash
     };
-  };
-
-  Url.popstate = function() {
-    var data, target, url_key, _ref, _results;
-    _ref = Url.targets();
     _results = [];
-    for (target in _ref) {
-      data = _ref[target];
+    for (target in targets) {
+      data = targets[target];
       if (data) {
         _results.push((function() {
-          var _i, _len, _ref1, _results1;
-          _ref1 = LOCATION[target];
+          var _i, _len, _ref, _results1;
+          _ref = Url[target];
           _results1 = [];
-          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-            url_key = _ref1[_i];
-            _results1.push(Url.routes[url_key].popstate(data, target));
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            url_key = _ref[_i];
+            route = Url.routes[url_key];
+            _results1.push(cb(route, data, target));
           }
           return _results1;
         })());
@@ -1133,21 +1150,19 @@ Url = (function() {
     return _results;
   };
 
-  pushstate = function() {
-    var data, link, target, url_key, _i, _len, _ref, _ref1;
+  Url.popstate = function() {
+    return Url.each(function(route, data, target) {
+      return route.popstate(data, target);
+    });
+  };
+
+  Url.pushstate = function() {
+    var link;
     link = location.href;
     if (typeof history !== "undefined" && history !== null) {
-      _ref = Url.targets();
-      for (target in _ref) {
-        data = _ref[target];
-        if (data) {
-          _ref1 = LOCATION[target];
-          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-            url_key = _ref1[_i];
-            link = Url.routes[url_key].pushstate(link);
-          }
-        }
-      }
+      Url.each(function(route, data, target, target_is_cookie) {
+        return link = route.pushstate(link);
+      });
     }
     if (location.href !== link) {
       history.pushState("pushstate", null, link);
@@ -1155,41 +1170,34 @@ Url = (function() {
     }
   };
 
-  Url.pushstate = _.debounce(pushstate, DELAY.presto, {
-    leading: false,
-    trailing: true
-  });
-
   Url.vue = new Vue({
-    data: {},
+    data: Url.data,
     ready: function() {
-      return this.$watch('$data', function(value) {
-        return Url.pushstate();
+      var pushstate;
+      pushstate = _.debounce(Url.pushstate, DELAY.presto, {
+        leading: false,
+        trailing: true
       });
+      return this.$watch('$data', pushstate);
     }
   });
 
-  Url.routes = {};
-
   function Url(format, vue) {
-    var self;
     this.format = format;
     if (vue == null) {
       vue = {};
     }
-    self = this;
     this.keys = [];
+    this.params_in_url = [];
     this.scanner = new RegExp(this.format.replace(/[.]/ig, function(key) {
       return "\\" + key;
     }).replace(/:([a-z_]+)/ig, (function(_this) {
       return function(_, key) {
+        var type, _ref;
+        type = ((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String";
         _this.keys.push(key);
-        switch (LOCATION.options[key].type) {
-          case Number:
-            return "([\\.0-9]+)";
-          default:
-            return "([^\\/\\-\\=\\.]+)";
-        }
+        _this.params_in_url.push(key);
+        return Url.regexp(type);
       };
     })(this), "i"));
     this.vue = new Vue(_.merge(vue, {
@@ -1201,9 +1209,8 @@ Url = (function() {
   }
 
   Url.prototype.popstate = function(path, target) {
-    var i, key, value, _i, _len, _ref;
+    var i, key, _i, _len, _ref;
     this.target = target;
-    this.params_in_url = [];
     this.params = [];
     this.match = this.scanner.exec(path);
     if (this.match) {
@@ -1211,9 +1218,7 @@ Url = (function() {
       _ref = this.keys;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         key = _ref[i];
-        value = this.match[i];
-        this.params_in_url.push(key);
-        this.change(key, value);
+        this.change(key, this.match[i]);
       }
     }
     this.vue.$set("url", Url.vue.$data);
@@ -1221,28 +1226,39 @@ Url = (function() {
   };
 
   Url.prototype.pushstate = function(link) {
-    var key, path, _i, _len, _ref;
-    if (location[this.target] == null) {
-      return link;
+    switch (this.target) {
+      case "cookie":
+        return document.cookie = this.serialize();
+      default:
+        if (location[this.target] == null) {
+          return link;
+        }
+        return link.replace(this.scanner, this.serialize());
     }
+  };
+
+  Url.prototype.serialize = function() {
+    var key, path, _i, _len, _ref;
     path = this.format;
     _ref = this.params_in_url;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       key = _ref[_i];
       path = path.replace(RegExp(":" + key, "ig"), this.value(key));
     }
-    return link.replace(this.scanner, path);
+    return path;
   };
 
   Url.prototype.change = function(key, value) {
-    var subkey, subval, _ref, _results;
+    var subkey, subval, type, _ref, _ref1, _results;
+    type = ((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String";
+    value = Url.parse[type](value);
     this.params.push(key);
-    Url.vue.$data[key] = LOCATION.options[key].type(value);
-    if (LOCATION.bind[key] != null) {
-      _ref = LOCATION.bind[key][Url.vue.$data[key]];
+    Url.vue.$data[key] = value;
+    if (Url.bind[key] != null) {
+      _ref1 = Url.bind[key][value];
       _results = [];
-      for (subkey in _ref) {
-        subval = _ref[subkey];
+      for (subkey in _ref1) {
+        subval = _ref1[subkey];
         if (key !== subkey) {
           _results.push(this.change(subkey, subval));
         } else {
@@ -1254,12 +1270,12 @@ Url = (function() {
   };
 
   Url.prototype.value = function(key) {
-    var value;
+    var value, _ref;
     value = Url.vue.$data[key];
     if (value != null) {
       return value;
     } else {
-      return LOCATION.options[key].current;
+      return ((_ref = Url.options[key]) != null ? _ref.current : void 0) || null;
     }
   };
 
