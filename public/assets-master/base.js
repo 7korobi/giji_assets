@@ -853,6 +853,7 @@ this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,
 
 this.LOCATION = {"options":{"search":null,"width":{"current":"normal"},"layout":{"current":"stat_type"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
+Number.MAX_INT32 = 0x7fffffff;
 var FixedBox, win;
 
 win = {
@@ -1081,6 +1082,217 @@ FixedBox = (function() {
   return FixedBox;
 
 })();
+var Serial, func, key, _ref;
+
+Serial = (function() {
+  function Serial() {}
+
+  Serial.parser = {
+    Array: function(val) {
+      if (val.split != null) {
+        return val.split(",");
+      } else {
+        return val;
+      }
+    },
+    Date: function(val) {
+      return new Date(Number(val));
+    },
+    Number: Number,
+    String: String,
+    "null": String,
+    undefined: String
+  };
+
+  Serial.url = {};
+
+  return Serial;
+
+})();
+
+_ref = Serial.parser;
+for (key in _ref) {
+  func = _ref[key];
+  Serial.url[key] = (function() {
+    switch (key) {
+      case "Number":
+        return "([-]?[\\.0-9]+)";
+      case "Date":
+        return "([0-9]+)";
+      default:
+        return "([^\\/\\-\\=\\.]+)";
+    }
+  })();
+}
+;
+var Timer;
+
+Timer = (function() {
+  Timer.week = ["日", "月", "火", "水", "木", "金", "土"];
+
+  Timer.dow = function(dow) {
+    return Timer.week[dow];
+  };
+
+  Timer.hh = _.memoize(function(hh) {
+    var tt;
+    tt = ["午前", "午後"][Math.floor(hh / 12)];
+    hh = hh % 12;
+    if (hh < 10) {
+      hh = "0" + hh;
+    }
+    return "" + tt + hh + "時";
+  });
+
+  Timer.hhmm = _.memoize(function(hh, mi) {
+    if (mi < 10) {
+      mi = "0" + mi;
+    }
+    return "" + (Timer.hh(hh)) + mi + "分";
+  });
+
+  Timer.time_stamp = _.memoize(function(date) {
+    var dd, dow, hh, mi, mm, now;
+    if (!date) {
+      return "(？) ？？..時..分";
+    }
+    now = new Date(date);
+    hh = now.getHours();
+    mi = now.getMinutes();
+    dow = Timer.dow(now.getDay());
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+    return "(" + dow + ") " + (Timer.hhmm(hh, mi));
+  });
+
+  Timer.date_time_stamp = _.memoize(function(date) {
+    var dd, dow, hh, mi, mm, now, postfix, yyyy;
+    if (!date) {
+      return "....-..-..(？？？) --..時頃";
+    }
+    now = new Date(date - -15 * 60000);
+    yyyy = now.getFullYear();
+    mm = now.getMonth() + 1;
+    dd = now.getDate();
+    dow = Timer.dow(now.getDay());
+    hh = now.getHours();
+    mi = now.getMinutes();
+    postfix = ["頃", "半頃"][Math.floor(mi / 30)];
+    if (mm < 10) {
+      mm = "0" + mm;
+    }
+    if (dd < 10) {
+      dd = "0" + dd;
+    }
+    return "" + yyyy + "-" + mm + "-" + dd + " (" + dow + ") " + (Timer.hh(hh)) + postfix;
+  });
+
+  function Timer(at, options) {
+    var do_tick, key, tick, val;
+    this.at = at;
+    if (options == null) {
+      options = {};
+    }
+    for (key in options) {
+      val = options[key];
+      this[key] = val;
+    }
+    tick = (function(_this) {
+      return function(text, sec_span) {
+        var msec_span;
+        _this.text = text;
+        if (sec_span == null) {
+          sec_span = Number.NaN;
+        }
+        msec_span = sec_span * 1000;
+        return msec_span - (_this.msec % msec_span);
+      };
+    })(this);
+    do_tick = (function(_this) {
+      return function() {
+        var tick_time;
+        _this.msec = _.now() - Number(_this.at);
+        tick_time = _this.next(_this.msec / 1000, tick);
+        _this.timer_id = tick_time ? setTimeout(do_tick, tick_time) : 0;
+        return _this.draw(_this.text);
+      };
+    })(this);
+    do_tick();
+  }
+
+  Timer.prototype.abort = function() {
+    if (this.timer_id) {
+      return clearTimeout(this.timer_id);
+    }
+  };
+
+  Timer.prototype.next = function(second, tick) {
+    var hour, limit, minute;
+    if (0 < second) {
+      minute = Math.ceil(second / 60);
+      hour = Math.ceil(second / 3600);
+    }
+    if (second < 0) {
+      minute = Math.ceil(-second / 60);
+      hour = Math.ceil(-second / 3600);
+    }
+    limit = 3 * 60 * 60;
+    if ((-25 < second && second < 25)) {
+      return tick("25秒以内", 25);
+    }
+    if ((-60 < second && second < 60)) {
+      return tick("1分以内", 60);
+    }
+    if ((-3600 < second && second < 0)) {
+      return tick("" + minute + "分後", 30);
+    }
+    if ((0 < second && second < 3600)) {
+      return tick("" + minute + "分前", 60);
+    }
+    if ((-limit < second && second < 0)) {
+      return tick("" + hour + "時間後", 60);
+    }
+    if ((0 < second && second < limit)) {
+      return tick("" + hour + "時間前", 3600);
+    }
+    if (second < -limit) {
+      return tick(Timer.date_time_stamp(this.at), 3600);
+    }
+    if (limit < second) {
+      return tick(Timer.date_time_stamp(this.at));
+    }
+  };
+
+  Timer.prototype.draw = function() {};
+
+  return Timer;
+
+})();
+
+
+/*
+log.updated = new Timer log.updated_at,
+  draw: (text)->
+    log.elm = $("." + log._id)
+    log.elm.find("[time]").html text
+
+log.cancel_btn = 
+  if log.logid? && "q" == log.logid[0]
+    new Timer log.updated_at,
+      next: (second, tick)->
+        return tick """<span cancel_btn>なら削除できます。<a hogan-click='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a></span>""", 25 if -25 < second < 25
+        return tick ""
+      draw: (text)->
+        log.elm = $("." + log._id)
+        log.elm.find("[cancel_btn]").html text
+  else
+    text: ""
+ */
+;
 var Url;
 
 Url = (function() {
@@ -1095,30 +1307,6 @@ Url = (function() {
   Url.routes = {};
 
   Url.data = {};
-
-  Url.parse = {
-    Array: function(val) {
-      if (val.split != null) {
-        return val.split(",");
-      } else {
-        return val;
-      }
-    },
-    Date: function(val) {
-      return new Date(Number(val));
-    },
-    String: String,
-    Number: Number
-  };
-
-  Url.regexp = function(type) {
-    switch (type) {
-      case "Number":
-        return "([\\.0-9]+)";
-      default:
-        return "([^\\/\\-\\=\\.]+)";
-    }
-  };
 
   Url.each = function(cb) {
     var data, route, target, targets, url_key, _results;
@@ -1194,10 +1382,10 @@ Url = (function() {
     }).replace(/:([a-z_]+)/ig, (function(_this) {
       return function(_, key) {
         var type, _ref;
-        type = ((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String";
+        type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
         _this.keys.push(key);
         _this.params_in_url.push(key);
-        return Url.regexp(type);
+        return Serial.url[type];
       };
     })(this), "i"));
     this.vue = new Vue(_.merge(vue, {
@@ -1250,8 +1438,8 @@ Url = (function() {
 
   Url.prototype.change = function(key, value) {
     var subkey, subval, type, _ref, _ref1, _results;
-    type = ((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String";
-    value = Url.parse[type](value);
+    type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
+    value = Serial.parser[type](value);
     this.params.push(key);
     Url.vue.$data[key] = value;
     if (Url.bind[key] != null) {

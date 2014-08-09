@@ -3119,6 +3119,153 @@ beforeEach(function() {
     }
   });
 });
+describe("(basic)", function() {
+  return it("basic", function(done) {
+    jasmine.clock().install();
+    expect(true).toBeTruthy();
+    jasmine.clock().tick(1000);
+    expect(1).not.toBeFalsy();
+    expect(0).toBeFalsy();
+    expect(null).toBeFalsy();
+    expect(false).toBeFalsy();
+    jasmine.clock().uninstall();
+    return done();
+  });
+});
+
+
+/*
+  it "spec spec", ->
+    spyOn(url, 'value').andReturn true
+    expect(url.value "event_id").toEqual true
+
+  it "spec spec", ->
+    spyOn(url, 'value').andThrow "bad"
+    expect(url.value).toThrow "good"
+
+  it "spec spec", ->
+    expect ->
+      throw "Error"
+    .toThrowError "bad"
+ */
+;
+describe("Serial", function() {
+  beforeEach(function(done) {
+    return setTimeout(function() {
+      return done();
+    }, 0);
+  });
+  describe("parser", function() {
+    it("Array", function(done) {
+      expect(Serial.parser.Array("1,2,3")).toEqual(["1", "2", "3"]);
+      expect(Serial.parser.Array(",z,")).toEqual(["", "z", ""]);
+      return done();
+    });
+    it("Date", function(done) {
+      expect(Serial.parser.Date("1400000000000")).toEqual(new Date(1400000000000));
+      expect(Serial.parser.Date("zzz")).not.toEqual(Serial.parser.Date("zzz"));
+      return done();
+    });
+    it("Number", function(done) {
+      expect(Serial.parser.Number("100")).toEqual(100);
+      expect(Serial.parser.Number("-100")).toEqual(-100);
+      expect(Serial.parser.Number("1.5")).toEqual(1.5);
+      expect(Serial.parser.Number("0")).toEqual(0);
+      expect(Serial.parser.Number("aaa")).toEqual(Number.NaN);
+      return done();
+    });
+    it("String", function(done) {
+      expect(Serial.parser.String("aaa")).toEqual("aaa");
+      return done();
+    });
+    return it("(null)", function(done) {
+      expect(Serial.parser[null]("aaa")).toEqual("aaa");
+      return done();
+    });
+  });
+  return describe("url", function() {
+    it("Array", function(done) {
+      expect("a,b,c").toMatch(new RegExp(Serial.url.Array));
+      return done();
+    });
+    it("Date", function(done) {
+      expect("1400000000000").toMatch(new RegExp(Serial.url.Date));
+      return done();
+    });
+    it("Number", function(done) {
+      expect("-100").toMatch(new RegExp(Serial.url.Number));
+      expect("100").toMatch(new RegExp(Serial.url.Number));
+      expect("3.5").toMatch(new RegExp(Serial.url.Number));
+      return done();
+    });
+    it("String", function(done) {
+      expect("a,b^c~d").toMatch(new RegExp(Serial.url.String));
+      return done();
+    });
+    return it("(null)", function(done) {
+      expect("a,b^c~d").toMatch(new RegExp(Serial.url[null]));
+      return done();
+    });
+  });
+});
+describe("Timer", function() {
+  beforeEach(function(done) {
+    return setTimeout(function() {
+      return done();
+    }, 0);
+  });
+  describe("module", function() {
+    it("time_stamp", function(done) {
+      expect(Timer.time_stamp(1400000000000)).toEqual("(水) 午前01時53分");
+      expect(Timer.time_stamp(Number.NaN)).toEqual("(？) ？？..時..分");
+      expect(Timer.time_stamp(1400000000000)).toEqual("(水) 午前01時53分");
+      return done();
+    });
+    return it("date_time_stamp", function(done) {
+      expect(Timer.date_time_stamp(1400000000000)).toEqual("2014-05-14 (水) 午前02時頃");
+      expect(Timer.date_time_stamp(Number.NaN)).toEqual("....-..-..(？？？) --..時頃");
+      expect(Timer.date_time_stamp(1400000000000)).toEqual("2014-05-14 (水) 午前02時頃");
+      return done();
+    });
+  });
+  return describe("object", function() {
+    it("show lax time", function(done) {
+      jasmine.clock().install();
+      jasmine.clock().tick(0);
+      jasmine.clock().uninstall();
+      expect(new Timer(_.now() - 10800000).text).not.toEqual("3時間前");
+      expect(new Timer(_.now() - 3600000).text).toEqual("1時間前");
+      expect(new Timer(_.now() - 120000).text).toEqual("2分前");
+      expect(new Timer(_.now() - 60000).text).toEqual("1分前");
+      expect(new Timer(_.now() - 59999).text).toEqual("1分以内");
+      expect(new Timer(_.now() - 24999).text).toEqual("25秒以内");
+      expect(new Timer(_.now() + 24999).text).toEqual("25秒以内");
+      expect(new Timer(_.now() + 59999).text).toEqual("1分以内");
+      expect(new Timer(_.now() + 60000).text).toEqual("1分後");
+      expect(new Timer(_.now() + 120000).text).toEqual("2分後");
+      expect(new Timer(_.now() + 3600000).text).toEqual("1時間後");
+      expect(new Timer(_.now() + 10800000).text).not.toEqual("3時間後");
+      return done();
+    });
+    return it("show lax time by tick", function(done) {
+      var timer;
+      done();
+      jasmine.clock().install();
+      timer = new Timer(_.now() + 10800000);
+      jasmine.clock().tick(7200000) && expect(timer.text).toEqual("1時間後");
+      jasmine.clock().tick(60000) && expect(timer.text).toEqual("59分後");
+      jasmine.clock().tick(58 * 60000) && expect(timer.text).toEqual("1分後");
+      jasmine.clock().tick(1) && expect(timer.text).toEqual("1分以内");
+      jasmine.clock().tick(35000) && expect(timer.text).toEqual("25秒以内");
+      jasmine.clock().tick(49998) && expect(timer.text).toEqual("25秒以内");
+      jasmine.clock().tick(35000) && expect(timer.text).toEqual("1分以内");
+      jasmine.clock().tick(1) && expect(timer.text).toEqual("1分前");
+      jasmine.clock().tick(58 * 60000) && expect(timer.text).toEqual("59分前");
+      jasmine.clock().tick(60000) && expect(timer.text).toEqual("1時間前");
+      return jasmine.clock().uninstall();
+    });
+  });
+});
 Url.bind = {
   fname: {
     jasmine: {
@@ -3192,7 +3339,7 @@ describe("Url", function() {
       return expect(Url.routes.file.vue.$data.url.ext).toEqual("html");
     });
   });
-  describe("bind variable", function(done) {
+  return describe("bind variable", function(done) {
     beforeEach(function(done) {
       return setTimeout(function() {
         return done();
@@ -3213,35 +3360,7 @@ describe("Url", function() {
       return done();
     });
   });
-  return it("basic", function(done) {
-    jasmine.clock().install();
-    expect(true).toBeTruthy();
-    jasmine.clock().tick(1000);
-    expect(1).not.toBeFalsy();
-    expect(0).toBeFalsy();
-    expect(null).toBeFalsy();
-    expect(false).toBeFalsy();
-    jasmine.clock().uninstall();
-    return done();
-  });
 });
-
-
-/*
-  it "spec spec", ->
-    spyOn(url, 'value').andReturn true
-    expect(url.value "event_id").toEqual true
-
-  it "spec spec", ->
-    spyOn(url, 'value').andThrow "bad"
-    expect(url.value).toThrow "good"
-
-  it "spec spec", ->
-    expect ->
-      throw "Error"
-    .toThrowError "bad"
- */
-;
 
 
 
