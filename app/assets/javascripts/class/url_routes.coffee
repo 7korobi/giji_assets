@@ -8,29 +8,6 @@ class Url
 
   @data = {}
 
-
-  @parse = 
-    Array: (val)->
-      if val.split?
-        val.split ","
-      else
-        val
-
-    Date: (val)->
-      new Date Number val
-
-    String: String
-    Number: Number
-
-
-  @regexp = (type)->
-    switch type
-      when "Number"
-        "([\\.0-9]+)"
-      else
-        "([^\\/\\-\\=\\.]+)"
-
-
   @each = (cb)->
     targets = 
       cookie:   document.cookie
@@ -74,11 +51,11 @@ class Url
     @keys = []
     @params_in_url = []
     @scanner = new RegExp @format.replace(/[.]/ig,(key)-> "\\#{key}" ).replace /:([a-z_]+)/ig, (_, key)=>
-      type = (Url.options[key]?.type) || "String"
+      type = Url.options[key]?.type
       @keys.push key
       @params_in_url.push key
 
-      Url.regexp(type)
+      Serial.url[type]
     , "i"
     @vue = new Vue _.merge vue,
       data:
@@ -116,8 +93,8 @@ class Url
 
 
   change: (key, value)->
-    type = (Url.options[key]?.type) || "String"
-    value  = Url.parse[type] value
+    type = Url.options[key]?.type
+    value = Serial.parser[type](value)
 
     @params.push key
     Url.vue.$data[key] = value
