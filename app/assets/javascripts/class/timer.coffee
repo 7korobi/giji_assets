@@ -29,7 +29,7 @@ class Timer
 
 
   @date_time_stamp = _.memoize (date)->
-    return "....-..-..(？？？) --..時頃" unless date
+    return "....-..-.. (？) ？？..時頃" unless date
 
     now = new Date(date - -15*60000)
     yyyy = now.getFullYear();
@@ -83,11 +83,11 @@ class Timer
     return tick "25秒以内",                   25 if    -25 < second <     25
     return tick "1分以内",                    60 if    -60 < second <     60
 
-    return tick "#{minute}分後",              30 if  -3600 < second < 0
-    return tick "#{minute}分前",              60 if      0 < second <   3600
+    return tick "#{minute}分後",              30 if  -3540 < second <      0
+    return tick "#{minute}分前",              60 if      0 < second <   3540
 
-    return tick "#{hour}時間後",              60 if -limit < second < 0
-    return tick "#{hour}時間前",            3600 if      0 < second < limit
+    return tick "#{hour}時間後",              60 if -limit < second <      0
+    return tick "#{hour}時間前",            3600 if      0 < second <  limit
 
     return tick Timer.date_time_stamp(@at), 3600 if          second < -limit
     return tick Timer.date_time_stamp(@at)       if  limit < second

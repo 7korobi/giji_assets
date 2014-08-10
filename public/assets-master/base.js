@@ -1172,7 +1172,7 @@ Timer = (function() {
   Timer.date_time_stamp = _.memoize(function(date) {
     var dd, dow, hh, mi, mm, now, postfix, yyyy;
     if (!date) {
-      return "....-..-..(？？？) --..時頃";
+      return "....-..-.. (？) ？？..時頃";
     }
     now = new Date(date - -15 * 60000);
     yyyy = now.getFullYear();
@@ -1247,10 +1247,10 @@ Timer = (function() {
     if ((-60 < second && second < 60)) {
       return tick("1分以内", 60);
     }
-    if ((-3600 < second && second < 0)) {
+    if ((-3540 < second && second < 0)) {
       return tick("" + minute + "分後", 30);
     }
-    if ((0 < second && second < 3600)) {
+    if ((0 < second && second < 3540)) {
       return tick("" + minute + "分前", 60);
     }
     if ((-limit < second && second < 0)) {
