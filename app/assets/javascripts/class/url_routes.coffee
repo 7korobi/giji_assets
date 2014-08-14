@@ -88,7 +88,8 @@ class Url
   serialize: ->
     path = @format
     for key in @params_in_url
-      path = path.replace ///:#{key}///ig, @value key
+      type = Url.options[key]?.type
+      path = path.replace ///:#{key}///ig, Serial.serializer[type](@value key)
     path
 
 

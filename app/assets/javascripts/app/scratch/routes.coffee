@@ -1,6 +1,6 @@
 Url.cookie = ["css"]
 Url.search = ["story", "timer"]
-Url.hash = ["messages", "news", "all", "page", "hides", "search", "potof", "css"]
+Url.hash = ["messages", "news", "all", "page", "hides", "search", "potof", "css", "timer"]
 Url.options = LOCATION.options
 Url.bind = LOCATION.bind
 
