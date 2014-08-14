@@ -11,7 +11,7 @@ describe "Serial", ->
 
     it "Date", (done)->
       expect(Serial.parser.Date("LtUhQ0W")).toEqual 1400000000000
-      expect(Serial.parser.Date("@@@")).not.toEqual Number.NaN
+      expect(Serial.parser.Date("@@@")).toEqual Number.NaN
       done()
 
     it "Number", (done)->

@@ -3163,17 +3163,17 @@ new Cache.Append({
   message: ["scene"]
 });
 
-scene1 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+scene1 = ID.now();
 
-scene2 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+scene2 = ID.now();
 
-msg1 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+msg1 = ID.now();
 
-msg2 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+msg2 = ID.now();
 
-msg3 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+msg3 = ID.now();
 
-msg4 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+msg4 = ID.now();
 
 Cache.rule.site.set([
   {
@@ -3285,7 +3285,7 @@ describe("Serial", function() {
     });
     it("Date", function(done) {
       expect(Serial.parser.Date("LtUhQ0W")).toEqual(1400000000000);
-      expect(Serial.parser.Date("@@@")).not.toEqual(Number.NaN);
+      expect(Serial.parser.Date("@@@")).toEqual(Number.NaN);
       return done();
     });
     it("Number", function(done) {

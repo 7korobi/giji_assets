@@ -1387,7 +1387,7 @@ FixedBox = (function() {
   return FixedBox;
 
 })();
-var Serial, func, key, _ref;
+var ID, Serial, func, key, _ref;
 
 Serial = (function() {
   var c, n, _i, _len, _ref;
@@ -1480,7 +1480,27 @@ for (key in _ref) {
     }
   })();
 }
-;
+
+ID = (function() {
+  function ID() {}
+
+  ID.random_size = Serial.map.size * Serial.map.size;
+
+  ID.now = function() {
+    return Serial.serializer.Date(Math.random() * ID.random_size) + Serial.serializer.Date(_.now());
+  };
+
+  ID.to_random = function(str) {
+    return str.slice(0, 2);
+  };
+
+  ID.to_date = function(str) {
+    return new Date(Serial.parser.Date(str.slice(2)));
+  };
+
+  return ID;
+
+})();
 var Timer;
 
 Timer = (function() {
