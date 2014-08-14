@@ -3149,6 +3149,128 @@ describe("(basic)", function() {
     .toThrowError "bad"
  */
 ;
+var msg1, msg2, msg3, msg4, scene1, scene2;
+
+new Cache.Replace({
+  site: []
+});
+
+new Cache.Append({
+  scene: ["site"]
+});
+
+new Cache.Append({
+  message: ["scene"]
+});
+
+scene1 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+
+scene2 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+
+msg1 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+
+msg2 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+
+msg3 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+
+msg4 = Serial.serializer.Date(Math.random() * 3600) + Serial.serializer.Date(_.now());
+
+Cache.rule.site.set([
+  {
+    id: "a",
+    title: "α complex"
+  }, {
+    id: "b",
+    title: "β complex"
+  }
+]);
+
+Cache.rule.scene.set([
+  {
+    id: scene1,
+    site_id: "a",
+    title: "7korobi-say"
+  }, {
+    id: scene2,
+    site_id: "b",
+    title: "7korobi-say"
+  }
+]);
+
+Cache.rule.message.set([
+  {
+    id: msg1,
+    scene_id: scene1,
+    name: "7korobi",
+    text: "text 1",
+    created_at: Number(new Date(1))
+  }, {
+    id: msg2,
+    scene_id: scene2,
+    name: "7korobi",
+    text: "text 2",
+    created_at: Number(new Date(2))
+  }, {
+    id: msg3,
+    scene_id: scene2,
+    name: "7korobi",
+    text: "text 3",
+    created_at: Number(new Date(3))
+  }
+]);
+
+describe("Cache", function() {
+  beforeEach(function(done) {
+    return setTimeout(function() {
+      return done();
+    }, 1);
+  });
+  return describe("append items", function() {
+    it("replace log", function(done) {
+      expect(Cache.data.messages.length).toEqual(3);
+      expect(Cache.where.first({
+        order: "created_at"
+      }).text).toEqual("text 1");
+      Cache.rule.message.set([
+        {
+          id: msg1,
+          scene_id: scene1,
+          name: "7korobi",
+          text: "text 4",
+          created_at: Number(new Date(1)),
+          updated_at: Number(new Date(4))
+        }
+      ]);
+      done();
+      expect(Cache.data.messages.length).toEqual(3);
+      return expect(Cache.where.first({
+        order: "updated_at"
+      }).text).toEqual("text 4");
+    });
+    it("append log", function(done) {
+      expect(Cache.data.messages.length).toEqual(3);
+      Cache.rule.message.set([
+        {
+          id: msg4,
+          scene_id: scene2,
+          name: "7korobi",
+          text: "text 5",
+          created_at: Number(new Date(5))
+        }
+      ]);
+      done();
+      return expect(Cache.data.messages.length).toEqual(4);
+    });
+    return it("show window", function(done) {
+      expect(Cache.where({
+        site_id: "a"
+      }).all("message", {
+        order: "updated_at"
+      }).length).toEqual(1);
+      return done();
+    });
+  });
+});
 describe("Serial", function() {
   beforeEach(function(done) {
     return setTimeout(function() {
@@ -3162,8 +3284,8 @@ describe("Serial", function() {
       return done();
     });
     it("Date", function(done) {
-      expect(Serial.parser.Date("1400000000000")).toEqual(new Date(1400000000000));
-      expect(Serial.parser.Date("zzz")).not.toEqual(Serial.parser.Date("zzz"));
+      expect(Serial.parser.Date("LtUhQ0W")).toEqual(1400000000000);
+      expect(Serial.parser.Date("@@@")).not.toEqual(Number.NaN);
       return done();
     });
     it("Number", function(done) {

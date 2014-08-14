@@ -853,6 +853,311 @@ this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,
 
 this.LOCATION = {"options":{"search":null,"width":{"current":"normal"},"layout":{"current":"stat_type"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
+var Cache,
+  __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+Cache = (function() {
+  Cache.data = {};
+
+  Cache.rule = {};
+
+  Cache.where = function(hash) {
+    return (new Cache).where(hash);
+  };
+
+  function Cache() {
+    this.query = {
+      order: [],
+      where: {}
+    };
+  }
+
+  Cache.prototype.where = function(hash) {
+    var key, val, _results;
+    _results = [];
+    for (key in hash) {
+      val = hash[key];
+      _results.push(this.query.where[key] = val);
+    }
+    return _results;
+  };
+
+  Cache.prototype.first = function() {};
+
+  Cache.prototype.last = function() {};
+
+  Cache.prototype.all = function(ext) {
+    return _.sortBy(Cache.ext.order);
+  };
+
+  return Cache;
+
+})();
+
+Cache.Replace = (function() {
+  function Replace(refs) {
+    var field;
+    for (field in refs) {
+      this.parents = refs[field];
+      Cache.rule[field] = this;
+      this.list_name = "" + field + "s";
+      this.id = "" + field + "_id";
+      this.pk = this.parents.concat([field]);
+      Cache.data[this.list_name] = [];
+    }
+    this.map = {};
+  }
+
+  Replace.prototype.ids = function(o) {
+    return _.map(this.pk, function(key) {
+      return o["" + key + "_id"];
+    });
+  };
+
+  Replace.prototype.set_map = function(list) {
+    var o, _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = list.length; _i < _len; _i++) {
+      o = list[_i];
+      if (!o[this.id]) {
+        o[this.id] = o.id;
+      }
+      if (!o.id) {
+        o.ids || (o.ids = this.ids(o));
+        o.id = o.ids.join("-");
+      }
+      _results.push(this.map[o.id] = o);
+    }
+    return _results;
+  };
+
+  Replace.prototype.set = function(list) {
+    this.set_map(list);
+    return Cache.data[this.list_name] = list;
+  };
+
+  return Replace;
+
+})();
+
+Cache.Guard = (function(_super) {
+  __extends(Guard, _super);
+
+  function Guard(refs, protect) {
+    this.protect = protect;
+    Guard.__super__.constructor.call(this, refs);
+  }
+
+  return Guard;
+
+})(Cache.Replace);
+
+Cache.Append = (function(_super) {
+  __extends(Append, _super);
+
+  function Append(refs) {
+    Append.__super__.constructor.call(this, refs);
+  }
+
+  Append.prototype.set = function(news) {
+    var item, list, _, _ref;
+    this.set_map(news);
+    list = [];
+    _ref = this.map;
+    for (_ in _ref) {
+      item = _ref[_];
+      list.push(item);
+    }
+    return Cache.data[this.list_name] = list;
+  };
+
+  return Append;
+
+})(Cache.Replace);
+
+
+/*
+new Cache.Append  face: []
+
+new Cache.Replace rule: []
+new Cache.Guard   text: ["potof"], ["target", "targets","text", "style", "count"]
+new Cache.Guard   vote: ["potof"], ["target", "targets"]
+
+new Cache.Replace site:  []
+new Cache.Replace story: ["site"]
+new Cache.Append  event: ["story"]
+new Cache.Append  scene: ["site"]
+
+new Cache.Append message: ["scene"]
+new Cache.Replace  potof: ["scene"]
+
+Cache.data = 
+  form:
+    role: {}
+    text: 
+      title: "title-write"
+      cmd: "write"
+      csid_cid: ""
+      text: ""
+      style: ""
+      target: ""
+      targets: []
+    vote: {}
+    is_preview: off
+
+    texts:
+      - cmd: entry
+        title:
+        text:
+        style:
+        csid_cid:
+        csid_cids:
+        role:
+        roles:
+        is_preview:
+        img: ->
+        preview: ->
+        request: ->
+      - cmd: action
+        title:
+        text:
+        target:
+        targets:
+        action:
+        actions:
+        no:
+        nos:
+        is_preview:
+        preview: ->
+        request: ->
+
+      targets:
+      - cmd: vote
+        jst: target
+        title:
+        target:
+        target2:
+        targets:
+        request: ->
+      - cmd: entrust
+        title:
+        target:
+        targets:
+        request: ->
+      - cmd: role
+        title:
+        target:
+        target2:
+        targets:
+        request: ->
+      - cmd: gift
+        title:
+        target:
+        target2:
+        targets:
+        request: ->
+
+      commands:
+      - cmd: kick
+        jst: target
+        title:
+        target:
+        request: ->
+      - cmd: maker
+        jst: target
+        title:
+        target:
+        request: ->
+
+      - cmd: muster
+        jst: button
+        title:
+        request: ->
+      - cmd: start
+        jst: button
+        title:
+        request: ->
+      - cmd: update
+        jst: button
+        title:
+        request: ->
+      - cmd: extend
+        jst: button
+        title:
+        request: ->
+      - cmd: scrapvil
+        jst: button
+        title:
+        request: ->
+
+      links:
+      - cmd: exit
+        jst: button
+        title:
+        request: ->
+      - cmd: makevilform
+        title:
+        request: ->
+
+      side:
+      - cmd: rolelist
+        trsid:
+        game:
+        request: ->
+
+  stories:
+  events:
+  potofs:
+  story:
+    story_id:
+  event:
+    story_id:
+    event_id:
+  potof:
+    story_id:
+    potof_id:
+    user_id:
+    sow_autn_id:
+
+    longname:
+    shortname:
+    name:
+
+    win:
+      visible:
+      result:
+    point:
+      actaddpt:
+      saidpoint:
+      saidcount:
+    say:
+      say:
+      tsay:
+      spsay:
+      wsay:
+      gsay:
+      say_act:
+    is:
+      voter:
+      human:
+      enemy:
+      wolf:
+      pixi:
+      sensible:
+      committer:
+    timer:
+      entry:
+      entry_expired:
+
+    live:
+    love:
+    overhear:
+
+    history:
+    status:
+ */
+;
 Number.MAX_INT32 = 0x7fffffff;
 var FixedBox, win;
 
@@ -1085,20 +1390,71 @@ FixedBox = (function() {
 var Serial, func, key, _ref;
 
 Serial = (function() {
+  var c, n, _i, _len, _ref;
+
   function Serial() {}
+
+  Serial.map = {
+    to_s: "0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+    to_i: {}
+  };
+
+  _ref = Serial.map.to_s;
+  for (n = _i = 0, _len = _ref.length; _i < _len; n = ++_i) {
+    c = _ref[n];
+    Serial.map.to_i[c] = n;
+  }
+
+  Serial.map.size = Serial.map.to_s.length;
 
   Serial.parser = {
     Array: function(val) {
       if (val.split != null) {
         return val.split(",");
       } else {
-        return val;
+        return [val];
+      }
+    },
+    Date: function(code) {
+      var base, result, _j, _len1;
+      base = 1;
+      result = 0;
+      for (_j = 0, _len1 = code.length; _j < _len1; _j++) {
+        c = code[_j];
+        n = Serial.map.to_i[c];
+        if (n == null) {
+          return Number.NaN;
+        }
+        result += n * base;
+        base *= Serial.map.size;
+      }
+      return result;
+    },
+    Number: Number,
+    String: String,
+    "null": String,
+    undefined: String
+  };
+
+  Serial.serializer = {
+    Array: function(val) {
+      if (val.join != null) {
+        return val.join(",");
+      } else {
+        return [val];
       }
     },
     Date: function(val) {
-      return new Date(Number(val));
+      var result, time;
+      time = Math.ceil(val);
+      result = "";
+      while (time >= 1) {
+        result += Serial.map.to_s[time % Serial.map.size];
+        time = Math.floor(time / Serial.map.size);
+      }
+      return result;
     },
-    Number: Number,
+    Number: String,
     String: String,
     "null": String,
     undefined: String
@@ -1118,7 +1474,7 @@ for (key in _ref) {
       case "Number":
         return "([-]?[\\.0-9]+)";
       case "Date":
-        return "([0-9]+)";
+        return "([0-9a-zA-Z]+)";
       default:
         return "([^\\/\\-\\=\\.]+)";
     }
@@ -1426,12 +1782,13 @@ Url = (function() {
   };
 
   Url.prototype.serialize = function() {
-    var key, path, _i, _len, _ref;
+    var key, path, type, _i, _len, _ref, _ref1;
     path = this.format;
     _ref = this.params_in_url;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       key = _ref[_i];
-      path = path.replace(RegExp(":" + key, "ig"), this.value(key));
+      type = (_ref1 = Url.options[key]) != null ? _ref1.type : void 0;
+      path = path.replace(RegExp(":" + key, "ig"), Serial.serializer[type](this.value(key)));
     }
     return path;
   };
