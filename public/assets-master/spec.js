@@ -3203,19 +3203,22 @@ Cache.rule.message.set([
     scene_id: scene1,
     name: "7korobi",
     text: "text 1",
-    created_at: Number(new Date(1))
+    created_at: 1,
+    updated_at: 1
   }, {
     id: msg2,
     scene_id: scene2,
     name: "7korobi",
     text: "text 2",
-    created_at: Number(new Date(2))
+    created_at: 2,
+    updated_at: 2
   }, {
     id: msg3,
     scene_id: scene2,
     name: "7korobi",
     text: "text 3",
-    created_at: Number(new Date(3))
+    created_at: 3,
+    updated_at: 3
   }
 ]);
 
@@ -3227,46 +3230,40 @@ describe("Cache", function() {
   });
   return describe("append items", function() {
     it("replace log", function(done) {
-      expect(Cache.data.messages.length).toEqual(3);
-      expect(Cache.where.first({
-        order: "created_at"
-      }).text).toEqual("text 1");
+      expect(Cache.messages().value().length).toEqual(3);
+      expect(Cache.messages().sortBy("created_at").first().value().text).toEqual("text 1");
       Cache.rule.message.set([
         {
           id: msg1,
           scene_id: scene1,
           name: "7korobi",
           text: "text 4",
-          created_at: Number(new Date(1)),
-          updated_at: Number(new Date(4))
+          created_at: 1,
+          updated_at: 4
         }
       ]);
       done();
-      expect(Cache.data.messages.length).toEqual(3);
-      return expect(Cache.where.first({
-        order: "updated_at"
-      }).text).toEqual("text 4");
+      expect(Cache.messages().value().length).toEqual(3);
+      return expect(Cache.messages().sortBy("created_at").first().value().text).toEqual("text 4");
     });
     it("append log", function(done) {
-      expect(Cache.data.messages.length).toEqual(3);
+      expect(Cache.messages().value().length).toEqual(3);
       Cache.rule.message.set([
         {
           id: msg4,
           scene_id: scene2,
           name: "7korobi",
           text: "text 5",
-          created_at: Number(new Date(5))
+          created_at: 5
         }
       ]);
       done();
-      return expect(Cache.data.messages.length).toEqual(4);
+      return expect(Cache.messages().value().length).toEqual(4);
     });
     return it("show window", function(done) {
-      expect(Cache.where({
+      expect(Cache.messages().where({
         site_id: "a"
-      }).all("message", {
-        order: "updated_at"
-      }).length).toEqual(1);
+      }).value().length).toEqual(1);
       return done();
     });
   });
@@ -3356,22 +3353,22 @@ describe("Timer", function() {
       jasmine.clock().tick(0);
       jasmine.clock().uninstall();
       expect(new Timer(_.now() - 10800000).text).not.toEqual("3時間前");
-      expect(new Timer(_.now() - 10800000 + 1).text).toEqual("3時間前");
+      expect(new Timer(_.now() - 10800000 + 2).text).toEqual("3時間前");
       expect(new Timer(_.now() - 3540000).text).toEqual("1時間前");
-      expect(new Timer(_.now() - 3540000 + 1).text).toEqual("59分前");
+      expect(new Timer(_.now() - 3540000 + 2).text).toEqual("59分前");
       expect(new Timer(_.now() - 120000).text).toEqual("2分前");
       expect(new Timer(_.now() - 60000).text).toEqual("1分前");
-      expect(new Timer(_.now() - 60000 + 1).text).toEqual("1分以内");
+      expect(new Timer(_.now() - 60000 + 2).text).toEqual("1分以内");
       expect(new Timer(_.now() - 25000).text).toEqual("1分以内");
-      expect(new Timer(_.now() - 25000 + 1).text).toEqual("25秒以内");
-      expect(new Timer(_.now() + 25000 - 1).text).toEqual("25秒以内");
+      expect(new Timer(_.now() - 25000 + 2).text).toEqual("25秒以内");
+      expect(new Timer(_.now() + 25000 - 2).text).toEqual("25秒以内");
       expect(new Timer(_.now() + 25000).text).toEqual("1分以内");
-      expect(new Timer(_.now() + 60000 - 1).text).toEqual("1分以内");
+      expect(new Timer(_.now() + 60000 - 2).text).toEqual("1分以内");
       expect(new Timer(_.now() + 60000).text).toEqual("1分後");
       expect(new Timer(_.now() + 120000).text).toEqual("2分後");
-      expect(new Timer(_.now() + 3540000 - 1).text).toEqual("59分後");
+      expect(new Timer(_.now() + 3540000 - 2).text).toEqual("59分後");
       expect(new Timer(_.now() + 3540000).text).toEqual("1時間後");
-      expect(new Timer(_.now() + 10800000 - 1).text).toEqual("3時間後");
+      expect(new Timer(_.now() + 10800000 - 2).text).toEqual("3時間後");
       expect(new Timer(_.now() + 10800000).text).not.toEqual("3時間後");
       return done();
     });
@@ -3394,6 +3391,10 @@ describe("Timer", function() {
     });
   });
 });
+if (location.search !== "?param=1-B-C-LtUhQ0W") {
+  location.search = "?param=1-B-C-LtUhQ0W";
+}
+
 Url.bind = {
   fname: {
     jasmine: {
@@ -3442,6 +3443,8 @@ Url.pathname = ["file"];
 
 Url.cookie = ["file"];
 
+Url.search = ["param"];
+
 Url.routes = {
   param: new Url("param=:aaa-:bbb-:ccc-:ddd"),
   file: new Url("/:fname.:ext")
@@ -3457,34 +3460,39 @@ describe("Url", function() {
     it("(global)", function(done) {
       Url.popstate();
       done();
-      expect(Url.vue.$data.fname).toEqual("jasmine");
-      return expect(Url.vue.$data.ext).toEqual("html");
+      expect(Url.data.fname).toEqual("jasmine");
+      return expect(Url.data.ext).toEqual("html");
     });
     return it("file", function(done) {
       Url.popstate();
       done();
-      expect(Url.routes.file.vue.$data.url.fname).toEqual("jasmine");
-      return expect(Url.routes.file.vue.$data.url.ext).toEqual("html");
+      expect(Url.routes.file.data.fname).toEqual("jasmine");
+      return expect(Url.routes.file.data.ext).toEqual("html");
+    });
+  });
+  describe("popstate url", function(done) {
+    return it("param", function(done) {
+      Url.popstate();
+      done();
+      expect(Url.routes.param.data.aaa).toEqual(1);
+      expect(Url.routes.param.data.bbb).toEqual("B");
+      expect(Url.routes.param.data.ccc).toEqual("C");
+      return expect(Url.routes.param.data.ddd).toEqual(1400000000000);
     });
   });
   return describe("bind variable", function(done) {
-    beforeEach(function(done) {
-      return setTimeout(function() {
-        return done();
-      }, 1);
-    });
     it("location other", function(done) {
       Url.popstate();
-      Url.routes.file.vue.$data.url.fname = "other";
+      Url.routes.file.data.fname = "other";
       Url.routes.file.change("fname", "other");
-      expect(Url.routes.file.vue.$data.url.title).toEqual("変更");
+      expect(Url.routes.file.data.title).toEqual("変更");
       return done();
     });
     return it("location basic", function(done) {
       Url.popstate();
       Url.routes.file.vue.$data.url.fname = "jasmine";
       Url.routes.file.change("fname", "jasmine");
-      expect(Url.routes.file.vue.$data.url.title).toEqual("基本");
+      expect(Url.routes.file.data.title).toEqual("基本");
       return done();
     });
   });

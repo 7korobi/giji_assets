@@ -858,38 +858,9 @@ var Cache,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 Cache = (function() {
-  Cache.data = {};
+  function Cache() {}
 
   Cache.rule = {};
-
-  Cache.where = function(hash) {
-    return (new Cache).where(hash);
-  };
-
-  function Cache() {
-    this.query = {
-      order: [],
-      where: {}
-    };
-  }
-
-  Cache.prototype.where = function(hash) {
-    var key, val, _results;
-    _results = [];
-    for (key in hash) {
-      val = hash[key];
-      _results.push(this.query.where[key] = val);
-    }
-    return _results;
-  };
-
-  Cache.prototype.first = function() {};
-
-  Cache.prototype.last = function() {};
-
-  Cache.prototype.all = function(ext) {
-    return _.sortBy(Cache.ext.order);
-  };
 
   return Cache;
 
@@ -899,20 +870,52 @@ Cache.Replace = (function() {
   function Replace(refs) {
     var field;
     for (field in refs) {
-      this.parents = refs[field];
+      this.parent_names = refs[field];
       Cache.rule[field] = this;
       this.list_name = "" + field + "s";
       this.id = "" + field + "_id";
-      this.pk = this.parents.concat([field]);
-      Cache.data[this.list_name] = [];
+      this.pk = this.parent_names.concat([field]);
+      this.set([]);
     }
     this.map = {};
+    Cache[this.list_name] = (function(_this) {
+      return function() {
+        if (!_this.binded) {
+          _this.bind();
+        }
+        return _.chain(_this.list);
+      };
+    })(this);
   }
 
   Replace.prototype.ids = function(o) {
     return _.map(this.pk, function(key) {
       return o["" + key + "_id"];
     });
+  };
+
+  Replace.prototype.bind = function() {
+    var grand_id, grand_name, grand_names, item, parent, parent_id, parent_name, parents, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
+    _ref = this.parent_names;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      parent_name = _ref[_i];
+      grand_names = Cache.rule[parent_name].bind();
+      parents = Cache.rule[parent_name].map;
+      parent_id = "" + parent_name + "_id";
+      _ref1 = this.list;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        item = _ref1[_j];
+        parent = parents[item[parent_id]];
+        item[parent_name] = parent;
+        for (_k = 0, _len2 = grand_names.length; _k < _len2; _k++) {
+          grand_name = grand_names[_k];
+          grand_id = "" + grand_name + "_id";
+          item[grand_id] = parent[grand_id];
+        }
+      }
+    }
+    this.binded = true;
+    return this.parent_names;
   };
 
   Replace.prototype.set_map = function(list) {
@@ -933,8 +936,9 @@ Cache.Replace = (function() {
   };
 
   Replace.prototype.set = function(list) {
-    this.set_map(list);
-    return Cache.data[this.list_name] = list;
+    this.list = list;
+    this.binded = false;
+    return this.set_map(this.list);
   };
 
   return Replace;
@@ -961,15 +965,17 @@ Cache.Append = (function(_super) {
   }
 
   Append.prototype.set = function(news) {
-    var item, list, _, _ref;
+    var item, _, _ref, _results;
+    this.binded = false;
     this.set_map(news);
-    list = [];
+    this.list = [];
     _ref = this.map;
+    _results = [];
     for (_ in _ref) {
       item = _ref[_];
-      list.push(item);
+      _results.push(this.list.push(item));
     }
-    return Cache.data[this.list_name] = list;
+    return _results;
   };
 
   return Append;
@@ -1722,6 +1728,7 @@ Url = (function() {
 
   Url.pushstate = function() {
     var link;
+    Url.data = Url.vue.$data;
     link = location.href;
     if (typeof history !== "undefined" && history !== null) {
       Url.each(function(route, data, target, target_is_cookie) {
@@ -1766,7 +1773,7 @@ Url = (function() {
     })(this), "i"));
     this.vue = new Vue(_.merge(vue, {
       data: {
-        url: Url.vue.$data,
+        url: this.data = Url.vue.$data,
         params: []
       }
     }));
@@ -1785,7 +1792,7 @@ Url = (function() {
         this.change(key, this.match[i]);
       }
     }
-    this.vue.$set("url", Url.vue.$data);
+    this.vue.$set("url", this.data = Url.vue.$data);
     return this.vue.$set("params", this.params);
   };
 

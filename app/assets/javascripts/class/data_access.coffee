@@ -1,41 +1,39 @@
 class Cache
-  @data = {}
   @rule = {}
-
-  @where = (hash)->
-    (new Cache).where(hash)
-
-  constructor: ->
-    @query = 
-      order: []
-      where: {}
-
-  where: (hash)->
-    for key, val of hash
-      @query.where[key] = val
-
-  first: ->
-
-  last: ->
-
-  all: (ext)->
-    _.sortBy Cache.ext.order
-
 
 class Cache.Replace
   constructor: (refs)->
-    for field, @parents of refs
+    for field, @parent_names of refs
       Cache.rule[field] = @
 
       @list_name = "#{field}s"
       @id = "#{field}_id"
-      @pk = @parents.concat [field]
-      Cache.data[@list_name] = []
+      @pk = @parent_names.concat [field]
+      @set []
     @map = {}
+    Cache[@list_name] = => 
+      @bind() if ! @binded
+      _.chain @list
 
   ids: (o)->
     _.map @pk, (key)->
       o["#{key}_id"]
+
+  bind: ()->
+    for parent_name in @parent_names
+      grand_names = Cache.rule[parent_name].bind()
+
+      parents = Cache.rule[parent_name].map
+      parent_id = "#{parent_name}_id"
+      for item in @list 
+        parent = parents[item[parent_id]]
+        item[parent_name] = parent
+
+        for grand_name in grand_names
+          grand_id = "#{grand_name}_id"
+          item[grand_id] = parent[grand_id]
+    @binded = true
+    @parent_names
 
   set_map: (list)->
     for o in list
@@ -46,9 +44,9 @@ class Cache.Replace
         o.id  = o.ids.join("-")
       @map[ o.id ] = o
 
-  set: (list)->
-    @set_map list
-    Cache.data[@list_name] = list
+  set: (@list)->
+    @binded = false
+    @set_map @list
 
 
 class Cache.Guard extends Cache.Replace
@@ -61,11 +59,11 @@ class Cache.Append extends Cache.Replace
     super(refs)
 
   set: (news)->
+    @binded = false
     @set_map news
-    list = []
+    @list = []
     for _, item of @map
-      list.push item
-    Cache.data[@list_name] = list
+      @list.push item
 
 
 ###

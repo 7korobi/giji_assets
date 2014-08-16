@@ -30,19 +30,22 @@ Cache.rule.message.set [
   scene_id: scene1
   name: "7korobi"
   text: "text 1"
-  created_at: Number new Date(1)
+  created_at: 1
+  updated_at: 1
 ,
   id: msg2
   scene_id: scene2
   name: "7korobi"
   text: "text 2"
-  created_at: Number new Date(2)
+  created_at: 2
+  updated_at: 2
 ,
   id: msg3
   scene_id: scene2
   name: "7korobi"
   text: "text 3"
-  created_at: Number new Date(3)
+  created_at: 3
+  updated_at: 3
 ]
 
 describe "Cache", ->
@@ -52,33 +55,33 @@ describe "Cache", ->
     , 1
   describe "append items", ->
     it "replace log", (done)->
-      expect(Cache.data.messages.length).toEqual 3
-      expect(Cache.where.first(order: "created_at").text).toEqual "text 1"
+      expect(Cache.messages().value().length).toEqual 3
+      expect(Cache.messages().sortBy("created_at").first().value().text).toEqual "text 1"
       Cache.rule.message.set [
         id: msg1
         scene_id: scene1
         name: "7korobi"
         text: "text 4"
-        created_at: Number new Date(1)
-        updated_at: Number new Date(4)
+        created_at: 1
+        updated_at: 4
       ]
       done()
-      expect(Cache.data.messages.length).toEqual 3
-      expect(Cache.where.first(order: "updated_at").text).toEqual "text 4"
+      expect(Cache.messages().value().length).toEqual 3
+      expect(Cache.messages().sortBy("created_at").first().value().text).toEqual "text 4"
 
     it "append log", (done)->
-      expect(Cache.data.messages.length).toEqual 3
+      expect(Cache.messages().value().length).toEqual 3
       Cache.rule.message.set [
         id: msg4
         scene_id: scene2
         name: "7korobi"
         text: "text 5"
-        created_at: Number new Date(5)
+        created_at: 5
       ]
       done()
-      expect(Cache.data.messages.length).toEqual 4
+      expect(Cache.messages().value().length).toEqual 4
 
     it "show window", (done)->
-      expect(Cache.where(site_id: "a").all("message", order: "updated_at").length).toEqual 1
+      expect(Cache.messages().where(site_id: "a").value().length).toEqual 1
       done()
       
