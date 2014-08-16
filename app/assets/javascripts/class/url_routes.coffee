@@ -28,6 +28,7 @@ class Url
 
 
   @pushstate = ->
+    Url.data = Url.vue.$data
     link = location.href
     if history?
       Url.each (route, data, target, target_is_cookie)->
@@ -59,7 +60,7 @@ class Url
     , "i"
     @vue = new Vue _.merge vue,
       data:
-        url: Url.vue.$data
+        url: @data = Url.vue.$data
         params: []
 
 
@@ -71,7 +72,7 @@ class Url
       for key, i in @keys
         @change key, @match[i]
 
-    @vue.$set "url", Url.vue.$data
+    @vue.$set "url", @data = Url.vue.$data
     @vue.$set "params", @params
 
 
