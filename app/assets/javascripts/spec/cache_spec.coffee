@@ -2,7 +2,7 @@ new Cache.Replace("site")
 new Cache.Replace("story").belongs_to("site")
 new Cache.Replace("event").belongs_to("site").belongs_to("story")
 new Cache.Append("scene").belongs_to("site").belongs_to("story").belongs_to("event")
-new Cache.Append("message").belongs_to("scene")
+new Cache.Append("message").belongs_to("scene", (o)-> _.sortBy(o, "created_at"))
 new Cache.Replace("potof").belongs_to("scene")
 new Cache.Append("fab").belongs_to("message")
 new Cache.Replace("form").protect(["text"]).belongs_to("scene")
@@ -102,7 +102,7 @@ describe "Cache", ->
   describe "replace item", ->
     it "replace log", (done)->
       expect(Cache.messages.all().value().length).toEqual 3
-      expect(Cache.messages.all().sortBy("created_at").first().value().text).toEqual "text 1"
+      expect(Cache.messages.all().first().value().text).toEqual "text 1"
       Cache.rule.message.set [
         id: msg1
         scene_id: scene1
@@ -113,8 +113,8 @@ describe "Cache", ->
       ]
       done()
       expect(Cache.messages.all().value().length).toEqual 3
-      expect(Cache.messages.all().sortBy("created_at").first().value().text).toEqual "text 4"
-      expect(Cache.messages.scene(scene1).sortBy("created_at").first().value().text).toEqual "text 4"
+      expect(Cache.messages.all().first().value().text).toEqual "text 4"
+      expect(Cache.messages.scene(scene1).first().value().text).toEqual "text 4"
 
     it "link with data", (done)->
       expect(Cache.scenes.event(event1).value()).toEqual undefined

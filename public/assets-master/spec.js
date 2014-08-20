@@ -3159,7 +3159,9 @@ new Cache.Replace("event").belongs_to("site").belongs_to("story");
 
 new Cache.Append("scene").belongs_to("site").belongs_to("story").belongs_to("event");
 
-new Cache.Append("message").belongs_to("scene");
+new Cache.Append("message").belongs_to("scene", function(o) {
+  return _.sortBy(o, "created_at");
+});
 
 new Cache.Replace("potof").belongs_to("scene");
 
@@ -3293,7 +3295,7 @@ describe("Cache", function() {
   describe("replace item", function() {
     it("replace log", function(done) {
       expect(Cache.messages.all().value().length).toEqual(3);
-      expect(Cache.messages.all().sortBy("created_at").first().value().text).toEqual("text 1");
+      expect(Cache.messages.all().first().value().text).toEqual("text 1");
       Cache.rule.message.set([
         {
           id: msg1,
@@ -3306,8 +3308,8 @@ describe("Cache", function() {
       ]);
       done();
       expect(Cache.messages.all().value().length).toEqual(3);
-      expect(Cache.messages.all().sortBy("created_at").first().value().text).toEqual("text 4");
-      return expect(Cache.messages.scene(scene1).sortBy("created_at").first().value().text).toEqual("text 4");
+      expect(Cache.messages.all().first().value().text).toEqual("text 4");
+      return expect(Cache.messages.scene(scene1).first().value().text).toEqual("text 4");
     });
     return it("link with data", function(done) {
       var scene;

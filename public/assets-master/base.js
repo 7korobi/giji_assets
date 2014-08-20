@@ -885,12 +885,13 @@ Cache.Rule = (function() {
     };
   }
 
-  Rule.prototype.belongs_to = function(parent) {
-    var parent_id;
+  Rule.prototype.belongs_to = function(parent, order) {
+    var id_func, parent_id;
     parent_id = "" + parent + "_id";
-    this.scope(parent, function(o) {
+    id_func = function(o) {
       return o[parent_id];
-    });
+    };
+    this.scope(parent, id_func, order);
     return this;
   };
 
@@ -899,9 +900,12 @@ Cache.Rule = (function() {
     return this;
   };
 
-  Rule.prototype.scope = function(key, id_func) {
+  Rule.prototype.scope = function(key, id_func, order) {
     var scope;
     scope = new Cache.Scope(this, id_func);
+    if (order != null) {
+      scope.set_list = order;
+    }
     this.scopes[key] = scope;
     Cache[this.list_name][key] = function(scope_id) {
       return _.chain(scope.list[scope_id]);
@@ -983,6 +987,10 @@ Cache.Scope = (function() {
     return this.list = {};
   };
 
+  Scope.prototype.set_list = function(hash) {
+    return _.values(hash);
+  };
+
   Scope.prototype.set = function(list) {
     var idx, o, scope_id, updated_scope_ids, _i, _len, _results;
     updated_scope_ids = {};
@@ -1002,7 +1010,7 @@ Cache.Scope = (function() {
     }
     _results = [];
     for (scope_id in updated_scope_ids) {
-      _results.push(this.list[scope_id] = _.values(this.map[scope_id]));
+      _results.push(this.list[scope_id] = this.set_list(this.map[scope_id]));
     }
     return _results;
   };

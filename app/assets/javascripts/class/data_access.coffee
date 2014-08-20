@@ -14,16 +14,18 @@ class Cache.Rule
       all: -> _.chain(scope.list.all)
 
 
-  belongs_to: (parent)->
+  belongs_to: (parent, order)->
     parent_id = "#{parent}_id"
-    @scope parent, (o)->
+    id_func = (o)->
       o[parent_id]
+    @scope parent, id_func, order
     @
 
   protect: (@protect_ids)-> @
 
-  scope: (key, id_func)->
+  scope: (key, id_func, order)->
     scope = new Cache.Scope @, id_func
+    scope.set_list = order if order?
     @scopes[key] = scope
     Cache[@list_name][key] = (scope_id)->
       _.chain(scope.list[scope_id])
@@ -68,6 +70,9 @@ class Cache.Scope
     @map = {}
     @list = {}
 
+  set_list: (hash)->
+    _.values hash
+
   set: (list)->
     updated_scope_ids = {}
     for o, idx in list
@@ -82,7 +87,7 @@ class Cache.Scope
       @map[scope_id][o.id] = o
 
     for scope_id of updated_scope_ids
-      @list[scope_id] = _.values @map[scope_id]
+      @list[scope_id] = @set_list @map[scope_id]
 
 class Cache.Replace extends Cache.Rule
   set_scope: (scope, list)->
