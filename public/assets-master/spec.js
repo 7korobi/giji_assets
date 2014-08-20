@@ -3149,19 +3149,23 @@ describe("(basic)", function() {
     .toThrowError "bad"
  */
 ;
-var msg1, msg2, msg3, msg4, scene1, scene2;
+var fab1, form1, msg1, msg2, msg3, msg4, scene1, scene2;
 
-new Cache.Replace({
-  site: []
-});
+new Cache.Replace("site");
 
-new Cache.Append({
-  scene: ["site"]
-});
+new Cache.Replace("story").belongs_to("site");
 
-new Cache.Append({
-  message: ["scene"]
-});
+new Cache.Replace("event").belongs_to("story").belongs_to("site");
+
+new Cache.Append("scene").belongs_to("site").belongs_to("story");
+
+new Cache.Append("message").belongs_to("scene");
+
+new Cache.Append("fab").belongs_to("message");
+
+new Cache.Replace("potof").belongs_to("scene");
+
+new Cache.Replace("form").protect(["text"]).belongs_to("scene");
 
 scene1 = ID.now();
 
@@ -3174,6 +3178,10 @@ msg2 = ID.now();
 msg3 = ID.now();
 
 msg4 = ID.now();
+
+fab1 = ID.now();
+
+form1 = ID.now();
 
 Cache.rule.site.set([
   {
@@ -3222,16 +3230,49 @@ Cache.rule.message.set([
   }
 ]);
 
+Cache.rule.fab.set([
+  {
+    id: fab1,
+    message_id: msg3,
+    name: "7korobi",
+    created_at: 10,
+    updated_at: 10
+  }
+]);
+
+Cache.rule.form.set([
+  {
+    id: form1,
+    scene_id: scene1,
+    text: "last submit text."
+  }
+]);
+
 describe("Cache", function() {
   beforeEach(function(done) {
     return setTimeout(function() {
       return done();
     }, 1);
   });
+  describe("form input", function() {
+    return it("guard user input", function(done) {
+      expect(Cache.forms.all().first().value().text).toEqual("last submit text.");
+      Cache.forms.all().first().value().text = "new user input.";
+      expect(Cache.forms.all().first().value().text).toEqual("new user input.");
+      Cache.rule.form.set([
+        {
+          id: form1,
+          text: "last submit text."
+        }
+      ]);
+      done();
+      return expect(Cache.forms.all().first().value().text).toEqual("new user input.");
+    });
+  });
   return describe("append items", function() {
     it("replace log", function(done) {
-      expect(Cache.messages().value().length).toEqual(3);
-      expect(Cache.messages().sortBy("created_at").first().value().text).toEqual("text 1");
+      expect(Cache.messages.all().value().length).toEqual(3);
+      expect(Cache.messages.all().sortBy("created_at").first().value().text).toEqual("text 1");
       Cache.rule.message.set([
         {
           id: msg1,
@@ -3243,27 +3284,27 @@ describe("Cache", function() {
         }
       ]);
       done();
-      expect(Cache.messages().value().length).toEqual(3);
-      return expect(Cache.messages().sortBy("created_at").first().value().text).toEqual("text 4");
+      expect(Cache.messages.all().value().length).toEqual(3);
+      expect(Cache.messages.all().sortBy("created_at").first().value().text).toEqual("text 4");
+      return expect(Cache.messages.scene(scene1).sortBy("created_at").first().value().text).toEqual("text 4");
     });
     it("append log", function(done) {
-      expect(Cache.messages().value().length).toEqual(3);
+      expect(Cache.messages.all().value().length).toEqual(3);
       Cache.rule.message.set([
         {
           id: msg4,
           scene_id: scene2,
           name: "7korobi",
           text: "text 5",
-          created_at: 5
+          created_at: 5,
+          updated_at: 5
         }
       ]);
       done();
-      return expect(Cache.messages().value().length).toEqual(4);
+      return expect(Cache.messages.all().value().length).toEqual(4);
     });
     return it("show window", function(done) {
-      expect(Cache.messages().where({
-        site_id: "a"
-      }).value().length).toEqual(1);
+      expect(Cache.messages.scene(scene1).value().length).toEqual(1);
       return done();
     });
   });

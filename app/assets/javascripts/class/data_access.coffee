@@ -1,69 +1,99 @@
 class Cache
   @rule = {}
 
+
 class Cache.Replace
-  constructor: (refs)->
-    for field, @parent_names of refs
-      Cache.rule[field] = @
+  constructor: (field)->
+    Cache.rule[field] = @
+    @list_name = "#{field}s"
+    @id = "#{field}_id"
 
-      @list_name = "#{field}s"
-      @id = "#{field}_id"
-      @pk = @parent_names.concat [field]
-      @set []
-    @map = {}
-    Cache[@list_name] = => 
-      @bind() if ! @binded
-      _.chain @list
+    scope = @scope_generate -> "all"
+    @scopes = 
+      all: scope
+    Cache[@list_name] = 
+      all: -> _.chain(scope.list.all)
 
-  ids: (o)->
-    _.map @pk, (key)->
-      o["#{key}_id"]
 
-  bind: ()->
-    for parent_name in @parent_names
-      grand_names = Cache.rule[parent_name].bind()
+  belongs_to: (parent)->
+    parent_id = "#{parent}_id"
+    @scope parent, (o)->
+      o[parent_id]
+    @
 
-      parents = Cache.rule[parent_name].map
-      parent_id = "#{parent_name}_id"
-      for item in @list 
-        parent = parents[item[parent_id]]
-        item[parent_name] = parent
+  protect: (@protect_ids)-> @
 
-        for grand_name in grand_names
-          grand_id = "#{grand_name}_id"
-          item[grand_id] = parent[grand_id]
-    @binded = true
-    @parent_names
+  scope: (key, id_func)->
+    scope = @scope_generate(id_func)
+    @scopes[key] = scope
+    Cache[@list_name][key] = (scope_id)->
+      _.chain(scope.list[scope_id])
+    @
 
-  set_map: (list)->
+  scope_generate: (id_func)->
+    new Cache.Replace.Scope(@, id_func)
+
+  set: (list)->
     for o in list
       unless o[@id]
         o[@id] = o.id
       unless o.id
-        o.ids ||= @ids o
-        o.id  = o.ids.join("-")
-      @map[ o.id ] = o
+        o.id = o[@id]
 
-  set: (@list)->
-    @binded = false
-    @set_map @list
+      old = @scopes.all.map.all?[o.id]
+      if old? && @protect_ids?
+        for key in @protect_ids
+          o[key] = old[key]
 
+    for key, scope of @scopes
+      scope.set list
 
-class Cache.Guard extends Cache.Replace
-  constructor: (refs, @protect)->
-    super(refs)
+    return true
+
+  find: (id)->
+    @scopes.all.map.all[id]
 
 
 class Cache.Append extends Cache.Replace
-  constructor: (refs)->
-    super(refs)
+  constructor: (field)->
+    super
 
-  set: (news)->
-    @binded = false
-    @set_map news
-    @list = []
-    for _, item of @map
-      @list.push item
+  scope_generate: (id_func)->
+    new Cache.Append.Scope(@, id_func)
+
+
+class Cache.Append.Scope
+  constructor: (@cache, @id)->
+    @cleanup()
+
+  find: (id)->
+    @map.all[id]
+
+  cleanup: ->
+    @map = {}
+    @list = {}
+
+  set: (list)->
+    updated_scope_ids = {}
+    for o, idx in list
+      scope_id = @id o, idx
+      unless @map[scope_id]
+        @map[scope_id] = {}
+        @list[scope_id] = []
+      if @map[scope_id][o.id]
+        updated_scope_ids[scope_id] = true
+      else
+        @list[scope_id].push o
+      @map[scope_id][o.id] = o
+
+    for scope_id of updated_scope_ids
+      @list[scope_id] = _.values @map[scope_id]
+
+
+class Cache.Replace.Scope extends Cache.Append.Scope
+  set: (list)->
+    @cleanup()
+    super
 
 
 ###
