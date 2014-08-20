@@ -866,13 +866,13 @@ Cache = (function() {
 
 })();
 
-Cache.Replace = (function() {
-  function Replace(field) {
+Cache.Rule = (function() {
+  function Rule(field) {
     var scope;
     Cache.rule[field] = this;
     this.list_name = "" + field + "s";
     this.id = "" + field + "_id";
-    scope = this.scope_generate(function() {
+    scope = new Cache.Scope(this, function() {
       return "all";
     });
     this.scopes = {
@@ -885,7 +885,7 @@ Cache.Replace = (function() {
     };
   }
 
-  Replace.prototype.belongs_to = function(parent) {
+  Rule.prototype.belongs_to = function(parent) {
     var parent_id;
     parent_id = "" + parent + "_id";
     this.scope(parent, function(o) {
@@ -894,14 +894,14 @@ Cache.Replace = (function() {
     return this;
   };
 
-  Replace.prototype.protect = function(protect_ids) {
+  Rule.prototype.protect = function(protect_ids) {
     this.protect_ids = protect_ids;
     return this;
   };
 
-  Replace.prototype.scope = function(key, id_func) {
+  Rule.prototype.scope = function(key, id_func) {
     var scope;
-    scope = this.scope_generate(id_func);
+    scope = new Cache.Scope(this, id_func);
     this.scopes[key] = scope;
     Cache[this.list_name][key] = function(scope_id) {
       return _.chain(scope.list[scope_id]);
@@ -909,12 +909,34 @@ Cache.Replace = (function() {
     return this;
   };
 
-  Replace.prototype.scope_generate = function(id_func) {
-    return new Cache.Replace.Scope(this, id_func);
+  Rule.prototype.protect_item = function(list) {
+    var key, o, old, _i, _len, _ref, _results;
+    if (this.protect_ids != null) {
+      _results = [];
+      for (_i = 0, _len = list.length; _i < _len; _i++) {
+        o = list[_i];
+        old = (_ref = this.scopes.all.map.all) != null ? _ref[o.id] : void 0;
+        if (old != null) {
+          _results.push((function() {
+            var _j, _len1, _ref1, _results1;
+            _ref1 = this.protect_ids;
+            _results1 = [];
+            for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+              key = _ref1[_j];
+              _results1.push(o[key] = old[key]);
+            }
+            return _results1;
+          }).call(this));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
+    }
   };
 
-  Replace.prototype.set = function(list) {
-    var key, o, old, scope, _i, _j, _len, _len1, _ref, _ref1, _ref2;
+  Rule.prototype.set = function(list) {
+    var o, scope, _, _i, _len, _ref;
     for (_i = 0, _len = list.length; _i < _len; _i++) {
       o = list[_i];
       if (!o[this.id]) {
@@ -923,47 +945,29 @@ Cache.Replace = (function() {
       if (!o.id) {
         o.id = o[this.id];
       }
-      old = (_ref = this.scopes.all.map.all) != null ? _ref[o.id] : void 0;
-      if ((old != null) && (this.protect_ids != null)) {
-        _ref1 = this.protect_ids;
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          key = _ref1[_j];
-          o[key] = old[key];
-        }
-      }
     }
-    _ref2 = this.scopes;
-    for (key in _ref2) {
-      scope = _ref2[key];
-      scope.set(list);
+    this.protect_item(list);
+    _ref = this.scopes;
+    for (_ in _ref) {
+      scope = _ref[_];
+      this.set_scope(scope, list);
     }
     return true;
   };
 
-  Replace.prototype.find = function(id) {
+  Rule.prototype.rehash = function() {
+    return this.set(this.scopes.all.list.all);
+  };
+
+  Rule.prototype.find = function(id) {
     return this.scopes.all.map.all[id];
   };
 
-  return Replace;
+  return Rule;
 
 })();
 
-Cache.Append = (function(_super) {
-  __extends(Append, _super);
-
-  function Append(field) {
-    Append.__super__.constructor.apply(this, arguments);
-  }
-
-  Append.prototype.scope_generate = function(id_func) {
-    return new Cache.Append.Scope(this, id_func);
-  };
-
-  return Append;
-
-})(Cache.Replace);
-
-Cache.Append.Scope = (function() {
+Cache.Scope = (function() {
   function Scope(cache, id) {
     this.cache = cache;
     this.id = id;
@@ -1007,21 +1011,36 @@ Cache.Append.Scope = (function() {
 
 })();
 
-Cache.Replace.Scope = (function(_super) {
-  __extends(Scope, _super);
+Cache.Replace = (function(_super) {
+  __extends(Replace, _super);
 
-  function Scope() {
-    return Scope.__super__.constructor.apply(this, arguments);
+  function Replace() {
+    return Replace.__super__.constructor.apply(this, arguments);
   }
 
-  Scope.prototype.set = function(list) {
-    this.cleanup();
-    return Scope.__super__.set.apply(this, arguments);
+  Replace.prototype.set_scope = function(scope, list) {
+    scope.cleanup();
+    return scope.set(list);
   };
 
-  return Scope;
+  return Replace;
 
-})(Cache.Append.Scope);
+})(Cache.Rule);
+
+Cache.Append = (function(_super) {
+  __extends(Append, _super);
+
+  function Append() {
+    return Append.__super__.constructor.apply(this, arguments);
+  }
+
+  Append.prototype.set_scope = function(scope, list) {
+    return scope.set(list);
+  };
+
+  return Append;
+
+})(Cache.Rule);
 
 
 /*

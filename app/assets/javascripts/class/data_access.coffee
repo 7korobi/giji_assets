@@ -1,14 +1,13 @@
 class Cache
   @rule = {}
 
-
-class Cache.Replace
+class Cache.Rule
   constructor: (field)->
     Cache.rule[field] = @
     @list_name = "#{field}s"
     @id = "#{field}_id"
 
-    scope = @scope_generate -> "all"
+    scope = new Cache.Scope @, -> "all"
     @scopes = 
       all: scope
     Cache[@list_name] = 
@@ -24,14 +23,19 @@ class Cache.Replace
   protect: (@protect_ids)-> @
 
   scope: (key, id_func)->
-    scope = @scope_generate(id_func)
+    scope = new Cache.Scope @, id_func
     @scopes[key] = scope
     Cache[@list_name][key] = (scope_id)->
       _.chain(scope.list[scope_id])
     @
 
-  scope_generate: (id_func)->
-    new Cache.Replace.Scope(@, id_func)
+  protect_item: (list)->
+    if @protect_ids?
+      for o in list
+        old = @scopes.all.map.all?[o.id]
+        if old?
+          for key in @protect_ids
+            o[key] = old[key]
 
   set: (list)->
     for o in list
@@ -40,29 +44,20 @@ class Cache.Replace
       unless o.id
         o.id = o[@id]
 
-      old = @scopes.all.map.all?[o.id]
-      if old? && @protect_ids?
-        for key in @protect_ids
-          o[key] = old[key]
+    @protect_item list
 
-    for key, scope of @scopes
-      scope.set list
+    for _, scope of @scopes
+      @set_scope scope, list
 
     return true
+
+  rehash: ->
+    @set @scopes.all.list.all
 
   find: (id)->
     @scopes.all.map.all[id]
 
-
-class Cache.Append extends Cache.Replace
-  constructor: (field)->
-    super
-
-  scope_generate: (id_func)->
-    new Cache.Append.Scope(@, id_func)
-
-
-class Cache.Append.Scope
+class Cache.Scope
   constructor: (@cache, @id)->
     @cleanup()
 
@@ -89,11 +84,14 @@ class Cache.Append.Scope
     for scope_id of updated_scope_ids
       @list[scope_id] = _.values @map[scope_id]
 
+class Cache.Replace extends Cache.Rule
+  set_scope: (scope, list)->
+    scope.cleanup()
+    scope.set list
 
-class Cache.Replace.Scope extends Cache.Append.Scope
-  set: (list)->
-    @cleanup()
-    super
+class Cache.Append extends Cache.Rule
+  set_scope: (scope, list)->
+    scope.set list
 
 
 ###

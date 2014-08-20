@@ -3149,27 +3149,31 @@ describe("(basic)", function() {
     .toThrowError "bad"
  */
 ;
-var fab1, form1, msg1, msg2, msg3, msg4, scene1, scene2;
+var event1, fab1, form1, msg1, msg2, msg3, msg4, scene1, scene2, story1;
 
 new Cache.Replace("site");
 
 new Cache.Replace("story").belongs_to("site");
 
-new Cache.Replace("event").belongs_to("story").belongs_to("site");
+new Cache.Replace("event").belongs_to("site").belongs_to("story");
 
-new Cache.Append("scene").belongs_to("site").belongs_to("story");
+new Cache.Append("scene").belongs_to("site").belongs_to("story").belongs_to("event");
 
 new Cache.Append("message").belongs_to("scene");
 
-new Cache.Append("fab").belongs_to("message");
-
 new Cache.Replace("potof").belongs_to("scene");
+
+new Cache.Append("fab").belongs_to("message");
 
 new Cache.Replace("form").protect(["text"]).belongs_to("scene");
 
 scene1 = ID.now();
 
 scene2 = ID.now();
+
+story1 = ID.now();
+
+event1 = ID.now();
 
 msg1 = ID.now();
 
@@ -3190,6 +3194,23 @@ Cache.rule.site.set([
   }, {
     id: "b",
     title: "β complex"
+  }
+]);
+
+Cache.rule.story.set([
+  {
+    id: story1,
+    site_id: "a",
+    title: "ストーリー１"
+  }
+]);
+
+Cache.rule.event.set([
+  {
+    id: event1,
+    site_id: "a",
+    story_id: story1,
+    title: "イベント１"
   }
 ]);
 
@@ -3269,7 +3290,7 @@ describe("Cache", function() {
       return expect(Cache.forms.all().first().value().text).toEqual("new user input.");
     });
   });
-  return describe("append items", function() {
+  describe("replace item", function() {
     it("replace log", function(done) {
       expect(Cache.messages.all().value().length).toEqual(3);
       expect(Cache.messages.all().sortBy("created_at").first().value().text).toEqual("text 1");
@@ -3288,6 +3309,17 @@ describe("Cache", function() {
       expect(Cache.messages.all().sortBy("created_at").first().value().text).toEqual("text 4");
       return expect(Cache.messages.scene(scene1).sortBy("created_at").first().value().text).toEqual("text 4");
     });
+    return it("link with data", function(done) {
+      var scene;
+      expect(Cache.scenes.event(event1).value()).toEqual(void 0);
+      scene = Cache.scenes.all().first().value();
+      scene.event_id = event1;
+      Cache.rule.scene.set([scene]);
+      done();
+      return expect(Cache.scenes.event(event1).value().length).toEqual(1);
+    });
+  });
+  return describe("append items", function() {
     it("append log", function(done) {
       expect(Cache.messages.all().value().length).toEqual(3);
       Cache.rule.message.set([
