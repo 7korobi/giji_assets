@@ -44,7 +44,7 @@ describe "Url", ->
   beforeEach (done)->
     setTimeout ->
       done()
-    , 1
+    , 0
   describe "should capture file name", ->
     it "(global)", (done)->
       Url.popstate()

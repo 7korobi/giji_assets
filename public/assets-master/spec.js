@@ -3120,6 +3120,11 @@ beforeEach(function() {
   });
 });
 describe("(basic)", function() {
+  beforeEach(function(done) {
+    return setTimeout(function() {
+      return done();
+    }, 0);
+  });
   return it("basic", function(done) {
     jasmine.clock().install();
     expect(true).toBeTruthy();
@@ -3149,6 +3154,27 @@ describe("(basic)", function() {
     .toThrowError "bad"
  */
 ;
+describe("(browser css)", function() {
+  beforeEach(function(done) {
+    return setTimeout(function() {
+      return done();
+    }, 0);
+  });
+  it("disable", function(done) {
+    expect(document.styleSheets[0].disabled = true).toBeTruthy();
+    done();
+    return expect(document.styleSheets[0].disabled = false).toBeFalsy();
+  });
+  return it("insert rule", function(done) {
+    var red;
+    red = ".bar { border: 3px solid red; }";
+    document.styleSheets[0].insertRule(red, 0);
+    expect(document.styleSheets[0].rules[0].cssText).toEqual(red);
+    done();
+    document.styleSheets[0].deleteRule(0);
+    return document.styleSheets[0].insertRule(red, 0);
+  });
+});
 var event1, fab1, form1, msg1, msg2, msg3, msg4, scene1, scene2, story1;
 
 new Cache.Replace("site");
@@ -3275,7 +3301,7 @@ describe("Cache", function() {
   beforeEach(function(done) {
     return setTimeout(function() {
       return done();
-    }, 1);
+    }, 0);
   });
   describe("form input", function() {
     return it("guard user input", function(done) {
@@ -3529,7 +3555,7 @@ describe("Url", function() {
   beforeEach(function(done) {
     return setTimeout(function() {
       return done();
-    }, 1);
+    }, 0);
   });
   describe("should capture file name", function() {
     it("(global)", function(done) {

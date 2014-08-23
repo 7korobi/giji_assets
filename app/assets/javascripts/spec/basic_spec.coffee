@@ -1,4 +1,8 @@
 describe "(basic)", ->
+  beforeEach (done)->
+    setTimeout ->
+      done()
+    , 0
   it "basic", (done)->
     jasmine.clock().install();
 

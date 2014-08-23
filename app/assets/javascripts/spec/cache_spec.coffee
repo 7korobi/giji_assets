@@ -85,7 +85,7 @@ describe "Cache", ->
   beforeEach (done)->
     setTimeout ->
       done()
-    , 1
+    , 0
 
   describe "form input", ->
     it "guard user input", (done)->
