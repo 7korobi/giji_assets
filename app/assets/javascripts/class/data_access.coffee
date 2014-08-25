@@ -21,47 +21,58 @@ class Cache.Rule
   constructor: (field)->
     @id = "#{field}_id"
     @list_name = "#{field}s"
+    @scopes = {}
     @protect_ids = []
 
     Cache.rule[field] = @
     Cache[@list_name] = cache = {}
 
-    scope = new Cache.Scope()
-    scope.all = scope
-    scope.kind = -> "all"
-    scope.reset = (o)=> cache.all = o.all
+    kind = -> "all"
+    reset = (o)-> cache.all = o.all
+    @base_scope("_all", kind, reset).values = (hash)-> _.values hash
+
+  base_scope: (key, kind, reset)->
+    @scopes[key] = scope = new Cache.Scope(@)
+    @scope_keys = Object.keys(@scopes).sort().reverse()
+    scope.kind = kind
+    scope.reset = reset
     scope.cleanup()
-    @scopes = 
-      _all: scope
+
+    all = @scopes._all.list.all
+    if 0 < all?.length
+      scope.set all
+    scope
 
   schema: (cb)->
-    base_scope = (key, kind, reset, order)=>
-      scope = new Cache.Scope()
-      scope.all = @scopes._all
-      scope.kind = kind
-      scope.reset = reset
-      scope.values = order if order?
-      scope.cleanup()
-      @scopes[key] = scope
-
-      all = @scopes._all.list.all
-      if 0 < all?.length
-        scope.set all
-
     definer =
-      scope: (key, kind, order)=>
+      scope: (key, kind)=>
         cache = Cache[@list_name]
         reset = (o)-> cache[key] = o
-        base_scope key, kind, reset, order
+        @base_scope key, kind, reset
 
-      pager: (key, items, order)=>
+      pager: (key, items)=>
 
-      belongs_to: (parent, order)=>
+      belongs_to: (parent)=>
         cache = Cache[@list_name]
         parent_id = "#{parent}_id"
         kind = (o)-> o[parent_id]
         reset = (o)-> cache[parent] = o
-        base_scope parent, kind, reset, order
+        @base_scope parent, kind, reset
+
+      order: (key, desc)=>
+        @values =
+          if desc
+            (o)->
+              _.values(o).sort (a,b)->
+                return  1 if a[key] < b[key]
+                return -1 if a[key] > b[key]
+                return  0
+          else
+            (o)->
+              _.values(o).sort (a,b)->
+                return -1 if a[key] < b[key]
+                return  1 if a[key] > b[key]
+                return  0
 
       protect: (id_name)=>
         @protect_ids.push id_name
@@ -77,11 +88,14 @@ class Cache.Rule
 
     _.absorb list, @protect_ids, @scopes._all.map.all
 
-    for key in Object.keys(@scopes).sort().reverse()
+    for key in @scope_keys
       scope = @scopes[key]
       @set_scope scope, list
 
     return true
+
+  values: (hash)->
+    _.values hash
 
   rehash: ->
     @set @scopes._all.list.all
@@ -94,7 +108,7 @@ class Cache.Rule
     @scopes._all.map.all[id]
 
 class Cache.Scope
-  constructor: ->
+  constructor: (@rule)->
 
   find: (id)->
     @map.all[id]
@@ -104,11 +118,9 @@ class Cache.Scope
     @list = {}
     @reset @list
 
-  values: (hash)->
-    _.values hash
-
   set: (list)->
-    all = @all.map.all
+    all = @rule.scopes._all.map.all
+    values = @values || @rule.values
     reset_kinds = {}
     for o in list
       kind = @kind o
@@ -127,7 +139,7 @@ class Cache.Scope
         @map[kind][o._id] = o
 
     for kind, type of reset_kinds
-      @list[kind] = @values @map[kind]
+      @list[kind] = values @map[kind]
     @reset @list
 
 class Cache.Replace extends Cache.Rule

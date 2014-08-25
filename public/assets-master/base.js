@@ -901,64 +901,56 @@ Cache = (function() {
 
 Cache.Rule = (function() {
   function Rule(field) {
-    var cache, scope;
+    var cache, kind, reset;
     this.id = "" + field + "_id";
     this.list_name = "" + field + "s";
+    this.scopes = {};
     this.protect_ids = [];
     Cache.rule[field] = this;
     Cache[this.list_name] = cache = {};
-    scope = new Cache.Scope();
-    scope.all = scope;
-    scope.kind = function() {
+    kind = function() {
       return "all";
     };
-    scope.reset = (function(_this) {
-      return function(o) {
-        return cache.all = o.all;
-      };
-    })(this);
-    scope.cleanup();
-    this.scopes = {
-      _all: scope
+    reset = function(o) {
+      return cache.all = o.all;
+    };
+    this.base_scope("_all", kind, reset).values = function(hash) {
+      return _.values(hash);
     };
   }
 
+  Rule.prototype.base_scope = function(key, kind, reset) {
+    var all, scope;
+    this.scopes[key] = scope = new Cache.Scope(this);
+    this.scope_keys = Object.keys(this.scopes).sort().reverse();
+    scope.kind = kind;
+    scope.reset = reset;
+    scope.cleanup();
+    all = this.scopes._all.list.all;
+    if (0 < (all != null ? all.length : void 0)) {
+      scope.set(all);
+    }
+    return scope;
+  };
+
   Rule.prototype.schema = function(cb) {
-    var base_scope, definer;
-    base_scope = (function(_this) {
-      return function(key, kind, reset, order) {
-        var all, scope;
-        scope = new Cache.Scope();
-        scope.all = _this.scopes._all;
-        scope.kind = kind;
-        scope.reset = reset;
-        if (order != null) {
-          scope.values = order;
-        }
-        scope.cleanup();
-        _this.scopes[key] = scope;
-        all = _this.scopes._all.list.all;
-        if (0 < (all != null ? all.length : void 0)) {
-          return scope.set(all);
-        }
-      };
-    })(this);
+    var definer;
     definer = {
       scope: (function(_this) {
-        return function(key, kind, order) {
+        return function(key, kind) {
           var cache, reset;
           cache = Cache[_this.list_name];
           reset = function(o) {
             return cache[key] = o;
           };
-          return base_scope(key, kind, reset, order);
+          return _this.base_scope(key, kind, reset);
         };
       })(this),
       pager: (function(_this) {
-        return function(key, items, order) {};
+        return function(key, items) {};
       })(this),
       belongs_to: (function(_this) {
-        return function(parent, order) {
+        return function(parent) {
           var cache, kind, parent_id, reset;
           cache = Cache[_this.list_name];
           parent_id = "" + parent + "_id";
@@ -968,7 +960,32 @@ Cache.Rule = (function() {
           reset = function(o) {
             return cache[parent] = o;
           };
-          return base_scope(parent, kind, reset, order);
+          return _this.base_scope(parent, kind, reset);
+        };
+      })(this),
+      order: (function(_this) {
+        return function(key, desc) {
+          return _this.values = desc ? function(o) {
+            return _.values(o).sort(function(a, b) {
+              if (a[key] < b[key]) {
+                return 1;
+              }
+              if (a[key] > b[key]) {
+                return -1;
+              }
+              return 0;
+            });
+          } : function(o) {
+            return _.values(o).sort(function(a, b) {
+              if (a[key] < b[key]) {
+                return -1;
+              }
+              if (a[key] > b[key]) {
+                return 1;
+              }
+              return 0;
+            });
+          };
         };
       })(this),
       protect: (function(_this) {
@@ -992,13 +1009,17 @@ Cache.Rule = (function() {
       }
     }
     _.absorb(list, this.protect_ids, this.scopes._all.map.all);
-    _ref = Object.keys(this.scopes).sort().reverse();
+    _ref = this.scope_keys;
     for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
       key = _ref[_j];
       scope = this.scopes[key];
       this.set_scope(scope, list);
     }
     return true;
+  };
+
+  Rule.prototype.values = function(hash) {
+    return _.values(hash);
   };
 
   Rule.prototype.rehash = function() {
@@ -1025,7 +1046,9 @@ Cache.Rule = (function() {
 })();
 
 Cache.Scope = (function() {
-  function Scope() {}
+  function Scope(rule) {
+    this.rule = rule;
+  }
 
   Scope.prototype.find = function(id) {
     return this.map.all[id];
@@ -1037,13 +1060,10 @@ Cache.Scope = (function() {
     return this.reset(this.list);
   };
 
-  Scope.prototype.values = function(hash) {
-    return _.values(hash);
-  };
-
   Scope.prototype.set = function(list) {
-    var all, kind, o, old, old_kind, reset_kinds, type, _base, _i, _len;
-    all = this.all.map.all;
+    var all, kind, o, old, old_kind, reset_kinds, type, values, _base, _i, _len;
+    all = this.rule.scopes._all.map.all;
+    values = this.values || this.rule.values;
     reset_kinds = {};
     for (_i = 0, _len = list.length; _i < _len; _i++) {
       o = list[_i];
@@ -1065,7 +1085,7 @@ Cache.Scope = (function() {
     }
     for (kind in reset_kinds) {
       type = reset_kinds[kind];
-      this.list[kind] = this.values(this.map[kind]);
+      this.list[kind] = values(this.map[kind]);
     }
     return this.reset(this.list);
   };

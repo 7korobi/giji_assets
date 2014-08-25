@@ -3290,9 +3290,8 @@ describe("Cache", function() {
   var cache_message, cache_message_with_scope;
   cache_message = function() {
     new Cache.Append("message").schema(function() {
-      return this.belongs_to("scene", function(o) {
-        return _.sortBy(o, "created_at");
-      });
+      this.order("created_at");
+      return this.belongs_to("scene");
     });
     Cache.rule.message.cleanup();
     return Cache.rule.message.set([
@@ -3323,7 +3322,7 @@ describe("Cache", function() {
   cache_message_with_scope = function() {
     cache_message();
     return Cache.rule.message.schema(function() {
-      var kind, order;
+      var kind;
       kind = function(o) {
         switch (o.scene_id) {
           case scene2:
@@ -3335,12 +3334,9 @@ describe("Cache", function() {
             return false;
         }
       };
-      order = function(o) {
-        return _.sortBy(o, "created_at");
-      };
-      this.scope("of", kind, order);
-      this.pager("of", 5, order);
-      return this.pager("all", 5, order);
+      this.scope("of", kind);
+      this.pager("of", 5);
+      return this.pager("all", 5);
     });
   };
   beforeEach(function(done) {
@@ -3403,7 +3399,6 @@ describe("Cache", function() {
       return done();
     });
     it("replace item", function(done) {
-      console.log("replace items");
       cache_message_with_scope();
       Cache.rule.message.set([
         {
@@ -3421,7 +3416,6 @@ describe("Cache", function() {
       expect(Cache.messages.of.also.last.text).toEqual("text 2");
       expect(Cache.messages.of.good.length).toEqual(1);
       expect(Cache.messages.of.good.last.text).toEqual("text 3");
-      console.log("replace items");
       return done();
     });
     return it("append item", function(done) {

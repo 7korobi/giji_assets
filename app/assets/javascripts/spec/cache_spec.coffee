@@ -72,7 +72,8 @@ Cache.rule.form.set [
 describe "Cache", ->
   cache_message = ->
     new Cache.Append("message").schema ->
-      @belongs_to "scene", (o)-> _.sortBy(o, "created_at")
+      @order "created_at"
+      @belongs_to "scene"
     Cache.rule.message.cleanup()
     Cache.rule.message.set [
       _id: msg1
@@ -108,10 +109,9 @@ describe "Cache", ->
             "good"
           else
             false
-      order = (o)-> _.sortBy(o, "created_at")
-      @scope "of", kind, order
-      @pager "of", 5, order
-      @pager "all", 5, order
+      @scope "of", kind
+      @pager "of", 5
+      @pager "all", 5
 
   beforeEach (done)->
     setTimeout ->
@@ -167,7 +167,6 @@ describe "Cache", ->
       done()
 
     it "replace item", (done)->
-      console.log "replace items"
       cache_message_with_scope()
       Cache.rule.message.set [
         _id: msg1
@@ -183,7 +182,6 @@ describe "Cache", ->
       expect(Cache.messages.of.also.last.text).toEqual "text 2"
       expect(Cache.messages.of.good.length).toEqual 1
       expect(Cache.messages.of.good.last.text).toEqual "text 3"
-      console.log "replace items"
       done()
 
     it "append item", (done)->
