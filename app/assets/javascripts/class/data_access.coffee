@@ -1,67 +1,100 @@
+_.mixin 
+  absorb: (list, keys, object)->
+    return list unless object? && keys? && keys.length > 0
+    for o in list
+      old = object[o._id]
+      if old?
+        for key in keys
+          o[key] = old[key]
+    list
+
+Object.defineProperties Array.prototype,
+  last:
+    get: -> @[@length - 1]
+  first:
+    get: -> @[0]
+
 class Cache
   @rule = {}
 
 class Cache.Rule
   constructor: (field)->
-    Cache.rule[field] = @
-    @list_name = "#{field}s"
     @id = "#{field}_id"
+    @list_name = "#{field}s"
+    @protect_ids = []
 
-    scope = new Cache.Scope @, -> "all"
+    Cache.rule[field] = @
+    Cache[@list_name] = cache = {}
+
+    scope = new Cache.Scope()
+    scope.all = scope
+    scope.kind = -> "all"
+    scope.reset = (o)=> cache.all = o.all
+    scope.cleanup()
     @scopes = 
-      all: scope
-    Cache[@list_name] = 
-      all: -> _.chain(scope.list.all)
+      _all: scope
 
+  schema: (cb)->
+    base_scope = (key, kind, reset, order)=>
+      scope = new Cache.Scope()
+      scope.all = @scopes._all
+      scope.kind = kind
+      scope.reset = reset
+      scope.values = order if order?
+      scope.cleanup()
+      @scopes[key] = scope
 
-  belongs_to: (parent, order)->
-    parent_id = "#{parent}_id"
-    id_func = (o)->
-      o[parent_id]
-    @scope parent, id_func, order
-    @
+      all = @scopes._all.list.all
+      if 0 < all?.length
+        scope.set all
 
-  protect: (@protect_ids)-> @
+    definer =
+      scope: (key, kind, order)=>
+        cache = Cache[@list_name]
+        reset = (o)-> cache[key] = o
+        base_scope key, kind, reset, order
 
-  scope: (key, id_func, order)->
-    scope = new Cache.Scope @, id_func
-    scope.set_list = order if order?
-    @scopes[key] = scope
-    Cache[@list_name][key] = (scope_id)->
-      _.chain(scope.list[scope_id])
-    @
+      pager: (key, items, order)=>
 
-  protect_item: (list)->
-    if @protect_ids?
-      for o in list
-        old = @scopes.all.map.all?[o.id]
-        if old?
-          for key in @protect_ids
-            o[key] = old[key]
+      belongs_to: (parent, order)=>
+        cache = Cache[@list_name]
+        parent_id = "#{parent}_id"
+        kind = (o)-> o[parent_id]
+        reset = (o)-> cache[parent] = o
+        base_scope parent, kind, reset, order
+
+      protect: (id_name)=>
+        @protect_ids.push id_name
+    _.forEach [@], cb, definer
+
 
   set: (list)->
     for o in list
       unless o[@id]
-        o[@id] = o.id
-      unless o.id
-        o.id = o[@id]
+        o[@id] = o._id
+      unless o._id
+        o._id = o[@id]
 
-    @protect_item list
+    _.absorb list, @protect_ids, @scopes._all.map.all
 
-    for _, scope of @scopes
+    for key in Object.keys(@scopes).sort().reverse()
+      scope = @scopes[key]
       @set_scope scope, list
 
     return true
 
   rehash: ->
-    @set @scopes.all.list.all
+    @set @scopes._all.list.all
+
+  cleanup: ->
+    for __, scope of @scopes
+      scope.cleanup()
 
   find: (id)->
-    @scopes.all.map.all[id]
+    @scopes._all.map.all[id]
 
 class Cache.Scope
-  constructor: (@cache, @id)->
-    @cleanup()
+  constructor: ->
 
   find: (id)->
     @map.all[id]
@@ -69,25 +102,33 @@ class Cache.Scope
   cleanup: ->
     @map = {}
     @list = {}
+    @reset @list
 
-  set_list: (hash)->
+  values: (hash)->
     _.values hash
 
   set: (list)->
-    updated_scope_ids = {}
-    for o, idx in list
-      scope_id = @id o, idx
-      unless @map[scope_id]
-        @map[scope_id] = {}
-        @list[scope_id] = []
-      if @map[scope_id][o.id]
-        updated_scope_ids[scope_id] = true
-      else
-        @list[scope_id].push o
-      @map[scope_id][o.id] = o
+    all = @all.map.all
+    reset_kinds = {}
+    for o in list
+      kind = @kind o
+      if kind
+        @map[kind] ||= {}
 
-    for scope_id of updated_scope_ids
-      @list[scope_id] = @set_list @map[scope_id]
+        if all?
+          old = all[o._id]
+        if old?
+          old_kind = @kind old
+          delete @map[old_kind][o._id]
+          reset_kinds[kind] = reset_kinds[old_kind] = "update"
+        else
+          reset_kinds[kind] = "create"
+
+        @map[kind][o._id] = o
+
+    for kind, type of reset_kinds
+      @list[kind] = @values @map[kind]
+    @reset @list
 
 class Cache.Replace extends Cache.Rule
   set_scope: (scope, list)->

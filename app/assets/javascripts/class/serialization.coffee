@@ -1,3 +1,7 @@
+_.mixin
+  parseID: (id)->
+    time = Serial.parser.Date id[2..-1]
+    [id[0..1], time]
 
 class Serial
   # OI
@@ -70,10 +74,4 @@ class ID
   @random_size = Serial.map.size * Serial.map.size
   @now = ->
     Serial.serializer.Date(Math.random() * ID.random_size) + Serial.serializer.Date _.now()
-
-  @to_random = (str)->
-    str[0..1]
-
-  @to_date = (str)->
-    new Date Serial.parser.Date str[2..-1]
 

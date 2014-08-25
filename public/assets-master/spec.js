@@ -3175,29 +3175,43 @@ describe("(browser css)", function() {
     return document.styleSheets[0].insertRule(red, 0);
   });
 });
-var event1, fab1, form1, msg1, msg2, msg3, msg4, scene1, scene2, story1;
+var event1, fab1, form1, msg1, msg2, msg3, msg4, scene1, scene2, scene3, story1;
 
 new Cache.Replace("site");
 
-new Cache.Replace("story").belongs_to("site");
-
-new Cache.Replace("event").belongs_to("site").belongs_to("story");
-
-new Cache.Append("scene").belongs_to("site").belongs_to("story").belongs_to("event");
-
-new Cache.Append("message").belongs_to("scene", function(o) {
-  return _.sortBy(o, "created_at");
+new Cache.Replace("story").schema(function() {
+  return this.belongs_to("site");
 });
 
-new Cache.Replace("potof").belongs_to("scene");
+new Cache.Replace("event").schema(function() {
+  this.belongs_to("site");
+  return this.belongs_to("story");
+});
 
-new Cache.Append("fab").belongs_to("message");
+new Cache.Append("scene").schema(function() {
+  this.belongs_to("site");
+  this.belongs_to("story");
+  return this.belongs_to("event");
+});
 
-new Cache.Replace("form").protect(["text"]).belongs_to("scene");
+new Cache.Replace("potof").schema(function() {
+  return this.belongs_to("scene");
+});
+
+new Cache.Append("fab").schema(function() {
+  return this.belongs_to("message");
+});
+
+new Cache.Replace("form").schema(function() {
+  this.protect("text");
+  return this.belongs_to("scene");
+});
 
 scene1 = ID.now();
 
 scene2 = ID.now();
+
+scene3 = ID.now();
 
 story1 = ID.now();
 
@@ -3217,17 +3231,17 @@ form1 = ID.now();
 
 Cache.rule.site.set([
   {
-    id: "a",
+    _id: "a",
     title: "α complex"
   }, {
-    id: "b",
+    _id: "b",
     title: "β complex"
   }
 ]);
 
 Cache.rule.story.set([
   {
-    id: story1,
+    _id: story1,
     site_id: "a",
     title: "ストーリー１"
   }
@@ -3235,7 +3249,7 @@ Cache.rule.story.set([
 
 Cache.rule.event.set([
   {
-    id: event1,
+    _id: event1,
     site_id: "a",
     story_id: story1,
     title: "イベント１"
@@ -3244,44 +3258,19 @@ Cache.rule.event.set([
 
 Cache.rule.scene.set([
   {
-    id: scene1,
+    _id: scene1,
     site_id: "a",
     title: "7korobi-say"
   }, {
-    id: scene2,
+    _id: scene2,
     site_id: "b",
     title: "7korobi-say"
   }
 ]);
 
-Cache.rule.message.set([
-  {
-    id: msg1,
-    scene_id: scene1,
-    name: "7korobi",
-    text: "text 1",
-    created_at: 1,
-    updated_at: 1
-  }, {
-    id: msg2,
-    scene_id: scene2,
-    name: "7korobi",
-    text: "text 2",
-    created_at: 2,
-    updated_at: 2
-  }, {
-    id: msg3,
-    scene_id: scene2,
-    name: "7korobi",
-    text: "text 3",
-    created_at: 3,
-    updated_at: 3
-  }
-]);
-
 Cache.rule.fab.set([
   {
-    id: fab1,
+    _id: fab1,
     message_id: msg3,
     name: "7korobi",
     created_at: 10,
@@ -3291,13 +3280,69 @@ Cache.rule.fab.set([
 
 Cache.rule.form.set([
   {
-    id: form1,
+    _id: form1,
     scene_id: scene1,
     text: "last submit text."
   }
 ]);
 
 describe("Cache", function() {
+  var cache_message, cache_message_with_scope;
+  cache_message = function() {
+    new Cache.Append("message").schema(function() {
+      return this.belongs_to("scene", function(o) {
+        return _.sortBy(o, "created_at");
+      });
+    });
+    Cache.rule.message.cleanup();
+    return Cache.rule.message.set([
+      {
+        _id: msg1,
+        scene_id: scene1,
+        name: "7korobi",
+        text: "text 1",
+        created_at: 1,
+        updated_at: 1
+      }, {
+        _id: msg2,
+        scene_id: scene2,
+        name: "7korobi",
+        text: "text 2",
+        created_at: 2,
+        updated_at: 2
+      }, {
+        _id: msg3,
+        scene_id: scene3,
+        name: "7korobi",
+        text: "text 3",
+        created_at: 3,
+        updated_at: 3
+      }
+    ]);
+  };
+  cache_message_with_scope = function() {
+    cache_message();
+    return Cache.rule.message.schema(function() {
+      var kind, order;
+      kind = function(o) {
+        switch (o.scene_id) {
+          case scene2:
+            return "also";
+          case scene1:
+          case scene3:
+            return "good";
+          default:
+            return false;
+        }
+      };
+      order = function(o) {
+        return _.sortBy(o, "created_at");
+      };
+      this.scope("of", kind, order);
+      this.pager("of", 5, order);
+      return this.pager("all", 5, order);
+    });
+  };
   beforeEach(function(done) {
     return setTimeout(function() {
       return done();
@@ -3305,54 +3350,85 @@ describe("Cache", function() {
   });
   describe("form input", function() {
     return it("guard user input", function(done) {
-      expect(Cache.forms.all().first().value().text).toEqual("last submit text.");
-      Cache.forms.all().first().value().text = "new user input.";
-      expect(Cache.forms.all().first().value().text).toEqual("new user input.");
+      expect(Cache.forms.all.first.text).toEqual("last submit text.");
+      Cache.forms.all.first.text = "new user input.";
+      expect(Cache.forms.all.first.text).toEqual("new user input.");
       Cache.rule.form.set([
         {
-          id: form1,
+          _id: form1,
           text: "last submit text."
         }
       ]);
-      done();
-      return expect(Cache.forms.all().first().value().text).toEqual("new user input.");
+      expect(Cache.forms.all.first.text).toEqual("new user input.");
+      return done();
     });
   });
   describe("replace item", function() {
-    it("replace log", function(done) {
-      expect(Cache.messages.all().value().length).toEqual(3);
-      expect(Cache.messages.all().first().value().text).toEqual("text 1");
+    return it("link with data", function(done) {
+      var scene;
+      expect(Cache.scenes.event[event1]).toEqual(void 0);
+      scene = Cache.scenes.all.first;
+      scene.event_id = event1;
+      Cache.rule.scene.set([scene]);
+      expect(Cache.scenes.event[event1].length).toEqual(1);
+      return done();
+    });
+  });
+  describe("messages", function() {
+    it("is not have scope", function(done) {
+      cache_message();
+      expect(Cache.messages.of).toEqual(void 0);
+      return done();
+    });
+    return it("has scene", function(done) {
+      cache_message();
+      expect(Cache.messages.scene[scene1].length).toEqual(1);
+      expect(Cache.messages.scene[scene2].length).toEqual(1);
+      expect(Cache.messages.scene[scene3].length).toEqual(1);
+      expect(Cache.messages.scene[scene1].first.text).toEqual("text 1");
+      expect(Cache.messages.scene[scene2].first.text).toEqual("text 2");
+      expect(Cache.messages.scene[scene3].first.text).toEqual("text 3");
+      return done();
+    });
+  });
+  return describe("messages with scope", function() {
+    it("sepalate items", function(done) {
+      cache_message_with_scope();
+      expect(Cache.messages.all.length).toEqual(3);
+      expect(Cache.messages.of.also.length).toEqual(1);
+      expect(Cache.messages.of.also.first.text).toEqual("text 2");
+      expect(Cache.messages.of.good.length).toEqual(2);
+      expect(Cache.messages.of.good.first.text).toEqual("text 1");
+      expect(Cache.messages.of.good.last.text).toEqual("text 3");
+      return done();
+    });
+    it("replace item", function(done) {
+      console.log("replace items");
+      cache_message_with_scope();
       Cache.rule.message.set([
         {
-          id: msg1,
-          scene_id: scene1,
+          _id: msg1,
+          scene_id: scene2,
           name: "7korobi",
           text: "text 4",
           created_at: 1,
           updated_at: 4
         }
       ]);
-      done();
-      expect(Cache.messages.all().value().length).toEqual(3);
-      expect(Cache.messages.all().first().value().text).toEqual("text 4");
-      return expect(Cache.messages.scene(scene1).first().value().text).toEqual("text 4");
+      expect(Cache.messages.all.length).toEqual(3);
+      expect(Cache.messages.of.also.length).toEqual(2);
+      expect(Cache.messages.of.also.first.text).toEqual("text 4");
+      expect(Cache.messages.of.also.last.text).toEqual("text 2");
+      expect(Cache.messages.of.good.length).toEqual(1);
+      expect(Cache.messages.of.good.last.text).toEqual("text 3");
+      console.log("replace items");
+      return done();
     });
-    return it("link with data", function(done) {
-      var scene;
-      expect(Cache.scenes.event(event1).value()).toEqual(void 0);
-      scene = Cache.scenes.all().first().value();
-      scene.event_id = event1;
-      Cache.rule.scene.set([scene]);
-      done();
-      return expect(Cache.scenes.event(event1).value().length).toEqual(1);
-    });
-  });
-  return describe("append items", function() {
-    it("append log", function(done) {
-      expect(Cache.messages.all().value().length).toEqual(3);
+    return it("append item", function(done) {
+      cache_message_with_scope();
       Cache.rule.message.set([
         {
-          id: msg4,
+          _id: msg4,
           scene_id: scene2,
           name: "7korobi",
           text: "text 5",
@@ -3360,14 +3436,31 @@ describe("Cache", function() {
           updated_at: 5
         }
       ]);
-      done();
-      return expect(Cache.messages.all().value().length).toEqual(4);
-    });
-    return it("show window", function(done) {
-      expect(Cache.messages.scene(scene1).value().length).toEqual(1);
+      expect(Cache.messages.all.length).toEqual(4);
+      expect(Cache.messages.of.also.length).toEqual(2);
+      expect(Cache.messages.of.also.first.text).toEqual("text 2");
+      expect(Cache.messages.of.also.last.text).toEqual("text 5");
+      expect(Cache.messages.of.good.length).toEqual(2);
+      expect(Cache.messages.of.good.first.text).toEqual("text 1");
+      expect(Cache.messages.of.good.last.text).toEqual("text 3");
       return done();
     });
   });
+});
+
+/*
+jQuery ->
+  FixedBox.push  angular.element,   0, 1, '#topviewer'
+  FixedBox.push  angular.element,   1,-1, '#sayfilter'
+  FixedBox.push  angular.element, -12,-1, '#buttons'
+ */
+describe("FixedBox", function() {
+  beforeEach(function(done) {
+    return setTimeout(function() {
+      return done();
+    }, 0);
+  });
+  return describe("adjust", function() {});
 });
 describe("Serial", function() {
   beforeEach(function(done) {
@@ -3475,7 +3568,6 @@ describe("Timer", function() {
     });
     return it("show lax time by tick", function(done) {
       var timer;
-      done();
       jasmine.clock().install();
       timer = new Timer(_.now() + 10800000);
       jasmine.clock().tick(7200000) && expect(timer.text).toEqual("1時間後");
@@ -3488,7 +3580,8 @@ describe("Timer", function() {
       jasmine.clock().tick(1) && expect(timer.text).toEqual("1分前");
       jasmine.clock().tick(58 * 60000) && expect(timer.text).toEqual("59分前");
       jasmine.clock().tick(60000) && expect(timer.text).toEqual("1時間前");
-      return jasmine.clock().uninstall();
+      jasmine.clock().uninstall();
+      return done();
     });
   });
 });
