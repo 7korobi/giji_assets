@@ -1,0 +1,1157 @@
+---
+-   _id: c55
+    order: 10
+    face_id: c55
+    name: "パピヨン"
+-   _id: c29
+    order: 11
+    face_id: c29
+    name: "イアン"
+-   _id: c12
+    order: 12
+    face_id: c12
+    name: "バーナバス"
+-   _id: c16
+    order: 13
+    face_id: c16
+    name: "マリアンヌ"
+-   _id: c34
+    order: 14
+    face_id: c34
+    name: "トニー"
+-   _id: c44
+    order: 15
+    face_id: c44
+    name: "ドナルド"
+-   _id: c11
+    order: 16
+    face_id: c11
+    name: "カルヴィン"
+-   _id: c10
+    order: 17
+    face_id: c10
+    name: "ゾーイ"
+-   _id: c70
+    order: 18
+    face_id: c70
+    name: "パティ"
+-   _id: c56
+    order: 19
+    face_id: c56
+    name: "ゴドウィン"
+-   _id: c07
+    order: 20
+    face_id: c07
+    name: "ティモシー"
+-   _id: c41
+    order: 21
+    face_id: c41
+    name: "ヤニク"
+-   _id: c58
+    order: 22
+    face_id: c58
+    name: "ブルーノ"
+-   _id: c17
+    order: 23
+    face_id: c17
+    name: "ユリシーズ"
+-   _id: c39
+    order: 24
+    face_id: c39
+    name: "シビル"
+-   _id: c40
+    order: 25
+    face_id: c40
+    name: "ハワード"
+-   _id: c65
+    order: 26
+    face_id: c65
+    name: "ズリエル"
+-   _id: c59
+    order: 27
+    face_id: c59
+    name: "ムパムピス"
+-   _id: c57
+    order: 28
+    face_id: c57
+    name: "ツェツィーリヤ"
+-   _id: c04
+    order: 29
+    face_id: c04
+    name: "ノーリーン"
+-   _id: c46
+    order: 30
+    face_id: c46
+    name: "ゲイル"
+-   _id: c14
+    order: 31
+    face_id: c14
+    name: "レティーシャ"
+-   _id: c09
+    order: 32
+    face_id: c09
+    name: "ヒロシ"
+-   _id: c42
+    order: 33
+    face_id: c42
+    name: "ラルフ"
+-   _id: c37
+    order: 34
+    face_id: c37
+    name: "セシル"
+-   _id: c75
+    order: 35
+    face_id: c75
+    name: "ビリー"
+-   _id: c32
+    order: 36
+    face_id: c32
+    name: "オスカー"
+-   _id: c33
+    order: 37
+    face_id: c33
+    name: "ホリー"
+-   _id: c02
+    order: 38
+    face_id: c02
+    name: "アルフレッド"
+-   _id: c66
+    order: 39
+    face_id: c66
+    name: "クリストファー"
+-   _id: c24
+    order: 41
+    face_id: c24
+    name: "ナタリア"
+-   _id: c79
+    order: 42
+    face_id: c79
+    name: "マーゴ"
+-   _id: c61
+    order: 43
+    face_id: c61
+    name: "ヌマタロウ"
+-   _id: c23
+    order: 44
+    face_id: c23
+    name: "チャールズ"
+-   _id: c28
+    comment: ''
+    face_id: c28
+    name: "ケイト"
+    order: 47
+-   _id: c68
+    order: 48
+    face_id: c68
+    name: "ヨアヒム"
+-   _id: c30
+    order: 49
+    face_id: c30
+    name: "フィリップ"
+-   _id: c21
+    order: 50
+    face_id: c21
+    name: "ニール"
+-   _id: c52
+    order: 52
+    face_id: c52
+    name: "ギリアン"
+-   _id: c51
+    order: 53
+    face_id: c51
+    name: "ヨーランダ"
+-   _id: c01
+    comment: ''
+    face_id: c01
+    name: "メアリー"
+    order: 55
+-   _id: c69
+    order: 56
+    face_id: c69
+    name: "ギネス"
+-   _id: c63
+    order: 57
+    face_id: c63
+    name: "ピッパ"
+-   _id: c05
+    order: 59
+    face_id: c05
+    name: "キャサリン"
+-   _id: c22
+    order: 60
+    face_id: c22
+    name: "ワット"
+-   _id: c62
+    order: 61
+    face_id: c62
+    name: "ヴェラ"
+-   _id: c13
+    order: 62
+    face_id: c13
+    name: "ロミオ"
+-   _id: c18
+    order: 63
+    face_id: c18
+    name: "エマ"
+-   _id: c27
+    order: 65
+    face_id: c27
+    name: "リンダ"
+-   _id: c08
+    order: 66
+    face_id: c08
+    name: "ベネット"
+-   _id: c19
+    order: 67
+    face_id: c19
+    name: "タバサ"
+-   _id: c71
+    order: 70
+    face_id: c71
+    name: "ノックス"
+-   _id: c03
+    order: 71
+    face_id: c03
+    name: "スティーブン"
+-   _id: c43
+    order: 72
+    face_id: c43
+    name: "ガストン"
+-   _id: c15
+    order: 73
+    face_id: c15
+    name: "ウェーズリー"
+-   _id: c54
+    order: 75
+    face_id: c54
+    name: "ザック"
+-   _id: c25
+    order: 77
+    face_id: c25
+    name: "ルーカス"
+-   _id: c20
+    order: 78
+    face_id: c20
+    name: "グロリア"
+-   _id: c72
+    order: 79
+    face_id: c72
+    name: "ヴェスパタイン"
+-   _id: c47
+    order: 80
+    face_id: c47
+    name: "ペラジー"
+-   _id: c80
+    order: 81
+    face_id: c80
+    name: "テッド"
+-   _id: c105
+    comment: "年末カウントダウン♪"
+    name: "シメオン"
+    face_id: c105
+    order: 82
+-   _id: c96
+    face_id: c96
+    name: "レオナルド"
+    comment: 2011/12/11
+    order: 83
+-   _id: c95
+    face_id: c95
+    name: "モリス"
+    comment: 2011/12/11
+    order: 84
+-   _id: c97
+    face_id: c97
+    name: "ジェフ"
+    comment: 2011/12/14 超常現象はあるんだ…
+    order: 85
+-   _id: c98
+    face_id: c98
+    name: "オズワルド"
+    comment: 2011/12/29 この髭はぜったいワックス使ってる。
+    order: 86
+-   _id: c100
+    face_id: c100
+    name: "グレッグ"
+    comment: 2012/12/30 スポーツ系中学生くらいに見える
+    order: 87
+-   _id: c101
+    face_id: c101
+    name: "クラリッサ"
+    comment: 2011/12/30 美人さん♪
+    order: 88
+-   _id: c104
+    comment: "年末カウントダウン♪"
+    name: "ヒュー"
+    face_id: c104
+    order: 89
+-   _id: c106
+    comment: "年末カウントダウン♪"
+    face_id: c106
+    name: "ワンダ"
+    order: 90
+-   _id: c108
+    face_id: c108
+    name: "ブローリン"
+    comment: "年末カウントダウン♪"
+    order: 91
+-   _id: c90
+    face_id: c90
+    name: "ケヴィン"
+    comment: 2011/12/06
+    order: 125
+-   _id: c88
+    face_id: c88
+    name: "ピエール"
+    order: 126
+    comment: 2011/12/05
+-   _id: c89
+    face_id: c89
+    name: "カトリーナ"
+    comment: 2011/12/06
+    order: 127
+-   _id: c84
+    face_id: c84
+    name: "ブレンダ"
+    order: 129
+    comment: 2011/12/05
+-   _id: c85
+    face_id: c85
+    name: "ハナ"
+    order: 130
+    comment: 2011/12/05
+-   _id: c91
+    comment: 2011/12/06 姦しい奥様♪
+    face_id: c91
+    name: "ドロシー"
+    order: 143
+-   _id: c92
+    comment: 2011/12/06 姦し娘ーず♪
+    face_id: c92
+    name: "セレスト"
+    order: 144
+-   _id: c93
+    comment: 2011/12/06 えー○○が許されるのは小学生までだよねー♪
+    face_id: c93
+    name: "ベッキー"
+    order: 145
+-   _id: c78
+    order: 150
+    face_id: c78
+    name: "ネイサン"
+-   _id: c82
+    order: 160
+    face_id: c82
+    name: "ロビン"
+-   _id: c109
+    face_id: c109
+    name: "ラディスラヴァ"
+    comment: "年末カウントダウン♪"
+    order: 163
+-   _id: c94
+    face_id: c94
+    name: "ダーラ"
+    comment: 2011/12/11
+    order: 165
+-   _id: c102
+    comment: "年末カウントダウン♪"
+    face_id: c102
+    name: "ウォーレン"
+    order: 168
+-   _id: c73
+    order: 170
+    face_id: c73
+    name: "ローズマリー"
+-   _id: c81
+    order: 180
+    face_id: c81
+    name: "サイラス"
+-   _id: c64
+    order: 190
+    face_id: c64
+    name: "ヘクター"
+-   _id: c107
+    face_id: c107
+    name: "イヴォン"
+    comment: "年末カウントダウン♪"
+    order: 195
+-   _id: c67
+    order: 200
+    face_id: c67
+    name: "ソフィア"
+-   _id: c76
+    order: 210
+    face_id: c76
+    name: "ジョージ"
+-   _id: c60
+    order: 215
+    face_id: c60
+    name: "ポーチュラカ"
+-   _id: c45
+    order: 218
+    face_id: c45
+    name: "プリシラ"
+-   _id: c87
+    face_id: c87
+    name: "エリアス"
+    order: 220
+    comment: 2011/12/05
+-   _id: c48
+    order: 225
+    face_id: c48
+    name: "ビアンカ"
+-   _id: c86
+    face_id: c86
+    name: "ホレーショー"
+    order: 230
+    comment: 2011/12/05
+-   _id: c83
+    order: 240
+    face_id: c83
+    name: "アイリス"
+-   _id: c31
+    order: 250
+    face_id: c31
+    name: "ネル"
+-   _id: c103
+    comment: "年末カウントダウン♪"
+    name: "ナンシー"
+    face_id: c103
+    order: 998
+-   _id: c99
+    order: 999
+    face_id: c99
+    name: "サイモン"
+-   order: 10001
+    face_id: g01
+    name: "露蝶"
+    comment: "中国女性名"
+    _id: g01
+-   order: 10002
+    face_id: g02
+    name: "志偉"
+    comment: "台湾男性名 越南の名前も探したかったが、見つからぬ…"
+    _id: g02
+-   order: 10003
+    face_id: g03
+    name: "芙蓉"
+    comment: "里帰り"
+    _id: g03
+-   order: 10004
+    face_id: gc61
+    name: "沼太郎"
+    comment: "里帰り"
+    _id: gc61
+-   name: "デメテル"
+    face_id: mad01
+    comment: "阿片窟からきました"
+    order: 20001
+    _id: mad01
+-   name: "エルゴット"
+    face_id: mad02
+    comment: "阿片窟からきました"
+    order: 20002
+    _id: mad02
+-   name: "シーシャ"
+    face_id: mad03
+    comment: "阿片窟からきました"
+    order: 20003
+    _id: mad03
+-   name: "ドリベル"
+    face_id: mad04
+    comment: "阿片窟からきました"
+    order: 20004
+    _id: mad04
+-   name: "ヤヘイ"
+    face_id: mad05
+    comment: "阿片窟からきました"
+    order: 20005
+    _id: mad05
+-   name: "アヤワスカ"
+    face_id: mad06
+    comment: "阿片窟からきました"
+    order: 20006
+    _id: mad06
+-   name: "チアキ"
+    face_id: t01
+    comment: "時をかける少女"
+    order: 30001
+    _id: t01
+-   name: "リッキィ"
+    face_id: t02
+    comment: "夏への扉"
+    order: 30002
+    _id: t02
+-   name: "ミナカタ"
+    face_id: t03
+    comment: "ー仁ー"
+    order: 30003
+    _id: t03
+-   name: "カイル"
+    face_id: t04
+    comment: "サラ・コナー・クロニクルズ"
+    order: 30004
+    _id: t04
+-   name: "ジェニファー"
+    face_id: t05
+    comment: "バック・トゥ・ザ・フューチャー"
+    order: 30005
+    _id: t05
+-   _id: m99
+    order: 70001
+    face_id: m99
+    name: "パルック"
+-   _id: m06
+    order: 70002
+    face_id: m06
+    name: "リリンラ"
+-   _id: m03
+    order: 70003
+    face_id: m03
+    name: "トノサマ"
+-   _id: m05
+    order: 70004
+    face_id: m05
+    name: "ナナコロ"
+-   _id: m15
+    order: 70005
+    face_id: m15
+    name: "ミソチャ"
+-   _id: m07
+    order: 70006
+    face_id: m07
+    name: "アリス"
+-   _id: r30
+    order: 70006
+    face_id: r30
+    name: "トリ"
+-   _id: m01
+    order: 70007
+    face_id: m01
+    name: "ケムシ"
+-   _id: m02
+    order: 70008
+    face_id: m02
+    name: "ポプラ"
+-   _id: m04
+    order: 70009
+    face_id: m04
+    name: "アオイ"
+-   _id: b44
+    comment: ''
+    face_id: b44
+    name: "ドナルド"
+    order: 70010
+-   _id: m08
+    order: 70011
+    face_id: m08
+    name: "おっぱい"
+-   _id: m09
+    order: 70012
+    face_id: m09
+    name: "カミジャー"
+-   _id: r12
+    order: 70012
+    face_id: r12
+    name: "バーナバス"
+-   _id: b49
+    comment: ''
+    face_id: b49
+    name: "ボリス"
+    order: 70012
+-   _id: m10
+    order: 70013
+    face_id: m10
+    name: "アチャポ"
+-   _id: m12
+    comment: ''
+    face_id: m12
+    name: "トルニトス"
+    order: 70014
+-   _id: m11
+    order: 70015
+    face_id: m11
+    name: "ライトニング"
+-   _id: m13
+    order: 70016
+    face_id: m13
+    name: "ミケ"
+-   _id: m14
+    order: 70017
+    face_id: m14
+    name: "カリュクス"
+-   _id: sf01
+    order: 80001
+    face_id: sf01
+    name: "ラッシード"
+    comment: "りしあさん＆かれやなぎさん"
+-   _id: sf02
+    order: 80002
+    face_id: sf02
+    name: "エスペラント"
+    comment: "ふらぅさん＆かれやなぎさん"
+-   _id: sf03
+    order: 80003
+    face_id: sf03
+    name: "ピート"
+    comment: "たるっとさん＆りちゃさん"
+-   _id: sf04
+    order: 80004
+    face_id: sf04
+    name: "アシモフ"
+    comment: "あすたん＆りりんら"
+-   _id: sf05
+    order: 80005
+    face_id: sf05
+    name: "モナリザ"
+    comment: "ななころび＆りりんら"
+-   _id: sf06
+    order: 80006
+    face_id: sf06
+    name: "ワレンチナ"
+    comment: "まりもさん＆あずまさん"
+-   _id: sf07
+    order: 80007
+    face_id: sf07
+    name: "ヤンファ"
+    comment: "りしあさん＆はむおくん"
+-   _id: sf08
+    order: 80008
+    face_id: sf08
+    name: "ＰＪ"
+    comment: "りしあさん＆ふらぅさん"
+-   _id: sf09
+    order: 80009
+    face_id: sf09
+    name: "キリシマ"
+    comment: "ななころび＆ふらぅさん"
+-   _id: sf10
+    order: 80010
+    face_id: sf10
+    name: "ナユタ"
+    comment: "かれやなぎさん＆かいさん"
+-   _id: sf11
+    order: 80011
+    face_id: sf11
+    name: "イワノフ"
+    comment: "かれやなぎさん＆りちゃさん"
+-   order: 80012
+    face_id: sf12
+    name: "†ルシフェル†"
+    comment:
+    _id: sf12
+-   order: 80013
+    face_id: sf13
+    name: "トルドヴィン"
+    comment:
+    _id: sf13
+-   order: 80014
+    face_id: sf18
+    name: "玖休"
+    comment:
+    _id: sf18
+-   order: 80015
+    face_id: sf19
+    name: "参休"
+    comment:
+    _id: sf19
+-   order: 80016
+    face_id: sf14
+    name: "クリスマス"
+    comment:
+    _id: sf14
+-   order: 80017
+    face_id: sf15
+    name: "ジェームス"
+    comment:
+    _id: sf15
+-   order: 80018
+    face_id: sf16
+    name: "ライジ"
+    comment:
+    _id: sf16
+-   order: 80019
+    face_id: sf17
+    name: "ジャック"
+    comment:
+    _id: sf17
+-   _id: w05
+    order: 90001
+    face_id: w05
+    name: "定吉"
+    comment: "ぷえるとりこの旅人　エージ―エー"
+-   _id: w21
+    order: 90002
+    face_id: w21
+    name: "鉄平"
+    comment: "日本の伝統　熊木彫"
+-   _id: w22
+    order: 90003
+    face_id: w22
+    name: "竹三"
+    comment: "雪国の風雅　熊木彫"
+-   _id: w36
+    order: 90004
+    face_id: w36
+    name: "ウト"
+-   _id: w16
+    order: 90005
+    face_id: w16
+    name: "勢"
+    comment: "ぶたさん印の　あおいジンギスカン"
+-   _id: w18
+    order: 90006
+    face_id: w18
+    name: "菊"
+-   _id: w26
+    order: 90007
+    face_id: w26
+    name: "勝丸"
+-   _id: w35
+    comment: ''
+    face_id: w35
+    name: "奈須麿"
+    order: 90008
+-   _id: w24
+    order: 90009
+    face_id: w24
+    name: "辰次"
+    comment: "桃源郷ぐた国のめぐみ　ふらう乳業"
+-   _id: w37
+    order: 90010
+    face_id: w37
+    name: "芙蓉"
+-   _id: w29
+    order: 90011
+    face_id: w29
+    name: "志乃"
+-   _id: w20
+    order: 90012
+    face_id: w20
+    name: "藤之助"
+-   _id: w31
+    order: 90013
+    face_id: w31
+    name: "日向"
+-   _id: w12
+    order: 90014
+    face_id: w12
+    name: "おみつ"
+    comment: "道を外して60年　GEDOU協会"
+-   _id: w10
+    order: 90015
+    face_id: w10
+    name: "博史"
+-   _id: w25
+    order: 90016
+    face_id: w25
+    name: "法泉"
+-   _id: w09
+    order: 90017
+    face_id: w09
+    name: "チャールズ"
+    comment: "チャールズ派遣ならおまかせ　O-ririn"
+-   _id: w30
+    order: 90018
+    face_id: w30
+    name: "雪代"
+-   _id: w14
+    order: 90019
+    face_id: w14
+    name: "華月斎"
+    comment: "めげないゼラチン作り　MEGEゼラチン"
+-   _id: w13
+    order: 90020
+    face_id: w13
+    name: "たまこ"
+    comment: "世界の道をつなぐ　議事国地図"
+-   _id: w11
+    order: 90021
+    face_id: w11
+    name: "沼太郎"
+-   _id: w03
+    order: 90022
+    face_id: w03
+    name: "朔"
+    comment: "新しい議事をつくる　たき学会"
+-   _id: w34
+    order: 90023
+    face_id: w34
+    name: "余四朗"
+-   _id: w27
+    order: 90024
+    face_id: w27
+    name: "源蔵"
+-   _id: w28
+    order: 90025
+    face_id: w28
+    name: "甚六"
+-   _id: w17
+    order: 90026
+    face_id: w17
+    name: "雷門"
+    comment: "輝く月に未来を託す　暁月商事"
+-   _id: w39
+    comment: ''
+    face_id: w39
+    name: "沙耶"
+    order: 90027
+-   _id: w08
+    order: 90028
+    face_id: w08
+    name: "朝顔"
+-   _id: w43
+    order: 90029
+    face_id: w43
+    name: "春松"
+-   _id: w07
+    order: 90030
+    face_id: w07
+    name: "夕顔"
+-   _id: w40
+    order: 90031
+    face_id: w40
+    name: "朧"
+-   _id: w33
+    comment: ''
+    face_id: w33
+    name: "団十郎"
+    order: 90032
+-   _id: w23
+    order: 90033
+    face_id: w23
+    name: "仁右衛門"
+-   _id: w04
+    order: 90034
+    face_id: w04
+    name: "小鈴"
+    comment: "お口の愛人　タルッティ・タルット"
+-   _id: w06
+    order: 90035
+    face_id: w06
+    name: "ゆり"
+    comment: "道を外して60年　GEDOU協会"
+-   _id: w38
+    comment: ''
+    face_id: w38
+    name: "一平太"
+    order: 90037
+-   _id: w01
+    order: 90038
+    face_id: w01
+    name: "鏡花"
+    comment: "輝く月に未来を託す　暁月商事"
+-   _id: w15
+    order: 90039
+    face_id: w15
+    name: "八重"
+    comment: "桃源郷ぐた国のめぐみ　ふらう乳業"
+-   _id: w32
+    order: 90040
+    face_id: w32
+    name: "明之進"
+-   _id: w02
+    order: 90041
+    face_id: w02
+    name: "慶三郎"
+    comment: "カメラのことなら　MISEKI"
+-   _id: w44
+    face_id: w44
+    name: "雪客"
+    comment: "りりんラハウス呑んだくれ大会"
+    order: 90042
+-   _id: w45
+    face_id: w45
+    name: "亀吉"
+    comment: "りりんラハウス呑んだくれ大会"
+    order: 90043
+-   _id: w46
+    face_id: w46
+    name: "梅子"
+    order: 90044
+    comment: "お誕生日記念☆"
+-   face_id: w47
+    name: "置壱"
+    comment: "日本の美徳強化月間"
+    order: 90045
+    _id: w47
+-   face_id: all
+    name: "パルック"
+    order: 99999
+    _id: all
+
+#########################
+# 2013-04-01 update
+
+-   _id: g04
+    face_id: g04
+    name: "攻芸"
+    comment: "台湾男性名"
+    order: 10005
+
+-   _id: g05
+    face_id: g05
+    name: "麻雀"
+    comment: "中国女性名"
+    order: 10006
+
+-   _id: g06
+    face_id: g06
+    name: "黍炉"
+    comment: "ダリダイ・オッチギン"
+    order: 10007
+
+-   _id: mad07
+    face_id: mad07
+    name: "ダイミ"
+    comment: "阿片窟からきました"
+    order: 20007
+
+-   _id: mad08
+    face_id: mad08
+    name: "エフェドラ"
+    comment: "阿片窟からきました"
+    order: 20008
+
+-   _id: t06
+    face_id: t06
+    name: "サミュエル"
+    comment: "トランスフォーマー"
+    order: 30006
+
+-   _id: t07
+    face_id: t07
+    name: "アカリ"
+    comment: "時をかける少女"
+    order: 30007
+
+-   _id: t08
+    face_id: t08
+    name: "ミルフィ"
+    comment: "海賊戦隊ゴーカイジャー"
+    order: 30008
+
+-   _id: t09
+    face_id: t09
+    name: "ゴロウ"
+    comment: "時をかける少女"
+    order: 30009
+
+-   _id: t10
+    face_id: t10
+    name: "トレイル"
+    comment: "ゼルダの伝説 ムジュラの仮面"
+    order: 30010
+
+-   _id: t11
+    face_id: t11
+    name: "マドカ"
+    comment: "宇宙戦艦ヤマモト・ヨーコ"
+    order: 30011
+
+-   _id: t12
+    face_id: t12
+    name: "フランク"
+    comment: "オーロラの彼方へ"
+    order: 30012
+
+-   _id: t13
+    face_id: t13
+    name: "ジャニス"
+    comment: "フラッシュフォワード"
+    order: 30013
+
+#########################
+# 2013-06-14 update
+
+-   _id: t14
+    face_id: t14
+    name: "クシャミ"
+    comment: "吾輩は猫である。"
+    order: 30014
+
+-   _id: t15
+    face_id: t15
+    name: "ガーディ"
+    comment: "ベイカー街少年探偵団"
+    order: 30015
+
+
+#########################
+# 2013-06-15 update
+
+-   _id: sf20
+    face_id: sf20
+    name: "ティソ"
+    comment:
+    order: 80020
+
+-   _id: g07
+    face_id: g07
+    name: "ジリヤ"
+    comment: "ロシア女性名"
+    order: 10008
+
+-   _id: t16
+    face_id: t16
+    name: "アラン"
+    comment: "映画監督たちの共用偽名"
+    order: 30016
+
+
+#########################
+# 2013-06-20 update
+
+-   _id: w48
+    face_id: w48
+    name: "直円"
+    comment: "和算復活月間"
+    order: 90048
+
+-   _id: w49
+    face_id: w49
+    name: "錠"
+    comment: "ポルトガル人にジオゴっているんだぜ。へー。かっこいー。"
+    order: 90049
+
+-   _id: w50
+    face_id: w50
+    name: "丁助"
+    comment: "負けるたびに追い博打"
+    order: 90050
+
+
+#########################
+# 2013-11-04 update
+
+-   _id: t17
+    face_id: t17
+    name: "ススム"
+    comment: "おもいっきり探偵団 覇悪怒組"
+    order: 30018
+
+-   _id: t18
+    face_id: t18
+    name: "マユミ"
+    comment: "まんがはじめて物語（二代目）"
+    order: 30019
+
+
+#########################
+# 2013-12-19 update
+
+-   _id: c110
+    face_id: c110
+    name: "リー"
+    comment: ''
+    order: 92
+
+-   _id: t19
+    face_id: t19
+    name: "ハルカ"
+    comment: "はるかリフレイン"
+    order: 30017
+
+
+#########################
+# 2014-02-28 update かぎりなく3月1日めいた瞬間
+
+-   _id: w51
+    face_id: w51
+    name: "鬼丞"
+    comment: "リニューアル記念！"
+    order: 90051
+
+-   _id: w52
+    face_id: w52
+    name: "櫻子"
+    comment: "リニューアル記念！"
+    order: 90052
+
+-   _id: c111
+    face_id: c111
+    name: "スージー"
+    comment: "リニューアル記念！ 弟がいるという噂が…"
+    order: 93
+
+-   _id: c113
+    face_id: c113
+    name: "ジェレミー"
+    comment: "リニューアル記念！"
+    order: 94
+
+#########################
+# 2014-08-22 update 
+
+-   _id: c112
+    face_id: c112
+    name: "ニコラス"
+    comment: "！？"
+    order: 128
+
+-   _id: m16
+    face_id: m16
+    name: "アーサー"
+    comment: "円卓の騎士"
+    order: 70018
+
+-   _id: t20
+    face_id: t20
+    name: "エリ"
+    comment: "英国情報局秘密組織チェラブ (CHERUB)"
+    order: 30020
+
+#########################
+# 2014-08-23 update 
+
+-   _id: g08
+    face_id: g08
+    name: "イワン"
+    comment: "Иван-дурак"
+    order: 10009
+
+-   _id: c114
+    face_id: c114
+    name: "モンド"
+    comment: "８８件のご応募、ありがとう。そして、ありがとう。"
+    order: 131
+
+#########################
+# xxxx-xx-xx update
+
+
+# http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911
+# http://cjjc.weblio.jp/
+
+# 聖騎士募集
+
+# 覇権政府、オムニ、アンブレラ、サイバーダイン、ガルタイト鉱業
+# 神々自身、永遠の終り、ぼくの地球を守って、のび太の恐竜、のび太の日本誕生、のび太の太陽王伝説
+# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%BC%AB%E7%94%BB%E4%BD%9C%E5%93%81
+# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%98%A0%E7%94%BB%E4%BD%9C%E5%93%81
+# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E5%B0%8F%E8%AA%AC
+# http://ja.wikipedia.org/wiki/十五少年漂流記
+# http://ichiranya.com/society_culture/087-gang.php
+#
+# ムスリム同胞団
+# 歩き巫女 中条流 侘び茶 侘茶湯 板前
+# 労働者 駅長 車掌 客室乗務員
+# 写真家 〜診断士 洞窟探査 鉱泉分析
+# 三合派 八宅派 紫白九星派 玄空飛星派 玄空大卦派 八字派
+# 聖堂騎士
+# 黒後家蜘蛛 黒い兄弟
+# 官房秘密局 時間貯蓄銀行 保険機関 観光機関 麻薬委員
+# 魔法省 学園特警
+# シンボルマーク
+#  とんがり白帽 みつば詰草 不死の鸚哥 桜花会
+# 騎士団・魔術教団
+#  三百人委 啓明会 シオン修道会 テンプル騎士団
+#  十字＆王冠 黄金∴黎明
+# コミー
+#  人民の意志
+# 温泉から
+#  三助 湯もみ 湯治客（刀傷 刺青） 大旦那（サル顔）
+# 落語から
+# 阿片窟から
+#  ドッツ イボテン ムッシモール ムスカゾン クベンシス
+#  リゼル ペヨーテ カーピ シポ オアスカ アミン

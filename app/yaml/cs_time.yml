@@ -1,0 +1,80 @@
+chr_set:
+  _id: time
+  admin: "第四の壁の深奥"
+  maker: "次元X式コンピューター"
+
+chr_npc:
+  - caption: "エクスパンション・セット「帰還者議事」"
+    csid: time
+    face_id: c10
+    say_0: M4ライフルを持ってさえいれば…、なーんて、思っててもしょうがないね。鍵かけとこう。
+    say_1: "やっぱさ、銃を持った善人がいないとさ。<br><br>ちょっと出かけてくる！プリン食べちゃダメだよ！"
+
+
+chr_job:
+  - face_id: c10
+    job: "小銃協会"
+
+  - face_id: t01
+    job: "友愛組合"
+
+  - face_id: t02
+    job: "幸運の科学"
+
+  - face_id: t03
+    job: FSM団
+
+  - face_id: t04
+    job: "截拳道"
+
+  - face_id: t05
+    job: "開放的市民"
+
+  - face_id: c09
+    job: "暗殺教団"
+
+  - face_id: t06
+    job: "死ね死ね団"
+
+  - face_id: t07
+    job: "勧善懲悪委"
+
+  - face_id: t08
+    job: "覆面嫉妬団"
+
+  - face_id: t09
+    job: "匿名軍団"
+
+  - face_id: t10
+    job: "営利政府"
+
+  - face_id: t11
+    job: "鷹の爪団"
+
+  - face_id: t12
+    job: "地下鉄道"
+
+  - face_id: t13
+    job: MNU機関
+
+  - face_id: t14
+    job: "猫の集会"
+
+  - face_id: t15
+    job: "少年探偵団"
+
+  - face_id: t16
+    job: "安全保障局"
+
+  - face_id: t17
+    job: "薔薇∴十字"
+
+  - face_id: t18
+    job: "白銀∴秘星"
+
+  - face_id: t19
+    job: "聖戦士募集"
+
+  - face_id: t20
+    job: "MI:18"
+

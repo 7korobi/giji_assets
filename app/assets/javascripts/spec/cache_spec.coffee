@@ -1,4 +1,4 @@
-new Cache.Replace("site")
+new Cache.Replace("site").schema ->
 new Cache.Replace("story").schema ->
   @belongs_to "site"
 new Cache.Replace("event").schema ->

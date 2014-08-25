@@ -1,0 +1,54 @@
+new Cache.Append("face").schema ->
+  @order "order"
+new Cache.Append("chr_set").schema ->
+new Cache.Append("chr_npc").schema ->
+  @belongs_to "chr_set"
+  @belongs_to "face"
+new Cache.Append("chr_job").schema ->
+  @belongs_to "chr_set"
+  @belongs_to "face"
+
+Cache.rule.face.set <%= JSON.generate FACE %>
+
+<%
+%i[CS_ALL CS_ANIMAL CS_CHANGED CS_GER CS_MAD CS_RIRINRA CS_SCHOOL CS_SF CS_TIME CS_WA].each do |const|
+  data = Kernel.const_get( const )
+  id = data[:chr_set][:_id]
+  data[:chr_set]["chr_set_id"] = id
+  data[:chr_npc].each do |o| 
+    o["_id"] = "#{id}_#{o[:face_id]}"
+    o["chr_set_id"] = id
+  end
+  data[:chr_job].each do |o|
+    o["_id"] = "#{id}_#{o[:face_id]}"
+    o["chr_set_id"] = id
+  end
+ %>
+Cache.rule.chr_set.set [<%= JSON.generate(data[:chr_set]) %>]
+Cache.rule.chr_npc.set <%= JSON.generate(data[:chr_npc]) %> 
+Cache.rule.chr_job.set <%= JSON.generate(data[:chr_job]) %> 
+<%
+end
+%>
+list = []
+order = [
+  "ririnra"
+  "wa"
+  "time"
+  "sf"
+  "mad"
+  "ger"
+  "changed"
+  "animal"
+  ""
+]
+for face in Cache.faces.all
+  chr_set_id = "all"
+  face_id = face._id
+  _id = "all_#{face_id}"
+  faced_jobs = Cache.chr_jobs.face[face_id]
+  if faced_jobs?
+    job = _.sortBy(faced_jobs, (o)-> order.indexOf o.chr_set_id )?.first?.job
+  list.push {chr_set_id, face_id, job, _id} if job?
+
+Cache.rule.chr_job.set list

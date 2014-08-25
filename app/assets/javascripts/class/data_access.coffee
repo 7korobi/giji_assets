@@ -27,15 +27,14 @@ class Cache.Rule
     Cache.rule[field] = @
     Cache[@list_name] = cache = {}
 
-    kind = -> "all"
-    reset = (o)-> cache.all = o.all
-    @base_scope("_all", kind, reset).values = (hash)-> _.values hash
+    @base_scope "_all",
+      kind: -> "all"
+      reset: (o)-> cache.all = o.all
+      values: (o)-> _.values o
 
-  base_scope: (key, kind, reset)->
-    @scopes[key] = scope = new Cache.Scope(@)
+  base_scope: (key, hash)->
+    @scopes[key] = scope = new Cache.Scope(@, hash)
     @scope_keys = Object.keys(@scopes).sort().reverse()
-    scope.kind = kind
-    scope.reset = reset
     scope.cleanup()
 
     all = @scopes._all.list.all
@@ -47,17 +46,18 @@ class Cache.Rule
     definer =
       scope: (key, kind)=>
         cache = Cache[@list_name]
-        reset = (o)-> cache[key] = o
-        @base_scope key, kind, reset
-
+        @base_scope key,
+          kind: kind
+          reset: (o)-> cache[key] = o
+      
       pager: (key, items)=>
 
       belongs_to: (parent)=>
         cache = Cache[@list_name]
         parent_id = "#{parent}_id"
-        kind = (o)-> o[parent_id]
-        reset = (o)-> cache[parent] = o
-        @base_scope parent, kind, reset
+        @base_scope parent,
+          kind: (o)-> o[parent_id]
+          reset: (o)-> cache[parent] = o
 
       order: (key, desc)=>
         @values =
@@ -108,7 +108,8 @@ class Cache.Rule
     @scopes._all.map.all[id]
 
 class Cache.Scope
-  constructor: (@rule)->
+  constructor: (@rule, hash)->
+    {@kind, @reset, @values} = hash
 
   find: (id)->
     @map.all[id]
@@ -124,7 +125,7 @@ class Cache.Scope
     reset_kinds = {}
     for o in list
       kind = @kind o
-      if kind
+      if kind?
         @map[kind] ||= {}
 
         if all?
