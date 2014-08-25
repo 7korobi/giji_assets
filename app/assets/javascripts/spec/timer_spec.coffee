@@ -42,7 +42,6 @@ describe "Timer", ->
       done()
 
     it "show lax time by tick", (done)->
-      done()
       jasmine.clock().install()
       timer = new Timer(_.now() + 10800000)
       jasmine.clock().tick(   7200000) && expect(timer.text).toEqual "1時間後"
@@ -56,6 +55,7 @@ describe "Timer", ->
       jasmine.clock().tick(58 * 60000) && expect(timer.text).toEqual "59分前"
       jasmine.clock().tick(     60000) && expect(timer.text).toEqual "1時間前"
       jasmine.clock().uninstall()
+      done()
 
 
 
