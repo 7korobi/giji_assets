@@ -1,4 +1,41 @@
 ---
+-   _id: c49
+    comment: test
+    face_id: c49
+    name: "ボリス"
+    order: 1
+-   _id: c38
+    order: 2
+    face_id: c38
+    name: "コリーン"
+-   _id: c77
+    order: 3
+    face_id: c77
+    name: "キャロライナ"
+-   _id: c35
+    order: 4
+    face_id: c35
+    name: "ダン"
+-   _id: c53
+    order: 5
+    face_id: c53
+    name: "ゼルダ"
+-   _id: c74
+    order: 6
+    face_id: c74
+    name: "フランシスカ"
+-   _id: c50
+    order: 7
+    face_id: c50
+    name: "ディーン"
+-   _id: c36
+    order: 8
+    face_id: c36
+    name: "ミッシェル"
+-   _id: c26
+    order: 9
+    face_id: c26
+    name: "モニカ"
 -   _id: c55
     order: 10
     face_id: c55
@@ -638,42 +675,42 @@
 -   order: 80012
     face_id: sf12
     name: "†ルシフェル†"
-    comment:
+    comment: 
     _id: sf12
 -   order: 80013
     face_id: sf13
     name: "トルドヴィン"
-    comment:
+    comment: 
     _id: sf13
 -   order: 80014
     face_id: sf18
     name: "玖休"
-    comment:
+    comment: 
     _id: sf18
 -   order: 80015
     face_id: sf19
     name: "参休"
-    comment:
+    comment: 
     _id: sf19
 -   order: 80016
     face_id: sf14
     name: "クリスマス"
-    comment:
+    comment: 
     _id: sf14
 -   order: 80017
     face_id: sf15
     name: "ジェームス"
-    comment:
+    comment: 
     _id: sf15
 -   order: 80018
     face_id: sf16
     name: "ライジ"
-    comment:
+    comment: 
     _id: sf16
 -   order: 80019
     face_id: sf17
     name: "ジャック"
-    comment:
+    comment: 
     _id: sf17
 -   _id: w05
     order: 90001
@@ -1119,20 +1156,8 @@
 #########################
 # xxxx-xx-xx update
 
-
-# http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911
-# http://cjjc.weblio.jp/
-
-# 聖騎士募集
-
 # 覇権政府、オムニ、アンブレラ、サイバーダイン、ガルタイト鉱業
 # 神々自身、永遠の終り、ぼくの地球を守って、のび太の恐竜、のび太の日本誕生、のび太の太陽王伝説
-# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%BC%AB%E7%94%BB%E4%BD%9C%E5%93%81
-# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%98%A0%E7%94%BB%E4%BD%9C%E5%93%81
-# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E5%B0%8F%E8%AA%AC
-# http://ja.wikipedia.org/wiki/十五少年漂流記
-# http://ichiranya.com/society_culture/087-gang.php
-#
 # ムスリム同胞団
 # 歩き巫女 中条流 侘び茶 侘茶湯 板前
 # 労働者 駅長 車掌 客室乗務員
@@ -1143,7 +1168,7 @@
 # 官房秘密局 時間貯蓄銀行 保険機関 観光機関 麻薬委員
 # 魔法省 学園特警
 # シンボルマーク
-#  とんがり白帽 みつば詰草 不死の鸚哥 桜花会
+#  凸帽団 とんがり白帽 みつば詰草 不死の鸚哥 桜花会
 # 騎士団・魔術教団
 #  三百人委 啓明会 シオン修道会 テンプル騎士団
 #  十字＆王冠 黄金∴黎明
@@ -1155,3 +1180,12 @@
 # 阿片窟から
 #  ドッツ イボテン ムッシモール ムスカゾン クベンシス
 #  リゼル ペヨーテ カーピ シポ オアスカ アミン
+
+# http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911
+# http://cjjc.weblio.jp/
+# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%BC%AB%E7%94%BB%E4%BD%9C%E5%93%81
+# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%98%A0%E7%94%BB%E4%BD%9C%E5%93%81
+# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E5%B0%8F%E8%AA%AC
+# http://ja.wikipedia.org/wiki/十五少年漂流記
+# http://ichiranya.com/society_culture/087-gang.php
+#
