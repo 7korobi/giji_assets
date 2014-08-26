@@ -912,8 +912,9 @@ Cache.Rule = (function() {
       kind: function() {
         return "all";
       },
-      reset: function(o) {
-        return cache.all = o.all;
+      reset: function(list, map) {
+        cache.all = list.all;
+        return cache.find = map.all;
       },
       values: function(o) {
         return _.values(o);
@@ -967,6 +968,24 @@ Cache.Rule = (function() {
         };
       })(this),
       order: (function(_this) {
+        return function(func) {
+          cb = _.memoize(func, function(o) {
+            return o._id;
+          });
+          return _this.values = function(o) {
+            return _.values(o).sort(function(a, b) {
+              if (cb(a) < cb(b)) {
+                return -1;
+              }
+              if (cb(a) > cb(b)) {
+                return 1;
+              }
+              return 0;
+            });
+          };
+        };
+      })(this),
+      order_by: (function(_this) {
         return function(key, desc) {
           return _this.values = desc ? function(o) {
             return _.values(o).sort(function(a, b) {
@@ -1040,10 +1059,6 @@ Cache.Rule = (function() {
     return _results;
   };
 
-  Rule.prototype.find = function(id) {
-    return this.scopes._all.map.all[id];
-  };
-
   return Rule;
 
 })();
@@ -1054,14 +1069,10 @@ Cache.Scope = (function() {
     this.kind = hash.kind, this.reset = hash.reset, this.values = hash.values;
   }
 
-  Scope.prototype.find = function(id) {
-    return this.map.all[id];
-  };
-
   Scope.prototype.cleanup = function() {
     this.map = {};
     this.list = {};
-    return this.reset(this.list);
+    return this.reset(this.list, this.map);
   };
 
   Scope.prototype.set = function(list) {
@@ -1072,18 +1083,12 @@ Cache.Scope = (function() {
     for (_i = 0, _len = list.length; _i < _len; _i++) {
       o = list[_i];
       kind = this.kind(o);
-      if (kind != null) {
+      if (kind || kind === 0) {
         (_base = this.map)[kind] || (_base[kind] = {});
         if (all != null) {
           old = all[o._id];
         }
-        if (old != null) {
-          old_kind = this.kind(old);
-          delete this.map[old_kind][o._id];
-          reset_kinds[kind] = reset_kinds[old_kind] = "update";
-        } else {
-          reset_kinds[kind] = "create";
-        }
+        reset_kinds[kind] = old != null ? (old_kind = this.kind(old), delete this.map[old_kind][o._id], reset_kinds[old_kind] = "update") : "create";
         this.map[kind][o._id] = o;
       }
     }
@@ -1091,7 +1096,7 @@ Cache.Scope = (function() {
       type = reset_kinds[kind];
       this.list[kind] = values(this.map[kind]);
     }
-    return this.reset(this.list);
+    return this.reset(this.list, this.map);
   };
 
   return Scope;
@@ -1879,8 +1884,15 @@ Url = (function() {
     Url.data = Url.vue.$data;
     link = location.href;
     if (typeof history !== "undefined" && history !== null) {
-      Url.each(function(route, data, target, target_is_cookie) {
-        return link = route.pushstate(link);
+      Url.each(function(route, data, target) {
+        var expires;
+        switch (target) {
+          case "cookie":
+            expires = new Date(_.now() + 3600000 * 24 * 0.5).toUTCString();
+            return document.cookie = "" + (route.pushstate(data)) + "; expires=" + expires + "; ";
+          default:
+            return link = link.replace(data, route.pushstate(data));
+        }
       });
     }
     if (location.href !== link) {
