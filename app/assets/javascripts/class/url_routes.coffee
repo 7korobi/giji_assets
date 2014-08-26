@@ -31,8 +31,13 @@ class Url
     Url.data = Url.vue.$data
     link = location.href
     if history?
-      Url.each (route, data, target, target_is_cookie)->
-        link = route.pushstate link
+      Url.each (route, data, target)->
+        switch target
+          when "cookie"
+            expires = new Date(_.now() + 3600000 * 24 * 0.5).toUTCString()
+            document.cookie = "#{route.pushstate data}; expires=#{expires}; "
+          else
+            link = link.replace(data, route.pushstate data)
 
     if location.href != link
       history.pushState "pushstate", null, link
