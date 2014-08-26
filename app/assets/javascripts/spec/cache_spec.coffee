@@ -72,7 +72,7 @@ Cache.rule.form.set [
 describe "Cache", ->
   cache_message = ->
     new Cache.Append("message").schema ->
-      @order "created_at"
+      @order_by "created_at"
       @belongs_to "scene"
     Cache.rule.message.cleanup()
     Cache.rule.message.set [

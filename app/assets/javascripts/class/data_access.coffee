@@ -29,7 +29,9 @@ class Cache.Rule
 
     @base_scope "_all",
       kind: -> "all"
-      reset: (o)-> cache.all = o.all
+      reset: (list, map)->
+        cache.all = list.all
+        cache.find = map.all
       values: (o)-> _.values o
 
   base_scope: (key, hash)->
@@ -59,7 +61,15 @@ class Cache.Rule
           kind: (o)-> o[parent_id]
           reset: (o)-> cache[parent] = o
 
-      order: (key, desc)=>
+      order: (func)=>
+        cb = _.memoize func, (o)-> o._id
+        @values = (o)->
+          _.values(o).sort (a,b)->
+            return -1 if cb(a) < cb(b)
+            return  1 if cb(a) > cb(b)
+            return  0
+
+      order_by: (key, desc)=>
         @values =
           if desc
             (o)->
@@ -104,20 +114,14 @@ class Cache.Rule
     for __, scope of @scopes
       scope.cleanup()
 
-  find: (id)->
-    @scopes._all.map.all[id]
-
 class Cache.Scope
   constructor: (@rule, hash)->
     {@kind, @reset, @values} = hash
 
-  find: (id)->
-    @map.all[id]
-
   cleanup: ->
     @map = {}
     @list = {}
-    @reset @list
+    @reset @list, @map
 
   set: (list)->
     all = @rule.scopes._all.map.all
@@ -125,23 +129,25 @@ class Cache.Scope
     reset_kinds = {}
     for o in list
       kind = @kind o
-      if kind?
+      if kind || kind == 0
         @map[kind] ||= {}
 
         if all?
           old = all[o._id]
-        if old?
-          old_kind = @kind old
-          delete @map[old_kind][o._id]
-          reset_kinds[kind] = reset_kinds[old_kind] = "update"
-        else
-          reset_kinds[kind] = "create"
+
+        reset_kinds[kind] = 
+          if old?
+            old_kind = @kind old
+            delete @map[old_kind][o._id]
+            reset_kinds[old_kind] = "update"
+          else
+            "create"
 
         @map[kind][o._id] = o
 
     for kind, type of reset_kinds
       @list[kind] = values @map[kind]
-    @reset @list
+    @reset @list, @map
 
 class Cache.Replace extends Cache.Rule
   set_scope: (scope, list)->
