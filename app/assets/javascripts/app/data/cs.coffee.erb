@@ -1,28 +1,24 @@
 new Cache.Append("face").schema ->
-  @order "order"
+  @order_by "order"
 new Cache.Append("chr_set").schema ->
 new Cache.Append("chr_npc").schema ->
   @belongs_to "chr_set"
-  @belongs_to "face"
 new Cache.Append("chr_job").schema ->
+  @order (o)-> 
+    face = Cache.faces.find[o.face_id]
+    if face?
+      face.order
+    else
+      999999
   @belongs_to "chr_set"
   @belongs_to "face"
+  @scope "invalid", (o)->  (not Cache.faces.find[o.face_id]) && o.chr_set_id
 
 Cache.rule.face.set <%= JSON.generate FACE %>
 
 <%
-%i[CS_ALL CS_ANIMAL CS_CHANGED CS_GER CS_MAD CS_RIRINRA CS_SCHOOL CS_SF CS_TIME CS_WA].each do |const|
+%i[CS_GER CS_MAD CS_SCHOOL CS_SF CS_TIME CS_WA CS_RIRINRA  CS_ANIMAL CS_CHANGED  CS_ALL].each do |const|
   data = Kernel.const_get( const )
-  id = data[:chr_set][:_id]
-  data[:chr_set]["chr_set_id"] = id
-  data[:chr_npc].each do |o| 
-    o["_id"] = "#{id}_#{o[:face_id]}"
-    o["chr_set_id"] = id
-  end
-  data[:chr_job].each do |o|
-    o["_id"] = "#{id}_#{o[:face_id]}"
-    o["chr_set_id"] = id
-  end
  %>
 Cache.rule.chr_set.set [<%= JSON.generate(data[:chr_set]) %>]
 Cache.rule.chr_npc.set <%= JSON.generate(data[:chr_npc]) %> 
@@ -40,7 +36,7 @@ order = [
   "ger"
   "changed"
   "animal"
-  ""
+  "school"
 ]
 for face in Cache.faces.all
   chr_set_id = "all"
