@@ -1,18 +1,18 @@
-new Cache.Replace("site").schema ->
-new Cache.Replace("story").schema ->
+new Cache.Rule("site").schema ->
+new Cache.Rule("story").schema ->
   @belongs_to "site"
-new Cache.Replace("event").schema ->
+new Cache.Rule("event").schema ->
   @belongs_to "site"
   @belongs_to "story"
-new Cache.Append("scene").schema ->
+new Cache.Rule("scene").schema ->
   @belongs_to "site"
   @belongs_to "story"
   @belongs_to "event"
-new Cache.Replace("potof").schema ->
+new Cache.Rule("potof").schema ->
   @belongs_to "scene"
-new Cache.Append("fab").schema ->
+new Cache.Rule("fab").schema ->
   @belongs_to "message"
-new Cache.Replace("form").schema ->
+new Cache.Rule("form").schema ->
   @protect "text"
   @belongs_to "scene"
 
@@ -71,11 +71,11 @@ Cache.rule.form.set [
 
 describe "Cache", ->
   cache_message = ->
-    new Cache.Append("message").schema ->
+    new Cache.Rule("message").schema ->
       @order_by "created_at"
       @belongs_to "scene"
     Cache.rule.message.cleanup()
-    Cache.rule.message.set [
+    Cache.rule.message.merge [
       _id: msg1
       scene_id: scene1
       name: "7korobi"
@@ -168,7 +168,7 @@ describe "Cache", ->
 
     it "replace item", (done)->
       cache_message_with_scope()
-      Cache.rule.message.set [
+      Cache.rule.message.merge [
         _id: msg1
         scene_id: scene2
         name: "7korobi"
@@ -186,7 +186,7 @@ describe "Cache", ->
 
     it "append item", (done)->
       cache_message_with_scope()
-      Cache.rule.message.set [
+      Cache.rule.message.merge [
         _id: msg4
         scene_id: scene2
         name: "7korobi"

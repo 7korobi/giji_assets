@@ -22,6 +22,8 @@ class Cache.Rule
     @id = "#{field}_id"
     @list_name = "#{field}s"
     @scopes = {}
+    @validates = []
+    @responses = []
     @protect_ids = []
 
     Cache.rule[field] = @
@@ -41,7 +43,7 @@ class Cache.Rule
 
     all = @scopes._all.list.all
     if 0 < all?.length
-      scope.set all
+      scope.merge all
     scope
 
   schema: (cb)->
@@ -54,12 +56,20 @@ class Cache.Rule
       
       pager: (key, items)=>
 
-      belongs_to: (parent)=>
+      belongs_to: (parent, option)=>
         cache = Cache[@list_name]
+        parents = "#{parent}s"
         parent_id = "#{parent}_id"
+
         @base_scope parent,
           kind: (o)-> o[parent_id]
           reset: (o)-> cache[parent] = o
+
+        if option?.dependent?
+          @validates.push (o)->
+            that = Cache[parents]?.find[o[parent_id]]
+            o[parent] = that if that?
+          Cache.rule[parent].responses.push @
 
       order: (func)=>
         cb = _.memoize func, (o)-> o._id
@@ -89,7 +99,10 @@ class Cache.Rule
     _.forEach [@], cb, definer
 
 
-  set: (list)->
+  set_base: (list, set_scope)->
+    for validate in @validates
+      list = _.filter list, validate
+
     for o in list
       unless o[@id]
         o[@id] = o._id
@@ -100,30 +113,48 @@ class Cache.Rule
 
     for key in @scope_keys
       scope = @scopes[key]
-      @set_scope scope, list
-
+      set_scope scope, list
+    
     return true
 
-  values: (hash)->
-    _.values hash
+
+  reject: (list)->
+    all = _.xor list, @scopes._all.list.all
+    @set all
+
+  merge: (list)->
+    @set_base list, (scope, list)->
+      scope.merge list
+
+  set: (list)->
+    old_all = @scopes._all.list.all
+    @set_base list, (scope, list)->
+      scope.cleanup()
+      scope.merge list
+    new_all = @scopes._all.list.all
+
+    if @responses.length > 0
+      deletes = _.xor new_all, _.union(old_all, new_all)
+      if deletes.length > 0
+        for rule in @responses
+          rule.rehash()
 
   rehash: ->
     @set @scopes._all.list.all
 
   cleanup: ->
-    for __, scope of @scopes
+    for key in @scope_keys
+      scope = @scopes[key]
       scope.cleanup()
+
+  values: (hash)->
+    _.values hash
 
 class Cache.Scope
   constructor: (@rule, hash)->
-    {@kind, @reset, @values} = hash
+    {@kind, @reset, @values, @validate} = hash
 
-  cleanup: ->
-    @map = {}
-    @list = {}
-    @reset @list, @map
-
-  set: (list)->
+  merge: (list)->
     all = @rule.scopes._all.map.all
     values = @values || @rule.values
     reset_kinds = {}
@@ -149,14 +180,12 @@ class Cache.Scope
       @list[kind] = values @map[kind]
     @reset @list, @map
 
-class Cache.Replace extends Cache.Rule
-  set_scope: (scope, list)->
-    scope.cleanup()
-    scope.set list
-
-class Cache.Append extends Cache.Rule
-  set_scope: (scope, list)->
-    scope.set list
+  cleanup: ->
+    @map = {}
+    @list = {}
+    @union = {}
+    @
+    @reset @list, @map
 
 
 ###

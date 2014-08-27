@@ -853,9 +853,7 @@ this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,
 
 this.LOCATION = {"options":{"search":null,"width":{"current":"normal"},"layout":{"current":"stat_type"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
-var Cache,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var Cache;
 
 _.mixin({
   absorb: function(list, keys, object) {
@@ -905,6 +903,8 @@ Cache.Rule = (function() {
     this.id = "" + field + "_id";
     this.list_name = "" + field + "s";
     this.scopes = {};
+    this.validates = [];
+    this.responses = [];
     this.protect_ids = [];
     Cache.rule[field] = this;
     Cache[this.list_name] = cache = {};
@@ -929,7 +929,7 @@ Cache.Rule = (function() {
     scope.cleanup();
     all = this.scopes._all.list.all;
     if (0 < (all != null ? all.length : void 0)) {
-      scope.set(all);
+      scope.merge(all);
     }
     return scope;
   };
@@ -953,11 +953,12 @@ Cache.Rule = (function() {
         return function(key, items) {};
       })(this),
       belongs_to: (function(_this) {
-        return function(parent) {
-          var cache, parent_id;
+        return function(parent, option) {
+          var cache, parent_id, parents;
           cache = Cache[_this.list_name];
+          parents = "" + parent + "s";
           parent_id = "" + parent + "_id";
-          return _this.base_scope(parent, {
+          _this.base_scope(parent, {
             kind: function(o) {
               return o[parent_id];
             },
@@ -965,6 +966,16 @@ Cache.Rule = (function() {
               return cache[parent] = o;
             }
           });
+          if ((option != null ? option.dependent : void 0) != null) {
+            _this.validates.push(function(o) {
+              var that, _ref;
+              that = (_ref = Cache[parents]) != null ? _ref.find[o[parent_id]] : void 0;
+              if (that != null) {
+                return o[parent] = that;
+              }
+            });
+            return Cache.rule[parent].responses.push(_this);
+          }
         };
       })(this),
       order: (function(_this) {
@@ -1019,10 +1030,15 @@ Cache.Rule = (function() {
     return _.forEach([this], cb, definer);
   };
 
-  Rule.prototype.set = function(list) {
-    var key, o, scope, _i, _j, _len, _len1, _ref;
-    for (_i = 0, _len = list.length; _i < _len; _i++) {
-      o = list[_i];
+  Rule.prototype.set_base = function(list, set_scope) {
+    var key, o, scope, validate, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
+    _ref = this.validates;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      validate = _ref[_i];
+      list = _.filter(list, validate);
+    }
+    for (_j = 0, _len1 = list.length; _j < _len1; _j++) {
+      o = list[_j];
       if (!o[this.id]) {
         o[this.id] = o._id;
       }
@@ -1031,17 +1047,47 @@ Cache.Rule = (function() {
       }
     }
     _.absorb(list, this.protect_ids, this.scopes._all.map.all);
-    _ref = this.scope_keys;
-    for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-      key = _ref[_j];
+    _ref1 = this.scope_keys;
+    for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+      key = _ref1[_k];
       scope = this.scopes[key];
-      this.set_scope(scope, list);
+      set_scope(scope, list);
     }
     return true;
   };
 
-  Rule.prototype.values = function(hash) {
-    return _.values(hash);
+  Rule.prototype.reject = function(list) {
+    var all;
+    all = _.xor(list, this.scopes._all.list.all);
+    return this.set(all);
+  };
+
+  Rule.prototype.merge = function(list) {
+    return this.set_base(list, function(scope, list) {
+      return scope.merge(list);
+    });
+  };
+
+  Rule.prototype.set = function(list) {
+    var deletes, new_all, old_all, rule, _i, _len, _ref, _results;
+    old_all = this.scopes._all.list.all;
+    this.set_base(list, function(scope, list) {
+      scope.cleanup();
+      return scope.merge(list);
+    });
+    new_all = this.scopes._all.list.all;
+    if (this.responses.length > 0) {
+      deletes = _.xor(new_all, _.union(old_all, new_all));
+      if (deletes.length > 0) {
+        _ref = this.responses;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          rule = _ref[_i];
+          _results.push(rule.rehash());
+        }
+        return _results;
+      }
+    }
   };
 
   Rule.prototype.rehash = function() {
@@ -1049,14 +1095,19 @@ Cache.Rule = (function() {
   };
 
   Rule.prototype.cleanup = function() {
-    var scope, __, _ref, _results;
-    _ref = this.scopes;
+    var key, scope, _i, _len, _ref, _results;
+    _ref = this.scope_keys;
     _results = [];
-    for (__ in _ref) {
-      scope = _ref[__];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      key = _ref[_i];
+      scope = this.scopes[key];
       _results.push(scope.cleanup());
     }
     return _results;
+  };
+
+  Rule.prototype.values = function(hash) {
+    return _.values(hash);
   };
 
   return Rule;
@@ -1066,16 +1117,10 @@ Cache.Rule = (function() {
 Cache.Scope = (function() {
   function Scope(rule, hash) {
     this.rule = rule;
-    this.kind = hash.kind, this.reset = hash.reset, this.values = hash.values;
+    this.kind = hash.kind, this.reset = hash.reset, this.values = hash.values, this.validate = hash.validate;
   }
 
-  Scope.prototype.cleanup = function() {
-    this.map = {};
-    this.list = {};
-    return this.reset(this.list, this.map);
-  };
-
-  Scope.prototype.set = function(list) {
+  Scope.prototype.merge = function(list) {
     var all, kind, o, old, old_kind, reset_kinds, type, values, _base, _i, _len;
     all = this.rule.scopes._all.map.all;
     values = this.values || this.rule.values;
@@ -1099,40 +1144,17 @@ Cache.Scope = (function() {
     return this.reset(this.list, this.map);
   };
 
+  Scope.prototype.cleanup = function() {
+    this.map = {};
+    this.list = {};
+    this.union = {};
+    this;
+    return this.reset(this.list, this.map);
+  };
+
   return Scope;
 
 })();
-
-Cache.Replace = (function(_super) {
-  __extends(Replace, _super);
-
-  function Replace() {
-    return Replace.__super__.constructor.apply(this, arguments);
-  }
-
-  Replace.prototype.set_scope = function(scope, list) {
-    scope.cleanup();
-    return scope.set(list);
-  };
-
-  return Replace;
-
-})(Cache.Rule);
-
-Cache.Append = (function(_super) {
-  __extends(Append, _super);
-
-  function Append() {
-    return Append.__super__.constructor.apply(this, arguments);
-  }
-
-  Append.prototype.set_scope = function(scope, list) {
-    return scope.set(list);
-  };
-
-  return Append;
-
-})(Cache.Rule);
 
 
 /*

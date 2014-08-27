@@ -3106,28 +3106,31 @@ getJasmineRequireObj().ConsoleReporter = function() {
 }());
 var chr_set_id, face, face_id, faced_jobs, job, list, order, _i, _id, _len, _ref, _ref1, _ref2;
 
-new Cache.Append("face").schema(function() {
+new Cache.Rule("face").schema(function() {
   return this.order_by("order");
 });
 
-new Cache.Append("chr_set").schema(function() {});
+new Cache.Rule("chr_set").schema(function() {});
 
-new Cache.Append("chr_npc").schema(function() {
-  return this.belongs_to("chr_set");
+new Cache.Rule("chr_npc").schema(function() {
+  this.belongs_to("chr_set", {
+    dependent: true
+  });
+  return this.belongs_to("face", {
+    dependent: true
+  });
 });
 
-new Cache.Append("chr_job").schema(function() {
+new Cache.Rule("chr_job").schema(function() {
   this.order(function(o) {
-    var face;
-    face = Cache.faces.find[o.face_id];
-    if (face != null) {
-      return face.order;
-    } else {
-      return 999999;
-    }
+    return o.face.order;
   });
-  this.belongs_to("chr_set");
-  this.belongs_to("face");
+  this.belongs_to("chr_set", {
+    dependent: true
+  });
+  this.belongs_to("face", {
+    dependent: true
+  });
   return this.scope("invalid", function(o) {
     return (!Cache.faces.find[o.face_id]) && o.chr_set_id;
   });
@@ -4465,7 +4468,7 @@ Cache.rule.face.set([
   }
 ]);
 
-Cache.rule.chr_set.set([
+Cache.rule.chr_set.merge([
   {
     "_id": "ger",
     "admin": "闇の呟き",
@@ -4474,7 +4477,7 @@ Cache.rule.chr_set.set([
   }
 ]);
 
-Cache.rule.chr_npc.set([
+Cache.rule.chr_npc.merge([
   {
     "caption": "エクスパンション・セット「大陸議事」",
     "csid": "ger",
@@ -4486,7 +4489,7 @@ Cache.rule.chr_npc.set([
   }
 ]);
 
-Cache.rule.chr_job.set([
+Cache.rule.chr_job.merge([
   {
     "face_id": "g01",
     "job": "三元道士",
@@ -4535,7 +4538,7 @@ Cache.rule.chr_job.set([
   }
 ]);
 
-Cache.rule.chr_set.set([
+Cache.rule.chr_set.merge([
   {
     "_id": "mad",
     "admin": "闇の呟き",
@@ -4544,7 +4547,7 @@ Cache.rule.chr_set.set([
   }
 ]);
 
-Cache.rule.chr_npc.set([
+Cache.rule.chr_npc.merge([
   {
     "caption": "エクスパンション・セット「狂騒議事」",
     "csid": "mad",
@@ -4556,7 +4559,7 @@ Cache.rule.chr_npc.set([
   }
 ]);
 
-Cache.rule.chr_job.set([
+Cache.rule.chr_job.merge([
   {
     "face_id": "c103",
     "job": "厭世家",
@@ -4610,7 +4613,7 @@ Cache.rule.chr_job.set([
   }
 ]);
 
-Cache.rule.chr_set.set([
+Cache.rule.chr_set.merge([
   {
     "_id": "school",
     "admin": "校内放送",
@@ -4619,7 +4622,7 @@ Cache.rule.chr_set.set([
   }
 ]);
 
-Cache.rule.chr_npc.set([
+Cache.rule.chr_npc.merge([
   {
     "caption": "私立七転学園",
     "csid": "school",
@@ -4631,7 +4634,7 @@ Cache.rule.chr_npc.set([
   }
 ]);
 
-Cache.rule.chr_job.set([
+Cache.rule.chr_job.merge([
   {
     "face_id": "c01",
     "job": "華道部",
@@ -5180,7 +5183,7 @@ Cache.rule.chr_job.set([
   }
 ]);
 
-Cache.rule.chr_set.set([
+Cache.rule.chr_set.merge([
   {
     "_id": "sf",
     "admin": "黒体放射のエヴェレット解釈",
@@ -5189,7 +5192,7 @@ Cache.rule.chr_set.set([
   }
 ]);
 
-Cache.rule.chr_npc.set([
+Cache.rule.chr_npc.merge([
   {
     "caption": "明後日への道標",
     "csid": "SF",
@@ -5209,7 +5212,7 @@ Cache.rule.chr_npc.set([
   }
 ]);
 
-Cache.rule.chr_job.set([
+Cache.rule.chr_job.merge([
   {
     "face_id": "sf01",
     "job": "通信士",
@@ -5313,7 +5316,7 @@ Cache.rule.chr_job.set([
   }
 ]);
 
-Cache.rule.chr_set.set([
+Cache.rule.chr_set.merge([
   {
     "_id": "time",
     "admin": "第四の壁の深奥",
@@ -5322,7 +5325,7 @@ Cache.rule.chr_set.set([
   }
 ]);
 
-Cache.rule.chr_npc.set([
+Cache.rule.chr_npc.merge([
   {
     "caption": "エクスパンション・セット「帰還者議事」",
     "csid": "time",
@@ -5334,7 +5337,7 @@ Cache.rule.chr_npc.set([
   }
 ]);
 
-Cache.rule.chr_job.set([
+Cache.rule.chr_job.merge([
   {
     "face_id": "c10",
     "job": "小銃協会",
@@ -5448,7 +5451,7 @@ Cache.rule.chr_job.set([
   }
 ]);
 
-Cache.rule.chr_set.set([
+Cache.rule.chr_set.merge([
   {
     "_id": "wa",
     "admin": "闇の呟き",
@@ -5457,7 +5460,7 @@ Cache.rule.chr_set.set([
   }
 ]);
 
-Cache.rule.chr_npc.set([
+Cache.rule.chr_npc.merge([
   {
     "caption": "和の国てやんでえ",
     "csid": "wa",
@@ -5477,7 +5480,7 @@ Cache.rule.chr_npc.set([
   }
 ]);
 
-Cache.rule.chr_job.set([
+Cache.rule.chr_job.merge([
   {
     "face_id": "w01",
     "job": "役者",
@@ -5731,7 +5734,7 @@ Cache.rule.chr_job.set([
   }
 ]);
 
-Cache.rule.chr_set.set([
+Cache.rule.chr_set.merge([
   {
     "_id": "ririnra",
     "admin": "闇の呟き",
@@ -5740,7 +5743,7 @@ Cache.rule.chr_set.set([
   }
 ]);
 
-Cache.rule.chr_npc.set([
+Cache.rule.chr_npc.merge([
   {
     "caption": "人狼議事（キャサリン）",
     "csid": "ririnra_c05",
@@ -5824,7 +5827,7 @@ Cache.rule.chr_npc.set([
   }
 ]);
 
-Cache.rule.chr_job.set([
+Cache.rule.chr_job.merge([
   {
     "face_id": "c01",
     "job": "花売り",
@@ -6398,7 +6401,7 @@ Cache.rule.chr_job.set([
   }
 ]);
 
-Cache.rule.chr_set.set([
+Cache.rule.chr_set.merge([
   {
     "_id": "animal",
     "admin": "大地の震動",
@@ -6407,7 +6410,7 @@ Cache.rule.chr_set.set([
   }
 ]);
 
-Cache.rule.chr_npc.set([
+Cache.rule.chr_npc.merge([
   {
     "caption": "うきうきサバンナ",
     "csid": "animal",
@@ -6419,7 +6422,7 @@ Cache.rule.chr_npc.set([
   }
 ]);
 
-Cache.rule.chr_job.set([
+Cache.rule.chr_job.merge([
   {
     "face_id": "c01",
     "job": "こじか",
@@ -6968,7 +6971,7 @@ Cache.rule.chr_job.set([
   }
 ]);
 
-Cache.rule.chr_set.set([
+Cache.rule.chr_set.merge([
   {
     "_id": "changed",
     "admin": "闇の呟き",
@@ -6977,7 +6980,7 @@ Cache.rule.chr_set.set([
   }
 ]);
 
-Cache.rule.chr_npc.set([
+Cache.rule.chr_npc.merge([
   {
     "caption": "とのさま広場",
     "csid": "changed",
@@ -6997,7 +7000,7 @@ Cache.rule.chr_npc.set([
   }
 ]);
 
-Cache.rule.chr_job.set([
+Cache.rule.chr_job.merge([
   {
     "face_id": "b44",
     "job": "こあくとう",
@@ -7101,7 +7104,7 @@ Cache.rule.chr_job.set([
   }
 ]);
 
-Cache.rule.chr_set.set([
+Cache.rule.chr_set.merge([
   {
     "_id": "all",
     "admin": "闇の呟き",
@@ -7110,7 +7113,7 @@ Cache.rule.chr_set.set([
   }
 ]);
 
-Cache.rule.chr_npc.set([
+Cache.rule.chr_npc.merge([
   {
     "caption": "人狼議事 ちゃんぷる",
     "csid": "all",
@@ -7122,7 +7125,7 @@ Cache.rule.chr_npc.set([
   }
 ]);
 
-Cache.rule.chr_job.set([]);
+Cache.rule.chr_job.merge([]);
 
 list = [];
 
@@ -7150,7 +7153,7 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
   }
 }
 
-Cache.rule.chr_job.set(list);
+Cache.rule.chr_job.merge(list);
 beforeEach(function() {
   return jasmine.addMatchers({
     toBePlaying: function() {
@@ -7224,32 +7227,32 @@ describe("(browser css)", function() {
 });
 var event1, fab1, form1, msg1, msg2, msg3, msg4, scene1, scene2, scene3, story1;
 
-new Cache.Replace("site").schema(function() {});
+new Cache.Rule("site").schema(function() {});
 
-new Cache.Replace("story").schema(function() {
+new Cache.Rule("story").schema(function() {
   return this.belongs_to("site");
 });
 
-new Cache.Replace("event").schema(function() {
+new Cache.Rule("event").schema(function() {
   this.belongs_to("site");
   return this.belongs_to("story");
 });
 
-new Cache.Append("scene").schema(function() {
+new Cache.Rule("scene").schema(function() {
   this.belongs_to("site");
   this.belongs_to("story");
   return this.belongs_to("event");
 });
 
-new Cache.Replace("potof").schema(function() {
+new Cache.Rule("potof").schema(function() {
   return this.belongs_to("scene");
 });
 
-new Cache.Append("fab").schema(function() {
+new Cache.Rule("fab").schema(function() {
   return this.belongs_to("message");
 });
 
-new Cache.Replace("form").schema(function() {
+new Cache.Rule("form").schema(function() {
   this.protect("text");
   return this.belongs_to("scene");
 });
@@ -7336,12 +7339,12 @@ Cache.rule.form.set([
 describe("Cache", function() {
   var cache_message, cache_message_with_scope;
   cache_message = function() {
-    new Cache.Append("message").schema(function() {
+    new Cache.Rule("message").schema(function() {
       this.order_by("created_at");
       return this.belongs_to("scene");
     });
     Cache.rule.message.cleanup();
-    return Cache.rule.message.set([
+    return Cache.rule.message.merge([
       {
         _id: msg1,
         scene_id: scene1,
@@ -7447,7 +7450,7 @@ describe("Cache", function() {
     });
     it("replace item", function(done) {
       cache_message_with_scope();
-      Cache.rule.message.set([
+      Cache.rule.message.merge([
         {
           _id: msg1,
           scene_id: scene2,
@@ -7467,7 +7470,7 @@ describe("Cache", function() {
     });
     return it("append item", function(done) {
       cache_message_with_scope();
-      Cache.rule.message.set([
+      Cache.rule.message.merge([
         {
           _id: msg4,
           scene_id: scene2,
