@@ -7437,7 +7437,7 @@ describe("Cache", function() {
       return done();
     });
   });
-  return describe("messages with scope", function() {
+  describe("messages with scope", function() {
     it("sepalate items", function(done) {
       cache_message_with_scope();
       expect(Cache.messages.all.length).toEqual(3);
@@ -7487,6 +7487,32 @@ describe("Cache", function() {
       expect(Cache.messages.of.good.length).toEqual(2);
       expect(Cache.messages.of.good.first.text).toEqual("text 1");
       expect(Cache.messages.of.good.last.text).toEqual("text 3");
+      return done();
+    });
+  });
+  return describe("face data", function() {
+    it("all values", function(done) {
+      expect(Cache.faces.find.all).toEqual({
+        face_id: "all",
+        name: "パルック",
+        order: 99999,
+        _id: "all"
+      });
+      expect(Cache.faces.all.length).toEqual(241);
+      expect(Cache.chr_jobs.all.length).toEqual(700);
+      expect(Cache.chr_jobs.chr_set.all.length).toEqual(241);
+      return done();
+    });
+    return it("delete item", function(done) {
+      Cache.rule.face.reject([
+        {
+          _id: "all"
+        }
+      ]);
+      expect(Cache.faces.find.all).toEqual(void 0);
+      expect(Cache.faces.all.length).toEqual(240);
+      expect(Cache.chr_jobs.all.length).toEqual(699);
+      expect(Cache.chr_jobs.chr_set.all.length).toEqual(240);
       return done();
     });
   });

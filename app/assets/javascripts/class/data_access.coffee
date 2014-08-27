@@ -99,7 +99,7 @@ class Cache.Rule
     _.forEach [@], cb, definer
 
 
-  set_base: (list, set_scope)->
+  set_base: (list, cb)->
     for validate in @validates
       list = _.filter list, validate
 
@@ -113,29 +113,32 @@ class Cache.Rule
 
     for key in @scope_keys
       scope = @scopes[key]
-      set_scope scope, list
+      cb scope, list
     
     return true
 
 
   reject: (list)->
-    all = _.xor list, @scopes._all.list.all
-    @set all
+    @set_base list, (scope, list)->
+      scope.reject list
+
+    if @responses.length > 0
+      if @scopes._all.diff.del.length > 0
+        for rule in @responses
+          rule.rehash()
 
   merge: (list)->
     @set_base list, (scope, list)->
       scope.merge list
 
   set: (list)->
-    old_all = @scopes._all.list.all
     @set_base list, (scope, list)->
-      scope.cleanup()
+      scope.map = {}
+      scope.list = {}
       scope.merge list
-    new_all = @scopes._all.list.all
 
     if @responses.length > 0
-      deletes = _.xor new_all, _.union(old_all, new_all)
-      if deletes.length > 0
+      if @scopes._all.diff.del.length > 0
         for rule in @responses
           rule.rehash()
 
@@ -150,41 +153,54 @@ class Cache.Rule
   values: (hash)->
     _.values hash
 
+
 class Cache.Scope
   constructor: (@rule, hash)->
-    {@kind, @reset, @values, @validate} = hash
+    {@kind, @reset, @values} = hash
 
-  merge: (list)->
+  adjust: (list, merge_phase)->
     all = @rule.scopes._all.map.all
     values = @values || @rule.values
+    @diff = 
+      add: []
+      del: []
     reset_kinds = {}
+
     for o in list
-      kind = @kind o
-      if kind || kind == 0
-        @map[kind] ||= {}
+      if all?
+        old = all[o._id]
+      if old?
+        old_kind = @kind old
+        if @map[old_kind]?
+          reset_kinds[old_kind] = true
+          @diff.del.push o._id
+          delete @map[old_kind][o._id]
 
-        if all?
-          old = all[o._id]
-
-        reset_kinds[kind] = 
-          if old?
-            old_kind = @kind old
-            delete @map[old_kind][o._id]
-            reset_kinds[old_kind] = "update"
-          else
-            "create"
-
-        @map[kind][o._id] = o
+      merge_phase(o, reset_kinds)
 
     for kind, type of reset_kinds
       @list[kind] = values @map[kind]
     @reset @list, @map
 
+  reject: (list)->
+    @adjust list, ->
+
+  merge: (list)->
+    @adjust list, (o, reset_kinds)=>
+      kind = @kind o
+      if kind || kind == 0
+        reset_kinds[kind] = true
+        @map[kind] ||= {}
+        @map[kind][o._id] = o
+        @diff.add.push o._id
+
+
   cleanup: ->
     @map = {}
     @list = {}
-    @union = {}
-    @
+    @diff = 
+      add: []
+      del: []
     @reset @list, @map
 
 

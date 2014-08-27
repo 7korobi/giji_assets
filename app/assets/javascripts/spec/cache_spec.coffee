@@ -203,3 +203,18 @@ describe "Cache", ->
       expect(Cache.messages.of.good.last.text).toEqual "text 3"
       done()
 
+  describe "face data", ->
+    it "all values", (done)->
+      expect(Cache.faces.find.all).toEqual face_id: "all", name: "パルック", order: 99999, _id: "all"
+      expect(Cache.faces.all.length).toEqual 241
+      expect(Cache.chr_jobs.all.length).toEqual 700
+      expect(Cache.chr_jobs.chr_set.all.length).toEqual 241
+      done()
+
+    it "delete item", (done)->
+      Cache.rule.face.reject [_id: "all"]
+      expect(Cache.faces.find.all).toEqual undefined
+      expect(Cache.faces.all.length).toEqual 240
+      expect(Cache.chr_jobs.all.length).toEqual 699
+      expect(Cache.chr_jobs.chr_set.all.length).toEqual 240
+      done()

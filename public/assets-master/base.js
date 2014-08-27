@@ -1030,7 +1030,7 @@ Cache.Rule = (function() {
     return _.forEach([this], cb, definer);
   };
 
-  Rule.prototype.set_base = function(list, set_scope) {
+  Rule.prototype.set_base = function(list, cb) {
     var key, o, scope, validate, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
     _ref = this.validates;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -1051,15 +1051,27 @@ Cache.Rule = (function() {
     for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
       key = _ref1[_k];
       scope = this.scopes[key];
-      set_scope(scope, list);
+      cb(scope, list);
     }
     return true;
   };
 
   Rule.prototype.reject = function(list) {
-    var all;
-    all = _.xor(list, this.scopes._all.list.all);
-    return this.set(all);
+    var rule, _i, _len, _ref, _results;
+    this.set_base(list, function(scope, list) {
+      return scope.reject(list);
+    });
+    if (this.responses.length > 0) {
+      if (this.scopes._all.diff.del.length > 0) {
+        _ref = this.responses;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          rule = _ref[_i];
+          _results.push(rule.rehash());
+        }
+        return _results;
+      }
+    }
   };
 
   Rule.prototype.merge = function(list) {
@@ -1069,16 +1081,14 @@ Cache.Rule = (function() {
   };
 
   Rule.prototype.set = function(list) {
-    var deletes, new_all, old_all, rule, _i, _len, _ref, _results;
-    old_all = this.scopes._all.list.all;
+    var rule, _i, _len, _ref, _results;
     this.set_base(list, function(scope, list) {
-      scope.cleanup();
+      scope.map = {};
+      scope.list = {};
       return scope.merge(list);
     });
-    new_all = this.scopes._all.list.all;
     if (this.responses.length > 0) {
-      deletes = _.xor(new_all, _.union(old_all, new_all));
-      if (deletes.length > 0) {
+      if (this.scopes._all.diff.del.length > 0) {
         _ref = this.responses;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -1117,25 +1127,32 @@ Cache.Rule = (function() {
 Cache.Scope = (function() {
   function Scope(rule, hash) {
     this.rule = rule;
-    this.kind = hash.kind, this.reset = hash.reset, this.values = hash.values, this.validate = hash.validate;
+    this.kind = hash.kind, this.reset = hash.reset, this.values = hash.values;
   }
 
-  Scope.prototype.merge = function(list) {
-    var all, kind, o, old, old_kind, reset_kinds, type, values, _base, _i, _len;
+  Scope.prototype.adjust = function(list, merge_phase) {
+    var all, kind, o, old, old_kind, reset_kinds, type, values, _i, _len;
     all = this.rule.scopes._all.map.all;
     values = this.values || this.rule.values;
+    this.diff = {
+      add: [],
+      del: []
+    };
     reset_kinds = {};
     for (_i = 0, _len = list.length; _i < _len; _i++) {
       o = list[_i];
-      kind = this.kind(o);
-      if (kind || kind === 0) {
-        (_base = this.map)[kind] || (_base[kind] = {});
-        if (all != null) {
-          old = all[o._id];
-        }
-        reset_kinds[kind] = old != null ? (old_kind = this.kind(old), delete this.map[old_kind][o._id], reset_kinds[old_kind] = "update") : "create";
-        this.map[kind][o._id] = o;
+      if (all != null) {
+        old = all[o._id];
       }
+      if (old != null) {
+        old_kind = this.kind(old);
+        if (this.map[old_kind] != null) {
+          reset_kinds[old_kind] = true;
+          this.diff.del.push(o._id);
+          delete this.map[old_kind][o._id];
+        }
+      }
+      merge_phase(o, reset_kinds);
     }
     for (kind in reset_kinds) {
       type = reset_kinds[kind];
@@ -1144,11 +1161,32 @@ Cache.Scope = (function() {
     return this.reset(this.list, this.map);
   };
 
+  Scope.prototype.reject = function(list) {
+    return this.adjust(list, function() {});
+  };
+
+  Scope.prototype.merge = function(list) {
+    return this.adjust(list, (function(_this) {
+      return function(o, reset_kinds) {
+        var kind, _base;
+        kind = _this.kind(o);
+        if (kind || kind === 0) {
+          reset_kinds[kind] = true;
+          (_base = _this.map)[kind] || (_base[kind] = {});
+          _this.map[kind][o._id] = o;
+          return _this.diff.add.push(o._id);
+        }
+      };
+    })(this));
+  };
+
   Scope.prototype.cleanup = function() {
     this.map = {};
     this.list = {};
-    this.union = {};
-    this;
+    this.diff = {
+      add: [],
+      del: []
+    };
     return this.reset(this.list, this.map);
   };
 
