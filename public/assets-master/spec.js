@@ -7545,7 +7545,7 @@ describe("Serial", function() {
       return done();
     });
     it("Date", function(done) {
-      expect(Serial.parser.Date("LtUhQ0W")).toEqual(1400000000000);
+      expect(Serial.parser.Date("KfmhEBZ")).toEqual(1400000000000);
       expect(Serial.parser.Date("@@@")).toEqual(Number.NaN);
       return done();
     });
@@ -7655,8 +7655,8 @@ describe("Timer", function() {
     });
   });
 });
-if (location.search !== "?param=1-B-C-LtUhQ0W") {
-  location.search = "?param=1-B-C-LtUhQ0W";
+if (location.search !== "?param=1-B-C-KfmhEBZ") {
+  location.search = "?param=1-B-C-KfmhEBZ";
 }
 
 Url.bind = {

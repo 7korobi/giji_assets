@@ -1,13 +1,3 @@
-_.mixin 
-  absorb: (list, keys, object)->
-    return list unless object? && keys? && keys.length > 0
-    for o in list
-      old = object[o._id]
-      if old?
-        for key in keys
-          o[key] = old[key]
-    list
-
 Object.defineProperties Array.prototype,
   last:
     get: -> @[@length - 1]
@@ -24,7 +14,10 @@ class Cache.Rule
     @scopes = {}
     @validates = []
     @responses = []
-    @protect_ids = []
+    @adjust =
+      _id: (o)-> o._id = o[@id] unless o._id
+    @adjust[@id] = (o)=> o[@id] = o._id unless o[@id]
+    @adjust_keys = ["_id", @id]
 
     Cache.rule[field] = @
     Cache[@list_name] = cache = {}
@@ -53,7 +46,7 @@ class Cache.Rule
         @base_scope key,
           kind: kind
           reset: (o)-> cache[key] = o
-      
+
       pager: (key, items)=>
 
       belongs_to: (parent, option)=>
@@ -94,27 +87,30 @@ class Cache.Rule
                 return  1 if a[key] > b[key]
                 return  0
 
-      protect: (id_name)=>
-        @protect_ids.push id_name
+      fields: (@adjust)=>
+
+      protect: (key)=>
+        @adjust[key] = (o, old)->
+          o[key] = old[key] if old?
+
     _.forEach [@], cb, definer
+    @adjust_keys = _.keys(@adjust).sort()
 
 
   set_base: (list, cb)->
     for validate in @validates
       list = _.filter list, validate
 
+    all = @scopes._all.map.all
     for o in list
-      unless o[@id]
-        o[@id] = o._id
-      unless o._id
-        o._id = o[@id]
-
-    _.absorb list, @protect_ids, @scopes._all.map.all
+      old = all?[o._id]
+      for key in @adjust_keys
+        @adjust[key](o, old)
 
     for key in @scope_keys
       scope = @scopes[key]
       cb scope, list
-    
+
     return true
 
 
@@ -161,7 +157,7 @@ class Cache.Scope
   adjust: (list, merge_phase)->
     all = @rule.scopes._all.map.all
     values = @values || @rule.values
-    @diff = 
+    @diff =
       add: []
       del: []
     reset_kinds = {}
@@ -198,7 +194,7 @@ class Cache.Scope
   cleanup: ->
     @map = {}
     @list = {}
-    @diff = 
+    @diff =
       add: []
       del: []
     @reset @list, @map
@@ -219,10 +215,10 @@ new Cache.Append  scene: ["site"]
 new Cache.Append message: ["scene"]
 new Cache.Replace  potof: ["scene"]
 
-Cache.data = 
+Cache.data =
   form:
     role: {}
-    text: 
+    text:
       title: "title-write"
       cmd: "write"
       csid_cid: ""

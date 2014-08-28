@@ -4,9 +4,9 @@ _.mixin
     [id[0..1], time]
 
 class Serial
-  # OI
+  # OIl
   @map = 
-    to_s: "0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    to_s: "0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
     to_i: {}
 
   for c, n in @map.to_s

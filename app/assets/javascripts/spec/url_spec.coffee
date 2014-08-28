@@ -1,4 +1,4 @@
-location.search = "?param=1-B-C-LtUhQ0W" unless location.search == "?param=1-B-C-LtUhQ0W"
+location.search = "?param=1-B-C-KfmhEBZ" unless location.search == "?param=1-B-C-KfmhEBZ"
 
 Url.bind =
   fname:

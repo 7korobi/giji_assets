@@ -855,26 +855,6 @@ this.LOCATION = {"options":{"search":null,"width":{"current":"normal"},"layout":
 
 var Cache;
 
-_.mixin({
-  absorb: function(list, keys, object) {
-    var key, o, old, _i, _j, _len, _len1;
-    if (!((object != null) && (keys != null) && keys.length > 0)) {
-      return list;
-    }
-    for (_i = 0, _len = list.length; _i < _len; _i++) {
-      o = list[_i];
-      old = object[o._id];
-      if (old != null) {
-        for (_j = 0, _len1 = keys.length; _j < _len1; _j++) {
-          key = keys[_j];
-          o[key] = old[key];
-        }
-      }
-    }
-    return list;
-  }
-});
-
 Object.defineProperties(Array.prototype, {
   last: {
     get: function() {
@@ -905,7 +885,21 @@ Cache.Rule = (function() {
     this.scopes = {};
     this.validates = [];
     this.responses = [];
-    this.protect_ids = [];
+    this.adjust = {
+      _id: function(o) {
+        if (!o._id) {
+          return o._id = o[this.id];
+        }
+      }
+    };
+    this.adjust[this.id] = (function(_this) {
+      return function(o) {
+        if (!o[_this.id]) {
+          return o[_this.id] = o._id;
+        }
+      };
+    })(this);
+    this.adjust_keys = ["_id", this.id];
     Cache.rule[field] = this;
     Cache[this.list_name] = cache = {};
     this.base_scope("_all", {
@@ -1021,35 +1015,45 @@ Cache.Rule = (function() {
           };
         };
       })(this),
+      fields: (function(_this) {
+        return function(adjust) {
+          _this.adjust = adjust;
+        };
+      })(this),
       protect: (function(_this) {
-        return function(id_name) {
-          return _this.protect_ids.push(id_name);
+        return function(key) {
+          return _this.adjust[key] = function(o, old) {
+            if (old != null) {
+              return o[key] = old[key];
+            }
+          };
         };
       })(this)
     };
-    return _.forEach([this], cb, definer);
+    _.forEach([this], cb, definer);
+    return this.adjust_keys = _.keys(this.adjust).sort();
   };
 
   Rule.prototype.set_base = function(list, cb) {
-    var key, o, scope, validate, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
+    var all, key, o, old, scope, validate, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2;
     _ref = this.validates;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       validate = _ref[_i];
       list = _.filter(list, validate);
     }
+    all = this.scopes._all.map.all;
     for (_j = 0, _len1 = list.length; _j < _len1; _j++) {
       o = list[_j];
-      if (!o[this.id]) {
-        o[this.id] = o._id;
-      }
-      if (!o._id) {
-        o._id = o[this.id];
+      old = all != null ? all[o._id] : void 0;
+      _ref1 = this.adjust_keys;
+      for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+        key = _ref1[_k];
+        this.adjust[key](o, old);
       }
     }
-    _.absorb(list, this.protect_ids, this.scopes._all.map.all);
-    _ref1 = this.scope_keys;
-    for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
-      key = _ref1[_k];
+    _ref2 = this.scope_keys;
+    for (_l = 0, _len3 = _ref2.length; _l < _len3; _l++) {
+      key = _ref2[_l];
       scope = this.scopes[key];
       cb(scope, list);
     }
@@ -1210,10 +1214,10 @@ new Cache.Append  scene: ["site"]
 new Cache.Append message: ["scene"]
 new Cache.Replace  potof: ["scene"]
 
-Cache.data = 
+Cache.data =
   form:
     role: {}
-    text: 
+    text:
       title: "title-write"
       cmd: "write"
       csid_cid: ""
@@ -1622,7 +1626,7 @@ Serial = (function() {
   function Serial() {}
 
   Serial.map = {
-    to_s: "0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
+    to_s: "0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz",
     to_i: {}
   };
 

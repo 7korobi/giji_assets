@@ -10,7 +10,7 @@ describe "Serial", ->
       done()
 
     it "Date", (done)->
-      expect(Serial.parser.Date("LtUhQ0W")).toEqual 1400000000000
+      expect(Serial.parser.Date("KfmhEBZ")).toEqual 1400000000000
       expect(Serial.parser.Date("@@@")).toEqual Number.NaN
       done()
 
