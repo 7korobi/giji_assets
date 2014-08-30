@@ -16,9 +16,9 @@ Cache.rule.face.set <%= JSON.generate FACE %>
 %i[CS_GER CS_MAD CS_SCHOOL CS_SF CS_TIME CS_WA CS_RIRINRA  CS_ANIMAL CS_CHANGED  CS_ALL].each do |const|
   data = Kernel.const_get( const )
  %>
-Cache.rule.chr_set.merge [<%= JSON.generate(data[:chr_set]) %>]
-Cache.rule.chr_npc.merge <%= JSON.generate(data[:chr_npc]) %> 
-Cache.rule.chr_job.merge <%= JSON.generate(data[:chr_job]) %> 
+Cache.rule.chr_set.merge [<%= JSON.generate(data.chr_set) %>]
+Cache.rule.chr_npc.merge <%= JSON.generate(data.chr_npc) %>
+Cache.rule.chr_job.merge <%= JSON.generate(data.chr_job) %>
 <%
 end
 %>

@@ -22,3 +22,6 @@ gem "slim"
 gem "less-rails"
 gem "bootstrap-sass"
 
+gem "thor"
+gem "hashie"
+gem "capistrano"
