@@ -1,4 +1,4 @@
-Dir.glob('app/yaml/*.yml').uniq.each do |path|
+Dir.glob('*/yaml/*.yml').uniq.each do |path|
   file, name = /(\w+).yml/.match(path).to_a
   const = name.upcase.to_sym
 
