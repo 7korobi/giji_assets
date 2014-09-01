@@ -1,5 +1,6 @@
 lock '3.2.1'
 
+set :application, "giji_assets"
 set :org, "7korobi"
 
 ### multistage settings

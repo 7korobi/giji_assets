@@ -16,14 +16,10 @@ namespace :rsync do
     open(fetch(:rsync_script),"w") do |f|
       f.puts %Q[FILE_TO=/home/7korobi/public_html]
       on roles(:file) do |server|
-        f.puts %Q|rsync --links --recursive --exclude='.git' --exclude='.svn' ~/Dropbox/web_work/images/ /www/giji_rails/public/images/|
-        %w[
-          /www/giji_rails/public/
-          /www/giji_assets/public/
-        ].each do |path|
-          options = "--links --recursive --exclude='stories' --exclude='.git' --exclude='.svn'"
-          f.puts %Q|TARGET=#{path}; rsync -e "ssh -p #{server.port || 22}" #{options} $TARGET #{server.user}@#{server.hostname}:$FILE_TO &|
-        end
+        options = "--links --recursive --exclude='.git' --exclude='.svn'"
+        f.puts %Q|rsync #{options} ~/Dropbox/web_work/images/ /www/giji_assets/public/images/|
+        f.puts %Q|TARGET=/www/giji_assets/public/|
+        f.puts %Q|rsync -e "ssh -p #{server.port || 22}" #{options} --exclude='stories' $TARGET #{server.user}@#{server.hostname}:$FILE_TO &|
       end
     end
     run_locally do
