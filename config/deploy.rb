@@ -1,8 +1,6 @@
 lock '3.2.1'
 
-set :application, "giji_rails"
 set :org, "7korobi"
-set :deploy_to, "/www/giji_rails"
 
 ### multistage settings
 set :stage_dir, "config/deploy"
