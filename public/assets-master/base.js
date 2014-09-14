@@ -899,7 +899,7 @@ Cache.Rule = (function() {
     Cache[this.list_name] = cache = {};
     this.base_scope("_all", {
       kind: function() {
-        return "all";
+        return ["all"];
       },
       reset: function(list, map) {
         cache.all = list.all;
@@ -949,7 +949,7 @@ Cache.Rule = (function() {
           parent_id = "" + parent + "_id";
           _this.base_scope(parent, {
             kind: function(o) {
-              return o[parent_id];
+              return [o[parent_id]];
             },
             reset: function(o) {
               return cache[parent] = o;
@@ -1035,30 +1035,40 @@ Cache.Rule = (function() {
     return this.adjust_keys = _.keys(this.adjust).sort();
   };
 
-  Rule.prototype.set_base = function(list, cb) {
-    var all, key, o, old, scope, validate, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2;
-    _ref = this.validates;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      validate = _ref[_i];
-      list = _.filter(list, validate);
-    }
+  Rule.prototype.set_base = function(from, cb) {
+    var accept, all, key, list, o, old, scope, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
     all = this.scopes._all.map.all;
-    for (_j = 0, _len1 = list.length; _j < _len1; _j++) {
-      o = list[_j];
+    list = [];
+    accept = (function(_this) {
+      return function(o) {
+        var validate, _i, _len, _ref;
+        _ref = _this.validates;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          validate = _ref[_i];
+          if (!validate(o)) {
+            return;
+          }
+        }
+        return list.push(o);
+      };
+    })(this);
+    _ref = from || [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      o = _ref[_i];
       old = all != null ? all[o._id] : void 0;
       _ref1 = this.adjust_keys;
-      for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
-        key = _ref1[_k];
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        key = _ref1[_j];
         this.adjust[key](o, old);
       }
+      accept(o);
     }
     _ref2 = this.scope_keys;
-    for (_l = 0, _len3 = _ref2.length; _l < _len3; _l++) {
-      key = _ref2[_l];
+    for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+      key = _ref2[_k];
       scope = this.scopes[key];
       cb(scope, list);
     }
-    return true;
   };
 
   Rule.prototype.reject = function(list) {
@@ -1066,17 +1076,17 @@ Cache.Rule = (function() {
     this.set_base(list, function(scope, list) {
       return scope.reject(list);
     });
-    if (this.responses.length > 0) {
-      if (this.scopes._all.diff.del.length > 0) {
-        _ref = this.responses;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          rule = _ref[_i];
-          _results.push(rule.rehash());
-        }
-        return _results;
+    _ref = this.responses;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      rule = _ref[_i];
+      if (this.scopes._all.diff.del) {
+        _results.push(rule.rehash());
+      } else {
+        _results.push(void 0);
       }
     }
+    return _results;
   };
 
   Rule.prototype.merge = function(list) {
@@ -1092,17 +1102,17 @@ Cache.Rule = (function() {
       scope.list = {};
       return scope.merge(list);
     });
-    if (this.responses.length > 0) {
-      if (this.scopes._all.diff.del.length > 0) {
-        _ref = this.responses;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          rule = _ref[_i];
-          _results.push(rule.rehash());
-        }
-        return _results;
+    _ref = this.responses;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      rule = _ref[_i];
+      if (this.scopes._all.diff.del) {
+        _results.push(rule.rehash());
+      } else {
+        _results.push(void 0);
       }
     }
+    return _results;
   };
 
   Rule.prototype.rehash = function() {
@@ -1136,13 +1146,10 @@ Cache.Scope = (function() {
   }
 
   Scope.prototype.adjust = function(list, merge_phase) {
-    var all, kind, o, old, old_kind, reset_kinds, type, values, _i, _len;
+    var all, kind, o, old, old_kind, reset_kinds, type, values, _i, _j, _len, _len1, _ref;
     all = this.rule.scopes._all.map.all;
     values = this.values || this.rule.values;
-    this.diff = {
-      add: [],
-      del: []
-    };
+    this.diff = {};
     reset_kinds = {};
     for (_i = 0, _len = list.length; _i < _len; _i++) {
       o = list[_i];
@@ -1150,11 +1157,14 @@ Cache.Scope = (function() {
         old = all[o._id];
       }
       if (old != null) {
-        old_kind = this.kind(old);
-        if (this.map[old_kind] != null) {
-          reset_kinds[old_kind] = true;
-          this.diff.del.push(o._id);
-          delete this.map[old_kind][o._id];
+        _ref = this.kind(old) || [];
+        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+          old_kind = _ref[_j];
+          if (this.map[old_kind] != null) {
+            reset_kinds[old_kind] = true;
+            delete this.map[old_kind][o._id];
+            this.diff.del = true;
+          }
         }
       }
       merge_phase(o, reset_kinds);
@@ -1173,13 +1183,16 @@ Cache.Scope = (function() {
   Scope.prototype.merge = function(list) {
     return this.adjust(list, (function(_this) {
       return function(o, reset_kinds) {
-        var kind, _base;
-        kind = _this.kind(o);
-        if (kind || kind === 0) {
-          reset_kinds[kind] = true;
-          (_base = _this.map)[kind] || (_base[kind] = {});
-          _this.map[kind][o._id] = o;
-          return _this.diff.add.push(o._id);
+        var kind, _base, _i, _len, _ref;
+        _ref = _this.kind(o) || [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          kind = _ref[_i];
+          if (kind || kind === 0) {
+            reset_kinds[kind] = true;
+            (_base = _this.map)[kind] || (_base[kind] = {});
+            _this.map[kind][o._id] = o;
+            _this.diff.add = true;
+          }
         }
       };
     })(this));
@@ -1188,10 +1201,7 @@ Cache.Scope = (function() {
   Scope.prototype.cleanup = function() {
     this.map = {};
     this.list = {};
-    this.diff = {
-      add: [],
-      del: []
-    };
+    this.diff = {};
     return this.reset(this.list, this.map);
   };
 
@@ -1836,7 +1846,7 @@ for (key in _ref) {
 ID = (function() {
   function ID() {}
 
-  ID.random_size = Serial.map.size * Serial.map.size;
+  ID.random_size = Serial.map.size * Serial.map.size * Serial.map.size;
 
   ID.now = function() {
     return Serial.serializer.Date(Math.random() * ID.random_size) + Serial.serializer.Date(_.now());

@@ -3128,11 +3128,8 @@ new Cache.Rule("chr_job").schema(function() {
   this.belongs_to("chr_set", {
     dependent: true
   });
-  this.belongs_to("face", {
+  return this.belongs_to("face", {
     dependent: true
-  });
-  return this.scope("invalid", function(o) {
-    return (!Cache.faces.find[o.face_id]) && o.chr_set_id;
   });
 });
 
@@ -7158,7 +7155,14 @@ Cache.rule.chr_npc.merge([
   }
 ]);
 
-Cache.rule.chr_job.merge([]);
+Cache.rule.chr_job.merge([
+  {
+    "face_id": "all",
+    "job": "かみさま",
+    "_id": "all_all",
+    "chr_set_id": "all"
+  }
+]);
 
 list = [];
 
@@ -7409,12 +7413,10 @@ describe("Cache", function() {
       kind = function(o) {
         switch (o.scene_id) {
           case scene2:
-            return "also";
+            return ["also"];
           case scene1:
           case scene3:
-            return "good";
-          default:
-            return false;
+            return ["good"];
         }
       };
       return this.scope("of", kind);
@@ -7556,7 +7558,7 @@ describe("Cache", function() {
         this.belongs_to("face");
         this.belongs_to("sow_auth");
         this.scope("logid", function(o) {
-          return o.logid;
+          return [o.logid];
         });
         this.scope("unread", function(o) {
           return null;
@@ -7591,18 +7593,20 @@ describe("Cache", function() {
             o.security = (function() {
               switch (false) {
                 case !o.logid.match(/^([D].\d+)/):
-                  return "delete";
+                  return ["delete", "think", "all"];
                 case !o.logid.match(/^([qcS].\d+)|(MM\d+)/):
-                  return "open";
+                  return ["open", "clan", "think", "all"];
                 case !o.logid.match(/^([aAmMI].\d+)|(vilinfo)|(potofs)/):
-                  return "announce";
+                  return ["announce", "open", "clan", "think", "all"];
                 case !o.logid.match(/^([Ti].\d+)/):
-                  return "think";
+                  return ["think", "all"];
                 case !o.logid.match(/^([\-WPX].\d+)/):
-                  return "clan";
+                  return ["clan", "all"];
+                default:
+                  return [];
               }
             })();
-            return o.scene_id = o.event_id + o.security;
+            return o.scene_id = o.event_id + o.security[0];
           }
         });
       });

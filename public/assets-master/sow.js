@@ -34,11 +34,8 @@ new Cache.Rule("chr_job").schema(function() {
   this.belongs_to("chr_set", {
     dependent: true
   });
-  this.belongs_to("face", {
+  return this.belongs_to("face", {
     dependent: true
-  });
-  return this.scope("invalid", function(o) {
-    return (!Cache.faces.find[o.face_id]) && o.chr_set_id;
   });
 });
 
@@ -4064,7 +4061,14 @@ Cache.rule.chr_npc.merge([
   }
 ]);
 
-Cache.rule.chr_job.merge([]);
+Cache.rule.chr_job.merge([
+  {
+    "face_id": "all",
+    "job": "かみさま",
+    "_id": "all_all",
+    "chr_set_id": "all"
+  }
+]);
 
 list = [];
 

@@ -34,11 +34,8 @@ new Cache.Rule("chr_job").schema(function() {
   this.belongs_to("chr_set", {
     dependent: true
   });
-  this.belongs_to("face", {
+  return this.belongs_to("face", {
     dependent: true
-  });
-  return this.scope("invalid", function(o) {
-    return (!Cache.faces.find[o.face_id]) && o.chr_set_id;
   });
 });
 
@@ -4064,7 +4061,14 @@ Cache.rule.chr_npc.merge([
   }
 ]);
 
-Cache.rule.chr_job.merge([]);
+Cache.rule.chr_job.merge([
+  {
+    "face_id": "all",
+    "job": "かみさま",
+    "_id": "all_all",
+    "chr_set_id": "all"
+  }
+]);
 
 list = [];
 
@@ -4093,30 +4097,49 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 }
 
 Cache.rule.chr_job.merge(list);
+var _ref;
+
+new Cache.Rule("map_face").schema(function() {
+  this.belongs_to("face");
+  this.order(function(o) {
+    return -o.sow_auth_id.all;
+  });
+  this.fields({
+    _id: function(o) {
+      return o._id = o.face_id;
+    }
+  });
+  return this.scope("chr_set", function(o) {
+    var chr_job, list, _i, _len, _results;
+    list = Cache.chr_jobs.face[o.face_id];
+    if (list) {
+      _results = [];
+      for (_i = 0, _len = list.length; _i < _len; _i++) {
+        chr_job = list[_i];
+        _results.push(chr_job.chr_set_id);
+      }
+      return _results;
+    }
+  });
+});
+
+Cache.rule.map_face.set(typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0);
 Url.cookie = ["css"];
 
-Url.search = ["story", "timer"];
-
-Url.hash = ["messages", "news", "all", "page", "hides", "search", "potof", "css", "timer"];
+Url.search = ["css"];
 
 Url.options = LOCATION.options;
 
 Url.bind = LOCATION.bind;
 
 Url.routes = {
-  story: new Url("/on/:story_id"),
-  timer: new Url("timer=:viewed_at"),
-  messages: new Url("/:event_id/messages/:message_ids/"),
-  news: new Url("/:event_id/:mode_id/news/:row/"),
-  all: new Url("/:event_id/:mode_id/all/"),
-  page: new Url("/:event_id/:mode_id/:page.of.:row/"),
-  hides: new Url("/hides/:hide_ids"),
-  search: new Url("/search/:search"),
-  potof: new Url("/potof/:potofs_order"),
-  css: new Url("/css-:theme-:width-:layout-:font", function(params) {
+  shape: new Url("shape=:chr_set-:order", function(params) {}),
+  css: new Url("css=:theme-:width-:layout-:font", function(params) {
     var h, html, key, style, val, _ref;
     this.style_p || (this.style_p = "");
-    h = {};
+    h = {
+      w770: true
+    };
     for (key in params) {
       val = params[key];
       if ((key != null) && (val != null) && "String" === (((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String")) {
