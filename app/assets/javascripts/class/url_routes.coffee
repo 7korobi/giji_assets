@@ -64,7 +64,7 @@ class Url
 
   pushstate: (link)->
     # TODO: cookie & href each targets.
-    switch @target 
+    switch @target
       when "cookie"
         document.cookie = @serialize()
       else

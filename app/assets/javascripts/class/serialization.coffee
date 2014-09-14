@@ -71,7 +71,7 @@ for key, func of Serial.parser
         "([^\\/\\-\\=\\.]+)"
 
 class ID
-  @random_size = Serial.map.size * Serial.map.size
+  @random_size = Serial.map.size * Serial.map.size * Serial.map.size
   @now = ->
     Serial.serializer.Date(Math.random() * ID.random_size) + Serial.serializer.Date _.now()
   @at = (date)->

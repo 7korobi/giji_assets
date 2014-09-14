@@ -8,7 +8,6 @@ new Cache.Rule("chr_job").schema ->
   @order (o)-> o.face.order
   @belongs_to "chr_set", dependent: true
   @belongs_to "face", dependent: true
-  @scope "invalid", (o)->  (not Cache.faces.find[o.face_id]) && o.chr_set_id
 
 Cache.rule.face.set <%= JSON.generate FACE %>
 

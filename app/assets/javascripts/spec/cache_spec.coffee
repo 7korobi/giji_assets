@@ -104,11 +104,9 @@ describe "Cache", ->
       kind = (o)->
         switch o.scene_id
           when scene2
-            "also"
+            ["also"]
           when scene1, scene3
-            "good"
-          else
-            false
+            ["good"]
       @scope "of", kind
 
   beforeEach (done)->
@@ -224,7 +222,7 @@ describe "Cache", ->
         @belongs_to "scene"
         @belongs_to "face"
         @belongs_to "sow_auth"
-        @scope "logid", (o)-> o.logid
+        @scope "logid", (o)-> [o.logid]
         @scope "unread", (o)-> null
         @scope "info", (o)->
           if o.logid.match /^([aAmM].\d+)|(vilinfo)|(potofs)/
@@ -251,16 +249,18 @@ describe "Cache", ->
             o.security =
               switch
                 when o.logid.match /^([D].\d+)/
-                  "delete"
+                  ["delete", "think", "all"]
                 when o.logid.match /^([qcS].\d+)|(MM\d+)/
-                  "open"
+                  ["open", "clan", "think", "all"]
                 when o.logid.match /^([aAmMI].\d+)|(vilinfo)|(potofs)/
-                  "announce"
+                  ["announce", "open", "clan", "think", "all"]
                 when o.logid.match /^([Ti].\d+)/
-                  "think"
+                  ["think", "all"]
                 when o.logid.match /^([\-WPX].\d+)/
-                  "clan"
-            o.scene_id = o.event_id + o.security
+                  ["clan", "all"]
+                else
+                  []
+            o.scene_id = o.event_id + o.security[0]
       done()
       for event in sample2.events
         Cache.rule.message.merge event.messages

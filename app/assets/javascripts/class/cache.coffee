@@ -23,7 +23,7 @@ class Cache.Rule
     Cache[@list_name] = cache = {}
 
     @base_scope "_all",
-      kind: -> "all"
+      kind: -> ["all"]
       reset: (list, map)->
         cache.all = list.all
         cache.find = map.all
@@ -55,7 +55,7 @@ class Cache.Rule
         parent_id = "#{parent}_id"
 
         @base_scope parent,
-          kind: (o)-> o[parent_id]
+          kind: (o)-> [o[parent_id]]
           reset: (o)-> cache[parent] = o
 
         if option?.dependent?
@@ -99,31 +99,34 @@ class Cache.Rule
     @adjust_keys = _.keys(@adjust).sort()
 
 
-  set_base: (list, cb)->
-    for validate in @validates
-      list = _.filter list, validate
-
+  set_base: (from, cb)->
     all = @scopes._all.map.all
-    for o in list
+    list = []
+ 
+    accept = (o)=>
+      for validate in @validates
+        return unless validate(o)
+      list.push o
+
+    for o in from || []
       old = all?[o._id]
       for key in @adjust_keys
         @adjust[key](o, old)
+      accept o
 
     for key in @scope_keys
       scope = @scopes[key]
       cb scope, list
 
-    return true
+    return
 
 
   reject: (list)->
     @set_base list, (scope, list)->
       scope.reject list
 
-    if @responses.length > 0
-      if @scopes._all.diff.del.length > 0
-        for rule in @responses
-          rule.rehash()
+    for rule in @responses
+      rule.rehash() if @scopes._all.diff.del
 
   merge: (list)->
     @set_base list, (scope, list)->
@@ -135,10 +138,8 @@ class Cache.Rule
       scope.list = {}
       scope.merge list
 
-    if @responses.length > 0
-      if @scopes._all.diff.del.length > 0
-        for rule in @responses
-          rule.rehash()
+    for rule in @responses
+      rule.rehash() if @scopes._all.diff.del
 
   rehash: ->
     @set @scopes._all.list.all
@@ -159,20 +160,19 @@ class Cache.Scope
   adjust: (list, merge_phase)->
     all = @rule.scopes._all.map.all
     values = @values || @rule.values
-    @diff =
-      add: []
-      del: []
+    @diff = {}
+
     reset_kinds = {}
 
     for o in list
       if all?
         old = all[o._id]
       if old?
-        old_kind = @kind old
-        if @map[old_kind]?
-          reset_kinds[old_kind] = true
-          @diff.del.push o._id
-          delete @map[old_kind][o._id]
+        for old_kind in @kind(old) || []
+          if @map[old_kind]?
+            reset_kinds[old_kind] = true
+            delete @map[old_kind][o._id]
+            @diff.del = true
 
       merge_phase(o, reset_kinds)
 
@@ -185,20 +185,18 @@ class Cache.Scope
 
   merge: (list)->
     @adjust list, (o, reset_kinds)=>
-      kind = @kind o
-      if kind || kind == 0
-        reset_kinds[kind] = true
-        @map[kind] ||= {}
-        @map[kind][o._id] = o
-        @diff.add.push o._id
-
+      for kind in @kind(o) || []
+        if kind || kind == 0
+          reset_kinds[kind] = true
+          @map[kind] ||= {}
+          @map[kind][o._id] = o
+          @diff.add = true
+      return
 
   cleanup: ->
     @map = {}
     @list = {}
-    @diff =
-      add: []
-      del: []
+    @diff = {}
     @reset @list, @map
 
 
