@@ -35,17 +35,17 @@
   @include vivid(#100, #664, #ccf);
   @include main-theme(#000, #cb8, #664);
 
-  &.large-msg,
-  &.center-msg {
+  &.large-layout,
+  &.center-layout {
     .outframe {
       border-right: 3px double #863;
       border-left : 3px double #863;
     }
   }
 
-  &.mini-msg,
-  &.game-msg,
-  &.right-msg {
+  &.mini-layout,
+  &.game-layout,
+  &.right-layout {
     .outframe {
       border-left : 3px double #863;
     }

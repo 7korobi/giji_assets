@@ -37,13 +37,13 @@
   @include vivid(#002, #720, #ccf);
   @include main-theme(#000, #cb8, #720);
 
-  &.large-msg,
-  &.center-msg {
+  &.large-layout,
+  &.center-layout {
   }
 
-  &.mini-msg,
-  &.game-msg,
-  &.right-msg {
+  &.mini-layout,
+  &.game-layout,
+  &.right-layout {
   }
 
   #sayfilter .paragraph {

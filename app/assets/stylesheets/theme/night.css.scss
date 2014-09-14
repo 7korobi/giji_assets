@@ -37,8 +37,8 @@
   @include vivid(#100, #55a, #eed);
   @include main-theme(#ffa, rgba(0,0,0, 0.33), #224);
 
-  &.large-msg,
-  &.center-msg {
+  &.large-layout,
+  &.center-layout {
     .outframe {
       background-position: right top;
       border-right: 1px solid #403;
@@ -46,9 +46,9 @@
     }
   }
 
-  &.mini-msg,
-  &.game-msg,
-  &.right-msg {
+  &.mini-layout,
+  &.game-layout,
+  &.right-layout {
     .outframe {
       background-position: right top;
       border-left: 1px solid #403;
