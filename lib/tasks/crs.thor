@@ -28,9 +28,8 @@ class Crs < Thor
     end
 
 
-    append  = [Hashie::Mash.new("face_id"=>"all", "job"=>"かみさま", "chr_set_id"=>"all")]
     rejects = %w[r12 gc61]
-    CS_ALL.chr_job = (chr_jobs_hash.values.flatten | append).uniq {|o| o.face_id }.reject {|o| rejects.member? o.face_id }
+    CS_ALL.chr_job = (chr_jobs_hash.values.flatten).uniq {|o| o.face_id }.reject {|o| rejects.member? o.face_id }
 
     ([CS_ALL] + chr_sets).map do |cs|
       faces = cs.chr_job.map {|job| FACE.find {|f| f.face_id == job.face_id } }.compact
