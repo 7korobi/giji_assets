@@ -1154,6 +1154,27 @@
     order: 131
 
 #########################
+# 2014-09-11 update 
+
+-   _id: m18
+    face_id: m18
+    name: "ミーム"
+    comment: "インターネット・ミームから。 えんいー"
+    order: 70020
+
+-   _id: m19
+    face_id: m19
+    name: "タルト"
+    comment: "https://twitter.com/7korobi/status/510069062974447617"
+    order: 70021
+
+-   _id: m20
+    face_id: m20
+    name: "ショコラ"
+    comment: "https://twitter.com/noa_marimo/status/510100541536358400"
+    order: 70022
+
+#########################
 # xxxx-xx-xx update
 
 # 覇権政府、オムニ、アンブレラ、サイバーダイン、ガルタイト鉱業

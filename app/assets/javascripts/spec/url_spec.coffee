@@ -70,14 +70,12 @@ describe "Url", ->
   describe "bind variable", (done)->
     it "location other", (done)->
       Url.popstate()
-      Url.routes.file.data.fname = "other"
       Url.routes.file.change "fname", "other"
       expect(Url.routes.file.data.title).toEqual "変更"
       done()
 
     it "location basic", (done)->
       Url.popstate()
-      Url.routes.file.vue.$data.url.fname = "jasmine"
       Url.routes.file.change "fname", "jasmine"
       expect(Url.routes.file.data.title).toEqual "基本"
       done()

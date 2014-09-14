@@ -4465,6 +4465,24 @@ Cache.rule.face.set([
     "name": "モンド",
     "comment": "８８件のご応募、ありがとう。そして、ありがとう。",
     "order": 131
+  }, {
+    "_id": "m18",
+    "face_id": "m18",
+    "name": "ミーム",
+    "comment": "インターネット・ミームから。 えんいー",
+    "order": 70020
+  }, {
+    "_id": "m19",
+    "face_id": "m19",
+    "name": "タルト",
+    "comment": "https://twitter.com/7korobi/status/510069062974447617",
+    "order": 70021
+  }, {
+    "_id": "m20",
+    "face_id": "m20",
+    "name": "ショコラ",
+    "comment": "https://twitter.com/noa_marimo/status/510100541536358400",
+    "order": 70022
   }
 ]);
 
@@ -7092,6 +7110,21 @@ Cache.rule.chr_job.merge([
     "_id": "changed_m16",
     "chr_set_id": "changed"
   }, {
+    "face_id": "m18",
+    "job": "記号の妖精",
+    "_id": "changed_m18",
+    "chr_set_id": "changed"
+  }, {
+    "face_id": "m19",
+    "job": "おひめさま",
+    "_id": "changed_m19",
+    "chr_set_id": "changed"
+  }, {
+    "face_id": "m20",
+    "job": "げぼく",
+    "_id": "changed_m20",
+    "chr_set_id": "changed"
+  }, {
     "face_id": "m99",
     "job": "かみさま",
     "_id": "changed_m99",
@@ -7384,9 +7417,7 @@ describe("Cache", function() {
             return false;
         }
       };
-      this.scope("of", kind);
-      this.pager("of", 5);
-      return this.pager("all", 5);
+      return this.scope("of", kind);
     });
   };
   beforeEach(function(done) {
@@ -7490,7 +7521,7 @@ describe("Cache", function() {
       return done();
     });
   });
-  return describe("face data", function() {
+  describe("face data", function() {
     it("all values", function(done) {
       expect(Cache.faces.find.all).toEqual({
         face_id: "all",
@@ -7498,9 +7529,9 @@ describe("Cache", function() {
         order: 99999,
         _id: "all"
       });
-      expect(Cache.faces.all.length).toEqual(241);
-      expect(Cache.chr_jobs.all.length).toEqual(700);
-      expect(Cache.chr_jobs.chr_set.all.length).toEqual(241);
+      expect(Cache.faces.all.length).toEqual(244);
+      expect(Cache.chr_jobs.all.length).toEqual(706);
+      expect(Cache.chr_jobs.chr_set.all.length).toEqual(244);
       return done();
     });
     return it("delete item", function(done) {
@@ -7510,10 +7541,78 @@ describe("Cache", function() {
         }
       ]);
       expect(Cache.faces.find.all).toEqual(void 0);
-      expect(Cache.faces.all.length).toEqual(240);
-      expect(Cache.chr_jobs.all.length).toEqual(699);
-      expect(Cache.chr_jobs.chr_set.all.length).toEqual(240);
+      expect(Cache.faces.all.length).toEqual(243);
+      expect(Cache.chr_jobs.all.length).toEqual(705);
+      expect(Cache.chr_jobs.chr_set.all.length).toEqual(243);
       return done();
+    });
+  });
+  return describe("import sample data", function() {
+    return it("get all item", function(done) {
+      var event, _i, _len, _ref;
+      new Cache.Rule("message").schema(function() {
+        this.order_by("created_at");
+        this.belongs_to("scene");
+        this.belongs_to("face");
+        this.belongs_to("sow_auth");
+        this.scope("logid", function(o) {
+          return o.logid;
+        });
+        this.scope("unread", function(o) {
+          return null;
+        });
+        this.scope("info", function(o) {
+          if (o.logid.match(/^([aAmM].\d+)|(vilinfo)|(potofs)/)) {
+            return o.security;
+          }
+        });
+        this.scope("action", function(o) {
+          if (o.logid.match(/^.[AB]/)) {
+            return o.security;
+          }
+        });
+        this.scope("talk", function(o) {
+          if (o.logid.match(/^.[SX]/)) {
+            return o.security;
+          }
+        });
+        this.scope("memo", function(o) {
+          if (o.logid.match(/^.[M]/)) {
+            return o.security;
+          }
+        });
+        return this.fields({
+          _id: function(o) {
+            o.created_at = new Date(o.date) - 0;
+            o._id = ID.at(o.created_at);
+            return delete o.date;
+          },
+          security: function(o) {
+            o.security = (function() {
+              switch (false) {
+                case !o.logid.match(/^([D].\d+)/):
+                  return "delete";
+                case !o.logid.match(/^([qcS].\d+)|(MM\d+)/):
+                  return "open";
+                case !o.logid.match(/^([aAmMI].\d+)|(vilinfo)|(potofs)/):
+                  return "announce";
+                case !o.logid.match(/^([Ti].\d+)/):
+                  return "think";
+                case !o.logid.match(/^([\-WPX].\d+)/):
+                  return "clan";
+              }
+            })();
+            return o.scene_id = o.event_id + o.security;
+          }
+        });
+      });
+      done();
+      _ref = sample2.events;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        event = _ref[_i];
+        Cache.rule.message.merge(event.messages);
+      }
+      return expect(Cache.messages.all.length).toEqual(1604);
     });
   });
 });
@@ -7747,14 +7846,12 @@ describe("Url", function() {
   return describe("bind variable", function(done) {
     it("location other", function(done) {
       Url.popstate();
-      Url.routes.file.data.fname = "other";
       Url.routes.file.change("fname", "other");
       expect(Url.routes.file.data.title).toEqual("変更");
       return done();
     });
     return it("location basic", function(done) {
       Url.popstate();
-      Url.routes.file.vue.$data.url.fname = "jasmine";
       Url.routes.file.change("fname", "jasmine");
       expect(Url.routes.file.data.title).toEqual("基本");
       return done();

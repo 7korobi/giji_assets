@@ -72,6 +72,15 @@ chr_job:
   - face_id: m16
     job: "りゅうきへい"
 
+  - face_id: m18
+    job: "記号の妖精"
+
+  - face_id: m19
+    job: "おひめさま"
+
+  - face_id: m20
+    job: "げぼく"
+
   - face_id: m99
     job: "かみさま"
 

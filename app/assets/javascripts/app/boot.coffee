@@ -42,10 +42,6 @@ if "onpopstate" of window
   unless head.browser.safari
     Url.popstate()
 
-if "onhaschange" of window
-  $(window).on "haschange", (event)->
-    console.log "on haschange"
-
 if "onmessage" of window
   $(window).on "message", (event)->
     console.log "on message"

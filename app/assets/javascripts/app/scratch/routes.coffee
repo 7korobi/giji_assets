@@ -18,22 +18,14 @@ Url.routes =
 
   potof: new Url "/potof/:potofs_order"
 
-  css: new Url "/css-:theme-:width-:layout-:font",
-    el: "html"
-    ready: ->
-      style_p = ""
-      style_change = =>
-        html = document.documentElement
-        html.className = html.className.replace style_p, @style
-        style_p = @style
-      @$watch 'url', _.debounce style_change, DELAY.presto,
-        leading: false
-        trailing: true
+  css: new Url "/css-:theme-:width-:layout-:font", (params)->
+    @style_p ||= ""
+    h = {}
+    for key, val of params
+      h["#{val}-#{key}"] = true if key? && val? && "String" == ((Url.options[key]?.type) || "String")
+    style = Object.keys(h).join(" ")
 
-    computed:
-      style: ->
-        h = {}
-        for key in @params
-          val = @url[key]
-          h["#{val}-#{key}"] = true if key? && val? && "String" == ((Url.options[key]?.type) || "String")
-        Object.keys(h).join(" ")
+    html = document.documentElement
+    html.className = html.className.replace @style_p, style
+    @style_p = style
+

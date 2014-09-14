@@ -1,0 +1,506 @@
+sampleF = {
+	"form": {},
+	"cautions": []
+}
+sampleF.form.login = {
+  "cmd": "login",
+  "admin_uri": "",
+  "is_admin": 0,
+  "cmdfrom": "",
+  "expired": 1411117994000,
+  "uidtext": "master".replace(" ","&nbsp;"),
+  "uid": "master"
+}
+sampleF.form.uri = "./sow.cgi";
+sampleF.cautions.push("{{potof.timer.entry_limit()}}までに一度も発言せず村も開始されなかった場合、あなたは自動的に村から追い出されます。");
+sampleF.cautions.push("※発言すると期限が延長されます。");
+text_form = {
+	cmd: "wrmemo",
+	jst: "memo",
+	text: "",
+	votes: [],
+	style: "",
+	title: "メモを貼る",
+	count: "あと36回",
+	caption: "※メモを使うと発言を20pt消費します。",
+	max: {
+		unit: "count",
+		line: 25,
+		size: 2000
+	},
+	mestype: "SAY",
+	csid_cid: "ger/g03",
+	longname: "吹牛方士 芙蓉"
+};
+sampleF.form.texts.push(text_form);
+
+text_form = {
+	cmd: "write",
+	jst: "open",
+	text: "",
+	votes: [],
+	style: "",
+	title: "発言",
+	mestype: "SAY",
+	caption: "",
+	max: {
+		unit: "point",
+		line: 20,
+		size: 1000
+	},
+	csid_cid: "ger/g03",
+	longname: "吹牛方士 芙蓉",
+	target: "-1"
+};
+(function(){
+var a = [];
+var b = [];
+a.push({val:"-1",          mestype:"SAY", name:"あと3000pt (発言)"});
+a.push({val:"0", mestype:"TSAY", name:"あと1000pt (独り言)"});
+a.push({val:"1", mestype:"AIM", name:"あと3000pt 店番 ソフィアと内緒話"});a.push({val:"2", mestype:"AIM", name:"あと3000pt 奇跡の子 カリュクスと内緒話"});a.push({val:"3", mestype:"AIM", name:"あと3000pt 安全保障局 アランと内緒話"});a.push({val:"4", mestype:"AIM", name:"あと3000pt 幸運の科学 リッキィと内緒話"});a.push({val:"5", mestype:"AIM", name:"あと3000pt 記号の妖精 ミームと内緒話"});text_form.targets = a;
+text_form.roles   = b;
+})();
+sampleF.form.texts.push(text_form);
+var text_form_open = text_form;
+text_form = {
+	cmd: "action",
+	jst: "action",
+	action: "-99",
+	target: "-1",
+	text: "",
+	title: "アクション",
+	count: "あと36回",
+	max: {
+		unit: "count",
+		line: 1,
+		size: 120
+	},
+	mestype: "SAY",
+	shortname: "芙蓉"
+};
+(function(){
+var a = [];
+var b = [];
+a.push({val:"-1", name:"（選択しない）"});
+b.push({val:"-99", name:"（↓自由に入力）"});
+a.push({val:"1", name:"ソフィア", longname:"店番 ソフィア"});
+a.push({val:"2", name:"カリュクス", longname:"奇跡の子 カリュクス"});
+a.push({val:"3", name:"アラン", longname:"安全保障局 アラン"});
+a.push({val:"4", name:"リッキィ", longname:"幸運の科学 リッキィ"});
+a.push({val:"5", name:"ミーム", longname:"記号の妖精 ミーム"});
+b.push({val:"0", name:"につかいこまれた。"});
+b.push({val:"1", name:"にスパム缶を押しつけた。"});
+b.push({val:"2", name:"に画期的なミッションを提案した。さあ、きみも参加しよう！"});
+b.push({val:"3", name:"にロケットシューズを差し出した。10、9、8、……"});
+b.push({val:"4", name:"に「Thiotimoline」と書かれた注射を投与した。"});
+b.push({val:"5", name:"にアスベストアーマーを謹んで進呈した。"});
+b.push({val:"6", name:"にゴシゴシボットをけしかけた。"});
+b.push({val:"7", name:"にあっかんべーをした。"});
+b.push({val:"8", name:"にむぎゅうした。"});
+b.push({val:"9", name:"にクラクションを鳴らした。"});
+b.push({val:"10", name:"にお辞儀をした。"});
+b.push({val:"11", name:"にひどくうろたえた。"});
+b.push({val:"12", name:"に謹んで賄賂を差し出した。"});
+b.push({val:"13", name:"が悪の秘密結社に狙われていると確信した。"});
+b.push({val:"14", name:"が悪の秘密結社に唆されていると確信した。"});
+b.push({val:"15", name:"を不信の目で見た。"});
+b.push({val:"16", name:"をつんつんつついた。"});
+b.push({val:"17", name:"を秘密警察(IntSec)に通報しますた。"});
+b.push({val:"18", name:"をじっと見つめた。"});
+b.push({val:"19", name:"を慰める振りをした。"});
+b.push({val:"20", name:"を巻き添えにした。"});
+b.push({val:"21", name:"を秘密結社に招待した。"});
+b.push({val:"22", name:"を「同志！」と呼んでみた。"});
+b.push({val:"23", name:"を空の彼方にぶっ飛ばした。"});
+b.push({val:"24", name:"をセラミックハリセンで殴った。"});
+b.push({val:"25", name:"を純白(Ultra-Violet)のハリセンで殴った。"});
+b.push({val:"26", name:"を自殺的ボランティアに推薦した。"});
+b.push({val:"27", name:"を電子レンジで乾かしてさしあげた。"});
+b.push({val:"28", name:"をプラズマキャノンの的にしてみた。"});
+b.push({val:"29", name:"をトンデモ理論で弁護した。"});
+b.push({val:"30", name:"を冷凍庫に放り込んだ。"});
+b.push({val:"31", name:"を医療ポッドに捧げた。"});
+b.push({val:"32", name:"の装備を取り上げて、じろじろ覗き込んだ。"});
+b.push({val:"33", name:"の足下を指さした。たいへん、地面がありませんよ。"});
+b.push({val:"34", name:"の頭を撫でた。"});
+b.push({val:"35", name:"の肩を叩いた。"});
+b.push({val:"36", name:"の行いを、最新の「反逆っぽい行動リスト」から見つけ出した。"});
+b.push({val:"37", name:"の靴をほこりひとつないほどに舐め回した。"});
+b.push({val:"38", name:"のチョコレートを借用した。"});
+b.push({val:"39", name:"の見てない隙に、すべてをやりとげた。"});
+b.push({val:"40", name:"と試用したR&Dの新装備に、Ａ評価をつけた。"});
+b.push({val:"41", name:"とにやりと微笑みあった。"});
+b.push({val:"42", name:"から逃げ出した！しかし、回り込まれてしまった！"});
+b.push({val:"-4", name:"のセキュリティ・クリアランスを引き上げた。"});
+b.push({val:"-5", name:"のセキュリティ・クリアランスを引き下ろした。"});
+b.push({val:"-3", name:"に別れを告げた。次のクローンはもっとうまくやるだろう。(0回目)"});
+b.push({val:"-2", name:"ここまで読んだ。"});
+b.push({val:"-1", name:"に話の続きを促した。(残3回)"});
+text_form.targets = a;
+text_form.actions = b;
+})();
+sampleF.form.texts.push(text_form);
+sampleF.form.win = "WIN_NONE";
+sampleF.form.secrets.push("あなたは<a href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_VILLAGER\">村人</a>を希望しています。ただし、希望した通りの能力者になれるとは限りません。");
+command = {
+	cmd: "exit",
+	jst: "button",
+	title: "村を出る"
+};
+sampleF.form.commands[command.cmd] = command;
+var command;
+var a = [];
+sampleF.form.command_targets = a;
+a.push({val:"1", name:"店番 ソフィア"});
+a.push({val:"2", name:"奇跡の子 カリュクス"});
+a.push({val:"3", name:"安全保障局 アラン"});
+a.push({val:"4", name:"幸運の科学 リッキィ"});
+a.push({val:"5", name:"記号の妖精 ミーム"});
+
+
+sampleF.story = {
+	"folder": "PERJURY",
+	"vid": 227,
+    "turn":   0,
+
+	"link": _.unescape("./sow.cgi?vid=227&amp;cmd=vinfo"),
+	"name":    "最初から打ち切り村",
+	"rating":  "biohazard",
+	"comment": "――　先生の次回作にご期待ください！！<br><br>━・━・━・━・━・━・━・━・━・━・<br><br>風呂敷を広げるだけ広げてたたまずに打ち切り落ちを積極的に狙ってゆく村です。<br>読解が難解になる事も想定内ですので気を強く持とう。<br><br>参加者は決まっています。<br>独り言には「ｗ」が乱れ飛んでいる可能性がある村です。<br>読む際には、ご注意下さい。<br><br>■村のルール<br>1.多重ログインをしない。<br>2.システムの出力内容を、そのまま書き写さない。<br>3.エピローグまで秘密を守る。参加中の村の内容は秘密だ。<br>4.エピローグまで秘密を守る。希望した能力、画面を見ているきみが何者なのかは秘密だ。",
+	"csid":    "all",
+
+	"order": 0,
+	"is_finish":    (0 !== 0),
+	"is_epilogue":  (0 !== 0),
+	"is_prologue":  (0 === 0),
+	"is_scrap":     (0 !== 0),
+	"is_totalcommit": (3 === -1),
+
+	"options": [],
+
+	"entry": {
+		"limit":   "password"
+	},
+
+	"card":{
+		"discard": giji.story.card.discard(""),
+		"event":   giji.story.card.event(""),
+		"config":  "villager/seerrole/prince/witch/scapegoat/sorcerer/cursewolf/mimicry".split('/')
+	},
+	"announce":{
+		"game_name": "タブラの人狼",
+		"game_help": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。<li>狼を全滅させると、村勝利。<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。</li>",
+		"trs_name": "オール☆スター",
+		"trs_help": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。",
+		"csidcaptions": "人狼議事 ちゃんぷる ",
+		"starttype": "手動開始（開始ボタンを押したら開始）",
+		"totalcommit": "",
+		"rating": "[危] 無茶ぶり上等"
+	},
+	"timer":{
+		"extend":   2,
+		"updateddt":    new Date(1000 * 1410504238),
+		"nextupdatedt": new Date(1000 * 1410555600),
+		"nextchargedt": new Date(1000 * 1410555600),
+		"nextcommitdt": new Date(1000 * 1410504238),
+		"scraplimitdt": new Date(1000 * 1410987600)
+	},
+	"type":{
+		"roletable": "custom",
+		"say":   "vulcan",
+		"start": "manual",
+		"vote":  "anonymity",
+		"mob":   "grave",
+		"game":  "TABULA"
+	},
+	"upd":{
+		"interval": 2,
+		"hour":     6,
+		"minute":   0
+	},
+	"vpl":[
+		8,
+		8
+	]
+};
+if(1 === 0      ){ sampleF.story.options.push("aiming-talk");   }
+if(1 === 0     ){ sampleF.story.options.push("entrust");       }
+if(1 === 0){ sampleF.story.options.push("random-target"); }
+if(1 !== 0   ){ sampleF.story.options.push("select-role");   }
+if(1 === 0    ){ sampleF.story.options.push("seq-event");     }
+if(1 === 0      ){ sampleF.story.options.push("show-id");       }
+if(1 === 0      ){ sampleF.story.options.push("undead-talk");   }
+(function(){
+var a = [];
+a.push("1.ここは長期人狼サーバーだ。短期はできない。");a.push("2.情報ページ（ここ）を熟読する。");a.push("3.ルールを守り、つねに心構えに気を配る。");a.push("4.進行中は、どんな嘘でもＯＫ。");a.push("5.ただし、（村建て人）、（管理人）の発言では嘘をつかないこと。");a.push("6.突然死をしない。");sampleF.story.announce.nrules = a;
+})();
+sampleF.events = [];
+var event = {
+	"is_progress": (1 == 1),
+	"name": "プロローグ",
+	"link": "./sow.cgi?vid=227&rowall=on&turn=0",
+	"news": null,
+	"turn": 0
+}
+sampleF.events.push(event);
+event.news = "./sow.cgi?vid=227";
+sampleF.form.turn = 0;
+sampleF.event = {
+	"turn":   0,
+	"winner": giji.event.winner(0),
+	"event":  giji.event.event(0),
+	"riot":      -1,
+	"scapegoat": -1,
+	"is_seance": (0 !== 0),
+	"is_public": (0 !== 1),
+	"is_eclipse": (0 !== 0),
+	"is_freecost": (0 !== 0),
+	"is_epilogue": (0 !== 0),
+	"is_startable": (0 !== 0),
+	"player":{
+		"start": 8,
+		"limit": 8,
+		"mob":   4,
+		"votable": 6,
+		"commitable": 6
+	},
+	"say":{
+		"modifiedsay":   new Date(1000 * 1410511952),
+		"modifiedwsay":  new Date(1000 * 0),
+		"modifiedgsay":  new Date(1000 * 0),
+		"modifiedspsay": new Date(1000 * 0),
+		"modifiedxsay":  new Date(1000 * 0),
+		"modifiedvsay":  new Date(1000 * 0)
+	},
+	"messages": []
+};
+sampleF.potofs=[];
+var pl = {
+	"turn":    0,
+    "pno":     0,
+	"csid":    "ger",
+	"face_id": "g03",
+	"deathday": -1,
+	"is_delete": true,
+
+	"name":    "芙蓉",
+	"jobname": "",
+	"longname": "吹牛方士 芙蓉",
+	"shortname": "芙蓉",
+	"clearance": 1,
+	"zapcount": 0,
+	"postfix": "",
+
+	"live": "live",
+	"bonds": [],
+	"pseudobonds": [],
+
+	"point":{},
+	"say":{
+		"say": 3000
+	}
+};
+pl.point = {
+	"actaddpt":  3,
+	"saidcount": 1,
+	"saidpoint": 0
+};
+pl.sow_auth_id = "master";
+pl.is_canrole = (0 !== 1);
+pl.is_cangift = (0 !== 1);
+
+pl.win = {
+	visible: "WIN_NONE",
+	result:  ""
+};
+
+pl.live = "live";
+pl.role = giji.potof.roles(-1, -1);
+pl.rolestate = -1;
+pl.select = giji.potof.select(1);
+
+pl.history = "";
+pl.sheep = "";
+pl.overhear = [];
+
+pl.love = "";
+pl.bonds = [];
+pl.pseudolove = "";
+pl.pseudobonds = [];
+
+pl.is_voter = (0 !== 1);
+pl.is_human = (0 !== 0);
+pl.is_enemy = (0 !== 0);
+pl.is_wolf = (0 !== 0);
+pl.is_pixi = (0 !== 0);
+pl.is_sensible = (0 !== 1);
+pl.is_committer = (0 !== 1);
+pl.say = {
+	"say":   3000,
+	"tsay":  1000,
+	"spsay": 1500,
+	"wsay":  4000,
+	"gsay":  3000,
+	"say_act": 36
+};
+pl.timer = {
+	"entrieddt":    new Date(1000 * 1410504238),
+	"limitentrydt": new Date(1000 * 0)
+};
+sampleF.potofs.push(pl);
+sampleF.potof = pl;
+var pl = {
+	"turn":    0,
+    "pno":     1,
+	"csid":    "all",
+	"face_id": "c67",
+	"deathday": -1,
+	"is_delete": true,
+
+	"name":    "ソフィア",
+	"jobname": "",
+	"longname": "店番 ソフィア",
+	"shortname": "ソフィア",
+	"clearance": 1,
+	"zapcount": 0,
+	"postfix": "",
+
+	"live": "live",
+	"bonds": [],
+	"pseudobonds": [],
+
+	"point":{},
+	"say":{
+		"say": 3000
+	}
+};
+pl.point = {
+	"actaddpt":  3,
+	"saidcount": 1,
+	"saidpoint": 0
+};
+sampleF.potofs.push(pl);
+var pl = {
+	"turn":    0,
+    "pno":     2,
+	"csid":    "all",
+	"face_id": "m14",
+	"deathday": -1,
+	"is_delete": true,
+
+	"name":    "カリュクス",
+	"jobname": "",
+	"longname": "奇跡の子 カリュクス",
+	"shortname": "カリュクス",
+	"clearance": 1,
+	"zapcount": 0,
+	"postfix": "",
+
+	"live": "live",
+	"bonds": [],
+	"pseudobonds": [],
+
+	"point":{},
+	"say":{
+		"say": 3000
+	}
+};
+pl.point = {
+	"actaddpt":  3,
+	"saidcount": 1,
+	"saidpoint": 0
+};
+sampleF.potofs.push(pl);
+var pl = {
+	"turn":    0,
+    "pno":     3,
+	"csid":    "all",
+	"face_id": "t16",
+	"deathday": -1,
+	"is_delete": true,
+
+	"name":    "アラン",
+	"jobname": "",
+	"longname": "安全保障局 アラン",
+	"shortname": "アラン",
+	"clearance": 1,
+	"zapcount": 0,
+	"postfix": "",
+
+	"live": "live",
+	"bonds": [],
+	"pseudobonds": [],
+
+	"point":{},
+	"say":{
+		"say": 3000
+	}
+};
+pl.point = {
+	"actaddpt":  3,
+	"saidcount": 1,
+	"saidpoint": 0
+};
+sampleF.potofs.push(pl);
+var pl = {
+	"turn":    0,
+    "pno":     4,
+	"csid":    "all",
+	"face_id": "t02",
+	"deathday": -1,
+	"is_delete": true,
+
+	"name":    "リッキィ",
+	"jobname": "",
+	"longname": "幸運の科学 リッキィ",
+	"shortname": "リッキィ",
+	"clearance": 1,
+	"zapcount": 0,
+	"postfix": "",
+
+	"live": "live",
+	"bonds": [],
+	"pseudobonds": [],
+
+	"point":{},
+	"say":{
+		"say": 3000
+	}
+};
+pl.point = {
+	"actaddpt":  3,
+	"saidcount": 1,
+	"saidpoint": 0
+};
+sampleF.potofs.push(pl);
+var pl = {
+	"turn":    0,
+    "pno":     5,
+	"csid":    "all",
+	"face_id": "m18",
+	"deathday": -1,
+	"is_delete": true,
+
+	"name":    "ミーム",
+	"jobname": "",
+	"longname": "記号の妖精 ミーム",
+	"shortname": "ミーム",
+	"clearance": 1,
+	"zapcount": 0,
+	"postfix": "",
+
+	"live": "live",
+	"bonds": [],
+	"pseudobonds": [],
+
+	"point":{},
+	"say":{
+		"say": 3000
+	}
+};
+pl.point = {
+	"actaddpt":  3,
+	"saidcount": 1,
+	"saidpoint": 0
+};
+sampleF.potofs.push(pl);

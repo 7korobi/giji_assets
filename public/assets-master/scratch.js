@@ -9,10 +9,7 @@ for (key in _ref) {
     LOCATION.bind[key][bind[key]] = bind;
   }
 }
-
-Vue.config({
-  debug: true
-});
+;
 var chr_set_id, face, face_id, faced_jobs, job, list, order, _i, _id, _len, _ref, _ref1, _ref2;
 
 new Cache.Rule("face").schema(function() {
@@ -1374,6 +1371,24 @@ Cache.rule.face.set([
     "name": "モンド",
     "comment": "８８件のご応募、ありがとう。そして、ありがとう。",
     "order": 131
+  }, {
+    "_id": "m18",
+    "face_id": "m18",
+    "name": "ミーム",
+    "comment": "インターネット・ミームから。 えんいー",
+    "order": 70020
+  }, {
+    "_id": "m19",
+    "face_id": "m19",
+    "name": "タルト",
+    "comment": "https://twitter.com/7korobi/status/510069062974447617",
+    "order": 70021
+  }, {
+    "_id": "m20",
+    "face_id": "m20",
+    "name": "ショコラ",
+    "comment": "https://twitter.com/noa_marimo/status/510100541536358400",
+    "order": 70022
   }
 ]);
 
@@ -4001,6 +4016,21 @@ Cache.rule.chr_job.merge([
     "_id": "changed_m16",
     "chr_set_id": "changed"
   }, {
+    "face_id": "m18",
+    "job": "記号の妖精",
+    "_id": "changed_m18",
+    "chr_set_id": "changed"
+  }, {
+    "face_id": "m19",
+    "job": "おひめさま",
+    "_id": "changed_m19",
+    "chr_set_id": "changed"
+  }, {
+    "face_id": "m20",
+    "job": "げぼく",
+    "_id": "changed_m20",
+    "chr_set_id": "changed"
+  }, {
     "face_id": "m99",
     "job": "かみさま",
     "_id": "changed_m99",
@@ -4083,39 +4113,20 @@ Url.routes = {
   hides: new Url("/hides/:hide_ids"),
   search: new Url("/search/:search"),
   potof: new Url("/potof/:potofs_order"),
-  css: new Url("/css-:theme-:width-:layout-:font", {
-    el: "html",
-    ready: function() {
-      var style_change, style_p;
-      style_p = "";
-      style_change = (function(_this) {
-        return function() {
-          var html;
-          html = document.documentElement;
-          html.className = html.className.replace(style_p, _this.style);
-          return style_p = _this.style;
-        };
-      })(this);
-      return this.$watch('url', _.debounce(style_change, DELAY.presto, {
-        leading: false,
-        trailing: true
-      }));
-    },
-    computed: {
-      style: function() {
-        var h, key, val, _i, _len, _ref, _ref1;
-        h = {};
-        _ref = this.params;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          key = _ref[_i];
-          val = this.url[key];
-          if ((key != null) && (val != null) && "String" === (((_ref1 = Url.options[key]) != null ? _ref1.type : void 0) || "String")) {
-            h["" + val + "-" + key] = true;
-          }
-        }
-        return Object.keys(h).join(" ");
+  css: new Url("/css-:theme-:width-:layout-:font", function(params) {
+    var h, html, key, style, val, _ref;
+    this.style_p || (this.style_p = "");
+    h = {};
+    for (key in params) {
+      val = params[key];
+      if ((key != null) && (val != null) && "String" === (((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String")) {
+        h["" + val + "-" + key] = true;
       }
     }
+    style = Object.keys(h).join(" ");
+    html = document.documentElement;
+    html.className = html.className.replace(this.style_p, style);
+    return this.style_p = style;
   })
 };
 if ("onorientationchange" in window) {
@@ -4171,12 +4182,6 @@ if ("onpopstate" in window) {
   if (!head.browser.safari) {
     Url.popstate();
   }
-}
-
-if ("onhaschange" in window) {
-  $(window).on("haschange", function(event) {
-    return console.log("on haschange");
-  });
 }
 
 if ("onmessage" in window) {

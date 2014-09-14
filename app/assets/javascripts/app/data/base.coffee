@@ -3,5 +3,3 @@ for key, binds of LOCATION.bind
   for bind in binds
     LOCATION.bind[key][bind[key]] = bind
 
-Vue.config
-  debug: true

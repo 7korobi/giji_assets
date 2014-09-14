@@ -4,6 +4,7 @@ class Crs < Thor
   desc "create", "create config to other server"
   def create
     require './config/environment'
+    require './lib/rsync'
     require 'erubis'
 
     chr_sets = [
@@ -39,6 +40,12 @@ class Crs < Thor
     end.flatten.each do | params |
       CrsCreate.new.activate(Hashie::Mash.new params)
     end
+
+    rsync = Giji::RSync.new
+    rsync.each do |folder, protocol, set|
+      rsync.put(protocol, set, 'rs/', :lapp, :app)
+    end
+    rsync.exec
   end
 
 

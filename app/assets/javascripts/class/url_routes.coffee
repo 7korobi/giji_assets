@@ -21,14 +21,12 @@ class Url
           route = Url.routes[url_key]
           cb(route, data, target)
 
-
   @popstate = ->
+    Url.data = {}
     Url.each (route, data, target)->
       route.popstate data, target
 
-
   @pushstate = ->
-    Url.data = Url.vue.$data
     link = location.href
     if history?
       Url.each (route, data, target)->
@@ -43,17 +41,7 @@ class Url
       history.pushState "pushstate", null, link
       Url.popstate()
 
-
-  @vue = new Vue
-    data: Url.data
-    ready: ->
-      pushstate = _.debounce Url.pushstate, DELAY.presto,
-        leading: false
-        trailing: true
-      @$watch '$data', pushstate
-
-
-  constructor: (@format, vue = {})->
+  constructor: (@format, @event_cb = ->)->
     @keys = []
     @params_in_url = []
     @scanner = new RegExp @format.replace(/[.]/ig,(key)-> "\\#{key}" ).replace /:([a-z_]+)/ig, (_, key)=>
@@ -63,23 +51,16 @@ class Url
 
       Serial.url[type]
     , "i"
-    @vue = new Vue _.merge vue,
-      data:
-        url: @data = Url.vue.$data
-        params: []
-
 
   popstate: (path, @target)->
+    @data = {}
     @params = []
     @match = @scanner.exec(path)
     if @match
       @match.shift()
       for key, i in @keys
         @change key, @match[i]
-
-    @vue.$set "url", @data = Url.vue.$data
-    @vue.$set "params", @params
-
+    @event_cb(@data)
 
   pushstate: (link)->
     # TODO: cookie & href each targets.
@@ -104,45 +85,15 @@ class Url
     value = Serial.parser[type](value)
 
     @params.push key
-    Url.vue.$data[key] = value
+    Url.data[key] = @data[key] = value
     if Url.bind[key]?
       for subkey, subval of Url.bind[key][value]
         @change subkey, subval if key != subkey
 
 
   value: (key)->
-    value = Url.vue.$data[key]
+    value = @data[key]
     if value?
       value
     else
       (Url.options[key]?.current) || null
-
-
-###
-el: the element the directive is bound to.
-key: the keypath of the binding, excluding arguments and filters.
-arg: the argument, if present.
-expression: the raw, unparsed expression.
-vm: the context ViewModel that owns this directive.
-value: the current binding value.
-# <div v-href=""></div>
-###
-
-
-Vue.directive 'href',
-  bind: (value) ->
-    @el.addEventListener 'click', =>
-      @vm[@key]
-
-
-  update: (value)->
-    $(@el).attr 'href', Url.link value
-
-
-  unbind: ->
-    @el.removeEventListener 'click', =>
-      console.log 'unbind'
-
-
-
-

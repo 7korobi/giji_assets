@@ -110,8 +110,6 @@ describe "Cache", ->
           else
             false
       @scope "of", kind
-      @pager "of", 5
-      @pager "all", 5
 
   beforeEach (done)->
     setTimeout ->
@@ -206,15 +204,64 @@ describe "Cache", ->
   describe "face data", ->
     it "all values", (done)->
       expect(Cache.faces.find.all).toEqual face_id: "all", name: "パルック", order: 99999, _id: "all"
-      expect(Cache.faces.all.length).toEqual 241
-      expect(Cache.chr_jobs.all.length).toEqual 700
-      expect(Cache.chr_jobs.chr_set.all.length).toEqual 241
+      expect(Cache.faces.all.length).toEqual 244
+      expect(Cache.chr_jobs.all.length).toEqual 706
+      expect(Cache.chr_jobs.chr_set.all.length).toEqual 244
       done()
 
     it "delete item", (done)->
       Cache.rule.face.reject [_id: "all"]
       expect(Cache.faces.find.all).toEqual undefined
-      expect(Cache.faces.all.length).toEqual 240
-      expect(Cache.chr_jobs.all.length).toEqual 699
-      expect(Cache.chr_jobs.chr_set.all.length).toEqual 240
+      expect(Cache.faces.all.length).toEqual 243
+      expect(Cache.chr_jobs.all.length).toEqual 705
+      expect(Cache.chr_jobs.chr_set.all.length).toEqual 243
       done()
+
+  describe "import sample data", ->
+    it "get all item", (done)->
+      new Cache.Rule("message").schema ->
+        @order_by "created_at"
+        @belongs_to "scene"
+        @belongs_to "face"
+        @belongs_to "sow_auth"
+        @scope "logid", (o)-> o.logid
+        @scope "unread", (o)-> null
+        @scope "info", (o)->
+          if o.logid.match /^([aAmM].\d+)|(vilinfo)|(potofs)/
+            o.security
+
+        @scope "action", (o)->
+          if o.logid.match /^.[AB]/
+            o.security
+
+        @scope "talk", (o)->
+          if o.logid.match /^.[SX]/
+            o.security
+
+        @scope "memo", (o)->
+          if o.logid.match /^.[M]/
+            o.security
+
+        @fields
+          _id: (o)-> 
+            o.created_at = new Date(o.date) - 0
+            o._id = ID.at(o.created_at)
+            delete o.date
+          security: (o)->
+            o.security =
+              switch
+                when o.logid.match /^([D].\d+)/
+                  "delete"
+                when o.logid.match /^([qcS].\d+)|(MM\d+)/
+                  "open"
+                when o.logid.match /^([aAmMI].\d+)|(vilinfo)|(potofs)/
+                  "announce"
+                when o.logid.match /^([Ti].\d+)/
+                  "think"
+                when o.logid.match /^([\-WPX].\d+)/
+                  "clan"
+            o.scene_id = o.event_id + o.security
+      done()
+      for event in sample2.events
+        Cache.rule.message.merge event.messages
+      expect(Cache.messages.all.length).toEqual 1604

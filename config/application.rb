@@ -23,6 +23,7 @@ module GijiAssets
     config.assets.precompile += %w(
       base.js
       scratch.js
+      rails.js
       sow.js
       spec.js
       spec.css
