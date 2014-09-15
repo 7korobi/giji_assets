@@ -2,6 +2,7 @@ chr_set:
   _id: animal
   admin: "大地の震動"
   maker: "草原のざわめき"
+  caption: "うきうきサバンナ"
 
 chr_npc:
   - caption: "うきうきサバンナ"

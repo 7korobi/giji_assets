@@ -3,6 +3,7 @@ chr_set:
   _id: all
   admin: 闇の呟き
   maker: 天のお告げ
+  caption: 人狼議事 ちゃんぷる
 
 chr_npc:
   - caption: 人狼議事 ちゃんぷる

@@ -2,6 +2,7 @@ chr_set:
   _id: changed
   admin: "闇の呟き"
   maker: "広場のお告げ"
+  caption: "はおうの広場"
 
 chr_npc:
   - caption: "とのさま広場"

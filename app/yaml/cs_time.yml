@@ -2,6 +2,7 @@ chr_set:
   _id: time
   admin: "第四の壁の深奥"
   maker: "次元X式コンピューター"
+  caption: "エクスパンション・セット「帰還者議事」"
 
 chr_npc:
   - caption: "エクスパンション・セット「帰還者議事」"

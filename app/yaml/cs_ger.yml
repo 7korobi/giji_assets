@@ -2,6 +2,7 @@ chr_set:
   _id: ger
   admin: "闇の呟き"
   maker: "馬頭琴の調"
+  caption: "エクスパンション・セット「大陸議事」"
 
 chr_npc:
   - caption: "エクスパンション・セット「大陸議事」"

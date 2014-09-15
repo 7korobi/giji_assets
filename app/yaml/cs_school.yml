@@ -2,6 +2,7 @@ chr_set:
   _id: school
   admin: "校内放送"
   maker: "校内放送"
+  caption: "私立七転学園"
 
 chr_npc:
   - caption: "私立七転学園"

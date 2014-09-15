@@ -2,6 +2,7 @@ chr_set:
   _id: wa
   admin: "闇の呟き"
   maker: "稲荷のお告げ"
+  caption: "和の国てやんでえ"
 
 chr_npc:
   - caption: "和の国てやんでえ"

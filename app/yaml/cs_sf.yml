@@ -2,6 +2,7 @@ chr_set:
   _id: sf
   admin: "黒体放射のエヴェレット解釈"
   maker: "重ね合せ猫のユニタリ変換"
+  caption: "明後日への道標"
 
 chr_npc:
   - caption: "明後日への道標"
