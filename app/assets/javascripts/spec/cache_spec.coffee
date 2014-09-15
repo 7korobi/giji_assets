@@ -76,13 +76,6 @@ describe "Cache", ->
       @belongs_to "scene"
     Cache.rule.message.cleanup()
     Cache.rule.message.merge [
-      _id: msg1
-      scene_id: scene1
-      name: "7korobi"
-      text: "text 1"
-      created_at: 1
-      updated_at: 1
-    ,
       _id: msg2
       scene_id: scene2
       name: "7korobi"
@@ -96,6 +89,14 @@ describe "Cache", ->
       text: "text 3"
       created_at: 3
       updated_at: 3
+    ,
+      _id: msg1
+      scene_id: scene1
+      name: "7korobi"
+      text: "text 1"
+      created_at: 1
+      updated_at: 1
+    ,
     ]
 
   cache_message_with_scope = ->
