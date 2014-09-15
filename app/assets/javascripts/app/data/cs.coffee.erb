@@ -1,13 +1,17 @@
 new Cache.Rule("face").schema ->
   @order_by "order"
 new Cache.Rule("chr_set").schema ->
+  @order_by "caption"
 new Cache.Rule("chr_npc").schema ->
   @belongs_to "chr_set", dependent: true
   @belongs_to "face", dependent: true
 new Cache.Rule("chr_job").schema ->
-  @order (o)-> o.face.order
+  @order_by "order"
   @belongs_to "chr_set", dependent: true
   @belongs_to "face", dependent: true
+  @fields
+    _id: (o)-> 
+      o.order = o.face.order
 
 Cache.rule.face.set <%= JSON.generate FACE %>
 

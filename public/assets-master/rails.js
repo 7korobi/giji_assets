@@ -16,7 +16,9 @@ new Cache.Rule("face").schema(function() {
   return this.order_by("order");
 });
 
-new Cache.Rule("chr_set").schema(function() {});
+new Cache.Rule("chr_set").schema(function() {
+  return this.order_by("caption");
+});
 
 new Cache.Rule("chr_npc").schema(function() {
   this.belongs_to("chr_set", {
@@ -28,14 +30,17 @@ new Cache.Rule("chr_npc").schema(function() {
 });
 
 new Cache.Rule("chr_job").schema(function() {
-  this.order(function(o) {
-    return o.face.order;
-  });
+  this.order_by("order");
   this.belongs_to("chr_set", {
     dependent: true
   });
-  return this.belongs_to("face", {
+  this.belongs_to("face", {
     dependent: true
+  });
+  return this.fields({
+    _id: function(o) {
+      return o.order = o.face.order;
+    }
   });
 });
 
@@ -1394,6 +1399,7 @@ Cache.rule.chr_set.merge([
     "_id": "ger",
     "admin": "闇の呟き",
     "maker": "馬頭琴の調",
+    "caption": "エクスパンション・セット「大陸議事」",
     "chr_set_id": "ger"
   }
 ]);
@@ -1464,6 +1470,7 @@ Cache.rule.chr_set.merge([
     "_id": "mad",
     "admin": "闇の呟き",
     "maker": "天上の調べ",
+    "caption": "エクスパンション・セット「狂騒議事」",
     "chr_set_id": "mad"
   }
 ]);
@@ -1539,6 +1546,7 @@ Cache.rule.chr_set.merge([
     "_id": "school",
     "admin": "校内放送",
     "maker": "校内放送",
+    "caption": "私立七転学園",
     "chr_set_id": "school"
   }
 ]);
@@ -2109,6 +2117,7 @@ Cache.rule.chr_set.merge([
     "_id": "sf",
     "admin": "黒体放射のエヴェレット解釈",
     "maker": "重ね合せ猫のユニタリ変換",
+    "caption": "明後日への道標",
     "chr_set_id": "sf"
   }
 ]);
@@ -2242,6 +2251,7 @@ Cache.rule.chr_set.merge([
     "_id": "time",
     "admin": "第四の壁の深奥",
     "maker": "次元X式コンピューター",
+    "caption": "エクスパンション・セット「帰還者議事」",
     "chr_set_id": "time"
   }
 ]);
@@ -2377,6 +2387,7 @@ Cache.rule.chr_set.merge([
     "_id": "wa",
     "admin": "闇の呟き",
     "maker": "稲荷のお告げ",
+    "caption": "和の国てやんでえ",
     "chr_set_id": "wa"
   }
 ]);
@@ -2660,6 +2671,7 @@ Cache.rule.chr_set.merge([
     "_id": "ririnra",
     "admin": "闇の呟き",
     "maker": "天のお告げ",
+    "caption": "人狼議事",
     "chr_set_id": "ririnra"
   }
 ]);
@@ -3327,6 +3339,7 @@ Cache.rule.chr_set.merge([
     "_id": "animal",
     "admin": "大地の震動",
     "maker": "草原のざわめき",
+    "caption": "うきうきサバンナ",
     "chr_set_id": "animal"
   }
 ]);
@@ -3897,6 +3910,7 @@ Cache.rule.chr_set.merge([
     "_id": "changed",
     "admin": "闇の呟き",
     "maker": "広場のお告げ",
+    "caption": "はおうの広場",
     "chr_set_id": "changed"
   }
 ]);
@@ -4045,6 +4059,7 @@ Cache.rule.chr_set.merge([
     "_id": "all",
     "admin": "闇の呟き",
     "maker": "天のお告げ",
+    "caption": "人狼議事 ちゃんぷる",
     "chr_set_id": "all"
   }
 ]);
@@ -4097,33 +4112,92 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 }
 
 Cache.rule.chr_job.merge(list);
-var _ref;
-
 new Cache.Rule("map_face").schema(function() {
-  this.belongs_to("face");
-  this.order(function(o) {
-    return -o.sow_auth_id.all;
+  this.belongs_to("face", {
+    dependent: true
   });
+  this.order_by("order", "desc");
   this.fields({
     _id: function(o) {
-      return o._id = o.face_id;
+      var chr_job, list;
+      o._id = o.face_id;
+      list = Cache.chr_jobs.face[o.face_id];
+      o.chr_set_ids = (function() {
+        var _i, _len, _results;
+        if (list) {
+          _results = [];
+          for (_i = 0, _len = list.length; _i < _len; _i++) {
+            chr_job = list[_i];
+            _results.push(chr_job.chr_set_id);
+          }
+          return _results;
+        } else {
+          return [];
+        }
+      })();
+      return o.order = o.sow_auth_id.all;
     }
   });
   return this.scope("chr_set", function(o) {
-    var chr_job, list, _i, _len, _results;
-    list = Cache.chr_jobs.face[o.face_id];
-    if (list) {
-      _results = [];
-      for (_i = 0, _len = list.length; _i < _len; _i++) {
-        chr_job = list[_i];
-        _results.push(chr_job.chr_set_id);
-      }
-      return _results;
-    }
+    return o.chr_set_ids;
   });
 });
+var _ref;
 
-Cache.rule.map_face.set(typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0);
+if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
+  Cache.rule.map_face.set(gon.map_reduce.faces);
+  $(function() {
+    var chr_set;
+    chr_set = m.prop("all");
+    m.module(document.getElementById("map_faces"), {
+      controller: function() {},
+      view: function(c) {
+        var chrs, headline;
+        chrs = Cache.map_faces.chr_set[chr_set()];
+        headline = chrs ? "人気の " + chrs.length + "キャラクター" : "";
+        return [
+          m("hr", {
+            style: "border-color:black;"
+          }), m(".mark", headline), _.map(chrs, function(o) {
+            var chr_job, face_name, job_name;
+            chr_job = Cache.chr_jobs.find["" + (chr_set()) + "_" + o.face_id];
+            job_name = chr_job.job;
+            face_name = o.face.name;
+            return m(".chrbox", [
+              m("img", {
+                src: "http://7korobi.gehirn.ne.jp/images/portrate/" + o.face_id + ".jpg"
+              }), m(".chrblank", [
+                m("div", job_name), m("div", face_name), m("div", m("a.mark", {
+                  href: "faces/" + o.face_id
+                }, "登場 " + o.sow_auth_id.all + "回")), m("div", "♥" + o.sow_auth_id.max_is)
+              ])
+            ]);
+          }), m("hr", {
+            style: "border-color:black;"
+          })
+        ];
+      }
+    });
+    return m.module(document.getElementById("chr_sets"), {
+      controller: function() {},
+      view: function(c) {
+        var sets;
+        sets = Cache.chr_sets.all;
+        return [
+          m("label.input-block-level", "キャラセットを選んでみよう ☆ミ"), m("select.form-control", {
+            onchange: m.withAttr("value", chr_set),
+            value: chr_set()
+          }, _.map(sets, function(o) {
+            return m("option", {
+              value: o._id
+            }, o.caption);
+          }))
+        ];
+      }
+    });
+  });
+}
+;
 Url.cookie = ["css"];
 
 Url.search = ["css"];

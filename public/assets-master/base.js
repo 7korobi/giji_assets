@@ -1172,6 +1172,7 @@ Cache.Scope = (function() {
     for (kind in reset_kinds) {
       type = reset_kinds[kind];
       this.list[kind] = values(this.map[kind]);
+      console.log([kind, this.list[kind]]);
     }
     return this.reset(this.list, this.map);
   };
