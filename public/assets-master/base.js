@@ -969,15 +969,19 @@ Cache.Rule = (function() {
       })(this),
       order: (function(_this) {
         return function(func) {
-          cb = _.memoize(func, function(o) {
-            return o._id;
-          });
-          return _this.values = function(o) {
-            return _.values(o).sort(function(a, b) {
-              if (cb(a) < cb(b)) {
+          return _this.values = function(hash) {
+            var list, o, s, _i, _len;
+            list = _.values(hash);
+            _this.orders = s = {};
+            for (_i = 0, _len = list.length; _i < _len; _i++) {
+              o = list[_i];
+              _this.orders[o._id] = func(o);
+            }
+            return list.sort(function(a, b) {
+              if (s[a._id] < s[b._id]) {
                 return -1;
               }
-              if (cb(a) > cb(b)) {
+              if (s[a._id] > s[b._id]) {
                 return 1;
               }
               return 0;
@@ -1036,7 +1040,7 @@ Cache.Rule = (function() {
   };
 
   Rule.prototype.set_base = function(from, cb) {
-    var accept, all, key, list, o, old, scope, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
+    var accept, all, key, list, o, old, scope, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2;
     all = this.scopes._all.map.all;
     list = [];
     accept = (function(_this) {
@@ -1055,17 +1059,20 @@ Cache.Rule = (function() {
     _ref = from || [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       o = _ref[_i];
-      old = all != null ? all[o._id] : void 0;
-      _ref1 = this.adjust_keys;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        key = _ref1[_j];
-        this.adjust[key](o, old);
-      }
       accept(o);
     }
+    for (_j = 0, _len1 = list.length; _j < _len1; _j++) {
+      o = list[_j];
+      old = all != null ? all[o._id] : void 0;
+      _ref1 = this.adjust_keys;
+      for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
+        key = _ref1[_k];
+        this.adjust[key](o, old);
+      }
+    }
     _ref2 = this.scope_keys;
-    for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-      key = _ref2[_k];
+    for (_l = 0, _len3 = _ref2.length; _l < _len3; _l++) {
+      key = _ref2[_l];
       scope = this.scopes[key];
       cb(scope, list);
     }
@@ -1172,7 +1179,6 @@ Cache.Scope = (function() {
     for (kind in reset_kinds) {
       type = reset_kinds[kind];
       this.list[kind] = values(this.map[kind]);
-      console.log([kind, this.list[kind]]);
     }
     return this.reset(this.list, this.map);
   };

@@ -65,11 +65,14 @@ class Cache.Rule
           Cache.rule[parent].responses.push @
 
       order: (func)=>
-        cb = _.memoize func, (o)-> o._id
-        @values = (o)->
-          _.values(o).sort (a,b)->
-            return -1 if cb(a) < cb(b)
-            return  1 if cb(a) > cb(b)
+        @values = (hash)=>
+          list = _.values(hash)
+          @orders = s = {}
+          for o in list
+            @orders[o._id] = func(o)
+          list.sort (a,b)->
+            return -1 if s[a._id] < s[b._id]
+            return  1 if s[a._id] > s[b._id]
             return  0
 
       order_by: (key, desc)=>
@@ -109,10 +112,12 @@ class Cache.Rule
       list.push o
 
     for o in from || []
+      accept o
+
+    for o in list
       old = all?[o._id]
       for key in @adjust_keys
         @adjust[key](o, old)
-      accept o
 
     for key in @scope_keys
       scope = @scopes[key]

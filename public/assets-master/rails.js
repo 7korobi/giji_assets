@@ -30,17 +30,14 @@ new Cache.Rule("chr_npc").schema(function() {
 });
 
 new Cache.Rule("chr_job").schema(function() {
-  this.order_by("order");
+  this.order(function(o) {
+    return o.face.order;
+  });
   this.belongs_to("chr_set", {
     dependent: true
   });
-  this.belongs_to("face", {
+  return this.belongs_to("face", {
     dependent: true
-  });
-  return this.fields({
-    _id: function(o) {
-      return o.order = o.face.order;
-    }
   });
 });
 
