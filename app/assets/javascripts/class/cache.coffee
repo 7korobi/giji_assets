@@ -27,7 +27,6 @@ class Cache.Rule
       reset: (list, map)->
         cache.all = list.all
         cache.find = map.all
-      values: (o)-> _.values o
 
   base_scope: (key, hash)->
     @scopes[key] = scope = new Cache.Scope(@, hash)
@@ -40,6 +39,10 @@ class Cache.Rule
     scope
 
   schema: (cb)->
+    sort = =>
+      for key, scope of @scopes
+        scope.sort()
+      return
     definer =
       scope: (key, kind)=>
         cache = Cache[@list_name]
@@ -74,6 +77,7 @@ class Cache.Rule
             return -1 if s[a._id] < s[b._id]
             return  1 if s[a._id] > s[b._id]
             return  0
+        sort()
 
       order_by: (key, desc)=>
         @values =
@@ -89,6 +93,7 @@ class Cache.Rule
                 return -1 if a[key] < b[key]
                 return  1 if a[key] > b[key]
                 return  0
+        sort()
 
       fields: (adjust)=>
         for key, cb of adjust
@@ -164,9 +169,7 @@ class Cache.Scope
 
   adjust: (list, merge_phase)->
     all = @rule.scopes._all.map.all
-    values = @values || @rule.values
     @diff = {}
-
     reset_kinds = {}
 
     for o in list
@@ -181,9 +184,7 @@ class Cache.Scope
 
       merge_phase(o, reset_kinds)
 
-    for kind, type of reset_kinds
-      @list[kind] = values @map[kind]
-    @reset @list, @map
+    @sort(reset_kinds)
 
   reject: (list)->
     @adjust list, ->
@@ -197,6 +198,12 @@ class Cache.Scope
           @map[kind][o._id] = o
           @diff.add = true
       return
+
+  sort: (reset_kinds = @map)->
+    values = @values || @rule.values
+    for kind, type of reset_kinds
+      @list[kind] = values @map[kind]
+    @reset @list, @map
 
   cleanup: ->
     @map = {}

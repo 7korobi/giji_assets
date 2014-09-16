@@ -904,9 +904,6 @@ Cache.Rule = (function() {
       reset: function(list, map) {
         cache.all = list.all;
         return cache.find = map.all;
-      },
-      values: function(o) {
-        return _.values(o);
       }
     });
   }
@@ -924,7 +921,17 @@ Cache.Rule = (function() {
   };
 
   Rule.prototype.schema = function(cb) {
-    var definer;
+    var definer, sort;
+    sort = (function(_this) {
+      return function() {
+        var key, scope, _ref;
+        _ref = _this.scopes;
+        for (key in _ref) {
+          scope = _ref[key];
+          scope.sort();
+        }
+      };
+    })(this);
     definer = {
       scope: (function(_this) {
         return function(key, kind) {
@@ -969,7 +976,7 @@ Cache.Rule = (function() {
       })(this),
       order: (function(_this) {
         return function(func) {
-          return _this.values = function(hash) {
+          _this.values = function(hash) {
             var list, o, s, _i, _len;
             list = _.values(hash);
             _this.orders = s = {};
@@ -987,11 +994,12 @@ Cache.Rule = (function() {
               return 0;
             });
           };
+          return sort();
         };
       })(this),
       order_by: (function(_this) {
         return function(key, desc) {
-          return _this.values = desc ? function(o) {
+          _this.values = desc ? function(o) {
             return _.values(o).sort(function(a, b) {
               if (a[key] < b[key]) {
                 return 1;
@@ -1012,6 +1020,7 @@ Cache.Rule = (function() {
               return 0;
             });
           };
+          return sort();
         };
       })(this),
       fields: (function(_this) {
@@ -1153,9 +1162,8 @@ Cache.Scope = (function() {
   }
 
   Scope.prototype.adjust = function(list, merge_phase) {
-    var all, kind, o, old, old_kind, reset_kinds, type, values, _i, _j, _len, _len1, _ref;
+    var all, o, old, old_kind, reset_kinds, _i, _j, _len, _len1, _ref;
     all = this.rule.scopes._all.map.all;
-    values = this.values || this.rule.values;
     this.diff = {};
     reset_kinds = {};
     for (_i = 0, _len = list.length; _i < _len; _i++) {
@@ -1176,11 +1184,7 @@ Cache.Scope = (function() {
       }
       merge_phase(o, reset_kinds);
     }
-    for (kind in reset_kinds) {
-      type = reset_kinds[kind];
-      this.list[kind] = values(this.map[kind]);
-    }
-    return this.reset(this.list, this.map);
+    return this.sort(reset_kinds);
   };
 
   Scope.prototype.reject = function(list) {
@@ -1203,6 +1207,19 @@ Cache.Scope = (function() {
         }
       };
     })(this));
+  };
+
+  Scope.prototype.sort = function(reset_kinds) {
+    var kind, type, values;
+    if (reset_kinds == null) {
+      reset_kinds = this.map;
+    }
+    values = this.values || this.rule.values;
+    for (kind in reset_kinds) {
+      type = reset_kinds[kind];
+      this.list[kind] = values(this.map[kind]);
+    }
+    return this.reset(this.list, this.map);
   };
 
   Scope.prototype.cleanup = function() {

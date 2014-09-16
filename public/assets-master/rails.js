@@ -4113,13 +4113,12 @@ new Cache.Rule("map_face").schema(function() {
   this.belongs_to("face", {
     dependent: true
   });
-  this.order_by("order", "desc");
   this.fields({
     _id: function(o) {
       var chr_job, list;
       o._id = o.face_id;
       list = Cache.chr_jobs.face[o.face_id];
-      o.chr_set_ids = (function() {
+      return o.chr_set_ids = (function() {
         var _i, _len, _results;
         if (list) {
           _results = [];
@@ -4132,7 +4131,6 @@ new Cache.Rule("map_face").schema(function() {
           return [];
         }
       })();
-      return o.order = o.sow_auth_id.all;
     }
   });
   return this.scope("chr_set", function(o) {
@@ -4144,12 +4142,66 @@ var _ref;
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.map_face.set(gon.map_reduce.faces);
   $(function() {
-    var chr_set;
+    var chr_set, map_order, map_order_hash, map_orders;
     chr_set = m.prop("all");
+    map_order = m.prop("all");
+    map_orders = function(prop) {
+      Cache.rule.map_face.schema(function() {
+        return this.order(function(o) {
+          return -map_order_hash[prop].func(o);
+        });
+      });
+      return map_order_hash[prop];
+    };
+    map_order_hash = {
+      all: {
+        caption: "合計",
+        title: "登場",
+        func: function(o) {
+          return o.win.all;
+        }
+      },
+      human: {
+        caption: "村人陣営",
+        title: "村側",
+        func: function(o) {
+          return o.win.value.村人陣営 || 0;
+        }
+      },
+      wolf: {
+        caption: "人狼陣営",
+        title: "狼側",
+        func: function(o) {
+          return o.win.value.人狼陣営 || 0;
+        }
+      },
+      enemy: {
+        caption: "敵側の人間",
+        title: "敵側",
+        func: function(o) {
+          return o.win.value.敵側の人間 || 0;
+        }
+      },
+      pixi: {
+        caption: "妖精",
+        title: "妖精",
+        func: function(o) {
+          return o.win.value.妖精 || 0;
+        }
+      },
+      other: {
+        caption: "その他",
+        title: "その他",
+        func: function(o) {
+          return o.win.value.その他 || 0;
+        }
+      }
+    };
     m.module(document.getElementById("map_faces"), {
       controller: function() {},
       view: function(c) {
-        var chrs, headline;
+        var chrs, headline, map_order_set;
+        map_order_set = map_orders(map_order());
         chrs = Cache.map_faces.chr_set[chr_set()];
         headline = chrs ? "人気の " + chrs.length + "キャラクター" : "";
         return [
@@ -4165,8 +4217,8 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
                 src: "http://7korobi.gehirn.ne.jp/images/portrate/" + o.face_id + ".jpg"
               }), m(".chrblank", [
                 m("div", job_name), m("div", face_name), m("div", m("a.mark", {
-                  href: "faces/" + o.face_id
-                }, "登場 " + o.sow_auth_id.all + "回")), m("div", "♥" + o.sow_auth_id.max_is)
+                  href: "/map_reduce/faces/" + o.face_id
+                }, "" + map_order_set.title + " " + (map_order_set.func(o)) + "回")), m("div", "♥" + o.sow_auth_id.max_is)
               ])
             ]);
           }), m("hr", {
@@ -4178,15 +4230,22 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     return m.module(document.getElementById("chr_sets"), {
       controller: function() {},
       view: function(c) {
-        var sets;
-        sets = Cache.chr_sets.all;
+        var chr_sets;
+        chr_sets = Cache.chr_sets.all;
         return [
           m("label.input-block-level", "キャラセットを選んでみよう ☆ミ"), m("select.form-control", {
             onchange: m.withAttr("value", chr_set),
             value: chr_set()
-          }, _.map(sets, function(o) {
+          }, _.map(chr_sets, function(o) {
             return m("option", {
               value: o._id
+            }, o.caption);
+          })), m("select.form-control", {
+            onchange: m.withAttr("value", map_order),
+            value: map_order()
+          }, _.map(map_order_hash, function(o, key) {
+            return m("option", {
+              value: key
             }, o.caption);
           }))
         ];
