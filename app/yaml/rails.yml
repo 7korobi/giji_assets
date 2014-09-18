@@ -1,0 +1,19 @@
+map_faces_orders:
+  all:
+    caption: 合計
+    title: 登場
+  human:
+    caption: 村人陣営
+    title: 村側
+  wolf:
+    caption: 人狼陣営
+    title: 狼側
+  enemy:
+    caption: 敵側の人間
+    title: 敵側
+  pixi:
+    caption: 妖精
+    title: 妖精
+  other:
+    caption: その他
+    title: その他

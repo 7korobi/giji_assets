@@ -9,6 +9,7 @@ new Cache.Rule("map_face").schema ->
           chr_job.chr_set_id for chr_job in list
         else
           []
+      o.win.value.合計 = o.win.all
 
   @scope "chr_set", (o)-> o.chr_set_ids
 

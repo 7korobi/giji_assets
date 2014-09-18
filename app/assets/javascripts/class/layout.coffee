@@ -1,21 +1,28 @@
 win =
   do:
     resize: (e)->
-      win.height = window.innerHeight || $(window).height()
-      win.width = window.innerWidth || $(window).width()
+      win.height = Math.max window.innerHeight, document.documentElement.clientHeight
+      win.width  = Math.max window.innerWidth,  document.documentElement.clientWidth
+      body_height = Math.max document.body.clientHeight , document.body.scrollHeight, document.documentElement.scrollHeight, document.documentElement.clientHeight
+      body_width =  Math.max document.body.clientWidth,   document.body.scrollWidth,  document.documentElement.scrollWidth,  document.documentElement.clientWidth
       win.max =
-        top:  $('body').height() - win.height
-        left: $('body').width()  - win.width
+        top:  body_height - win.height
+        left: body_width  - win.width
+      if win.height > win.width
+        win.landscape = false
+        win.portlate = true
+      else
+        win.landscape = true
+        win.portlate = false
+
       #console.log ["resize", e]
       cb(e) for cb in win.on.resize
 
     scroll: (e)->
       win.left = window.pageXOffset
       win.top  = window.pageYOffset
-      win.left = win.max.left if win.max.left < win.left
-      win.top  = win.max.top  if win.max.top  < win.top
-      win.left = 0            if                win.left  < 0
-      win.top  = 0            if                win.top   < 0
+      win.left = Math.max 0, Math.min win.max.left, win.left
+      win.top  = Math.max 0, Math.min win.max.top,  win.top
 
       #console.log ["scroll", e]
       cb(e) for cb in win.on.scroll
@@ -25,9 +32,9 @@ win =
       cb(e) for cb in win.on.gesture
 
     motion: (e)->
-      win.accel   = e.originalEvent.acceleration
-      win.gravity = e.originalEvent.accelerationIncludingGravity
-      win.rotate  = e.originalEvent.rotationRate
+      win.accel   = e.acceleration
+      win.gravity = e.accelerationIncludingGravity
+      win.rotate  = e.rotationRate
       #console.log ["touch-motion", e]
       cb(e) for cb in win.on.motion
 
@@ -49,6 +56,8 @@ win =
       #console.log ["touch-end", e]
       cb(e) for cb in win.on.end
 
+    load: ->
+      cb() for cb in win.on.load
   on:
     resize: []
     scroll: []
@@ -58,6 +67,7 @@ win =
     move: []
     drag: []
     end: []
+    load: []
 
   top:    0
   left:   0

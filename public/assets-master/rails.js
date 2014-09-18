@@ -4109,6 +4109,36 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 }
 
 Cache.rule.chr_job.merge(list);
+var RAILS;
+
+RAILS = {
+  "map_faces_orders": {
+    "all": {
+      "caption": "合計",
+      "title": "登場"
+    },
+    "human": {
+      "caption": "村人陣営",
+      "title": "村側"
+    },
+    "wolf": {
+      "caption": "人狼陣営",
+      "title": "狼側"
+    },
+    "enemy": {
+      "caption": "敵側の人間",
+      "title": "敵側"
+    },
+    "pixi": {
+      "caption": "妖精",
+      "title": "妖精"
+    },
+    "other": {
+      "caption": "その他",
+      "title": "その他"
+    }
+  }
+};
 new Cache.Rule("map_face").schema(function() {
   this.belongs_to("face", {
     dependent: true
@@ -4118,7 +4148,7 @@ new Cache.Rule("map_face").schema(function() {
       var chr_job, list;
       o._id = o.face_id;
       list = Cache.chr_jobs.face[o.face_id];
-      return o.chr_set_ids = (function() {
+      o.chr_set_ids = (function() {
         var _i, _len, _results;
         if (list) {
           _results = [];
@@ -4131,6 +4161,7 @@ new Cache.Rule("map_face").schema(function() {
           return [];
         }
       })();
+      return o.win.value.合計 = o.win.all;
     }
   });
   return this.scope("chr_set", function(o) {
@@ -4141,65 +4172,27 @@ var _ref;
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.map_face.set(gon.map_reduce.faces);
-  $(function() {
-    var chr_set, map_order, map_order_hash, map_orders;
+  win.on.load.push(function() {
+    var chr_set, map_order, map_orders;
     chr_set = m.prop("all");
     map_order = m.prop("all");
     map_orders = function(prop) {
+      var order;
+      order = RAILS.map_faces_orders[prop];
+      order.func = function(o) {
+        var _base, _name;
+        return (_base = o.win.value)[_name = order.caption] || (_base[_name] = 0);
+      };
       Cache.rule.map_face.schema(function() {
         return this.order(function(o) {
-          return -map_order_hash[prop].func(o);
+          return -order.func(o);
         });
       });
-      return map_order_hash[prop];
-    };
-    map_order_hash = {
-      all: {
-        caption: "合計",
-        title: "登場",
-        func: function(o) {
-          return o.win.all;
-        }
-      },
-      human: {
-        caption: "村人陣営",
-        title: "村側",
-        func: function(o) {
-          return o.win.value.村人陣営 || 0;
-        }
-      },
-      wolf: {
-        caption: "人狼陣営",
-        title: "狼側",
-        func: function(o) {
-          return o.win.value.人狼陣営 || 0;
-        }
-      },
-      enemy: {
-        caption: "敵側の人間",
-        title: "敵側",
-        func: function(o) {
-          return o.win.value.敵側の人間 || 0;
-        }
-      },
-      pixi: {
-        caption: "妖精",
-        title: "妖精",
-        func: function(o) {
-          return o.win.value.妖精 || 0;
-        }
-      },
-      other: {
-        caption: "その他",
-        title: "その他",
-        func: function(o) {
-          return o.win.value.その他 || 0;
-        }
-      }
+      return order;
     };
     m.module(document.getElementById("map_faces"), {
       controller: function() {},
-      view: function(c) {
+      view: function() {
         var chrs, headline, map_order_set;
         map_order_set = map_orders(map_order());
         chrs = Cache.map_faces.chr_set[chr_set()];
@@ -4229,7 +4222,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     });
     return m.module(document.getElementById("chr_sets"), {
       controller: function() {},
-      view: function(c) {
+      view: function() {
         var chr_sets;
         chr_sets = Cache.chr_sets.all;
         return [
@@ -4240,10 +4233,16 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
             return m("option", {
               value: o._id
             }, o.caption);
+          })), m("div", _.map(RAILS.map_faces_orders, function(o, key) {
+            return m("a.mark", {
+              onclick: function() {
+                return map_order(key);
+              }
+            }, o.caption);
           })), m("select.form-control", {
             onchange: m.withAttr("value", map_order),
             value: map_order()
-          }, _.map(map_order_hash, function(o, key) {
+          }, _.map(RAILS.map_faces_orders, function(o, key) {
             return m("option", {
               value: key
             }, o.caption);
@@ -4283,39 +4282,39 @@ Url.routes = {
   })
 };
 if ("onorientationchange" in window) {
-  $(window).on('orientationchange', _.throttle(win["do"].resize, DELAY.presto));
-  $(window).on('orientationchange', _.throttle(win["do"].scroll, DELAY.lento));
+  window.addEventListener('orientationchange', _.throttle(win["do"].resize, DELAY.presto));
+  window.addEventListener('orientationchange', _.throttle(win["do"].scroll, DELAY.lento));
 } else {
-  $(window).on('resize', _.throttle(win["do"].resize, DELAY.presto));
-  $(window).on('resize', _.throttle(win["do"].scroll, DELAY.lento));
+  window.addEventListener('resize', _.throttle(win["do"].resize, DELAY.presto));
+  window.addEventListener('resize', _.throttle(win["do"].scroll, DELAY.lento));
 }
 
-$(window).on('scroll', _.throttle(win["do"].scroll, DELAY.presto));
+window.addEventListener('scroll', _.throttle(win["do"].scroll, DELAY.presto));
 
-$(window).on('scroll', _.throttle(win["do"].resize, DELAY.lento));
+window.addEventListener('scroll', _.throttle(win["do"].resize, DELAY.lento));
 
 if ("ondevicemotion" in window) {
-  $(window).on('devicemotion', _.throttle(win["do"].motion, DELAY.presto));
+  window.addEventListener('devicemotion', _.throttle(win["do"].motion, DELAY.presto));
 }
 
 if ("ongesturestart" in window) {
-  $(window).on('gesturestart', _.throttle(win["do"].start, DELAY.presto));
-  $(window).on('gesturechange', _.throttle(win["do"].move, DELAY.presto));
-  $(window).on('gestureend', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('gesturestart', _.throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('gesturechange', _.throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('gestureend', _.throttle(win["do"].end, DELAY.presto));
 }
 
 if ("ontouchstart" in window) {
-  $(window).on('touchstart', _.throttle(win["do"].start, DELAY.presto));
-  $(window).on('touchmove', _.throttle(win["do"].move, DELAY.presto));
-  $(window).on('touchend', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('touchstart', _.throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('touchmove', _.throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('touchend', _.throttle(win["do"].end, DELAY.presto));
 } else {
-  $(window).on('mousedown', _.throttle(win["do"].start, DELAY.presto));
-  $(window).on('mousemove', _.throttle(win["do"].move, DELAY.presto));
-  $(window).on('mouseup', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('mousedown', _.throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('mousemove', _.throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('mouseup', _.throttle(win["do"].end, DELAY.presto));
 }
 
 if ("onhashchange" in window) {
-  $(window).on("hashchange", function(event) {
+  window.addEventListener("hashchange", function(event) {
     if (event.clipboardData) {
       return console.log(event);
     } else {
@@ -4325,7 +4324,7 @@ if ("onhashchange" in window) {
 }
 
 if ("onpopstate" in window) {
-  $(window).on("popstate", function(event) {
+  window.addEventListener("popstate", function(event) {
     if (event.clipboardData) {
       return console.log(event);
     } else {
@@ -4338,27 +4337,31 @@ if ("onpopstate" in window) {
 }
 
 if ("onmessage" in window) {
-  $(window).on("message", function(event) {
+  window.addEventListener("message", function(event) {
     return console.log("on message");
   });
 }
 
 if ("onoffline" in window) {
-  $(window).on("offline", function(event) {
+  window.addEventListener("offline", function(event) {
     return console.log("on offline");
   });
 }
 
 if ("ononline" in window) {
-  $(window).on("online", function(event) {
+  window.addEventListener("online", function(event) {
     return console.log("on online");
   });
 }
 
 if ("onstorage" in window) {
-  $(window).on("storage", function(event) {
+  window.addEventListener("storage", function(event) {
     return console.log("on storage");
   });
+}
+
+if ("onload" in window) {
+  window.addEventListener("load", win["do"].load);
 }
 ;
 

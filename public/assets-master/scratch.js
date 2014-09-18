@@ -4146,39 +4146,39 @@ Url.routes = {
   })
 };
 if ("onorientationchange" in window) {
-  $(window).on('orientationchange', _.throttle(win["do"].resize, DELAY.presto));
-  $(window).on('orientationchange', _.throttle(win["do"].scroll, DELAY.lento));
+  window.addEventListener('orientationchange', _.throttle(win["do"].resize, DELAY.presto));
+  window.addEventListener('orientationchange', _.throttle(win["do"].scroll, DELAY.lento));
 } else {
-  $(window).on('resize', _.throttle(win["do"].resize, DELAY.presto));
-  $(window).on('resize', _.throttle(win["do"].scroll, DELAY.lento));
+  window.addEventListener('resize', _.throttle(win["do"].resize, DELAY.presto));
+  window.addEventListener('resize', _.throttle(win["do"].scroll, DELAY.lento));
 }
 
-$(window).on('scroll', _.throttle(win["do"].scroll, DELAY.presto));
+window.addEventListener('scroll', _.throttle(win["do"].scroll, DELAY.presto));
 
-$(window).on('scroll', _.throttle(win["do"].resize, DELAY.lento));
+window.addEventListener('scroll', _.throttle(win["do"].resize, DELAY.lento));
 
 if ("ondevicemotion" in window) {
-  $(window).on('devicemotion', _.throttle(win["do"].motion, DELAY.presto));
+  window.addEventListener('devicemotion', _.throttle(win["do"].motion, DELAY.presto));
 }
 
 if ("ongesturestart" in window) {
-  $(window).on('gesturestart', _.throttle(win["do"].start, DELAY.presto));
-  $(window).on('gesturechange', _.throttle(win["do"].move, DELAY.presto));
-  $(window).on('gestureend', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('gesturestart', _.throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('gesturechange', _.throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('gestureend', _.throttle(win["do"].end, DELAY.presto));
 }
 
 if ("ontouchstart" in window) {
-  $(window).on('touchstart', _.throttle(win["do"].start, DELAY.presto));
-  $(window).on('touchmove', _.throttle(win["do"].move, DELAY.presto));
-  $(window).on('touchend', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('touchstart', _.throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('touchmove', _.throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('touchend', _.throttle(win["do"].end, DELAY.presto));
 } else {
-  $(window).on('mousedown', _.throttle(win["do"].start, DELAY.presto));
-  $(window).on('mousemove', _.throttle(win["do"].move, DELAY.presto));
-  $(window).on('mouseup', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('mousedown', _.throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('mousemove', _.throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('mouseup', _.throttle(win["do"].end, DELAY.presto));
 }
 
 if ("onhashchange" in window) {
-  $(window).on("hashchange", function(event) {
+  window.addEventListener("hashchange", function(event) {
     if (event.clipboardData) {
       return console.log(event);
     } else {
@@ -4188,7 +4188,7 @@ if ("onhashchange" in window) {
 }
 
 if ("onpopstate" in window) {
-  $(window).on("popstate", function(event) {
+  window.addEventListener("popstate", function(event) {
     if (event.clipboardData) {
       return console.log(event);
     } else {
@@ -4201,27 +4201,31 @@ if ("onpopstate" in window) {
 }
 
 if ("onmessage" in window) {
-  $(window).on("message", function(event) {
+  window.addEventListener("message", function(event) {
     return console.log("on message");
   });
 }
 
 if ("onoffline" in window) {
-  $(window).on("offline", function(event) {
+  window.addEventListener("offline", function(event) {
     return console.log("on offline");
   });
 }
 
 if ("ononline" in window) {
-  $(window).on("online", function(event) {
+  window.addEventListener("online", function(event) {
     return console.log("on online");
   });
 }
 
 if ("onstorage" in window) {
-  $(window).on("storage", function(event) {
+  window.addEventListener("storage", function(event) {
     return console.log("on storage");
   });
+}
+
+if ("onload" in window) {
+  window.addEventListener("load", win["do"].load);
 }
 ;
 
