@@ -68,7 +68,7 @@ for key, func of Serial.parser
       when "Date"
         "([0-9a-zA-Z]+)"
       else
-        "([^\\/\\-\\=\\.]+)"
+        "([^\\/\\-\\=\\.\\&\\(\\)\\\"\\'\\`]+)"
 
 class ID
   @random_size = Serial.map.size * Serial.map.size * Serial.map.size
