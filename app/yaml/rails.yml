@@ -17,3 +17,908 @@ map_faces_orders:
   other:
     caption: その他
     title: その他
+
+options:
+  seq-event:
+    help: 事件が順序どおりに発生する
+  show-id:
+    help: ユーザーIDを公開する
+  entrust:
+    help: 委任投票をする
+  select-role:
+    help: 役職希望を受け付ける
+  random-target:
+    help: 投票・能力の対象に「ランダム」を含める
+  undead-talk:
+    help: 狼・妖精と死者との間で、会話ができる
+  aiming-talk:
+    help: ふたりだけの内緒話をすることができる
+
+roletable:
+  secret:   詳細は黒幕だけが知っています。
+  custom:   自由設定
+  default:  標準
+  hamster:  ハムスター
+  mistery:  （なんだっけ？？？）
+  random:   ランダム
+  test1st:  人狼審問試験壱型
+  test2nd:  人狼審問試験弐型
+  ultimate: アルティメット
+  wbbs_c:   人狼BBS-C国
+  wbbs_f:   人狼BBS-F国
+  wbbs_g:   人狼BBS-G国
+  lover:    恋愛天使
+
+vote:
+  sign:
+    CAPTION: 記名で投票
+  anonymity:
+    CAPTION: 匿名で投票
+
+mes_text:
+  - mes_text
+  - mes_text_monospace
+  - mes_text_report
+
+monospace:
+  mono: 1
+  head: 2
+
+n_rule_name:
+  - 短期はここではできない。
+  - 情報ページ（ここ）を熟読する。
+  - ルールを守り、つねに心構えに気を配る。
+  - 進行中は、どんな嘘でもＯＫ。
+  - ただし、（村建て人）、（管理人）の発言では嘘をつかないこと。
+  - 突然死をしない。
+
+switch:
+  wolf:
+    mestype: WSAY
+  pixi:
+    mestype: XSAY
+  muppet:
+    mestype: SAY
+  sympathy:
+    mestype: SPSAY
+
+loves:
+  love:
+    win: LOVER
+  hate:
+    win: HATER
+
+wins:
+  MOB:
+    name: 見物人
+  NONE:
+    name: その他
+  HUMAN:
+    name: 村人陣営
+  WOLF:
+    name: 人狼陣営
+  EVIL:
+    name: 敵側の人間
+  GURU:
+    name: 笛吹き
+  PIXI:
+    name: 妖精
+  LONEWOLF:
+    name: 一匹狼
+  LOVER:
+    name: 恋人陣営
+  HATER:
+    name: 邪気陣営
+  DISH:
+    name: 据え膳
+
+groups:
+  MOB:
+    name: 見物人
+  OTHER:
+    name: その他
+  HUMAN:
+    name: 村人陣営
+  WOLF:
+    name: 人狼陣営
+  EVIL:
+    name: 敵側の人間
+  PIXI:
+    name: 妖精
+
+specials:
+  mob:
+    name: 見物人
+    win:   MOB
+
+roles:
+  mob:
+    name: 見物人
+    win: MOB
+    group: OTHER
+  lover:
+    name: 弟子
+    win:
+    group: OTHER
+  robber:
+    name: 盗賊
+    win:
+    group: OTHER
+  tangle:
+    name: 怨念
+    win:
+    group: OTHER
+  villager:
+    name: 村人
+    win: HUMAN
+    group: HUMAN
+  stigma:
+    name: 聖痕者
+    win: HUMAN
+    group: HUMAN
+  fm:
+    name: 結社員
+    win: HUMAN
+    group: HUMAN
+  sympathy:
+    name: 共鳴者
+    win: HUMAN
+    group: HUMAN
+  seer:
+    name: 占い師
+    win: HUMAN
+    group: HUMAN
+  seerwin:
+    name: 信仰占師
+    win: HUMAN
+    group: HUMAN
+  oura:
+    name: 気占師
+    win: HUMAN
+    group: HUMAN
+  aura:
+    name: 気占師
+    win: HUMAN
+    group: HUMAN
+  seerrole:
+    name: 賢者
+    win: HUMAN
+    group: HUMAN
+  guard:
+    name: 守護者
+    win: HUMAN
+    group: HUMAN
+  medium:
+    name: 霊能者
+    win: HUMAN
+    group: HUMAN
+  mediumwin:
+    name: 信仰霊能者
+    win: HUMAN
+    group: HUMAN
+  mediumrole:
+    name: 導師
+    win: HUMAN
+    group: HUMAN
+  necromancer:
+    name: 降霊者
+    win: HUMAN
+    group: HUMAN
+  follow:
+    name: 追従者
+    win: HUMAN
+    group: HUMAN
+  fan:
+    name: 煽動者
+    win: HUMAN
+    group: HUMAN
+  hunter:
+    name: 賞金稼
+    win: HUMAN
+    group: HUMAN
+  weredog:
+    name: 人犬
+    win: HUMAN
+    group: HUMAN
+  prince:
+    name: 王子様
+    win: HUMAN
+    group: HUMAN
+  rightwolf:
+    name: 狼血族
+    win: HUMAN
+    group: HUMAN
+  doctor:
+    name: 医師
+    win: HUMAN
+    group: HUMAN
+  curse:
+    name: 呪人
+    win: HUMAN
+    group: HUMAN
+  dying:
+    name: 預言者
+    win: HUMAN
+    group: HUMAN
+  invalid:
+    name: 病人
+    win: HUMAN
+    group: HUMAN
+  alchemist:
+    name: 錬金術師
+    win: HUMAN
+    group: HUMAN
+  witch:
+    name: 魔女
+    win: HUMAN
+    group: HUMAN
+  girl:
+    name: 少女
+    win: HUMAN
+    group: HUMAN
+  scapegoat:
+    name: 生贄
+    win: HUMAN
+    group: HUMAN
+  elder:
+    name: 長老
+    win: HUMAN
+    group: HUMAN
+  jammer:
+    name: 邪魔之民
+    win: EVIL
+    group: EVIL
+  snatch:
+    name: 宿借之民
+    win: EVIL
+    group: EVIL
+  bat:
+    name: 念波之民
+    win: EVIL
+    group: EVIL
+  cpossess:
+    name: 囁き狂人
+    win: EVIL
+    group: EVIL
+  possess:
+    name: 狂人
+    win: EVIL
+    group: EVIL
+  fanatic:
+    name: 狂信者
+    win: EVIL
+    group: EVIL
+  muppeting:
+    name: 人形使い
+    win: EVIL
+    group: EVIL
+  wisper:
+    name: 囁き狂人
+    win: EVIL
+    group: EVIL
+  semiwolf:
+    name: 半狼
+    win: EVIL
+    group: EVIL
+  dyingpossess:
+    name: ---
+    win: EVIL
+    group: EVIL
+  oracle:
+    name: 魔神官
+    win: EVIL
+    group: EVIL
+  sorcerer:
+    name: 魔術師
+    win: EVIL
+    group: EVIL
+  walpurgis:
+    name: 魔法少年
+    win:  EVIL
+    group: EVIL
+  headless:
+    name: 首無騎士
+    win: WOLF
+    group: WOLF
+  wolf:
+    name: 人狼
+    win: WOLF
+    group: WOLF
+  aurawolf:
+    name: ---
+    win: WOLF
+    group: WOLF
+  intwolf:
+    name: 智狼
+    win: WOLF
+    group: WOLF
+  cursewolf:
+    name: 呪狼
+    win: WOLF
+    group: WOLF
+  whitewolf:
+    name: 白狼
+    win: WOLF
+    group: WOLF
+  childwolf:
+    name: 仔狼
+    win: WOLF
+    group: WOLF
+  dyingwolf:
+    name: 衰狼
+    win: WOLF
+    group: WOLF
+  silentwolf:
+    name: 黙狼
+    win: WOLF
+    group: WOLF
+  werebat:
+    name: コウモリ人間
+    win: PIXI
+    group: PIXI
+  hamster:
+    name: 栗鼠妖精
+    win: PIXI
+    group: PIXI
+  mimicry:
+    name: 擬狼妖精
+    win: PIXI
+    group: PIXI
+  dyingpixi:
+    name: 風花妖精
+    win: PIXI
+    group: PIXI
+  trickster:
+    name: 悪戯妖精
+    win: PIXI
+    group: PIXI
+  hatedevil:
+    name: 邪気悪魔
+    win: HATER
+    group: OTHER
+  loveangel:
+    name: 恋愛天使
+    win: LOVER
+    group: OTHER
+  passion:
+    name: 片思い
+    win: LOVER
+    group: OTHER
+  lonewolf:
+    name: 一匹狼
+    win: LONEWOLF
+    group: WOLF
+  guru:
+    name: 笛吹き
+    win: GURU
+    group: OTHER
+  dish:
+    name: 鱗魚人
+    win: DISH
+    group: OTHER
+  bitch:
+    name: 遊び人
+    win: LOVER
+    group: OTHER
+
+gifts:
+  none:
+    name: ""
+    win:
+    group: 
+  lost:
+    name: 喪失
+    win:
+    group: OTHER
+  bind:
+    name: ---
+    win:
+    group: 
+  shield:
+    name: 光の輪
+    win:
+    group: OTHER
+  glass:
+    name: 魔鏡
+    win:
+    group: OTHER
+  ogre:
+    name: 悪鬼
+    win: WOLF
+    group: WOLF
+  fairy:
+    name: 妖精の子
+    win: PIXI
+    group: PIXI
+  fink:
+    name: 半端者
+    win: EVIL
+    group: EVIL
+  decide:
+    name: 決定者
+    win:
+    group: OTHER
+  seeronce:
+    name: 夢占師
+    win:
+    group: OTHER
+  dipsy:
+    name: 酔払い
+    win:
+    group: OTHER
+
+events:
+  nothing:
+    name: 普通の日
+  aprilfool:
+    name: 四月馬鹿
+  turnfink:
+    name: 二重スパイ
+  turnfairy:
+    name: 妖精の輪
+  eclipse:
+    name: 日蝕
+  cointoss:
+    name: Sir Cointoss
+  force:
+    name: 影響力
+  miracle:
+    name: 奇跡
+  prophecy:
+    name: 聖者のお告げ
+  clamor:
+    name: 不満
+  fire:
+    name: 熱意
+  nightmare:
+    name: 悪夢
+  ghost:
+    name: 亡霊
+  escape:
+    name: 逃亡
+  seance:
+    name: 降霊会
+
+maskstates:
+  0b1111111111111111_1111_000_00000: 
+  0b0000000000000000_0100_000_00000: 投票対象外
+  0b0000000000000000_0010_000_00000: 恩恵対象外
+  0b0000000000000000_0001_000_00000: 能力対象外
+  0b0000000000000000_0000_010_00000: 感染
+  0b0000000000000000_0000_001_00000: 負傷
+  0b0000000000000000_0000_000_01000: <s>投票</s>
+  0b0000000000000000_0000_000_00111: <s>全能力</s>
+  0b0000000000000000_0000_000_00100: <s>恩恵</s>
+  0b0000000000000000_0000_000_00011: <s>能力</s>
+  0b0000000000000000_0000_000_00010: <s>毒薬</s>
+  0b0000000000000000_0000_000_00001: <s>蘇生薬</s>
+
+live:
+  live:       生存者
+  executed:   処刑
+  victim:     襲撃
+  cursed:     呪詛
+  droop:      衰退
+  suicide:    後追
+  feared:     恐怖
+  suddendead: 突然死
+  mob:        見物人
+
+live_caption:
+  live:       生存者
+  executed:   処刑
+  victim:     犠牲者
+  cursed:     犠牲者
+  droop:      犠牲者
+  suicide:    犠牲者
+  feared:     犠牲者
+  suddendead: 突然死
+  mob:        見物人
+
+mob:
+  visiter:
+    CAPTION: 客席
+    HELP:    進行中会話は客席同士のみ
+  grave:
+    CAPTION: 裏方
+    HELP:    進行中会話は墓下と
+  alive:
+    CAPTION: 舞台
+    HELP:    進行中会話は地上、墓下、両方と
+  juror:
+    CAPTION: 陪審
+    HELP:    進行中会話は陪審同士のみ。陪審（＆決定者）だけが投票する。
+  gamemaster:
+    CAPTION: 黒幕
+    HELP:    進行中会話は地上、墓下、両方と。場を支配する特権をもつ。
+
+game_rule:
+  TABULA:
+    CAPTION: タブラの人狼
+    HELP: |
+      <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
+      <li>狼を全滅させると、村勝利。
+      <li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。
+
+  MILLERHOLLOW:
+    CAPTION: ミラーズホロウ
+    HELP: |
+      <li>同数票の処刑候補が複数いた場合、処刑をとりやめる。
+      <li>すべての死者は役職が公開される。
+      <li>狼を全滅させると、村勝利。
+      <li>「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。
+
+  LIVE_TABULA:
+    CAPTION: タブラの人狼（死んだら負け）
+    HELP: |
+      <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
+      <li>狼を全滅させると、村側の生存者が勝利。
+      <li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。
+      <li>ただし、仲間が勝利していても、死んでしまった者は敗北である。
+
+  LIVE_MILLERHOLLOW:
+    CAPTION: ミラーズホロウ（死んだら負け）
+    HELP: |
+      <li>同数票の処刑候補が複数いた場合、処刑をとりやめる。
+      <li>狼を全滅させると、村側の生存者が勝利。
+      <li>「村人」を全滅させると、狼勝利。役職を持つ村側の生き残りは、勝利に直接は寄与しない。
+      <li>ただし、仲間が勝利していても、死んでしまった者は敗北である。
+
+  TROUBLE:
+    CAPTION: Trouble☆Aliens
+    HELP: | 
+      <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
+      <li>人狼は会話できない。襲撃候補リストで判断できない。
+      <li>襲撃先は翌日、犠牲候補と人狼に開示される。
+      <li>守護者は、より大人数の人狼からは守りきることができず、身代わりに感染する。
+      <li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。
+      <li>狼を全滅させると、村側の生存者が勝利（村側は死んだら負ける）。
+      <li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼と感染者の勝利。
+
+  MISTERY:
+    CAPTION: 深い霧の夜
+    HELP: |
+     <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
+     <li>村側は自分の役職を自覚しない。
+     <li>村側は、能力の結果不審者を見かけることがある。
+     <li>人狼の行動対象に選ばれると、不審者を見かける。
+     <li>狼を全滅させると、村勝利。
+     <li>役職「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。
+
+  VOV:
+    CAPTION: 狂犬病の谷
+    HELP:  |
+      <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
+      <li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。
+      <li>狼を全滅させると、村勝利。
+      <li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。
+
+  SECRET:
+    CAPTION: 陰謀に集う胡蝶
+    HELP:  |
+      <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
+      <li>人狼は会話できない。襲撃候補リストで判断できない。
+      <li>襲撃先は翌日、犠牲候補と人狼に開示される。
+      <li>狼を全滅させると、村側の生存者が勝利。
+      <li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼の生存者が勝利。
+      <li>いかなる場合も、死んでしまったものは敗北である。
+
+trs:
+  all:
+    CAPTION: オール☆スター
+    HELP:    すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。
+  simple:
+    CAPTION: ラッキー☆スター
+    HELP:    初心者向けの、シンプルな設定です。拡張設定の一部が固定になっています。
+  star:
+    CAPTION: Orbital☆Star
+    HELP:    すべての役職、恩恵、事件を楽しむことができます。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>宇宙時代に突入した「全部入り」のセットです。村落共同体は渓谷や高原ではなく、小惑星帯や人工コロニー、移民船にあるでしょう。事件が始まるまでは、とても充実した近代的なインフラが整っていたのですが……
+  regend:
+    CAPTION: 議事☆伝承
+    HELP:    すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。アクション内容は穏当になり、未来的ですばらしいクローンも居ません。
+  fool:
+    CAPTION: 適当系
+    HELP:    てきとーな感じ。
+  sow:
+    CAPTION: 人狼物語
+    HELP:    ウェブゲーム「人狼物語」風の役職を楽しめます。ただし、細かい動作に違いがあります。
+  wbbs:
+    CAPTION: 人狼BBS
+    HELP:    ウェブゲーム「人狼BBS」風の役職を楽しめます。ただし、細かい動作に違いがあります。
+  juna:
+    CAPTION: 人狼審問
+    HELP:    ウェブゲーム「人狼審問」風の役職を楽しめます。ただし、細かい動作に違いがあります。
+  complex:
+    CAPTION: PARANOIA
+    HELP:    ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！
+  complexx:
+    CAPTION: ParanoiA
+    HELP:    ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！
+  cabala:
+    CAPTION: ギロチン広場
+    HELP:    権謀術数を弄び、虚実まじえた会話を楽しむためのセットです。
+  tabula:
+    CAPTION: タブラの人狼
+    HELP:    カードゲーム「Lupus in Tabula」風の役職を楽しめます。ただし、疫病神、公証人、悪魔くん、には対応していません。
+  millerhollow:
+    CAPTION: ミラーズホロウ
+    HELP:    カードゲーム「The Werewolves of Millers Hollow + New Moon」風の役職を楽しめます。ただし、愚か者には対応していません。守護者、笛吹きにすこし違いがあります。
+  ultimate:
+    CAPTION: アルティメット
+    HELP:    カードゲーム「アルティメット人狼」風の役職を楽しめます。ただし、ドワーフ、ドッペルゲンガー、アル中、愚か者、倫理学者には対応していません。
+
+saycnt:
+  sow:
+    CAPTION: 人狼物語
+    HELP:
+  say5: &SAY5
+    CAPTION: 寡黙への挑戦
+    COST_SAY:  count # 回数勘定
+    COST_MEMO: none  # 無制限
+    COST_ACT:  count # 回数勘定
+    RECOVERY:       1 # 発言復活
+    MAX_SAY:        5 # 発言/憑依回数
+    MAX_TSAY:       5 # 独り言発言回数
+    MAX_SPSAY:      5 # 共鳴発言回数
+    MAX_WSAY:      10 # 囁き/念話発言回数
+    MAX_GSAY:      10 # うめき発言回数
+    MAX_PSAY:      10 # プロローグ発言回数
+    MAX_ESAY:     999 # エピローグ発言回数
+    MAX_SAY_ACT:    5 # アクション回数
+    ADD_SAY:        0 # 促しで増える発言回数
+    MAX_ADDSAY:     0 # 促しの回数
+    MAX_MESLINE:   10 # 一発言の最大行数
+
+  point: &POINT
+    COST_SAY:  point # バイト勘定
+    COST_MEMO: count # 回数勘定
+    COST_ACT:  count # 回数勘定
+    MAX_ESAY:    9999 # エピローグ発言回数
+
+  count: &COUNT
+    COST_SAY:  count # 回数勘定
+    COST_MEMO: count # 回数勘定
+    COST_ACT:  count # 回数勘定
+    ADD_SAY:        0 # 促しで増える発言回数
+    MAX_ADDSAY:     0 # 促しの回数
+
+  lobby: &INFINITY
+    CAPTION: ロビー
+    HELP:    ∞pt/∞act
+    COST_SAY:  none # 無制限
+    COST_MEMO: none # 無制限
+    COST_ACT:  none # 無制限
+    RECOVERY:       1 # 発言復活
+    MAX_SAY:     9999 # 発言/憑依回数
+    MAX_TSAY:    9999 # 独り言発言回数
+    MAX_SPSAY:   9999 # 共鳴発言回数
+    MAX_WSAY:    9999 # 囁き/念話発言回数
+    MAX_GSAY:    9999 # うめき発言回数
+    MAX_PSAY:    9999 # プロローグ発言回数
+    MAX_ESAY:    9999 # エピローグ発言回数
+    MAX_SAY_ACT:   99 # アクション回数
+    ADD_SAY:     9999 # 促しで増える発言回数
+    MAX_ADDSAY:     0 # 促しの回数
+    MAX_MESCNT:  1000 # 一発言の最大文字数
+    MAX_MESLINE:   20 # 一発言の最大行数
+
+  say5x200:
+    <<: *SAY5
+    CAPTION: 寡黙への挑戦
+    HELP:    （24h回復） 200字x5回/5act'
+    MAX_MESCNT:   200 # 一発言の最大文字数
+
+  say5x300:
+    <<: *SAY5
+    CAPTION: 小論文への挑戦
+    HELP:    （24h回復） 300字x5回/15act'
+    MAX_MESCNT:   300 # 一発言の最大文字数
+
+  saving:
+    <<: *COUNT
+    CAPTION: 節約
+    HELP:    250字x20回/15act
+    RECOVERY:       0 # 発言復活
+    MAX_SAY:       20 # 発言/憑依回数
+    MAX_TSAY:      10 # 独り言発言回数
+    MAX_SPSAY:     10 # 共鳴発言回数
+    MAX_WSAY:      30 # 囁き/念話発言回数
+    MAX_GSAY:      20 # うめき発言回数
+    MAX_PSAY:      20 # プロローグ発言回数
+    MAX_ESAY:     999 # エピローグ発言回数
+    MAX_SAY_ACT:   15 # アクション回数
+    MAX_MESCNT:   250 # 一発言の最大文字数
+    MAX_MESLINE:   10 # 一発言の最大行数
+
+  wbbs:
+    <<: *COUNT
+    CAPTION: 人狼BBS
+    HELP:    200字x20回
+    COST_MEMO: none  # 無制限
+    RECOVERY:       0 # 発言復活
+    MAX_SAY:       20 # 発言/憑依回数
+    MAX_TSAY:       5 # 独り言発言回数
+    MAX_SPSAY:     20 # 共鳴発言回数
+    MAX_WSAY:      40 # 囁き/念話発言回数
+    MAX_GSAY:      20 # うめき発言回数
+    MAX_PSAY:      20 # プロローグ発言回数
+    MAX_ESAY:     999 # エピローグ発言回数
+    MAX_SAY_ACT:    0 # アクション回数
+    MAX_MESCNT:   200 # 一発言の最大文字数
+    MAX_MESLINE:    5 # 一発言の最大行数
+
+  euro:
+    <<: *COUNT
+    CAPTION: 欧州
+    HELP:    （24h回復） 800字x30回/30act
+    RECOVERY:       1 # 発言復活
+    MAX_SAY:       30 # 発言/憑依回数
+    MAX_TSAY:     999 # 独り言発言回数
+    MAX_SPSAY:    999 # 共鳴発言回数
+    MAX_WSAY:     999 # 囁き/念話発言回数
+    MAX_GSAY:     999 # うめき発言回数
+    MAX_PSAY:      30 # プロローグ発言回数
+    MAX_ESAY:     999 # エピローグ発言回数
+    MAX_SAY_ACT:   30 # アクション回数
+    MAX_MESCNT:   800 # 一発言の最大文字数
+    MAX_MESLINE:   20 # 一発言の最大行数
+
+
+  tiny:
+    <<: *POINT
+    CAPTION: たりない
+    HELP:    （24h回復）（メモは20pt） 333pt/9act
+    COST_MEMO: point # 20pt勘定
+    RECOVERY:       1 # 発言復活
+    MAX_SAY:      333 # 発言/憑依回数
+    MAX_TSAY:     999 # 独り言発言回数
+    MAX_SPSAY:    333 # 共鳴発言回数
+    MAX_WSAY:     999 # 囁き/念話発言回数
+    MAX_GSAY:     999 # うめき発言回数
+    MAX_PSAY:     999 # プロローグ発言回数
+    MAX_SAY_ACT:    9 # アクション回数
+    ADD_SAY:        0 # 促しで増える発言回数
+    MAX_ADDSAY:     0 # 促しの回数
+    MAX_MESCNT:   300 # 一発言の最大文字数
+    MAX_MESLINE:   10 # 一発言の最大行数
+
+  weak: &WEAK
+    <<: *POINT
+    CAPTION: むりせず
+    HELP:    （24h回復）（メモは20pt） 777pt/15act
+    COST_MEMO: point # 20pt勘定
+    RECOVERY:       1 # 発言復活
+    MAX_SAY:      777 # 発言/憑依回数
+    MAX_TSAY:     777 # 独り言発言回数
+    MAX_SPSAY:    777 # 共鳴発言回数
+    MAX_WSAY:     999 # 囁き/念話発言回数
+    MAX_GSAY:     999 # うめき発言回数
+    MAX_PSAY:    1200 # プロローグ発言回数
+    MAX_SAY_ACT:   15 # アクション回数
+    ADD_SAY:        0 # 促しで増える発言回数
+    MAX_ADDSAY:     0 # 促しの回数
+    MAX_MESCNT:   600 # 一発言の最大文字数
+    MAX_MESLINE:   15 # 一発言の最大行数
+
+  juna: &JUNA
+    <<: *POINT
+    CAPTION: しんもん
+    HELP:    （24h回復） 1200pt/24act
+    RECOVERY:       1 # 発言復活
+    MAX_SAY:     1200 # 発言/憑依回数
+    MAX_TSAY:     700 # 独り言発言回数
+    MAX_SPSAY:    700 # 共鳴発言回数
+    MAX_WSAY:    3000 # 囁き/念話発言回数
+    MAX_GSAY:    2000 # うめき発言回数
+    MAX_PSAY:    2000 # プロローグ発言回数
+    MAX_SAY_ACT:   24 # アクション回数
+    ADD_SAY:        0 # 促しで増える発言回数
+    MAX_ADDSAY:     0 # 促しの回数
+    MAX_MESCNT:  1000 # 一発言の最大文字数
+    MAX_MESLINE:   20 # 一発言の最大行数
+
+  vulcan: &VULCAN
+    <<: *POINT
+    CAPTION: いっぱい
+    HELP:    （24h回復） 1000pt+++300pt/36act
+    RECOVERY:       1 # 発言復活
+    MAX_SAY:     1000 # 発言/憑依回数
+    MAX_TSAY:    1000 # 独り言発言回数
+    MAX_SPSAY:   1500 # 共鳴発言回数
+    MAX_WSAY:    4000 # 囁き/念話発言回数
+    MAX_GSAY:    3000 # うめき発言回数
+    MAX_PSAY:    3000 # プロローグ発言回数
+    MAX_SAY_ACT:   36 # アクション回数
+    ADD_SAY:      300 # 促しで増える発言回数
+    MAX_ADDSAY:     3 # 促しの回数
+    MAX_MESCNT:  1000 # 一発言の最大文字数
+    MAX_MESLINE:   20 # 一発言の最大行数
+
+  infinity:
+    <<: *INFINITY
+    CAPTION: むげん
+
+  weak_braid:
+    <<: *WEAK
+    CAPTION: むりせず
+    HELP:    （24h回復）（メモは20pt） 600pt++100pt/15act
+    MAX_SAY:      600 # 発言/憑依回数
+    MAX_TSAY:     600 # 独り言発言回数
+    MAX_SPSAY:    600 # 共鳴発言回数
+    ADD_SAY:      100 # 促しで増える発言回数
+    MAX_ADDSAY:     2 # 促しの回数
+
+  juna_braid:
+    <<: *JUNA
+    CAPTION: しんもん
+    HELP:    （24h回復） 800pt++200pt/24act
+    RECOVERY:       1 # 発言復活
+    MAX_SAY:      800 # 発言/憑依回数
+    ADD_SAY:      200 # 促しで増える発言回数
+    MAX_ADDSAY:     2 # 促しの回数
+
+  vulcan_braid:
+    <<: *VULCAN
+
+  infinity_braid:
+    <<: *INFINITY
+    CAPTION: むげん
+
+
+log:
+  anchor:
+    q:           # no anchor
+    m: '#'       # MESTYPE_MAKER
+    a: '%'       # MESTYPE_ADMIN
+    S: ''        # MESTYPE_SAY
+    T: '-'       # MESTYPE_TSAY
+    W: '*'       # MESTYPE_WSAY
+    G: '+'       # MESTYPE_GSAY
+    P: '='       # MESTYPE_SPSAY
+    X: '!'       # MESTYPE_XSAY
+    V: '@'       # MESTYPE_VSAY
+
+
+  mestypetext:
+  -                # MESTYPE_UNDEF
+  -                # MESTYPE_INFOSP
+  - 【管理人削除】 # MESTYPE_DELETEDADMIN
+  -                # MESTYPE_CAST
+  -                # MESTYPE_MAKER
+  -                # MESTYPE_ADMIN
+  - 【未確】       # MESTYPE_QUEUE
+  -                # MESTYPE_INFONOM
+  - 【削除】       # MESTYPE_DELETED
+  - 【人】         # MESTYPE_SAY
+  - 【独】         # MESTYPE_TSAY
+  - 【赤】         # MESTYPE_WSAY
+  - 【墓】         # MESTYPE_GSAY
+  - 【鳴】         # MESTYPE_SPSAY
+  - 【念】         # MESTYPE_XSAY
+  - 【見】         # MESTYPE_VSAY
+  - 【憑】         # MESTYPE_MSAY
+  -                # MESTYPE_AIM
+  -                #
+  -                # MESTYPE_INFOWOLF
+
+  font:
+  -                # MESTYPE_UNDEF
+  -                # MESTYPE_INFOSP
+  - color="gray"   # MESTYPE_DELETEDADMIN
+  -                # MESTYPE_CAST
+  -                # MESTYPE_MAKER
+  -                # MESTYPE_ADMIN
+  -                # MESTYPE_QUEUE
+  -                # MESTYPE_INFONOM
+  - color="gray"   # MESTYPE_DELETED
+  -                # MESTYPE_SAY
+  - color="gray"   # MESTYPE_TSAY
+  - color="red"    # MESTYPE_WSAY
+  - color="teal"   # MESTYPE_GSAY
+  - color="blue"   # MESTYPE_SPSAY
+  - color="green"  # MESTYPE_XSAY
+  - color="maroon" # MESTYPE_VSAY
+  -                # MESTYPE_MSAY
+  - color="purple" # MESTYPE_AIM
+  -                #
+  - color="red"    # MESTYPE_INFOWOLF
