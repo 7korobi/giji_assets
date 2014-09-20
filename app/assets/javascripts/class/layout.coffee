@@ -21,8 +21,6 @@ win =
     scroll: (e)->
       win.left = window.pageXOffset
       win.top  = window.pageYOffset
-      win.left = Math.max 0, Math.min win.max.left, win.left
-      win.top  = Math.max 0, Math.min win.max.top,  win.top
 
       #console.log ["scroll", e]
       cb(e) for cb in win.on.scroll
@@ -58,6 +56,9 @@ win =
 
     load: ->
       cb() for cb in win.on.load
+      win.do.resize()
+      win.do.scroll()
+
   on:
     resize: []
     scroll: []
@@ -84,57 +85,50 @@ win =
     top:  0
     left: 0
 
-class FixedBox
+
+class Layout
   @list = {}
 
-  @push = ($, dx, dy, key)->
-    @list[key] or= new FixedBox dx, dy, $(key)
-
-  constructor: (dx, dy, fixed_box)->
-    @dx = dx
-    @dy = dy
-    @box = fixed_box
-
+  constructor: (@dx, @dy, @box)->
     if @box
-      win.on.resize.push(=> @resize())
-      win.on.scroll.push(=> @scroll())
+      win.on.resize.push => @resize()
+      win.on.scroll.push => @scroll()
+      Layout.list[@box.id] = @
+      @box.style.position = "fixed"
 
   resize: ()->
-    return unless @box
-    width  = win.width  - @box.width()
-    height = win.height - @box.height()
+    return unless @box && head.browser.power != "simple"
+    width  = win.width  - @box.offsetWidth
+    height = win.height - @box.offsetHeight
 
     @left = @dx + width if @dx < 0
     @left = @dx         if   0 < @dx
     @top = @dy + height if @dy < 0
     @top = @dy          if   0 < @dy
 
-  scroll: ()->
-    return unless @box && head.browser.power != "simple"
-    @box.css
-      "z-index": (new Date).getTime()
-      position: "fixed"
+    @box.style.zIndex = _.now()
 
     if 0 == @dx
-      @box.css
-        top: 0
-        left: ""
-        width: @box.parent().width()
+      @box.style.top = 0
+      @box.style.left = null
+      @box.style.width = @box.parentElement.offsetWidth
     else
-      @box.css
-        top:  0
-        left: 0
+      @box.style.top = 0
+      @box.style.left = 0
 
     left = @left + win.left
     top  = @top
     @translate(left, top)
 
+  scroll: ()->
+
   translate: (left, top)->
     transform  = "translate(#{left}px, #{top}px)"
-    @box.css "-webkit-transform",  transform  if head.browser.webkit
-    @box.css "-moz-transform",   transform  if head.browser.mozilla
-    @box.css "-ms-transform",  transform  if head.browser.ie
-    @box.css "-o-transform", transform  if head.browser.opera
-    @box.css "transform",  transform
+    @box.style.webkitTransform = transform if head.browser.safari || head.browser.webkit
+    @box.style.mozTransform = transform if head.browser.mozilla
+    @box.style.msTransform = transform if head.browser.ie
+    @box.style.oTransform = transform if head.browser.opera
+    @box.style.transform = transform
+
 
 
