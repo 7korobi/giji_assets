@@ -4137,6 +4137,1085 @@ RAILS = {
       "caption": "その他",
       "title": "その他"
     }
+  },
+  "options": {
+    "seq-event": {
+      "help": "事件が順序どおりに発生する"
+    },
+    "show-id": {
+      "help": "ユーザーIDを公開する"
+    },
+    "entrust": {
+      "help": "委任投票をする"
+    },
+    "select-role": {
+      "help": "役職希望を受け付ける"
+    },
+    "random-target": {
+      "help": "投票・能力の対象に「ランダム」を含める"
+    },
+    "undead-talk": {
+      "help": "狼・妖精と死者との間で、会話ができる"
+    },
+    "aiming-talk": {
+      "help": "ふたりだけの内緒話をすることができる"
+    }
+  },
+  "roletable": {
+    "secret": "詳細は黒幕だけが知っています。",
+    "custom": "自由設定",
+    "default": "標準",
+    "hamster": "ハムスター",
+    "mistery": "（なんだっけ？？？）",
+    "random": "ランダム",
+    "test1st": "人狼審問試験壱型",
+    "test2nd": "人狼審問試験弐型",
+    "ultimate": "アルティメット",
+    "wbbs_c": "人狼BBS-C国",
+    "wbbs_f": "人狼BBS-F国",
+    "wbbs_g": "人狼BBS-G国",
+    "lover": "恋愛天使"
+  },
+  "vote": {
+    "sign": {
+      "CAPTION": "記名で投票"
+    },
+    "anonymity": {
+      "CAPTION": "匿名で投票"
+    }
+  },
+  "mes_text": ["mes_text", "mes_text_monospace", "mes_text_report"],
+  "monospace": {
+    "mono": 1,
+    "head": 2
+  },
+  "n_rule_name": ["短期はここではできない。", "情報ページ（ここ）を熟読する。", "ルールを守り、つねに心構えに気を配る。", "進行中は、どんな嘘でもＯＫ。", "ただし、（村建て人）、（管理人）の発言では嘘をつかないこと。", "突然死をしない。"],
+  "switch": {
+    "wolf": {
+      "mestype": "WSAY"
+    },
+    "pixi": {
+      "mestype": "XSAY"
+    },
+    "muppet": {
+      "mestype": "SAY"
+    },
+    "sympathy": {
+      "mestype": "SPSAY"
+    }
+  },
+  "loves": {
+    "love": {
+      "win": "LOVER"
+    },
+    "hate": {
+      "win": "HATER"
+    }
+  },
+  "wins": {
+    "MOB": {
+      "name": "見物人"
+    },
+    "NONE": {
+      "name": "その他"
+    },
+    "HUMAN": {
+      "name": "村人陣営"
+    },
+    "WOLF": {
+      "name": "人狼陣営"
+    },
+    "EVIL": {
+      "name": "敵側の人間"
+    },
+    "GURU": {
+      "name": "笛吹き"
+    },
+    "PIXI": {
+      "name": "妖精"
+    },
+    "LONEWOLF": {
+      "name": "一匹狼"
+    },
+    "LOVER": {
+      "name": "恋人陣営"
+    },
+    "HATER": {
+      "name": "邪気陣営"
+    },
+    "DISH": {
+      "name": "据え膳"
+    }
+  },
+  "groups": {
+    "MOB": {
+      "name": "見物人"
+    },
+    "OTHER": {
+      "name": "その他"
+    },
+    "HUMAN": {
+      "name": "村人陣営"
+    },
+    "WOLF": {
+      "name": "人狼陣営"
+    },
+    "EVIL": {
+      "name": "敵側の人間"
+    },
+    "PIXI": {
+      "name": "妖精"
+    }
+  },
+  "specials": {
+    "mob": {
+      "name": "見物人",
+      "win": "MOB"
+    }
+  },
+  "roles": {
+    "mob": {
+      "name": "見物人",
+      "win": "MOB",
+      "group": "OTHER"
+    },
+    "lover": {
+      "name": "弟子",
+      "win": null,
+      "group": "OTHER"
+    },
+    "robber": {
+      "name": "盗賊",
+      "win": null,
+      "group": "OTHER"
+    },
+    "tangle": {
+      "name": "怨念",
+      "win": null,
+      "group": "OTHER"
+    },
+    "villager": {
+      "name": "村人",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "stigma": {
+      "name": "聖痕者",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "fm": {
+      "name": "結社員",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "sympathy": {
+      "name": "共鳴者",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "seer": {
+      "name": "占い師",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "seerwin": {
+      "name": "信仰占師",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "oura": {
+      "name": "気占師",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "aura": {
+      "name": "気占師",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "seerrole": {
+      "name": "賢者",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "guard": {
+      "name": "守護者",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "medium": {
+      "name": "霊能者",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "mediumwin": {
+      "name": "信仰霊能者",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "mediumrole": {
+      "name": "導師",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "necromancer": {
+      "name": "降霊者",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "follow": {
+      "name": "追従者",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "fan": {
+      "name": "煽動者",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "hunter": {
+      "name": "賞金稼",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "weredog": {
+      "name": "人犬",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "prince": {
+      "name": "王子様",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "rightwolf": {
+      "name": "狼血族",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "doctor": {
+      "name": "医師",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "curse": {
+      "name": "呪人",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "dying": {
+      "name": "預言者",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "invalid": {
+      "name": "病人",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "alchemist": {
+      "name": "錬金術師",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "witch": {
+      "name": "魔女",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "girl": {
+      "name": "少女",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "scapegoat": {
+      "name": "生贄",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "elder": {
+      "name": "長老",
+      "win": "HUMAN",
+      "group": "HUMAN"
+    },
+    "jammer": {
+      "name": "邪魔之民",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "snatch": {
+      "name": "宿借之民",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "bat": {
+      "name": "念波之民",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "cpossess": {
+      "name": "囁き狂人",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "possess": {
+      "name": "狂人",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "fanatic": {
+      "name": "狂信者",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "muppeting": {
+      "name": "人形使い",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "wisper": {
+      "name": "囁き狂人",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "semiwolf": {
+      "name": "半狼",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "dyingpossess": {
+      "name": "---",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "oracle": {
+      "name": "魔神官",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "sorcerer": {
+      "name": "魔術師",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "walpurgis": {
+      "name": "魔法少年",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "headless": {
+      "name": "首無騎士",
+      "win": "WOLF",
+      "group": "WOLF"
+    },
+    "wolf": {
+      "name": "人狼",
+      "win": "WOLF",
+      "group": "WOLF"
+    },
+    "aurawolf": {
+      "name": "---",
+      "win": "WOLF",
+      "group": "WOLF"
+    },
+    "intwolf": {
+      "name": "智狼",
+      "win": "WOLF",
+      "group": "WOLF"
+    },
+    "cursewolf": {
+      "name": "呪狼",
+      "win": "WOLF",
+      "group": "WOLF"
+    },
+    "whitewolf": {
+      "name": "白狼",
+      "win": "WOLF",
+      "group": "WOLF"
+    },
+    "childwolf": {
+      "name": "仔狼",
+      "win": "WOLF",
+      "group": "WOLF"
+    },
+    "dyingwolf": {
+      "name": "衰狼",
+      "win": "WOLF",
+      "group": "WOLF"
+    },
+    "silentwolf": {
+      "name": "黙狼",
+      "win": "WOLF",
+      "group": "WOLF"
+    },
+    "werebat": {
+      "name": "コウモリ人間",
+      "win": "PIXI",
+      "group": "PIXI"
+    },
+    "hamster": {
+      "name": "栗鼠妖精",
+      "win": "PIXI",
+      "group": "PIXI"
+    },
+    "mimicry": {
+      "name": "擬狼妖精",
+      "win": "PIXI",
+      "group": "PIXI"
+    },
+    "dyingpixi": {
+      "name": "風花妖精",
+      "win": "PIXI",
+      "group": "PIXI"
+    },
+    "trickster": {
+      "name": "悪戯妖精",
+      "win": "PIXI",
+      "group": "PIXI"
+    },
+    "hatedevil": {
+      "name": "邪気悪魔",
+      "win": "HATER",
+      "group": "OTHER"
+    },
+    "loveangel": {
+      "name": "恋愛天使",
+      "win": "LOVER",
+      "group": "OTHER"
+    },
+    "passion": {
+      "name": "片思い",
+      "win": "LOVER",
+      "group": "OTHER"
+    },
+    "lonewolf": {
+      "name": "一匹狼",
+      "win": "LONEWOLF",
+      "group": "WOLF"
+    },
+    "guru": {
+      "name": "笛吹き",
+      "win": "GURU",
+      "group": "OTHER"
+    },
+    "dish": {
+      "name": "鱗魚人",
+      "win": "DISH",
+      "group": "OTHER"
+    },
+    "bitch": {
+      "name": "遊び人",
+      "win": "LOVER",
+      "group": "OTHER"
+    }
+  },
+  "gifts": {
+    "none": {
+      "name": "",
+      "win": null,
+      "group": null
+    },
+    "lost": {
+      "name": "喪失",
+      "win": null,
+      "group": "OTHER"
+    },
+    "bind": {
+      "name": "---",
+      "win": null,
+      "group": null
+    },
+    "shield": {
+      "name": "光の輪",
+      "win": null,
+      "group": "OTHER"
+    },
+    "glass": {
+      "name": "魔鏡",
+      "win": null,
+      "group": "OTHER"
+    },
+    "ogre": {
+      "name": "悪鬼",
+      "win": "WOLF",
+      "group": "WOLF"
+    },
+    "fairy": {
+      "name": "妖精の子",
+      "win": "PIXI",
+      "group": "PIXI"
+    },
+    "fink": {
+      "name": "半端者",
+      "win": "EVIL",
+      "group": "EVIL"
+    },
+    "decide": {
+      "name": "決定者",
+      "win": null,
+      "group": "OTHER"
+    },
+    "seeronce": {
+      "name": "夢占師",
+      "win": null,
+      "group": "OTHER"
+    },
+    "dipsy": {
+      "name": "酔払い",
+      "win": null,
+      "group": "OTHER"
+    }
+  },
+  "events": {
+    "nothing": {
+      "name": "普通の日"
+    },
+    "aprilfool": {
+      "name": "四月馬鹿"
+    },
+    "turnfink": {
+      "name": "二重スパイ"
+    },
+    "turnfairy": {
+      "name": "妖精の輪"
+    },
+    "eclipse": {
+      "name": "日蝕"
+    },
+    "cointoss": {
+      "name": "Sir Cointoss"
+    },
+    "force": {
+      "name": "影響力"
+    },
+    "miracle": {
+      "name": "奇跡"
+    },
+    "prophecy": {
+      "name": "聖者のお告げ"
+    },
+    "clamor": {
+      "name": "不満"
+    },
+    "fire": {
+      "name": "熱意"
+    },
+    "nightmare": {
+      "name": "悪夢"
+    },
+    "ghost": {
+      "name": "亡霊"
+    },
+    "escape": {
+      "name": "逃亡"
+    },
+    "seance": {
+      "name": "降霊会"
+    }
+  },
+  "maskstates": {
+    "268435200": null,
+    "1024": "投票対象外",
+    "512": "恩恵対象外",
+    "256": "能力対象外",
+    "64": "感染",
+    "32": "負傷",
+    "8": "\u003Cs\u003E投票\u003C/s\u003E",
+    "7": "\u003Cs\u003E全能力\u003C/s\u003E",
+    "4": "\u003Cs\u003E恩恵\u003C/s\u003E",
+    "3": "\u003Cs\u003E能力\u003C/s\u003E",
+    "2": "\u003Cs\u003E毒薬\u003C/s\u003E",
+    "1": "\u003Cs\u003E蘇生薬\u003C/s\u003E"
+  },
+  "live": {
+    "live": "生存者",
+    "executed": "処刑",
+    "victim": "襲撃",
+    "cursed": "呪詛",
+    "droop": "衰退",
+    "suicide": "後追",
+    "feared": "恐怖",
+    "suddendead": "突然死",
+    "mob": "見物人"
+  },
+  "live_caption": {
+    "live": "生存者",
+    "executed": "処刑",
+    "victim": "犠牲者",
+    "cursed": "犠牲者",
+    "droop": "犠牲者",
+    "suicide": "犠牲者",
+    "feared": "犠牲者",
+    "suddendead": "突然死",
+    "mob": "見物人"
+  },
+  "mob": {
+    "visiter": {
+      "CAPTION": "客席",
+      "HELP": "進行中会話は客席同士のみ"
+    },
+    "grave": {
+      "CAPTION": "裏方",
+      "HELP": "進行中会話は墓下と"
+    },
+    "alive": {
+      "CAPTION": "舞台",
+      "HELP": "進行中会話は地上、墓下、両方と"
+    },
+    "juror": {
+      "CAPTION": "陪審",
+      "HELP": "進行中会話は陪審同士のみ。陪審（＆決定者）だけが投票する。"
+    },
+    "gamemaster": {
+      "CAPTION": "黒幕",
+      "HELP": "進行中会話は地上、墓下、両方と。場を支配する特権をもつ。"
+    }
+  },
+  "game_rule": {
+    "TABULA": {
+      "CAPTION": "タブラの人狼",
+      "HELP": "\u003Cli\u003E同数票の処刑候補が複数いた場合、ランダムに処刑する。\n\u003Cli\u003E狼を全滅させると、村勝利。\n\u003Cli\u003E人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"
+    },
+    "MILLERHOLLOW": {
+      "CAPTION": "ミラーズホロウ",
+      "HELP": "\u003Cli\u003E同数票の処刑候補が複数いた場合、処刑をとりやめる。\n\u003Cli\u003Eすべての死者は役職が公開される。\n\u003Cli\u003E狼を全滅させると、村勝利。\n\u003Cli\u003E「村人」を全滅させると、狼勝利。\u003Cbr\u003E役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"
+    },
+    "LIVE_TABULA": {
+      "CAPTION": "タブラの人狼（死んだら負け）",
+      "HELP": "\u003Cli\u003E同数票の処刑候補が複数いた場合、ランダムに処刑する。\n\u003Cli\u003E狼を全滅させると、村側の生存者が勝利。\n\u003Cli\u003E人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n\u003Cli\u003Eただし、仲間が勝利していても、死んでしまった者は敗北である。\n"
+    },
+    "LIVE_MILLERHOLLOW": {
+      "CAPTION": "ミラーズホロウ（死んだら負け）",
+      "HELP": "\u003Cli\u003E同数票の処刑候補が複数いた場合、処刑をとりやめる。\n\u003Cli\u003E狼を全滅させると、村側の生存者が勝利。\n\u003Cli\u003E「村人」を全滅させると、狼勝利。役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n\u003Cli\u003Eただし、仲間が勝利していても、死んでしまった者は敗北である。\n"
+    },
+    "TROUBLE": {
+      "CAPTION": "Trouble☆Aliens",
+      "HELP": "\u003Cli\u003E同数票の処刑候補が複数いた場合、ランダムに処刑する。\n\u003Cli\u003E人狼は会話できない。襲撃候補リストで判断できない。\n\u003Cli\u003E襲撃先は翌日、犠牲候補と人狼に開示される。\n\u003Cli\u003E守護者は、より大人数の人狼からは守りきることができず、身代わりに感染する。\n\u003Cli\u003E１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n\u003Cli\u003E狼を全滅させると、村側の生存者が勝利（村側は死んだら負ける）。\n\u003Cli\u003E人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼と感染者の勝利。\n"
+    },
+    "MISTERY": {
+      "CAPTION": "深い霧の夜",
+      "HELP": "\u003Cli\u003E同数票の処刑候補が複数いた場合、ランダムに処刑する。\n\u003Cli\u003E村側は自分の役職を自覚しない。\n\u003Cli\u003E村側は、能力の結果不審者を見かけることがある。\n\u003Cli\u003E人狼の行動対象に選ばれると、不審者を見かける。\n\u003Cli\u003E狼を全滅させると、村勝利。\n\u003Cli\u003E役職「村人」を全滅させると、狼勝利。\u003Cbr\u003E役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"
+    },
+    "VOV": {
+      "CAPTION": "狂犬病の谷",
+      "HELP": "\u003Cli\u003E同数票の処刑候補が複数いた場合、ランダムに処刑する。\n\u003Cli\u003E１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n\u003Cli\u003E狼を全滅させると、村勝利。\n\u003Cli\u003E人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"
+    },
+    "SECRET": {
+      "CAPTION": "陰謀に集う胡蝶",
+      "HELP": "\u003Cli\u003E同数票の処刑候補が複数いた場合、ランダムに処刑する。\n\u003Cli\u003E人狼は会話できない。襲撃候補リストで判断できない。\n\u003Cli\u003E襲撃先は翌日、犠牲候補と人狼に開示される。\n\u003Cli\u003E狼を全滅させると、村側の生存者が勝利。\n\u003Cli\u003E人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼の生存者が勝利。\n\u003Cli\u003Eいかなる場合も、死んでしまったものは敗北である。\n"
+    }
+  },
+  "trs": {
+    "all": {
+      "CAPTION": "オール☆スター",
+      "HELP": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。"
+    },
+    "simple": {
+      "CAPTION": "ラッキー☆スター",
+      "HELP": "初心者向けの、シンプルな設定です。拡張設定の一部が固定になっています。"
+    },
+    "star": {
+      "CAPTION": "Orbital☆Star",
+      "HELP": "すべての役職、恩恵、事件を楽しむことができます。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。\u003Cbr\u003E宇宙時代に突入した「全部入り」のセットです。村落共同体は渓谷や高原ではなく、小惑星帯や人工コロニー、移民船にあるでしょう。事件が始まるまでは、とても充実した近代的なインフラが整っていたのですが……"
+    },
+    "regend": {
+      "CAPTION": "議事☆伝承",
+      "HELP": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。アクション内容は穏当になり、未来的ですばらしいクローンも居ません。"
+    },
+    "fool": {
+      "CAPTION": "適当系",
+      "HELP": "てきとーな感じ。"
+    },
+    "sow": {
+      "CAPTION": "人狼物語",
+      "HELP": "ウェブゲーム「人狼物語」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
+    },
+    "wbbs": {
+      "CAPTION": "人狼BBS",
+      "HELP": "ウェブゲーム「人狼BBS」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
+    },
+    "juna": {
+      "CAPTION": "人狼審問",
+      "HELP": "ウェブゲーム「人狼審問」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
+    },
+    "complex": {
+      "CAPTION": "PARANOIA",
+      "HELP": "ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。\u003Cbr\u003E！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"
+    },
+    "complexx": {
+      "CAPTION": "ParanoiA",
+      "HELP": "ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。\u003Cbr\u003E！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"
+    },
+    "cabala": {
+      "CAPTION": "ギロチン広場",
+      "HELP": "権謀術数を弄び、虚実まじえた会話を楽しむためのセットです。"
+    },
+    "tabula": {
+      "CAPTION": "タブラの人狼",
+      "HELP": "カードゲーム「Lupus in Tabula」風の役職を楽しめます。ただし、疫病神、公証人、悪魔くん、には対応していません。"
+    },
+    "millerhollow": {
+      "CAPTION": "ミラーズホロウ",
+      "HELP": "カードゲーム「The Werewolves of Millers Hollow + New Moon」風の役職を楽しめます。ただし、愚か者には対応していません。守護者、笛吹きにすこし違いがあります。"
+    },
+    "ultimate": {
+      "CAPTION": "アルティメット",
+      "HELP": "カードゲーム「アルティメット人狼」風の役職を楽しめます。ただし、ドワーフ、ドッペルゲンガー、アル中、愚か者、倫理学者には対応していません。"
+    }
+  },
+  "saycnt": {
+    "sow": {
+      "CAPTION": "人狼物語",
+      "HELP": null
+    },
+    "say5": {
+      "CAPTION": "寡黙への挑戦",
+      "COST_SAY": "count",
+      "COST_MEMO": "none",
+      "COST_ACT": "count",
+      "RECOVERY": 1,
+      "MAX_SAY": 5,
+      "MAX_TSAY": 5,
+      "MAX_SPSAY": 5,
+      "MAX_WSAY": 10,
+      "MAX_GSAY": 10,
+      "MAX_PSAY": 10,
+      "MAX_ESAY": 999,
+      "MAX_SAY_ACT": 5,
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0,
+      "MAX_MESLINE": 10
+    },
+    "point": {
+      "COST_SAY": "point",
+      "COST_MEMO": "count",
+      "COST_ACT": "count",
+      "MAX_ESAY": 9999
+    },
+    "count": {
+      "COST_SAY": "count",
+      "COST_MEMO": "count",
+      "COST_ACT": "count",
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0
+    },
+    "lobby": {
+      "CAPTION": "ロビー",
+      "HELP": "∞pt/∞act",
+      "COST_SAY": "none",
+      "COST_MEMO": "none",
+      "COST_ACT": "none",
+      "RECOVERY": 1,
+      "MAX_SAY": 9999,
+      "MAX_TSAY": 9999,
+      "MAX_SPSAY": 9999,
+      "MAX_WSAY": 9999,
+      "MAX_GSAY": 9999,
+      "MAX_PSAY": 9999,
+      "MAX_ESAY": 9999,
+      "MAX_SAY_ACT": 99,
+      "ADD_SAY": 9999,
+      "MAX_ADDSAY": 0,
+      "MAX_MESCNT": 1000,
+      "MAX_MESLINE": 20
+    },
+    "say5x200": {
+      "CAPTION": "寡黙への挑戦",
+      "COST_SAY": "count",
+      "COST_MEMO": "none",
+      "COST_ACT": "count",
+      "RECOVERY": 1,
+      "MAX_SAY": 5,
+      "MAX_TSAY": 5,
+      "MAX_SPSAY": 5,
+      "MAX_WSAY": 10,
+      "MAX_GSAY": 10,
+      "MAX_PSAY": 10,
+      "MAX_ESAY": 999,
+      "MAX_SAY_ACT": 5,
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0,
+      "MAX_MESLINE": 10,
+      "HELP": "（24h回復） 200字x5回/5act'",
+      "MAX_MESCNT": 200
+    },
+    "say5x300": {
+      "CAPTION": "小論文への挑戦",
+      "COST_SAY": "count",
+      "COST_MEMO": "none",
+      "COST_ACT": "count",
+      "RECOVERY": 1,
+      "MAX_SAY": 5,
+      "MAX_TSAY": 5,
+      "MAX_SPSAY": 5,
+      "MAX_WSAY": 10,
+      "MAX_GSAY": 10,
+      "MAX_PSAY": 10,
+      "MAX_ESAY": 999,
+      "MAX_SAY_ACT": 5,
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0,
+      "MAX_MESLINE": 10,
+      "HELP": "（24h回復） 300字x5回/15act'",
+      "MAX_MESCNT": 300
+    },
+    "saving": {
+      "COST_SAY": "count",
+      "COST_MEMO": "count",
+      "COST_ACT": "count",
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0,
+      "CAPTION": "節約",
+      "HELP": "250字x20回/15act",
+      "RECOVERY": 0,
+      "MAX_SAY": 20,
+      "MAX_TSAY": 10,
+      "MAX_SPSAY": 10,
+      "MAX_WSAY": 30,
+      "MAX_GSAY": 20,
+      "MAX_PSAY": 20,
+      "MAX_ESAY": 999,
+      "MAX_SAY_ACT": 15,
+      "MAX_MESCNT": 250,
+      "MAX_MESLINE": 10
+    },
+    "wbbs": {
+      "COST_SAY": "count",
+      "COST_MEMO": "none",
+      "COST_ACT": "count",
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0,
+      "CAPTION": "人狼BBS",
+      "HELP": "200字x20回",
+      "RECOVERY": 0,
+      "MAX_SAY": 20,
+      "MAX_TSAY": 5,
+      "MAX_SPSAY": 20,
+      "MAX_WSAY": 40,
+      "MAX_GSAY": 20,
+      "MAX_PSAY": 20,
+      "MAX_ESAY": 999,
+      "MAX_SAY_ACT": 0,
+      "MAX_MESCNT": 200,
+      "MAX_MESLINE": 5
+    },
+    "euro": {
+      "COST_SAY": "count",
+      "COST_MEMO": "count",
+      "COST_ACT": "count",
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0,
+      "CAPTION": "欧州",
+      "HELP": "（24h回復） 800字x30回/30act",
+      "RECOVERY": 1,
+      "MAX_SAY": 30,
+      "MAX_TSAY": 999,
+      "MAX_SPSAY": 999,
+      "MAX_WSAY": 999,
+      "MAX_GSAY": 999,
+      "MAX_PSAY": 30,
+      "MAX_ESAY": 999,
+      "MAX_SAY_ACT": 30,
+      "MAX_MESCNT": 800,
+      "MAX_MESLINE": 20
+    },
+    "tiny": {
+      "COST_SAY": "point",
+      "COST_MEMO": "point",
+      "COST_ACT": "count",
+      "MAX_ESAY": 9999,
+      "CAPTION": "たりない",
+      "HELP": "（24h回復）（メモは20pt） 333pt/9act",
+      "RECOVERY": 1,
+      "MAX_SAY": 333,
+      "MAX_TSAY": 999,
+      "MAX_SPSAY": 333,
+      "MAX_WSAY": 999,
+      "MAX_GSAY": 999,
+      "MAX_PSAY": 999,
+      "MAX_SAY_ACT": 9,
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0,
+      "MAX_MESCNT": 300,
+      "MAX_MESLINE": 10
+    },
+    "weak": {
+      "COST_SAY": "point",
+      "COST_MEMO": "point",
+      "COST_ACT": "count",
+      "MAX_ESAY": 9999,
+      "CAPTION": "むりせず",
+      "HELP": "（24h回復）（メモは20pt） 777pt/15act",
+      "RECOVERY": 1,
+      "MAX_SAY": 777,
+      "MAX_TSAY": 777,
+      "MAX_SPSAY": 777,
+      "MAX_WSAY": 999,
+      "MAX_GSAY": 999,
+      "MAX_PSAY": 1200,
+      "MAX_SAY_ACT": 15,
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0,
+      "MAX_MESCNT": 600,
+      "MAX_MESLINE": 15
+    },
+    "juna": {
+      "COST_SAY": "point",
+      "COST_MEMO": "count",
+      "COST_ACT": "count",
+      "MAX_ESAY": 9999,
+      "CAPTION": "しんもん",
+      "HELP": "（24h回復） 1200pt/24act",
+      "RECOVERY": 1,
+      "MAX_SAY": 1200,
+      "MAX_TSAY": 700,
+      "MAX_SPSAY": 700,
+      "MAX_WSAY": 3000,
+      "MAX_GSAY": 2000,
+      "MAX_PSAY": 2000,
+      "MAX_SAY_ACT": 24,
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0,
+      "MAX_MESCNT": 1000,
+      "MAX_MESLINE": 20
+    },
+    "vulcan": {
+      "COST_SAY": "point",
+      "COST_MEMO": "count",
+      "COST_ACT": "count",
+      "MAX_ESAY": 9999,
+      "CAPTION": "いっぱい",
+      "HELP": "（24h回復） 1000pt+++300pt/36act",
+      "RECOVERY": 1,
+      "MAX_SAY": 1000,
+      "MAX_TSAY": 1000,
+      "MAX_SPSAY": 1500,
+      "MAX_WSAY": 4000,
+      "MAX_GSAY": 3000,
+      "MAX_PSAY": 3000,
+      "MAX_SAY_ACT": 36,
+      "ADD_SAY": 300,
+      "MAX_ADDSAY": 3,
+      "MAX_MESCNT": 1000,
+      "MAX_MESLINE": 20
+    },
+    "infinity": {
+      "CAPTION": "むげん",
+      "HELP": "∞pt/∞act",
+      "COST_SAY": "none",
+      "COST_MEMO": "none",
+      "COST_ACT": "none",
+      "RECOVERY": 1,
+      "MAX_SAY": 9999,
+      "MAX_TSAY": 9999,
+      "MAX_SPSAY": 9999,
+      "MAX_WSAY": 9999,
+      "MAX_GSAY": 9999,
+      "MAX_PSAY": 9999,
+      "MAX_ESAY": 9999,
+      "MAX_SAY_ACT": 99,
+      "ADD_SAY": 9999,
+      "MAX_ADDSAY": 0,
+      "MAX_MESCNT": 1000,
+      "MAX_MESLINE": 20
+    },
+    "weak_braid": {
+      "COST_SAY": "point",
+      "COST_MEMO": "point",
+      "COST_ACT": "count",
+      "MAX_ESAY": 9999,
+      "CAPTION": "むりせず",
+      "HELP": "（24h回復）（メモは20pt） 600pt++100pt/15act",
+      "RECOVERY": 1,
+      "MAX_SAY": 600,
+      "MAX_TSAY": 600,
+      "MAX_SPSAY": 600,
+      "MAX_WSAY": 999,
+      "MAX_GSAY": 999,
+      "MAX_PSAY": 1200,
+      "MAX_SAY_ACT": 15,
+      "ADD_SAY": 100,
+      "MAX_ADDSAY": 2,
+      "MAX_MESCNT": 600,
+      "MAX_MESLINE": 15
+    },
+    "juna_braid": {
+      "COST_SAY": "point",
+      "COST_MEMO": "count",
+      "COST_ACT": "count",
+      "MAX_ESAY": 9999,
+      "CAPTION": "しんもん",
+      "HELP": "（24h回復） 800pt++200pt/24act",
+      "RECOVERY": 1,
+      "MAX_SAY": 800,
+      "MAX_TSAY": 700,
+      "MAX_SPSAY": 700,
+      "MAX_WSAY": 3000,
+      "MAX_GSAY": 2000,
+      "MAX_PSAY": 2000,
+      "MAX_SAY_ACT": 24,
+      "ADD_SAY": 200,
+      "MAX_ADDSAY": 2,
+      "MAX_MESCNT": 1000,
+      "MAX_MESLINE": 20
+    },
+    "vulcan_braid": {
+      "COST_SAY": "point",
+      "COST_MEMO": "count",
+      "COST_ACT": "count",
+      "MAX_ESAY": 9999,
+      "CAPTION": "いっぱい",
+      "HELP": "（24h回復） 1000pt+++300pt/36act",
+      "RECOVERY": 1,
+      "MAX_SAY": 1000,
+      "MAX_TSAY": 1000,
+      "MAX_SPSAY": 1500,
+      "MAX_WSAY": 4000,
+      "MAX_GSAY": 3000,
+      "MAX_PSAY": 3000,
+      "MAX_SAY_ACT": 36,
+      "ADD_SAY": 300,
+      "MAX_ADDSAY": 3,
+      "MAX_MESCNT": 1000,
+      "MAX_MESLINE": 20
+    },
+    "infinity_braid": {
+      "CAPTION": "むげん",
+      "HELP": "∞pt/∞act",
+      "COST_SAY": "none",
+      "COST_MEMO": "none",
+      "COST_ACT": "none",
+      "RECOVERY": 1,
+      "MAX_SAY": 9999,
+      "MAX_TSAY": 9999,
+      "MAX_SPSAY": 9999,
+      "MAX_WSAY": 9999,
+      "MAX_GSAY": 9999,
+      "MAX_PSAY": 9999,
+      "MAX_ESAY": 9999,
+      "MAX_SAY_ACT": 99,
+      "ADD_SAY": 9999,
+      "MAX_ADDSAY": 0,
+      "MAX_MESCNT": 1000,
+      "MAX_MESLINE": 20
+    }
+  },
+  "log": {
+    "anchor": {
+      "q": null,
+      "m": "#",
+      "a": "%",
+      "S": "",
+      "T": "-",
+      "W": "*",
+      "G": "+",
+      "P": "=",
+      "X": "!",
+      "V": "@"
+    },
+    "mestypetext": [null, null, "【管理人削除】", null, null, null, "【未確】", null, "【削除】", "【人】", "【独】", "【赤】", "【墓】", "【鳴】", "【念】", "【見】", "【憑】", null, null, null],
+    "font": [null, null, "color=\"gray\"", null, null, null, null, null, "color=\"gray\"", null, "color=\"gray\"", "color=\"red\"", "color=\"teal\"", "color=\"blue\"", "color=\"green\"", "color=\"maroon\"", null, "color=\"purple\"", null, "color=\"red\""]
   }
 };
 new Cache.Rule("map_face").schema(function() {
@@ -4168,14 +5247,29 @@ new Cache.Rule("map_face").schema(function() {
     return o.chr_set_ids;
   });
 });
-var _ref;
+var face, if_exist, touch_events, _ref;
+
+touch_events = function(touch) {
+  return {
+    onmousedown: touch.start,
+    onmousemove: touch.move,
+    onmouseup: touch.end,
+    ongesturestart: touch.start,
+    ongesturechange: touch.move,
+    ongestureend: touch.end,
+    ontouchstart: touch.start,
+    ontouchmove: touch.move,
+    ontouchend: touch.end
+  };
+};
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.map_face.set(gon.map_reduce.faces);
   win.on.load.push(function() {
-    var chr_set, map_order, map_orders;
+    var chr_set, map_order, map_orders, touch_state;
     chr_set = m.prop("all");
     map_order = m.prop("all");
+    touch_state = m.prop(false);
     map_orders = function(prop) {
       var order;
       order = RAILS.map_faces_orders[prop];
@@ -4193,28 +5287,33 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     m.module(document.getElementById("map_faces"), {
       controller: function() {},
       view: function() {
-        var chrs, headline, map_order_set;
+        var chr_job, chrs, face_name, headline, job_name, map_order_set, o;
         map_order_set = map_orders(map_order());
         chrs = Cache.map_faces.chr_set[chr_set()];
         headline = chrs ? "人気の " + chrs.length + "キャラクター" : "";
         return [
           m("hr", {
             style: "border-color:black;"
-          }), m(".mark", headline), _.map(chrs, function(o) {
-            var chr_job, face_name, job_name;
-            chr_job = Cache.chr_jobs.find["" + (chr_set()) + "_" + o.face_id];
-            job_name = chr_job.job;
-            face_name = o.face.name;
-            return m(".chrbox", [
-              m("img", {
-                src: "http://7korobi.gehirn.ne.jp/images/portrate/" + o.face_id + ".jpg"
-              }), m(".chrblank", [
-                m("div", job_name), m("div", face_name), m("div", m("a.mark", {
-                  href: "/map_reduce/faces/" + o.face_id
-                }, "" + map_order_set.title + " " + (map_order_set.func(o)) + "回")), m("div", "♥" + o.sow_auth_id.max_is)
-              ])
-            ]);
-          }), m("hr", {
+          }), m(".mark", headline), (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = chrs.length; _i < _len; _i++) {
+              o = chrs[_i];
+              chr_job = Cache.chr_jobs.find["" + (chr_set()) + "_" + o.face_id];
+              job_name = chr_job.job;
+              face_name = o.face.name;
+              _results.push(m(".chrbox", [
+                m("img", {
+                  src: "http://7korobi.gehirn.ne.jp/images/portrate/" + o.face_id + ".jpg"
+                }), m(".chrblank", [
+                  m("div", job_name), m("div", face_name), m("div", m("a.mark", {
+                    href: "/map_reduce/faces/" + o.face_id
+                  }, "" + map_order_set.title + " " + (map_order_set.func(o)) + "回")), m("div", "♥" + o.RAILS_auth_id.max_is)
+                ])
+              ]));
+            }
+            return _results;
+          })(), m("hr", {
             style: "border-color:black;"
           })
         ];
@@ -4223,36 +5322,320 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     return m.module(document.getElementById("chr_sets"), {
       controller: function() {},
       view: function() {
-        var chr_sets;
+        var attrs, chr_sets, div_attrs, head, key, o;
         chr_sets = Cache.chr_sets.all;
+        div_attrs = touch_events({
+          start: function() {
+            return touch_state(true);
+          },
+          move: function() {},
+          end: function() {}
+        });
+        head = m("div", m("label.input-block-level", "キャラセットを選んでみよう ☆ミ"));
         return [
-          m("label.input-block-level", "キャラセットを選んでみよう ☆ミ"), m("select.form-control", {
-            onchange: m.withAttr("value", chr_set),
-            value: chr_set()
-          }, _.map(chr_sets, function(o) {
-            return m("option", {
-              value: o._id
-            }, o.caption);
-          })), m("div", _.map(RAILS.map_faces_orders, function(o, key) {
-            return m("a.mark", {
-              onclick: function() {
-                return map_order(key);
+          m("div", div_attrs, touch_state() ? [
+            head, m("ul", (function() {
+              var _i, _len, _results;
+              _results = [];
+              for (_i = 0, _len = chr_sets.length; _i < _len; _i++) {
+                o = chr_sets[_i];
+                attrs = touch_events({
+                  start: function() {},
+                  move: function() {},
+                  end: function() {
+                    chr_set(o._id);
+                    return touch_state(false);
+                  }
+                });
+                _results.push(m("li.mark", attrs, o.caption));
               }
-            }, o.caption);
-          })), m("select.form-control", {
-            onchange: m.withAttr("value", map_order),
-            value: map_order()
-          }, _.map(RAILS.map_faces_orders, function(o, key) {
-            return m("option", {
-              value: key
-            }, o.caption);
-          }))
+              return _results;
+            })()), (function() {
+              var _ref1, _results;
+              _ref1 = RAILS.map_faces_orders;
+              _results = [];
+              for (key in _ref1) {
+                o = _ref1[key];
+                attrs = touch_events({
+                  start: function() {},
+                  move: function() {},
+                  end: function() {
+                    map_order(key);
+                    return touch_state(false);
+                  }
+                });
+                attrs["class"] = key === map_order() ? "btn btn-success" : "btn btn-default";
+                _results.push(m("a", attrs, o.caption));
+              }
+              return _results;
+            })()
+          ] : [head, m("span.badge.badge-info", Cache.chr_sets.find[chr_set()].caption), m("span.badge.badge-info", map_orders(map_order()).title)])
         ];
       }
     });
   });
 }
-;
+
+if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
+  face = Cache.map_face_detail = gon.face;
+  face.story_id_of_folders = _.groupBy(face.story_ids, function(_arg) {
+    var count, k, _ref1;
+    k = _arg[0], count = _arg[1];
+    return (_ref1 = k.split("-")) != null ? _ref1[0] : void 0;
+  });
+  face.role_of_wins = _.groupBy(face.roles, function(_arg) {
+    var count, k, role;
+    k = _arg[0], count = _arg[1];
+    role = RAILS.gifts[k] || RAILS.roles[k] || {
+      group: "OTHER"
+    };
+    return RAILS.groups[role.group].name;
+  });
+  win.on.load.push(function() {
+    var comma, inline_item, inline_item_span, letter, name;
+    name = {
+      config: function(o) {
+        var _ref1, _ref2, _ref3;
+        return ((_ref1 = RAILS.roles[o]) != null ? _ref1.name : void 0) || ((_ref2 = RAILS.gifts[o]) != null ? _ref2.name : void 0) || ((_ref3 = RAILS.events[o]) != null ? _ref3.name : void 0) || o || "";
+      }
+    };
+    comma = function(num) {
+      return (String(Math.round(num))).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    };
+    inline_item_span = function(align, em, vdom) {
+      return m("span", {
+        style: "display:inline-block; width:" + em + "em; text-align:" + align + "; white-space: nowrap;"
+      }, vdom);
+    };
+    inline_item = function(cb) {
+      var list_cmds;
+      list_cmds = {
+        center: function(em, vdom) {
+          return inline_item_span("center", em, vdom);
+        },
+        right: function(em, vdom) {
+          return inline_item_span("right", em, vdom);
+        }
+      };
+      return m(".mark.", {
+        style: "display:inline-block;"
+      }, cb.call(list_cmds));
+    };
+    letter = function(head, vdom) {
+      return [m("h3.mesname", m("b", head)), m("p.text", vdom)];
+    };
+    m.module(document.getElementById("summary"), {
+      controller: function() {},
+      view: function() {
+        var role, win;
+        return [
+          m("h2", face.name + " の活躍"), m("h6", [m("span.code", Timer.date_time_stamp(face.says[0].date.min)), m.trust("&nbsp;〜&nbsp;"), m("span.code", Timer.date_time_stamp(face.says[0].date.max))]), m("table.say.SAY", m("tbody", m("tr", [
+            m("td.img", m("img", {
+              src: "http://7korobi.gehirn.ne.jp/images/portrate/" + face.face_id + ".jpg"
+            })), m("td.field", [
+              m(".msg", [
+                letter(face.name, ["全部で", m("span.mark", face.role.all), "の役職になりました"]), (function() {
+                  var _i, _len, _ref1, _results;
+                  _ref1 = face.win.keys;
+                  _results = [];
+                  for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                    win = _ref1[_i];
+                    _results.push(letter("" + win + " x" + face.win.value[win] + "回", (function() {
+                      var _j, _len1, _ref2, _results1;
+                      _ref2 = face.role_of_wins[win];
+                      _results1 = [];
+                      for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+                        role = _ref2[_j];
+                        _results1.push(inline_item(function() {
+                          return [this.center(3.75, name.config(role[0])), this.right(2.50, "x" + role[1])];
+                        }));
+                      }
+                      return _results1;
+                    })()));
+                  }
+                  return _results;
+                })()
+              ])
+            ])
+          ])))
+        ];
+      }
+    });
+    m.module(document.getElementById("calc"), {
+      controller: function() {},
+      view: function() {
+        var say, says_calc_line, says_calc_lines, says_count_line, says_count_lines, _i, _len, _ref1;
+        says_count_lines = [
+          m("tr.caution", [
+            m("th.msg", {
+              colspan: 2
+            }, "総合値"), m("th.msg", {
+              style: "text-align:right"
+            }, "一番長い発言"), m("th.msg", {
+              style: "text-align:right"
+            }, "総文字数"), m("th.msg", {
+              style: "text-align:right"
+            }, "総発言回数")
+          ])
+        ];
+        says_calc_lines = [
+          m("tr.caution", [
+            m("th.msg", {
+              colspan: 2
+            }, "平均値"), m("th.msg", {
+              style: "text-align:right"
+            }, "／村数"), m("th.msg", {
+              style: "text-align:right"
+            }, "文字数"), m("th.msg", {
+              style: "text-align:right"
+            }, "発言回数")
+          ])
+        ];
+        _ref1 = face.says;
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          say = _ref1[_i];
+          says_count_line = m("tr." + say.logid_head + "AY", [
+            m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
+              style: "text-align:right"
+            }, "" + (comma(say.max)) + " 字"), m("th.msg", {
+              style: "text-align:right"
+            }, "" + (comma(say.all)) + " 字"), m("th.msg", {
+              style: "text-align:right"
+            }, "" + (comma(say.count)) + " 回")
+          ]);
+          says_calc_line = m("tr." + say.logid_head + "AY", [
+            m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
+              style: "text-align:right"
+            }, "" + (comma(say.vil)) + " 村"), m("th.msg", {
+              style: "text-align:right"
+            }, "" + (comma(say.all / say.vil)) + " 字"), m("th.msg", {
+              style: "text-align:right"
+            }, "" + (comma(say.count / say.vil)) + " 回")
+          ]);
+          says_count_lines.push(says_count_line);
+          says_calc_lines.push(says_calc_line);
+        }
+        return [m("table.say.info", says_count_lines), m("table.say.info", says_calc_lines)];
+      }
+    });
+    m.module(document.getElementById("village"), {
+      controller: function() {},
+      view: function() {
+        var folder, story_id;
+        return [
+          m(".MAKER.guide", [
+            letter(face.name, ["全部で", m("span.mark", "" + face.folder.all + "回"), "登場しました。"]), (function() {
+              var _i, _len, _ref1, _results;
+              _ref1 = face.folder.keys;
+              _results = [];
+              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                folder = _ref1[_i];
+                _results.push(letter("" + folder + " x" + face.folder.value[folder] + "回", (function() {
+                  var _j, _len1, _ref2, _results1;
+                  _ref2 = face.story_id_of_folders[folder];
+                  _results1 = [];
+                  for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+                    story_id = _ref2[_j];
+                    _results1.push(inline_item(function() {
+                      return m("a", {
+                        style: "display:block; width:" + (2.5 + folder.length * 0.6) + "em; text-align:left;",
+                        href: "http://7korobi.gehirn.ne.jp/stories/" + story_id[0] + ".html"
+                      }, story_id[0]);
+                    }));
+                  }
+                  return _results1;
+                })()));
+              }
+              return _results;
+            })()
+          ])
+        ];
+      }
+    });
+    return m.module(document.getElementById("sow_user"), {
+      controller: function() {},
+      view: function() {
+        var sow_auth_id;
+        return [
+          m(".ADMIN.guide", [
+            letter(face.name, ["全部で", m("span.mark", "" + face.sow_auth_ids.length + "人"), "が、", m("span.mark", "" + face.sow_auth_id.all + "回"), "登場しました。"]), (function() {
+              var _i, _len, _ref1, _results;
+              _ref1 = face.sow_auth_ids;
+              _results = [];
+              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                sow_auth_id = _ref1[_i];
+                _results.push(inline_item(function() {
+                  return [this.right(9.0, sow_auth_id[0]), this.right(2.0, "x" + sow_auth_id[1])];
+                }));
+              }
+              return _results;
+            })()
+          ])
+        ];
+      }
+    });
+  });
+}
+
+if_exist = function(id, cb) {
+  var dom;
+  dom = document.getElementById(id);
+  if (!!dom) {
+    return win.on.load.push(function() {
+      return cb(dom);
+    });
+  }
+};
+
+if_exist("buttons", function(dom) {
+  m.module(dom, {
+    controller: function() {},
+    view: function() {
+      var o;
+      return m("nav", [
+        m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-search", {
+          onclick: function() {}
+        })), m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-pencil", {
+          onclick: function() {}
+        })), (function() {
+          var _i, _len, _ref1, _results;
+          _ref1 = [];
+          _results = [];
+          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+            o = _ref1[_i];
+            _results.push(m("span", m("a.btn.click", {
+              onclick: function() {}
+            }, o.name)));
+          }
+          return _results;
+        })(), m("a.btn.btn-default", {
+          onclick: function() {}
+        }, "✗")
+      ]);
+    }
+  });
+  return new Layout(-12, -1, dom);
+});
+
+if_exist("sayfilter", function(dom) {
+  m.module(dom, {
+    controller: function() {},
+    view: function() {
+      return [];
+    }
+  });
+  return new Layout(1, -1, dom);
+});
+
+if_exist("topviewer", function(dom) {
+  m.module(dom, {
+    controller: function() {},
+    view: function() {
+      return [];
+    }
+  });
+  return new Layout(0, 1, dom);
+});
 Url.cookie = ["css"];
 
 Url.search = ["css"];
