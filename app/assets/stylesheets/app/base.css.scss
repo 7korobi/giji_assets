@@ -68,12 +68,13 @@ $screen-lg: 770px;
 @import "bootstrap/utilities";
 @import "bootstrap/responsive-utilities";
 
-@import "lib/lib";
+@import "lib/_lib";
 @import "lib/box";
 @import "lib/font";
 @import "lib/giji";
 @import "lib/layout";
 @import "lib/message";
+@import "lib/mithril";
 @import "lib/player";
 @import "lib/table";
 @import "lib/theme";

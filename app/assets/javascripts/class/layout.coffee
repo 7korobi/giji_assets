@@ -1,4 +1,9 @@
 win =
+  do_event_list: (list, e)->
+    m.startComputation()
+    cb(e) for cb in list
+    m.endComputation()
+
   do:
     resize: (e)->
       win.height = Math.max window.innerHeight, document.documentElement.clientHeight
@@ -16,46 +21,46 @@ win =
         win.portlate = false
 
       #console.log ["resize", e]
-      cb(e) for cb in win.on.resize
+      win.do_event_list win.on.resize, e
 
     scroll: (e)->
       win.left = window.pageXOffset
       win.top  = window.pageYOffset
 
       #console.log ["scroll", e]
-      cb(e) for cb in win.on.scroll
+      win.do_event_list win.on.scroll, e
 
     gesture: (e)->
       #console.log ["touch-gesture", e]
-      cb(e) for cb in win.on.gesture
+      win.do_event_list win.on.gesture, e
 
     motion: (e)->
       win.accel   = e.acceleration
       win.gravity = e.accelerationIncludingGravity
       win.rotate  = e.rotationRate
       #console.log ["touch-motion", e]
-      cb(e) for cb in win.on.motion
+      win.do_event_list win.on.motion, e
 
     start: (e)->
       win.is_tap = true
       #console.log ["touch-start", e]
-      cb(e) for cb in win.on.start
+      win.do_event_list win.on.start, e 
 
     move: (e)->
       if win.is_tap
         #console.log ["touch-drag", e]
-        cb(e) for cb in win.on.drag
+        win.do_event_list win.on.drag, e
       else
         #console.log ["touch-move", e]
-        cb(e) for cb in win.on.move
+        win.do_event_list win.on.move, e
 
     end: (e)->
       win.is_tap = false
       #console.log ["touch-end", e]
-      cb(e) for cb in win.on.end
+      win.do_event_list win.on.end, e
 
-    load: ->
-      cb() for cb in win.on.load
+    load: (e)->
+      win.do_event_list win.on.load, e
       win.do.resize()
       win.do.scroll()
 

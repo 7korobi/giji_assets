@@ -1,8 +1,3 @@
-_.mixin
-  parseID: (id)->
-    time = Serial.parser.Date id[2..-1]
-    [id[0..1], time]
-
 class Serial
   # OIl
   @map = 

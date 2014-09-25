@@ -1,3 +1,62 @@
+head_img:
+  770:
+    cinema:
+      - morning.png
+      - moon.png
+    wa:
+      - morning.png
+      - lupino.png
+    night:
+      - morning.png
+      - moon.png
+    star:
+      - morning.png
+      - lupino.png
+    juna:
+      - morning.png
+      - lupino.png
+    sow:
+      - morning.png
+      - lupino.png
+  580:
+    cinema:
+      - b.jpg
+      - w.jpg
+    wa:
+      - b.jpg
+      - w.jpg
+    night:
+      - b.jpg
+      - w.jpg
+    star:
+      - r.jpg
+      - c.jpg
+    juna:
+      - b.jpg
+      - w.jpg
+    sow:
+      - r.jpg
+      - c.jpg
+  458:
+    cinema:
+      - b.jpg
+      - w.jpg
+    wa:
+      - b.jpg
+      - w.jpg
+    night:
+      - b.jpg
+      - w.jpg
+    star:
+      - r.jpg
+      - c.jpg
+    juna:
+      - b.jpg
+      - w.jpg
+    sow:
+      - r.jpg
+      - c.jpg
+
 map_faces_orders:
   all:
     caption: 合計
@@ -330,6 +389,10 @@ roles:
     group: WOLF
   intwolf:
     name: 智狼
+    win: WOLF
+    group: WOLF
+  cwolf:
+    name: 呪狼
     win: WOLF
     group: WOLF
   cursewolf:

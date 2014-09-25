@@ -1,9 +1,3 @@
-Object.defineProperties Array.prototype,
-  last:
-    get: -> @[@length - 1]
-  first:
-    get: -> @[0]
-
 class Cache
   @rule = {}
 

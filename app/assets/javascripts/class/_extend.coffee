@@ -1,4 +1,14 @@
-DECOLATE = ($scope, $sce)->
+define = (type, cb)->
+  Object.defineProperties type.prototype, cb()
+
+define Array, ->
+  last:
+    get: -> @[@length - 1]
+  first:
+    get: -> @[0]
+
+
+define String, ->
   player = (log)->
     return log unless log
     log.replace ///
@@ -75,20 +85,30 @@ DECOLATE = ($scope, $sce)->
        .replace /'/g, "&apos;"
        .replace /\//g, "&#x2f;"
 
-  $scope.preview_decolate = (log)->
-    if log
-      $sce.trustAsHtml br space player anchor_preview link random_preview unhtml log
-    else
-      null
+  deco_preview: 
+    get: ->
+      br space player anchor_preview link random_preview unhtml @
 
-  $scope.text_decolate = (log)->
-    if log
-      $sce.trustAsHtml space player anchor link random log
-    else
-      null
+  deco_text:
+    get: ->
+      space player anchor link random @
 
-  $scope.undecolate = (log)->
-    if log
-      unanchor unrandom unbr log
-    else
-      null
+  undecolate:
+    get: ->
+      unanchor unrandom unbr @
+
+  sjis_length: 
+    get: ->
+      # countup sjis byte size
+      other = @match(/[^\x01-\xff]/g) or []
+      @length + other.length
+
+
+Number.MAX_INT32 = 0x7fffffff
+
+_.mixin
+  parseID: (id)->
+    time = Serial.parser.Date id[2..-1]
+    [id[0..1], time]
+
+

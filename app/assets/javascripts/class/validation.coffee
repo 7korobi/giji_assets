@@ -1,10 +1,4 @@
 class InputBase
-  calc_length = (text)->
-    # countup sjis byte size
-    ascii = text.match(/[\x01-\xff]/g)  or []
-    other = text.match(/[^\x01-\xff]/g) or []
-    ascii.length + other.length * 2
-
   calc_point = (size)->
     point  = 20
     point += (size - 50)/14 if 50 < size
@@ -14,7 +8,7 @@ class InputBase
     @text = text.replace(/\n$/g, '\n ')
     @lines = @text.split("\n").length
 
-    @size = calc_length(@text)
+    @size = @text.sjis_length
     @point = calc_point(@size)
 
     message = @bad[@validate.type]()
@@ -44,7 +38,7 @@ class InputBase
   bad_input: ->
     return true unless @text?
     return true if @validate.is_disable
-    return true if calc_length(@text.replace /\s/g, '') < 4
+    return true if @text.replace(/\s/g, '').sjis_length < 4
     if @max?
       return true if @max.size < @size
       return true if @max.line < @lines
@@ -55,17 +49,16 @@ class InputBase
       @text_preview =
         switch @validate.preview
           when "talk"
-            deco_preview @text
+            @text.deco_preview
           when "action"
             target = @validate.target
             head = @validate.head + "は、"
-            text = deco_preview(
+            text = 
               if 0 < @text.length
                 @text.replace(/\n$/g, '\n ')
               else
                 @validate.text
-            )
-            "#{head}#{target}#{text}"
+            "#{head}#{target}#{text.deco_preview}"
       @is_preview = true
       cb()
     else
