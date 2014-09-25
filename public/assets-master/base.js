@@ -1310,8 +1310,6 @@ Url = (function() {
 
   Url.data = {};
 
-  Url.prop = {};
-
   Url.each = function(cb) {
     var data, route, target, targets, url_key, _results;
     targets = {
@@ -1399,7 +1397,7 @@ Url = (function() {
       _ref = this.keys;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         key = _ref[i];
-        this.change_base(key, this.match[i]);
+        this.change(key, this.match[i]);
       }
     }
     return this.event_cb(this.data);
@@ -1429,33 +1427,24 @@ Url = (function() {
     return path;
   };
 
-  Url.prototype.change_base = function(key, value) {
+  Url.prototype.change = function(key, value) {
     var subkey, subval, type, _ref, _ref1, _results;
     type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
     value = Serial.parser[type](value);
     this.params.push(key);
-    this.change(key, value);
+    Url.data[key] = this.data[key] = value;
     if (Url.bind[key] != null) {
       _ref1 = Url.bind[key][value];
       _results = [];
       for (subkey in _ref1) {
         subval = _ref1[subkey];
         if (key !== subkey) {
-          _results.push(this.change_base(subkey, subval));
+          _results.push(this.change(subkey, subval));
         } else {
           _results.push(void 0);
         }
       }
       return _results;
-    }
-  };
-
-  Url.prototype.change = function(key, value) {
-    Url.data[key] = this.data[key] = value;
-    if (Url.prop[key]) {
-      return Url.prop[key](value);
-    } else {
-      return Url.prop[key] = m.prop(value);
     }
   };
 
