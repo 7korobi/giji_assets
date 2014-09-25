@@ -7725,9 +7725,9 @@ describe("Timer", function() {
       jasmine.clock().tick(0);
       jasmine.clock().uninstall();
       expect(new Timer(_.now() - 10800000).text).not.toEqual("3時間前");
-      expect(new Timer(_.now() - 10800000 + 2).text).toEqual("3時間前");
-      expect(new Timer(_.now() - 3540000).text).toEqual("1時間前");
-      expect(new Timer(_.now() - 3540000 + 2).text).toEqual("59分前");
+      expect(new Timer(_.now() - 10800000 + 2).text).toEqual("2時間前");
+      expect(new Timer(_.now() - 3600000).text).toEqual("1時間前");
+      expect(new Timer(_.now() - 3600000 + 2).text).toEqual("59分前");
       expect(new Timer(_.now() - 120000).text).toEqual("2分前");
       expect(new Timer(_.now() - 60000).text).toEqual("1分前");
       expect(new Timer(_.now() - 60000 + 2).text).toEqual("1分以内");
@@ -7738,9 +7738,9 @@ describe("Timer", function() {
       expect(new Timer(_.now() + 60000 - 2).text).toEqual("1分以内");
       expect(new Timer(_.now() + 60000).text).toEqual("1分後");
       expect(new Timer(_.now() + 120000).text).toEqual("2分後");
-      expect(new Timer(_.now() + 3540000 - 2).text).toEqual("59分後");
-      expect(new Timer(_.now() + 3540000).text).toEqual("1時間後");
-      expect(new Timer(_.now() + 10800000 - 2).text).toEqual("3時間後");
+      expect(new Timer(_.now() + 3600000 - 2).text).toEqual("59分後");
+      expect(new Timer(_.now() + 3600000).text).toEqual("1時間後");
+      expect(new Timer(_.now() + 10800000 - 2).text).toEqual("2時間後");
       expect(new Timer(_.now() + 10800000).text).not.toEqual("3時間後");
       return done();
     });

@@ -4112,6 +4112,32 @@ Cache.rule.chr_job.merge(list);
 var RAILS;
 
 RAILS = {
+  "head_img": {
+    "770": {
+      "cinema": ["morning.png", "moon.png"],
+      "wa": ["morning.png", "lupino.png"],
+      "night": ["morning.png", "moon.png"],
+      "star": ["morning.png", "lupino.png"],
+      "juna": ["morning.png", "lupino.png"],
+      "sow": ["morning.png", "lupino.png"]
+    },
+    "580": {
+      "cinema": ["b.jpg", "w.jpg"],
+      "wa": ["b.jpg", "w.jpg"],
+      "night": ["b.jpg", "w.jpg"],
+      "star": ["r.jpg", "c.jpg"],
+      "juna": ["b.jpg", "w.jpg"],
+      "sow": ["r.jpg", "c.jpg"]
+    },
+    "458": {
+      "cinema": ["b.jpg", "w.jpg"],
+      "wa": ["b.jpg", "w.jpg"],
+      "night": ["b.jpg", "w.jpg"],
+      "star": ["r.jpg", "c.jpg"],
+      "juna": ["b.jpg", "w.jpg"],
+      "sow": ["r.jpg", "c.jpg"]
+    }
+  },
   "map_faces_orders": {
     "all": {
       "caption": "合計",
@@ -4521,6 +4547,11 @@ RAILS = {
     },
     "intwolf": {
       "name": "智狼",
+      "win": "WOLF",
+      "group": "WOLF"
+    },
+    "cwolf": {
+      "name": "呪狼",
       "win": "WOLF",
       "group": "WOLF"
     },
@@ -5247,44 +5278,75 @@ new Cache.Rule("map_face").schema(function() {
     return o.chr_set_ids;
   });
 });
-var face, if_exist, touch_events, _ref;
+var chr_set, face, map_order, map_orders, touch_events, touch_state, _ref;
 
 touch_events = function(touch) {
-  return {
-    onmousedown: touch.start,
-    onmousemove: touch.move,
-    onmouseup: touch.end,
-    ongesturestart: touch.start,
-    ongesturechange: touch.move,
-    ongestureend: touch.end,
-    ontouchstart: touch.start,
-    ontouchmove: touch.move,
-    ontouchend: touch.end
+  var list_cmds;
+  list_cmds = {
+    start: function(cb) {
+      return {
+        onmousedown: function() {
+          return cb();
+        },
+        ongesturestart: function() {
+          return cb();
+        },
+        ontouchstart: function() {
+          return cb();
+        }
+      };
+    },
+    move: function(cb) {
+      return {
+        onmousemove: function() {
+          return cb();
+        },
+        ongesturechange: function() {
+          return cb();
+        },
+        ontouchmove: function() {
+          return cb();
+        }
+      };
+    },
+    end: function(cb) {
+      return {
+        onmouseup: function() {
+          return cb();
+        },
+        ongestureend: function() {
+          return cb();
+        },
+        ontouchend: function() {
+          return cb();
+        }
+      };
+    }
   };
+  return touch.call(list_cmds);
 };
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.map_face.set(gon.map_reduce.faces);
-  win.on.load.push(function() {
-    var chr_set, map_order, map_orders, touch_state;
-    chr_set = m.prop("all");
-    map_order = m.prop("all");
-    touch_state = m.prop(false);
-    map_orders = function(prop) {
-      var order;
-      order = RAILS.map_faces_orders[prop];
-      order.func = function(o) {
-        var _base, _name;
-        return (_base = o.win.value)[_name = order.caption] || (_base[_name] = 0);
-      };
-      Cache.rule.map_face.schema(function() {
-        return this.order(function(o) {
-          return -order.func(o);
-        });
-      });
-      return order;
+  chr_set = m.prop("all");
+  map_order = m.prop("all");
+  touch_state = m.prop(false);
+  map_orders = function(prop) {
+    var order;
+    order = RAILS.map_faces_orders[prop];
+    order.func = function(o) {
+      var _base, _name;
+      return (_base = o.win.value)[_name = order.caption] || (_base[_name] = 0);
     };
-    m.module(document.getElementById("map_faces"), {
+    Cache.rule.map_face.schema(function() {
+      return this.order(function(o) {
+        return -order.func(o);
+      });
+    });
+    return order;
+  };
+  GUI.if_exist("map_faces", function(dom) {
+    return m.module(dom, {
       controller: function() {},
       view: function() {
         var chr_job, chrs, face_name, headline, job_name, map_order_set, o;
@@ -5303,12 +5365,10 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
               job_name = chr_job.job;
               face_name = o.face.name;
               _results.push(m(".chrbox", [
-                m("img", {
-                  src: "http://7korobi.gehirn.ne.jp/images/portrate/" + o.face_id + ".jpg"
-                }), m(".chrblank", [
+                GUI.portrate(o.face_id), m(".chrblank", [
                   m("div", job_name), m("div", face_name), m("div", m("a.mark", {
                     href: "/map_reduce/faces/" + o.face_id
-                  }, "" + map_order_set.title + " " + (map_order_set.func(o)) + "回")), m("div", "♥" + o.RAILS_auth_id.max_is)
+                  }, "" + map_order_set.title + " " + (map_order_set.func(o)) + "回")), m("div", "♥" + o.sow_auth_id.max_is)
                 ])
               ]));
             }
@@ -5319,35 +5379,40 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
         ];
       }
     });
-    return m.module(document.getElementById("chr_sets"), {
+  });
+  GUI.if_exist("chr_sets", function(dom) {
+    return m.module(dom, {
       controller: function() {},
       view: function() {
-        var attrs, chr_sets, div_attrs, head, key, o;
+        var attrs, chr_sets, cs, div_attrs, head, key, o, select_chr_set, select_map_order;
         chr_sets = Cache.chr_sets.all;
-        div_attrs = touch_events({
-          start: function() {
+        div_attrs = touch_events(function() {
+          return this.start(function() {
             return touch_state(true);
-          },
-          move: function() {},
-          end: function() {}
+          });
         });
         head = m("div", m("label.input-block-level", "キャラセットを選んでみよう ☆ミ"));
         return [
-          m("div", div_attrs, touch_state() ? [
+          m("div", div_attrs, touch_state() ? (select_chr_set = function(o) {
+            return function() {
+              chr_set(o._id);
+              return touch_state(false);
+            };
+          }, select_map_order = function(o) {
+            return function() {
+              map_order(o);
+              return touch_state(false);
+            };
+          }, [
             head, m("ul", (function() {
               var _i, _len, _results;
               _results = [];
               for (_i = 0, _len = chr_sets.length; _i < _len; _i++) {
-                o = chr_sets[_i];
-                attrs = touch_events({
-                  start: function() {},
-                  move: function() {},
-                  end: function() {
-                    chr_set(o._id);
-                    return touch_state(false);
-                  }
+                cs = chr_sets[_i];
+                attrs = touch_events(function() {
+                  return this.end(select_chr_set(cs));
                 });
-                _results.push(m("li.mark", attrs, o.caption));
+                _results.push(m("li.mark", attrs, cs.caption));
               }
               return _results;
             })()), (function() {
@@ -5356,20 +5421,15 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
               _results = [];
               for (key in _ref1) {
                 o = _ref1[key];
-                attrs = touch_events({
-                  start: function() {},
-                  move: function() {},
-                  end: function() {
-                    map_order(key);
-                    return touch_state(false);
-                  }
+                attrs = touch_events(function() {
+                  return this.end(select_map_order(key));
                 });
                 attrs["class"] = key === map_order() ? "btn btn-success" : "btn btn-default";
                 _results.push(m("a", attrs, o.caption));
               }
               return _results;
             })()
-          ] : [head, m("span.badge.badge-info", Cache.chr_sets.find[chr_set()].caption), m("span.badge.badge-info", map_orders(map_order()).title)])
+          ]) : [head, m("span.badge.badge-info", Cache.chr_sets.find[chr_set()].caption), m("span.badge.badge-info", map_orders(map_order()).title)])
         ];
       }
     });
@@ -5378,6 +5438,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
   face = Cache.map_face_detail = gon.face;
+  face.name = Cache.faces.find[face.face_id].name;
   face.story_id_of_folders = _.groupBy(face.story_ids, function(_arg) {
     var count, k, _ref1;
     k = _arg[0], count = _arg[1];
@@ -5391,63 +5452,38 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
     };
     return RAILS.groups[role.group].name;
   });
-  win.on.load.push(function() {
-    var comma, inline_item, inline_item_span, letter, name;
-    name = {
-      config: function(o) {
-        var _ref1, _ref2, _ref3;
-        return ((_ref1 = RAILS.roles[o]) != null ? _ref1.name : void 0) || ((_ref2 = RAILS.gifts[o]) != null ? _ref2.name : void 0) || ((_ref3 = RAILS.events[o]) != null ? _ref3.name : void 0) || o || "";
-      }
-    };
-    comma = function(num) {
-      return (String(Math.round(num))).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
-    };
-    inline_item_span = function(align, em, vdom) {
-      return m("span", {
-        style: "display:inline-block; width:" + em + "em; text-align:" + align + "; white-space: nowrap;"
-      }, vdom);
-    };
-    inline_item = function(cb) {
-      var list_cmds;
-      list_cmds = {
-        center: function(em, vdom) {
-          return inline_item_span("center", em, vdom);
-        },
-        right: function(em, vdom) {
-          return inline_item_span("right", em, vdom);
-        }
-      };
-      return m(".mark.", {
-        style: "display:inline-block;"
-      }, cb.call(list_cmds));
-    };
-    letter = function(head, vdom) {
-      return [m("h3.mesname", m("b", head)), m("p.text", vdom)];
-    };
-    m.module(document.getElementById("summary"), {
+  GUI.if_exist("summary", function(dom) {
+    return m.module(dom, {
       controller: function() {},
       view: function() {
-        var role, win;
+        var role, rolename, width, win;
         return [
-          m("h2", face.name + " の活躍"), m("h6", [m("span.code", Timer.date_time_stamp(face.says[0].date.min)), m.trust("&nbsp;〜&nbsp;"), m("span.code", Timer.date_time_stamp(face.says[0].date.max))]), m("table.say.SAY", m("tbody", m("tr", [
-            m("td.img", m("img", {
-              src: "http://7korobi.gehirn.ne.jp/images/portrate/" + face.face_id + ".jpg"
-            })), m("td.field", [
+          m("h2", face.name + " の活躍"), m("h6", face.says[0] != null ? [m("span.code", Timer.date_time_stamp(face.says[0].date.min)), m.trust("&nbsp;〜&nbsp;"), m("span.code", Timer.date_time_stamp(face.says[0].date.max))] : void 0), m("table.say.SAY", m("tbody", m("tr", [
+            m("td.img", GUI.portrate(face.face_id)), m("td.field", [
               m(".msg", [
-                letter(face.name, ["全部で", m("span.mark", face.role.all), "の役職になりました"]), (function() {
+                GUI.letter(face.name, ["全部で", m("span.mark", face.role.all), "の役職になりました"]), (function() {
                   var _i, _len, _ref1, _results;
                   _ref1 = face.win.keys;
                   _results = [];
                   for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
                     win = _ref1[_i];
-                    _results.push(letter("" + win + " x" + face.win.value[win] + "回", (function() {
+                    _results.push(GUI.letter("" + win + " x" + face.win.value[win] + "回", (function() {
                       var _j, _len1, _ref2, _results1;
                       _ref2 = face.role_of_wins[win];
                       _results1 = [];
                       for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
                         role = _ref2[_j];
-                        _results1.push(inline_item(function() {
-                          return [this.center(3.75, name.config(role[0])), this.right(2.50, "x" + role[1])];
+                        rolename = GUI.name.config(role[0]);
+                        width = (function() {
+                          switch (false) {
+                            case !(4 < rolename.length):
+                              return 10.35;
+                            default:
+                              return 3.75;
+                          }
+                        })();
+                        _results1.push(GUI.inline_item(function() {
+                          return [this.center(width, rolename), this.right(2.5, "x" + role[1])];
                         }));
                       }
                       return _results1;
@@ -5461,7 +5497,9 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
         ];
       }
     });
-    m.module(document.getElementById("calc"), {
+  });
+  GUI.if_exist("calc", function(dom) {
+    return m.module(dom, {
       controller: function() {},
       view: function() {
         var say, says_calc_line, says_calc_lines, says_count_line, says_count_lines, _i, _len, _ref1;
@@ -5497,20 +5535,20 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
           says_count_line = m("tr." + say.logid_head + "AY", [
             m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
               style: "text-align:right"
-            }, "" + (comma(say.max)) + " 字"), m("th.msg", {
+            }, "" + (GUI.comma(say.max)) + " 字"), m("th.msg", {
               style: "text-align:right"
-            }, "" + (comma(say.all)) + " 字"), m("th.msg", {
+            }, "" + (GUI.comma(say.all)) + " 字"), m("th.msg", {
               style: "text-align:right"
-            }, "" + (comma(say.count)) + " 回")
+            }, "" + (GUI.comma(say.count)) + " 回")
           ]);
           says_calc_line = m("tr." + say.logid_head + "AY", [
             m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
               style: "text-align:right"
-            }, "" + (comma(say.vil)) + " 村"), m("th.msg", {
+            }, "" + (GUI.comma(say.vil)) + " 村"), m("th.msg", {
               style: "text-align:right"
-            }, "" + (comma(say.all / say.vil)) + " 字"), m("th.msg", {
+            }, "" + (GUI.comma(say.all / say.vil)) + " 字"), m("th.msg", {
               style: "text-align:right"
-            }, "" + (comma(say.count / say.vil)) + " 回")
+            }, "" + (GUI.comma(say.count / say.vil)) + " 回")
           ]);
           says_count_lines.push(says_count_line);
           says_calc_lines.push(says_calc_line);
@@ -5518,25 +5556,27 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
         return [m("table.say.info", says_count_lines), m("table.say.info", says_calc_lines)];
       }
     });
-    m.module(document.getElementById("village"), {
+  });
+  GUI.if_exist("village", function(dom) {
+    return m.module(dom, {
       controller: function() {},
       view: function() {
         var folder, story_id;
         return [
           m(".MAKER.guide", [
-            letter(face.name, ["全部で", m("span.mark", "" + face.folder.all + "回"), "登場しました。"]), (function() {
+            GUI.letter(face.name, ["全部で", m("span.mark", "" + face.folder.all + "回"), "登場しました。"]), (function() {
               var _i, _len, _ref1, _results;
               _ref1 = face.folder.keys;
               _results = [];
               for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
                 folder = _ref1[_i];
-                _results.push(letter("" + folder + " x" + face.folder.value[folder] + "回", (function() {
+                _results.push(GUI.letter("" + folder + " x" + face.folder.value[folder] + "回", (function() {
                   var _j, _len1, _ref2, _results1;
                   _ref2 = face.story_id_of_folders[folder];
                   _results1 = [];
                   for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
                     story_id = _ref2[_j];
-                    _results1.push(inline_item(function() {
+                    _results1.push(GUI.inline_item(function() {
                       return m("a", {
                         style: "display:block; width:" + (2.5 + folder.length * 0.6) + "em; text-align:left;",
                         href: "http://7korobi.gehirn.ne.jp/stories/" + story_id[0] + ".html"
@@ -5552,20 +5592,33 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
         ];
       }
     });
-    return m.module(document.getElementById("sow_user"), {
+  });
+  GUI.if_exist("sow_user", function(dom) {
+    return m.module(dom, {
       controller: function() {},
       view: function() {
-        var sow_auth_id;
+        var length, sow_auth_id, width;
         return [
           m(".ADMIN.guide", [
-            letter(face.name, ["全部で", m("span.mark", "" + face.sow_auth_ids.length + "人"), "が、", m("span.mark", "" + face.sow_auth_id.all + "回"), "登場しました。"]), (function() {
+            GUI.letter(face.name, ["全部で", m("span.mark", "" + face.sow_auth_ids.length + "人"), "が、", m("span.mark", "" + face.sow_auth_id.all + "回"), "登場しました。"]), (function() {
               var _i, _len, _ref1, _results;
               _ref1 = face.sow_auth_ids;
               _results = [];
               for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
                 sow_auth_id = _ref1[_i];
-                _results.push(inline_item(function() {
-                  return [this.right(9.0, sow_auth_id[0]), this.right(2.0, "x" + sow_auth_id[1])];
+                length = sow_auth_id[0].sjis_length;
+                width = (function() {
+                  switch (false) {
+                    case !(17 < length):
+                      return 14.45;
+                    case !(11 < length):
+                      return 10.25;
+                    default:
+                      return 6.0;
+                  }
+                })();
+                _results.push(GUI.inline_item(function() {
+                  return [this.right(width, sow_auth_id[0]), this.right(2.0, "x" + sow_auth_id[1])];
                 }));
               }
               return _results;
@@ -5577,17 +5630,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
   });
 }
 
-if_exist = function(id, cb) {
-  var dom;
-  dom = document.getElementById(id);
-  if (!!dom) {
-    return win.on.load.push(function() {
-      return cb(dom);
-    });
-  }
-};
-
-if_exist("buttons", function(dom) {
+GUI.if_exist("buttons", function(dom) {
   m.module(dom, {
     controller: function() {},
     view: function() {
@@ -5617,7 +5660,7 @@ if_exist("buttons", function(dom) {
   return new Layout(-12, -1, dom);
 });
 
-if_exist("sayfilter", function(dom) {
+GUI.if_exist("sayfilter", function(dom) {
   m.module(dom, {
     controller: function() {},
     view: function() {
@@ -5627,7 +5670,7 @@ if_exist("sayfilter", function(dom) {
   return new Layout(1, -1, dom);
 });
 
-if_exist("topviewer", function(dom) {
+GUI.if_exist("topviewer", function(dom) {
   m.module(dom, {
     controller: function() {},
     view: function() {
@@ -5636,6 +5679,41 @@ if_exist("topviewer", function(dom) {
   });
   return new Layout(0, 1, dom);
 });
+
+GUI.if_exist("to_root", function(dom) {
+  var day_or_night, test1, test2, test3;
+  day_or_night = m.prop();
+  test1 = new Timer(_.now() + 10000, {
+    prop: m.prop()
+  });
+  test2 = new Timer(_.now() + 20000, {
+    prop: m.prop()
+  });
+  test3 = new Timer(_.now() + 40000, {
+    prop: m.prop()
+  });
+  return m.module(document.getElementById("to_root"), {
+    controller: function() {
+      var hour;
+      hour = 1000 * 60 * 60;
+      return GUI.do_tick(function(now) {
+        var zone;
+        zone = now + 3 * hour;
+        day_or_night(Math.floor(zone / (12 * hour)) % 2);
+        return 12 * hour - zone % (12 * hour);
+      });
+    },
+    view: function() {
+      return [
+        m("a", {
+          href: "http://giji.check.jp/"
+        }, GUI.title(770, "cinema", day_or_night())), m("div", test1.prop()), m("div", test2.prop()), m("div", test3.prop())
+      ];
+    }
+  });
+});
+
+m.endComputation();
 Url.cookie = ["css"];
 
 Url.search = ["css"];

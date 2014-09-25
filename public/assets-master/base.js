@@ -77,20 +77,159 @@ this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,
 
 this.LOCATION = {"options":{"search":null,"width":{"current":"normal"},"layout":{"current":"stat_type"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
-var Cache;
+var define;
 
-Object.defineProperties(Array.prototype, {
-  last: {
-    get: function() {
-      return this[this.length - 1];
+define = function(type, cb) {
+  return Object.defineProperties(type.prototype, cb());
+};
+
+define(Array, function() {
+  return {
+    last: {
+      get: function() {
+        return this[this.length - 1];
+      }
+    },
+    first: {
+      get: function() {
+        return this[0];
+      }
     }
-  },
-  first: {
-    get: function() {
-      return this[0];
+  };
+});
+
+define(String, function() {
+  var anchor, anchor_preview, br, id_num, link, link_regexp, link_regexp_g, player, random, random_preview, space, unanchor, unbr, unhtml, unrandom, uri_to_link;
+  player = function(log) {
+    if (!log) {
+      return log;
     }
+    return log.replace(/(\/\*)(.*?)(\*\/|$)/g, '<em>$1<span class="player">$2</span>$3</em>');
+  };
+  unanchor = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id) {
+      return ">>" + id;
+    });
+  };
+  anchor = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id) {
+      return "<a hogan-click=\"popup(" + turn + ",'" + a + "')\" data=\"" + a + "," + turn + "," + id + "\" class=\"mark\">&gt;&gt;" + id + "</a>";
+    });
+  };
+  anchor_preview = function(log) {
+    return log;
+  };
+  unrandom = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd) {
+      return cmd;
+    });
+  };
+  random = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd) {
+      return "<a class=\"mark\" hogan-click=\"inner('" + cmd + "','" + val + "')\">" + val + "</a>";
+    });
+  };
+  random_preview = function(log) {
+    return log.replace(/\[\[([^\[]+)\]\]/g, function(key, val) {
+      return "<a class=\"mark\" hogan-click=\"inner('" + val + "','？')\">" + val + "</a>";
+    });
+  };
+  link_regexp = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/;
+  link_regexp_g = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/g;
+  id_num = 0;
+  uri_to_link = _.memoize(function(uri) {
+    var host, path, protocol, _ref;
+    id_num++;
+    _ref = uri.match(link_regexp), uri = _ref[0], protocol = _ref[1], host = _ref[2], path = _ref[3];
+    return "<span class=\"badge\" hogan-click=\"external('link_" + id_num + "','" + uri + "','" + protocol + "','" + host + "','" + path + "')\">LINK - " + protocol + "</span>";
+  });
+  link = function(log) {
+    var text, uri, uris, _i, _len;
+    if (!log) {
+      return log;
+    }
+    text = log.replace(/\s|<br>/g, ' ').replace(/(<([^>]+)>)/ig, "");
+    uris = text.match(link_regexp_g);
+    if (uris) {
+      for (_i = 0, _len = uris.length; _i < _len; _i++) {
+        uri = uris[_i];
+        log = log.replace(uri, uri_to_link(uri));
+      }
+    }
+    return log;
+  };
+  space = function(log) {
+    if (!log) {
+      return log;
+    }
+    return log.replace(/(^|\n|<br>)(\ *)/gm, function(full, s1, s2, offset) {
+      var nbsps;
+      s1 || (s1 = "");
+      nbsps = s2.replace(/\ /g, '&nbsp;');
+      return "" + s1 + nbsps;
+    });
+  };
+  br = function(log) {
+    return log.replace(/\n/gm, function(br) {
+      return "<br>";
+    });
+  };
+  unbr = function(log) {
+    return log.replace(/<br>/gm, function(br) {
+      return "\n";
+    });
+  };
+  unhtml = function(log) {
+    return log.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;").replace(/\//g, "&#x2f;");
+  };
+  return {
+    deco_preview: {
+      get: function() {
+        return br(space(player(anchor_preview(link(random_preview(unhtml(this)))))));
+      }
+    },
+    deco_text: {
+      get: function() {
+        return space(player(anchor(link(random(this)))));
+      }
+    },
+    undecolate: {
+      get: function() {
+        return unanchor(unrandom(unbr(this)));
+      }
+    },
+    sjis_length: {
+      get: function() {
+        var other;
+        other = this.match(/[^\x01-\xff]/g) || [];
+        return this.length + other.length;
+      }
+    }
+  };
+});
+
+Number.MAX_INT32 = 0x7fffffff;
+
+_.mixin({
+  parseID: function(id) {
+    var time;
+    time = Serial.parser.Date(id.slice(2));
+    return [id.slice(0, 2), time];
   }
 });
+var Cache;
 
 Cache = (function() {
   function Cache() {}
@@ -644,134 +783,88 @@ Cache.data =
     status:
  */
 ;
-var DECOLATE;
+var GUI;
 
-DECOLATE = function($scope, $sce) {
-  var anchor, anchor_preview, br, id_num, link, link_regexp, link_regexp_g, player, random, random_preview, space, unanchor, unbr, unhtml, unrandom, uri_to_link;
-  player = function(log) {
-    if (!log) {
-      return log;
-    }
-    return log.replace(/(\/\*)(.*?)(\*\/|$)/g, '<em>$1<span class="player">$2</span>$3</em>');
-  };
-  unanchor = function(log) {
-    if (!log) {
-      return log;
-    }
-    return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id) {
-      return ">>" + id;
+GUI = {
+  portrate: function(face_id) {
+    return m("img", {
+      src: "http://7korobi.gehirn.ne.jp/images/portrate/" + face_id + ".jpg"
     });
-  };
-  anchor = function(log) {
-    if (!log) {
-      return log;
-    }
-    return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id) {
-      return "<a hogan-click=\"popup(" + turn + ",'" + a + "')\" data=\"" + a + "," + turn + "," + id + "\" class=\"mark\">&gt;&gt;" + id + "</a>";
+  },
+  title: function(width, theme, day_or_night) {
+    return m("img", {
+      src: ("http://7korobi.gehirn.ne.jp/images/banner/title" + width) + RAILS.head_img[width][theme][day_or_night]
     });
-  };
-  anchor_preview = function(log) {
-    return log;
-  };
-  unrandom = function(log) {
-    if (!log) {
-      return log;
-    }
-    return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd) {
-      return cmd;
-    });
-  };
-  random = function(log) {
-    if (!log) {
-      return log;
-    }
-    return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd) {
-      return "<a class=\"mark\" hogan-click=\"inner('" + cmd + "','" + val + "')\">" + val + "</a>";
-    });
-  };
-  random_preview = function(log) {
-    return log.replace(/\[\[([^\[]+)\]\]/g, function(key, val) {
-      return "<a class=\"mark\" hogan-click=\"inner('" + val + "','？')\">" + val + "</a>";
-    });
-  };
-  link_regexp = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/;
-  link_regexp_g = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/g;
-  id_num = 0;
-  uri_to_link = _.memoize(function(uri) {
-    var host, path, protocol, _ref;
-    id_num++;
-    _ref = uri.match(link_regexp), uri = _ref[0], protocol = _ref[1], host = _ref[2], path = _ref[3];
-    return "<span class=\"badge\" hogan-click=\"external('link_" + id_num + "','" + uri + "','" + protocol + "','" + host + "','" + path + "')\">LINK - " + protocol + "</span>";
-  });
-  link = function(log) {
-    var text, uri, uris, _i, _len;
-    if (!log) {
-      return log;
-    }
-    text = log.replace(/\s|<br>/g, ' ').replace(/(<([^>]+)>)/ig, "");
-    uris = text.match(link_regexp_g);
-    if (uris) {
-      for (_i = 0, _len = uris.length; _i < _len; _i++) {
-        uri = uris[_i];
-        log = log.replace(uri, uri_to_link(uri));
+  },
+  inline_item: function(cb) {
+    var inline_item_span, list_cmds;
+    inline_item_span = function(align, em, vdom) {
+      return m("li", {
+        style: "width:" + em + "em; text-align:" + align + ";"
+      }, vdom);
+    };
+    list_cmds = {
+      center: function(em, vdom) {
+        return inline_item_span("center", em, vdom);
+      },
+      right: function(em, vdom) {
+        return inline_item_span("right", em, vdom);
       }
+    };
+    return m("ul.mark.inline", cb.call(list_cmds));
+  },
+  letter: function(head, vdom) {
+    return [m("h3.mesname", m("b", head)), m("p.text", vdom)];
+  },
+  do_tick: function(cb) {
+    var action;
+    action = function() {
+      var tick;
+      m.startComputation();
+      tick = cb(_.now());
+      if (tick) {
+        setTimeout(function() {
+          return action();
+        }, tick);
+      }
+      return m.endComputation();
+    };
+    return action();
+  },
+  if_exist: function(id, cb) {
+    var dom;
+    dom = document.getElementById(id);
+    if (!!dom) {
+      return win.on.load.push(function() {
+        return cb(dom);
+      });
     }
-    return log;
-  };
-  space = function(log) {
-    if (!log) {
-      return log;
+  },
+  comma: function(num) {
+    return (String(Math.round(num))).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+  },
+  name: {
+    config: function(o) {
+      var _ref, _ref1, _ref2;
+      return ((_ref = RAILS.roles[o]) != null ? _ref.name : void 0) || ((_ref1 = RAILS.gifts[o]) != null ? _ref1.name : void 0) || ((_ref2 = RAILS.events[o]) != null ? _ref2.name : void 0) || o || "";
     }
-    return log.replace(/(^|\n|<br>)(\ *)/gm, function(full, s1, s2, offset) {
-      var nbsps;
-      s1 || (s1 = "");
-      nbsps = s2.replace(/\ /g, '&nbsp;');
-      return "" + s1 + nbsps;
-    });
-  };
-  br = function(log) {
-    return log.replace(/\n/gm, function(br) {
-      return "<br>";
-    });
-  };
-  unbr = function(log) {
-    return log.replace(/<br>/gm, function(br) {
-      return "\n";
-    });
-  };
-  unhtml = function(log) {
-    return log.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;").replace(/\//g, "&#x2f;");
-  };
-  $scope.preview_decolate = function(log) {
-    if (log) {
-      return $sce.trustAsHtml(br(space(player(anchor_preview(link(random_preview(unhtml(log))))))));
-    } else {
-      return null;
-    }
-  };
-  $scope.text_decolate = function(log) {
-    if (log) {
-      return $sce.trustAsHtml(space(player(anchor(link(random(log))))));
-    } else {
-      return null;
-    }
-  };
-  return $scope.undecolate = function(log) {
-    if (log) {
-      return unanchor(unrandom(unbr(log)));
-    } else {
-      return null;
-    }
-  };
+  }
 };
-Number.MAX_INT32 = 0x7fffffff;
-
 var Layout, win;
 
 win = {
+  do_event_list: function(list, e) {
+    var cb, _i, _len;
+    m.startComputation();
+    for (_i = 0, _len = list.length; _i < _len; _i++) {
+      cb = list[_i];
+      cb(e);
+    }
+    return m.endComputation();
+  },
   "do": {
     resize: function(e) {
-      var body_height, body_width, cb, _i, _len, _ref, _results;
+      var body_height, body_width;
       win.height = Math.max(window.innerHeight, document.documentElement.clientHeight);
       win.width = Math.max(window.innerWidth, document.documentElement.clientWidth);
       body_height = Math.max(document.body.clientHeight, document.body.scrollHeight, document.documentElement.scrollHeight, document.documentElement.clientHeight);
@@ -787,98 +880,39 @@ win = {
         win.landscape = true;
         win.portlate = false;
       }
-      _ref = win.on.resize;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        cb = _ref[_i];
-        _results.push(cb(e));
-      }
-      return _results;
+      return win.do_event_list(win.on.resize, e);
     },
     scroll: function(e) {
-      var cb, _i, _len, _ref, _results;
       win.left = window.pageXOffset;
       win.top = window.pageYOffset;
-      _ref = win.on.scroll;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        cb = _ref[_i];
-        _results.push(cb(e));
-      }
-      return _results;
+      return win.do_event_list(win.on.scroll, e);
     },
     gesture: function(e) {
-      var cb, _i, _len, _ref, _results;
-      _ref = win.on.gesture;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        cb = _ref[_i];
-        _results.push(cb(e));
-      }
-      return _results;
+      return win.do_event_list(win.on.gesture, e);
     },
     motion: function(e) {
-      var cb, _i, _len, _ref, _results;
       win.accel = e.acceleration;
       win.gravity = e.accelerationIncludingGravity;
       win.rotate = e.rotationRate;
-      _ref = win.on.motion;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        cb = _ref[_i];
-        _results.push(cb(e));
-      }
-      return _results;
+      return win.do_event_list(win.on.motion, e);
     },
     start: function(e) {
-      var cb, _i, _len, _ref, _results;
       win.is_tap = true;
-      _ref = win.on.start;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        cb = _ref[_i];
-        _results.push(cb(e));
-      }
-      return _results;
+      return win.do_event_list(win.on.start, e);
     },
     move: function(e) {
-      var cb, _i, _j, _len, _len1, _ref, _ref1, _results, _results1;
       if (win.is_tap) {
-        _ref = win.on.drag;
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          cb = _ref[_i];
-          _results.push(cb(e));
-        }
-        return _results;
+        return win.do_event_list(win.on.drag, e);
       } else {
-        _ref1 = win.on.move;
-        _results1 = [];
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          cb = _ref1[_j];
-          _results1.push(cb(e));
-        }
-        return _results1;
+        return win.do_event_list(win.on.move, e);
       }
     },
     end: function(e) {
-      var cb, _i, _len, _ref, _results;
       win.is_tap = false;
-      _ref = win.on.end;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        cb = _ref[_i];
-        _results.push(cb(e));
-      }
-      return _results;
+      return win.do_event_list(win.on.end, e);
     },
-    load: function() {
-      var cb, _i, _len, _ref;
-      _ref = win.on.load;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        cb = _ref[_i];
-        cb();
-      }
+    load: function(e) {
+      win.do_event_list(win.on.load, e);
       win["do"].resize();
       return win["do"].scroll();
     }
@@ -988,14 +1022,6 @@ Layout = (function() {
 
 })();
 var ID, Serial, func, key, _ref;
-
-_.mixin({
-  parseID: function(id) {
-    var time;
-    time = Serial.parser.Date(id.slice(2));
-    return [id.slice(0, 2), time];
-  }
-});
 
 Serial = (function() {
   var c, n, _i, _len, _ref;
@@ -1172,7 +1198,7 @@ Timer = (function() {
   });
 
   function Timer(at, options) {
-    var do_tick, key, tick, val;
+    var key, val;
     this.at = at;
     if (options == null) {
       options = {};
@@ -1181,60 +1207,58 @@ Timer = (function() {
       val = options[key];
       this[key] = val;
     }
-    tick = (function(_this) {
-      return function(text, sec_span) {
-        var msec_span;
-        _this.text = text;
-        if (sec_span == null) {
-          sec_span = Number.NaN;
-        }
-        msec_span = sec_span * 1000;
-        return msec_span - (_this.msec % msec_span);
+    GUI.do_tick((function(_this) {
+      return function(now) {
+        _this.msec = now - _this.at;
+        return _this.next(_this.msec / 1000, function(text, sec_span) {
+          var diff, msec_span;
+          _this.text = text;
+          if (sec_span == null) {
+            sec_span = Number.NaN;
+          }
+          if (_this.prop) {
+            _this.prop(_this.text);
+          }
+          msec_span = sec_span * 1000;
+          diff = _this.msec % msec_span;
+          if (0 < diff) {
+            return msec_span - diff;
+          } else {
+            return 1 - diff;
+          }
+        });
       };
-    })(this);
-    do_tick = (function(_this) {
-      return function() {
-        var tick_time;
-        _this.msec = _.now() - Number(_this.at);
-        tick_time = _this.next(_this.msec / 1000, tick);
-        _this.timer_id = tick_time ? setTimeout(do_tick, tick_time) : 0;
-        return _this.draw(_this.text);
-      };
-    })(this);
-    do_tick();
+    })(this));
   }
-
-  Timer.prototype.abort = function() {
-    if (this.timer_id) {
-      return clearTimeout(this.timer_id);
-    }
-  };
 
   Timer.prototype.next = function(second, tick) {
     var hour, limit, minute;
     if (0 < second) {
-      minute = Math.ceil(second / 60);
-      hour = Math.ceil(second / 3600);
+      minute = Math.floor(second / 60);
+      hour = Math.floor(second / 3600);
     }
     if (second < 0) {
-      minute = Math.ceil(-second / 60);
-      hour = Math.ceil(-second / 3600);
+      minute = Math.floor(-second / 60);
+      hour = Math.floor(-second / 3600);
     }
     limit = 3 * 60 * 60;
     if ((-25 < second && second < 25)) {
       return tick("25秒以内", 25);
     }
-    if ((-60 < second && second < 60)) {
+    if ((0 < second && second < 60)) {
       return tick("1分以内", 60);
     }
-    if ((-3540 < second && second < 0)) {
-      return tick("" + minute + "分後", 30);
+    if ((-60 < second && second < 0)) {
+      return tick("1分以内", 25);
     }
-    if ((0 < second && second < 3540)) {
+    if ((-3600 < second && second < 0)) {
+      return tick("" + minute + "分後", 60);
+    }
+    if ((0 < second && second < 3600)) {
       return tick("" + minute + "分前", 60);
     }
     if ((-limit < second && second < 0)) {
-      return tick("" + hour + "時間後", 60);
+      return tick("" + hour + "時間後", 3600);
     }
     if ((0 < second && second < limit)) {
       return tick("" + hour + "時間前", 3600);
@@ -1246,8 +1270,6 @@ Timer = (function() {
       return tick(Timer.date_time_stamp(this.at));
     }
   };
-
-  Timer.prototype.draw = function() {};
 
   return Timer;
 
@@ -1287,6 +1309,8 @@ Url = (function() {
   Url.routes = {};
 
   Url.data = {};
+
+  Url.prop = {};
 
   Url.each = function(cb) {
     var data, route, target, targets, url_key, _results;
@@ -1375,7 +1399,7 @@ Url = (function() {
       _ref = this.keys;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         key = _ref[i];
-        this.change(key, this.match[i]);
+        this.change_base(key, this.match[i]);
       }
     }
     return this.event_cb(this.data);
@@ -1405,24 +1429,33 @@ Url = (function() {
     return path;
   };
 
-  Url.prototype.change = function(key, value) {
+  Url.prototype.change_base = function(key, value) {
     var subkey, subval, type, _ref, _ref1, _results;
     type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
     value = Serial.parser[type](value);
     this.params.push(key);
-    Url.data[key] = this.data[key] = value;
+    this.change(key, value);
     if (Url.bind[key] != null) {
       _ref1 = Url.bind[key][value];
       _results = [];
       for (subkey in _ref1) {
         subval = _ref1[subkey];
         if (key !== subkey) {
-          _results.push(this.change(subkey, subval));
+          _results.push(this.change_base(subkey, subval));
         } else {
           _results.push(void 0);
         }
       }
       return _results;
+    }
+  };
+
+  Url.prototype.change = function(key, value) {
+    Url.data[key] = this.data[key] = value;
+    if (Url.prop[key]) {
+      return Url.prop[key](value);
+    } else {
+      return Url.prop[key] = m.prop(value);
     }
   };
 
@@ -1444,16 +1477,9 @@ var InputBase, InputSow,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 InputBase = (function() {
-  var calc_length, calc_point;
+  var calc_point;
 
   function InputBase() {}
-
-  calc_length = function(text) {
-    var ascii, other;
-    ascii = text.match(/[\x01-\xff]/g) || [];
-    other = text.match(/[^\x01-\xff]/g) || [];
-    return ascii.length + other.length * 2;
-  };
 
   calc_point = function(size) {
     var point;
@@ -1471,7 +1497,7 @@ InputBase = (function() {
     }
     this.text = text.replace(/\n$/g, '\n ');
     this.lines = this.text.split("\n").length;
-    this.size = calc_length(this.text);
+    this.size = this.text.sjis_length;
     this.point = calc_point(this.size);
     message = this.bad[this.validate.type]();
     this.is_bad = !!message;
@@ -1503,7 +1529,7 @@ InputBase = (function() {
     if (this.validate.is_disable) {
       return true;
     }
-    if (calc_length(this.text.replace(/\s/g, '')) < 4) {
+    if (this.text.replace(/\s/g, '').sjis_length < 4) {
       return true;
     }
     if (this.max != null) {
@@ -1523,12 +1549,12 @@ InputBase = (function() {
       this.text_preview = (function() {
         switch (this.validate.preview) {
           case "talk":
-            return deco_preview(this.text);
+            return this.text.deco_preview;
           case "action":
             target = this.validate.target;
             head = this.validate.head + "は、";
-            text = deco_preview(0 < this.text.length ? this.text.replace(/\n$/g, '\n ') : this.validate.text);
-            return "" + head + target + text;
+            text = 0 < this.text.length ? this.text.replace(/\n$/g, '\n ') : this.validate.text;
+            return "" + head + target + text.deco_preview;
         }
       }).call(this);
       this.is_preview = true;

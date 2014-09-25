@@ -8214,11 +8214,12 @@ h1, h2, h3, h4, h5, h6 {
 .chrF,
 .say img {
   float: left;
-  max-width: 90px;
-  width: 90px;
+  max-width: 88px;
+  width: 88px;
+  margin-right: 2px;
 }
 
-/* line 79, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 80, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .chrblank,
 .chrM,
 .chrF {
@@ -8232,103 +8233,103 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 50px;
 }
 
-/* line 91, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 92, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .chrlist {
   padding: 0px;
   background-color: #000;
 }
 
-/* line 96, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 97, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .chrblank {
   background-color: #444844;
 }
 
-/* line 99, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 100, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .chrM {
   background-color: #444888;
 }
 
-/* line 102, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 103, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .chrF {
   background-color: #884844;
 }
 
-/* line 106, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 107, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .sayfilter_content_enable {
   width: 100%;
 }
 
-/* line 110, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 111, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .sayfilter_content_disenable {
   width: 100%;
 }
 
-/* line 114, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 115, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .sayfilter_incontent input {
   display: none;
 }
 
-/* line 118, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 119, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .sayfilter_content th {
   padding: 1px;
 }
 
-/* line 122, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 123, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 dt, dd {
   padding: 4px 0;
 }
 
-/* line 127, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 128, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 #tab .paragraph th {
   padding: 0 3px 3px 3px;
 }
-/* line 128, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 129, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 #tab .paragraph td {
   padding: 1px 0 0 3px;
 }
-/* line 129, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 130, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 #tab .paragraph .name {
   margin-right: -3ex;
   white-space: nowrap;
 }
-/* line 133, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 134, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 #tab .paragraph .nowrap {
   white-space: nowrap;
 }
 
-/* line 138, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 139, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .say {
   width: 100%;
 }
 
-/* line 139, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 140, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 img {
   border-style: none;
 }
 
-/* line 141, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 142, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .btn.click {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-/* line 146, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 147, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .multicolumn_label {
   display: block;
   float: left;
 }
 
-/* line 151, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 152, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .multicolumn_right {
   width: 70%;
 }
 
-/* line 155, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 156, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .multicolumn_role {
   width: 100%;
 }
 
-/* line 159, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 160, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .multicolumn_clear {
   clear: left;
 }
@@ -9076,6 +9077,18 @@ h6 {
 .white-color .mes_pixi .memoright {
   color: black;
   background-color: #99aa77;
+}
+
+/* line 1, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/mithril.css.scss */
+ul.inline {
+  display: inline-block;
+  margin: 0;
+}
+
+/* line 6, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/mithril.css.scss */
+ul.inline li {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 /* line 2, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/player.css.scss */
@@ -11750,36 +11763,36 @@ table {
   background: #113;
 }
 
-/* line 89, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 90, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 .btn-default {
   color: #333333 !important;
 }
 
-/* line 93, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 94, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 .potofs td {
   padding: 1px 3px;
 }
 
-/* line 97, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 98, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 .inverse {
   background-color: #222;
   color: #333333;
 }
 
-/* line 102, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 103, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 .action .text {
   overflow: hidden;
   overflow-x: auto;
   word-wrap: break-word;
 }
 
-/* line 109, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 110, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 .text .mark,
 .pagenavi .mark {
   display: inline-block;
 }
 
-/* line 113, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 114, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 .mark {
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
@@ -11789,7 +11802,7 @@ table {
   background-color: rgba(255, 255, 255, 0.25);
 }
 
-/* line 122, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 123, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 .pagenavi ul {
   border-radius: 9px;
   padding: 0.10em 0.25em;
@@ -11799,7 +11812,7 @@ table {
   background-color: rgba(255, 255, 255, 0.75);
 }
 
-/* line 135, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 136, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 .footnote,
 .toppage .paragraph,
 .accordion dt,
@@ -11807,36 +11820,36 @@ table {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* line 139, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 140, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 body {
   color: #333333;
   padding: 0;
 }
 
-/* line 145, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 146, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 h2,
 h2 a {
   color: #333333;
 }
 
-/* line 148, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 149, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 h2 {
   border-bottom: 1px solid #333333;
 }
 
-/* line 152, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 153, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 a {
   color: #333333;
   text-decoration: none;
 }
 
-/* line 158, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 159, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 code a,
 .btn a {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-/* line 162, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 163, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 ul.unstyled, ol.unstyled {
   margin-left: 0;
   list-style: none;

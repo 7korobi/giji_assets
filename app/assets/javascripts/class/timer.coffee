@@ -50,50 +50,40 @@ class Timer
     for key, val of options
       @[key] = val
 
-    tick = (@text, sec_span = Number.NaN)=>
-      msec_span = sec_span * 1000
-      msec_span - (@msec % msec_span)
+    GUI.do_tick (now)=>
+      @msec = (now - @at)
+      @next @msec / 1000, (@text, sec_span = Number.NaN)=>
+        @prop @text if @prop
 
-    do_tick = =>
-      @msec = _.now() - Number @at
-      tick_time = @next(@msec / 1000, tick)
-      @timer_id = 
-        if tick_time
-          setTimeout do_tick, tick_time
+        msec_span = sec_span * 1000
+        diff = @msec % msec_span
+        if 0 < diff
+          msec_span - diff
         else
-          0
-      @draw @text
-
-    do_tick()
-
-
-  abort: ->
-    clearTimeout @timer_id if @timer_id
-
+          1 - diff
 
   next: (second, tick)->
     if 0 < second
-      minute = Math.ceil(  second /   60)
-      hour   = Math.ceil(  second / 3600)
+      minute = Math.floor(  second /   60)
+      hour   = Math.floor(  second / 3600)
     if second < 0
-      minute = Math.ceil(- second /   60)
-      hour   = Math.ceil(- second / 3600)
+      minute = Math.floor(- second /   60)
+      hour   = Math.floor(- second / 3600)
 
     limit = 3 * 60 * 60
-    return tick "25秒以内",                   25 if    -25 < second <     25
-    return tick "1分以内",                    60 if    -60 < second <     60
+    return tick      "25秒以内",              25 if    -25 < second <     25
+    return tick       "1分以内",              60 if      0 < second <     60
 
-    return tick "#{minute}分後",              30 if  -3540 < second <      0
-    return tick "#{minute}分前",              60 if      0 < second <   3540
+    return tick       "1分以内",              25 if    -60 < second <      0
 
-    return tick "#{hour}時間後",              60 if -limit < second <      0
+    return tick "#{minute}分後",              60 if  -3600 < second <      0
+    return tick "#{minute}分前",              60 if      0 < second <   3600
+
+    return tick "#{hour}時間後",            3600 if -limit < second <      0
     return tick "#{hour}時間前",            3600 if      0 < second <  limit
 
     return tick Timer.date_time_stamp(@at), 3600 if          second < -limit
     return tick Timer.date_time_stamp(@at)       if  limit < second
-
-
-  draw: ->
 
 ###
 log.updated = new Timer log.updated_at,
