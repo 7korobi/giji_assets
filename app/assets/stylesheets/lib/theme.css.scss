@@ -139,13 +139,13 @@
     color: #ddf;
     background-color: rgba(  0,  0,  0, 0.33);
   }
-  &.w458 {
+  &.mini-width {
     .action_nom,
     .action {
       border-width: 0 0 2px 18px;
     }
   }
-  &.w580, &.w770 {
+  &.std-width, &.wide-width {
     .action_nom,
     .action {
       border-width: 0 0 2px 22px;
@@ -260,13 +260,13 @@
     background: #cb8;
   }
 
-  &.w458 {
+  &.mini-width {
     .action_nom,
     .action {
       border-width: 2px 0 2px 14px;
     }
   }
-  &.w580, &.w770 {
+  &.std-width, &.wide-width {
     .action_nom,
     .action {
       border-width: 2px 0 2px 18px;

@@ -104,7 +104,7 @@
   }
 }
 
-.w458 {
+.mini-width {
   @include width(460px, 110px, 128px);
   @include film(9px);
   .chrlist {
@@ -148,7 +148,7 @@
 }
 
 
-.w580 {
+.std-width {
   @include width(580px, 119px, 141px);
   @include film(12px);
   .chrlist {
@@ -197,7 +197,7 @@
   }
 }
 
-.w770 {
+.wide-width {
   @include width(770px, 119px, 141px);
   @include film(12px);
   .chrlist {

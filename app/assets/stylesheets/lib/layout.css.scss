@@ -56,6 +56,7 @@ body {
 input[type="number"],
 #checklist,
 #buttons,
+#css_changer,
 .css_changer,
 .config_item,
 .mes_date,
@@ -107,6 +108,12 @@ hr,
 }
 
 .invisible_hr { display: none; }
+
+.drag-head,
+.drag-foot,
+.drag {
+  z-index: 999;
+}
 
 .drag,
 .ajax {

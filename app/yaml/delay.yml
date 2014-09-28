@@ -3,7 +3,7 @@ grave:      25000
 msg_delete: 25000
 msg_minute: 60000
 
-presto:    20
-animato:   80
-andante:  320
-lento:   1280
+presto:    50
+animato:  200
+andante:  800
+lento:   3200
