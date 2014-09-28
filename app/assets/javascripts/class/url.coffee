@@ -6,7 +6,7 @@ class Url
   @hash = []
   @routes = {}
 
-  @data = {}
+  @prop = {}
 
   @each = (cb)->
     targets = 
@@ -41,9 +41,12 @@ class Url
       history.pushState "pushstate", null, link
       Url.popstate()
 
+  @pushstate_event = _.debounce(Url.pushstate, DELAY.presto)
+
   constructor: (@format, @event_cb = ->)->
     @keys = []
     @params_in_url = []
+
     @scanner = new RegExp @format.replace(/[.]/ig,(key)-> "\\#{key}" ).replace /:([a-z_]+)/ig, (_, key)=>
       type = Url.options[key]?.type
       @keys.push key
@@ -59,7 +62,9 @@ class Url
     if @match
       @match.shift()
       for key, i in @keys
-        @change key, @match[i]
+        @parse key, @match[i]
+        Url.prop[key] @match[i]
+
     @event_cb(@data)
 
   pushstate: (link)->
@@ -71,29 +76,38 @@ class Url
         return link unless location[@target]?
         link.replace @scanner, @serialize()
 
-
   serialize: ->
     path = @format
     for key in @params_in_url
       type = Url.options[key]?.type
-      path = path.replace ///:#{key}///ig, Serial.serializer[type](@value key)
+      path = path.replace ///:#{key}///ig, Serial.serializer[type](Url.prop[key]())
     path
 
 
-  change: (key, value)->
-    type = Url.options[key]?.type
-    value = Serial.parser[type](value)
+  parse: (key, value)->
+    unless Url.prop[key]
+      prop = m.prop()
+      Url.prop[key] = (val)=>
+        if arguments.length
+          type = Url.options[key]?.type
+          val = Serial.parser[type](val)
+
+          prop @data[key] = val
+          if Url.bind[key]?
+            for subkey, subval of Url.bind[key][value]
+              Url.prop[subkey](subval) if key != subkey
+
+          Url.pushstate_event()
+
+        else
+          value = prop()
+          if value?
+            value
+          else
+            (Url.options[key]?.current) || null
 
     @params.push key
-    Url.data[key] = @data[key] = value
     if Url.bind[key]?
       for subkey, subval of Url.bind[key][value]
-        @change subkey, subval if key != subkey
+        @parse(subkey, subval) if key != subkey
 
-
-  value: (key)->
-    value = @data[key]
-    if value?
-      value
-    else
-      (Url.options[key]?.current) || null

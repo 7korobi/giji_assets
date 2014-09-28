@@ -1,24 +1,7 @@
-touch_events = (touch)->
-  list_cmds =
-    start: (cb)->
-      onmousedown: -> cb()
-      ongesturestart: -> cb()
-      ontouchstart: -> cb()
-    move: (cb)->
-      onmousemove: -> cb()
-      ongesturechange: -> cb()
-      ontouchmove: -> cb()
-    end: (cb)->
-      onmouseup: -> cb()
-      ongestureend: -> cb()
-      ontouchend: -> cb()
-  touch.call(list_cmds)
-
 if gon?.map_reduce?.faces?
   Cache.rule.map_face.set gon.map_reduce.faces
   chr_set = m.prop("all")
   map_order = m.prop("all")
-  touch_state = m.prop(false)
   map_orders = (prop)->
     order = RAILS.map_faces_orders[prop]
     order.func = (o)-> o.win.value[order.caption] ||= 0
@@ -31,79 +14,43 @@ if gon?.map_reduce?.faces?
       controller: ->
       view: ->
         map_order_set = map_orders(map_order())
+        headline = ""
         chrs = Cache.map_faces.chr_set[chr_set()]
-        headline =
-          if chrs
-            "人気の #{chrs.length}キャラクター"
-          else
-            ""
+        headline = "人気の #{chrs.length}キャラクター" if chrs?.length
+        GUI.chrs chrs, headline, (o, face)->
+          chr_job = Cache.chr_jobs.find["#{chr_set()}_#{face._id}"]
+          job_name = chr_job.job
 
-        [ m "hr",
-            style: "border-color:black;"
-          m ".mark", headline
-          for o in chrs
-            chr_job = Cache.chr_jobs.find["#{chr_set()}_#{o.face_id}"]
-            job_name = chr_job.job
-            face_name = o.face.name
-
-            m ".chrbox", [
-              GUI.portrate o.face_id
-              m ".chrblank", [
-                m "div", job_name
-                m "div", face_name
-                m "div", 
-                  m "a.mark",
-                    href: "/map_reduce/faces/#{o.face_id}"
-                  , "#{map_order_set.title} #{map_order_set.func(o)}回"
-                m "div", "♥#{o.sow_auth_id.max_is}"
-              ]
-            ]
-          m "hr",
-            style: "border-color:black;"
-        ]
+          [ m "div", job_name
+            m "div", face.name
+            m "div", 
+              m "a.mark",
+                href: "/map_reduce/faces/#{face._id}"
+              , "#{map_order_set.title} #{map_order_set.func(o)}回"
+            m "div", "♥#{o.sow_auth_id.max_is}"
+          ]
 
   GUI.if_exist "chr_sets", (dom)->
+    touch = new GUI.TouchMenu()
     m.module dom,
       controller: ->
       view: ->
         chr_sets = Cache.chr_sets.all
-        div_attrs = touch_events ->
-          @start ->
-            touch_state true
-        head =
-          m "div",
-            m "label.input-block-level", "キャラセットを選んでみよう ☆ミ"
-        [ m "div", div_attrs,
-            if touch_state()
-              select_chr_set = (o)->
-                ->
-                  chr_set o._id
-                  touch_state false
-              select_map_order = (o)->
-                ->
-                  map_order o
-                  touch_state false
-
-              [ head
+        m "div", [
+          m ".choice.guide", [
+            "キャラセットを選んでみよう "
+            m "span.badge.badge-info", Cache.chr_sets.find[chr_set()].caption
+            m "span.badge.badge-info", map_orders(map_order()).title
+            m "a.glyphicon.glyphicon-cog", touch.start()
+          ]
+          if touch.state()
+            m ".drag",
+              m ".contentframe", touch.cancel(), [
                 m "ul", 
                   for cs in chr_sets
-                    attrs = touch_events ->
-                      @end select_chr_set cs
-                    m "li.mark",attrs , cs.caption
+                    m "li.btn-block", touch.btn(chr_set, cs._id) , cs.caption
                 for key, o of RAILS.map_faces_orders
-                  attrs = touch_events ->
-                    @end select_map_order key
-                  attrs.class =
-                    if key == map_order()
-                      "btn btn-success"
-                    else
-                      "btn btn-default"
-                  m "a", attrs, o.caption
-              ]
-            else
-              [ head
-                m "span.badge.badge-info", Cache.chr_sets.find[chr_set()].caption
-                m "span.badge.badge-info", map_orders(map_order()).title
+                  m "a", touch.btn(map_order, key), o.caption
               ]
         ]
 
@@ -290,15 +237,134 @@ GUI.if_exist "topviewer", (dom)->
       []
   new Layout   0, 1, dom
 
+GUI.if_exist "css_changer", (dom)->
+  touch = new GUI.TouchMenu()
+  m.module dom,
+    controller: ->
+    view: ->
+      [ m "span", [
+          m "a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
+          m "a.mark", touch.btn(Url.prop.theme, "night"), "月夜"
+          m "a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"
+          m "a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"
+          m "a.glyphicon.glyphicon-cog", touch.start()
+        ]
+        if touch.state()
+          m ".drag",
+            m ".contentframe", touch.cancel(), [
+              m "h6", "幅の広さ"
+              m ".form-inline",
+                m ".form-group", [
+                  m "a", touch.btn(Url.prop.width, "mini"), "携帯"
+                  m "a", touch.btn(Url.prop.width, "std"),  "普通"
+                  m "a", touch.btn(Url.prop.width, "wide"), "広域"
+                ]
+              m "h6", "位置"
+              m ".form-inline",
+                m ".form-group", [
+                  m "a", touch.btn(Url.prop.layout, "left"),   "左詰"
+                  m "a", touch.btn(Url.prop.layout, "center"), "中央"
+                  m "a", touch.btn(Url.prop.layout, "right"),  "右詰"
+                ]
+              m "h6", "位置"
+              m ".form-inline",
+                m ".form-group", [
+                  m "a", touch.btn(Url.prop.font, "large"),   "大判"
+                  m "a", touch.btn(Url.prop.font, "novel"),   "明朝"
+                  m "a", touch.btn(Url.prop.font, "std"), "ゴシック"
+                  m "a", touch.btn(Url.prop.font, "small"),   "繊細"
+                ]
+            ]
+      ]
+
+###
+  css: new Url "css=:theme-:width-:layout-:font", (params)->
+
+  .pagenavi
+    h6(ng-if="mode" style="text-align:left;") 見るログを選ぶ
+    .form-inline(ng-if="mode" style="text-align:left;")
+      .form-group
+        a.mark(ng-click="event.show_info()") 情報
+      | &thinsp;
+      .form-group(ng-repeat="e in events")
+        a.mark(ng-click="e.show_talk()") {{e.name}}
+      .form-group(ng-if="story.news().is_progress")
+        | &thinsp;/&thinsp;
+        a.mark(ng-click="story.news().show_news()") 最新
+        | &thinsp;
+        a.mark(ng-click="story.news().show_unread()") 未読
+
+    h6(ng-if="show_style_navi && msg_style") ログの表示方法
+    .form-inline(ng-if="show_style_navi && msg_style")
+      .form-group
+        label
+          select.form-control.input-medium(ng-model="css.value" ng-options="o.val as o.name group by o.group for o in css.select")
+      | &thinsp;
+      .form-group
+        label
+          select.form-control.input-mini(ng-model="msg_styles.power"   ng-options="key as selectors.power[key] for key in selector_keys.power" )
+        | &thinsp;
+      .form-group
+        label
+          select.form-control.input-mini(ng-model="msg_styles.order"   ng-options="key as selectors.order[key] for key in selector_keys.order" )
+        | &thinsp;
+      .form-group
+        label
+          select.form-control.input-mini(ng-model="msg_styles.row"   ng-options="key as selectors.row[key] for key in selector_keys.row" )
+        | &thinsp;
+
+    h6(ng-if="show_style_navi") スタイル（ログの見た目）を調整する
+    .form-inline(ng-if="show_style_navi")
+      .form-group.mark
+        label.checkbox(ng-repeat="key in selector_keys.font")
+          input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.font")
+            | {{selectors.font[key]}}
+      | &thinsp;
+      .form-group.mark
+        label.checkbox(ng-repeat="key in selector_keys.width")
+          input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.width")
+            | {{selectors.width[key]}}
+
+    h6(ng-if="show_style_navi && mode") ログから表示する部分を選ぶ
+    .form-inline(ng-if="show_style_navi && mode")
+      .form-group.mark
+        label
+          input(type="radio" tabindex="-1" value="open"  ng-model="modes.view") 公開
+        label
+          input(type="radio" tabindex="-1" value="clan"  ng-model="modes.view") 内緒話
+        label
+          input(type="radio" tabindex="-1" value="think" ng-model="modes.view") 独り言
+        label
+          input(type="radio" tabindex="-1" value="all"   ng-model="modes.view") 全部
+      | &thinsp;
+      .form-group.mark
+        label.checkbox
+          input(type="checkbox" tabindex="-1" ng-model="modes.last") 最後の言葉
+        label.checkbox
+          input(type="checkbox" tabindex="-1" ng-model="modes.open") 公開発言
+        label.checkbox
+          input(type="checkbox" tabindex="-1" ng-model="msg_styles.pl") 中身発言
+
+
+    h6(ng-if="event") ページ移動
+    .form-inline(ng-if="event" style="text-align:right;")
+      .form-group(ng-if="page && ! event.is_news" template="navi/paginate")
+      | &thinsp;
+      .form-group(ng-if="mode")
+        a.mark.click(ng-click="mode.value = mode_common[1].value") メモ
+      | &thinsp;
+      .form-group(ng-if="mode")
+        a.mark.click(ng-click="mode.value = mode_common[2].value") 議事
+      | &thinsp;
+      .form-group
+        input.form-control.input-medium(type="text" ng-model="search_input" ng-blur="search.value = search_input" placeholder="ログを探す")
+      | &thinsp;
+      .form-group(ng-if="event.is_progress")
+        a.mark.click.glyphicon.glyphicon-pencil(ng-click="go.form()")
+###
+
 GUI.if_exist "to_root", (dom)->
   day_or_night = m.prop()
-  test1 = new Timer _.now() + 10000,
-    prop: m.prop()
-  test2 = new Timer _.now() + 20000,
-    prop: m.prop()
-  test3 = new Timer _.now() + 40000,
-    prop: m.prop()
-
   m.module document.getElementById("to_root"),
     controller: ->
       hour = 1000 * 60 * 60
@@ -312,9 +378,6 @@ GUI.if_exist "to_root", (dom)->
       [ m "a",
           href: "http://giji.check.jp/"
         , GUI.title 770, "cinema", day_or_night()
-        m "div", test1.prop()
-        m "div", test2.prop()
-        m "div", test3.prop()
       ]
 
 m.endComputation()

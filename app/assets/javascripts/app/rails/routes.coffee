@@ -9,8 +9,7 @@ Url.routes =
 
   css: new Url "css=:theme-:width-:layout-:font", (params)->
     @style_p ||= ""
-    h = 
-      w770: true
+    h = {}
     for key, val of params
       h["#{val}-#{key}"] = true if key? && val? && "String" == ((Url.options[key]?.type) || "String")
     style = Object.keys(h).join(" ")

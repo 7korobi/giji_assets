@@ -1,7 +1,7 @@
 options:
   search:
   width:
-    current: normal
+    current: std
   layout:
     current: center
   font:
