@@ -73,9 +73,9 @@ Mithril=m=new function a(b,c){function d(){for(var a,b=arguments,c=(!(null==b[1]
 //fgnass.github.com/spin.js#v2.0.1
 !function(a,b){"object"==typeof exports?module.exports=b():"function"==typeof define&&define.amd?define(b):a.Spinner=b()}(this,function(){"use strict";function a(a,b){var c,d=document.createElement(a||"div");for(c in b)d[c]=b[c];return d}function b(a){for(var b=1,c=arguments.length;c>b;b++)a.appendChild(arguments[b]);return a}function c(a,b,c,d){var e=["opacity",b,~~(100*a),c,d].join("-"),f=.01+c/d*100,g=Math.max(1-(1-a)/b*(100-f),a),h=j.substring(0,j.indexOf("Animation")).toLowerCase(),i=h&&"-"+h+"-"||"";return l[e]||(m.insertRule("@"+i+"keyframes "+e+"{0%{opacity:"+g+"}"+f+"%{opacity:"+a+"}"+(f+.01)+"%{opacity:1}"+(f+b)%100+"%{opacity:"+a+"}100%{opacity:"+g+"}}",m.cssRules.length),l[e]=1),e}function d(a,b){var c,d,e=a.style;for(b=b.charAt(0).toUpperCase()+b.slice(1),d=0;d<k.length;d++)if(c=k[d]+b,void 0!==e[c])return c;return void 0!==e[b]?b:void 0}function e(a,b){for(var c in b)a.style[d(a,c)||c]=b[c];return a}function f(a){for(var b=1;b<arguments.length;b++){var c=arguments[b];for(var d in c)void 0===a[d]&&(a[d]=c[d])}return a}function g(a,b){return"string"==typeof a?a:a[b%a.length]}function h(a){this.opts=f(a||{},h.defaults,n)}function i(){function c(b,c){return a("<"+b+' xmlns="urn:schemas-microsoft.com:vml" class="spin-vml">',c)}m.addRule(".spin-vml","behavior:url(#default#VML)"),h.prototype.lines=function(a,d){function f(){return e(c("group",{coordsize:k+" "+k,coordorigin:-j+" "+-j}),{width:k,height:k})}function h(a,h,i){b(m,b(e(f(),{rotation:360/d.lines*a+"deg",left:~~h}),b(e(c("roundrect",{arcsize:d.corners}),{width:j,height:d.width,left:d.radius,top:-d.width>>1,filter:i}),c("fill",{color:g(d.color,a),opacity:d.opacity}),c("stroke",{opacity:0}))))}var i,j=d.length+d.width,k=2*j,l=2*-(d.width+d.length)+"px",m=e(f(),{position:"absolute",top:l,left:l});if(d.shadow)for(i=1;i<=d.lines;i++)h(i,-2,"progid:DXImageTransform.Microsoft.Blur(pixelradius=2,makeshadow=1,shadowopacity=.3)");for(i=1;i<=d.lines;i++)h(i);return b(a,m)},h.prototype.opacity=function(a,b,c,d){var e=a.firstChild;d=d.shadow&&d.lines||0,e&&b+d<e.childNodes.length&&(e=e.childNodes[b+d],e=e&&e.firstChild,e=e&&e.firstChild,e&&(e.opacity=c))}}var j,k=["webkit","Moz","ms","O"],l={},m=function(){var c=a("style",{type:"text/css"});return b(document.getElementsByTagName("head")[0],c),c.sheet||c.styleSheet}(),n={lines:12,length:7,width:5,radius:10,rotate:0,corners:1,color:"#000",direction:1,speed:1,trail:100,opacity:.25,fps:20,zIndex:2e9,className:"spinner",top:"50%",left:"50%",position:"absolute"};h.defaults={},f(h.prototype,{spin:function(b){this.stop();{var c=this,d=c.opts,f=c.el=e(a(0,{className:d.className}),{position:d.position,width:0,zIndex:d.zIndex});d.radius+d.length+d.width}if(e(f,{left:d.left,top:d.top}),b&&b.insertBefore(f,b.firstChild||null),f.setAttribute("role","progressbar"),c.lines(f,c.opts),!j){var g,h=0,i=(d.lines-1)*(1-d.direction)/2,k=d.fps,l=k/d.speed,m=(1-d.opacity)/(l*d.trail/100),n=l/d.lines;!function o(){h++;for(var a=0;a<d.lines;a++)g=Math.max(1-(h+(d.lines-a)*n)%l*m,d.opacity),c.opacity(f,a*d.direction+i,g,d);c.timeout=c.el&&setTimeout(o,~~(1e3/k))}()}return c},stop:function(){var a=this.el;return a&&(clearTimeout(this.timeout),a.parentNode&&a.parentNode.removeChild(a),this.el=void 0),this},lines:function(d,f){function h(b,c){return e(a(),{position:"absolute",width:f.length+f.width+"px",height:f.width+"px",background:b,boxShadow:c,transformOrigin:"left",transform:"rotate("+~~(360/f.lines*k+f.rotate)+"deg) translate("+f.radius+"px,0)",borderRadius:(f.corners*f.width>>1)+"px"})}for(var i,k=0,l=(f.lines-1)*(1-f.direction)/2;k<f.lines;k++)i=e(a(),{position:"absolute",top:1+~(f.width/2)+"px",transform:f.hwaccel?"translate3d(0,0,0)":"",opacity:f.opacity,animation:j&&c(f.opacity,f.trail,l+k*f.direction,f.lines)+" "+1/f.speed+"s linear infinite"}),f.shadow&&b(i,e(h("#000","0 0 4px #000"),{top:"2px"})),b(d,b(i,h(g(f.color,k),"0 0 1px rgba(0,0,0,.1)")));return d},opacity:function(a,b,c){b<a.childNodes.length&&(a.childNodes[b].style.opacity=c)}});var o=e(a("group"),{behavior:"url(#default#VML)"});return!d(o,"transform")&&o.adj?i():j=d(o,"animation"),h});
 
-this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,"presto":20,"animato":80,"andante":320,"lento":1280} ;
+this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,"presto":50,"animato":200,"andante":800,"lento":3200} ;
 
-this.LOCATION = {"options":{"search":null,"width":{"current":"normal"},"layout":{"current":"stat_type"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
+this.LOCATION = {"options":{"search":null,"width":{"current":"std"},"layout":{"current":"stat_type"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
 var define;
 
@@ -786,15 +786,42 @@ Cache.data =
 var GUI;
 
 GUI = {
+  img_head: "http://7korobi.gehirn.ne.jp/images/",
   portrate: function(face_id) {
     return m("img", {
-      src: "http://7korobi.gehirn.ne.jp/images/portrate/" + face_id + ".jpg"
+      src: GUI.img_head + ("/portrate/" + face_id + ".jpg")
     });
   },
   title: function(width, theme, day_or_night) {
     return m("img", {
-      src: ("http://7korobi.gehirn.ne.jp/images/banner/title" + width) + RAILS.head_img[width][theme][day_or_night]
+      src: GUI.img_head + ("/banner/title" + width) + RAILS.head_img[width][theme][day_or_night]
     });
+  },
+  attrs: function(dsl) {
+    var list_cmds, o;
+    o = {};
+    list_cmds = {
+      "class": function(str) {
+        return o["class"] = str;
+      },
+      start: function(cb) {
+        o.onmousedown = cb;
+        o.ongesturestart = cb;
+        return o.ontouchstart = cb;
+      },
+      move: function(cb) {
+        o.onmousemove = cb;
+        o.ongesturechange = cb;
+        return o.ontouchmove = cb;
+      },
+      end: function(cb) {
+        o.onmouseup = cb;
+        o.ongestureend = cb;
+        return o.ontouchend = cb;
+      }
+    };
+    dsl.call(list_cmds);
+    return o;
   },
   inline_item: function(cb) {
     var inline_item_span, list_cmds;
@@ -815,6 +842,20 @@ GUI = {
   },
   letter: function(head, vdom) {
     return [m("h3.mesname", m("b", head)), m("p.text", vdom)];
+  },
+  chrs: function(chrs, headline, cb) {
+    var o;
+    return [
+      m("hr.black"), m(".mark", headline), (function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = chrs.length; _i < _len; _i++) {
+          o = chrs[_i];
+          _results.push(m(".chrbox", [GUI.portrate(o.face._id), m(".chrblank", cb(o, o.face))]));
+        }
+        return _results;
+      })(), m("hr.black")
+    ];
   },
   do_tick: function(cb) {
     var action;
@@ -850,11 +891,59 @@ GUI = {
     }
   }
 };
+
+GUI.TouchMenu = (function() {
+  function TouchMenu() {
+    this.state = m.prop(false);
+  }
+
+  TouchMenu.prototype.start = function() {
+    var state;
+    state = this.state;
+    return GUI.attrs(function() {
+      return this.start(function() {
+        return state(true);
+      });
+    });
+  };
+
+  TouchMenu.prototype.cancel = function() {
+    var state;
+    state = this.state;
+    return GUI.attrs(function() {
+      return this.end(function() {
+        return state(false);
+      });
+    });
+  };
+
+  TouchMenu.prototype.btn = function(prop, val) {
+    var state;
+    state = this.state;
+    return GUI.attrs(function() {
+      this.end(function() {
+        state(false);
+        return prop(val);
+      });
+      if (val === prop()) {
+        return this["class"]("btn btn-success");
+      } else {
+        return this["class"]("btn btn-default");
+      }
+    });
+  };
+
+  return TouchMenu;
+
+})();
 var Layout, win;
 
 win = {
   do_event_list: function(list, e) {
     var cb, _i, _len;
+    if (!list.length) {
+      return;
+    }
     m.startComputation();
     for (_i = 0, _len = list.length; _i < _len; _i++) {
       cb = list[_i];
@@ -864,7 +953,7 @@ win = {
   },
   "do": {
     resize: function(e) {
-      var body_height, body_width;
+      var body_height, body_width, cb, _i, _len, _ref, _results;
       win.height = Math.max(window.innerHeight, document.documentElement.clientHeight);
       win.width = Math.max(window.innerWidth, document.documentElement.clientWidth);
       body_height = Math.max(document.body.clientHeight, document.body.scrollHeight, document.documentElement.scrollHeight, document.documentElement.clientHeight);
@@ -880,12 +969,25 @@ win = {
         win.landscape = true;
         win.portlate = false;
       }
-      return win.do_event_list(win.on.resize, e);
+      _ref = win.on.resize;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        cb = _ref[_i];
+        _results.push(cb(e));
+      }
+      return _results;
     },
     scroll: function(e) {
+      var cb, _i, _len, _ref, _results;
       win.left = window.pageXOffset;
       win.top = window.pageYOffset;
-      return win.do_event_list(win.on.scroll, e);
+      _ref = win.on.scroll;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        cb = _ref[_i];
+        _results.push(cb(e));
+      }
+      return _results;
     },
     gesture: function(e) {
       return win.do_event_list(win.on.gesture, e);
@@ -1308,7 +1410,7 @@ Url = (function() {
 
   Url.routes = {};
 
-  Url.data = {};
+  Url.prop = {};
 
   Url.each = function(cb) {
     var data, route, target, targets, url_key, _results;
@@ -1368,6 +1470,8 @@ Url = (function() {
     }
   };
 
+  Url.pushstate_event = _.debounce(Url.pushstate, DELAY.presto);
+
   function Url(format, event_cb) {
     this.format = format;
     this.event_cb = event_cb != null ? event_cb : function() {};
@@ -1397,7 +1501,8 @@ Url = (function() {
       _ref = this.keys;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         key = _ref[i];
-        this.change(key, this.match[i]);
+        this.parse(key, this.match[i]);
+        Url.prop[key](this.match[i]);
       }
     }
     return this.event_cb(this.data);
@@ -1422,39 +1527,56 @@ Url = (function() {
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       key = _ref[_i];
       type = (_ref1 = Url.options[key]) != null ? _ref1.type : void 0;
-      path = path.replace(RegExp(":" + key, "ig"), Serial.serializer[type](this.value(key)));
+      path = path.replace(RegExp(":" + key, "ig"), Serial.serializer[type](Url.prop[key]()));
     }
     return path;
   };
 
-  Url.prototype.change = function(key, value) {
-    var subkey, subval, type, _ref, _ref1, _results;
-    type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
-    value = Serial.parser[type](value);
+  Url.prototype.parse = function(key, value) {
+    var prop, subkey, subval, _ref, _results;
+    if (!Url.prop[key]) {
+      prop = m.prop();
+      Url.prop[key] = (function(_this) {
+        return function(val) {
+          var subkey, subval, type, _ref, _ref1, _ref2;
+          if (arguments.length) {
+            type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
+            val = Serial.parser[type](val);
+            prop(_this.data[key] = val);
+            if (Url.bind[key] != null) {
+              _ref1 = Url.bind[key][value];
+              for (subkey in _ref1) {
+                subval = _ref1[subkey];
+                if (key !== subkey) {
+                  Url.prop[subkey](subval);
+                }
+              }
+            }
+            return Url.pushstate_event();
+          } else {
+            value = prop();
+            if (value != null) {
+              return value;
+            } else {
+              return ((_ref2 = Url.options[key]) != null ? _ref2.current : void 0) || null;
+            }
+          }
+        };
+      })(this);
+    }
     this.params.push(key);
-    Url.data[key] = this.data[key] = value;
     if (Url.bind[key] != null) {
-      _ref1 = Url.bind[key][value];
+      _ref = Url.bind[key][value];
       _results = [];
-      for (subkey in _ref1) {
-        subval = _ref1[subkey];
+      for (subkey in _ref) {
+        subval = _ref[subkey];
         if (key !== subkey) {
-          _results.push(this.change(subkey, subval));
+          _results.push(this.parse(subkey, subval));
         } else {
           _results.push(void 0);
         }
       }
       return _results;
-    }
-  };
-
-  Url.prototype.value = function(key) {
-    var value, _ref;
-    value = this.data[key];
-    if (value != null) {
-      return value;
-    } else {
-      return ((_ref = Url.options[key]) != null ? _ref.current : void 0) || null;
     }
   };
 
