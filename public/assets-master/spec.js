@@ -7763,10 +7763,6 @@ describe("Timer", function() {
     });
   });
 });
-if (location.search !== "?param=1-B-C-KfmhEBZ") {
-  location.search = "?param=1-B-C-KfmhEBZ";
-}
-
 Url.bind = {
   fname: {
     jasmine: {
@@ -7782,19 +7778,19 @@ Url.bind = {
 
 Url.options = {
   aaa: {
-    current: null,
+    current: 1,
     type: "Number"
   },
   bbb: {
-    current: null,
+    current: "B",
     type: "String"
   },
   ccc: {
-    current: null,
+    current: "C",
     type: "String"
   },
   ddd: {
-    current: null,
+    current: 1400000000000,
     type: "Date"
   },
   fname: {
@@ -7811,15 +7807,13 @@ Url.options = {
   }
 };
 
-Url.pathname = ["file"];
-
-Url.cookie = ["file"];
-
-Url.search = ["param"];
-
 Url.routes = {
-  param: new Url("param=:aaa-:bbb-:ccc-:ddd"),
-  file: new Url("/:fname.:ext")
+  pathname: {
+    file: new Url("/:fname.:ext")
+  },
+  search: {
+    param: new Url("param=:aaa-:bbb-:ccc-:ddd")
+  }
 };
 
 describe("Url", function() {

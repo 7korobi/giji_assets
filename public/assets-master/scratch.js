@@ -4109,41 +4109,38 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 }
 
 Cache.rule.chr_job.merge(list);
-Url.cookie = ["css"];
-
-Url.search = ["story", "timer"];
-
-Url.hash = ["messages", "news", "all", "page", "hides", "search", "potof", "css", "timer"];
-
 Url.options = LOCATION.options;
 
 Url.bind = LOCATION.bind;
 
 Url.routes = {
-  story: new Url("/on/:story_id"),
-  timer: new Url("timer=:viewed_at"),
-  messages: new Url("/:event_id/messages/:message_ids/"),
-  news: new Url("/:event_id/:mode_id/news/:row/"),
-  all: new Url("/:event_id/:mode_id/all/"),
-  page: new Url("/:event_id/:mode_id/:page.of.:row/"),
-  hides: new Url("/hides/:hide_ids"),
-  search: new Url("/search/:search"),
-  potof: new Url("/potof/:potofs_order"),
-  css: new Url("/css-:theme-:width-:layout-:font", function(params) {
-    var h, html, key, style, val, _ref;
-    this.style_p || (this.style_p = "");
-    h = {};
-    for (key in params) {
-      val = params[key];
-      if ((key != null) && (val != null) && "String" === (((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String")) {
-        h["" + val + "-" + key] = true;
+  hash: {
+    story: new Url("/on/:story_id"),
+    timer: new Url("timer=:viewed_at"),
+    messages: new Url("/:event_id/messages/:message_ids/"),
+    news: new Url("/:event_id/:mode_id/news/:row/"),
+    all: new Url("/:event_id/:mode_id/all/"),
+    page: new Url("/:event_id/:mode_id/:page.of.:row/"),
+    hides: new Url("/hides/:hide_ids"),
+    search: new Url("/search/:search"),
+    potof: new Url("/potof/:potofs_order")
+  },
+  search: {
+    css: new Url("css=:theme-:width-:layout-:font", {
+      unmatch: "?",
+      change: function(params) {
+        var h, key, val, _ref;
+        h = {};
+        for (key in params) {
+          val = params[key];
+          if ((key != null) && (val != null) && "String" === (((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String")) {
+            h["" + val + "-" + key] = true;
+          }
+        }
+        return GUI.header(Object.keys(h));
       }
-    }
-    style = Object.keys(h).join(" ");
-    html = document.documentElement;
-    html.className = html.className.replace(this.style_p, style);
-    return this.style_p = style;
-  })
+    })
+  }
 };
 if ("onorientationchange" in window) {
   window.addEventListener('orientationchange', _.throttle(win["do"].resize, DELAY.presto));

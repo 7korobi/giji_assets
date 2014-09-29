@@ -8,6 +8,13 @@ GUI =
     m "img",
       src: GUI.img_head + "/banner/title#{width}" + RAILS.head_img[width][theme][day_or_night]
 
+  header_style_p: ""
+  header: (keys)->
+    style = keys.join(" ")
+    html = document.documentElement
+    html.className = html.className.replace GUI.header_style_p, style
+    GUI.header_style_p = style
+
   attrs: (dsl)->
     o = {}
     list_cmds =
@@ -70,10 +77,9 @@ GUI =
     action()
 
   if_exist: (id, cb)->
-    dom = document.getElementById(id)
-    if !!dom
-      win.on.load.push ->
-        cb(dom)
+    win.on.load.push ->
+      dom = document.getElementById(id)
+      cb(dom) if !!dom && cb
 
   comma: (num)->
     (String Math.round num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
@@ -91,7 +97,7 @@ class GUI.TouchMenu
     state = @state
     GUI.attrs ->
       @start ->
-        state true
+        state ! state()
 
   cancel: ->
     state = @state
@@ -102,10 +108,11 @@ class GUI.TouchMenu
   btn: (prop, val)->
     state = @state
     GUI.attrs ->
-      @end ->
-        state false
-        prop val
-      if val == prop()
-        @class "btn btn-success"
-      else
-        @class "btn btn-default"
+      if prop
+        @end ->
+          state false
+          prop val
+        if val == prop()
+          @class "btn btn-success"
+        else
+          @class "btn btn-default"

@@ -4140,28 +4140,34 @@ RAILS = {
   },
   "map_faces_orders": {
     "all": {
-      "caption": "合計",
-      "title": "登場"
+      "caption": "登場",
+      "headline": "登場した",
+      "order": "合計"
     },
     "human": {
-      "caption": "村人陣営",
-      "title": "村側"
+      "caption": "村側",
+      "headline": "人間だった",
+      "order": "村人陣営"
     },
     "wolf": {
-      "caption": "人狼陣営",
-      "title": "狼側"
+      "caption": "狼側",
+      "headline": "人狼だった",
+      "order": "人狼陣営"
     },
     "enemy": {
-      "caption": "敵側の人間",
-      "title": "敵側"
+      "caption": "敵側",
+      "headline": "敵側の人間だった",
+      "order": "敵側の人間"
     },
     "pixi": {
       "caption": "妖精",
-      "title": "妖精"
+      "headline": "妖精だった",
+      "order": "妖精"
     },
     "other": {
       "caption": "その他",
-      "title": "その他"
+      "headline": "その他だった",
+      "order": "その他"
     }
   },
   "options": {
@@ -5249,6 +5255,33 @@ RAILS = {
     "font": [null, null, "color=\"gray\"", null, null, null, null, null, "color=\"gray\"", null, "color=\"gray\"", "color=\"red\"", "color=\"teal\"", "color=\"blue\"", "color=\"green\"", "color=\"maroon\"", null, "color=\"purple\"", null, "color=\"red\""]
   }
 };
+var _ref;
+
+Url.options = LOCATION.options;
+
+Url.bind = LOCATION.bind;
+
+Url.routes = {
+  search: {
+    shape: new Url("shape=:chr_set-:order", {
+      unmatch: ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) && "?"
+    }),
+    css: new Url("css=:theme-:width-:layout-:font", {
+      unmatch: "?",
+      change: function(params) {
+        var h, key, val, _ref1;
+        h = {};
+        for (key in params) {
+          val = params[key];
+          if ((key != null) && (val != null) && "String" === (((_ref1 = Url.options[key]) != null ? _ref1.type : void 0) || "String")) {
+            h["" + val + "-" + key] = true;
+          }
+        }
+        return GUI.header(Object.keys(h));
+      }
+    })
+  }
+};
 new Cache.Rule("map_face").schema(function() {
   this.belongs_to("face", {
     dependent: true
@@ -5278,18 +5311,16 @@ new Cache.Rule("map_face").schema(function() {
     return o.chr_set_ids;
   });
 });
-var chr_set, face, map_order, map_orders, _ref;
+var face, map_orders, _ref;
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.map_face.set(gon.map_reduce.faces);
-  chr_set = m.prop("all");
-  map_order = m.prop("all");
   map_orders = function(prop) {
     var order;
     order = RAILS.map_faces_orders[prop];
     order.func = function(o) {
       var _base, _name;
-      return (_base = o.win.value)[_name = order.caption] || (_base[_name] = 0);
+      return (_base = o.win.value)[_name = order.order] || (_base[_name] = 0);
     };
     Cache.rule.map_face.schema(function() {
       return this.order(function(o) {
@@ -5303,20 +5334,20 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
       controller: function() {},
       view: function() {
         var chrs, headline, map_order_set;
-        map_order_set = map_orders(map_order());
+        map_order_set = map_orders(Url.prop.order());
+        chrs = Cache.map_faces.chr_set[Url.prop.chr_set()];
         headline = "";
-        chrs = Cache.map_faces.chr_set[chr_set()];
         if (chrs != null ? chrs.length : void 0) {
-          headline = "人気の " + chrs.length + "キャラクター";
+          headline = [m("span.badge.badge-info", Cache.chr_sets.find[Url.prop.chr_set()].caption), "の" + chrs.length + "人を、", m("span.badge.badge-info", map_orders(Url.prop.order()).headline), "回数で並べています"];
         }
         return GUI.chrs(chrs, headline, function(o, face) {
           var chr_job, job_name;
-          chr_job = Cache.chr_jobs.find["" + (chr_set()) + "_" + face._id];
+          chr_job = Cache.chr_jobs.find["" + (Url.prop.chr_set()) + "_" + face._id];
           job_name = chr_job.job;
           return [
             m("div", job_name), m("div", face.name), m("div", m("a.mark", {
               href: "/map_reduce/faces/" + face._id
-            }, "" + map_order_set.title + " " + (map_order_set.func(o)) + "回")), m("div", "♥" + o.sow_auth_id.max_is)
+            }, "" + map_order_set.caption + " " + (map_order_set.func(o)) + "回")), m("div", "♥" + o.sow_auth_id.max_is)
           ];
         });
       }
@@ -5331,25 +5362,25 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
         var chr_sets, cs, key, o;
         chr_sets = Cache.chr_sets.all;
         return m("div", [
-          m(".choice.guide", ["キャラセットを選んでみよう ", m("span.badge.badge-info", Cache.chr_sets.find[chr_set()].caption), m("span.badge.badge-info", map_orders(map_order()).title), m("a.glyphicon.glyphicon-cog", touch.start())]), touch.state() ? m(".drag", m(".contentframe", touch.cancel(), [
-            m("ul", (function() {
-              var _i, _len, _results;
-              _results = [];
-              for (_i = 0, _len = chr_sets.length; _i < _len; _i++) {
-                cs = chr_sets[_i];
-                _results.push(m("li.btn-block", touch.btn(chr_set, cs._id), cs.caption));
-              }
-              return _results;
-            })()), (function() {
+          m(".choice.guide", ["キャラセットを選んでみよう ", m("a.glyphicon.glyphicon-tags", touch.start())]), touch.state() ? m(".drag", m(".contentframe", [
+            (function() {
               var _ref1, _results;
               _ref1 = RAILS.map_faces_orders;
               _results = [];
               for (key in _ref1) {
                 o = _ref1[key];
-                _results.push(m("a", touch.btn(map_order, key), o.caption));
+                _results.push(m("a", touch.btn(Url.prop.order, key), o.caption));
               }
               return _results;
-            })()
+            })(), m("ul", (function() {
+              var _i, _len, _results;
+              _results = [];
+              for (_i = 0, _len = chr_sets.length; _i < _len; _i++) {
+                cs = chr_sets[_i];
+                _results.push(m("li.btn-block", touch.btn(Url.prop.chr_set, cs._id), cs.caption));
+              }
+              return _results;
+            })())
           ])) : void 0
         ]);
       }
@@ -5425,7 +5456,9 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
       view: function() {
         var say, says_calc_line, says_calc_lines, says_count_line, says_count_lines, _i, _len, _ref1;
         says_count_lines = [
-          m("tr.caution", [
+          m("a", {
+            name: "says_count"
+          }), m("tr.caution", [
             m("th.msg", {
               colspan: 2
             }, "総合値"), m("th.msg", {
@@ -5438,7 +5471,9 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
           ])
         ];
         says_calc_lines = [
-          m("tr.caution", [
+          m("a", {
+            name: "says_calc"
+          }), m("tr.caution", [
             m("th.msg", {
               colspan: 2
             }, "平均値"), m("th.msg", {
@@ -5484,7 +5519,9 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
       view: function() {
         var folder, story_id;
         return [
-          m(".MAKER.guide", [
+          m("a", {
+            name: "village"
+          }), m(".MAKER.guide", [
             GUI.letter(face.name, ["全部で", m("span.mark", "" + face.folder.all + "回"), "登場しました。"]), (function() {
               var _i, _len, _ref1, _results;
               _ref1 = face.folder.keys;
@@ -5499,7 +5536,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
                     story_id = _ref2[_j];
                     _results1.push(GUI.inline_item(function() {
                       return m("a", {
-                        style: "display:block; width:" + (2.5 + folder.length * 0.6) + "em; text-align:left;",
+                        style: "display:block; width:" + (2.8 + folder.length * 0.65) + "em; text-align:left;",
                         href: "http://7korobi.gehirn.ne.jp/stories/" + story_id[0] + ".html"
                       }, story_id[0]);
                     }));
@@ -5520,7 +5557,9 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
       view: function() {
         var length, sow_auth_id, width;
         return [
-          m(".ADMIN.guide", [
+          m("a", {
+            name: "sow_user"
+          }), m(".ADMIN.guide", [
             GUI.letter(face.name, ["全部で", m("span.mark", "" + face.sow_auth_ids.length + "人"), "が、", m("span.mark", "" + face.sow_auth_id.all + "回"), "登場しました。"]), (function() {
               var _i, _len, _ref1, _results;
               _ref1 = face.sow_auth_ids;
@@ -5717,39 +5756,13 @@ GUI.if_exist("to_root", function(dom) {
       return [
         m("a", {
           href: "http://giji.check.jp/"
-        }, GUI.title(770, "cinema", day_or_night()))
+        }, GUI.title(Url.prop.w(), Url.prop.theme(), day_or_night()))
       ];
     }
   });
 });
 
 m.endComputation();
-Url.cookie = ["css"];
-
-Url.search = ["css"];
-
-Url.options = LOCATION.options;
-
-Url.bind = LOCATION.bind;
-
-Url.routes = {
-  shape: new Url("shape=:chr_set-:order", function(params) {}),
-  css: new Url("css=:theme-:width-:layout-:font", function(params) {
-    var h, html, key, style, val, _ref;
-    this.style_p || (this.style_p = "");
-    h = {};
-    for (key in params) {
-      val = params[key];
-      if ((key != null) && (val != null) && "String" === (((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String")) {
-        h["" + val + "-" + key] = true;
-      }
-    }
-    style = Object.keys(h).join(" ");
-    html = document.documentElement;
-    html.className = html.className.replace(this.style_p, style);
-    return this.style_p = style;
-  })
-};
 if ("onorientationchange" in window) {
   window.addEventListener('orientationchange', _.throttle(win["do"].resize, DELAY.presto));
   window.addEventListener('orientationchange', _.throttle(win["do"].scroll, DELAY.lento));

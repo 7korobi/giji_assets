@@ -59,23 +59,29 @@ head_img:
 
 map_faces_orders:
   all:
-    caption: 合計
-    title: 登場
+    caption: 登場
+    headline: 登場した
+    order: 合計
   human:
-    caption: 村人陣営
-    title: 村側
+    caption: 村側
+    headline: 人間だった
+    order: 村人陣営
   wolf:
-    caption: 人狼陣営
-    title: 狼側
+    caption: 狼側
+    headline: 人狼だった
+    order: 人狼陣営
   enemy:
-    caption: 敵側の人間
-    title: 敵側
+    caption: 敵側
+    headline: 敵側の人間だった
+    order: 敵側の人間
   pixi:
     caption: 妖精
-    title: 妖精
+    headline: 妖精だった
+    order: 妖精
   other:
     caption: その他
-    title: その他
+    headline: その他だった
+    order: その他
 
 options:
   seq-event:

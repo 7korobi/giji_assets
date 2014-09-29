@@ -4109,30 +4109,26 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 }
 
 Cache.rule.chr_job.merge(list);
-Url.hash = ["css"];
-
 Url.options = LOCATION.options;
 
 Url.bind = LOCATION.bind;
 
 Url.routes = {
-  css: new Url("css=:theme-:width-:layout-:font", function(params) {
-    var h, html, key, style, val, _ref;
-    this.style_p || (this.style_p = "");
-    h = {
-      w770: true
-    };
-    for (key in params) {
-      val = params[key];
-      if ((key != null) && (val != null) && "String" === (((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String")) {
-        h["" + val + "-" + key] = true;
+  search: {
+    css: new Url("css=:theme-:width-:layout-:font", {
+      change: function(params) {
+        var h, key, val, _ref;
+        h = {};
+        for (key in params) {
+          val = params[key];
+          if ((key != null) && (val != null) && "String" === (((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String")) {
+            h["" + val + "-" + key] = true;
+          }
+        }
+        return GUI.header(Object.keys(h));
       }
-    }
-    style = Object.keys(h).join(" ");
-    html = document.documentElement;
-    html.className = html.className.replace(this.style_p, style);
-    return this.style_p = style;
-  })
+    })
+  }
 };
 if ("onorientationchange" in window) {
   window.addEventListener('orientationchange', _.throttle(win["do"].resize, DELAY.presto));

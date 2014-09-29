@@ -1,10 +1,8 @@
 if gon?.map_reduce?.faces?
   Cache.rule.map_face.set gon.map_reduce.faces
-  chr_set = m.prop("all")
-  map_order = m.prop("all")
   map_orders = (prop)->
     order = RAILS.map_faces_orders[prop]
-    order.func = (o)-> o.win.value[order.caption] ||= 0
+    order.func = (o)-> o.win.value[order.order] ||= 0
     Cache.rule.map_face.schema ->
       @order (o)-> - order.func(o)
     order
@@ -13,12 +11,19 @@ if gon?.map_reduce?.faces?
     m.module dom, 
       controller: ->
       view: ->
-        map_order_set = map_orders(map_order())
+        map_order_set = map_orders(Url.prop.order())
+        chrs = Cache.map_faces.chr_set[Url.prop.chr_set()]
         headline = ""
-        chrs = Cache.map_faces.chr_set[chr_set()]
-        headline = "人気の #{chrs.length}キャラクター" if chrs?.length
+        if chrs?.length
+          headline = [
+            m "span.badge.badge-info", Cache.chr_sets.find[Url.prop.chr_set()].caption
+            "の#{chrs.length}人を、"
+            m "span.badge.badge-info", map_orders(Url.prop.order()).headline
+            "回数で並べています"
+          ]
+
         GUI.chrs chrs, headline, (o, face)->
-          chr_job = Cache.chr_jobs.find["#{chr_set()}_#{face._id}"]
+          chr_job = Cache.chr_jobs.find["#{Url.prop.chr_set()}_#{face._id}"]
           job_name = chr_job.job
 
           [ m "div", job_name
@@ -26,7 +31,7 @@ if gon?.map_reduce?.faces?
             m "div", 
               m "a.mark",
                 href: "/map_reduce/faces/#{face._id}"
-              , "#{map_order_set.title} #{map_order_set.func(o)}回"
+              , "#{map_order_set.caption} #{map_order_set.func(o)}回"
             m "div", "♥#{o.sow_auth_id.max_is}"
           ]
 
@@ -39,18 +44,16 @@ if gon?.map_reduce?.faces?
         m "div", [
           m ".choice.guide", [
             "キャラセットを選んでみよう "
-            m "span.badge.badge-info", Cache.chr_sets.find[chr_set()].caption
-            m "span.badge.badge-info", map_orders(map_order()).title
-            m "a.glyphicon.glyphicon-cog", touch.start()
+            m "a.glyphicon.glyphicon-tags", touch.start()
           ]
           if touch.state()
             m ".drag",
-              m ".contentframe", touch.cancel(), [
+              m ".contentframe", [
+                for key, o of RAILS.map_faces_orders
+                  m "a", touch.btn(Url.prop.order, key), o.caption
                 m "ul", 
                   for cs in chr_sets
-                    m "li.btn-block", touch.btn(chr_set, cs._id) , cs.caption
-                for key, o of RAILS.map_faces_orders
-                  m "a", touch.btn(map_order, key), o.caption
+                    m "li.btn-block", touch.btn(Url.prop.chr_set, cs._id) , cs.caption
               ]
         ]
 
@@ -111,7 +114,8 @@ if gon?.face?
       controller: ->
       view: ->
         says_count_lines =
-          [ m "tr.caution", [
+          [ m "a", {name: "says_count"}
+            m "tr.caution", [
               m "th.msg", {colspan: 2}, "総合値"
               m "th.msg", {style: "text-align:right"}, "一番長い発言"
               m "th.msg", {style: "text-align:right"}, "総文字数"
@@ -119,7 +123,8 @@ if gon?.face?
             ]
           ]
         says_calc_lines =
-          [ m "tr.caution", [
+          [ m "a", {name: "says_calc"}
+            m "tr.caution", [
               m "th.msg", {colspan: 2}, "平均値"
               m "th.msg", {style: "text-align:right"}, "／村数"
               m "th.msg", {style: "text-align:right"}, "文字数"
@@ -154,7 +159,8 @@ if gon?.face?
     m.module dom,
       controller: ->
       view: ->
-        [ m ".MAKER.guide", [
+        [ m "a", {name: "village"}
+          m ".MAKER.guide", [
             GUI.letter face.name, [
               "全部で"
               m "span.mark", "#{face.folder.all}回"
@@ -165,7 +171,7 @@ if gon?.face?
                 for story_id in face.story_id_of_folders[folder]
                   GUI.inline_item -> 
                     m "a",
-                      style: "display:block; width:#{2.5 + folder.length * 0.6}em; text-align:left;"
+                      style: "display:block; width:#{2.8 + folder.length * 0.65}em; text-align:left;"
                       href: "http://7korobi.gehirn.ne.jp/stories/#{story_id[0]}.html"
                     , story_id[0]
           ]
@@ -175,7 +181,8 @@ if gon?.face?
     m.module dom,
       controller: ->
       view: ->
-        [ m ".ADMIN.guide", [
+        [ m "a", {name: "sow_user"}
+          m ".ADMIN.guide", [
             GUI.letter face.name, [
               "全部で"
               m "span.mark", "#{face.sow_auth_ids.length}人"
@@ -377,7 +384,7 @@ GUI.if_exist "to_root", (dom)->
     view: ->
       [ m "a",
           href: "http://giji.check.jp/"
-        , GUI.title 770, "cinema", day_or_night()
+        , GUI.title Url.prop.w(), Url.prop.theme(), day_or_night()
       ]
 
 m.endComputation()
