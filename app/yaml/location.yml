@@ -1,13 +1,18 @@
 options:
+  chr_set:
+    current: all
+  order:
+    current: all
+
   search:
+  w:
+    type: Number
   width:
     current: std
   layout:
     current: center
   font:
     current: std
-  layout:
-    current: stat_type
   viewed_at:
     type: Date
     current: 10000
@@ -65,6 +70,14 @@ options:
     current: ALL
 
 bind:
+  width:
+    - width: wide
+      w: 770
+    - width: std
+      w: 580
+    - width: mini
+      w: 458
+
   page:
     - page: 0
 
