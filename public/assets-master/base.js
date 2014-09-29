@@ -806,26 +806,32 @@ GUI = {
     return GUI.header_style_p = style;
   },
   attrs: function(dsl) {
-    var list_cmds, o;
+    var act, list_cmds, o;
     o = {};
+    act = function(cb) {
+      return function(e) {
+        cb(e);
+        return e.preventDefault();
+      };
+    };
     list_cmds = {
       "class": function(str) {
         return o["class"] = str;
       },
       start: function(cb) {
-        o.onmousedown = cb;
-        o.ongesturestart = cb;
-        return o.ontouchstart = cb;
+        o.onmousedown = act(cb);
+        o.ongesturestart = act(cb);
+        return o.ontouchstart = act(cb);
       },
       move: function(cb) {
-        o.onmousemove = cb;
-        o.ongesturechange = cb;
-        return o.ontouchmove = cb;
+        o.onmousemove = act(cb);
+        o.ongesturechange = act(cb);
+        return o.ontouchmove = act(cb);
       },
       end: function(cb) {
-        o.onmouseup = cb;
-        o.ongestureend = cb;
-        return o.ontouchend = cb;
+        o.onmouseup = act(cb);
+        o.ongestureend = act(cb);
+        return o.ontouchend = act(cb);
       }
     };
     dsl.call(list_cmds);

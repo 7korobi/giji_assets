@@ -7812,7 +7812,9 @@ Url.routes = {
     file: new Url("/:fname.:ext")
   },
   search: {
-    param: new Url("param=:aaa-:bbb-:ccc-:ddd")
+    param: new Url("param=:aaa-:bbb-:ccc-:ddd", {
+      unmatch: "?"
+    })
   }
 };
 

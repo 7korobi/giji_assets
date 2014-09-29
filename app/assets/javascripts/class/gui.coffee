@@ -17,21 +17,26 @@ GUI =
 
   attrs: (dsl)->
     o = {}
+    act = (cb)->
+      (e)->
+        cb(e)
+        e.preventDefault()
+
     list_cmds =
       class: (str)->
         o.class = str
       start: (cb)->
-        o.onmousedown = cb
-        o.ongesturestart = cb
-        o.ontouchstart = cb
+        o.onmousedown = act(cb)
+        o.ongesturestart = act(cb)
+        o.ontouchstart = act(cb)
       move: (cb)->
-        o.onmousemove = cb
-        o.ongesturechange = cb
-        o.ontouchmove = cb
+        o.onmousemove = act(cb)
+        o.ongesturechange = act(cb)
+        o.ontouchmove = act(cb)
       end: (cb)->
-        o.onmouseup = cb
-        o.ongestureend = cb
-        o.ontouchend = cb
+        o.onmouseup = act(cb)
+        o.ongestureend = act(cb)
+        o.ontouchend = act(cb)
     dsl.call list_cmds
     o
 
