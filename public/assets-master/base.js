@@ -1469,7 +1469,6 @@ Url = (function() {
   Url.href = function() {
     var link;
     link = Url.each(function(route, data, target, targets) {
-      console.log([data, target]);
       return targets[target] = route.pushstate(data, target);
     });
     return link.protocol + "//" + link.host + link.pathname + link.search + link.hash;
@@ -1620,7 +1619,6 @@ Url = (function() {
     if (this.options.secure) {
       ary.push("secure");
     }
-    console.log(ary.join("; "));
     return document.cookie = ary.join("; ");
   };
 
