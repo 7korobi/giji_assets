@@ -1,6 +1,7 @@
 
 class Url
   @routes = {}
+  @cookie = {}
   @prop = {}
 
   @location = ->
@@ -12,6 +13,7 @@ class Url
     hash:     location.hash
 
   @each = (cb)->
+    Url.routes.cookie = Url.cookie
     targets = Url.location()
     for target, data of targets
       for url_key, route of Url.routes[target]
@@ -39,12 +41,7 @@ class Url
 
   @href = ->
     link = Url.each (route, data, target, targets)->
-      switch target
-        when "cookie"
-          expires = new Date(_.now() + 3600000 * 24 * 0.5).toUTCString()
-          document.cookie = "#{route.pushstate data}; expires=#{expires}; "
-        else
-          targets[target] = route.pushstate data, target
+      targets[target] = route.pushstate data, target
 
     link.protocol + "//" + link.host + link.pathname + link.search + link.hash
 
@@ -54,11 +51,14 @@ class Url
 
     @data = {}
 
+    if @options.cookie
+      Url.cookie[ID.now()] = @
+
     @scanner = new RegExp @format.replace(/[.]/ig,(key)-> "\\#{key}" ).replace /:([a-z_]+)/ig, (_, key)=>
       type = Url.options[key]?.type
       @keys.push key
       @keys_in_url.push key
-      @prop key
+      @parse key
 
       Serial.url[type]
     , "i"
@@ -69,23 +69,26 @@ class Url
     if @match
       @match.shift()
       for key, i in @keys
-        @parse key, @match[i]
+        @prop(key)(@match[i])
 
       @params = Object.keys @data
       @options.change?(@data)
 
   pushstate: (path, target)->
+    if target == "cookie" && @options.cookie
+      return @set_cookie @serialize()
+
     if @scanner.exec(path)
-      path.replace @scanner, @serialize()
-    else
-      if @options.unmatch
-        path += 
-        if path.length
-          "&" 
-        else
-          @options.unmatch
-        path += @serialize()
-      path
+      return path.replace @scanner, @serialize()
+
+    if @options.unmatch
+      path += 
+      if path.length
+        "&" 
+      else
+        @options.unmatch
+      path += @serialize()
+    path
 
   serialize: ->
     path = @format
@@ -94,7 +97,6 @@ class Url
       val = @prop(key)()
       path = path.replace ///:#{key}///ig, Serial.serializer[type](val)
     path 
-
 
   prop: (key)->
     unless Url.prop[key]
@@ -107,8 +109,9 @@ class Url
           m.startComputation()
           prop @data[key] = val
           if Url.bind[key]?
-            for subkey, subval of Url.bind[key][value]
+            for subkey, subval of Url.bind[key][val]
               @prop(subkey)(subval) if key != subkey
+
           m.endComputation()
 
           Url.pushstate()
@@ -122,10 +125,23 @@ class Url
 
     Url.prop[key]
 
-  parse: (key, value)->
-    @prop(key)(value)
+  parse: (key)->
+    @prop(key)
 
     if Url.bind[key]?
-      for subkey, subval of Url.bind[key][value]
-        @parse(subkey, subval) if key != subkey
+      for value, obj of Url.bind[key]
+        for subkey, subval of obj
+          @parse(subkey) unless Url.prop[subkey]
 
+  set_cookie: (value)->
+    ary = [value]
+    if @options.cookie
+      expires = new Date Math.min 2147397247000, _.now() + @options.cookie.time * 3600000
+      ary.push "expires=#{expires.toUTCString()}"
+    if @options.domain
+      ary.push "domain=#{@options.domain}"
+    if @options.path
+      ary.push "path=#{@options.path}"
+    if @options.secure
+      ary.push "secure"
+    document.cookie = ary.join("; ")

@@ -6,7 +6,7 @@ GUI =
 
   title: (width, theme, day_or_night)->
     m "img",
-      src: GUI.img_head + "/banner/title#{width}" + RAILS.head_img[width][theme][day_or_night]
+      src: GUI.img_head + "/banner/title#{width}" + RAILS.head_img[width]?[theme]?[day_or_night]
 
   header_style_p: ""
   header: (keys)->

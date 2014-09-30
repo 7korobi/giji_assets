@@ -1,9 +1,7 @@
 win =
   do_event_list: (list, e)->
     return unless list.length
-    m.startComputation()
     cb(e) for cb in list
-    m.endComputation()
 
   do:
     resize: (e)->
@@ -22,14 +20,14 @@ win =
         win.portlate = false
 
       #console.log ["resize", e]
-      cb(e) for cb in win.on.resize
+      win.do_event_list win.on.resize, e
 
     scroll: (e)->
       win.left = window.pageXOffset
       win.top  = window.pageYOffset
 
       #console.log ["scroll", e]
-      cb(e) for cb in win.on.scroll
+      win.do_event_list win.on.scroll, e
 
     gesture: (e)->
       #console.log ["touch-gesture", e]

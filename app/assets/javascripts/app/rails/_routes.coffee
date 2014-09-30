@@ -7,6 +7,9 @@ Url.routes =
       unmatch: gon?.map_reduce?.faces? && "?"
 
     css: new Url "css=:theme-:width-:layout-:font",
+      cookie:
+        time: 12
+        path: "/rails"
       unmatch: "?"
       change: (params)->
         h = {}

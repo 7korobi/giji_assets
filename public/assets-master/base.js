@@ -793,8 +793,9 @@ GUI = {
     });
   },
   title: function(width, theme, day_or_night) {
+    var _ref, _ref1;
     return m("img", {
-      src: GUI.img_head + ("/banner/title" + width) + RAILS.head_img[width][theme][day_or_night]
+      src: GUI.img_head + ("/banner/title" + width) + ((_ref = RAILS.head_img[width]) != null ? (_ref1 = _ref[theme]) != null ? _ref1[day_or_night] : void 0 : void 0)
     });
   },
   header_style_p: "",
@@ -956,20 +957,20 @@ var Layout, win;
 
 win = {
   do_event_list: function(list, e) {
-    var cb, _i, _len;
+    var cb, _i, _len, _results;
     if (!list.length) {
       return;
     }
-    m.startComputation();
+    _results = [];
     for (_i = 0, _len = list.length; _i < _len; _i++) {
       cb = list[_i];
-      cb(e);
+      _results.push(cb(e));
     }
-    return m.endComputation();
+    return _results;
   },
   "do": {
     resize: function(e) {
-      var body_height, body_width, cb, _i, _len, _ref, _results;
+      var body_height, body_width;
       win.height = Math.max(window.innerHeight, document.documentElement.clientHeight);
       win.width = Math.max(window.innerWidth, document.documentElement.clientWidth);
       body_height = Math.max(document.body.clientHeight, document.body.scrollHeight, document.documentElement.scrollHeight, document.documentElement.clientHeight);
@@ -985,25 +986,12 @@ win = {
         win.landscape = true;
         win.portlate = false;
       }
-      _ref = win.on.resize;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        cb = _ref[_i];
-        _results.push(cb(e));
-      }
-      return _results;
+      return win.do_event_list(win.on.resize, e);
     },
     scroll: function(e) {
-      var cb, _i, _len, _ref, _results;
       win.left = window.pageXOffset;
       win.top = window.pageYOffset;
-      _ref = win.on.scroll;
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        cb = _ref[_i];
-        _results.push(cb(e));
-      }
-      return _results;
+      return win.do_event_list(win.on.scroll, e);
     },
     gesture: function(e) {
       return win.do_event_list(win.on.gesture, e);
@@ -1228,7 +1216,7 @@ for (key in _ref) {
       case "Date":
         return "([0-9a-zA-Z]+)";
       default:
-        return "([^\\/\\-\\=\\.\\&\\(\\)\\\"\\'\\`]+)";
+        return "([^\\/\\-\\=\\.\\&\\(\\)\\\"\\'\\`\\;]+)";
     }
   })();
 }
@@ -1418,6 +1406,8 @@ var Url;
 Url = (function() {
   Url.routes = {};
 
+  Url.cookie = {};
+
   Url.prop = {};
 
   Url.location = function() {
@@ -1433,6 +1423,7 @@ Url = (function() {
 
   Url.each = function(cb) {
     var data, route, target, targets, url_key, _ref;
+    Url.routes.cookie = Url.cookie;
     targets = Url.location();
     for (target in targets) {
       data = targets[target];
@@ -1478,14 +1469,8 @@ Url = (function() {
   Url.href = function() {
     var link;
     link = Url.each(function(route, data, target, targets) {
-      var expires;
-      switch (target) {
-        case "cookie":
-          expires = new Date(_.now() + 3600000 * 24 * 0.5).toUTCString();
-          return document.cookie = "" + (route.pushstate(data)) + "; expires=" + expires + "; ";
-        default:
-          return targets[target] = route.pushstate(data, target);
-      }
+      console.log([data, target]);
+      return targets[target] = route.pushstate(data, target);
     });
     return link.protocol + "//" + link.host + link.pathname + link.search + link.hash;
   };
@@ -1496,6 +1481,9 @@ Url = (function() {
     this.keys = [];
     this.keys_in_url = [];
     this.data = {};
+    if (this.options.cookie) {
+      Url.cookie[ID.now()] = this;
+    }
     this.scanner = new RegExp(this.format.replace(/[.]/ig, function(key) {
       return "\\" + key;
     }).replace(/:([a-z_]+)/ig, (function(_this) {
@@ -1504,7 +1492,7 @@ Url = (function() {
         type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
         _this.keys.push(key);
         _this.keys_in_url.push(key);
-        _this.prop(key);
+        _this.parse(key);
         return Serial.url[type];
       };
     })(this), "i"));
@@ -1519,7 +1507,7 @@ Url = (function() {
       _ref = this.keys;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         key = _ref[i];
-        this.parse(key, this.match[i]);
+        this.prop(key)(this.match[i]);
       }
       this.params = Object.keys(this.data);
       return typeof (_base = this.options).change === "function" ? _base.change(this.data) : void 0;
@@ -1527,15 +1515,17 @@ Url = (function() {
   };
 
   Url.prototype.pushstate = function(path, target) {
+    if (target === "cookie" && this.options.cookie) {
+      return this.set_cookie(this.serialize());
+    }
     if (this.scanner.exec(path)) {
       return path.replace(this.scanner, this.serialize());
-    } else {
-      if (this.options.unmatch) {
-        path += path.length ? "&" : this.options.unmatch;
-        path += this.serialize();
-      }
-      return path;
     }
+    if (this.options.unmatch) {
+      path += path.length ? "&" : this.options.unmatch;
+      path += this.serialize();
+    }
+    return path;
   };
 
   Url.prototype.serialize = function() {
@@ -1564,7 +1554,7 @@ Url = (function() {
             m.startComputation();
             prop(_this.data[key] = val);
             if (Url.bind[key] != null) {
-              _ref1 = Url.bind[key][value];
+              _ref1 = Url.bind[key][val];
               for (subkey in _ref1) {
                 subval = _ref1[subkey];
                 if (key !== subkey) {
@@ -1588,22 +1578,50 @@ Url = (function() {
     return Url.prop[key];
   };
 
-  Url.prototype.parse = function(key, value) {
-    var subkey, subval, _ref, _results;
-    this.prop(key)(value);
+  Url.prototype.parse = function(key) {
+    var obj, subkey, subval, value, _ref, _results;
+    this.prop(key);
     if (Url.bind[key] != null) {
-      _ref = Url.bind[key][value];
+      _ref = Url.bind[key];
       _results = [];
-      for (subkey in _ref) {
-        subval = _ref[subkey];
-        if (key !== subkey) {
-          _results.push(this.parse(subkey, subval));
-        } else {
-          _results.push(void 0);
-        }
+      for (value in _ref) {
+        obj = _ref[value];
+        _results.push((function() {
+          var _results1;
+          _results1 = [];
+          for (subkey in obj) {
+            subval = obj[subkey];
+            if (!Url.prop[subkey]) {
+              _results1.push(this.parse(subkey));
+            } else {
+              _results1.push(void 0);
+            }
+          }
+          return _results1;
+        }).call(this));
       }
       return _results;
     }
+  };
+
+  Url.prototype.set_cookie = function(value) {
+    var ary, expires;
+    ary = [value];
+    if (this.options.cookie) {
+      expires = new Date(Math.min(2147397247000, _.now() + this.options.cookie.time * 3600000));
+      ary.push("expires=" + (expires.toUTCString()));
+    }
+    if (this.options.domain) {
+      ary.push("domain=" + this.options.domain);
+    }
+    if (this.options.path) {
+      ary.push("path=" + this.options.path);
+    }
+    if (this.options.secure) {
+      ary.push("secure");
+    }
+    console.log(ary.join("; "));
+    return document.cookie = ary.join("; ");
   };
 
   return Url;

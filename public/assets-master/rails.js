@@ -5267,6 +5267,10 @@ Url.routes = {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) && "?"
     }),
     css: new Url("css=:theme-:width-:layout-:font", {
+      cookie: {
+        time: 12,
+        path: "/rails"
+      },
       unmatch: "?",
       change: function(params) {
         var h, key, val, _ref1;
