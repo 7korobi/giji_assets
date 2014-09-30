@@ -7828,37 +7828,37 @@ describe("Url", function() {
     it("(global)", function(done) {
       Url.popstate();
       done();
-      expect(Url.data.fname).toEqual("jasmine");
-      return expect(Url.data.ext).toEqual("html");
+      expect(Url.prop.fname()).toEqual("jasmine");
+      return expect(Url.prop.ext()).toEqual("html");
     });
     return it("file", function(done) {
       Url.popstate();
       done();
-      expect(Url.routes.file.data.fname).toEqual("jasmine");
-      return expect(Url.routes.file.data.ext).toEqual("html");
+      expect(Url.routes.pathname.file.data.fname).toEqual("jasmine");
+      return expect(Url.routes.pathname.file.data.ext).toEqual("html");
     });
   });
   describe("popstate url", function(done) {
     return it("param", function(done) {
       Url.popstate();
       done();
-      expect(Url.routes.param.data.aaa).toEqual(1);
-      expect(Url.routes.param.data.bbb).toEqual("B");
-      expect(Url.routes.param.data.ccc).toEqual("C");
-      return expect(Url.routes.param.data.ddd).toEqual(1400000000000);
+      expect(Url.routes.search.param.data.aaa).toEqual(1);
+      expect(Url.routes.search.param.data.bbb).toEqual("B");
+      expect(Url.routes.search.param.data.ccc).toEqual("C");
+      return expect(Url.routes.search.param.data.ddd).toEqual(1400000000000);
     });
   });
   return describe("bind variable", function(done) {
     it("location other", function(done) {
       Url.popstate();
-      Url.routes.file.change("fname", "other");
-      expect(Url.routes.file.data.title).toEqual("変更");
+      Url.prop.fname("other");
+      expect(Url.prop.title()).toEqual("変更");
       return done();
     });
     return it("location basic", function(done) {
       Url.popstate();
-      Url.routes.file.change("fname", "jasmine");
-      expect(Url.routes.file.data.title).toEqual("基本");
+      Url.prop.fname("jasmine");
+      expect(Url.prop.title()).toEqual("基本");
       return done();
     });
   });

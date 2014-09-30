@@ -46,34 +46,34 @@ describe "Url", ->
     it "(global)", (done)->
       Url.popstate()
       done()
-      expect(Url.data.fname).toEqual "jasmine"
-      expect(Url.data.ext).toEqual "html"
+      expect(Url.prop.fname()).toEqual "jasmine"
+      expect(Url.prop.ext()).toEqual "html"
 
     it "file", (done)->
       Url.popstate()
       done()
-      expect(Url.routes.file.data.fname).toEqual "jasmine"
-      expect(Url.routes.file.data.ext).toEqual "html"
+      expect(Url.routes.pathname.file.data.fname).toEqual "jasmine"
+      expect(Url.routes.pathname.file.data.ext).toEqual "html"
 
   describe "popstate url", (done)->
     it "param", (done)->
       Url.popstate()
       done()
-      expect(Url.routes.param.data.aaa).toEqual  1
-      expect(Url.routes.param.data.bbb).toEqual "B"
-      expect(Url.routes.param.data.ccc).toEqual "C"
-      expect(Url.routes.param.data.ddd).toEqual 1400000000000
+      expect(Url.routes.search.param.data.aaa).toEqual  1
+      expect(Url.routes.search.param.data.bbb).toEqual "B"
+      expect(Url.routes.search.param.data.ccc).toEqual "C"
+      expect(Url.routes.search.param.data.ddd).toEqual 1400000000000
 
   describe "bind variable", (done)->
     it "location other", (done)->
       Url.popstate()
-      Url.routes.file.change "fname", "other"
-      expect(Url.routes.file.data.title).toEqual "変更"
+      Url.prop.fname "other"
+      expect(Url.prop.title()).toEqual "変更"
       done()
 
     it "location basic", (done)->
       Url.popstate()
-      Url.routes.file.change "fname", "jasmine"
-      expect(Url.routes.file.data.title).toEqual "基本"
+      Url.prop.fname "jasmine"
+      expect(Url.prop.title()).toEqual "基本"
       done()
 
