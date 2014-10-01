@@ -21,23 +21,24 @@ class Url
     targets
 
   @popstate = ->
+    console.log "pop state"
     Url.each (route, data, target)->
       route.popstate data, target
-    Url.replacestate()
+    Url.mode = "replaceState"
 
-  @state = (cb)->
-    _.debounce ->
-      new_href = Url.href()
-      if location.href != new_href
-        cb(new_href, location.href)
-        Url.popstate()
-    , DELAY.presto
+  @state = _.debounce ->
+    new_href = Url.href()
+    if location.href != new_href
+      history[Url.mode] "pushstate", null, new_href if history?
+      Url.popstate()
+  , DELAY.presto
 
-  @pushstate = Url.state (new_href)->
-    history.pushState "pushstate", null, new_href if history?
+  @pushstate = ->
+    Url.mode = "pushState"
+    Url.state()
 
-  @replacestate = Url.state (new_href)->
-    history.replaceState "replacestate", null, new_href if history?
+  @replacestate = ->
+    Url.state()
 
   @href = ->
     link = Url.each (route, data, target, targets)->
@@ -69,7 +70,7 @@ class Url
     if @match
       @match.shift()
       for key, i in @keys
-        @prop(key)(@match[i])
+        @prop(key)(@match[i], true)
 
       @params = Object.keys @data
       @options.change?(@data)
@@ -101,7 +102,7 @@ class Url
   prop: (key)->
     unless Url.prop[key]
       prop = m.prop()
-      Url.prop[key] = (val)=>
+      Url.prop[key] = (val, is_replace)=>
         if arguments.length
           type = Url.options[key]?.type
           val = Serial.parser[type](val)
@@ -110,11 +111,14 @@ class Url
           prop @data[key] = val
           if Url.bind[key]?
             for subkey, subval of Url.bind[key][val]
-              @prop(subkey)(subval) if key != subkey
+              @prop(subkey)(subval, true) if key != subkey
 
           m.endComputation()
 
-          Url.pushstate()
+          if is_replace
+            Url.replacestate()
+          else
+            Url.pushstate()
 
         else
           value = prop()

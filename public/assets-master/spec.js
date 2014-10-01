@@ -7264,7 +7264,7 @@ describe("(browser css)", function() {
     done();
     return expect(document.styleSheets[0].disabled = false).toBeFalsy();
   });
-  return it("insert rule", function(done) {
+  it("insert rule", function(done) {
     var red;
     red = ".bar { border: 3px solid red; }";
     document.styleSheets[0].insertRule(red, 0);
@@ -7272,6 +7272,10 @@ describe("(browser css)", function() {
     done();
     document.styleSheets[0].deleteRule(0);
     return document.styleSheets[0].insertRule(red, 0);
+  });
+  return it("api test", function(done) {
+    done();
+    return expect(document.querySelectorAll("li.passed")[0].tagName).toEqual("LI");
   });
 });
 var event1, fab1, form1, msg1, msg2, msg3, msg4, scene1, scene2, scene3, story1;

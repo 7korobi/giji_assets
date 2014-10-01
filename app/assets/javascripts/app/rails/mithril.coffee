@@ -284,7 +284,183 @@ GUI.if_exist "css_changer", (dom)->
             ]
       ]
 
+GUI.if_exist "headline", (dom)->
+  touch = new GUI.TouchMenu()
+  m.module dom,
+    controller: ->
+    view: ->
+      m ".choice",
+        m "table.board", [
+          m "tr", 
+            if touch.state()
+              [ m "th.choice",
+                  colspan: 2,
+                , m "strong", "進行中の村"
+                m "th.no_choice",
+                  colspan: 2,
+                , m "a", touch.start(), "終了した村を見る"
+              ]
+            else
+              [ m "th.no_choice",
+                  colspan: 2,
+                , m "a", touch.start(), "進行中の村を見る"
+                m "th.choice",
+                  colspan: 2,
+                , m "strong", "終了した村"
+              ]
+          m "tr.link", [
+            m "th.choice", "ロビー"
+            m "th.choice", "夢の形"
+            m "th.choice", "陰謀"
+            m "th.choice", "ＲＰ"
+          ]
+          if touch.state()
+            m "tr", [
+              m "td.no_choice", [
+                m "a",
+                  href: "#"
+                , "lobby"
+                m "br"
+                "offparty"
+                m "br"
+                m "br"
+                m "br"
+              ]
+              m "td.no_choice", [
+                m "a",
+                  href: "#"
+                , "morphe"
+                m "br"
+                "#村:"
+                m "a",
+                  href: "#"
+                , "cafe"
+                m "br"
+                m "br"
+                m "br"
+              ]
+              m "td.no_choice", [
+                "wolf"
+                m "br"
+                "ultimate"
+                m "br"
+                "allstar"
+                m "br"
+                "cabala"
+                m "br"
+              ]
+              m "td.no_choice", [
+                "role-play"
+                m "br"
+                "RP-advance"
+                m "br"
+                "#村:"
+                m "a",
+                  href: "#"
+                , "perjury"
+                m "br"
+                "#村:"
+                m "a",
+                  href: "#"
+                , "xebec"
+                m "br"
+                "#村:"
+                m "a",
+                  href: "#"
+                , "crazy"
+                m "br"
+                "#村:"
+                m "a",
+                  href: "#"
+                , "ciel"
+              ]
+            ]
+          else
+            m "tr", [
+              m "td.no_choice", [
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/lobby?folder=LOBBY"
+                , "lobby"
+                m "br"
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=OFFPARTY"
+                ,"offparty"
+                m "br"
+                m "br"
+                m "br"
+              ]
+              m "td.no_choice", [
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=MORPHE"
+                , "morphe"
+                m "br"
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CAFE"
+                , "cafe"
+                m "br"
+                m "br"
+                m "br"
+              ]
+              m "td.no_choice", [
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=WOLF"
+                , "wolf"
+                m "br"
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=ULTIMATE"
+                , "ultimate"
+                m "br"
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=ALLSTAR"
+                , "allstar"
+                m "br"
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CABALA"
+                , "cabala"
+                m "br"
+              ]
+              m "td.no_choice", [
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=RP"
+                , "role-play"
+                m "br"
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=PRETENSE"
+                , "advance"
+                m "br"
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=PERJURY"
+                , "perjury"
+                m "br"
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=XEBEC"
+                , "xebec"
+                m "br"
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CRAZY"
+                , "crazy"
+                m "br"
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CIEL"
+                , "ciel"
+              ]
+            ]
+        ]
+
+
+
 ###
+- max_vage    = GAME[:PERJURY][:config][:cfg][:MAX_VILLAGES]
+- max_crazy   = GAME[:CRAZY  ][:config][:cfg][:MAX_VILLAGES]
+- max_xebec   = GAME[:XEBEC  ][:config][:cfg][:MAX_VILLAGES]
+- max_ciel    = GAME[:CIEL   ][:config][:cfg][:MAX_VILLAGES]
+- max_cafe    = GAME[:CABALA ][:config][:cfg][:MAX_VILLAGES]
+- max_pan     = GAME[:PAN    ][:config][:cfg][:MAX_VILLAGES]
+- max_morphe  = GAME[:MORPHE ][:config][:cfg][:MAX_VILLAGES]
+- max_all     = ( max_vage + max_crazy + max_xebec + max_ciel )
+- max_all    += ( max_cafe + max_morphe )
+
+
   css: new Url "css=:theme-:width-:layout-:font", (params)->
 
   .pagenavi
@@ -319,18 +495,6 @@ GUI.if_exist "css_changer", (dom)->
         label
           select.form-control.input-mini(ng-model="msg_styles.row"   ng-options="key as selectors.row[key] for key in selector_keys.row" )
         | &thinsp;
-
-    h6(ng-if="show_style_navi") スタイル（ログの見た目）を調整する
-    .form-inline(ng-if="show_style_navi")
-      .form-group.mark
-        label.checkbox(ng-repeat="key in selector_keys.font")
-          input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.font")
-            | {{selectors.font[key]}}
-      | &thinsp;
-      .form-group.mark
-        label.checkbox(ng-repeat="key in selector_keys.width")
-          input(type="radio" tabindex="-1" value="{{key}}" ng-model="styles.width")
-            | {{selectors.width[key]}}
 
     h6(ng-if="show_style_navi && mode") ログから表示する部分を選ぶ
     .form-inline(ng-if="show_style_navi && mode")

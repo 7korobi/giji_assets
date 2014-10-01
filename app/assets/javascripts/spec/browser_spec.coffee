@@ -17,4 +17,6 @@ describe "(browser css)", ->
     document.styleSheets[0].deleteRule(0)
     document.styleSheets[0].insertRule(red,0)
 
-
+  it "api test", (done)->
+    done()
+    expect( document.querySelectorAll("li.passed")[0].tagName ).toEqual("LI")

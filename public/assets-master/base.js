@@ -1437,34 +1437,32 @@ Url = (function() {
   };
 
   Url.popstate = function() {
+    console.log("pop state");
     Url.each(function(route, data, target) {
       return route.popstate(data, target);
     });
-    return Url.replacestate();
+    return Url.mode = "replaceState";
   };
 
-  Url.state = function(cb) {
-    return _.debounce(function() {
-      var new_href;
-      new_href = Url.href();
-      if (location.href !== new_href) {
-        cb(new_href, location.href);
-        return Url.popstate();
+  Url.state = _.debounce(function() {
+    var new_href;
+    new_href = Url.href();
+    if (location.href !== new_href) {
+      if (typeof history !== "undefined" && history !== null) {
+        history[Url.mode]("pushstate", null, new_href);
       }
-    }, DELAY.presto);
+      return Url.popstate();
+    }
+  }, DELAY.presto);
+
+  Url.pushstate = function() {
+    Url.mode = "pushState";
+    return Url.state();
   };
 
-  Url.pushstate = Url.state(function(new_href) {
-    if (typeof history !== "undefined" && history !== null) {
-      return history.pushState("pushstate", null, new_href);
-    }
-  });
-
-  Url.replacestate = Url.state(function(new_href) {
-    if (typeof history !== "undefined" && history !== null) {
-      return history.replaceState("replacestate", null, new_href);
-    }
-  });
+  Url.replacestate = function() {
+    return Url.state();
+  };
 
   Url.href = function() {
     var link;
@@ -1506,7 +1504,7 @@ Url = (function() {
       _ref = this.keys;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         key = _ref[i];
-        this.prop(key)(this.match[i]);
+        this.prop(key)(this.match[i], true);
       }
       this.params = Object.keys(this.data);
       return typeof (_base = this.options).change === "function" ? _base.change(this.data) : void 0;
@@ -1545,7 +1543,7 @@ Url = (function() {
     if (!Url.prop[key]) {
       prop = m.prop();
       Url.prop[key] = (function(_this) {
-        return function(val) {
+        return function(val, is_replace) {
           var subkey, subval, type, value, _ref, _ref1, _ref2;
           if (arguments.length) {
             type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
@@ -1557,12 +1555,16 @@ Url = (function() {
               for (subkey in _ref1) {
                 subval = _ref1[subkey];
                 if (key !== subkey) {
-                  _this.prop(subkey)(subval);
+                  _this.prop(subkey)(subval, true);
                 }
               }
             }
             m.endComputation();
-            return Url.pushstate();
+            if (is_replace) {
+              return Url.replacestate();
+            } else {
+              return Url.pushstate();
+            }
           } else {
             value = prop();
             if (value != null) {
