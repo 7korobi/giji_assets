@@ -284,6 +284,27 @@ GUI.if_exist "css_changer", (dom)->
             ]
       ]
 
+
+if gon?.villages?
+  GUI.if_exist "villages", (dom)->
+    m.module dom,
+      controller: ->
+      view: ->
+        [ m "h3", "開始待ちの村／進行中の村"
+          for v in gon.villages
+            time = new Timer v.updated_at,
+              prop: m.prop()
+            m ".#{v.mestype}",
+              m ".action", [
+                m "p.text.#{v.style}", [
+                  m "b", v.name
+                  "は、#{v.log}"
+                ]
+                m "p.mes_date", time.prop()
+              ]
+
+        ]
+
 GUI.if_exist "headline", (dom)->
   touch = new GUI.TouchMenu()
   m.module dom,

@@ -5655,6 +5655,32 @@ GUI.if_exist("css_changer", function(dom) {
   });
 });
 
+if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null) {
+  GUI.if_exist("villages", function(dom) {
+    return m.module(dom, {
+      controller: function() {},
+      view: function() {
+        var time, v;
+        return [
+          m("h3", "開始待ちの村／進行中の村"), (function() {
+            var _i, _len, _ref1, _results;
+            _ref1 = gon.villages;
+            _results = [];
+            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+              v = _ref1[_i];
+              time = new Timer(v.updated_at, {
+                prop: m.prop()
+              });
+              _results.push(m("." + v.mestype, m(".action", [m("p.text." + v.style, [m("b", v.name), "は、" + v.log]), m("p.mes_date", time.prop())])));
+            }
+            return _results;
+          })()
+        ];
+      }
+    });
+  });
+}
+
 GUI.if_exist("headline", function(dom) {
   var touch;
   touch = new GUI.TouchMenu();
