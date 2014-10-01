@@ -284,32 +284,77 @@ GUI.if_exist "css_changer", (dom)->
             ]
       ]
 
+message = 
+  say: (v)->
+    m "table.say.#{v.mestype}",
+      m "tbody",
+        m "tr", [
+          m "td.img",
+            GUI.portrate v.face_id
+
+          m "td.field",
+            m ".msg", [
+              m "h3.mesname", [
+                m.trust "&nbsp;"
+                m "b",
+                  m.trust v.name
+              ]
+              m "p.text.#{v.style}",
+                m.trust v.log
+              m "p.mes_date",
+                m "span.mark", v.anchor
+            ]
+        ]
+
+  action: (v)->
+    v.updated_timer ||= new Timer v.updated_at,
+      prop: m.prop()
+    m ".#{v.mestype}",
+      m ".action", [
+        m "p.text.#{v.style}", [
+          m "b", m.trust v.name
+          "は、"
+          m.trust v.log
+        ]
+        m "p.mes_date", v.updated_timer.prop()
+      ]
 
 if gon?.villages?
   GUI.if_exist "villages", (dom)->
     m.module dom,
       controller: ->
       view: ->
-        [ m "h3", "開始待ちの村／進行中の村"
-          for v in gon.villages
-            time = new Timer v.updated_at,
-              prop: m.prop()
-            m ".#{v.mestype}",
-              m ".action", [
-                m "p.text.#{v.style}", [
-                  m "b", v.name
-                  "は、#{v.log}"
-                ]
-                m "p.mes_date", time.prop()
-              ]
+        message.action(v) for v in gon.villages
 
-        ]
+if gon?.byebyes?
+  GUI.if_exist "byebyes", (dom)->
+    m.module dom,
+      controller: ->
+      view: ->
+        message.action(v) for v in gon.byebyes
+
+if gon?.history?
+  GUI.if_exist "history", (dom)->
+    m.module dom,
+      controller: ->
+      view: ->
+        message.say(v) for v in gon.history
 
 GUI.if_exist "headline", (dom)->
   touch = new GUI.TouchMenu()
   m.module dom,
     controller: ->
     view: ->
+      max_vage    = GAME.PERJURY.config.cfg.MAX_VILLAGES
+      max_crazy   = GAME.CRAZY  .config.cfg.MAX_VILLAGES
+      max_xebec   = GAME.XEBEC  .config.cfg.MAX_VILLAGES
+      max_ciel    = GAME.CIEL   .config.cfg.MAX_VILLAGES
+      max_cafe    = GAME.CABALA .config.cfg.MAX_VILLAGES
+      max_pan     = GAME.PAN    .config.cfg.MAX_VILLAGES
+      max_morphe  = GAME.MORPHE .config.cfg.MAX_VILLAGES
+      max_all     = ( max_vage + max_crazy + max_xebec + max_ciel )
+      max_all    += ( max_cafe + max_morphe )
+
       m ".choice",
         m "table.board", [
           m "tr", 
@@ -339,7 +384,7 @@ GUI.if_exist "headline", (dom)->
             m "tr", [
               m "td.no_choice", [
                 m "a",
-                  href: "#"
+                  href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
                 , "lobby"
                 m "br"
                 "offparty"
@@ -348,13 +393,14 @@ GUI.if_exist "headline", (dom)->
                 m "br"
               ]
               m "td.no_choice", [
+                "#{max_morphe}村:"
                 m "a",
-                  href: "#"
+                  href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
                 , "morphe"
                 m "br"
-                "#村:"
+                "#{max_cafe}村:"
                 m "a",
-                  href: "#"
+                  href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
                 , "cafe"
                 m "br"
                 m "br"
@@ -375,24 +421,24 @@ GUI.if_exist "headline", (dom)->
                 m "br"
                 "RP-advance"
                 m "br"
-                "#村:"
+                "#{max_vage}村:"
                 m "a",
-                  href: "#"
+                  href: GAME.PERJURY.config.cfg.URL_SW + "/sow.cgi"
                 , "perjury"
                 m "br"
-                "#村:"
+                "#{max_xebec}村:"
                 m "a",
-                  href: "#"
+                  href: GAME.XEBEC.config.cfg.URL_SW + "/sow.cgi"
                 , "xebec"
                 m "br"
-                "#村:"
+                "#{max_crazy}村:"
                 m "a",
-                  href: "#"
+                  href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
                 , "crazy"
                 m "br"
-                "#村:"
+                "#{max_ciel}村:"
                 m "a",
-                  href: "#"
+                  href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
                 , "ciel"
               ]
             ]
@@ -471,17 +517,6 @@ GUI.if_exist "headline", (dom)->
 
 
 ###
-- max_vage    = GAME[:PERJURY][:config][:cfg][:MAX_VILLAGES]
-- max_crazy   = GAME[:CRAZY  ][:config][:cfg][:MAX_VILLAGES]
-- max_xebec   = GAME[:XEBEC  ][:config][:cfg][:MAX_VILLAGES]
-- max_ciel    = GAME[:CIEL   ][:config][:cfg][:MAX_VILLAGES]
-- max_cafe    = GAME[:CABALA ][:config][:cfg][:MAX_VILLAGES]
-- max_pan     = GAME[:PAN    ][:config][:cfg][:MAX_VILLAGES]
-- max_morphe  = GAME[:MORPHE ][:config][:cfg][:MAX_VILLAGES]
-- max_all     = ( max_vage + max_crazy + max_xebec + max_ciel )
-- max_all    += ( max_cafe + max_morphe )
-
-
   css: new Url "css=:theme-:width-:layout-:font", (params)->
 
   .pagenavi

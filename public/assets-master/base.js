@@ -1507,8 +1507,11 @@ Url = (function() {
         this.prop(key)(this.match[i], true);
       }
       this.params = Object.keys(this.data);
-      return typeof (_base = this.options).change === "function" ? _base.change(this.data) : void 0;
+      if (typeof (_base = this.options).change === "function") {
+        _base.change(this.data);
+      }
     }
+    return Url.replacestate();
   };
 
   Url.prototype.pushstate = function(path, target) {

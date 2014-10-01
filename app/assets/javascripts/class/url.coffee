@@ -74,6 +74,7 @@ class Url
 
       @params = Object.keys @data
       @options.change?(@data)
+    Url.replacestate()
 
   pushstate: (path, target)->
     if target == "cookie" && @options.cookie

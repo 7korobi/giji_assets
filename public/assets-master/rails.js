@@ -4109,7 +4109,7 @@ for (_i = 0, _len = _ref.length; _i < _len; _i++) {
 }
 
 Cache.rule.chr_job.merge(list);
-var RAILS;
+var GAME, RAILS;
 
 RAILS = {
   "head_img": {
@@ -5255,6 +5255,1426 @@ RAILS = {
     "font": [null, null, "color=\"gray\"", null, null, null, null, null, "color=\"gray\"", null, "color=\"gray\"", "color=\"red\"", "color=\"teal\"", "color=\"blue\"", "color=\"green\"", "color=\"maroon\"", null, "color=\"purple\"", null, "color=\"red\""]
   }
 };
+
+GAME = {
+  "PERL_DEFAULT": {
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "path": {
+        "DIR_LIB": "../cabala/lib",
+        "DIR_HTML": "../cabala/html",
+        "DIR_RS": "../cabala/rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "../sow/data/user"
+      },
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [1, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [1, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [1, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [0, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [0, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [1, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [1, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"]
+      }
+    }
+  },
+  "PERL_NEW": {
+    "config": {
+      "trsid": ["all", "star", "regend", "heavy", "complexx", "secret"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"]
+    }
+  },
+  "PERL_GAME": {
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "戦",
+      "maxsize": {
+        "MAXSIZE_ACTION": 60,
+        "MAXSIZE_MEMOCNT": 1000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx"],
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "../sow/data/user"
+      }
+    }
+  },
+  "PERL_UNION": {
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "戦",
+      "maxsize": {
+        "MAXSIZE_ACTION": 60,
+        "MAXSIZE_MEMOCNT": 1000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "wbbs", "saving", "euro"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"],
+      "trsid": ["sow", "all", "star", "regend", "heavy", "complexx", "tabula", "millerhollow", "ultimate"],
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "../sow/data/user"
+      },
+      "cfg": {
+        "TYPE": "CABALA",
+        "RULE": "UNION",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 3,
+        "TIMEOUT_SCRAP": 10,
+        "TOPPAGE_INFO": "../sow/_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp"
+      }
+    }
+  },
+  "PERL_BRAID": {
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "演",
+      "maxsize": {
+        "MAXSIZE_ACTION": 120,
+        "MAXSIZE_MEMOCNT": 2000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["weak", "juna", "vulcan"],
+      "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx"],
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [0, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [0, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [0, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [0, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [0, "1:自殺投票"]
+      },
+      "cfg": {
+        "TYPE": "BRAID",
+        "RULE": "BRAID",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 2,
+        "TIMEOUT_SCRAP": 5,
+        "TOPPAGE_INFO": "./_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp"
+      }
+    }
+  },
+  "TESTBED": {
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "戦",
+      "maxsize": {
+        "MAXSIZE_ACTION": 60,
+        "MAXSIZE_MEMOCNT": 1000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["weak", "juna", "say5x200", "say5x300", "wbbs", "saving", "euro", "vulcan", "infinity"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"],
+      "trsid": ["sow", "all", "star", "regend", "heavy", "complexx", "tabula", "millerhollow", "ultimate"],
+      "path": {
+        "DIR_LIB": "../testbed/lib",
+        "DIR_HTML": "../testbed/html",
+        "DIR_RS": "../testbed/rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "../sow/data/user"
+      },
+      "cfg": {
+        "TYPE": "CABALA",
+        "RULE": "ALLSTAR",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 1,
+        "TIMEOUT_SCRAP": 1,
+        "TOPPAGE_INFO": "../sow/_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://utage.family.jp/testbed",
+        "BASEDIR_CGIERR": "http://utage.family.jp//testbed",
+        "NAME_HOME": "人狼議事 手元テスト",
+        "MAX_VILLAGES": 9
+      },
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [1, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [1, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [0, "1:突然死あり"],
+        "ENABLED_BITTY": [1, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [0, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [1, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [1, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"]
+      },
+      "pl": "/www/giji_log/testbed/config.pl"
+    }
+  },
+  "PERJURY_OLD": {
+    "server": "utage.family.jp",
+    "oldlog": "/perjury/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/perjury/sow.cgi?cmd=rss",
+    "folder": "PERJURY_OLD",
+    "info_url": "/perjury/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事RP:Bp",
+    "epi_url": "/perjury/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "Bp",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "演",
+      "maxsize": {
+        "MAXSIZE_ACTION": 120,
+        "MAXSIZE_MEMOCNT": 2000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["weak", "juna", "vulcan"],
+      "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx"],
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [0, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [0, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [0, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [0, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [0, "1:自殺投票"]
+      },
+      "cfg": {
+        "TYPE": "CABALA",
+        "RULE": "BRAID",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 0,
+        "TIMEOUT_ENTRY": 2,
+        "TIMEOUT_SCRAP": 5,
+        "TOPPAGE_INFO": "../sow/_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://utage.family.jp/perjury",
+        "BASEDIR_CGIERR": "http://utage.family.jp//perjury",
+        "NAME_HOME": "人狼議事 Role Play braid perjury",
+        "MAX_VILLAGES": 0
+      },
+      "path": {
+        "DIR_LIB": "../cabala/lib",
+        "DIR_HTML": "../cabala/html",
+        "DIR_RS": "../cabala/rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "../sow/data/user"
+      },
+      "pl": "/www/giji_log/perjury/config.pl"
+    }
+  },
+  "PRETENSE": {
+    "server": "utage.family.jp",
+    "oldlog": "/pretense/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "folder": "PRETENSE",
+    "info_url": "/pretense/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事RP:A",
+    "epi_url": "/pretense/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "A"
+  },
+  "RP": {
+    "server": "utage.family.jp",
+    "oldlog": "/rp/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "folder": "RP",
+    "info_url": "/rp/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事RP:",
+    "epi_url": "/rp/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": ""
+  },
+  "CABALA_OLD": {
+    "server": "utage.family.jp",
+    "oldlog": "/cabala/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/cabala/sow.cgi?cmd=rss",
+    "folder": "CABALA",
+    "info_url": "/cabala/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事陰謀:",
+    "epi_url": "/cabala/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "C",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "戦",
+      "maxsize": {
+        "MAXSIZE_ACTION": 60,
+        "MAXSIZE_MEMOCNT": 1000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx"],
+      "path": {
+        "DIR_LIB": "../cabala/lib",
+        "DIR_HTML": "../cabala/html",
+        "DIR_RS": "../cabala/rs",
+        "DIR_VIL": "../cafe/data/vil",
+        "DIR_USER": "../sow/data/user"
+      },
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [1, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [1, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [1, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [0, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [1, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [1, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"]
+      },
+      "cfg": {
+        "TYPE": "CABALA",
+        "RULE": "CABALA",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 3,
+        "TIMEOUT_SCRAP": 10,
+        "TOPPAGE_INFO": "../sow/_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://utage.family.jp/cabala",
+        "BASEDIR_CGIERR": "http://utage.family.jp//cabala",
+        "NAME_HOME": "人狼議事 陰謀の苑",
+        "MAX_VILLAGES": 0
+      },
+      "pl": "/www/giji_log/cabala/config.pl"
+    }
+  },
+  "ALLSTAR_OLD": {
+    "server": "utage.family.jp",
+    "oldlog": "/allstar/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/allstar/sow.cgi?cmd=rss",
+    "folder": "ALLSTAR",
+    "info_url": "/allstar/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事大乱闘:A",
+    "epi_url": "/allstar/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "A",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "戦",
+      "maxsize": {
+        "MAXSIZE_ACTION": 60,
+        "MAXSIZE_MEMOCNT": 1000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "wbbs", "saving", "euro"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"],
+      "trsid": ["sow", "all", "star", "regend", "heavy", "complexx", "tabula", "millerhollow", "ultimate"],
+      "path": {
+        "DIR_LIB": "../cabala/lib",
+        "DIR_HTML": "../cabala/html",
+        "DIR_RS": "../cabala/rs",
+        "DIR_VIL": "../jksy/data/vil",
+        "DIR_USER": "../sow/data/user"
+      },
+      "cfg": {
+        "TYPE": "CABALA",
+        "RULE": "ALLSTAR",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 3,
+        "TIMEOUT_SCRAP": 10,
+        "TOPPAGE_INFO": "../sow/_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://utage.family.jp/allstar",
+        "BASEDIR_CGIERR": "http://utage.family.jp//allstar",
+        "NAME_HOME": "人狼議事 大乱闘オールスター",
+        "MAX_VILLAGES": 0
+      },
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [1, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [1, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [1, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [0, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [0, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [1, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"]
+      },
+      "pl": "/www/giji_log/allstar/config.pl"
+    }
+  },
+  "ULTIMATE": {
+    "server": "utage.family.jp",
+    "oldlog": "/ultimate/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "folder": "ULTIMATE",
+    "info_url": "/ultimate/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事大乱闘:",
+    "epi_url": "/ultimate/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": ""
+  },
+  "WOLF": {
+    "folder": "WOLF",
+    "nation": "人狼議事標準:",
+    "server": "utage.family.jp",
+    "oldlog": "/wolf/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/wolf/sow.cgi?cmd=rss",
+    "info_url": "/wolf/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "epi_url": "/wolf/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": ""
+  },
+  "PAN": {
+    "server": "soy-bean.sakura.ne.jp",
+    "oldlog": "/pan/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/pan/sow.cgi?cmd=rss",
+    "folder": "PAN",
+    "info_url": "/pan/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "似顔絵人狼",
+    "epi_url": "/pan/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "config": {
+      "csid": ["sow", "juna", "name", "bloody", "orange", "15girls", "tmmi", "cat", "bunmei"],
+      "erb": "./app/views/sow/pan.pl.erb",
+      "cd_default": "戦",
+      "maxsize": {
+        "MAXSIZE_ACTION": 60,
+        "MAXSIZE_MEMOCNT": 1000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "wbbs", "saving", "euro"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"],
+      "trsid": ["sow", "all", "star", "regend", "heavy", "complexx", "tabula", "millerhollow", "ultimate"],
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "./data/user"
+      },
+      "cfg": {
+        "TYPE": "CABALA",
+        "RULE": "PAN",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 3,
+        "TIMEOUT_SCRAP": 10,
+        "TOPPAGE_INFO": "../sow/_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://soy-bean.sakura.ne.jp/pan",
+        "BASEDIR_CGIERR": "http://soy-bean.sakura.ne.jp/pan//",
+        "NAME_HOME": "似顔絵人狼",
+        "MAX_VILLAGES": 1
+      },
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [1, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [1, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [1, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [0, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [0, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"],
+        "ENABLED_SEQ_EVENT": [0, "0:ランダムイベント 1:順序通りのイベント"]
+      },
+      "pl": "/www/giji_log/pan/config.pl",
+      "is_angular": "show-fix"
+    }
+  },
+  "MORPHE": {
+    "server": "morphe.sakura.ne.jp",
+    "oldlog": "/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow.cgi?cmd=rss",
+    "folder": "MORPHE",
+    "info_url": "/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事:M",
+    "epi_url": "/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "M",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "戦",
+      "maxsize": {
+        "MAXSIZE_ACTION": 60,
+        "MAXSIZE_MEMOCNT": 1000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["tiny", "weak", "juna", "vulcan", "say5x200", "say5x300", "saving", "euro"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx"],
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "./data/user"
+      },
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [1, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [1, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [1, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [0, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [0, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [1, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"]
+      },
+      "cfg": {
+        "TYPE": "BRAID",
+        "RULE": "MORPHE",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 2,
+        "TIMEOUT_SCRAP": 5,
+        "TOPPAGE_INFO": "./_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://morphe.sakura.ne.jp/morphe",
+        "BASEDIR_CGIERR": "http://morphe.sakura.ne.jp/morphe//",
+        "NAME_HOME": "人狼議事 夢の形",
+        "MAX_VILLAGES": 4
+      },
+      "pl": "/www/giji_log/morphe/config.pl"
+    }
+  },
+  "SOYBEAN": {
+    "server": "soy-bean.sakura.ne.jp",
+    "oldlog": "/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow.cgi?cmd=rss",
+    "folder": "SOYBEAN",
+    "info_url": "/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事RP:Cs",
+    "epi_url": "/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "Bs",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "演",
+      "maxsize": {
+        "MAXSIZE_ACTION": 120,
+        "MAXSIZE_MEMOCNT": 2000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["weak", "juna", "vulcan", "infinity"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx", "secret"],
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [0, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [0, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [0, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [1, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"],
+        "ENABLED_SEQ_EVENT": [1, "1:事件正順の選択を有効にする。"],
+        "ENABLED_TEST_ROLE": [1, "1:テスト中役職を有効にする。"]
+      },
+      "cfg": {
+        "TYPE": "BRAID",
+        "RULE": "BRAID",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 2,
+        "TIMEOUT_SCRAP": 5,
+        "TOPPAGE_INFO": "./_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://soy-bean.sakura.ne.jp/soy-bean",
+        "BASEDIR_CGIERR": "http://soy-bean.sakura.ne.jp/soy-bean//",
+        "NAME_HOME": "人狼議事 鯖の味噌煮",
+        "MAX_VILLAGES": 2
+      },
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "./data/user"
+      },
+      "pl": "/www/giji_log/soy-bean/config.pl",
+      "is_angular": "show-fix"
+    }
+  },
+  "CIEL": {
+    "server": "ciel.moo.jp",
+    "oldlog": "/cheat/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/cheat/sow.cgi?cmd=rss",
+    "folder": "CIEL",
+    "info_url": "/cheat/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事RP:Cc",
+    "epi_url": "/cheat/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "Cc",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "演",
+      "maxsize": {
+        "MAXSIZE_ACTION": 120,
+        "MAXSIZE_MEMOCNT": 2000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["weak", "juna", "vulcan", "infinity"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx", "secret"],
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [0, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [0, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [0, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [1, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [0, "1:自殺投票"]
+      },
+      "cfg": {
+        "TYPE": "CHEAT",
+        "RULE": "CIEL",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 2,
+        "TIMEOUT_SCRAP": 5,
+        "TOPPAGE_INFO": "./_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "BASEDIR_CGIERR": "http://ciel.moo.jp//cheat",
+        "URL_SW": "http://ciel.moo.jp/cheat",
+        "MAX_VILLAGES": 2,
+        "NAME_HOME": "人狼議事 ciel\u003Cbr\u003E- Role Play Cheat -"
+      },
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "./data/user"
+      },
+      "pl": "/www/giji_log/ciel/config.pl",
+      "is_angular": "show-fix"
+    }
+  },
+  "PERJURY": {
+    "server": "perjury.rulez.jp",
+    "oldlog": "/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow.cgi?cmd=rss",
+    "folder": "PERJURY",
+    "info_url": "/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事RP:Cp",
+    "epi_url": "/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "Bp",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "演",
+      "maxsize": {
+        "MAXSIZE_ACTION": 120,
+        "MAXSIZE_MEMOCNT": 2000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["weak", "juna", "vulcan", "infinity"],
+      "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx"],
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [0, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [0, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [0, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [0, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [0, "1:自殺投票"]
+      },
+      "cfg": {
+        "TYPE": "CHEAT",
+        "RULE": "PERJURY",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 2,
+        "TIMEOUT_SCRAP": 5,
+        "TOPPAGE_INFO": "./_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "BASEDIR_CGIERR": "http://perjury.rulez.jp//",
+        "URL_SW": "http://perjury.rulez.jp",
+        "MAX_VILLAGES": 2,
+        "NAME_HOME": "人狼議事 perjury rulez\u003Cbr\u003E- Role Play Cheat -"
+      },
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "../sow/data/user"
+      },
+      "pl": "/www/giji_log/vage/config.pl",
+      "is_angular": "show-fix"
+    }
+  },
+  "XEBEC": {
+    "server": "xebec.x0.to",
+    "oldlog": "/xebec/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/xebec/sow.cgi?cmd=rss",
+    "folder": "XEBEC",
+    "info_url": "/xebec/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事RP:Bx",
+    "epi_url": "/xebec/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "Bx",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "演",
+      "maxsize": {
+        "MAXSIZE_ACTION": 120,
+        "MAXSIZE_MEMOCNT": 2000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["weak", "juna", "vulcan"],
+      "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx"],
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [0, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [0, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [0, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [0, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [0, "1:自殺投票"]
+      },
+      "cfg": {
+        "TYPE": "BRAID",
+        "RULE": "BRAID",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 2,
+        "TIMEOUT_SCRAP": 5,
+        "TOPPAGE_INFO": "./_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://xebec.x0.to/xebec",
+        "BASEDIR_CGIERR": "http://xebec.x0.to//xebec",
+        "NAME_HOME": "人狼議事 xebec\u003Cbr\u003E- Role Play braid -",
+        "MAX_VILLAGES": 3
+      },
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "../sow/data/user"
+      },
+      "pl": "/www/giji_log/xebec/config.pl"
+    }
+  },
+  "CRAZY": {
+    "server": "crazy-crazy.sakura.ne.jp",
+    "oldlog": "/crazy/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/crazy/sow.cgi?cmd=rss",
+    "folder": "CRAZY",
+    "info_url": "/crazy/sow.cgi?\\ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事RP:Bc",
+    "epi_url": "/crazy/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "Bc",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "演",
+      "maxsize": {
+        "MAXSIZE_ACTION": 120,
+        "MAXSIZE_MEMOCNT": 2000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["infinity"],
+      "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx"],
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [0, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [0, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [0, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [1, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [0, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [0, "1:自殺投票"]
+      },
+      "cfg": {
+        "TYPE": "BRAID",
+        "RULE": "BRAID",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 2,
+        "TIMEOUT_SCRAP": 5,
+        "TOPPAGE_INFO": "./_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://crazy-crazy.sakura.ne.jp/crazy",
+        "BASEDIR_CGIERR": "http://crazy-crazy.sakura.ne.jp//crazy",
+        "NAME_HOME": "人狼議事 crazy\u003Cbr\u003E- Role Play braid -",
+        "MAX_VILLAGES": 2
+      },
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "./data/user"
+      },
+      "pl": "/www/giji_log/crazy/config.pl"
+    }
+  },
+  "CABALA": {
+    "server": "cabala.halfmoon.jp",
+    "oldlog": "/cafe/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/cafe/sow.cgi?cmd=rss",
+    "folder": "CABALA",
+    "info_url": "/cafe/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事CabalaCafe:",
+    "epi_url": "/cafe/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "C",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "戦",
+      "maxsize": {
+        "MAXSIZE_ACTION": 60,
+        "MAXSIZE_MEMOCNT": 1000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx", "secret"],
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "../sow/data/user"
+      },
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [1, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [1, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [1, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [0, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [1, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [1, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"]
+      },
+      "cfg": {
+        "TYPE": "BRAID",
+        "RULE": "CABALA",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 1,
+        "TIMEOUT_ENTRY": 2,
+        "TIMEOUT_SCRAP": 5,
+        "TOPPAGE_INFO": "./_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://cabala.halfmoon.jp/cafe",
+        "BASEDIR_CGIERR": "http://cabala.halfmoon.jp//cafe",
+        "NAME_HOME": "人狼議事 Cabala Cafe",
+        "MAX_VILLAGES": 4
+      },
+      "pl": "/www/giji_log/cafe/config.pl",
+      "is_angular": "show-fix"
+    }
+  },
+  "ALLSTAR": {
+    "server": "jinro.jksy.org",
+    "oldlog": "/~nanakorobi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/~nanakorobi?cmd=rss",
+    "folder": "ALLSTAR",
+    "info_url": "/~nanakorobi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事大乱闘:A",
+    "epi_url": "/~nanakorobi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "A",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "戦",
+      "maxsize": {
+        "MAXSIZE_ACTION": 60,
+        "MAXSIZE_MEMOCNT": 1000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "wbbs", "saving", "euro"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"],
+      "trsid": ["sow", "all", "star", "regend", "heavy", "complexx", "tabula", "millerhollow", "ultimate"],
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "../sow/data/user"
+      },
+      "cfg": {
+        "TYPE": "BRAID",
+        "RULE": "ALLSTAR",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "admin",
+        "ENABLED_VMAKE": 0,
+        "TIMEOUT_ENTRY": 3,
+        "TIMEOUT_SCRAP": 10,
+        "TOPPAGE_INFO": "./_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://jinro.jksy.org/~nanakorobi",
+        "BASEDIR_CGIERR": "http://jinro.jksy.org//~nanakorobi",
+        "NAME_HOME": "人狼議事 大乱闘All☆Star",
+        "MAX_VILLAGES": 4
+      },
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [1, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [1, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [1, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [0, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [1, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [0, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [1, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"]
+      },
+      "pl": "/www/giji_log/jksy/config.pl"
+    }
+  },
+  "LOBBY_OLD": {
+    "folder": "LOBBY_OLD",
+    "nation": "人狼議事旧ロビー",
+    "vid_code": "O"
+  },
+  "LOBBY": {
+    "server": "crazy-crazy.sakura.ne.jp",
+    "oldlog": "/giji_lobby/lobby/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/giji_lobby/lobby/sow.cgi?cmd=rss",
+    "folder": "LOBBY",
+    "info_url": "/giji_lobby/lobby/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事ロビー",
+    "epi_url": "/giji_lobby/lobby/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "L",
+    "config": {
+      "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
+      "erb": "./app/views/sow/giji.pl.erb",
+      "cd_default": "戦",
+      "maxsize": {
+        "MAXSIZE_ACTION": 60,
+        "MAXSIZE_MEMOCNT": 1000,
+        "MAXSIZE_MEMOLINE": 25
+      },
+      "saycnt": ["lobby"],
+      "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"],
+      "trsid": ["all", "star", "regend", "heavy", "complexx", "secret"],
+      "path": {
+        "DIR_LIB": "./lib",
+        "DIR_HTML": "./html",
+        "DIR_RS": "./rs",
+        "DIR_VIL": "./data/vil",
+        "DIR_USER": "../data/user"
+      },
+      "cfg": {
+        "TYPE": "BRAID",
+        "RULE": "LOBBY",
+        "USERID_NPC": "master",
+        "USERID_ADMIN": "master",
+        "ENABLED_VMAKE": 0,
+        "TIMEOUT_ENTRY": 3,
+        "TIMEOUT_SCRAP": 365,
+        "TOPPAGE_INFO": "./_info.pl",
+        "BASEDIR_CGI": ".",
+        "BASEDIR_DAT": "./data",
+        "BASEDIR_DOC": "http://7korobi.gehirn.ne.jp",
+        "URL_SW": "http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby",
+        "BASEDIR_CGIERR": "http://crazy-crazy.sakura.ne.jp//giji_lobby/lobby",
+        "NAME_HOME": "人狼議事 ロビー",
+        "MAX_VILLAGES": 10,
+        "MAX_LOG": 750
+      },
+      "enable": {
+        "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
+        "ENABLED_DELETED": [1, "削除発言を表示するかどうか"],
+        "ENABLED_WINNER_LABEL": [1, "1:勝利者表示をする。"],
+        "ENABLED_MAX_ESAY": [0, "エピローグを発言制限対象に 0:しない、1:する"],
+        "ENABLED_RANDOMTARGET": [1, "1:投票・能力先に「ランダム」を含める"],
+        "ENABLED_SUDDENDEATH": [1, "1:突然死あり"],
+        "ENABLED_BITTY": [1, "少女や交霊者ののぞきみがひらがなのみ。"],
+        "ENABLED_PERMIT_DEAD": [0, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],
+        "ENABLED_UNDEAD": [0, "1:幽界トーク村を設定可能"],
+        "ENABLED_AIMING": [1, "1:対象を指定した発言（内緒話）を含める"],
+        "ENABLED_MOB_AIMING": [1, "1:見物人が内緒話を使える。"],
+        "ENABLED_AMBIDEXTER": [1, "1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],
+        "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"],
+        "ENABLED_SEQ_EVENT": [0, "0:ランダムイベント 1:順序通りのイベント"]
+      },
+      "pl": "/www/giji_log/lobby/config.pl",
+      "is_angular": "show-fix"
+    }
+  },
+  "OFFPARTY": {
+    "server": "party.ps.land.to",
+    "oldlog": "/kitchen/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/kitchen/sow.cgi?cmd=rss",
+    "folder": "OFFPARTY",
+    "info_url": "/kitchen/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼議事オフ相談所",
+    "epi_url": "/kitchen/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
+    "vid_code": "P"
+  },
+  "MSHE": {
+    "server": "mshe.skr.jp",
+    "oldlog": "/?cmd=log",
+    "livelog": "/index.cgi",
+    "folder": "MSHE",
+    "info_url": "/",
+    "nation": "人狼BBQ",
+    "epi_url": "/"
+  },
+  "APH": {
+    "server": "www.waonwolf.net",
+    "oldlog": "/aph/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/aph/sow.cgi?cmd=rss",
+    "folder": "APH",
+    "info_url": "/aph/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "WorldWerewolfWar",
+    "epi_url": "/aph/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "AOZIRU": {
+    "server": "wolfao.sakura.ne.jp",
+    "live_url": "/wolf/index.cgi?vid=%s\u0026date=1",
+    "oldlog": "/wolf/index.cgi?villist=all",
+    "livelog": "/wolf/index.cgi",
+    "folder": "AOZIRU",
+    "info_url": "/wolf/index.cgi?vid=%s\u0026date=0",
+    "nation": "青汁天国",
+    "epi_url": "/"
+  },
+  "TIS": {
+    "server": "www5.atpages.jp",
+    "oldlog": "/tis/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/tis/sow/sow.cgi?cmd=rss",
+    "folder": "TIS",
+    "info_url": "/tis/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼物語 静寂の国",
+    "epi_url": "/tis/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "O8O8O0O0": {
+    "server": "o8o8.o0o0.jp",
+    "oldlog": "/wolf/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/wolf/sow.cgi?cmd=rss",
+    "folder": "O8O8O0O0",
+    "info_url": "/wolf/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼物語暗黒編",
+    "epi_url": "/wolf/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "EUROREAL": {
+    "server": "euros.sakura.ne.jp",
+    "oldlog": "/real/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/real/sow.cgi?cmd=rss",
+    "folder": "EUROREAL",
+    "info_url": "/real/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼物語@リア充",
+    "epi_url": "/real/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "TENGOKU": {
+    "server": "wolften.sakura.ne.jp",
+    "live_url": "/?vid=%s\u0026date=1",
+    "oldlog": "/?villist=all",
+    "livelog": "/",
+    "folder": "TENGOKU",
+    "info_url": "/?vid=%s\u0026date=0",
+    "nation": "人狼天国",
+    "epi_url": "/"
+  },
+  "MELON": {
+    "server": "melon-cirrus.sakura.ne.jp",
+    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow/sow.cgi?cmd=rss",
+    "folder": "MELON",
+    "info_url": "/sow/sow.cgi?ua=mb\u0026v=%s\u0026cmd=vinfo",
+    "nation": "人狼物語瓜科国",
+    "epi_url": "/sow/sow.cgi?ua=mb\u0026v=%s\u0026t=%s\u0026mv=p\u0026n=1\u0026r=30"
+  },
+  "RINNE": {
+    "server": "monooki.sakura.ne.jp",
+    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow/sow.cgi?cmd=rss",
+    "folder": "RINNE",
+    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼輪廻",
+    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "EUROSOW": {
+    "server": "euros.sakura.ne.jp",
+    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow/sow.cgi?cmd=rss",
+    "folder": "EUROSOW",
+    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼物語@欧州",
+    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "BARA": {
+    "server": "lup.lunare.org",
+    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow/sow.cgi?cmd=rss",
+    "folder": "BARA",
+    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼物語*薔薇の下国",
+    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "ENDLESSLOOP": {
+    "server": "endlessloop.skr.jp",
+    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow/sow.cgi?cmd=rss",
+    "folder": "ENDLESSLOOP",
+    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "天空の回廊",
+    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "MONSTERS": {
+    "server": "marinonet.org",
+    "oldlog": "/webwerewolf/cgi_wwwolf.cgi?mode=log",
+    "livelog": "/webwerewolf/rss.cgi",
+    "folder": "MONSTERS",
+    "info_url": "/webwerewolf/cgi_wwwolf.cgi?VILLAGENO=%s\u0026STORYTYPE=1\u0026TXTLOGIN=1\u0026COMMAND=LOGVIEW",
+    "nation": "Monster's Village",
+    "epi_url": "/webwerewolf/cgi_wwwolf.cgi?VILLAGENO=%s\u0026STORYTYPE=1\u0026TXTLOGIN=1\u0026COMMAND=LOGVIEW"
+  },
+  "HIGURASHI": {
+    "server": "tkido.com",
+    "oldlog": "/h_jinro/log_index.html",
+    "livelog": "/h_jinro/game.php",
+    "folder": "HIGURASHI",
+    "info_url": "/h_jinro/log/%05d00a.html",
+    "nation": "ひぐらし人狼",
+    "epi_url": "/h_jinro/log/%05d%02da.html"
+  },
+  "SEILEITOH": {
+    "server": "seileitoh.sakura.ne.jp",
+    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow/sow.cgi?cmd=rss",
+    "folder": "SEILEITOH",
+    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼・青玲学園",
+    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "GUTA": {
+    "server": "www3.marimo.or.jp",
+    "oldlog": "/~fgmaster/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "folder": "GUTA",
+    "info_url": "/~fgmaster/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼物語ぐた国",
+    "epi_url": "/~fgmaster/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "TENKEY": {
+    "server": "www5.atpages.jp",
+    "live_url": "/~euro/ten/index.cgi?vid=%s\u0026date=1",
+    "oldlog": "/~euro/ten/index.cgi?villist=all",
+    "livelog": "/~euro/ten/index.cgi",
+    "folder": "TENKEY",
+    "info_url": "/~euro/ten/index.cgi?vid=%s\u0026date=0",
+    "nation": "錠前天国",
+    "epi_url": "/"
+  },
+  "PLUM": {
+    "server": "w5.oroti.net",
+    "oldlog": "/~plum/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/~plum/sow/sow.cgi?cmd=rss",
+    "folder": "PLUM",
+    "info_url": "/~plum/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼梅暦",
+    "epi_url": "/~plum/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "SEBAS": {
+    "server": "sebas.chips.jp",
+    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow/sow.cgi?cmd=rss",
+    "folder": "SEBAS",
+    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼物語執事国",
+    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "MEBIUS": {
+    "server": "tkido.com",
+    "oldlog": "/m_jinro/log/index.html",
+    "livelog": "/m_jinro/game.php",
+    "folder": "MEBIUS",
+    "info_url": "/m_jinro/log/%05d00a.html",
+    "nation": "メビウス人狼",
+    "epi_url": "/m_jinro/log/%05d%02da.html"
+  },
+  "HAMYORON": {
+    "server": "hamyoron.s262.xrea.com",
+    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow/sow.cgi?cmd=rss",
+    "folder": "HAMYORON",
+    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼物語狼と踊れ",
+    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "GUTALUTIMATE": {
+    "server": "www3.marimo.or.jp",
+    "oldlog": "/~fgmaster/ultimate/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "folder": "GUTALUTIMATE",
+    "info_url": "/~fgmaster/ultimate/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼物語ぐたるてぃめっと",
+    "epi_url": "/~fgmaster/ultimate/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "YOA": {
+    "server": "yoa.crywlf.com",
+    "live_url": "/ten/index.cgi?vid=%s\u0026date=1",
+    "oldlog": "/ten/index.cgi?villist=all",
+    "livelog": "/ten/index.cgi",
+    "folder": "YOA",
+    "info_url": "/ten/index.cgi?vid=%s\u0026date=0",
+    "nation": "ヨア国",
+    "epi_url": "/"
+  },
+  "SCHICKSAL": {
+    "server": "schicksal.sakura.ne.jp",
+    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow/sow.cgi?cmd=rss",
+    "folder": "SCHICKSAL",
+    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼物語-幻夢-",
+    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "THJINROU": {
+    "server": "thjinrou.sakura.ne.jp",
+    "oldlog": "/gamelog.php",
+    "livelog": "/jinrou.php",
+    "folder": "THJINROU",
+    "info_url": "/gamelog.php",
+    "nation": "東方人狼裁",
+    "epi_url": "/gamelog.php"
+  },
+  "NACHT": {
+    "server": "wolf.nacht.jp",
+    "oldlog": "/sw/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sw/sow.cgi?cmd=rss",
+    "folder": "NACHT",
+    "info_url": "/sw/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "Geschichte von Werwolf\u003Cbr\u003E《SchwarzWeiss》   ",
+    "epi_url": "/sw/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "GUTA_CABALA": {
+    "server": "www3.marimo.or.jp",
+    "oldlog": "/~fgmaster/cabala/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/~fgmaster/cabala/sow.cgi?cmd=rss",
+    "folder": "GUTA_CABALA",
+    "info_url": "/~fgmaster/cabala/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "人狼物語ぐたるてぃめっと",
+    "epi_url": "/~fgmaster/cabala/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "JINROTTER": {
+    "server": "jinrotter.ruawerewolf.net",
+    "live_url": "/?vid=%s\u0026date=1",
+    "oldlog": "/?villist=all",
+    "livelog": "/",
+    "folder": "JINROTTER",
+    "info_url": "/?vid=%s\u0026date=0",
+    "nation": "人狼ったー",
+    "epi_url": "/"
+  },
+  "LOVESICK": {
+    "server": "werewolf.lovesick.jp",
+    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
+    "livelog": "/sow/sow.cgi?cmd=rss",
+    "folder": "LOVESICK",
+    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
+    "nation": "汝は人狼なりや？\u003Cbr\u003ELOVE SICK ",
+    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
+  },
+  "BBS": {
+    "folder": "BBS",
+    "nation": "人狼BBS:",
+    "server": "ninjinix.x0.com",
+    "oldlog": "/wolf/index.rb?cmd=log",
+    "info_url": "/wolf/index.rb?vid=%s\u0026meslog=%s_progress_0",
+    "epi_url": "/wolf/index.rb?vid=%s\u0026meslog=%s_party_%s"
+  },
+  "BBS_A": {
+    "folder": "BBS_A",
+    "nation": "人狼BBS:A",
+    "server": "ninjinix.x0.com",
+    "oldlog": "/wolfa/index.rb?cmd=log",
+    "info_url": "/wolfa/index.rb?vid=%s\u0026meslog=%s_progress_0",
+    "epi_url": "/wolfa/index.rb?vid=%s\u0026meslog=%s_party_%s"
+  },
+  "BBS_B": {
+    "folder": "BBS_B",
+    "nation": "人狼BBS:B",
+    "server": "ninjinix.x0.com",
+    "oldlog": "/wolfb/index.rb?cmd=log",
+    "info_url": "/wolfb/index.rb?vid=%s\u0026meslog=%s_progress_0",
+    "epi_url": "/wolfb/index.rb?vid=%s\u0026meslog=%s_party_%s"
+  },
+  "BBS_C": {
+    "folder": "BBS_C",
+    "nation": "人狼BBS:C",
+    "server": "ninjinix.x0.com",
+    "oldlog": "/wolfc/index.rb?cmd=log",
+    "info_url": "/wolfc/index.rb?vid=%s\u0026meslog=%s_progress_0",
+    "epi_url": "/wolfc/index.rb?vid=%s\u0026meslog=%s_party_%s"
+  },
+  "BBS_D": {
+    "folder": "BBS_D",
+    "nation": "人狼BBS:D",
+    "server": "ninjinix.x0.com",
+    "oldlog": "/wolfd/index.rb?cmd=log",
+    "info_url": "/wolfd/index.rb?vid=%s\u0026meslog=%s_progress_0",
+    "epi_url": "/wolfd/index.rb?vid=%s\u0026meslog=%s_party_%s"
+  },
+  "BBS_E": {
+    "folder": "BBS_E",
+    "nation": "人狼BBS:E",
+    "server": "ninjinix.x0.com",
+    "oldlog": "/wolfe/index.rb?cmd=log",
+    "info_url": "/wolfe/index.rb?vid=%s\u0026meslog=%s_progress_0",
+    "epi_url": "/wolfe/index.rb?vid=%s\u0026meslog=%s_party_%s"
+  },
+  "BBS_F": {
+    "folder": "BBS_F",
+    "nation": "人狼BBS:F",
+    "server": "ninjin002.x0.com",
+    "oldlog": "/wolff/index.rb?cmd=log",
+    "info_url": "/wolff/index.rb?vid=%s\u0026meslog=%s_progress_0",
+    "epi_url": "/wolff/index.rb?vid=%s\u0026meslog=%s_party_%s"
+  },
+  "BBS_G": {
+    "folder": "BBS_G",
+    "nation": "人狼BBS:G",
+    "server": "www.wolfg.x0.com",
+    "livelog": "/",
+    "live_url": "/index.rb?vid=%s\u0026#bottom",
+    "oldlog": "/index.rb?cmd=log",
+    "info_url": "/index.rb?vid=%s\u0026meslog=000_progress",
+    "epi_url": "/index.rb?vid=%s\u0026meslog=%s_party"
+  },
+  "BBS_Z": {
+    "folder": "BBS_Z",
+    "nation": "人狼BBS:Z",
+    "server": "ninjinix.x0.com",
+    "oldlog": "/wolfz/index.rb?cmd=log",
+    "info_url": "/wolfz/index.rb?vid=%s\u0026meslog=%s_progress_0",
+    "epi_url": "/wolfz/index.rb?vid=%s\u0026meslog=%s_party_%s"
+  },
+  "SUI_A": {
+    "folder": "SUI_A",
+    "nation": "推理と説得:A",
+    "server": "sui.sib.jp",
+    "livelog": "/",
+    "live_url": "/pc/view/%s",
+    "oldlog": "/pc/index_kako/",
+    "info_url": "/pc/view_kako/%s/1/all/WRBG",
+    "epi_url": "/pc/view_kako/%s/%s/all/WRBG"
+  }
+};
 var _ref;
 
 Url.options = LOCATION.options;
@@ -5315,7 +6735,7 @@ new Cache.Rule("map_face").schema(function() {
     return o.chr_set_ids;
   });
 });
-var face, map_orders, _ref;
+var face, map_orders, message, _ref;
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.map_face.set(gon.map_reduce.faces);
@@ -5655,27 +7075,67 @@ GUI.if_exist("css_changer", function(dom) {
   });
 });
 
+message = {
+  say: function(v) {
+    return m("table.say." + v.mestype, m("tbody", m("tr", [m("td.img", GUI.portrate(v.face_id)), m("td.field", m(".msg", [m("h3.mesname", [m.trust("&nbsp;"), m("b", m.trust(v.name))]), m("p.text." + v.style, m.trust(v.log)), m("p.mes_date", m("span.mark", v.anchor))]))])));
+  },
+  action: function(v) {
+    v.updated_timer || (v.updated_timer = new Timer(v.updated_at, {
+      prop: m.prop()
+    }));
+    return m("." + v.mestype, m(".action", [m("p.text." + v.style, [m("b", m.trust(v.name)), "は、", m.trust(v.log)]), m("p.mes_date", v.updated_timer.prop())]));
+  }
+};
+
 if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null) {
   GUI.if_exist("villages", function(dom) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var time, v;
-        return [
-          m("h3", "開始待ちの村／進行中の村"), (function() {
-            var _i, _len, _ref1, _results;
-            _ref1 = gon.villages;
-            _results = [];
-            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-              v = _ref1[_i];
-              time = new Timer(v.updated_at, {
-                prop: m.prop()
-              });
-              _results.push(m("." + v.mestype, m(".action", [m("p.text." + v.style, [m("b", v.name), "は、" + v.log]), m("p.mes_date", time.prop())])));
-            }
-            return _results;
-          })()
-        ];
+        var v, _i, _len, _ref1, _results;
+        _ref1 = gon.villages;
+        _results = [];
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          v = _ref1[_i];
+          _results.push(message.action(v));
+        }
+        return _results;
+      }
+    });
+  });
+}
+
+if ((typeof gon !== "undefined" && gon !== null ? gon.byebyes : void 0) != null) {
+  GUI.if_exist("byebyes", function(dom) {
+    return m.module(dom, {
+      controller: function() {},
+      view: function() {
+        var v, _i, _len, _ref1, _results;
+        _ref1 = gon.byebyes;
+        _results = [];
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          v = _ref1[_i];
+          _results.push(message.action(v));
+        }
+        return _results;
+      }
+    });
+  });
+}
+
+if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null) {
+  GUI.if_exist("history", function(dom) {
+    return m.module(dom, {
+      controller: function() {},
+      view: function() {
+        var v, _i, _len, _ref1, _results;
+        _ref1 = gon.history;
+        _results = [];
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          v = _ref1[_i];
+          _results.push(message.say(v));
+        }
+        return _results;
       }
     });
   });
@@ -5687,6 +7147,16 @@ GUI.if_exist("headline", function(dom) {
   return m.module(dom, {
     controller: function() {},
     view: function() {
+      var max_all, max_cafe, max_ciel, max_crazy, max_morphe, max_pan, max_vage, max_xebec;
+      max_vage = GAME.PERJURY.config.cfg.MAX_VILLAGES;
+      max_crazy = GAME.CRAZY.config.cfg.MAX_VILLAGES;
+      max_xebec = GAME.XEBEC.config.cfg.MAX_VILLAGES;
+      max_ciel = GAME.CIEL.config.cfg.MAX_VILLAGES;
+      max_cafe = GAME.CABALA.config.cfg.MAX_VILLAGES;
+      max_pan = GAME.PAN.config.cfg.MAX_VILLAGES;
+      max_morphe = GAME.MORPHE.config.cfg.MAX_VILLAGES;
+      max_all = max_vage + max_crazy + max_xebec + max_ciel;
+      max_all += max_cafe + max_morphe;
       return m(".choice", m("table.board", [
         m("tr", touch.state() ? [
           m("th.choice", {
@@ -5703,23 +7173,23 @@ GUI.if_exist("headline", function(dom) {
         ]), m("tr.link", [m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ")]), touch.state() ? m("tr", [
           m("td.no_choice", [
             m("a", {
-              href: "#"
+              href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
             }, "lobby"), m("br"), "offparty", m("br"), m("br"), m("br")
           ]), m("td.no_choice", [
-            m("a", {
-              href: "#"
-            }, "morphe"), m("br"), "#村:", m("a", {
-              href: "#"
+            "" + max_morphe + "村:", m("a", {
+              href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
+            }, "morphe"), m("br"), "" + max_cafe + "村:", m("a", {
+              href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
             }, "cafe"), m("br"), m("br"), m("br")
           ]), m("td.no_choice", ["wolf", m("br"), "ultimate", m("br"), "allstar", m("br"), "cabala", m("br")]), m("td.no_choice", [
-            "role-play", m("br"), "RP-advance", m("br"), "#村:", m("a", {
-              href: "#"
-            }, "perjury"), m("br"), "#村:", m("a", {
-              href: "#"
-            }, "xebec"), m("br"), "#村:", m("a", {
-              href: "#"
-            }, "crazy"), m("br"), "#村:", m("a", {
-              href: "#"
+            "role-play", m("br"), "RP-advance", m("br"), "" + max_vage + "村:", m("a", {
+              href: GAME.PERJURY.config.cfg.URL_SW + "/sow.cgi"
+            }, "perjury"), m("br"), "" + max_xebec + "村:", m("a", {
+              href: GAME.XEBEC.config.cfg.URL_SW + "/sow.cgi"
+            }, "xebec"), m("br"), "" + max_crazy + "村:", m("a", {
+              href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
+            }, "crazy"), m("br"), "" + max_ciel + "村:", m("a", {
+              href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
             }, "ciel")
           ])
         ]) : m("tr", [
@@ -5768,17 +7238,6 @@ GUI.if_exist("headline", function(dom) {
 
 
 /*
-- max_vage    = GAME[:PERJURY][:config][:cfg][:MAX_VILLAGES]
-- max_crazy   = GAME[:CRAZY  ][:config][:cfg][:MAX_VILLAGES]
-- max_xebec   = GAME[:XEBEC  ][:config][:cfg][:MAX_VILLAGES]
-- max_ciel    = GAME[:CIEL   ][:config][:cfg][:MAX_VILLAGES]
-- max_cafe    = GAME[:CABALA ][:config][:cfg][:MAX_VILLAGES]
-- max_pan     = GAME[:PAN    ][:config][:cfg][:MAX_VILLAGES]
-- max_morphe  = GAME[:MORPHE ][:config][:cfg][:MAX_VILLAGES]
-- max_all     = ( max_vage + max_crazy + max_xebec + max_ciel )
-- max_all    += ( max_cafe + max_morphe )
-
-
   css: new Url "css=:theme-:width-:layout-:font", (params)->
 
   .pagenavi
