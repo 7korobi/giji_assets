@@ -3,13 +3,16 @@ Url.bind = LOCATION.bind
 
 Url.routes =
   search:
+    stories: new Url "folder=:folder",
+      unmatch: "?"
+
     shape: new Url "shape=:chr_set-:order",
       unmatch: gon?.map_reduce?.faces? && "?"
 
     css: new Url "css=:theme-:width-:layout-:font",
       cookie:
         time: 12
-        path: "/rails"
+        path: "/"
       unmatch: "?"
       change: (params)->
         h = {}

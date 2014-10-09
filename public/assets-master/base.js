@@ -75,7 +75,7 @@ Mithril=m=new function a(b,c){function d(a){return{}.toString.call(a)}function e
 
 this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,"presto":50,"animato":200,"andante":800,"lento":3200} ;
 
-this.LOCATION = {"options":{"chr_set":{"current":"all"},"order":{"current":"all"},"search":null,"w":{"type":"Number"},"width":{"current":"std"},"layout":{"current":"center"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"width":[{"width":"wide","w":770},{"width":"std","w":580},{"width":"mini","w":458}],"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
+this.LOCATION = {"options":{"chr_set":{"current":"all"},"order":{"current":"all"},"search":null,"w":{"type":"Number"},"width":{"current":"std"},"layout":{"current":"center"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"folder":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"folder":[{"folder":"ALL","nation":"- すべて -"},{"folder":"PAN","nation":"似顔絵人狼"},{"folder":"WOLF","nation":"人狼議事標準"},{"folder":"RP","nation":"人狼議事RP:"},{"folder":"PRETENSE","nation":"人狼議事RP:Advance"},{"folder":"XEBEC","nation":"人狼議事RP:Braid XEBEC"},{"folder":"CRAZY","nation":"人狼議事RP:Braid Crazy"},{"folder":"CIEL","nation":"人狼議事RP:Cheat Ciel"},{"folder":"PERJURY","nation":"人狼議事RP:Cheat Perjury"},{"folder":"ULTIMATE","nation":"人狼議事大乱闘:"},{"folder":"ALLSTAR","nation":"人狼議事大乱闘:Allstar"},{"folder":"CABALA","nation":"人狼議事CabalaCafe"},{"folder":"MORPHE","nation":"人狼議事モルペウス"},{"folder":"SOYBEAN","nation":"人狼議事鯖の味噌煮"},{"folder":"LOBBY","nation":"人狼議事ロビー"},{"folder":"OFFPARTY","nation":"人狼議事オフ相談所"},{"folder":"TEST","nation":"人狼議事テスト"}],"width":[{"width":"wide","w":770},{"width":"std","w":580},{"width":"mini","w":458}],"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
 var define;
 
@@ -783,10 +783,11 @@ Cache.data =
     status:
  */
 ;
-var GUI;
+var GUI,
+  __slice = [].slice;
 
 GUI = {
-  img_head: "http://7korobi.gehirn.ne.jp/images/",
+  img_head: "//7korobi.gehirn.ne.jp/images/",
   portrate: function(face_id) {
     return m("img", {
       src: GUI.img_head + ("/portrate/" + face_id + ".jpg")
@@ -820,19 +821,22 @@ GUI = {
         return o["class"] = str;
       },
       start: function(cb) {
-        o.onmousedown = act(cb);
-        o.ongesturestart = act(cb);
-        return o.ontouchstart = act(cb);
+        cb = act(cb);
+        o.onmousedown = cb;
+        o.ongesturestart = cb;
+        return o.ontouchstart = cb;
       },
       move: function(cb) {
-        o.onmousemove = act(cb);
-        o.ongesturechange = act(cb);
-        return o.ontouchmove = act(cb);
+        cb = act(cb);
+        o.onmousemove = cb;
+        o.ongesturechange = cb;
+        return o.ontouchmove = cb;
       },
       end: function(cb) {
-        o.onmouseup = act(cb);
-        o.ongestureend = act(cb);
-        return o.ontouchend = act(cb);
+        cb = act(cb);
+        o.onmouseup = cb;
+        o.ongestureend = cb;
+        return o.ontouchend = cb;
       }
     };
     dsl.call(list_cmds);
@@ -846,17 +850,23 @@ GUI = {
       }, vdom);
     };
     list_cmds = {
-      center: function(em, vdom) {
+      center: function() {
+        var em, vdom;
+        em = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
         return inline_item_span("center", em, vdom);
       },
-      right: function(em, vdom) {
+      right: function() {
+        var em, vdom;
+        em = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
         return inline_item_span("right", em, vdom);
       }
     };
     return m("ul.mark.inline", cb.call(list_cmds));
   },
-  letter: function(head, vdom) {
-    return [m("h3.mesname", m("b", head)), m("p.text", vdom)];
+  letter: function() {
+    var head, style, vdom;
+    style = arguments[0], head = arguments[1], vdom = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
+    return [m("h3.mesname", m("b", head)), m("p.text." + style, vdom)];
   },
   chrs: function(chrs, headline, cb) {
     var o;
@@ -876,21 +886,20 @@ GUI = {
     var action;
     action = function() {
       var tick;
-      m.startComputation();
+      m.redraw();
       tick = cb(_.now());
       if (tick) {
-        setTimeout(function() {
+        return setTimeout(function() {
           return action();
         }, tick);
       }
-      return m.endComputation();
     };
     return action();
   },
-  if_exist: function(id, cb) {
+  if_exist: function(query, cb) {
     return win.on.load.push(function() {
       var dom;
-      dom = document.getElementById(id);
+      dom = document.querySelector(query);
       if (!!dom && cb) {
         return cb(dom);
       }
@@ -903,6 +912,34 @@ GUI = {
     config: function(o) {
       var _ref, _ref1, _ref2;
       return ((_ref = RAILS.roles[o]) != null ? _ref.name : void 0) || ((_ref1 = RAILS.gifts[o]) != null ? _ref1.name : void 0) || ((_ref2 = RAILS.events[o]) != null ? _ref2.name : void 0) || o || "";
+    }
+  },
+  names: {
+    config: function(list, cb) {
+      var hash, key, size, _i, _len, _results;
+      hash = {};
+      for (_i = 0, _len = list.length; _i < _len; _i++) {
+        key = list[_i];
+        hash[key] || (hash[key] = 0);
+        hash[key] += 1;
+      }
+      _results = [];
+      for (key in hash) {
+        size = hash[key];
+        _results.push(cb(GUI.name.config(key), size));
+      }
+      return _results;
+    }
+  },
+  message: {
+    say: function(v) {
+      return m("table.say." + v.mestype, m("tbody", m("tr", [m("td.img", GUI.portrate(v.face_id)), m("td.field", m(".msg", [GUI.letter(v.style, m.trust(v.name), m.trust(v.log)), m("p.mes_date", m("span.mark", v.anchor))]))])));
+    },
+    action: function(v) {
+      v.updated_timer || (v.updated_timer = new Timer(v.updated_at, {
+        prop: m.prop()
+      }));
+      return m("." + v.mestype, m(".action", [m("p.text." + v.style, [m("b", m.trust(v.name)), "は、", m.trust(v.log)]), m("p.mes_date", v.updated_timer.prop())]));
     }
   }
 };
@@ -953,6 +990,50 @@ GUI.TouchMenu = (function() {
   return TouchMenu;
 
 })();
+var b, key, _i, _len, _ref, _ref1;
+
+if (head.browser != null) {
+  b = head.browser;
+  b.power = "pc";
+  b.viewport = "width=device-width, initial-scale=1.0";
+  if (navigator.userAgent.toLowerCase().indexOf('windows') !== -1) {
+    b.win = true;
+  }
+  if (navigator.userAgent.toLowerCase().indexOf('macintosh') !== -1) {
+    b.mac = true;
+  }
+  if (navigator.userAgent.toLowerCase().indexOf('safari') !== -1) {
+    b.ios = true;
+  }
+  if (navigator.userAgent.toLowerCase().indexOf('android') !== -1) {
+    b.android = true;
+    b.power = "simple";
+  }
+  if (navigator.userAgent.toLowerCase().indexOf('iphone') !== -1) {
+    b.viewport = "width=device-width, initial-scale=0.5";
+    b.iphone = true;
+    b.ios = true;
+    b.power = "mobile";
+  }
+  if (navigator.userAgent.toLowerCase().indexOf('ipad') !== -1) {
+    b.ios = true;
+    b.power = "mobile";
+  }
+  _ref = ['crios', 'silk', 'mercury'];
+  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+    key = _ref[_i];
+    if (navigator.userAgent.toLowerCase().indexOf(key) !== -1) {
+      b.power = "mobile";
+    }
+  }
+  b[b.power] = true;
+}
+
+if ((_ref1 = document.querySelector("meta[name=viewport]")) != null) {
+  _ref1.attributes.content = head.browser.viewport;
+}
+
+head.useragent = navigator.userAgent;
 var Layout, win;
 
 win = {
@@ -1055,25 +1136,28 @@ Layout = (function() {
     this.dx = dx;
     this.dy = dy;
     this.box = box;
-    if (this.box) {
-      win.on.resize.push((function(_this) {
-        return function() {
-          return _this.resize();
-        };
-      })(this));
-      win.on.scroll.push((function(_this) {
-        return function() {
-          return _this.scroll();
-        };
-      })(this));
-      Layout.list[this.box.id] = this;
-      this.box.style.position = "fixed";
+    if (!this.box) {
+      return;
     }
+    win.on.resize.push((function(_this) {
+      return function() {
+        return _this.resize();
+      };
+    })(this));
+    win.on.scroll.push((function(_this) {
+      return function() {
+        return _this.scroll();
+      };
+    })(this));
+    Layout.list[this.box.id] = this;
+    this.box.style.position = "fixed";
+    this.box.style.top = 0;
+    this.box.style.zIndex = _.now();
   }
 
   Layout.prototype.resize = function() {
     var height, left, top, width;
-    if (!(this.box && head.browser.power !== "simple")) {
+    if (!this.box) {
       return;
     }
     width = win.width - this.box.offsetWidth;
@@ -1090,18 +1174,14 @@ Layout = (function() {
     if (0 < this.dy) {
       this.top = this.dy;
     }
-    this.box.style.zIndex = _.now();
-    if (0 === this.dx) {
-      this.box.style.top = 0;
-      this.box.style.left = null;
-      this.box.style.width = this.box.parentElement.offsetWidth;
-    } else {
-      this.box.style.top = 0;
-      this.box.style.left = 0;
-    }
     left = this.left + win.left;
     top = this.top;
-    return this.translate(left, top);
+    this.translate(left, top);
+    if (0 === this.dx) {
+      return this.box.style.width = "" + this.box.parentElement.offsetWidth + "px";
+    } else {
+      return this.box.style.left = 0;
+    }
   };
 
   Layout.prototype.scroll = function() {};
@@ -1109,9 +1189,7 @@ Layout = (function() {
   Layout.prototype.translate = function(left, top) {
     var transform;
     transform = "translate(" + left + "px, " + top + "px)";
-    if (head.browser.safari || head.browser.webkit) {
-      this.box.style.webkitTransform = transform;
-    }
+    this.box.style.webkitTransform = transform;
     if (head.browser.mozilla) {
       this.box.style.mozTransform = transform;
     }

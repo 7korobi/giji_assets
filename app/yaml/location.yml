@@ -23,6 +23,7 @@ options:
   color:
   title:
 
+  folder:
   story_id:
   event_id:
   mode_id:
@@ -70,6 +71,42 @@ options:
     current: ALL
 
 bind:
+  folder:
+    - folder: ALL
+      nation: "- すべて -"
+    - folder: PAN
+      nation: 似顔絵人狼
+    - folder: WOLF
+      nation: 人狼議事標準
+    - folder: RP
+      nation: "人狼議事RP:"
+    - folder: PRETENSE
+      nation: 人狼議事RP:Advance
+    - folder: XEBEC
+      nation: 人狼議事RP:Braid XEBEC
+    - folder: CRAZY
+      nation: 人狼議事RP:Braid Crazy
+    - folder: CIEL
+      nation: 人狼議事RP:Cheat Ciel
+    - folder: PERJURY
+      nation: 人狼議事RP:Cheat Perjury
+    - folder: ULTIMATE
+      nation: "人狼議事大乱闘:"
+    - folder: ALLSTAR
+      nation: 人狼議事大乱闘:Allstar
+    - folder: CABALA
+      nation: 人狼議事CabalaCafe
+    - folder: MORPHE
+      nation: 人狼議事モルペウス
+    - folder: SOYBEAN
+      nation: 人狼議事鯖の味噌煮
+    - folder: LOBBY
+      nation: 人狼議事ロビー
+    - folder: OFFPARTY
+      nation: 人狼議事オフ相談所
+    - folder: TEST
+      nation: 人狼議事テスト
+
   width:
     - width: wide
       w: 770

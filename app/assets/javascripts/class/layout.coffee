@@ -94,14 +94,18 @@ class Layout
   @list = {}
 
   constructor: (@dx, @dy, @box)->
-    if @box
-      win.on.resize.push => @resize()
-      win.on.scroll.push => @scroll()
-      Layout.list[@box.id] = @
-      @box.style.position = "fixed"
+    return unless @box
+
+    win.on.resize.push => @resize()
+    win.on.scroll.push => @scroll()
+    Layout.list[@box.id] = @
+
+    @box.style.position = "fixed"
+    @box.style.top = 0
+    @box.style.zIndex = _.now()
 
   resize: ()->
-    return unless @box && head.browser.power != "simple"
+    return unless @box
     width  = win.width  - @box.offsetWidth
     height = win.height - @box.offsetHeight
 
@@ -110,25 +114,20 @@ class Layout
     @top = @dy + height if @dy < 0
     @top = @dy          if   0 < @dy
 
-    @box.style.zIndex = _.now()
-
-    if 0 == @dx
-      @box.style.top = 0
-      @box.style.left = null
-      @box.style.width = @box.parentElement.offsetWidth
-    else
-      @box.style.top = 0
-      @box.style.left = 0
-
     left = @left + win.left
     top  = @top
     @translate(left, top)
+
+    if 0 == @dx
+      @box.style.width = "#{@box.parentElement.offsetWidth}px"
+    else
+      @box.style.left = 0
 
   scroll: ()->
 
   translate: (left, top)->
     transform  = "translate(#{left}px, #{top}px)"
-    @box.style.webkitTransform = transform if head.browser.safari || head.browser.webkit
+    @box.style.webkitTransform = transform
     @box.style.mozTransform = transform if head.browser.mozilla
     @box.style.msTransform = transform if head.browser.ie
     @box.style.oTransform = transform if head.browser.opera

@@ -1,3 +1,11 @@
+scrolls = []
+scroll_to = (elem, is_continue, context)->
+  if is_continue
+    console.log elem
+  else
+    scrolls.push [elem]
+
+
 if gon?.map_reduce?.faces?
   Cache.rule.map_face.set gon.map_reduce.faces
   map_orders = (prop)->
@@ -7,7 +15,7 @@ if gon?.map_reduce?.faces?
       @order (o)-> - order.func(o)
     order
 
-  GUI.if_exist "map_faces", (dom)->
+  GUI.if_exist "#map_faces", (dom)->
     m.module dom, 
       controller: ->
       view: ->
@@ -35,30 +43,29 @@ if gon?.map_reduce?.faces?
             m "div", "♥#{o.sow_auth_id.max_is}"
           ]
 
-  GUI.if_exist "chr_sets", (dom)->
+  GUI.if_exist "#chr_sets", (dom)->
     touch = new GUI.TouchMenu()
     m.module dom,
       controller: ->
       view: ->
         chr_sets = Cache.chr_sets.all
-        m "div", [
-          m ".choice.guide", [
+        m "div", 
+          m ".choice.guide", 
             "キャラセットを選んでみよう "
             m "a.glyphicon.glyphicon-tags", touch.start()
-          ]
           if touch.state()
             m ".drag",
-              m ".contentframe", [
+              m ".contentframe", 
                 for key, o of RAILS.map_faces_orders
                   m "a", touch.btn(Url.prop.order, key), o.caption
+              m ".contentframe", 
                 m "ul", 
                   for cs in chr_sets
                     m "li.btn-block", touch.btn(Url.prop.chr_set, cs._id) , cs.caption
-              ]
-        ]
 
 if gon?.face?
   face = Cache.map_face_detail = gon.face
+  Cache.rule.map_face_story_log.set face.story_logs
   face.name = Cache.faces.find[face.face_id].name
   face.story_id_of_folders = _.groupBy face.story_ids, ([k,count])->
     k.split("-")?[0]
@@ -67,87 +74,81 @@ if gon?.face?
     role = RAILS.gifts[k] || RAILS.roles[k] || {group: "OTHER"}
     RAILS.groups[role.group].name
 
-  GUI.if_exist "summary", (dom)->
+  GUI.if_exist "#summary", (dom)->
     m.module dom,
       controller: ->
       view: ->
-        [ m "h2", face.name + " の活躍"
-          m "h6", 
-            if face.says[0]?
-              [ m "span.code", Timer.date_time_stamp face.says[0].date.min
-                m.trust "&nbsp;〜&nbsp;"
-                m "span.code", Timer.date_time_stamp face.says[0].date.max
-              ]
-          m "table.say.SAY",
-            m "tbody",
-              m "tr", [
-                m "td.img", 
-                  GUI.portrate face.face_id
-                m "td.field", [
-                  m ".msg", [
-                    GUI.letter face.name, [
-                      "全部で"
-                      m "span.mark", face.role.all
-                      "の役職になりました"
-                    ]
-                    for win in face.win.keys
-                      GUI.letter "#{win} x#{face.win.value[win]}回",
-                        for role in face.role_of_wins[win]
-                          rolename = GUI.name.config role[0]
-                          width = 
-                            switch 
-                              when  4 < rolename.length
-                                10.35 # 3.75 * 2 + 0.35
-                              else
-                                 3.75
-                          GUI.inline_item -> [
-                            @center width, rolename
-                            @right  2.5, "x" + role[1]
-                          ]
-                  ]
+        letters = [
+          GUI.letter "", 
+            face.name
+            "全部で"
+            m "span.mark", face.role.all
+            "の役職になりました"
+          for win in face.win.keys
+            GUI.letter "", 
+              "#{win} x#{face.win.value[win]}回"
+              for role in face.role_of_wins[win]
+                rolename = GUI.name.config role[0]
+                width = 
+                  switch 
+                    when  4 < rolename.length
+                      10.35 # 3.75 * 2 + 0.35
+                    else
+                       3.75
+                GUI.inline_item -> [
+                  @center width, rolename
+                  @right  2.5, "x" + role[1]
                 ]
-              ]
         ]
 
-  GUI.if_exist "calc", (dom)->
+        [ m "h2", face.name + " の活躍"
+          if face.says[0]?
+            m "h6", 
+              m "span.code", Timer.date_time_stamp face.says[0].date.min
+              m.trust "&nbsp;〜&nbsp;"
+              m "span.code", Timer.date_time_stamp face.says[0].date.max
+          m "table.say.SAY",
+            m "tbody",
+              m "tr",
+                m "td.img", 
+                  GUI.portrate face.face_id
+                m "td.field",
+                  m ".msg", letters
+        ]
+
+  GUI.if_exist "#calc", (dom)->
     m.module dom,
       controller: ->
       view: ->
-        says_count_lines =
-          [ m "a", {name: "says_count"}
-            m "tr.caution", [
-              m "th.msg", {colspan: 2}, "総合値"
-              m "th.msg", {style: "text-align:right"}, "一番長い発言"
-              m "th.msg", {style: "text-align:right"}, "総文字数"
-              m "th.msg", {style: "text-align:right"}, "総発言回数"
-            ]
-          ]
-        says_calc_lines =
-          [ m "a", {name: "says_calc"}
-            m "tr.caution", [
-              m "th.msg", {colspan: 2}, "平均値"
-              m "th.msg", {style: "text-align:right"}, "／村数"
-              m "th.msg", {style: "text-align:right"}, "文字数"
-              m "th.msg", {style: "text-align:right"}, "発言回数"
-            ]
-          ]
+        says_count_lines = [
+          m "tr.caution", { config: scroll_to },
+            m "th.msg", {colspan: 2}, "総合値"
+            m "th.msg", {style: "text-align:right"}, "一番長い発言"
+            m "th.msg", {style: "text-align:right"}, "総文字数"
+            m "th.msg", {style: "text-align:right"}, "総発言回数"
+        ]
+        says_calc_lines = [
+          m "tr.caution", { config: scroll_to },
+            m "th.msg", {colspan: 2}, "平均値"
+            m "th.msg", {style: "text-align:right"}, "／村数"
+            m "th.msg", {style: "text-align:right"}, "文字数"
+            m "th.msg", {style: "text-align:right"}, "発言回数"
+        ]
         for say in face.says
           says_count_line =
-            m "tr.#{say.logid_head}AY", [
+            m "tr.#{say.logid_head}AY",
               m "th.msg"
               m "th.msg", face.say_titles[say.logid_head]
               m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.max  } 字"
               m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.all  } 字"
               m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.count} 回"
-            ]
           says_calc_line =
-            m "tr.#{say.logid_head}AY", [
+            m "tr.#{say.logid_head}AY",
               m "th.msg"
               m "th.msg", face.say_titles[say.logid_head]
               m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.vil} 村"
               m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.all / say.vil} 字"
               m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.count / say.vil} 回"
-            ]
           says_count_lines.push says_count_line
           says_calc_lines.push says_calc_line
           
@@ -155,192 +156,228 @@ if gon?.face?
           m "table.say.info", says_calc_lines
         ]
 
-  GUI.if_exist "village", (dom)->
+  GUI.if_exist "#village", (dom)->
+    touch = new GUI.TouchMenu()
     m.module dom,
       controller: ->
       view: ->
-        [ m "a", {name: "village"}
-          m ".MAKER.guide", [
-            GUI.letter face.name, [
-              "全部で"
-              m "span.mark", "#{face.folder.all}回"
-              "登場しました。"
-            ]
-            for folder in face.folder.keys
-              GUI.letter "#{folder} x#{face.folder.value[folder]}回", 
-                for story_id in face.story_id_of_folders[folder]
-                  GUI.inline_item -> 
-                    m "a",
-                      style: "display:block; width:#{2.8 + folder.length * 0.65}em; text-align:left;"
-                      href: "http://7korobi.gehirn.ne.jp/stories/#{story_id[0]}.html"
-                    , story_id[0]
-          ]
+        letters = [
+          GUI.letter "", face.name,
+            "全部で"
+            m "span.mark", "#{face.folder.all}回"
+            "登場しました。"
+          for folder in face.folder.keys
+            GUI.letter "", "#{folder} x#{face.folder.value[folder]}回", 
+              for story_id in face.story_id_of_folders[folder]
+                GUI.inline_item -> 
+                  m "a",
+                    style: "display:block; width:#{2.8 + folder.length * 0.65}em; text-align:left;"
+                    href: "//7korobi.gehirn.ne.jp/stories/#{story_id[0]}.html"
+                  , story_id[0]
         ]
+        m ".MAKER.guide",{ config: scroll_to }, letters
 
-  GUI.if_exist "sow_user", (dom)->
+  GUI.if_exist "#sow_user", (dom)->
     m.module dom,
       controller: ->
       view: ->
-        [ m "a", {name: "sow_user"}
-          m ".ADMIN.guide", [
-            GUI.letter face.name, [
-              "全部で"
-              m "span.mark", "#{face.sow_auth_ids.length}人"
-              "が、"
-              m "span.mark", "#{face.sow_auth_id.all}回"
-              "登場しました。"
+        letters = [
+          GUI.letter "", 
+            face.name
+            "全部で"
+            m "span.mark", "#{face.sow_auth_ids.length}人"
+            "が、"
+            m "span.mark", "#{face.sow_auth_id.all}回"
+            "登場しました。"
+          for sow_auth_id in face.sow_auth_ids
+            length = sow_auth_id[0].sjis_length
+            width = 
+              switch 
+                when 17 < length
+                  14.45 # 16.45 = 3.8 * 4 + 1.25
+                when 11 < length
+                  10.25 # 12.25 = 3.8 * 3 + 0.85
+                else
+                   6.0  #  8.0  = 3.8 * 2 + 0.20
+                        #  5.8  = 3.8 * 1 + 2.00
+            GUI.inline_item -> [
+              @right width, sow_auth_id[0]
+              @right 2.0, "x" + sow_auth_id[1]
             ]
-            for sow_auth_id in face.sow_auth_ids
-              length = sow_auth_id[0].sjis_length
-              width = 
-                switch 
-                  when 17 < length
-                    14.45 # 16.45 = 3.8 * 4 + 1.25
-                  when 11 < length
-                    10.25 # 12.25 = 3.8 * 3 + 0.85
-                  else
-                     6.0  #  8.0  = 3.8 * 2 + 0.20
-                          #  5.8  = 3.8 * 1 + 2.00
-              GUI.inline_item -> [
-                @right width, sow_auth_id[0]
-                @right 2.0, "x" + sow_auth_id[1]
-              ]
-          ]
         ]
+        m ".ADMIN.guide",{ config: scroll_to }, letters
 
-GUI.if_exist "buttons", (dom)->
-  m.module dom,
-    controller: ->
-    view: ->
-      m "nav", [
-        m "span",
-          m "a.btn.btn-default.click.glyphicon.glyphicon-search",
-            onclick: ->
-        m "span",
-          m "a.btn.btn-default.click.glyphicon.glyphicon-pencil",
-            onclick: ->
-        for o in []
-          m "span",
-            m "a.btn.click",
-              onclick: ->
-            , o.name
-        m "a.btn.btn-default",
-          onclick: ->
-        , "✗"
-      ]
-  new Layout -12,-1, dom
-
-GUI.if_exist "sayfilter", (dom)->
-  m.module dom,
-    controller: ->
-    view: ->
-      []
-  new Layout   1,-1, dom
-
-GUI.if_exist "topviewer", (dom)->
-  m.module dom,
-    controller: ->
-    view: ->
-      []
-  new Layout   0, 1, dom
-
-GUI.if_exist "css_changer", (dom)->
+GUI.if_exist "#buttons", (dom)->
+  layout = new Layout -12,-1, dom
   touch = new GUI.TouchMenu()
   m.module dom,
     controller: ->
     view: ->
-      [ m "span", [
-          m "a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
-          m "a.mark", touch.btn(Url.prop.theme, "night"), "月夜"
-          m "a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"
-          m "a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"
-          m "a.glyphicon.glyphicon-cog", touch.start()
-        ]
+      m "nav",
+        m "span",
+          m "a.btn.btn-default.click.glyphicon.glyphicon-search",
+            href: "#search"
+        m "span",
+          m "a.btn.btn-default.click.glyphicon.glyphicon-pencil",
+            href: "#pencil"
+        for o in []
+          m "span",
+            m "a.btn.click", o.name
+        m "a.btn.btn-default",
+          touch.start()
+        , "✗"
+
+GUI.if_exist "#sayfilter", (dom)->
+  layout = new Layout   1,-1, dom
+  m.module dom,
+    controller: ->
+    view: ->
+      []
+
+GUI.if_exist "#topviewer", (dom)->
+  layout = new Layout   0, -1, dom
+  m.module dom,
+    controller: ->
+    view: ->
+      []
+
+GUI.if_exist "#css_changer", (dom)->
+  touch = new GUI.TouchMenu()
+  m.module dom,
+    controller: ->
+    view: ->
+      win.do.resize()
+      m "span",
+        m "a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
+        m "a.mark", touch.btn(Url.prop.theme, "night"), "月夜"
+        m "a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"
+        m "a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"
+        m "a.glyphicon.glyphicon-cog", touch.start()
         if touch.state()
           m ".drag",
-            m ".contentframe", touch.cancel(), [
+            m ".contentframe", touch.cancel(),
               m "h6", "幅の広さ"
               m ".form-inline",
-                m ".form-group", [
+                m ".form-group",
                   m "a", touch.btn(Url.prop.width, "mini"), "携帯"
                   m "a", touch.btn(Url.prop.width, "std"),  "普通"
                   m "a", touch.btn(Url.prop.width, "wide"), "広域"
-                ]
               m "h6", "位置"
               m ".form-inline",
-                m ".form-group", [
+                m ".form-group",
                   m "a", touch.btn(Url.prop.layout, "left"),   "左詰"
                   m "a", touch.btn(Url.prop.layout, "center"), "中央"
                   m "a", touch.btn(Url.prop.layout, "right"),  "右詰"
-                ]
               m "h6", "位置"
               m ".form-inline",
-                m ".form-group", [
+                m ".form-group",
                   m "a", touch.btn(Url.prop.font, "large"),   "大判"
                   m "a", touch.btn(Url.prop.font, "novel"),   "明朝"
                   m "a", touch.btn(Url.prop.font, "std"), "ゴシック"
                   m "a", touch.btn(Url.prop.font, "small"),   "繊細"
-                ]
-            ]
-      ]
-
-message = 
-  say: (v)->
-    m "table.say.#{v.mestype}",
-      m "tbody",
-        m "tr", [
-          m "td.img",
-            GUI.portrate v.face_id
-
-          m "td.field",
-            m ".msg", [
-              m "h3.mesname", [
-                m.trust "&nbsp;"
-                m "b",
-                  m.trust v.name
-              ]
-              m "p.text.#{v.style}",
-                m.trust v.log
-              m "p.mes_date",
-                m "span.mark", v.anchor
-            ]
-        ]
-
-  action: (v)->
-    v.updated_timer ||= new Timer v.updated_at,
-      prop: m.prop()
-    m ".#{v.mestype}",
-      m ".action", [
-        m "p.text.#{v.style}", [
-          m "b", m.trust v.name
-          "は、"
-          m.trust v.log
-        ]
-        m "p.mes_date", v.updated_timer.prop()
-      ]
 
 if gon?.villages?
-  GUI.if_exist "villages", (dom)->
+  GUI.if_exist "#villages", (dom)->
     m.module dom,
       controller: ->
       view: ->
-        message.action(v) for v in gon.villages
+        GUI.message.action(v) for v in gon.villages
 
 if gon?.byebyes?
-  GUI.if_exist "byebyes", (dom)->
+  GUI.if_exist "#byebyes", (dom)->
     m.module dom,
       controller: ->
       view: ->
-        message.action(v) for v in gon.byebyes
+        GUI.message.action(v) for v in gon.byebyes
 
 if gon?.history?
-  GUI.if_exist "history", (dom)->
+  GUI.if_exist "#history", (dom)->
     m.module dom,
       controller: ->
       view: ->
-        message.say(v) for v in gon.history
+        GUI.message.say(v) for v in gon.history
 
-GUI.if_exist "headline", (dom)->
+if gon?.stories?
+  Cache.rule.story.set gon.stories
+  GUI.if_exist "#stories", (dom)->
+    touch = new GUI.TouchMenu()
+    folder_touch = new GUI.TouchMenu()
+    m.module dom,
+      controller: ->
+      view: ->
+        icon =
+          if touch.state()
+            "glyphicon-resize-small"
+          else
+            "glyphicon-resize-full"
+        head = ->
+          m "thead",
+            m "tr", 
+              m "th",
+                m "code", touch.start(),
+                  m "i.glyphicon.#{icon}"
+              if touch.state()
+                m "th", "人数"
+              if touch.state()
+                m "th", "ルール"
+
+        m "div",
+          m ".pagenavi.form-inline",
+            m "h6", "検索する。　　　　"
+            m ".form-inline",
+              m "span.btn.btn-default.dropdown-toggle", folder_touch.start(),
+                m "i.glyphicon.glyphicon-book"
+                m "span.caret"
+          if folder_touch.state()
+            m ".drag",
+              m ".contentframe",
+                m "ul", [
+                  for key, _ of Cache.storys.folder
+                    break unless GAME[key]
+                    m "li.btn-block", folder_touch.btn(Url.prop.folder, key), 
+                      GAME[key].nation
+                      m "inf", "(#{Cache.storys.folder[key].length})"
+                  m "li.btn-block", folder_touch.btn(Url.prop.folder, "ALL"),
+                    "- すべて -"
+                    m "inf", "(#{Cache.storys.all.length})"
+                ]
+
+          m "table.table.table-border.table-hover",
+            head()
+            m "tbody",
+              for o in Cache.storys.folder[Url.prop.folder()] || Cache.storys.all
+                if touch.state()
+                  m "tr",
+                    m "td",
+                      m "a",
+                        href: o.link
+                      , m "code.glyphicon.glyphicon-film"
+                      m "kbd.note", o._id
+                      m "a",
+                        href: o.file
+                      , m.trust o.name
+                      o.view.rating
+                      m ".note", " 　　更新 : #{o.view.update_at} #{o.view.update_interval}"
+                      m ".note", o.view.configs
+                      m ".note", o.view.events
+                    m "td.small", "#{o.view.player_length}人"
+                    m "td.small",
+                      m ".note", o.view.say_limit
+                      m ".note", o.view.game_rule
+                else
+                  m "tr",
+                    m "td",
+                      m "a",
+                        href: o.link
+                      , m "code.glyphicon.glyphicon-film"
+                      m "kbd.note", o._id
+                      m "a",
+                        href: o.file
+                      , o.name
+                      o.view.rating
+            head()
+
+GUI.if_exist "#headline", (dom)->
   touch = new GUI.TouchMenu()
   m.module dom,
     controller: ->
@@ -356,33 +393,27 @@ GUI.if_exist "headline", (dom)->
       max_all    += ( max_cafe + max_morphe )
 
       m ".choice",
-        m "table.board", [
-          m "tr", 
-            if touch.state()
-              [ m "th.choice",
-                  colspan: 2,
-                , m "strong", "進行中の村"
-                m "th.no_choice",
-                  colspan: 2,
-                , m "a", touch.start(), "終了した村を見る"
-              ]
-            else
-              [ m "th.no_choice",
-                  colspan: 2,
-                , m "a", touch.start(), "進行中の村を見る"
-                m "th.choice",
-                  colspan: 2,
-                , m "strong", "終了した村"
-              ]
-          m "tr.link", [
+        m "table.board",
+          if touch.state()
+            m "tr",
+              m "th.choice[colspan=2]",
+                m "strong", "進行中の村"
+              m "th.no_choice[colspan=2]",
+                m "a", touch.start(), "終了した村を見る"
+          else
+            m "tr",
+              m "th.no_choice[colspan=2]",
+                m "a", touch.start(), "進行中の村を見る"
+              m "th.choice[colspan=2]",
+                m "strong", "終了した村"
+          m "tr.link",
             m "th.choice", "ロビー"
             m "th.choice", "夢の形"
             m "th.choice", "陰謀"
             m "th.choice", "ＲＰ"
-          ]
           if touch.state()
-            m "tr", [
-              m "td.no_choice", [
+            m "tr",
+              m "td.no_choice",
                 m "a",
                   href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
                 , "lobby"
@@ -391,8 +422,7 @@ GUI.if_exist "headline", (dom)->
                 m "br"
                 m "br"
                 m "br"
-              ]
-              m "td.no_choice", [
+              m "td.no_choice",
                 "#{max_morphe}村:"
                 m "a",
                   href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
@@ -405,8 +435,7 @@ GUI.if_exist "headline", (dom)->
                 m "br"
                 m "br"
                 m "br"
-              ]
-              m "td.no_choice", [
+              m "td.no_choice",
                 "wolf"
                 m "br"
                 "ultimate"
@@ -415,8 +444,7 @@ GUI.if_exist "headline", (dom)->
                 m "br"
                 "cabala"
                 m "br"
-              ]
-              m "td.no_choice", [
+              m "td.no_choice",
                 "role-play"
                 m "br"
                 "RP-advance"
@@ -440,80 +468,71 @@ GUI.if_exist "headline", (dom)->
                 m "a",
                   href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
                 , "ciel"
-              ]
-            ]
           else
-            m "tr", [
-              m "td.no_choice", [
+            m "tr",
+              m "td.no_choice",
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/lobby?folder=LOBBY"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
                 , "lobby"
                 m "br"
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=OFFPARTY"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
                 ,"offparty"
                 m "br"
                 m "br"
                 m "br"
-              ]
-              m "td.no_choice", [
+              m "td.no_choice",
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=MORPHE"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
                 , "morphe"
                 m "br"
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CAFE"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CAFE"
                 , "cafe"
                 m "br"
                 m "br"
                 m "br"
-              ]
-              m "td.no_choice", [
+              m "td.no_choice",
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=WOLF"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
                 , "wolf"
                 m "br"
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=ULTIMATE"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
                 , "ultimate"
                 m "br"
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=ALLSTAR"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
                 , "allstar"
                 m "br"
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CABALA"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
                 , "cabala"
                 m "br"
-              ]
-              m "td.no_choice", [
+              m "td.no_choice", 
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=RP"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=RP"
                 , "role-play"
                 m "br"
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=PRETENSE"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
                 , "advance"
                 m "br"
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=PERJURY"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
                 , "perjury"
                 m "br"
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=XEBEC"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
                 , "xebec"
                 m "br"
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CRAZY"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
                 , "crazy"
                 m "br"
                 m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CIEL"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
                 , "ciel"
-              ]
-            ]
-        ]
-
 
 
 ###
@@ -590,7 +609,7 @@ GUI.if_exist "headline", (dom)->
         a.mark.click.glyphicon.glyphicon-pencil(ng-click="go.form()")
 ###
 
-GUI.if_exist "to_root", (dom)->
+GUI.if_exist "#to_root", (dom)->
   day_or_night = m.prop()
   m.module document.getElementById("to_root"),
     controller: ->
@@ -603,7 +622,7 @@ GUI.if_exist "to_root", (dom)->
 
     view: ->
       [ m "a",
-          href: "http://giji.check.jp/"
+          href: "//giji.check.jp/"
         , GUI.title Url.prop.w(), Url.prop.theme(), day_or_night()
       ]
 

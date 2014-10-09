@@ -6325,354 +6325,6 @@ GAME = {
     "nation": "人狼議事オフ相談所",
     "epi_url": "/kitchen/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50",
     "vid_code": "P"
-  },
-  "MSHE": {
-    "server": "mshe.skr.jp",
-    "oldlog": "/?cmd=log",
-    "livelog": "/index.cgi",
-    "folder": "MSHE",
-    "info_url": "/",
-    "nation": "人狼BBQ",
-    "epi_url": "/"
-  },
-  "APH": {
-    "server": "www.waonwolf.net",
-    "oldlog": "/aph/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/aph/sow.cgi?cmd=rss",
-    "folder": "APH",
-    "info_url": "/aph/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "WorldWerewolfWar",
-    "epi_url": "/aph/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "AOZIRU": {
-    "server": "wolfao.sakura.ne.jp",
-    "live_url": "/wolf/index.cgi?vid=%s\u0026date=1",
-    "oldlog": "/wolf/index.cgi?villist=all",
-    "livelog": "/wolf/index.cgi",
-    "folder": "AOZIRU",
-    "info_url": "/wolf/index.cgi?vid=%s\u0026date=0",
-    "nation": "青汁天国",
-    "epi_url": "/"
-  },
-  "TIS": {
-    "server": "www5.atpages.jp",
-    "oldlog": "/tis/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/tis/sow/sow.cgi?cmd=rss",
-    "folder": "TIS",
-    "info_url": "/tis/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼物語 静寂の国",
-    "epi_url": "/tis/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "O8O8O0O0": {
-    "server": "o8o8.o0o0.jp",
-    "oldlog": "/wolf/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/wolf/sow.cgi?cmd=rss",
-    "folder": "O8O8O0O0",
-    "info_url": "/wolf/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼物語暗黒編",
-    "epi_url": "/wolf/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "EUROREAL": {
-    "server": "euros.sakura.ne.jp",
-    "oldlog": "/real/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/real/sow.cgi?cmd=rss",
-    "folder": "EUROREAL",
-    "info_url": "/real/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼物語@リア充",
-    "epi_url": "/real/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "TENGOKU": {
-    "server": "wolften.sakura.ne.jp",
-    "live_url": "/?vid=%s\u0026date=1",
-    "oldlog": "/?villist=all",
-    "livelog": "/",
-    "folder": "TENGOKU",
-    "info_url": "/?vid=%s\u0026date=0",
-    "nation": "人狼天国",
-    "epi_url": "/"
-  },
-  "MELON": {
-    "server": "melon-cirrus.sakura.ne.jp",
-    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/sow/sow.cgi?cmd=rss",
-    "folder": "MELON",
-    "info_url": "/sow/sow.cgi?ua=mb\u0026v=%s\u0026cmd=vinfo",
-    "nation": "人狼物語瓜科国",
-    "epi_url": "/sow/sow.cgi?ua=mb\u0026v=%s\u0026t=%s\u0026mv=p\u0026n=1\u0026r=30"
-  },
-  "RINNE": {
-    "server": "monooki.sakura.ne.jp",
-    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/sow/sow.cgi?cmd=rss",
-    "folder": "RINNE",
-    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼輪廻",
-    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "EUROSOW": {
-    "server": "euros.sakura.ne.jp",
-    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/sow/sow.cgi?cmd=rss",
-    "folder": "EUROSOW",
-    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼物語@欧州",
-    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "BARA": {
-    "server": "lup.lunare.org",
-    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/sow/sow.cgi?cmd=rss",
-    "folder": "BARA",
-    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼物語*薔薇の下国",
-    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "ENDLESSLOOP": {
-    "server": "endlessloop.skr.jp",
-    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/sow/sow.cgi?cmd=rss",
-    "folder": "ENDLESSLOOP",
-    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "天空の回廊",
-    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "MONSTERS": {
-    "server": "marinonet.org",
-    "oldlog": "/webwerewolf/cgi_wwwolf.cgi?mode=log",
-    "livelog": "/webwerewolf/rss.cgi",
-    "folder": "MONSTERS",
-    "info_url": "/webwerewolf/cgi_wwwolf.cgi?VILLAGENO=%s\u0026STORYTYPE=1\u0026TXTLOGIN=1\u0026COMMAND=LOGVIEW",
-    "nation": "Monster's Village",
-    "epi_url": "/webwerewolf/cgi_wwwolf.cgi?VILLAGENO=%s\u0026STORYTYPE=1\u0026TXTLOGIN=1\u0026COMMAND=LOGVIEW"
-  },
-  "HIGURASHI": {
-    "server": "tkido.com",
-    "oldlog": "/h_jinro/log_index.html",
-    "livelog": "/h_jinro/game.php",
-    "folder": "HIGURASHI",
-    "info_url": "/h_jinro/log/%05d00a.html",
-    "nation": "ひぐらし人狼",
-    "epi_url": "/h_jinro/log/%05d%02da.html"
-  },
-  "SEILEITOH": {
-    "server": "seileitoh.sakura.ne.jp",
-    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/sow/sow.cgi?cmd=rss",
-    "folder": "SEILEITOH",
-    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼・青玲学園",
-    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "GUTA": {
-    "server": "www3.marimo.or.jp",
-    "oldlog": "/~fgmaster/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "folder": "GUTA",
-    "info_url": "/~fgmaster/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼物語ぐた国",
-    "epi_url": "/~fgmaster/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "TENKEY": {
-    "server": "www5.atpages.jp",
-    "live_url": "/~euro/ten/index.cgi?vid=%s\u0026date=1",
-    "oldlog": "/~euro/ten/index.cgi?villist=all",
-    "livelog": "/~euro/ten/index.cgi",
-    "folder": "TENKEY",
-    "info_url": "/~euro/ten/index.cgi?vid=%s\u0026date=0",
-    "nation": "錠前天国",
-    "epi_url": "/"
-  },
-  "PLUM": {
-    "server": "w5.oroti.net",
-    "oldlog": "/~plum/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/~plum/sow/sow.cgi?cmd=rss",
-    "folder": "PLUM",
-    "info_url": "/~plum/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼梅暦",
-    "epi_url": "/~plum/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "SEBAS": {
-    "server": "sebas.chips.jp",
-    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/sow/sow.cgi?cmd=rss",
-    "folder": "SEBAS",
-    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼物語執事国",
-    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "MEBIUS": {
-    "server": "tkido.com",
-    "oldlog": "/m_jinro/log/index.html",
-    "livelog": "/m_jinro/game.php",
-    "folder": "MEBIUS",
-    "info_url": "/m_jinro/log/%05d00a.html",
-    "nation": "メビウス人狼",
-    "epi_url": "/m_jinro/log/%05d%02da.html"
-  },
-  "HAMYORON": {
-    "server": "hamyoron.s262.xrea.com",
-    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/sow/sow.cgi?cmd=rss",
-    "folder": "HAMYORON",
-    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼物語狼と踊れ",
-    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "GUTALUTIMATE": {
-    "server": "www3.marimo.or.jp",
-    "oldlog": "/~fgmaster/ultimate/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "folder": "GUTALUTIMATE",
-    "info_url": "/~fgmaster/ultimate/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼物語ぐたるてぃめっと",
-    "epi_url": "/~fgmaster/ultimate/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "YOA": {
-    "server": "yoa.crywlf.com",
-    "live_url": "/ten/index.cgi?vid=%s\u0026date=1",
-    "oldlog": "/ten/index.cgi?villist=all",
-    "livelog": "/ten/index.cgi",
-    "folder": "YOA",
-    "info_url": "/ten/index.cgi?vid=%s\u0026date=0",
-    "nation": "ヨア国",
-    "epi_url": "/"
-  },
-  "SCHICKSAL": {
-    "server": "schicksal.sakura.ne.jp",
-    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/sow/sow.cgi?cmd=rss",
-    "folder": "SCHICKSAL",
-    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼物語-幻夢-",
-    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "THJINROU": {
-    "server": "thjinrou.sakura.ne.jp",
-    "oldlog": "/gamelog.php",
-    "livelog": "/jinrou.php",
-    "folder": "THJINROU",
-    "info_url": "/gamelog.php",
-    "nation": "東方人狼裁",
-    "epi_url": "/gamelog.php"
-  },
-  "NACHT": {
-    "server": "wolf.nacht.jp",
-    "oldlog": "/sw/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/sw/sow.cgi?cmd=rss",
-    "folder": "NACHT",
-    "info_url": "/sw/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "Geschichte von Werwolf\u003Cbr\u003E《SchwarzWeiss》   ",
-    "epi_url": "/sw/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "GUTA_CABALA": {
-    "server": "www3.marimo.or.jp",
-    "oldlog": "/~fgmaster/cabala/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/~fgmaster/cabala/sow.cgi?cmd=rss",
-    "folder": "GUTA_CABALA",
-    "info_url": "/~fgmaster/cabala/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "人狼物語ぐたるてぃめっと",
-    "epi_url": "/~fgmaster/cabala/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "JINROTTER": {
-    "server": "jinrotter.ruawerewolf.net",
-    "live_url": "/?vid=%s\u0026date=1",
-    "oldlog": "/?villist=all",
-    "livelog": "/",
-    "folder": "JINROTTER",
-    "info_url": "/?vid=%s\u0026date=0",
-    "nation": "人狼ったー",
-    "epi_url": "/"
-  },
-  "LOVESICK": {
-    "server": "werewolf.lovesick.jp",
-    "oldlog": "/sow/sow.cgi?cmd=oldlog\u0026rowall=on",
-    "livelog": "/sow/sow.cgi?cmd=rss",
-    "folder": "LOVESICK",
-    "info_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026cmd=vinfo",
-    "nation": "汝は人狼なりや？\u003Cbr\u003ELOVE SICK ",
-    "epi_url": "/sow/sow.cgi?ua=mb\u0026vid=%s\u0026turn=%s\u0026move=page\u0026pageno=1\u0026row=50"
-  },
-  "BBS": {
-    "folder": "BBS",
-    "nation": "人狼BBS:",
-    "server": "ninjinix.x0.com",
-    "oldlog": "/wolf/index.rb?cmd=log",
-    "info_url": "/wolf/index.rb?vid=%s\u0026meslog=%s_progress_0",
-    "epi_url": "/wolf/index.rb?vid=%s\u0026meslog=%s_party_%s"
-  },
-  "BBS_A": {
-    "folder": "BBS_A",
-    "nation": "人狼BBS:A",
-    "server": "ninjinix.x0.com",
-    "oldlog": "/wolfa/index.rb?cmd=log",
-    "info_url": "/wolfa/index.rb?vid=%s\u0026meslog=%s_progress_0",
-    "epi_url": "/wolfa/index.rb?vid=%s\u0026meslog=%s_party_%s"
-  },
-  "BBS_B": {
-    "folder": "BBS_B",
-    "nation": "人狼BBS:B",
-    "server": "ninjinix.x0.com",
-    "oldlog": "/wolfb/index.rb?cmd=log",
-    "info_url": "/wolfb/index.rb?vid=%s\u0026meslog=%s_progress_0",
-    "epi_url": "/wolfb/index.rb?vid=%s\u0026meslog=%s_party_%s"
-  },
-  "BBS_C": {
-    "folder": "BBS_C",
-    "nation": "人狼BBS:C",
-    "server": "ninjinix.x0.com",
-    "oldlog": "/wolfc/index.rb?cmd=log",
-    "info_url": "/wolfc/index.rb?vid=%s\u0026meslog=%s_progress_0",
-    "epi_url": "/wolfc/index.rb?vid=%s\u0026meslog=%s_party_%s"
-  },
-  "BBS_D": {
-    "folder": "BBS_D",
-    "nation": "人狼BBS:D",
-    "server": "ninjinix.x0.com",
-    "oldlog": "/wolfd/index.rb?cmd=log",
-    "info_url": "/wolfd/index.rb?vid=%s\u0026meslog=%s_progress_0",
-    "epi_url": "/wolfd/index.rb?vid=%s\u0026meslog=%s_party_%s"
-  },
-  "BBS_E": {
-    "folder": "BBS_E",
-    "nation": "人狼BBS:E",
-    "server": "ninjinix.x0.com",
-    "oldlog": "/wolfe/index.rb?cmd=log",
-    "info_url": "/wolfe/index.rb?vid=%s\u0026meslog=%s_progress_0",
-    "epi_url": "/wolfe/index.rb?vid=%s\u0026meslog=%s_party_%s"
-  },
-  "BBS_F": {
-    "folder": "BBS_F",
-    "nation": "人狼BBS:F",
-    "server": "ninjin002.x0.com",
-    "oldlog": "/wolff/index.rb?cmd=log",
-    "info_url": "/wolff/index.rb?vid=%s\u0026meslog=%s_progress_0",
-    "epi_url": "/wolff/index.rb?vid=%s\u0026meslog=%s_party_%s"
-  },
-  "BBS_G": {
-    "folder": "BBS_G",
-    "nation": "人狼BBS:G",
-    "server": "www.wolfg.x0.com",
-    "livelog": "/",
-    "live_url": "/index.rb?vid=%s\u0026#bottom",
-    "oldlog": "/index.rb?cmd=log",
-    "info_url": "/index.rb?vid=%s\u0026meslog=000_progress",
-    "epi_url": "/index.rb?vid=%s\u0026meslog=%s_party"
-  },
-  "BBS_Z": {
-    "folder": "BBS_Z",
-    "nation": "人狼BBS:Z",
-    "server": "ninjinix.x0.com",
-    "oldlog": "/wolfz/index.rb?cmd=log",
-    "info_url": "/wolfz/index.rb?vid=%s\u0026meslog=%s_progress_0",
-    "epi_url": "/wolfz/index.rb?vid=%s\u0026meslog=%s_party_%s"
-  },
-  "SUI_A": {
-    "folder": "SUI_A",
-    "nation": "推理と説得:A",
-    "server": "sui.sib.jp",
-    "livelog": "/",
-    "live_url": "/pc/view/%s",
-    "oldlog": "/pc/index_kako/",
-    "info_url": "/pc/view_kako/%s/1/all/WRBG",
-    "epi_url": "/pc/view_kako/%s/%s/all/WRBG"
   }
 };
 var _ref;
@@ -6683,13 +6335,16 @@ Url.bind = LOCATION.bind;
 
 Url.routes = {
   search: {
+    stories: new Url("folder=:folder", {
+      unmatch: "?"
+    }),
     shape: new Url("shape=:chr_set-:order", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) && "?"
     }),
     css: new Url("css=:theme-:width-:layout-:font", {
       cookie: {
         time: 12,
-        path: "/rails"
+        path: "/"
       },
       unmatch: "?",
       change: function(params) {
@@ -6735,7 +6390,83 @@ new Cache.Rule("map_face").schema(function() {
     return o.chr_set_ids;
   });
 });
-var face, map_orders, message, _ref;
+
+new Cache.Rule("map_face_story_log").schema(function() {
+  this.scope("folder", function(o) {
+    return [o.folder];
+  });
+  this.fields({
+    _id: function(o) {
+      o._id = o.logid_head;
+      return o.folder = o.logid_head.split("-")[0].toUpperCase();
+    }
+  });
+  return this.order(function(o) {
+    return -o.date.max;
+  });
+});
+
+new Cache.Rule("story").schema(function() {
+  var caption;
+  this.scope("folder", function(o) {
+    return [o.folder];
+  });
+  this.scope("game_rule", function(o) {
+    return [o.view.game_rule];
+  });
+  this.scope("say_limit", function(o) {
+    return [o.view.say_limit];
+  });
+  this.scope("update_at", function(o) {
+    return [o.view.update_at];
+  });
+  this.scope("update_interval", function(o) {
+    return [o.view.update_interval];
+  });
+  this.scope("player_length", function(o) {
+    return [o.view.player_length];
+  });
+  caption = function(field, key) {
+    var data;
+    data = field[key];
+    if (data) {
+      return data.CAPTION;
+    } else {
+      return null;
+    }
+  };
+  return this.fields({
+    _id: function(o) {
+      return o.view = {
+        rating: m("img", {
+          src: "//7korobi.gehirn.ne.jp/images/icon/cd_" + o.rating + ".png"
+        }),
+        update_at: Timer.hhmm(o.upd.hour, o.upd.minute),
+        update_interval: "" + (o.upd.interval * 24) + "時間",
+        player_length: o.vpl.last,
+        configs: GUI.names.config(o.card.config, function(name, size) {
+          return m("span.mark", "" + name + "x" + size);
+        }),
+        events: GUI.names.config(o.card.event, function(name, size) {
+          return m("span.mark", "" + name + "x" + size);
+        }),
+        say_limit: caption(RAILS.saycnt, o.type.say) || "――",
+        game_rule: caption(RAILS.game_rule, o.type.game) || "タブラの人狼"
+      };
+    }
+  });
+});
+var face, map_orders, scroll_to, scrolls, _ref;
+
+scrolls = [];
+
+scroll_to = function(elem, is_continue, context) {
+  if (is_continue) {
+    return console.log(elem);
+  } else {
+    return scrolls.push([elem]);
+  }
+};
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.map_face.set(gon.map_reduce.faces);
@@ -6753,7 +6484,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     });
     return order;
   };
-  GUI.if_exist("map_faces", function(dom) {
+  GUI.if_exist("#map_faces", function(dom) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
@@ -6777,7 +6508,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
       }
     });
   });
-  GUI.if_exist("chr_sets", function(dom) {
+  GUI.if_exist("#chr_sets", function(dom) {
     var touch;
     touch = new GUI.TouchMenu();
     return m.module(dom, {
@@ -6785,28 +6516,24 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
       view: function() {
         var chr_sets, cs, key, o;
         chr_sets = Cache.chr_sets.all;
-        return m("div", [
-          m(".choice.guide", ["キャラセットを選んでみよう ", m("a.glyphicon.glyphicon-tags", touch.start())]), touch.state() ? m(".drag", m(".contentframe", [
-            (function() {
-              var _ref1, _results;
-              _ref1 = RAILS.map_faces_orders;
-              _results = [];
-              for (key in _ref1) {
-                o = _ref1[key];
-                _results.push(m("a", touch.btn(Url.prop.order, key), o.caption));
-              }
-              return _results;
-            })(), m("ul", (function() {
-              var _i, _len, _results;
-              _results = [];
-              for (_i = 0, _len = chr_sets.length; _i < _len; _i++) {
-                cs = chr_sets[_i];
-                _results.push(m("li.btn-block", touch.btn(Url.prop.chr_set, cs._id), cs.caption));
-              }
-              return _results;
-            })())
-          ])) : void 0
-        ]);
+        return m("div", m(".choice.guide", "キャラセットを選んでみよう ", m("a.glyphicon.glyphicon-tags", touch.start())), touch.state() ? m(".drag", m(".contentframe", (function() {
+          var _ref1, _results;
+          _ref1 = RAILS.map_faces_orders;
+          _results = [];
+          for (key in _ref1) {
+            o = _ref1[key];
+            _results.push(m("a", touch.btn(Url.prop.order, key), o.caption));
+          }
+          return _results;
+        })()), m(".contentframe", m("ul", (function() {
+          var _i, _len, _results;
+          _results = [];
+          for (_i = 0, _len = chr_sets.length; _i < _len; _i++) {
+            cs = chr_sets[_i];
+            _results.push(m("li.btn-block", touch.btn(Url.prop.chr_set, cs._id), cs.caption));
+          }
+          return _results;
+        })()))) : void 0);
       }
     });
   });
@@ -6814,6 +6541,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
   face = Cache.map_face_detail = gon.face;
+  Cache.rule.map_face_story_log.set(face.story_logs);
   face.name = Cache.faces.find[face.face_id].name;
   face.story_id_of_folders = _.groupBy(face.story_ids, function(_arg) {
     var count, k, _ref1;
@@ -6828,108 +6556,95 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
     };
     return RAILS.groups[role.group].name;
   });
-  GUI.if_exist("summary", function(dom) {
+  GUI.if_exist("#summary", function(dom) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var role, rolename, width, win;
-        return [
-          m("h2", face.name + " の活躍"), m("h6", face.says[0] != null ? [m("span.code", Timer.date_time_stamp(face.says[0].date.min)), m.trust("&nbsp;〜&nbsp;"), m("span.code", Timer.date_time_stamp(face.says[0].date.max))] : void 0), m("table.say.SAY", m("tbody", m("tr", [
-            m("td.img", GUI.portrate(face.face_id)), m("td.field", [
-              m(".msg", [
-                GUI.letter(face.name, ["全部で", m("span.mark", face.role.all), "の役職になりました"]), (function() {
-                  var _i, _len, _ref1, _results;
-                  _ref1 = face.win.keys;
-                  _results = [];
-                  for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-                    win = _ref1[_i];
-                    _results.push(GUI.letter("" + win + " x" + face.win.value[win] + "回", (function() {
-                      var _j, _len1, _ref2, _results1;
-                      _ref2 = face.role_of_wins[win];
-                      _results1 = [];
-                      for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-                        role = _ref2[_j];
-                        rolename = GUI.name.config(role[0]);
-                        width = (function() {
-                          switch (false) {
-                            case !(4 < rolename.length):
-                              return 10.35;
-                            default:
-                              return 3.75;
-                          }
-                        })();
-                        _results1.push(GUI.inline_item(function() {
-                          return [this.center(width, rolename), this.right(2.5, "x" + role[1])];
-                        }));
-                      }
-                      return _results1;
-                    })()));
-                  }
-                  return _results;
-                })()
-              ])
-            ])
-          ])))
+        var letters, role, rolename, width, win;
+        letters = [
+          GUI.letter("", face.name, "全部で", m("span.mark", face.role.all), "の役職になりました"), (function() {
+            var _i, _len, _ref1, _results;
+            _ref1 = face.win.keys;
+            _results = [];
+            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+              win = _ref1[_i];
+              _results.push(GUI.letter("", "" + win + " x" + face.win.value[win] + "回", (function() {
+                var _j, _len1, _ref2, _results1;
+                _ref2 = face.role_of_wins[win];
+                _results1 = [];
+                for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+                  role = _ref2[_j];
+                  rolename = GUI.name.config(role[0]);
+                  width = (function() {
+                    switch (false) {
+                      case !(4 < rolename.length):
+                        return 10.35;
+                      default:
+                        return 3.75;
+                    }
+                  })();
+                  _results1.push(GUI.inline_item(function() {
+                    return [this.center(width, rolename), this.right(2.5, "x" + role[1])];
+                  }));
+                }
+                return _results1;
+              })()));
+            }
+            return _results;
+          })()
         ];
+        return [m("h2", face.name + " の活躍"), face.says[0] != null ? m("h6", m("span.code", Timer.date_time_stamp(face.says[0].date.min)), m.trust("&nbsp;〜&nbsp;"), m("span.code", Timer.date_time_stamp(face.says[0].date.max))) : void 0, m("table.say.SAY", m("tbody", m("tr", m("td.img", GUI.portrate(face.face_id)), m("td.field", m(".msg", letters)))))];
       }
     });
   });
-  GUI.if_exist("calc", function(dom) {
+  GUI.if_exist("#calc", function(dom) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
         var say, says_calc_line, says_calc_lines, says_count_line, says_count_lines, _i, _len, _ref1;
         says_count_lines = [
-          m("a", {
-            name: "says_count"
-          }), m("tr.caution", [
-            m("th.msg", {
-              colspan: 2
-            }, "総合値"), m("th.msg", {
-              style: "text-align:right"
-            }, "一番長い発言"), m("th.msg", {
-              style: "text-align:right"
-            }, "総文字数"), m("th.msg", {
-              style: "text-align:right"
-            }, "総発言回数")
-          ])
+          m("tr.caution", {
+            config: scroll_to
+          }, m("th.msg", {
+            colspan: 2
+          }, "総合値"), m("th.msg", {
+            style: "text-align:right"
+          }, "一番長い発言"), m("th.msg", {
+            style: "text-align:right"
+          }, "総文字数"), m("th.msg", {
+            style: "text-align:right"
+          }, "総発言回数"))
         ];
         says_calc_lines = [
-          m("a", {
-            name: "says_calc"
-          }), m("tr.caution", [
-            m("th.msg", {
-              colspan: 2
-            }, "平均値"), m("th.msg", {
-              style: "text-align:right"
-            }, "／村数"), m("th.msg", {
-              style: "text-align:right"
-            }, "文字数"), m("th.msg", {
-              style: "text-align:right"
-            }, "発言回数")
-          ])
+          m("tr.caution", {
+            config: scroll_to
+          }, m("th.msg", {
+            colspan: 2
+          }, "平均値"), m("th.msg", {
+            style: "text-align:right"
+          }, "／村数"), m("th.msg", {
+            style: "text-align:right"
+          }, "文字数"), m("th.msg", {
+            style: "text-align:right"
+          }, "発言回数"))
         ];
         _ref1 = face.says;
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           say = _ref1[_i];
-          says_count_line = m("tr." + say.logid_head + "AY", [
-            m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
-              style: "text-align:right"
-            }, "" + (GUI.comma(say.max)) + " 字"), m("th.msg", {
-              style: "text-align:right"
-            }, "" + (GUI.comma(say.all)) + " 字"), m("th.msg", {
-              style: "text-align:right"
-            }, "" + (GUI.comma(say.count)) + " 回")
-          ]);
-          says_calc_line = m("tr." + say.logid_head + "AY", [
-            m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
-              style: "text-align:right"
-            }, "" + (GUI.comma(say.vil)) + " 村"), m("th.msg", {
-              style: "text-align:right"
-            }, "" + (GUI.comma(say.all / say.vil)) + " 字"), m("th.msg", {
-              style: "text-align:right"
-            }, "" + (GUI.comma(say.count / say.vil)) + " 回")
-          ]);
+          says_count_line = m("tr." + say.logid_head + "AY", m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
+            style: "text-align:right"
+          }, "" + (GUI.comma(say.max)) + " 字"), m("th.msg", {
+            style: "text-align:right"
+          }, "" + (GUI.comma(say.all)) + " 字"), m("th.msg", {
+            style: "text-align:right"
+          }, "" + (GUI.comma(say.count)) + " 回"));
+          says_calc_line = m("tr." + say.logid_head + "AY", m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
+            style: "text-align:right"
+          }, "" + (GUI.comma(say.vil)) + " 村"), m("th.msg", {
+            style: "text-align:right"
+          }, "" + (GUI.comma(say.all / say.vil)) + " 字"), m("th.msg", {
+            style: "text-align:right"
+          }, "" + (GUI.comma(say.count / say.vil)) + " 回"));
           says_count_lines.push(says_count_line);
           says_calc_lines.push(says_calc_line);
         }
@@ -6937,158 +6652,145 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
       }
     });
   });
-  GUI.if_exist("village", function(dom) {
+  GUI.if_exist("#village", function(dom) {
+    var touch;
+    touch = new GUI.TouchMenu();
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var folder, story_id;
-        return [
-          m("a", {
-            name: "village"
-          }), m(".MAKER.guide", [
-            GUI.letter(face.name, ["全部で", m("span.mark", "" + face.folder.all + "回"), "登場しました。"]), (function() {
-              var _i, _len, _ref1, _results;
-              _ref1 = face.folder.keys;
-              _results = [];
-              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-                folder = _ref1[_i];
-                _results.push(GUI.letter("" + folder + " x" + face.folder.value[folder] + "回", (function() {
-                  var _j, _len1, _ref2, _results1;
-                  _ref2 = face.story_id_of_folders[folder];
-                  _results1 = [];
-                  for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-                    story_id = _ref2[_j];
-                    _results1.push(GUI.inline_item(function() {
-                      return m("a", {
-                        style: "display:block; width:" + (2.8 + folder.length * 0.65) + "em; text-align:left;",
-                        href: "http://7korobi.gehirn.ne.jp/stories/" + story_id[0] + ".html"
-                      }, story_id[0]);
-                    }));
-                  }
-                  return _results1;
-                })()));
-              }
-              return _results;
-            })()
-          ])
+        var folder, letters, story_id;
+        letters = [
+          GUI.letter("", face.name, "全部で", m("span.mark", "" + face.folder.all + "回"), "登場しました。"), (function() {
+            var _i, _len, _ref1, _results;
+            _ref1 = face.folder.keys;
+            _results = [];
+            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+              folder = _ref1[_i];
+              _results.push(GUI.letter("", "" + folder + " x" + face.folder.value[folder] + "回", (function() {
+                var _j, _len1, _ref2, _results1;
+                _ref2 = face.story_id_of_folders[folder];
+                _results1 = [];
+                for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+                  story_id = _ref2[_j];
+                  _results1.push(GUI.inline_item(function() {
+                    return m("a", {
+                      style: "display:block; width:" + (2.8 + folder.length * 0.65) + "em; text-align:left;",
+                      href: "//7korobi.gehirn.ne.jp/stories/" + story_id[0] + ".html"
+                    }, story_id[0]);
+                  }));
+                }
+                return _results1;
+              })()));
+            }
+            return _results;
+          })()
         ];
+        return m(".MAKER.guide", {
+          config: scroll_to
+        }, letters);
       }
     });
   });
-  GUI.if_exist("sow_user", function(dom) {
+  GUI.if_exist("#sow_user", function(dom) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var length, sow_auth_id, width;
-        return [
-          m("a", {
-            name: "sow_user"
-          }), m(".ADMIN.guide", [
-            GUI.letter(face.name, ["全部で", m("span.mark", "" + face.sow_auth_ids.length + "人"), "が、", m("span.mark", "" + face.sow_auth_id.all + "回"), "登場しました。"]), (function() {
-              var _i, _len, _ref1, _results;
-              _ref1 = face.sow_auth_ids;
-              _results = [];
-              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-                sow_auth_id = _ref1[_i];
-                length = sow_auth_id[0].sjis_length;
-                width = (function() {
-                  switch (false) {
-                    case !(17 < length):
-                      return 14.45;
-                    case !(11 < length):
-                      return 10.25;
-                    default:
-                      return 6.0;
-                  }
-                })();
-                _results.push(GUI.inline_item(function() {
-                  return [this.right(width, sow_auth_id[0]), this.right(2.0, "x" + sow_auth_id[1])];
-                }));
-              }
-              return _results;
-            })()
-          ])
+        var length, letters, sow_auth_id, width;
+        letters = [
+          GUI.letter("", face.name, "全部で", m("span.mark", "" + face.sow_auth_ids.length + "人"), "が、", m("span.mark", "" + face.sow_auth_id.all + "回"), "登場しました。"), (function() {
+            var _i, _len, _ref1, _results;
+            _ref1 = face.sow_auth_ids;
+            _results = [];
+            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+              sow_auth_id = _ref1[_i];
+              length = sow_auth_id[0].sjis_length;
+              width = (function() {
+                switch (false) {
+                  case !(17 < length):
+                    return 14.45;
+                  case !(11 < length):
+                    return 10.25;
+                  default:
+                    return 6.0;
+                }
+              })();
+              _results.push(GUI.inline_item(function() {
+                return [this.right(width, sow_auth_id[0]), this.right(2.0, "x" + sow_auth_id[1])];
+              }));
+            }
+            return _results;
+          })()
         ];
+        return m(".ADMIN.guide", {
+          config: scroll_to
+        }, letters);
       }
     });
   });
 }
 
-GUI.if_exist("buttons", function(dom) {
-  m.module(dom, {
+GUI.if_exist("#buttons", function(dom) {
+  var layout, touch;
+  layout = new Layout(-12, -1, dom);
+  touch = new GUI.TouchMenu();
+  return m.module(dom, {
     controller: function() {},
     view: function() {
       var o;
-      return m("nav", [
-        m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-search", {
-          onclick: function() {}
-        })), m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-pencil", {
-          onclick: function() {}
-        })), (function() {
-          var _i, _len, _ref1, _results;
-          _ref1 = [];
-          _results = [];
-          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-            o = _ref1[_i];
-            _results.push(m("span", m("a.btn.click", {
-              onclick: function() {}
-            }, o.name)));
-          }
-          return _results;
-        })(), m("a.btn.btn-default", {
-          onclick: function() {}
-        }, "✗")
-      ]);
+      return m("nav", m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-search", {
+        href: "#search"
+      })), m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-pencil", {
+        href: "#pencil"
+      })), (function() {
+        var _i, _len, _ref1, _results;
+        _ref1 = [];
+        _results = [];
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          o = _ref1[_i];
+          _results.push(m("span", m("a.btn.click", o.name)));
+        }
+        return _results;
+      })(), m("a.btn.btn-default", touch.start(), "✗"));
     }
   });
-  return new Layout(-12, -1, dom);
 });
 
-GUI.if_exist("sayfilter", function(dom) {
-  m.module(dom, {
+GUI.if_exist("#sayfilter", function(dom) {
+  var layout;
+  layout = new Layout(1, -1, dom);
+  return m.module(dom, {
     controller: function() {},
     view: function() {
       return [];
     }
   });
-  return new Layout(1, -1, dom);
 });
 
-GUI.if_exist("topviewer", function(dom) {
-  m.module(dom, {
+GUI.if_exist("#topviewer", function(dom) {
+  var layout;
+  layout = new Layout(0, -1, dom);
+  return m.module(dom, {
     controller: function() {},
     view: function() {
       return [];
     }
   });
-  return new Layout(0, 1, dom);
 });
 
-GUI.if_exist("css_changer", function(dom) {
+GUI.if_exist("#css_changer", function(dom) {
   var touch;
   touch = new GUI.TouchMenu();
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      return [m("span", [m("a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a.mark", touch.btn(Url.prop.theme, "night"), "月夜"), m("a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"), m("a.glyphicon.glyphicon-cog", touch.start())]), touch.state() ? m(".drag", m(".contentframe", touch.cancel(), [m("h6", "幅の広さ"), m(".form-inline", m(".form-group", [m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "wide"), "広域")])), m("h6", "位置"), m(".form-inline", m(".form-group", [m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰")])), m("h6", "位置"), m(".form-inline", m(".form-group", [m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細")]))])) : void 0];
+      win["do"].resize();
+      return m("span", m("a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a.mark", touch.btn(Url.prop.theme, "night"), "月夜"), m("a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"), m("a.glyphicon.glyphicon-cog", touch.start()), touch.state() ? m(".drag", m(".contentframe", touch.cancel(), m("h6", "幅の広さ"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "wide"), "広域"))), m("h6", "位置"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰"))), m("h6", "位置"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細"))))) : void 0);
     }
   });
 });
 
-message = {
-  say: function(v) {
-    return m("table.say." + v.mestype, m("tbody", m("tr", [m("td.img", GUI.portrate(v.face_id)), m("td.field", m(".msg", [m("h3.mesname", [m.trust("&nbsp;"), m("b", m.trust(v.name))]), m("p.text." + v.style, m.trust(v.log)), m("p.mes_date", m("span.mark", v.anchor))]))])));
-  },
-  action: function(v) {
-    v.updated_timer || (v.updated_timer = new Timer(v.updated_at, {
-      prop: m.prop()
-    }));
-    return m("." + v.mestype, m(".action", [m("p.text." + v.style, [m("b", m.trust(v.name)), "は、", m.trust(v.log)]), m("p.mes_date", v.updated_timer.prop())]));
-  }
-};
-
 if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null) {
-  GUI.if_exist("villages", function(dom) {
+  GUI.if_exist("#villages", function(dom) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
@@ -7097,7 +6799,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null
         _results = [];
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           v = _ref1[_i];
-          _results.push(message.action(v));
+          _results.push(GUI.message.action(v));
         }
         return _results;
       }
@@ -7106,7 +6808,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null
 }
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.byebyes : void 0) != null) {
-  GUI.if_exist("byebyes", function(dom) {
+  GUI.if_exist("#byebyes", function(dom) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
@@ -7115,7 +6817,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.byebyes : void 0) != null)
         _results = [];
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           v = _ref1[_i];
-          _results.push(message.action(v));
+          _results.push(GUI.message.action(v));
         }
         return _results;
       }
@@ -7124,7 +6826,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.byebyes : void 0) != null)
 }
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null) {
-  GUI.if_exist("history", function(dom) {
+  GUI.if_exist("#history", function(dom) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
@@ -7133,7 +6835,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
         _results = [];
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           v = _ref1[_i];
-          _results.push(message.say(v));
+          _results.push(GUI.message.say(v));
         }
         return _results;
       }
@@ -7141,7 +6843,62 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
   });
 }
 
-GUI.if_exist("headline", function(dom) {
+if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) {
+  Cache.rule.story.set(gon.stories);
+  GUI.if_exist("#stories", function(dom) {
+    var folder_touch, touch;
+    touch = new GUI.TouchMenu();
+    folder_touch = new GUI.TouchMenu();
+    return m.module(dom, {
+      controller: function() {},
+      view: function() {
+        var head, icon, key, o, _;
+        icon = touch.state() ? "glyphicon-resize-small" : "glyphicon-resize-full";
+        head = function() {
+          return m("thead", m("tr", m("th", m("code", touch.start(), m("i.glyphicon." + icon))), touch.state() ? m("th", "人数") : void 0, touch.state() ? m("th", "ルール") : void 0));
+        };
+        return m("div", m(".pagenavi.form-inline", m("h6", "検索する。　　　　"), m(".form-inline", m("span.btn.btn-default.dropdown-toggle", folder_touch.start(), m("i.glyphicon.glyphicon-book"), m("span.caret")))), folder_touch.state() ? m(".drag", m(".contentframe", m("ul", [
+          (function() {
+            var _ref1, _results;
+            _ref1 = Cache.storys.folder;
+            _results = [];
+            for (key in _ref1) {
+              _ = _ref1[key];
+              if (!GAME[key]) {
+                break;
+              }
+              _results.push(m("li.btn-block", folder_touch.btn(Url.prop.folder, key), GAME[key].nation, m("inf", "(" + Cache.storys.folder[key].length + ")")));
+            }
+            return _results;
+          })(), m("li.btn-block", folder_touch.btn(Url.prop.folder, "ALL"), "- すべて -", m("inf", "(" + Cache.storys.all.length + ")"))
+        ]))) : void 0, m("table.table.table-border.table-hover", head(), m("tbody", (function() {
+          var _i, _len, _ref1, _results;
+          _ref1 = Cache.storys.folder[Url.prop.folder()] || Cache.storys.all;
+          _results = [];
+          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+            o = _ref1[_i];
+            if (touch.state()) {
+              _results.push(m("tr", m("td", m("a", {
+                href: o.link
+              }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
+                href: o.file
+              }, m.trust(o.name)), o.view.rating, m(".note", " 　　更新 : " + o.view.update_at + " " + o.view.update_interval), m(".note", o.view.configs), m(".note", o.view.events)), m("td.small", "" + o.view.player_length + "人"), m("td.small", m(".note", o.view.say_limit), m(".note", o.view.game_rule))));
+            } else {
+              _results.push(m("tr", m("td", m("a", {
+                href: o.link
+              }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
+                href: o.file
+              }, o.name), o.view.rating)));
+            }
+          }
+          return _results;
+        })()), head()));
+      }
+    });
+  });
+}
+
+GUI.if_exist("#headline", function(dom) {
   var touch;
   touch = new GUI.TouchMenu();
   return m.module(dom, {
@@ -7157,81 +6914,49 @@ GUI.if_exist("headline", function(dom) {
       max_morphe = GAME.MORPHE.config.cfg.MAX_VILLAGES;
       max_all = max_vage + max_crazy + max_xebec + max_ciel;
       max_all += max_cafe + max_morphe;
-      return m(".choice", m("table.board", [
-        m("tr", touch.state() ? [
-          m("th.choice", {
-            colspan: 2
-          }, m("strong", "進行中の村")), m("th.no_choice", {
-            colspan: 2
-          }, m("a", touch.start(), "終了した村を見る"))
-        ] : [
-          m("th.no_choice", {
-            colspan: 2
-          }, m("a", touch.start(), "進行中の村を見る")), m("th.choice", {
-            colspan: 2
-          }, m("strong", "終了した村"))
-        ]), m("tr.link", [m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ")]), touch.state() ? m("tr", [
-          m("td.no_choice", [
-            m("a", {
-              href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
-            }, "lobby"), m("br"), "offparty", m("br"), m("br"), m("br")
-          ]), m("td.no_choice", [
-            "" + max_morphe + "村:", m("a", {
-              href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
-            }, "morphe"), m("br"), "" + max_cafe + "村:", m("a", {
-              href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
-            }, "cafe"), m("br"), m("br"), m("br")
-          ]), m("td.no_choice", ["wolf", m("br"), "ultimate", m("br"), "allstar", m("br"), "cabala", m("br")]), m("td.no_choice", [
-            "role-play", m("br"), "RP-advance", m("br"), "" + max_vage + "村:", m("a", {
-              href: GAME.PERJURY.config.cfg.URL_SW + "/sow.cgi"
-            }, "perjury"), m("br"), "" + max_xebec + "村:", m("a", {
-              href: GAME.XEBEC.config.cfg.URL_SW + "/sow.cgi"
-            }, "xebec"), m("br"), "" + max_crazy + "村:", m("a", {
-              href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
-            }, "crazy"), m("br"), "" + max_ciel + "村:", m("a", {
-              href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
-            }, "ciel")
-          ])
-        ]) : m("tr", [
-          m("td.no_choice", [
-            m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/lobby?folder=LOBBY"
-            }, "lobby"), m("br"), m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=OFFPARTY"
-            }, "offparty"), m("br"), m("br"), m("br")
-          ]), m("td.no_choice", [
-            m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=MORPHE"
-            }, "morphe"), m("br"), m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CAFE"
-            }, "cafe"), m("br"), m("br"), m("br")
-          ]), m("td.no_choice", [
-            m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=WOLF"
-            }, "wolf"), m("br"), m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=ULTIMATE"
-            }, "ultimate"), m("br"), m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=ALLSTAR"
-            }, "allstar"), m("br"), m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CABALA"
-            }, "cabala"), m("br")
-          ]), m("td.no_choice", [
-            m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=RP"
-            }, "role-play"), m("br"), m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=PRETENSE"
-            }, "advance"), m("br"), m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=PERJURY"
-            }, "perjury"), m("br"), m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=XEBEC"
-            }, "xebec"), m("br"), m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CRAZY"
-            }, "crazy"), m("br"), m("a", {
-              href: "http://7korobi.gehirn.ne.jp/stories/offparty?folder=CIEL"
-            }, "ciel")
-          ])
-        ])
-      ]));
+      return m(".choice", m("table.board", touch.state() ? m("tr", m("th.choice[colspan=2]", m("strong", "進行中の村")), m("th.no_choice[colspan=2]", m("a", touch.start(), "終了した村を見る"))) : m("tr", m("th.no_choice[colspan=2]", m("a", touch.start(), "進行中の村を見る")), m("th.choice[colspan=2]", m("strong", "終了した村"))), m("tr.link", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ")), touch.state() ? m("tr", m("td.no_choice", m("a", {
+        href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
+      }, "lobby"), m("br"), "offparty", m("br"), m("br"), m("br")), m("td.no_choice", "" + max_morphe + "村:", m("a", {
+        href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
+      }, "morphe"), m("br"), "" + max_cafe + "村:", m("a", {
+        href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
+      }, "cafe"), m("br"), m("br"), m("br")), m("td.no_choice", "wolf", m("br"), "ultimate", m("br"), "allstar", m("br"), "cabala", m("br")), m("td.no_choice", "role-play", m("br"), "RP-advance", m("br"), "" + max_vage + "村:", m("a", {
+        href: GAME.PERJURY.config.cfg.URL_SW + "/sow.cgi"
+      }, "perjury"), m("br"), "" + max_xebec + "村:", m("a", {
+        href: GAME.XEBEC.config.cfg.URL_SW + "/sow.cgi"
+      }, "xebec"), m("br"), "" + max_crazy + "村:", m("a", {
+        href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
+      }, "crazy"), m("br"), "" + max_ciel + "村:", m("a", {
+        href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
+      }, "ciel"))) : m("tr", m("td.no_choice", m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
+      }, "lobby"), m("br"), m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
+      }, "offparty"), m("br"), m("br"), m("br")), m("td.no_choice", m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
+      }, "morphe"), m("br"), m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=CAFE"
+      }, "cafe"), m("br"), m("br"), m("br")), m("td.no_choice", m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
+      }, "wolf"), m("br"), m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
+      }, "ultimate"), m("br"), m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
+      }, "allstar"), m("br"), m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
+      }, "cabala"), m("br")), m("td.no_choice", m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=RP"
+      }, "role-play"), m("br"), m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
+      }, "advance"), m("br"), m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
+      }, "perjury"), m("br"), m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
+      }, "xebec"), m("br"), m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
+      }, "crazy"), m("br"), m("a", {
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
+      }, "ciel")))));
     }
   });
 });
@@ -7311,7 +7036,7 @@ GUI.if_exist("headline", function(dom) {
         a.mark.click.glyphicon.glyphicon-pencil(ng-click="go.form()")
  */
 
-GUI.if_exist("to_root", function(dom) {
+GUI.if_exist("#to_root", function(dom) {
   var day_or_night;
   day_or_night = m.prop();
   return m.module(document.getElementById("to_root"), {
@@ -7328,7 +7053,7 @@ GUI.if_exist("to_root", function(dom) {
     view: function() {
       return [
         m("a", {
-          href: "http://giji.check.jp/"
+          href: "//giji.check.jp/"
         }, GUI.title(Url.prop.w(), Url.prop.theme(), day_or_night()))
       ];
     }

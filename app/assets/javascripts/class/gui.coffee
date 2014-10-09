@@ -1,5 +1,5 @@
 GUI = 
-  img_head: "http://7korobi.gehirn.ne.jp/images/"
+  img_head: "//7korobi.gehirn.ne.jp/images/"
   portrate: (face_id)->
     m "img", 
       src: GUI.img_head + "/portrate/#{face_id}.jpg"
@@ -26,17 +26,20 @@ GUI =
       class: (str)->
         o.class = str
       start: (cb)->
-        o.onmousedown = act(cb)
-        o.ongesturestart = act(cb)
-        o.ontouchstart = act(cb)
+        cb = act(cb)
+        o.onmousedown = cb
+        o.ongesturestart = cb
+        o.ontouchstart = cb
       move: (cb)->
-        o.onmousemove = act(cb)
-        o.ongesturechange = act(cb)
-        o.ontouchmove = act(cb)
+        cb = act(cb)
+        o.onmousemove = cb
+        o.ongesturechange = cb
+        o.ontouchmove = cb
       end: (cb)->
-        o.onmouseup = act(cb)
-        o.ongestureend = act(cb)
-        o.ontouchend = act(cb)
+        cb = act(cb)
+        o.onmouseup = cb
+        o.ongestureend = cb
+        o.ontouchend = cb
     dsl.call list_cmds
     o
 
@@ -46,16 +49,16 @@ GUI =
         style: "width:#{em}em; text-align:#{align};"
       , vdom
     list_cmds =
-      center: (em, vdom)-> inline_item_span "center", em, vdom
-      right:  (em, vdom)-> inline_item_span "right", em, vdom
+      center: (em, vdom...)-> inline_item_span "center", em, vdom
+      right:  (em, vdom...)-> inline_item_span "right", em, vdom
 
     m "ul.mark.inline", cb.call(list_cmds)
 
 
-  letter: (head, vdom)->
+  letter: (style, head, vdom...)->
     [ m "h3.mesname",
         m "b", head
-      m "p.text", vdom
+      m "p.text.#{style}", vdom
     ]
 
   chrs: (chrs, headline, cb)->
@@ -72,18 +75,17 @@ GUI =
 
   do_tick: (cb)->
     action = ->
-      m.startComputation()
+      m.redraw()
       tick = cb(_.now())
       if tick
         setTimeout ->
           action()
         , tick
-      m.endComputation()
     action()
 
-  if_exist: (id, cb)->
+  if_exist: (query, cb)->
     win.on.load.push ->
-      dom = document.getElementById(id)
+      dom = document.querySelector(query)
       cb(dom) if !!dom && cb
 
   comma: (num)->
@@ -92,6 +94,45 @@ GUI =
   name:
     config: (o)->
       RAILS.roles[o]?.name || RAILS.gifts[o]?.name || RAILS.events[o]?.name || o || ""
+
+  names:
+    config: (list, cb)->
+      hash = {}
+      for key in list
+        hash[key] ||= 0
+        hash[key] += 1
+      for key, size of hash
+        cb GUI.name.config(key), size
+
+  message:
+    say: (v)->
+      m "table.say.#{v.mestype}",
+        m "tbody",
+          m "tr", [
+            m "td.img",
+              GUI.portrate v.face_id
+
+            m "td.field",
+              m ".msg", [
+                GUI.letter v.style, m.trust(v.name), m.trust(v.log)
+                m "p.mes_date",
+                  m "span.mark", v.anchor
+              ]
+          ]
+
+    action: (v)->
+      v.updated_timer ||= new Timer v.updated_at,
+        prop: m.prop()
+      m ".#{v.mestype}",
+        m ".action", [
+          m "p.text.#{v.style}", [
+            m "b", m.trust v.name
+            "は、"
+            m.trust v.log
+          ]
+          m "p.mes_date", v.updated_timer.prop()
+        ]
+
 
 
 class GUI.TouchMenu
