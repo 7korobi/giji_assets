@@ -70,7 +70,8 @@ class Url
     if @match
       @match.shift()
       for key, i in @keys
-        @prop(key)(@match[i], true)
+        val = decodeURI @match[i]
+        @prop(key)(val, true)
 
       @params = Object.keys @data
       @options.change?(@data)
@@ -140,13 +141,13 @@ class Url
 
   set_cookie: (value)->
     ary = [value]
-    if @options.cookie
+    if @options.cookie.time
       expires = new Date Math.min 2147397247000, _.now() + @options.cookie.time * 3600000
       ary.push "expires=#{expires.toUTCString()}"
-    if @options.domain
+    if @options.cookie.domain
       ary.push "domain=#{@options.domain}"
-    if @options.path
+    if @options.cookie.path
       ary.push "path=#{@options.path}"
-    if @options.secure
+    if @options.cookie.secure
       ary.push "secure"
     document.cookie = ary.join("; ")
