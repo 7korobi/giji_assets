@@ -75,7 +75,7 @@ Mithril=m=new function a(b,c){function d(a){return{}.toString.call(a)}function e
 
 this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,"presto":50,"animato":200,"andante":800,"lento":3200} ;
 
-this.LOCATION = {"options":{"chr_set":{"current":"all"},"order":{"current":"all"},"search":null,"w":{"type":"Number"},"width":{"current":"std"},"layout":{"current":"center"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"folder":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"rating":{"current":"ALL"},"game_rule":{"current":"ALL"},"potof_size":{"current":"ALL"},"card_win":{"current":"ALL"},"card_role":{"current":"ALL"},"card_event":{"current":"ALL"},"upd_time":{"current":"ALL"},"upd_interval":{"current":"ALL"}},"bind":{"folder":[{"folder":"ALL","nation":"- すべて -"},{"folder":"PAN","nation":"似顔絵人狼"},{"folder":"WOLF","nation":"人狼議事標準"},{"folder":"RP","nation":"人狼議事RP:"},{"folder":"PRETENSE","nation":"人狼議事RP:Advance"},{"folder":"XEBEC","nation":"人狼議事RP:Braid XEBEC"},{"folder":"CRAZY","nation":"人狼議事RP:Braid Crazy"},{"folder":"CIEL","nation":"人狼議事RP:Cheat Ciel"},{"folder":"PERJURY","nation":"人狼議事RP:Cheat Perjury"},{"folder":"ULTIMATE","nation":"人狼議事大乱闘:"},{"folder":"ALLSTAR","nation":"人狼議事大乱闘:Allstar"},{"folder":"CABALA","nation":"人狼議事CabalaCafe"},{"folder":"MORPHE","nation":"人狼議事モルペウス"},{"folder":"SOYBEAN","nation":"人狼議事鯖の味噌煮"},{"folder":"LOBBY","nation":"人狼議事ロビー"},{"folder":"OFFPARTY","nation":"人狼議事オフ相談所"},{"folder":"TEST","nation":"人狼議事テスト"}],"width":[{"width":"wide","w":770},{"width":"std","w":580},{"width":"mini","w":458}],"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
+this.LOCATION = {"options":{"search":null,"w":{"type":"Number"},"width":{"current":"std"},"layout":{"current":"center"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"card_win":{"current":"ALL"},"chr_set":{"current":"all"},"order":{"current":"all"},"folder":{"current":"all"},"game":{"current":"all"},"say_limit":{"current":"all"},"player_length":{"current":"all"},"rating":{"current":"all"},"config":{"current":"all"},"event":{"current":"all"},"update_at":{"current":"all"},"update_interval":{"current":"all"}},"bind":{"folder":[{"folder":"all","nation":"- すべて -"},{"folder":"PAN","nation":"似顔絵人狼"},{"folder":"WOLF","nation":"人狼議事標準"},{"folder":"RP","nation":"人狼議事RP:"},{"folder":"PRETENSE","nation":"人狼議事RP:Advance"},{"folder":"XEBEC","nation":"人狼議事RP:Braid XEBEC"},{"folder":"CRAZY","nation":"人狼議事RP:Braid Crazy"},{"folder":"CIEL","nation":"人狼議事RP:Cheat Ciel"},{"folder":"PERJURY","nation":"人狼議事RP:Cheat Perjury"},{"folder":"ULTIMATE","nation":"人狼議事大乱闘:"},{"folder":"ALLSTAR","nation":"人狼議事大乱闘:Allstar"},{"folder":"CABALA","nation":"人狼議事CabalaCafe"},{"folder":"MORPHE","nation":"人狼議事モルペウス"},{"folder":"SOYBEAN","nation":"人狼議事鯖の味噌煮"},{"folder":"LOBBY","nation":"人狼議事ロビー"},{"folder":"OFFPARTY","nation":"人狼議事オフ相談所"},{"folder":"TEST","nation":"人狼議事テスト"}],"width":[{"width":"wide","w":770},{"width":"std","w":580},{"width":"mini","w":458}],"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
 var define;
 
@@ -240,9 +240,184 @@ Cache = (function() {
 
 })();
 
+Cache.Finder = (function() {
+  function Finder(scopes, sort_func) {
+    this.scopes = scopes;
+    this.sort_func = sort_func;
+  }
+
+  Finder.prototype.where = function(scopes) {
+    var id, kind, kind_hash, kinds, scope, val;
+    this.list = (function() {
+      var _i, _len, _ref, _results;
+      _ref = this.base_map();
+      _results = [];
+      for (id in _ref) {
+        val = _ref[id];
+        for (scope in scopes) {
+          kinds = scopes[scope];
+          val = null;
+          for (_i = 0, _len = kinds.length; _i < _len; _i++) {
+            kind = kinds[_i];
+            kind_hash = this.scopes[scope].hash[kind];
+            if (!kind_hash) {
+              continue;
+            }
+            val = kind_hash != null ? kind_hash[id] : void 0;
+            if (val) {
+              break;
+            }
+          }
+          if (!val) {
+            break;
+          }
+        }
+        if (!val) {
+          continue;
+        }
+        _results.push(val);
+      }
+      return _results;
+    }).call(this);
+    return this;
+  };
+
+  Finder.prototype.all = function() {
+    return this.where();
+  };
+
+  Finder.prototype.find = function(id, kind, scope) {
+    if (kind == null) {
+      kind = "all";
+    }
+    if (scope == null) {
+      scope = "_all";
+    }
+    return this.scopes[scope].hash[kind][id];
+  };
+
+  Finder.prototype.sort = function(desc) {
+    return this.sort_func(desc, this.list);
+  };
+
+  Finder.prototype.refresh = function() {
+    this.cache = {};
+    return this.diff = {};
+  };
+
+  Finder.prototype.map_reduce = function() {
+    var calc, emit, first, hash, id, init, kind_key, map, reduce, scope, scope_key, target, val, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _results;
+    init = function(val) {
+      return {
+        count: 0,
+        sum: 0
+      };
+    };
+    this.reduce = {};
+    _ref = this.base_map();
+    for (id in _ref) {
+      val = _ref[id];
+      _ref1 = this.scopes;
+      for (scope_key in _ref1) {
+        scope = _ref1[scope_key];
+        this.reduce[scope_key] = {};
+        _ref2 = scope.hash;
+        for (kind_key in _ref2) {
+          hash = _ref2[kind_key];
+          first = this.map(val);
+          this.reduce[scope_key][kind_key] = init(first);
+        }
+      }
+      break;
+    }
+    switch (typeof first) {
+      case "number":
+        this.reduce_calc = true;
+        map = function(val) {
+          return {
+            max: val,
+            min: val,
+            count: 1,
+            sum: val
+          };
+        };
+        break;
+      default:
+        map = function(val) {
+          return {
+            max: val,
+            min: val,
+            count: 1
+          };
+        };
+    }
+    reduce = (function(_this) {
+      return function(target, emit, val) {
+        if (!target.max || emit.max < target.max) {
+          target.max = emit.max;
+          target.last = val;
+        }
+        if (!target.min || target.min < emit.min) {
+          target.min = emit.min;
+          target.first = val;
+        }
+        if (emit.count) {
+          target.count += emit.count;
+        }
+        if (emit.sum) {
+          return target.sum += emit.sum;
+        }
+      };
+    })(this);
+    calc = (function(_this) {
+      return function(target) {
+        if (_this.reduce_calc) {
+          return target.avg = target.sum / target.count;
+        }
+      };
+    })(this);
+    _ref3 = this.base_map();
+    for (id in _ref3) {
+      val = _ref3[id];
+      emit = map(this.map(val));
+      _ref4 = this.scopes;
+      for (scope_key in _ref4) {
+        scope = _ref4[scope_key];
+        _ref5 = scope.hash;
+        for (kind_key in _ref5) {
+          hash = _ref5[kind_key];
+          target = this.reduce[scope_key][kind_key];
+          if (hash[val._id] != null) {
+            reduce(target, emit, val);
+          }
+        }
+      }
+    }
+    _ref6 = this.scopes;
+    _results = [];
+    for (scope_key in _ref6) {
+      scope = _ref6[scope_key];
+      _results.push((function() {
+        var _ref7, _results1;
+        _ref7 = scope.hash;
+        _results1 = [];
+        for (kind_key in _ref7) {
+          hash = _ref7[kind_key];
+          target = this.reduce[scope_key][kind_key];
+          _results1.push(calc(target));
+        }
+        return _results1;
+      }).call(this));
+    }
+    return _results;
+  };
+
+  return Finder;
+
+})();
+
 Cache.Rule = (function() {
   function Rule(field) {
-    var cache;
     this.id = "" + field + "_id";
     this.list_name = "" + field + "s";
     this.scopes = {};
@@ -263,17 +438,25 @@ Cache.Rule = (function() {
       };
     })(this);
     this.adjust_keys = ["_id", this.id];
-    Cache.rule[field] = this;
-    Cache[this.list_name] = cache = {};
+    this.finder = new Cache.Finder(this.scopes, function(list) {
+      return list;
+    });
+    this.finder.base_map = (function(_this) {
+      return function() {
+        return _this.scopes._all.hash.all;
+      };
+    })(this);
+    this.finder.map = function(o) {
+      return o._id;
+    };
     this.base_scope("_all", {
       kind: function() {
         return ["all"];
       },
-      reset: function(list, map) {
-        cache.all = list.all;
-        return cache.find = map.all;
-      }
+      finder: this.finder
     });
+    Cache.rule[field] = this;
+    Cache[this.list_name] = this.finder;
   }
 
   Rule.prototype.base_scope = function(key, hash) {
@@ -281,7 +464,7 @@ Cache.Rule = (function() {
     this.scopes[key] = scope = new Cache.Scope(this, hash);
     this.scope_keys = Object.keys(this.scopes).sort().reverse();
     scope.cleanup();
-    all = this.scopes._all.list.all;
+    all = _.values(this.finder.base_map());
     if (0 < (all != null ? all.length : void 0)) {
       scope.merge(all);
     }
@@ -289,15 +472,28 @@ Cache.Rule = (function() {
   };
 
   Rule.prototype.schema = function(cb) {
-    var definer, sort;
-    sort = (function(_this) {
-      return function() {
-        var key, scope, _ref;
-        _ref = _this.scopes;
-        for (key in _ref) {
-          scope = _ref[key];
-          scope.sort();
-        }
+    var definer, order_base;
+    order_base = (function(_this) {
+      return function(func) {
+        _this.finder.map = func;
+        return _this.finder.sort_func = function(desc, list) {
+          var gt, lt, o, s, _i, _len, _ref;
+          _ref = desc ? [1, -1] : [-1, 1], lt = _ref[0], gt = _ref[1];
+          _this.finder.orders = s = {};
+          for (_i = 0, _len = list.length; _i < _len; _i++) {
+            o = list[_i];
+            s[o._id] = func(o);
+          }
+          return list.sort(function(a, b) {
+            if (s[a._id] < s[b._id]) {
+              return lt;
+            }
+            if (s[a._id] > s[b._id]) {
+              return gt;
+            }
+            return 0;
+          });
+        };
       };
     })(this);
     definer = {
@@ -307,9 +503,7 @@ Cache.Rule = (function() {
           cache = Cache[_this.list_name];
           return _this.base_scope(key, {
             kind: kind,
-            reset: function(o) {
-              return cache[key] = o;
-            }
+            finder: _this.finder
           });
         };
       })(this),
@@ -326,14 +520,12 @@ Cache.Rule = (function() {
             kind: function(o) {
               return [o[parent_id]];
             },
-            reset: function(o) {
-              return cache[parent] = o;
-            }
+            finder: _this.finder
           });
           if ((option != null ? option.dependent : void 0) != null) {
             _this.validates.push(function(o) {
               var that, _ref;
-              that = (_ref = Cache[parents]) != null ? _ref.find[o[parent_id]] : void 0;
+              that = (_ref = Cache[parents]) != null ? _ref.find(o[parent_id]) : void 0;
               if (that != null) {
                 return o[parent] = that;
               }
@@ -344,51 +536,14 @@ Cache.Rule = (function() {
       })(this),
       order: (function(_this) {
         return function(func) {
-          _this.values = function(hash) {
-            var list, o, s, _i, _len;
-            list = _.values(hash);
-            _this.orders = s = {};
-            for (_i = 0, _len = list.length; _i < _len; _i++) {
-              o = list[_i];
-              _this.orders[o._id] = func(o);
-            }
-            return list.sort(function(a, b) {
-              if (s[a._id] < s[b._id]) {
-                return -1;
-              }
-              if (s[a._id] > s[b._id]) {
-                return 1;
-              }
-              return 0;
-            });
-          };
-          return sort();
+          return order_base(func);
         };
       })(this),
       order_by: (function(_this) {
-        return function(key, desc) {
-          _this.values = desc ? function(o) {
-            return _.values(o).sort(function(a, b) {
-              if (a[key] < b[key]) {
-                return 1;
-              }
-              if (a[key] > b[key]) {
-                return -1;
-              }
-              return 0;
-            });
-          } : function(o) {
-            return _.values(o).sort(function(a, b) {
-              if (a[key] < b[key]) {
-                return -1;
-              }
-              if (a[key] > b[key]) {
-                return 1;
-              }
-              return 0;
-            });
-          };
-          return sort();
+        return function(key) {
+          return order_base(function(o) {
+            return o[key];
+          });
         };
       })(this),
       fields: (function(_this) {
@@ -418,7 +573,7 @@ Cache.Rule = (function() {
 
   Rule.prototype.set_base = function(from, cb) {
     var accept, all, key, list, o, old, scope, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2;
-    all = this.scopes._all.map.all;
+    all = this.finder.base_map();
     list = [];
     accept = (function(_this) {
       return function(o) {
@@ -453,6 +608,7 @@ Cache.Rule = (function() {
       scope = this.scopes[key];
       cb(scope, list);
     }
+    this.finder.map_reduce();
   };
 
   Rule.prototype.reject = function(list) {
@@ -464,7 +620,7 @@ Cache.Rule = (function() {
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       rule = _ref[_i];
-      if (this.scopes._all.diff.del) {
+      if (this.finder.diff.del || this.finder.diff.change) {
         _results.push(rule.rehash());
       } else {
         _results.push(void 0);
@@ -482,15 +638,14 @@ Cache.Rule = (function() {
   Rule.prototype.set = function(list) {
     var rule, _i, _len, _ref, _results;
     this.set_base(list, function(scope, list) {
-      scope.map = {};
-      scope.list = {};
+      scope.hash = {};
       return scope.merge(list);
     });
     _ref = this.responses;
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       rule = _ref[_i];
-      if (this.scopes._all.diff.del) {
+      if (this.finder.diff.del || this.finder.diff.change) {
         _results.push(rule.rehash());
       } else {
         _results.push(void 0);
@@ -500,7 +655,9 @@ Cache.Rule = (function() {
   };
 
   Rule.prototype.rehash = function() {
-    return this.set(this.scopes._all.list.all);
+    var all;
+    all = _.values(this.finder.base_map());
+    return this.set(all);
   };
 
   Rule.prototype.cleanup = function() {
@@ -515,25 +672,21 @@ Cache.Rule = (function() {
     return _results;
   };
 
-  Rule.prototype.values = function(hash) {
-    return _.values(hash);
-  };
-
   return Rule;
 
 })();
 
 Cache.Scope = (function() {
-  function Scope(rule, hash) {
+  function Scope(rule, _arg) {
     this.rule = rule;
-    this.kind = hash.kind, this.reset = hash.reset, this.values = hash.values;
+    this.kind = _arg.kind, this.finder = _arg.finder;
   }
 
   Scope.prototype.adjust = function(list, merge_phase) {
-    var all, o, old, old_kind, reset_kinds, _i, _j, _len, _len1, _ref;
-    all = this.rule.scopes._all.map.all;
-    this.diff = {};
-    reset_kinds = {};
+    var all, o, old, old_kind, _i, _j, _len, _len1, _ref, _results;
+    all = this.finder.base_map();
+    this.finder.refresh();
+    _results = [];
     for (_i = 0, _len = list.length; _i < _len; _i++) {
       o = list[_i];
       if (all != null) {
@@ -543,16 +696,15 @@ Cache.Scope = (function() {
         _ref = this.kind(old) || [];
         for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
           old_kind = _ref[_j];
-          if (this.map[old_kind] != null) {
-            reset_kinds[old_kind] = true;
-            delete this.map[old_kind][o._id];
-            this.diff.del = true;
+          if (this.hash[old_kind] != null) {
+            this.finder.diff.del = true;
+            delete this.hash[old_kind][o._id];
           }
         }
       }
-      merge_phase(o, reset_kinds);
+      _results.push(merge_phase(o));
     }
-    return this.sort(reset_kinds);
+    return _results;
   };
 
   Scope.prototype.reject = function(list) {
@@ -561,40 +713,27 @@ Cache.Scope = (function() {
 
   Scope.prototype.merge = function(list) {
     return this.adjust(list, (function(_this) {
-      return function(o, reset_kinds) {
+      return function(o) {
         var kind, _base, _i, _len, _ref;
         _ref = _this.kind(o) || [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           kind = _ref[_i];
           if (kind || kind === 0) {
-            reset_kinds[kind] = true;
-            (_base = _this.map)[kind] || (_base[kind] = {});
-            _this.map[kind][o._id] = o;
-            _this.diff.add = true;
+            (_base = _this.hash)[kind] || (_base[kind] = {});
+            if (_this.hash[kind][o._id]) {
+              _this.finder.diff.change = true;
+            } else {
+              _this.finder.diff.add = true;
+            }
+            _this.hash[kind][o._id] = o;
           }
         }
       };
     })(this));
   };
 
-  Scope.prototype.sort = function(reset_kinds) {
-    var kind, type, values;
-    if (reset_kinds == null) {
-      reset_kinds = this.map;
-    }
-    values = this.values || this.rule.values;
-    for (kind in reset_kinds) {
-      type = reset_kinds[kind];
-      this.list[kind] = values(this.map[kind]);
-    }
-    return this.reset(this.list, this.map);
-  };
-
   Scope.prototype.cleanup = function() {
-    this.map = {};
-    this.list = {};
-    this.diff = {};
-    return this.reset(this.list, this.map);
+    return this.hash = {};
   };
 
   return Scope;
@@ -945,16 +1084,27 @@ GUI = {
 };
 
 GUI.TouchMenu = (function() {
-  function TouchMenu() {
+  function TouchMenu(menus) {
+    this.menus = menus;
     this.state = m.prop(false);
   }
 
-  TouchMenu.prototype.start = function() {
+  TouchMenu.prototype.menu = function() {
+    var menu_cb, options, vdom;
+    options = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    menu_cb = this.menus[this.state()];
+    if (menu_cb) {
+      vdom.push(m(".drag", m(".contentframe", menu_cb(this))));
+    }
+    return m(".pagenavi.choice.guide.form-inline", options, vdom);
+  };
+
+  TouchMenu.prototype.start = function(mark) {
     var state;
     state = this.state;
     return GUI.attrs(function() {
       return this.start(function() {
-        return state(!state());
+        return state(mark !== state() && mark);
       });
     });
   };
@@ -1574,7 +1724,7 @@ Url = (function() {
   }
 
   Url.prototype.popstate = function(path, target) {
-    var i, key, _base, _i, _len, _ref;
+    var i, key, val, _base, _i, _len, _ref;
     this.data = {};
     this.match = this.scanner.exec(path);
     if (this.match) {
@@ -1582,7 +1732,8 @@ Url = (function() {
       _ref = this.keys;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         key = _ref[i];
-        this.prop(key)(this.match[i], true);
+        val = decodeURI(this.match[i]);
+        this.prop(key)(val, true);
       }
       this.params = Object.keys(this.data);
       if (typeof (_base = this.options).change === "function") {
@@ -1689,17 +1840,17 @@ Url = (function() {
   Url.prototype.set_cookie = function(value) {
     var ary, expires;
     ary = [value];
-    if (this.options.cookie) {
+    if (this.options.cookie.time) {
       expires = new Date(Math.min(2147397247000, _.now() + this.options.cookie.time * 3600000));
       ary.push("expires=" + (expires.toUTCString()));
     }
-    if (this.options.domain) {
+    if (this.options.cookie.domain) {
       ary.push("domain=" + this.options.domain);
     }
-    if (this.options.path) {
+    if (this.options.cookie.path) {
       ary.push("path=" + this.options.path);
     }
-    if (this.options.secure) {
+    if (this.options.cookie.secure) {
       ary.push("secure");
     }
     return document.cookie = ary.join("; ");

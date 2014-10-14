@@ -4086,13 +4086,15 @@ list = [];
 
 order = ["ririnra", "wa", "time", "sf", "mad", "ger", "changed", "animal", "school"];
 
-_ref = Cache.faces.all;
+_ref = Cache.faces.all().sort();
 for (_i = 0, _len = _ref.length; _i < _len; _i++) {
   face = _ref[_i];
   chr_set_id = "all";
   face_id = face._id;
   _id = "all_" + face_id;
-  faced_jobs = Cache.chr_jobs.face[face_id];
+  faced_jobs = Cache.chr_jobs.where({
+    face: [face_id]
+  }).sort();
   if (faced_jobs != null) {
     job = (_ref1 = _.sortBy(faced_jobs, function(o) {
       return order.indexOf(o.chr_set_id);

@@ -34,11 +34,11 @@ order = [
   "animal"
   "school"
 ]
-for face in Cache.faces.all
+for face in Cache.faces.all().sort()
   chr_set_id = "all"
   face_id = face._id
   _id = "all_#{face_id}"
-  faced_jobs = Cache.chr_jobs.face[face_id]
+  faced_jobs = Cache.chr_jobs.where(face:[face_id]).sort()
   if faced_jobs?
     job = _.sortBy(faced_jobs, (o)-> order.indexOf o.chr_set_id )?.first?.job
   list.push {chr_set_id, face_id, job, _id} if job?

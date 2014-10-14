@@ -7,12 +7,16 @@ scroll_to = (elem, is_continue, context)->
 
 
 if gon?.map_reduce?.faces?
+  Cache.rule.chr_set.schema ->
+    @order (o)->
+      Cache.map_faces.reduce.chr_set[o._id].count
+
   Cache.rule.map_face.set gon.map_reduce.faces
   map_orders = (prop)->
     order = RAILS.map_faces_orders[prop]
-    order.func = (o)-> o.win.value[order.order] ||= 0
+    order.func = (o)-> o.win.value[order.order] ?= 0
     Cache.rule.map_face.schema ->
-      @order (o)-> - order.func(o)
+      @order (o)-> order.func(o)
     order
 
   GUI.if_exist "#map_faces", (dom)->
@@ -20,18 +24,18 @@ if gon?.map_reduce?.faces?
       controller: ->
       view: ->
         map_order_set = map_orders(Url.prop.order())
-        chrs = Cache.map_faces.chr_set[Url.prop.chr_set()]
+        chrs = Cache.map_faces.where(chr_set:[Url.prop.chr_set()]).sort "desc"
         headline = ""
         if chrs?.length
           headline = [
-            m "span.badge.badge-info", Cache.chr_sets.find[Url.prop.chr_set()].caption
+            m "span.badge.badge-info", Cache.chr_sets.find(Url.prop.chr_set()).caption
             "の#{chrs.length}人を、"
             m "span.badge.badge-info", map_orders(Url.prop.order()).headline
             "回数で並べています"
           ]
 
         GUI.chrs chrs, headline, (o, face)->
-          chr_job = Cache.chr_jobs.find["#{Url.prop.chr_set()}_#{face._id}"]
+          chr_job = Cache.chr_jobs.find("#{Url.prop.chr_set()}_#{face._id}")
           job_name = chr_job.job
 
           [ m "div", job_name
@@ -44,29 +48,34 @@ if gon?.map_reduce?.faces?
           ]
 
   GUI.if_exist "#chr_sets", (dom)->
-    touch = new GUI.TouchMenu()
+    touch = new GUI.TouchMenu
+      order: (touch)->
+        for key, o of RAILS.map_faces_orders
+          m "a", touch.btn(Url.prop.order, key), o.caption
+
+      chr_set: (touch)->
+        m "ul", 
+          for cs in Cache.chr_sets.all().sort "desc"
+            m "li.btn-block", touch.btn(Url.prop.chr_set, cs._id) , 
+              cs.caption
+              m "inf", "(" + Cache.map_faces.reduce.chr_set[cs._id].count + "人)"
+
     m.module dom,
       controller: ->
       view: ->
-        chr_sets = Cache.chr_sets.all
-        m "div", 
-          m ".choice.guide", 
-            "キャラセットを選んでみよう "
-            m "a.glyphicon.glyphicon-tags", touch.start()
-          if touch.state()
-            m ".drag",
-              m ".contentframe", 
-                for key, o of RAILS.map_faces_orders
-                  m "a", touch.btn(Url.prop.order, key), o.caption
-              m ".contentframe", 
-                m "ul", 
-                  for cs in chr_sets
-                    m "li.btn-block", touch.btn(Url.prop.chr_set, cs._id) , cs.caption
+        touch.menu {},
+          "キャラセットを選んでみよう "
+          m "span.btn.btn-default.dropdown-toggle", touch.start("order"),
+            m "i.glyphicon.glyphicon-tags"
+            m "i.caret"
+          m "span.btn.btn-default.dropdown-toggle", touch.start("chr_set"),
+            m "i.glyphicon.glyphicon-tags"
+            m "i.caret"
 
 if gon?.face?
   face = Cache.map_face_detail = gon.face
   Cache.rule.map_face_story_log.set face.story_logs
-  face.name = Cache.faces.find[face.face_id].name
+  face.name = Cache.faces.find(face.face_id).name
   face.story_id_of_folders = _.groupBy face.story_ids, ([k,count])->
     k.split("-")?[0]
 
@@ -242,39 +251,39 @@ GUI.if_exist "#topviewer", (dom)->
       []
 
 GUI.if_exist "#css_changer", (dom)->
-  touch = new GUI.TouchMenu()
+  touch = new GUI.TouchMenu
+    css: (touch)-> [
+      m "h6", "幅の広さ"
+      m ".form-inline",
+        m ".form-group",
+          m "a", touch.btn(Url.prop.width, "mini"), "携帯"
+          m "a", touch.btn(Url.prop.width, "std"),  "普通"
+          m "a", touch.btn(Url.prop.width, "wide"), "広域"
+      m "h6", "位置"
+      m ".form-inline",
+        m ".form-group",
+          m "a", touch.btn(Url.prop.layout, "left"),   "左詰"
+          m "a", touch.btn(Url.prop.layout, "center"), "中央"
+          m "a", touch.btn(Url.prop.layout, "right"),  "右詰"
+      m "h6", "位置"
+      m ".form-inline",
+        m ".form-group",
+          m "a", touch.btn(Url.prop.font, "large"),   "大判"
+          m "a", touch.btn(Url.prop.font, "novel"),   "明朝"
+          m "a", touch.btn(Url.prop.font, "std"), "ゴシック"
+          m "a", touch.btn(Url.prop.font, "small"),   "繊細"
+    ]
+
   m.module dom,
     controller: ->
     view: ->
       win.do.resize()
-      m "span",
+      touch.menu {},
         m "a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
         m "a.mark", touch.btn(Url.prop.theme, "night"), "月夜"
         m "a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"
         m "a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"
-        m "a.glyphicon.glyphicon-cog", touch.start()
-        if touch.state()
-          m ".drag",
-            m ".contentframe", touch.cancel(),
-              m "h6", "幅の広さ"
-              m ".form-inline",
-                m ".form-group",
-                  m "a", touch.btn(Url.prop.width, "mini"), "携帯"
-                  m "a", touch.btn(Url.prop.width, "std"),  "普通"
-                  m "a", touch.btn(Url.prop.width, "wide"), "広域"
-              m "h6", "位置"
-              m ".form-inline",
-                m ".form-group",
-                  m "a", touch.btn(Url.prop.layout, "left"),   "左詰"
-                  m "a", touch.btn(Url.prop.layout, "center"), "中央"
-                  m "a", touch.btn(Url.prop.layout, "right"),  "右詰"
-              m "h6", "位置"
-              m ".form-inline",
-                m ".form-group",
-                  m "a", touch.btn(Url.prop.font, "large"),   "大判"
-                  m "a", touch.btn(Url.prop.font, "novel"),   "明朝"
-                  m "a", touch.btn(Url.prop.font, "std"), "ゴシック"
-                  m "a", touch.btn(Url.prop.font, "small"),   "繊細"
+        m "a.bigicon.glyphicon.glyphicon-cog", touch.start("css")
 
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
@@ -300,53 +309,118 @@ if gon?.history?
 if gon?.stories?
   Cache.rule.story.set gon.stories
   GUI.if_exist "#stories", (dom)->
-    touch = new GUI.TouchMenu()
-    folder_touch = new GUI.TouchMenu()
+    touch_sw = new GUI.TouchMenu()
+    touch = new GUI.TouchMenu
+      folder: (touch)->
+        btn_list Cache.storys.reduce.folder, Url.prop.folder, (key)-> GAME[key]?.nation
+      game: (touch)->
+        btn_list Cache.storys.reduce.game, Url.prop.game, (key, o)-> o.first.view.game_rule
+      rating: (touch)->
+        btn_list Cache.storys.reduce.rating, Url.prop.rating, (key, o)->
+
+          o.first.view.rating
+          RAILS.rating[key].caption
+      config: (touch)->
+        btn_list Cache.storys.reduce.config, Url.prop.config, (key)-> key
+      event: (touch)->
+        btn_list Cache.storys.reduce.event, Url.prop.event, (key)-> key
+      say_limit: (touch)->
+        btn_list Cache.storys.reduce.say_limit, Url.prop.say_limit, (key, o)-> o.first.view.say_limit
+      player_length: (touch)->
+        btn_list Cache.storys.reduce.player_length, Url.prop.player_length, (key, o)-> o.first.view.player_length + "人"
+      update_at: (touch)->
+        btn_list Cache.storys.reduce.update_at, Url.prop.update_at, (key, o)-> o.first.view.update_at
+      update_interval: (touch)->
+        btn_list Cache.storys.reduce.update_interval, Url.prop.update_interval, (key, o)-> o.first.view.update_interval
+    btn_list = (reduce, prop, caption_func)->
+      m "ul", [
+        for key, o of reduce
+          caption = caption_func key, o
+          continue unless caption
+          m "li.btn-block", touch.btn(prop, key),
+            m "span.badge", reduce[key].count
+            m "span", caption
+        m "li.btn-block", touch.btn(prop, "all"),
+          m "span.badge", Cache.storys.reduce._all.all.count
+          "- すべて -"
+      ]
+
     m.module dom,
       controller: ->
       view: ->
+        query =
+          game:  [Url.prop.game()]
+          event:  [Url.prop.event()]
+          config:  [Url.prop.config()]
+          folder:   [Url.prop.folder()]
+          rating:    [Url.prop.rating()]
+          say_limit:   [Url.prop.say_limit()]
+          update_at:     [Url.prop.update_at()]
+          update_interval: [Url.prop.update_interval()]
+          player_length:     [Url.prop.player_length()]
+        delete query.game  unless Cache.storys.reduce.game[Url.prop.game()]
+        delete query.event  unless Cache.storys.reduce.event[Url.prop.event()]
+        delete query.config  unless Cache.storys.reduce.config[Url.prop.config()]
+        delete query.folder   unless Cache.storys.reduce.folder[Url.prop.folder()]
+        delete query.rating    unless Cache.storys.reduce.rating[Url.prop.rating()]
+        delete query.say_limit  unless Cache.storys.reduce.update_at[Url.prop.say_limit()]
+        delete query.update_at   unless Cache.storys.reduce.update_at[Url.prop.update_at()]
+        delete query.player_length unless Cache.storys.reduce.player_length[Url.prop.player_length()]
+        delete query.update_interval unless Cache.storys.reduce.update_interval[Url.prop.update_interval()]
+
+        storys = Cache.storys.where query
         icon =
-          if touch.state()
+          if touch_sw.state()
             "glyphicon-resize-small"
           else
             "glyphicon-resize-full"
         head = ->
           m "thead",
             m "tr", 
-              m "th",
-                m "code", touch.start(),
-                  m "i.glyphicon.#{icon}"
-              if touch.state()
+              m "th"
+              if touch_sw.state()
                 m "th", "人数"
-              if touch.state()
+              if touch_sw.state()
                 m "th", "ルール"
 
         m "div",
-          m ".pagenavi.form-inline",
+          touch.menu {},
             m "h6", "検索する。　　　　"
-            m ".form-inline",
-              m "span.btn.btn-default.dropdown-toggle", folder_touch.start(),
-                m "i.glyphicon.glyphicon-book"
-                m "span.caret"
-          if folder_touch.state()
-            m ".drag",
-              m ".contentframe",
-                m "ul", [
-                  for key, _ of Cache.storys.folder
-                    break unless GAME[key]
-                    m "li.btn-block", folder_touch.btn(Url.prop.folder, key), 
-                      GAME[key].nation
-                      m "inf", "(#{Cache.storys.folder[key].length})"
-                  m "li.btn-block", folder_touch.btn(Url.prop.folder, "ALL"),
-                    "- すべて -"
-                    m "inf", "(#{Cache.storys.all.length})"
-                ]
+            m "span.btn.btn-default.dropdown-toggle", touch_sw.start(true),
+              m "i.glyphicon.#{icon}"
+            m "span.btn.btn-default.dropdown-toggle", touch.start("folder"),
+              m "i.glyphicon.glyphicon-book"
+              m "i.caret"
+            m "span.btn.btn-default.dropdown-toggle", touch.start("game"),
+              "ルール"
+              m "i.caret"
+            m "span.btn.btn-default.dropdown-toggle", touch.start("event"),
+              "事件"
+              m "i.caret"
+            m "span.btn.btn-default.dropdown-toggle", touch.start("config"),
+              "役職"
+              m "i.caret"
+            m "span.btn.btn-default.dropdown-toggle", touch.start("rating"),
+              "こだわり"
+              m "i.caret"
+            m "span.btn.btn-default.dropdown-toggle", touch.start("say_limit"),
+              "発言制限"
+              m "i.caret"
+            m "span.btn.btn-default.dropdown-toggle", touch.start("player_length"),
+              "人数"
+              m "i.caret"
+            m "span.btn.btn-default.dropdown-toggle", touch.start("update_at"),
+              "更新時刻"
+              m "i.caret"
+            m "span.btn.btn-default.dropdown-toggle", touch.start("update_interval"),
+              "更新間隔"
+              m "i.caret"
 
           m "table.table.table-border.table-hover",
             head()
             m "tbody",
-              for o in Cache.storys.folder[Url.prop.folder()] || Cache.storys.all
-                if touch.state()
+              for o in storys.list
+                if touch_sw.state()
                   m "tr",
                     m "td",
                       m "a",
@@ -379,6 +453,8 @@ if gon?.stories?
 
 GUI.if_exist "#headline", (dom)->
   touch = new GUI.TouchMenu()
+  touch.state "finish"
+
   m.module dom,
     controller: ->
     view: ->
@@ -394,16 +470,16 @@ GUI.if_exist "#headline", (dom)->
 
       m ".choice",
         m "table.board",
-          if touch.state()
+          if "progress" == touch.state()
             m "tr",
               m "th.choice[colspan=2]",
                 m "strong", "進行中の村"
               m "th.no_choice[colspan=2]",
-                m "a", touch.start(), "終了した村を見る"
-          else
+                m "a", touch.start("finish"), "終了した村を見る"
+          if "finish" == touch.state()
             m "tr",
               m "th.no_choice[colspan=2]",
-                m "a", touch.start(), "進行中の村を見る"
+                m "a", touch.start("progress"), "進行中の村を見る"
               m "th.choice[colspan=2]",
                 m "strong", "終了した村"
           m "tr.link",
@@ -411,7 +487,7 @@ GUI.if_exist "#headline", (dom)->
             m "th.choice", "夢の形"
             m "th.choice", "陰謀"
             m "th.choice", "ＲＰ"
-          if touch.state()
+          if "progress" == touch.state()
             m "tr",
               m "td.no_choice",
                 m "a",
@@ -468,7 +544,7 @@ GUI.if_exist "#headline", (dom)->
                 m "a",
                   href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
                 , "ciel"
-          else
+          if "finish" == touch.state()
             m "tr",
               m "td.no_choice",
                 m "a",

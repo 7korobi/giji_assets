@@ -7180,13 +7180,15 @@ list = [];
 
 order = ["ririnra", "wa", "time", "sf", "mad", "ger", "changed", "animal", "school"];
 
-_ref = Cache.faces.all;
+_ref = Cache.faces.all().sort();
 for (_i = 0, _len = _ref.length; _i < _len; _i++) {
   face = _ref[_i];
   chr_set_id = "all";
   face_id = face._id;
   _id = "all_" + face_id;
-  faced_jobs = Cache.chr_jobs.face[face_id];
+  faced_jobs = Cache.chr_jobs.where({
+    face: [face_id]
+  }).sort();
   if (faced_jobs != null) {
     job = (_ref1 = _.sortBy(faced_jobs, function(o) {
       return order.indexOf(o.chr_set_id);
@@ -7445,27 +7447,31 @@ describe("Cache", function() {
   });
   describe("form input", function() {
     return it("guard user input", function(done) {
-      expect(Cache.forms.all.first.text).toEqual("last submit text.");
-      Cache.forms.all.first.text = "new user input.";
-      expect(Cache.forms.all.first.text).toEqual("new user input.");
+      expect(Cache.forms.all().list.first.text).toEqual("last submit text.");
+      Cache.forms.all().list.first.text = "new user input.";
+      expect(Cache.forms.all().list.first.text).toEqual("new user input.");
       Cache.rule.form.set([
         {
           _id: form1,
           text: "last submit text."
         }
       ]);
-      expect(Cache.forms.all.first.text).toEqual("new user input.");
+      expect(Cache.forms.all().list.first.text).toEqual("new user input.");
       return done();
     });
   });
   describe("replace item", function() {
     return it("link with data", function(done) {
       var scene;
-      expect(Cache.scenes.event[event1]).toEqual(void 0);
-      scene = Cache.scenes.all.first;
+      expect(Cache.scenes.where({
+        event: [event1]
+      }).list).toEqual([]);
+      scene = Cache.scenes.all().list.first;
       scene.event_id = event1;
       Cache.rule.scene.set([scene]);
-      expect(Cache.scenes.event[event1].length).toEqual(1);
+      expect(Cache.scenes.where({
+        event: [event1]
+      }).list.length).toEqual(1);
       return done();
     });
   });
@@ -7477,24 +7483,46 @@ describe("Cache", function() {
     });
     return it("has scene", function(done) {
       cache_message();
-      expect(Cache.messages.scene[scene1].length).toEqual(1);
-      expect(Cache.messages.scene[scene2].length).toEqual(1);
-      expect(Cache.messages.scene[scene3].length).toEqual(1);
-      expect(Cache.messages.scene[scene1].first.text).toEqual("text 1");
-      expect(Cache.messages.scene[scene2].first.text).toEqual("text 2");
-      expect(Cache.messages.scene[scene3].first.text).toEqual("text 3");
+      expect(Cache.messages.where({
+        scene: [scene1]
+      }).list.length).toEqual(1);
+      expect(Cache.messages.where({
+        scene: [scene2]
+      }).list.length).toEqual(1);
+      expect(Cache.messages.where({
+        scene: [scene3]
+      }).list.length).toEqual(1);
+      expect(Cache.messages.where({
+        scene: [scene1]
+      }).list.first.text).toEqual("text 1");
+      expect(Cache.messages.where({
+        scene: [scene2]
+      }).list.first.text).toEqual("text 2");
+      expect(Cache.messages.where({
+        scene: [scene3]
+      }).list.first.text).toEqual("text 3");
       return done();
     });
   });
   describe("messages with scope", function() {
     it("sepalate items", function(done) {
       cache_message_with_scope();
-      expect(Cache.messages.all.length).toEqual(3);
-      expect(Cache.messages.of.also.length).toEqual(1);
-      expect(Cache.messages.of.also.first.text).toEqual("text 2");
-      expect(Cache.messages.of.good.length).toEqual(2);
-      expect(Cache.messages.of.good.first.text).toEqual("text 1");
-      expect(Cache.messages.of.good.last.text).toEqual("text 3");
+      expect(Cache.messages.all().list.length).toEqual(3);
+      expect(Cache.messages.where({
+        of: ["also"]
+      }).list.length).toEqual(1);
+      expect(Cache.messages.where({
+        of: ["also"]
+      }).list.first.text).toEqual("text 2");
+      expect(Cache.messages.where({
+        of: ["good"]
+      }).list.length).toEqual(2);
+      expect(Cache.messages.where({
+        of: ["good"]
+      }).sort().first.text).toEqual("text 1");
+      expect(Cache.messages.where({
+        of: ["good"]
+      }).sort().last.text).toEqual("text 3");
       return done();
     });
     it("replace item", function(done) {
@@ -7509,12 +7537,22 @@ describe("Cache", function() {
           updated_at: 4
         }
       ]);
-      expect(Cache.messages.all.length).toEqual(3);
-      expect(Cache.messages.of.also.length).toEqual(2);
-      expect(Cache.messages.of.also.first.text).toEqual("text 4");
-      expect(Cache.messages.of.also.last.text).toEqual("text 2");
-      expect(Cache.messages.of.good.length).toEqual(1);
-      expect(Cache.messages.of.good.last.text).toEqual("text 3");
+      expect(Cache.messages.all().list.length).toEqual(3);
+      expect(Cache.messages.where({
+        of: ["also"]
+      }).list.length).toEqual(2);
+      expect(Cache.messages.where({
+        of: ["also"]
+      }).sort().first.text).toEqual("text 4");
+      expect(Cache.messages.where({
+        of: ["also"]
+      }).sort().last.text).toEqual("text 2");
+      expect(Cache.messages.where({
+        of: ["good"]
+      }).list.length).toEqual(1);
+      expect(Cache.messages.where({
+        of: ["good"]
+      }).list.last.text).toEqual("text 3");
       return done();
     });
     return it("append item", function(done) {
@@ -7529,27 +7567,41 @@ describe("Cache", function() {
           updated_at: 5
         }
       ]);
-      expect(Cache.messages.all.length).toEqual(4);
-      expect(Cache.messages.of.also.length).toEqual(2);
-      expect(Cache.messages.of.also.first.text).toEqual("text 2");
-      expect(Cache.messages.of.also.last.text).toEqual("text 5");
-      expect(Cache.messages.of.good.length).toEqual(2);
-      expect(Cache.messages.of.good.first.text).toEqual("text 1");
-      expect(Cache.messages.of.good.last.text).toEqual("text 3");
+      expect(Cache.messages.all().list.length).toEqual(4);
+      expect(Cache.messages.where({
+        of: ["also"]
+      }).list.length).toEqual(2);
+      expect(Cache.messages.where({
+        of: ["also"]
+      }).sort().first.text).toEqual("text 2");
+      expect(Cache.messages.where({
+        of: ["also"]
+      }).sort().last.text).toEqual("text 5");
+      expect(Cache.messages.where({
+        of: ["good"]
+      }).list.length).toEqual(2);
+      expect(Cache.messages.where({
+        of: ["good"]
+      }).sort().first.text).toEqual("text 1");
+      expect(Cache.messages.where({
+        of: ["good"]
+      }).sort().last.text).toEqual("text 3");
       return done();
     });
   });
   describe("face data", function() {
     it("all values", function(done) {
-      expect(Cache.faces.find.all).toEqual({
+      expect(Cache.faces.find("all")).toEqual({
         face_id: "all",
         name: "パルック",
         order: 99999,
         _id: "all"
       });
-      expect(Cache.faces.all.length).toEqual(244);
-      expect(Cache.chr_jobs.all.length).toEqual(706);
-      expect(Cache.chr_jobs.chr_set.all.length).toEqual(244);
+      expect(Cache.faces.all().list.length).toEqual(244);
+      expect(Cache.chr_jobs.all().list.length).toEqual(706);
+      expect(Cache.chr_jobs.where({
+        chr_set: ["all"]
+      }).list.length).toEqual(244);
       return done();
     });
     return it("delete item", function(done) {
@@ -7558,10 +7610,12 @@ describe("Cache", function() {
           _id: "all"
         }
       ]);
-      expect(Cache.faces.find.all).toEqual(void 0);
-      expect(Cache.faces.all.length).toEqual(243);
-      expect(Cache.chr_jobs.all.length).toEqual(705);
-      expect(Cache.chr_jobs.chr_set.all.length).toEqual(243);
+      expect(Cache.faces.find("all")).toEqual(void 0);
+      expect(Cache.faces.all().list.length).toEqual(243);
+      expect(Cache.chr_jobs.all().list.length).toEqual(705);
+      expect(Cache.chr_jobs.where({
+        chr_set: ["all"]
+      }).list.length).toEqual(243);
       return done();
     });
   });
@@ -7632,7 +7686,7 @@ describe("Cache", function() {
         event = _ref[_i];
         Cache.rule.message.merge(event.messages);
       }
-      return expect(Cache.messages.all.length).toEqual(1604);
+      return expect(Cache.messages.all().list.length).toEqual(1604);
     });
   });
 });

@@ -4086,13 +4086,15 @@ list = [];
 
 order = ["ririnra", "wa", "time", "sf", "mad", "ger", "changed", "animal", "school"];
 
-_ref = Cache.faces.all;
+_ref = Cache.faces.all().sort();
 for (_i = 0, _len = _ref.length; _i < _len; _i++) {
   face = _ref[_i];
   chr_set_id = "all";
   face_id = face._id;
   _id = "all_" + face_id;
-  faced_jobs = Cache.chr_jobs.face[face_id];
+  faced_jobs = Cache.chr_jobs.where({
+    face: [face_id]
+  }).sort();
   if (faced_jobs != null) {
     job = (_ref1 = _.sortBy(faced_jobs, function(o) {
       return order.indexOf(o.chr_set_id);
@@ -4136,6 +4138,102 @@ RAILS = {
       "star": ["r.jpg", "c.jpg"],
       "juna": ["b.jpg", "w.jpg"],
       "sow": ["r.jpg", "c.jpg"]
+    }
+  },
+  "rating": {
+    "default": {
+      "caption": "とくになし"
+    },
+    "love": {
+      "caption": "[愛] 恋愛を重視",
+      "alt": "愛"
+    },
+    "sexy": {
+      "caption": "[性] 性表現あり",
+      "alt": "性"
+    },
+    "sexylove": {
+      "caption": "[性愛] 大人の恋愛",
+      "alt": "性愛"
+    },
+    "violence": {
+      "caption": "[暴] 暴力、グロ",
+      "alt": "暴"
+    },
+    "sexyviolence": {
+      "caption": "[性暴] えろぐろ",
+      "alt": "性暴"
+    },
+    "teller": {
+      "caption": "[怖] 恐怖を煽る",
+      "alt": "怖"
+    },
+    "drunk": {
+      "caption": "[楽] 享楽に耽る",
+      "alt": "楽"
+    },
+    "gamble": {
+      "caption": "[賭] 賭博に耽る",
+      "alt": "賭"
+    },
+    "crime": {
+      "caption": "[罪] 犯罪描写あり",
+      "alt": "罪"
+    },
+    "drug": {
+      "caption": "[薬] 薬物表現あり",
+      "alt": "薬"
+    },
+    "word": {
+      "caption": "[言] 殺伐、暴言あり",
+      "alt": "言"
+    },
+    "fireplace": {
+      "caption": "[暢] のんびり雑談",
+      "alt": "暢"
+    },
+    "appare": {
+      "caption": "[遖] あっぱれネタ風味",
+      "alt": "遖"
+    },
+    "ukkari": {
+      "caption": "[張] うっかりハリセン",
+      "alt": "張"
+    },
+    "child": {
+      "caption": "[全] 大人も子供も初心者も、みんな安心",
+      "alt": "全"
+    },
+    "biohazard": {
+      "caption": "[危] 無茶ぶり上等",
+      "alt": "危"
+    },
+    "": {
+      "caption": "null",
+      "alt": ""
+    },
+    "0": {
+      "caption": "0",
+      "alt": ""
+    },
+    "r15": {
+      "caption": "１５禁",
+      "alt": ""
+    },
+    "r18": {
+      "caption": "１８禁",
+      "alt": ""
+    },
+    "gro": {
+      "caption": "暴力、グロ",
+      "alt": ""
+    },
+    "view": {
+      "caption": "view"
+    },
+    "alert": {
+      "caption": "要注意",
+      "alt": ""
     }
   },
   "map_faces_orders": {
@@ -6335,7 +6433,7 @@ Url.bind = LOCATION.bind;
 
 Url.routes = {
   search: {
-    stories: new Url("folder=:folder", {
+    stories: new Url("stories=:folder-:game-:rating-:event-:config-:say_limit-:player_length-:update_at-:update_interval", {
       unmatch: "?"
     }),
     shape: new Url("shape=:chr_set-:order", {
@@ -6369,7 +6467,9 @@ new Cache.Rule("map_face").schema(function() {
     _id: function(o) {
       var chr_job, list;
       o._id = o.face_id;
-      list = Cache.chr_jobs.face[o.face_id];
+      list = Cache.chr_jobs.where({
+        face: [o.face_id]
+      }).sort();
       o.chr_set_ids = (function() {
         var _i, _len, _results;
         if (list) {
@@ -6402,7 +6502,7 @@ new Cache.Rule("map_face_story_log").schema(function() {
     }
   });
   return this.order(function(o) {
-    return -o.date.max;
+    return o.date.max;
   });
 });
 
@@ -6411,8 +6511,11 @@ new Cache.Rule("story").schema(function() {
   this.scope("folder", function(o) {
     return [o.folder];
   });
-  this.scope("game_rule", function(o) {
-    return [o.view.game_rule];
+  this.scope("game", function(o) {
+    return [o.type.game];
+  });
+  this.scope("rating", function(o) {
+    return [o.rating];
   });
   this.scope("say_limit", function(o) {
     return [o.view.say_limit];
@@ -6425,6 +6528,12 @@ new Cache.Rule("story").schema(function() {
   });
   this.scope("player_length", function(o) {
     return [o.view.player_length];
+  });
+  this.scope("config", function(o) {
+    return o.view.config_types;
+  });
+  this.scope("event", function(o) {
+    return o.view.event_types;
   });
   caption = function(field, key) {
     var data;
@@ -6444,6 +6553,12 @@ new Cache.Rule("story").schema(function() {
         update_at: Timer.hhmm(o.upd.hour, o.upd.minute),
         update_interval: "" + (o.upd.interval * 24) + "時間",
         player_length: o.vpl.last,
+        config_types: GUI.names.config(o.card.config, function(name, size) {
+          return name;
+        }),
+        event_types: GUI.names.config(o.card.event, function(name, size) {
+          return name;
+        }),
         configs: GUI.names.config(o.card.config, function(name, size) {
           return m("span.mark", "" + name + "x" + size);
         }),
@@ -6469,17 +6584,22 @@ scroll_to = function(elem, is_continue, context) {
 };
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
+  Cache.rule.chr_set.schema(function() {
+    return this.order(function(o) {
+      return Cache.map_faces.reduce.chr_set[o._id].count;
+    });
+  });
   Cache.rule.map_face.set(gon.map_reduce.faces);
   map_orders = function(prop) {
     var order;
     order = RAILS.map_faces_orders[prop];
     order.func = function(o) {
       var _base, _name;
-      return (_base = o.win.value)[_name = order.order] || (_base[_name] = 0);
+      return (_base = o.win.value)[_name = order.order] != null ? _base[_name] : _base[_name] = 0;
     };
     Cache.rule.map_face.schema(function() {
       return this.order(function(o) {
-        return -order.func(o);
+        return order.func(o);
       });
     });
     return order;
@@ -6490,14 +6610,16 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
       view: function() {
         var chrs, headline, map_order_set;
         map_order_set = map_orders(Url.prop.order());
-        chrs = Cache.map_faces.chr_set[Url.prop.chr_set()];
+        chrs = Cache.map_faces.where({
+          chr_set: [Url.prop.chr_set()]
+        }).sort("desc");
         headline = "";
         if (chrs != null ? chrs.length : void 0) {
-          headline = [m("span.badge.badge-info", Cache.chr_sets.find[Url.prop.chr_set()].caption), "の" + chrs.length + "人を、", m("span.badge.badge-info", map_orders(Url.prop.order()).headline), "回数で並べています"];
+          headline = [m("span.badge.badge-info", Cache.chr_sets.find(Url.prop.chr_set()).caption), "の" + chrs.length + "人を、", m("span.badge.badge-info", map_orders(Url.prop.order()).headline), "回数で並べています"];
         }
         return GUI.chrs(chrs, headline, function(o, face) {
           var chr_job, job_name;
-          chr_job = Cache.chr_jobs.find["" + (Url.prop.chr_set()) + "_" + face._id];
+          chr_job = Cache.chr_jobs.find("" + (Url.prop.chr_set()) + "_" + face._id);
           job_name = chr_job.job;
           return [
             m("div", job_name), m("div", face.name), m("div", m("a.mark", {
@@ -6510,30 +6632,35 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
   });
   GUI.if_exist("#chr_sets", function(dom) {
     var touch;
-    touch = new GUI.TouchMenu();
+    touch = new GUI.TouchMenu({
+      order: function(touch) {
+        var key, o, _ref1, _results;
+        _ref1 = RAILS.map_faces_orders;
+        _results = [];
+        for (key in _ref1) {
+          o = _ref1[key];
+          _results.push(m("a", touch.btn(Url.prop.order, key), o.caption));
+        }
+        return _results;
+      },
+      chr_set: function(touch) {
+        var cs;
+        return m("ul", (function() {
+          var _i, _len, _ref1, _results;
+          _ref1 = Cache.chr_sets.all().sort("desc");
+          _results = [];
+          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+            cs = _ref1[_i];
+            _results.push(m("li.btn-block", touch.btn(Url.prop.chr_set, cs._id), cs.caption, m("inf", "(" + Cache.map_faces.reduce.chr_set[cs._id].count + "人)")));
+          }
+          return _results;
+        })());
+      }
+    });
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var chr_sets, cs, key, o;
-        chr_sets = Cache.chr_sets.all;
-        return m("div", m(".choice.guide", "キャラセットを選んでみよう ", m("a.glyphicon.glyphicon-tags", touch.start())), touch.state() ? m(".drag", m(".contentframe", (function() {
-          var _ref1, _results;
-          _ref1 = RAILS.map_faces_orders;
-          _results = [];
-          for (key in _ref1) {
-            o = _ref1[key];
-            _results.push(m("a", touch.btn(Url.prop.order, key), o.caption));
-          }
-          return _results;
-        })()), m(".contentframe", m("ul", (function() {
-          var _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = chr_sets.length; _i < _len; _i++) {
-            cs = chr_sets[_i];
-            _results.push(m("li.btn-block", touch.btn(Url.prop.chr_set, cs._id), cs.caption));
-          }
-          return _results;
-        })()))) : void 0);
+        return touch.menu({}, "キャラセットを選んでみよう ", m("span.btn.btn-default.dropdown-toggle", touch.start("order"), m("i.glyphicon.glyphicon-tags"), m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("chr_set"), m("i.glyphicon.glyphicon-tags"), m("i.caret")));
       }
     });
   });
@@ -6542,7 +6669,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
 if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
   face = Cache.map_face_detail = gon.face;
   Cache.rule.map_face_story_log.set(face.story_logs);
-  face.name = Cache.faces.find[face.face_id].name;
+  face.name = Cache.faces.find(face.face_id).name;
   face.story_id_of_folders = _.groupBy(face.story_ids, function(_arg) {
     var count, k, _ref1;
     k = _arg[0], count = _arg[1];
@@ -6779,12 +6906,16 @@ GUI.if_exist("#topviewer", function(dom) {
 
 GUI.if_exist("#css_changer", function(dom) {
   var touch;
-  touch = new GUI.TouchMenu();
+  touch = new GUI.TouchMenu({
+    css: function(touch) {
+      return [m("h6", "幅の広さ"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "wide"), "広域"))), m("h6", "位置"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰"))), m("h6", "位置"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細")))];
+    }
+  });
   return m.module(dom, {
     controller: function() {},
     view: function() {
       win["do"].resize();
-      return m("span", m("a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a.mark", touch.btn(Url.prop.theme, "night"), "月夜"), m("a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"), m("a.glyphicon.glyphicon-cog", touch.start()), touch.state() ? m(".drag", m(".contentframe", touch.cancel(), m("h6", "幅の広さ"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "wide"), "広域"))), m("h6", "位置"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰"))), m("h6", "位置"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細"))))) : void 0);
+      return touch.menu({}, m("a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a.mark", touch.btn(Url.prop.theme, "night"), "月夜"), m("a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"), m("a.bigicon.glyphicon.glyphicon-cog", touch.start("css")));
     }
   });
 });
@@ -6846,38 +6977,129 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
 if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) {
   Cache.rule.story.set(gon.stories);
   GUI.if_exist("#stories", function(dom) {
-    var folder_touch, touch;
-    touch = new GUI.TouchMenu();
-    folder_touch = new GUI.TouchMenu();
+    var btn_list, touch, touch_sw;
+    touch_sw = new GUI.TouchMenu();
+    touch = new GUI.TouchMenu({
+      folder: function(touch) {
+        return btn_list(Cache.storys.reduce.folder, Url.prop.folder, function(key) {
+          var _ref1;
+          return (_ref1 = GAME[key]) != null ? _ref1.nation : void 0;
+        });
+      },
+      game: function(touch) {
+        return btn_list(Cache.storys.reduce.game, Url.prop.game, function(key, o) {
+          return o.first.view.game_rule;
+        });
+      },
+      rating: function(touch) {
+        return btn_list(Cache.storys.reduce.rating, Url.prop.rating, function(key, o) {
+          o.first.view.rating;
+          return RAILS.rating[key].caption;
+        });
+      },
+      config: function(touch) {
+        return btn_list(Cache.storys.reduce.config, Url.prop.config, function(key) {
+          return key;
+        });
+      },
+      event: function(touch) {
+        return btn_list(Cache.storys.reduce.event, Url.prop.event, function(key) {
+          return key;
+        });
+      },
+      say_limit: function(touch) {
+        return btn_list(Cache.storys.reduce.say_limit, Url.prop.say_limit, function(key, o) {
+          return o.first.view.say_limit;
+        });
+      },
+      player_length: function(touch) {
+        return btn_list(Cache.storys.reduce.player_length, Url.prop.player_length, function(key, o) {
+          return o.first.view.player_length + "人";
+        });
+      },
+      update_at: function(touch) {
+        return btn_list(Cache.storys.reduce.update_at, Url.prop.update_at, function(key, o) {
+          return o.first.view.update_at;
+        });
+      },
+      update_interval: function(touch) {
+        return btn_list(Cache.storys.reduce.update_interval, Url.prop.update_interval, function(key, o) {
+          return o.first.view.update_interval;
+        });
+      }
+    });
+    btn_list = function(reduce, prop, caption_func) {
+      var caption, key, o;
+      return m("ul", [
+        (function() {
+          var _results;
+          _results = [];
+          for (key in reduce) {
+            o = reduce[key];
+            caption = caption_func(key, o);
+            if (!caption) {
+              continue;
+            }
+            _results.push(m("li.btn-block", touch.btn(prop, key), m("span.badge", reduce[key].count), m("span", caption)));
+          }
+          return _results;
+        })(), m("li.btn-block", touch.btn(prop, "all"), m("span.badge", Cache.storys.reduce._all.all.count), "- すべて -")
+      ]);
+    };
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var head, icon, key, o, _;
-        icon = touch.state() ? "glyphicon-resize-small" : "glyphicon-resize-full";
-        head = function() {
-          return m("thead", m("tr", m("th", m("code", touch.start(), m("i.glyphicon." + icon))), touch.state() ? m("th", "人数") : void 0, touch.state() ? m("th", "ルール") : void 0));
+        var head, icon, o, query, storys;
+        query = {
+          game: [Url.prop.game()],
+          event: [Url.prop.event()],
+          config: [Url.prop.config()],
+          folder: [Url.prop.folder()],
+          rating: [Url.prop.rating()],
+          say_limit: [Url.prop.say_limit()],
+          update_at: [Url.prop.update_at()],
+          update_interval: [Url.prop.update_interval()],
+          player_length: [Url.prop.player_length()]
         };
-        return m("div", m(".pagenavi.form-inline", m("h6", "検索する。　　　　"), m(".form-inline", m("span.btn.btn-default.dropdown-toggle", folder_touch.start(), m("i.glyphicon.glyphicon-book"), m("span.caret")))), folder_touch.state() ? m(".drag", m(".contentframe", m("ul", [
-          (function() {
-            var _ref1, _results;
-            _ref1 = Cache.storys.folder;
-            _results = [];
-            for (key in _ref1) {
-              _ = _ref1[key];
-              if (!GAME[key]) {
-                break;
-              }
-              _results.push(m("li.btn-block", folder_touch.btn(Url.prop.folder, key), GAME[key].nation, m("inf", "(" + Cache.storys.folder[key].length + ")")));
-            }
-            return _results;
-          })(), m("li.btn-block", folder_touch.btn(Url.prop.folder, "ALL"), "- すべて -", m("inf", "(" + Cache.storys.all.length + ")"))
-        ]))) : void 0, m("table.table.table-border.table-hover", head(), m("tbody", (function() {
+        if (!Cache.storys.reduce.game[Url.prop.game()]) {
+          delete query.game;
+        }
+        if (!Cache.storys.reduce.event[Url.prop.event()]) {
+          delete query.event;
+        }
+        if (!Cache.storys.reduce.config[Url.prop.config()]) {
+          delete query.config;
+        }
+        if (!Cache.storys.reduce.folder[Url.prop.folder()]) {
+          delete query.folder;
+        }
+        if (!Cache.storys.reduce.rating[Url.prop.rating()]) {
+          delete query.rating;
+        }
+        if (!Cache.storys.reduce.update_at[Url.prop.say_limit()]) {
+          delete query.say_limit;
+        }
+        if (!Cache.storys.reduce.update_at[Url.prop.update_at()]) {
+          delete query.update_at;
+        }
+        if (!Cache.storys.reduce.player_length[Url.prop.player_length()]) {
+          delete query.player_length;
+        }
+        if (!Cache.storys.reduce.update_interval[Url.prop.update_interval()]) {
+          delete query.update_interval;
+        }
+        storys = Cache.storys.where(query);
+        icon = touch_sw.state() ? "glyphicon-resize-small" : "glyphicon-resize-full";
+        head = function() {
+          return m("thead", m("tr", m("th"), touch_sw.state() ? m("th", "人数") : void 0, touch_sw.state() ? m("th", "ルール") : void 0));
+        };
+        return m("div", touch.menu({}, m("h6", "検索する。　　　　"), m("span.btn.btn-default.dropdown-toggle", touch_sw.start(true), m("i.glyphicon." + icon)), m("span.btn.btn-default.dropdown-toggle", touch.start("folder"), m("i.glyphicon.glyphicon-book"), m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("game"), "ルール", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("event"), "事件", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("config"), "役職", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("rating"), "こだわり", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("say_limit"), "発言制限", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("player_length"), "人数", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_at"), "更新時刻", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_interval"), "更新間隔", m("i.caret"))), m("table.table.table-border.table-hover", head(), m("tbody", (function() {
           var _i, _len, _ref1, _results;
-          _ref1 = Cache.storys.folder[Url.prop.folder()] || Cache.storys.all;
+          _ref1 = storys.list;
           _results = [];
           for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
             o = _ref1[_i];
-            if (touch.state()) {
+            if (touch_sw.state()) {
               _results.push(m("tr", m("td", m("a", {
                 href: o.link
               }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
@@ -6901,6 +7123,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
 GUI.if_exist("#headline", function(dom) {
   var touch;
   touch = new GUI.TouchMenu();
+  touch.state("finish");
   return m.module(dom, {
     controller: function() {},
     view: function() {
@@ -6914,7 +7137,7 @@ GUI.if_exist("#headline", function(dom) {
       max_morphe = GAME.MORPHE.config.cfg.MAX_VILLAGES;
       max_all = max_vage + max_crazy + max_xebec + max_ciel;
       max_all += max_cafe + max_morphe;
-      return m(".choice", m("table.board", touch.state() ? m("tr", m("th.choice[colspan=2]", m("strong", "進行中の村")), m("th.no_choice[colspan=2]", m("a", touch.start(), "終了した村を見る"))) : m("tr", m("th.no_choice[colspan=2]", m("a", touch.start(), "進行中の村を見る")), m("th.choice[colspan=2]", m("strong", "終了した村"))), m("tr.link", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ")), touch.state() ? m("tr", m("td.no_choice", m("a", {
+      return m(".choice", m("table.board", "progress" === touch.state() ? m("tr", m("th.choice[colspan=2]", m("strong", "進行中の村")), m("th.no_choice[colspan=2]", m("a", touch.start("finish"), "終了した村を見る"))) : void 0, "finish" === touch.state() ? m("tr", m("th.no_choice[colspan=2]", m("a", touch.start("progress"), "進行中の村を見る")), m("th.choice[colspan=2]", m("strong", "終了した村"))) : void 0, m("tr.link", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ")), "progress" === touch.state() ? m("tr", m("td.no_choice", m("a", {
         href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
       }, "lobby"), m("br"), "offparty", m("br"), m("br"), m("br")), m("td.no_choice", "" + max_morphe + "村:", m("a", {
         href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
@@ -6928,7 +7151,7 @@ GUI.if_exist("#headline", function(dom) {
         href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
       }, "crazy"), m("br"), "" + max_ciel + "村:", m("a", {
         href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
-      }, "ciel"))) : m("tr", m("td.no_choice", m("a", {
+      }, "ciel"))) : void 0, "finish" === touch.state() ? m("tr", m("td.no_choice", m("a", {
         href: "//7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
       }, "lobby"), m("br"), m("a", {
         href: "//7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
@@ -6956,7 +7179,7 @@ GUI.if_exist("#headline", function(dom) {
         href: "//7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
       }, "crazy"), m("br"), m("a", {
         href: "//7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
-      }, "ciel")))));
+      }, "ciel"))) : void 0));
     }
   });
 });

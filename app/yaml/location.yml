@@ -1,9 +1,5 @@
-options:
-  chr_set:
-    current: all
-  order:
-    current: all
 
+options:
   search:
   w:
     type: Number
@@ -23,7 +19,6 @@ options:
   color:
   title:
 
-  folder:
   story_id:
   event_id:
   mode_id:
@@ -49,30 +44,35 @@ options:
   roletable:
     current: ALL
 
-  rating:
-    current: ALL
-
-  game_rule:
-    current: ALL
-
-  potof_size:
-    current: ALL
-
   card_win:
     current: ALL
-  card_role:
-    current: ALL
-  card_event:
-    current: ALL
 
-  upd_time:
-    current: ALL
-  upd_interval:
-    current: ALL
+  chr_set:
+    current: all
+  order:
+    current: all
+  folder:
+    current: all
+  game:
+    current: all
+  say_limit:
+    current: all
+  player_length:
+    current: all
+  rating:
+    current: all
+  config:
+    current: all
+  event:
+    current: all
+  update_at:
+    current: all
+  update_interval:
+    current: all
 
 bind:
   folder:
-    - folder: ALL
+    - folder: all
       nation: "- すべて -"
     - folder: PAN
       nation: 似顔絵人狼

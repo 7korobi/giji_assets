@@ -3,7 +3,7 @@ new Cache.Rule("map_face").schema ->
   @fields
     _id: (o)-> 
       o._id = o.face_id
-      list = Cache.chr_jobs.face[o.face_id]
+      list = Cache.chr_jobs.where(face:[o.face_id]).sort()
       o.chr_set_ids = 
         if list
           chr_job.chr_set_id for chr_job in list
@@ -19,15 +19,18 @@ new Cache.Rule("map_face_story_log").schema ->
     _id: (o)->
       o._id = o.logid_head
       o.folder = o.logid_head.split("-")[0].toUpperCase()
-  @order (o)-> - o.date.max
+  @order (o)-> o.date.max
 
 new Cache.Rule("story").schema ->
   @scope "folder", (o)-> [o.folder]
-  @scope "game_rule", (o)-> [o.view.game_rule]
+  @scope "game", (o)-> [o.type.game]
+  @scope "rating", (o)-> [o.rating]
   @scope "say_limit", (o)-> [o.view.say_limit]
   @scope "update_at", (o)-> [o.view.update_at]
   @scope "update_interval", (o)-> [o.view.update_interval]
   @scope "player_length", (o)-> [o.view.player_length]
+  @scope "config", (o)-> o.view.config_types
+  @scope "event", (o)-> o.view.event_types
 
   caption = (field, key)->
     data = field[key]
@@ -48,6 +51,10 @@ new Cache.Rule("story").schema ->
           "#{o.upd.interval * 24}時間"
         player_length:
           o.vpl.last
+        config_types:
+          GUI.names.config o.card.config, (name, size)-> name
+        event_types:
+          GUI.names.config o.card.event, (name, size)-> name
         configs:
           GUI.names.config o.card.config, (name, size)->
             m "span.mark", "#{name}x#{size}"

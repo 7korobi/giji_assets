@@ -3,7 +3,7 @@ Url.bind = LOCATION.bind
 
 Url.routes =
   search:
-    stories: new Url "folder=:folder",
+    stories: new Url "stories=:folder-:game-:rating-:event-:config-:say_limit-:player_length-:update_at-:update_interval",
       unmatch: "?"
 
     shape: new Url "shape=:chr_set-:order",
