@@ -1,6 +1,105 @@
 class Cache
   @rule = {}
 
+class Cache.Finder
+  constructor: (@scopes, @sort_func)->
+  where: (scopes)->
+    @list =
+      for id, val of @base_map()
+        for scope, kinds of scopes
+          val = null
+          for kind in kinds
+            kind_hash = @scopes[scope].hash[kind]
+            continue unless kind_hash
+            
+            val = kind_hash?[id]
+            break if val
+          break unless val
+        continue unless val
+        val
+    @
+
+  all: ->
+    @where()
+
+  find: (id, kind = "all", scope = "_all")->
+    @scopes[scope].hash[kind][id]
+
+  sort: (desc)->
+    @sort_func desc, @list
+
+  refresh: ->
+    @cache = {}
+    @diff = {}
+
+  # push
+  #   keys
+  # +=
+  #   count
+  # 
+  # first
+  # last
+  # 
+  # created_at last item
+  # created_at 
+  # sum 1
+  # sum text.length
+  map_reduce: ->
+    init = (val)->
+      count: 0
+      sum: 0
+
+    @reduce = {}
+    for id, val of @base_map()
+      for scope_key, scope of @scopes
+        @reduce[scope_key] = {}
+        for kind_key, hash of scope.hash
+          first = @map val
+          @reduce[scope_key][kind_key] = init first
+      break
+
+    switch typeof first
+      when "number"
+        @reduce_calc = true
+        map = (val)->
+          max: val
+          min: val
+          count: 1
+          sum: val
+
+      else
+        map = (val)->
+          max: val
+          min: val
+          count: 1
+
+    reduce = (target, emit, val)=>
+      if !(target.max) || emit.max < target.max
+        target.max = emit.max
+        target.last = val
+      if !(target.min) || target.min < emit.min
+        target.min = emit.min 
+        target.first = val
+      target.count += emit.count if emit.count
+      target.sum += emit.sum if emit.sum
+
+    calc = (target)=>
+      if @reduce_calc
+        target.avg = target.sum / target.count 
+
+    for id, val of @base_map()
+      emit = map @map val
+      for scope_key, scope of @scopes
+        for kind_key, hash of scope.hash
+          target = @reduce[scope_key][kind_key]
+          if hash[val._id]?
+            reduce target, emit, val
+
+    for scope_key, scope of @scopes
+      for kind_key, hash of scope.hash
+        target = @reduce[scope_key][kind_key]
+        calc target
+
 class Cache.Rule
   constructor: (field)->
     @id = "#{field}_id"
@@ -13,36 +112,50 @@ class Cache.Rule
     @adjust[@id] = (o)=> o[@id] = o._id unless o[@id]
     @adjust_keys = ["_id", @id]
 
-    Cache.rule[field] = @
-    Cache[@list_name] = cache = {}
-
+    @finder = new Cache.Finder @scopes, (list)-> list
+    @finder.base_map = => @scopes._all.hash.all
+    @finder.map = (o)-> o._id
     @base_scope "_all",
       kind: -> ["all"]
-      reset: (list, map)->
-        cache.all = list.all
-        cache.find = map.all
+      finder: @finder
+
+    Cache.rule[field] = @
+    Cache[@list_name] = @finder
 
   base_scope: (key, hash)->
     @scopes[key] = scope = new Cache.Scope(@, hash)
     @scope_keys = Object.keys(@scopes).sort().reverse()
     scope.cleanup()
 
-    all = @scopes._all.list.all
+    all = _.values @finder.base_map()
     if 0 < all?.length
       scope.merge all
     scope
 
   schema: (cb)->
-    sort = =>
-      for key, scope of @scopes
-        scope.sort()
-      return
+    order_base = (func)=>
+      @finder.map = func
+      @finder.sort_func = (desc, list)=>
+        [lt, gt] =
+          if desc 
+            [1, -1]
+          else
+            [-1, 1]
+
+        @finder.orders = s = {}
+        for o in list
+          s[o._id] = func(o)
+        list.sort (a,b)->
+          return lt if s[a._id] < s[b._id]
+          return gt if s[a._id] > s[b._id]
+          return  0
+
     definer =
       scope: (key, kind)=>
         cache = Cache[@list_name]
         @base_scope key,
           kind: kind
-          reset: (o)-> cache[key] = o
+          finder: @finder
 
       pager: (key, items)=>
 
@@ -53,41 +166,19 @@ class Cache.Rule
 
         @base_scope parent,
           kind: (o)-> [o[parent_id]]
-          reset: (o)-> cache[parent] = o
+          finder: @finder
 
         if option?.dependent?
           @validates.push (o)->
-            that = Cache[parents]?.find[o[parent_id]]
+            that = Cache[parents]?.find(o[parent_id])
             o[parent] = that if that?
           Cache.rule[parent].responses.push @
 
       order: (func)=>
-        @values = (hash)=>
-          list = _.values(hash)
-          @orders = s = {}
-          for o in list
-            @orders[o._id] = func(o)
-          list.sort (a,b)->
-            return -1 if s[a._id] < s[b._id]
-            return  1 if s[a._id] > s[b._id]
-            return  0
-        sort()
+        order_base func
 
-      order_by: (key, desc)=>
-        @values =
-          if desc
-            (o)->
-              _.values(o).sort (a,b)->
-                return  1 if a[key] < b[key]
-                return -1 if a[key] > b[key]
-                return  0
-          else
-            (o)->
-              _.values(o).sort (a,b)->
-                return -1 if a[key] < b[key]
-                return  1 if a[key] > b[key]
-                return  0
-        sort()
+      order_by: (key)=>
+        order_base (o)-> o[key]
 
       fields: (adjust)=>
         for key, cb of adjust
@@ -102,7 +193,7 @@ class Cache.Rule
 
 
   set_base: (from, cb)->
-    all = @scopes._all.map.all
+    all = @finder.base_map()
     list = []
  
     accept = (o)=>
@@ -122,6 +213,7 @@ class Cache.Rule
       scope = @scopes[key]
       cb scope, list
 
+    @finder.map_reduce()
     return
 
 
@@ -130,7 +222,7 @@ class Cache.Rule
       scope.reject list
 
     for rule in @responses
-      rule.rehash() if @scopes._all.diff.del
+      rule.rehash() if @finder.diff.del || @finder.diff.change
 
   merge: (list)->
     @set_base list, (scope, list)->
@@ -138,73 +230,57 @@ class Cache.Rule
 
   set: (list)->
     @set_base list, (scope, list)->
-      scope.map = {}
-      scope.list = {}
+      scope.hash = {}
       scope.merge list
 
     for rule in @responses
-      rule.rehash() if @scopes._all.diff.del
+      rule.rehash() if @finder.diff.del || @finder.diff.change
 
   rehash: ->
-    @set @scopes._all.list.all
+    all = _.values @finder.base_map()
+    @set all
 
   cleanup: ->
     for key in @scope_keys
       scope = @scopes[key]
       scope.cleanup()
 
-  values: (hash)->
-    _.values hash
-
-
 class Cache.Scope
-  constructor: (@rule, hash)->
-    {@kind, @reset, @values} = hash
+  constructor: (@rule, {@kind, @finder})->
 
   adjust: (list, merge_phase)->
-    all = @rule.scopes._all.map.all
-    @diff = {}
-    reset_kinds = {}
+    all = @finder.base_map()
+    @finder.refresh()
 
     for o in list
       if all?
         old = all[o._id]
       if old?
         for old_kind in @kind(old) || []
-          if @map[old_kind]?
-            reset_kinds[old_kind] = true
-            delete @map[old_kind][o._id]
-            @diff.del = true
+          if @hash[old_kind]?
+            @finder.diff.del = true
+            delete @hash[old_kind][o._id]
 
-      merge_phase(o, reset_kinds)
-
-    @sort(reset_kinds)
-
+      merge_phase(o)
+  
   reject: (list)->
     @adjust list, ->
 
   merge: (list)->
-    @adjust list, (o, reset_kinds)=>
+    @adjust list, (o)=>
       for kind in @kind(o) || []
         if kind || kind == 0
-          reset_kinds[kind] = true
-          @map[kind] ||= {}
-          @map[kind][o._id] = o
-          @diff.add = true
+          @hash[kind] ||= {}
+          if @hash[kind][o._id]
+            @finder.diff.change = true 
+          else
+            @finder.diff.add = true
+          @hash[kind][o._id] = o
       return
 
-  sort: (reset_kinds = @map)->
-    values = @values || @rule.values
-    for kind, type of reset_kinds
-      @list[kind] = values @map[kind]
-    @reset @list, @map
 
   cleanup: ->
-    @map = {}
-    @list = {}
-    @diff = {}
-    @reset @list, @map
-
+    @hash = {}
 
 ###
 new Cache.Append  face: []
