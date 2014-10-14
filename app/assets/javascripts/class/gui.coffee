@@ -136,14 +136,21 @@ GUI =
 
 
 class GUI.TouchMenu
-  constructor: ->
+  constructor: (@menus)->
     @state = m.prop(false)
 
-  start: ->
+  menu: (options, vdom...)->
+    menu_cb = @menus[@state()]
+    if menu_cb
+      vdom.push m ".drag", m ".contentframe", menu_cb @
+
+    m ".pagenavi.choice.guide.form-inline", options, vdom
+
+  start: (mark)->
     state = @state
     GUI.attrs ->
       @start ->
-        state ! state()
+        state( mark != state() && mark )
 
   cancel: ->
     state = @state
