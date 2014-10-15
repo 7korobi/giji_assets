@@ -6632,8 +6632,9 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
   });
   GUI.if_exist("#chr_sets", function(dom) {
     var touch;
-    touch = new GUI.TouchMenu({
-      order: function(touch) {
+    touch = new GUI.TouchMenu();
+    touch.menu_set(Cache.map_faces, Url.prop, "count", {
+      order: function() {
         var key, o, _ref1, _results;
         _ref1 = RAILS.map_faces_orders;
         _results = [];
@@ -6643,18 +6644,10 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
         }
         return _results;
       },
-      chr_set: function(touch) {
-        var cs;
-        return m("ul", (function() {
-          var _i, _len, _ref1, _results;
-          _ref1 = Cache.chr_sets.all().sort("desc");
-          _results = [];
-          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-            cs = _ref1[_i];
-            _results.push(m("li.btn-block", touch.btn(Url.prop.chr_set, cs._id), cs.caption, m("inf", "(" + Cache.map_faces.reduce.chr_set[cs._id].count + "人)")));
-          }
-          return _results;
-        })());
+      chr_set: function() {
+        return this.btn_list(function(key, o) {
+          return Cache.chr_sets.find(key).caption;
+        });
       }
     });
     return m.module(dom, {
@@ -6977,118 +6970,62 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
 if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) {
   Cache.rule.story.set(gon.stories);
   GUI.if_exist("#stories", function(dom) {
-    var btn_list, touch, touch_sw;
+    var touch, touch_sw;
     touch_sw = new GUI.TouchMenu();
-    touch = new GUI.TouchMenu({
-      folder: function(touch) {
-        return btn_list(Cache.storys.reduce.folder, Url.prop.folder, function(key) {
+    touch = new GUI.TouchMenu();
+    touch.menu_set(Cache.storys, Url.prop, "count", {
+      folder: function() {
+        return this.btn_list(function(key) {
           var _ref1;
           return (_ref1 = GAME[key]) != null ? _ref1.nation : void 0;
         });
       },
-      game: function(touch) {
-        return btn_list(Cache.storys.reduce.game, Url.prop.game, function(key, o) {
+      game: function() {
+        return this.btn_list(function(key, o) {
           return o.first.view.game_rule;
         });
       },
-      rating: function(touch) {
-        return btn_list(Cache.storys.reduce.rating, Url.prop.rating, function(key, o) {
-          o.first.view.rating;
-          return RAILS.rating[key].caption;
+      rating: function() {
+        return this.btn_list(function(key, o) {
+          return m("span", o.first.view.rating, RAILS.rating[key].caption);
         });
       },
-      config: function(touch) {
-        return btn_list(Cache.storys.reduce.config, Url.prop.config, function(key) {
+      config: function() {
+        return this.btn_list(function(key) {
           return key;
         });
       },
-      event: function(touch) {
-        return btn_list(Cache.storys.reduce.event, Url.prop.event, function(key) {
+      event: function() {
+        return this.btn_list(function(key) {
           return key;
         });
       },
-      say_limit: function(touch) {
-        return btn_list(Cache.storys.reduce.say_limit, Url.prop.say_limit, function(key, o) {
+      say_limit: function() {
+        return this.btn_list(function(key, o) {
           return o.first.view.say_limit;
         });
       },
-      player_length: function(touch) {
-        return btn_list(Cache.storys.reduce.player_length, Url.prop.player_length, function(key, o) {
+      player_length: function() {
+        return this.btn_list(function(key, o) {
           return o.first.view.player_length + "人";
         });
       },
-      update_at: function(touch) {
-        return btn_list(Cache.storys.reduce.update_at, Url.prop.update_at, function(key, o) {
+      update_at: function() {
+        return this.btn_list(function(key, o) {
           return o.first.view.update_at;
         });
       },
-      update_interval: function(touch) {
-        return btn_list(Cache.storys.reduce.update_interval, Url.prop.update_interval, function(key, o) {
+      update_interval: function() {
+        return this.btn_list(function(key, o) {
           return o.first.view.update_interval;
         });
       }
     });
-    btn_list = function(reduce, prop, caption_func) {
-      var caption, key, o;
-      return m("ul", [
-        (function() {
-          var _results;
-          _results = [];
-          for (key in reduce) {
-            o = reduce[key];
-            caption = caption_func(key, o);
-            if (!caption) {
-              continue;
-            }
-            _results.push(m("li.btn-block", touch.btn(prop, key), m("span.badge", reduce[key].count), m("span", caption)));
-          }
-          return _results;
-        })(), m("li.btn-block", touch.btn(prop, "all"), m("span.badge", Cache.storys.reduce._all.all.count), "- すべて -")
-      ]);
-    };
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var head, icon, o, query, storys;
-        query = {
-          game: [Url.prop.game()],
-          event: [Url.prop.event()],
-          config: [Url.prop.config()],
-          folder: [Url.prop.folder()],
-          rating: [Url.prop.rating()],
-          say_limit: [Url.prop.say_limit()],
-          update_at: [Url.prop.update_at()],
-          update_interval: [Url.prop.update_interval()],
-          player_length: [Url.prop.player_length()]
-        };
-        if (!Cache.storys.reduce.game[Url.prop.game()]) {
-          delete query.game;
-        }
-        if (!Cache.storys.reduce.event[Url.prop.event()]) {
-          delete query.event;
-        }
-        if (!Cache.storys.reduce.config[Url.prop.config()]) {
-          delete query.config;
-        }
-        if (!Cache.storys.reduce.folder[Url.prop.folder()]) {
-          delete query.folder;
-        }
-        if (!Cache.storys.reduce.rating[Url.prop.rating()]) {
-          delete query.rating;
-        }
-        if (!Cache.storys.reduce.update_at[Url.prop.say_limit()]) {
-          delete query.say_limit;
-        }
-        if (!Cache.storys.reduce.update_at[Url.prop.update_at()]) {
-          delete query.update_at;
-        }
-        if (!Cache.storys.reduce.player_length[Url.prop.player_length()]) {
-          delete query.player_length;
-        }
-        if (!Cache.storys.reduce.update_interval[Url.prop.update_interval()]) {
-          delete query.update_interval;
-        }
-        storys = Cache.storys.where(query);
+        var head, icon, o, storys;
+        storys = touch.by_menu();
         icon = touch_sw.state() ? "glyphicon-resize-small" : "glyphicon-resize-full";
         head = function() {
           return m("thead", m("tr", m("th"), touch_sw.state() ? m("th", "人数") : void 0, touch_sw.state() ? m("th", "ルール") : void 0));

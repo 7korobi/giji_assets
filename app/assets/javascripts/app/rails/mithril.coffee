@@ -48,17 +48,14 @@ if gon?.map_reduce?.faces?
           ]
 
   GUI.if_exist "#chr_sets", (dom)->
-    touch = new GUI.TouchMenu
-      order: (touch)->
+    touch = new GUI.TouchMenu()
+    touch.menu_set Cache.map_faces, Url.prop, "count",
+      order: ->
         for key, o of RAILS.map_faces_orders
           m "a", touch.btn(Url.prop.order, key), o.caption
 
-      chr_set: (touch)->
-        m "ul", 
-          for cs in Cache.chr_sets.all().sort "desc"
-            m "li.btn-block", touch.btn(Url.prop.chr_set, cs._id) , 
-              cs.caption
-              m "inf", "(" + Cache.map_faces.reduce.chr_set[cs._id].count + "人)"
+      chr_set: ->
+        @btn_list (key, o)-> Cache.chr_sets.find(key).caption
 
     m.module dom,
       controller: ->
@@ -310,65 +307,34 @@ if gon?.stories?
   Cache.rule.story.set gon.stories
   GUI.if_exist "#stories", (dom)->
     touch_sw = new GUI.TouchMenu()
-    touch = new GUI.TouchMenu
-      folder: (touch)->
-        btn_list Cache.storys.reduce.folder, Url.prop.folder, (key)-> GAME[key]?.nation
-      game: (touch)->
-        btn_list Cache.storys.reduce.game, Url.prop.game, (key, o)-> o.first.view.game_rule
-      rating: (touch)->
-        btn_list Cache.storys.reduce.rating, Url.prop.rating, (key, o)->
-
-          o.first.view.rating
-          RAILS.rating[key].caption
-      config: (touch)->
-        btn_list Cache.storys.reduce.config, Url.prop.config, (key)-> key
-      event: (touch)->
-        btn_list Cache.storys.reduce.event, Url.prop.event, (key)-> key
-      say_limit: (touch)->
-        btn_list Cache.storys.reduce.say_limit, Url.prop.say_limit, (key, o)-> o.first.view.say_limit
-      player_length: (touch)->
-        btn_list Cache.storys.reduce.player_length, Url.prop.player_length, (key, o)-> o.first.view.player_length + "人"
-      update_at: (touch)->
-        btn_list Cache.storys.reduce.update_at, Url.prop.update_at, (key, o)-> o.first.view.update_at
-      update_interval: (touch)->
-        btn_list Cache.storys.reduce.update_interval, Url.prop.update_interval, (key, o)-> o.first.view.update_interval
-    btn_list = (reduce, prop, caption_func)->
-      m "ul", [
-        for key, o of reduce
-          caption = caption_func key, o
-          continue unless caption
-          m "li.btn-block", touch.btn(prop, key),
-            m "span.badge", reduce[key].count
-            m "span", caption
-        m "li.btn-block", touch.btn(prop, "all"),
-          m "span.badge", Cache.storys.reduce._all.all.count
-          "- すべて -"
-      ]
+    touch = new GUI.TouchMenu()
+    touch.menu_set Cache.storys, Url.prop, "count", 
+      folder: ->
+        @btn_list (key)-> GAME[key]?.nation
+      game: ->
+        @btn_list (key, o)-> o.first.view.game_rule
+      rating: ->
+        @btn_list (key, o)->
+          m "span",
+            o.first.view.rating
+            RAILS.rating[key].caption
+      config: ->
+        @btn_list (key)-> key
+      event: ->
+        @btn_list (key)-> key
+      say_limit: ->
+        @btn_list (key, o)-> o.first.view.say_limit
+      player_length: ->
+        @btn_list (key, o)-> o.first.view.player_length + "人"
+      update_at: ->
+        @btn_list (key, o)-> o.first.view.update_at
+      update_interval: ->
+        @btn_list (key, o)-> o.first.view.update_interval
 
     m.module dom,
       controller: ->
       view: ->
-        query =
-          game:  [Url.prop.game()]
-          event:  [Url.prop.event()]
-          config:  [Url.prop.config()]
-          folder:   [Url.prop.folder()]
-          rating:    [Url.prop.rating()]
-          say_limit:   [Url.prop.say_limit()]
-          update_at:     [Url.prop.update_at()]
-          update_interval: [Url.prop.update_interval()]
-          player_length:     [Url.prop.player_length()]
-        delete query.game  unless Cache.storys.reduce.game[Url.prop.game()]
-        delete query.event  unless Cache.storys.reduce.event[Url.prop.event()]
-        delete query.config  unless Cache.storys.reduce.config[Url.prop.config()]
-        delete query.folder   unless Cache.storys.reduce.folder[Url.prop.folder()]
-        delete query.rating    unless Cache.storys.reduce.rating[Url.prop.rating()]
-        delete query.say_limit  unless Cache.storys.reduce.update_at[Url.prop.say_limit()]
-        delete query.update_at   unless Cache.storys.reduce.update_at[Url.prop.update_at()]
-        delete query.player_length unless Cache.storys.reduce.player_length[Url.prop.player_length()]
-        delete query.update_interval unless Cache.storys.reduce.update_interval[Url.prop.update_interval()]
-
-        storys = Cache.storys.where query
+        storys = touch.by_menu()
         icon =
           if touch_sw.state()
             "glyphicon-resize-small"

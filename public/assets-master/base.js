@@ -1089,12 +1089,70 @@ GUI.TouchMenu = (function() {
     this.state = m.prop(false);
   }
 
+  TouchMenu.prototype.by_menu = function() {
+    var hash, menu, prop;
+    hash = {};
+    for (menu in this.menus) {
+      prop = Url.prop[menu]();
+      if (this.finder.reduce[menu][prop]) {
+        hash[menu] = [prop];
+      }
+    }
+    return this.finder.where(hash);
+  };
+
+  TouchMenu.prototype.menu_set = function(finder, prop, sort_by, menus) {
+    var menu_item;
+    this.finder = finder;
+    this.prop = prop;
+    this.menus = menus;
+    menu_item = (function(_this) {
+      return function(caption_func, item_func) {
+        var caption, key, keys, menu, o, reduce;
+        menu = _this.state();
+        prop = _this.prop[menu];
+        reduce = _this.finder.reduce[menu];
+        keys = Object.keys(reduce).sort(function(a, b) {
+          return reduce[b][sort_by] - reduce[a][sort_by];
+        });
+        return [
+          !((reduce.all != null) && caption_func("all", reduce.all)) ? (o = _this.finder.reduce._all.all, item_func(o[sort_by], _this.btn(prop, "all"), "- すべて -")) : void 0, (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = keys.length; _i < _len; _i++) {
+              key = keys[_i];
+              o = reduce[key];
+              caption = caption_func(key, o);
+              if (!caption) {
+                continue;
+              }
+              _results.push(item_func(o[sort_by], this.btn(prop, key), caption));
+            }
+            return _results;
+          }).call(_this)
+        ];
+      };
+    })(this);
+    return this.helper = {
+      btn_group: function(caption_func) {
+        return menu_item(caption_func, function(size, btn, caption) {
+          return m("a", btn, m("span.badge", size), m("span", caption));
+        });
+      },
+      btn_list: function(caption_func) {
+        return m("ul", menu_item(caption_func, function(size, btn, caption) {
+          return m("li.btn-block", btn, m("span.badge", size), m("span", caption));
+        }));
+      }
+    };
+  };
+
   TouchMenu.prototype.menu = function() {
     var menu_cb, options, vdom;
     options = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
     menu_cb = this.menus[this.state()];
     if (menu_cb) {
-      vdom.push(m(".drag", m(".contentframe", menu_cb(this))));
+      vdom.push(m(".drag", m(".contentframe", menu_cb.call(this.helper))));
     }
     return m(".pagenavi.choice.guide.form-inline", options, vdom);
   };
@@ -1675,7 +1733,7 @@ Url = (function() {
   Url.state = _.debounce(function() {
     var new_href;
     new_href = Url.href();
-    if (location.href !== new_href) {
+    if (decodeURI(location.href) !== new_href) {
       if (typeof history !== "undefined" && history !== null) {
         history[Url.mode]("pushstate", null, new_href);
       }
