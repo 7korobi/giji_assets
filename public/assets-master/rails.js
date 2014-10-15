@@ -6433,8 +6433,11 @@ Url.bind = LOCATION.bind;
 
 Url.routes = {
   search: {
-    stories: new Url("stories=:folder-:game-:rating-:event-:config-:say_limit-:player_length-:update_at-:update_interval", {
-      unmatch: "?"
+    folder: new Url("folder=:folder", {
+      unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
+    }),
+    stories: new Url("stories=:game-:rating-:event-:config-:say_limit-:player_length-:update_at-:update_interval", {
+      unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
     shape: new Url("shape=:chr_set-:order", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) && "?"
@@ -6653,7 +6656,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return touch.menu({}, "キャラセットを選んでみよう ", m("span.btn.btn-default.dropdown-toggle", touch.start("order"), m("i.glyphicon.glyphicon-tags"), m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("chr_set"), m("i.glyphicon.glyphicon-tags"), m("i.caret")));
+        return touch.menu({}, "キャラセットを選んでみよう ", m("span.btn.btn-default.dropdown-toggle", touch.start("order"), "並び順", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("chr_set"), "キャラセット", m("i.caret")));
       }
     });
   });

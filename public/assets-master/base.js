@@ -1093,7 +1093,7 @@ GUI.TouchMenu = (function() {
     var hash, menu, prop;
     hash = {};
     for (menu in this.menus) {
-      prop = Url.prop[menu]();
+      prop = this.prop[menu]();
       if (this.finder.reduce[menu][prop]) {
         hash[menu] = [prop];
       }
@@ -1152,7 +1152,7 @@ GUI.TouchMenu = (function() {
     options = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
     menu_cb = this.menus[this.state()];
     if (menu_cb) {
-      vdom.push(m(".drag", m(".contentframe", menu_cb.call(this.helper))));
+      vdom.push(m(".drag", m(".contentframe", menu_cb.call(this.helper, this))));
     }
     return m(".pagenavi.choice.guide.form-inline", options, vdom);
   };
