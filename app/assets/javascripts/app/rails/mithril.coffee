@@ -63,10 +63,10 @@ if gon?.map_reduce?.faces?
         touch.menu {},
           "キャラセットを選んでみよう "
           m "span.btn.btn-default.dropdown-toggle", touch.start("order"),
-            m "i.glyphicon.glyphicon-tags"
+            "並び順"
             m "i.caret"
           m "span.btn.btn-default.dropdown-toggle", touch.start("chr_set"),
-            m "i.glyphicon.glyphicon-tags"
+            "キャラセット"
             m "i.caret"
 
 if gon?.face?
