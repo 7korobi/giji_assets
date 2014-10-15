@@ -181,7 +181,7 @@ class GUI.TouchMenu
   menu: (options, vdom...)->
     menu_cb = @menus[@state()]
     if menu_cb
-      vdom.push m ".drag", m ".contentframe", menu_cb.call(@helper)
+      vdom.push m ".drag", m ".contentframe", menu_cb.call(@helper, @)
 
     m ".pagenavi.choice.guide.form-inline", options, vdom
 
