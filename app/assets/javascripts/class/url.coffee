@@ -141,13 +141,15 @@ class Url
 
   set_cookie: (value)->
     ary = [value]
-    if @options.cookie.time
-      expires = new Date Math.min 2147397247000, _.now() + @options.cookie.time * 3600000
+
+    {time, domain, path, secure} = @options.cookie
+    if time
+      expires = new Date Math.min 2147397247000, _.now() + time * 3600000
       ary.push "expires=#{expires.toUTCString()}"
-    if @options.cookie.domain
-      ary.push "domain=#{@options.domain}"
-    if @options.cookie.path
-      ary.push "path=#{@options.path}"
-    if @options.cookie.secure
+    if domain
+      ary.push "domain=#{domain}"
+    if path
+      ary.push "path=#{path}"
+    if secure
       ary.push "secure"
     document.cookie = ary.join("; ")
