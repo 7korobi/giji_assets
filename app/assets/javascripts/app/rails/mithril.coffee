@@ -514,66 +514,66 @@ GUI.if_exist "#headline", (dom)->
             m "tr",
               m "td.no_choice",
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
+                  href: "//giji.check.jp/stories?folder=LOBBY"
                 , "lobby"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
+                  href: "//giji.check.jp/stories?folder=OFFPARTY"
                 ,"offparty"
                 m "br"
                 m "br"
                 m "br"
               m "td.no_choice",
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
+                  href: "//giji.check.jp/stories?folder=MORPHE"
                 , "morphe"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CAFE"
+                  href: "//giji.check.jp/stories?folder=CAFE"
                 , "cafe"
                 m "br"
                 m "br"
                 m "br"
               m "td.no_choice",
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
+                  href: "//giji.check.jp/stories?folder=WOLF"
                 , "wolf"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
+                  href: "//giji.check.jp/stories?folder=ULTIMATE"
                 , "ultimate"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
+                  href: "//giji.check.jp/stories?folder=ALLSTAR"
                 , "allstar"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
+                  href: "//giji.check.jp/stories?folder=CABALA"
                 , "cabala"
                 m "br"
               m "td.no_choice", 
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=RP"
+                  href: "//giji.check.jp/stories?folder=RP"
                 , "role-play"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
+                  href: "//giji.check.jp/stories?folder=PRETENSE"
                 , "advance"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
+                  href: "//giji.check.jp/stories?folder=PERJURY"
                 , "perjury"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
+                  href: "//giji.check.jp/stories?folder=XEBEC"
                 , "xebec"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
+                  href: "//giji.check.jp/stories?folder=CRAZY"
                 , "crazy"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
+                  href: "//giji.check.jp/stories?folder=CIEL"
                 , "ciel"
 
 

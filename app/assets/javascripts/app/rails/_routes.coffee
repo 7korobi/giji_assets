@@ -2,6 +2,8 @@ Url.options = LOCATION.options
 Url.bind = LOCATION.bind
 
 Url.routes =
+  pathname:
+    folder: new Url "/:folder/stories"
   search:
     folder: new Url "folder=:folder",
       unmatch: gon?.stories? && "?"

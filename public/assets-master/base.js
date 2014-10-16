@@ -1078,10 +1078,11 @@ GUI = {
       v.updated_timer || (v.updated_timer = new Timer(v.updated_at, {
         prop: m.prop()
       }));
-      return m("." + v.mestype, m(".action", [m("p.text." + v.style, [m("b", m.trust(v.name)), "は、", m.trust(v.log)]), m("p.mes_date", v.updated_timer.prop())]));
+      return m("." + v.mestype, m(".action", [m("p.text." + v.style, [m("b", m.trust(v.name)), m.trust("は、" + v.log)]), m("p.mes_date", v.updated_timer.prop())]));
     }
   }
 };
+var __slice = [].slice;
 
 GUI.TouchMenu = (function() {
   function TouchMenu(menus) {
@@ -1242,6 +1243,107 @@ if ((_ref1 = document.querySelector("meta[name=viewport]")) != null) {
 }
 
 head.useragent = navigator.userAgent;
+var Hilitor;
+
+Hilitor = function(id, tag) {
+  var colorIdx, colors, hiliteTag, matchRegex, openLeft, openRight, skipTags, targetNode, wordColor;
+  targetNode = document.getElementById(id) || document.body;
+  hiliteTag = tag || "EM";
+  skipTags = new RegExp("^(?:" + hiliteTag + "|SCRIPT|FORM|SPAN)$");
+  colors = ["#ff6", "#a0ffff", "#9f9", "#f99", "#f6f"];
+  wordColor = [];
+  colorIdx = 0;
+  matchRegex = "";
+  openLeft = false;
+  openRight = false;
+  this.setMatchType = function(type) {
+    switch (type) {
+      case "left":
+        this.openLeft = false;
+        this.openRight = true;
+        break;
+      case "right":
+        this.openLeft = true;
+        this.openRight = false;
+        break;
+      case "open":
+        this.openLeft = this.openRight = true;
+        break;
+      default:
+        this.openLeft = this.openRight = false;
+    }
+  };
+  this.setRegex = function(input) {
+    var re;
+    input = input.replace(/^[^\w]+|[^\w]+$/g, "").replace(/[^\w'-]+/g, "|");
+    re = "(" + input + ")";
+    if (!this.openLeft) {
+      re = "\\b" + re;
+    }
+    if (!this.openRight) {
+      re = re + "\\b";
+    }
+    matchRegex = new RegExp(re, "i");
+  };
+  this.getRegex = function() {
+    var retval;
+    retval = matchRegex.toString();
+    retval = retval.replace(/(^\/(\\b)?|\(|\)|(\\b)?\/i$)/g, "");
+    retval = retval.replace(/\|/g, " ");
+    return retval;
+  };
+  this.hiliteWords = function(node) {
+    var after, i, match, nv, regs;
+    if (node === undefined || !node) {
+      return;
+    }
+    if (!matchRegex) {
+      return;
+    }
+    if (skipTags.test(node.nodeName)) {
+      return;
+    }
+    if (node.hasChildNodes()) {
+      i = 0;
+      while (i < node.childNodes.length) {
+        this.hiliteWords(node.childNodes[i]);
+        i++;
+      }
+    }
+    if (node.nodeType === 3) {
+      if ((nv = node.nodeValue) && (regs = matchRegex.exec(nv))) {
+        if (!wordColor[regs[0].toLowerCase()]) {
+          wordColor[regs[0].toLowerCase()] = colors[colorIdx++ % colors.length];
+        }
+        match = document.createElement(hiliteTag);
+        match.appendChild(document.createTextNode(regs[0]));
+        match.style.backgroundColor = wordColor[regs[0].toLowerCase()];
+        match.style.fontStyle = "inherit";
+        match.style.color = "#000";
+        after = node.splitText(regs.index);
+        after.nodeValue = after.nodeValue.substring(regs[0].length);
+        node.parentNode.insertBefore(match, after);
+      }
+    }
+  };
+  this.remove = function() {
+    var arr, el, parent;
+    arr = document.getElementsByTagName(hiliteTag);
+    while (arr.length && (el = arr[0])) {
+      parent = el.parentNode;
+      parent.replaceChild(el.firstChild, el);
+      parent.normalize();
+    }
+  };
+  this.apply = function(input) {
+    this.remove();
+    if (input === undefined || !input) {
+      return;
+    }
+    this.setRegex(input);
+    this.hiliteWords(targetNode);
+  };
+};
 var Layout, win;
 
 win = {
@@ -1896,19 +1998,20 @@ Url = (function() {
   };
 
   Url.prototype.set_cookie = function(value) {
-    var ary, expires;
+    var ary, domain, expires, path, secure, time, _ref;
     ary = [value];
-    if (this.options.cookie.time) {
-      expires = new Date(Math.min(2147397247000, _.now() + this.options.cookie.time * 3600000));
+    _ref = this.options.cookie, time = _ref.time, domain = _ref.domain, path = _ref.path, secure = _ref.secure;
+    if (time) {
+      expires = new Date(Math.min(2147397247000, _.now() + time * 3600000));
       ary.push("expires=" + (expires.toUTCString()));
     }
-    if (this.options.cookie.domain) {
-      ary.push("domain=" + this.options.domain);
+    if (domain) {
+      ary.push("domain=" + domain);
     }
-    if (this.options.cookie.path) {
-      ary.push("path=" + this.options.path);
+    if (path) {
+      ary.push("path=" + path);
     }
-    if (this.options.cookie.secure) {
+    if (secure) {
       ary.push("secure");
     }
     return document.cookie = ary.join("; ");
