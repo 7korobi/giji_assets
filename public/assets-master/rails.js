@@ -4086,7 +4086,7 @@ list = [];
 
 order = ["ririnra", "wa", "time", "sf", "mad", "ger", "changed", "animal", "school"];
 
-_ref = Cache.faces.all().sort();
+_ref = Cache.faces.sort();
 for (_i = 0, _len = _ref.length; _i < _len; _i++) {
   face = _ref[_i];
   chr_set_id = "all";
@@ -6439,13 +6439,16 @@ Url.routes = {
     folder: new Url("folder=:folder", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
-    stories: new Url("stories=:game-:rating-:event-:config-:say_limit-:player_length-:update_at-:update_interval", {
+    stories: new Url("stories=:game~:rating~:event~:config~:say_limit~:player_length~:update_at~:update_interval~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
-    shape: new Url("shape=:chr_set-:order", {
+    faces: new Url("faces=:chr_set~:order~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) && "?"
     }),
-    css: new Url("css=:theme-:width-:layout-:font", {
+    scroll: new Url("scroll=:scroll", {
+      unmatch: "?"
+    }),
+    css: new Url("css=:theme~:width~:layout~:font", {
       cookie: {
         time: 12,
         path: "/"
@@ -6476,24 +6479,45 @@ new Cache.Rule("map_face").schema(function() {
       list = Cache.chr_jobs.where({
         face: [o.face_id]
       }).sort();
-      o.chr_set_ids = (function() {
-        var _i, _len, _results;
-        if (list) {
+      if (list) {
+        o.search_words = (function() {
+          var _i, _len, _results;
+          _results = [];
+          for (_i = 0, _len = list.length; _i < _len; _i++) {
+            chr_job = list[_i];
+            _results.push(chr_job.job);
+          }
+          return _results;
+        })();
+        o.chr_set_ids = (function() {
+          var _i, _len, _results;
           _results = [];
           for (_i = 0, _len = list.length; _i < _len; _i++) {
             chr_job = list[_i];
             _results.push(chr_job.chr_set_id);
           }
           return _results;
-        } else {
-          return [];
-        }
-      })();
+        })();
+      } else {
+        o.search_words = o.chr_set_ids = [];
+      }
       return o.win.value.合計 = o.win.all;
+    },
+    face_name: function(o) {
+      var sow_auth_id, _results;
+      o.search_words.push(o.face.name);
+      _results = [];
+      for (sow_auth_id in o.sow_auth_id.value) {
+        _results.push(o.search_words.push(sow_auth_id));
+      }
+      return _results;
     }
   });
-  return this.scope("chr_set", function(o) {
+  this.scope("chr_set", function(o) {
     return o.chr_set_ids;
+  });
+  return this.search(function(o) {
+    return o.search_words;
   });
 });
 
@@ -6541,6 +6565,9 @@ new Cache.Rule("story").schema(function() {
   this.scope("event", function(o) {
     return o.view.event_types;
   });
+  this.search(function(o) {
+    return [o.name];
+  });
   caption = function(field, key) {
     var data;
     data = field[key];
@@ -6577,17 +6604,9 @@ new Cache.Rule("story").schema(function() {
     }
   });
 });
-var face, map_orders, scroll_to, scrolls, _ref;
+var face, map_orders, scroll_spy, _ref;
 
-scrolls = [];
-
-scroll_to = function(elem, is_continue, context) {
-  if (is_continue) {
-    return console.log(elem);
-  } else {
-    return scrolls.push([elem]);
-  }
-};
+scroll_spy = new GUI.ScrollSpy(Url.prop.scroll);
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.chr_set.schema(function() {
@@ -6616,12 +6635,12 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
       view: function() {
         var chrs, headline, map_order_set;
         map_order_set = map_orders(Url.prop.order());
-        chrs = Cache.map_faces.where({
+        chrs = Cache.map_faces.search(Url.prop.search()).where({
           chr_set: [Url.prop.chr_set()]
         }).sort("desc");
         headline = "";
         if (chrs != null ? chrs.length : void 0) {
-          headline = [m("span.badge.badge-info", Cache.chr_sets.find(Url.prop.chr_set()).caption), "の" + chrs.length + "人を、", m("span.badge.badge-info", map_orders(Url.prop.order()).headline), "回数で並べています"];
+          headline = [m("span.badge.badge-info", Cache.chr_sets.find(Url.prop.chr_set()).caption), "の" + chrs.length + "人を、", m("span.badge.badge-info", map_order_set.headline), "回数で並べています"];
         }
         return GUI.chrs(chrs, headline, function(o, face) {
           var chr_job, job_name;
@@ -6659,7 +6678,10 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return touch.menu({}, "キャラセットを選んでみよう ", m("span.btn.btn-default.dropdown-toggle", touch.start("order"), "並び順", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("chr_set"), "キャラセット", m("i.caret")));
+        return touch.menu(scroll_spy.mark("menu"), m("input.form-control", {
+          onkeyup: m.withAttr("value", Url.prop.search),
+          value: Url.prop.search()
+        }), "キャラセットを選んでみよう ", m("span.btn.btn-default.dropdown-toggle", touch.start("order"), "並び順", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("chr_set"), "キャラセット", m("i.caret")));
       }
     });
   });
@@ -6719,7 +6741,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
             return _results;
           })()
         ];
-        return [m("h2", face.name + " の活躍"), face.says[0] != null ? m("h6", m("span.code", Timer.date_time_stamp(face.says[0].date.min)), m.trust("&nbsp;〜&nbsp;"), m("span.code", Timer.date_time_stamp(face.says[0].date.max))) : void 0, m("table.say.SAY", m("tbody", m("tr", m("td.img", GUI.portrate(face.face_id)), m("td.field", m(".msg", letters)))))];
+        return [m("h2", face.name + " の活躍"), face.says[0] != null ? m("h6", m("span.code", Timer.date_time_stamp(face.says[0].date.min)), m.trust("&nbsp;〜&nbsp;"), m("span.code", Timer.date_time_stamp(face.says[0].date.max))) : void 0, m("table.say.SAY", scroll_spy.mark("summary"), m("tbody", m("tr", m("td.img", GUI.portrate(face.face_id)), m("td.field", m(".msg", letters)))))];
       }
     });
   });
@@ -6729,9 +6751,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
       view: function() {
         var say, says_calc_line, says_calc_lines, says_count_line, says_count_lines, _i, _len, _ref1;
         says_count_lines = [
-          m("tr.caution", {
-            config: scroll_to
-          }, m("th.msg", {
+          m("tr.caution", m("th.msg", {
             colspan: 2
           }, "総合値"), m("th.msg", {
             style: "text-align:right"
@@ -6742,9 +6762,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
           }, "総発言回数"))
         ];
         says_calc_lines = [
-          m("tr.caution", {
-            config: scroll_to
-          }, m("th.msg", {
+          m("tr.caution", m("th.msg", {
             colspan: 2
           }, "平均値"), m("th.msg", {
             style: "text-align:right"
@@ -6774,7 +6792,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
           says_count_lines.push(says_count_line);
           says_calc_lines.push(says_calc_line);
         }
-        return [m("table.say.info", says_count_lines), m("table.say.info", says_calc_lines)];
+        return [m("table.say.info", scroll_spy.mark("says_count"), says_count_lines), m("table.say.info", scroll_spy.mark("says_calc"), says_calc_lines)];
       }
     });
   });
@@ -6811,9 +6829,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
             return _results;
           })()
         ];
-        return m(".MAKER.guide", {
-          config: scroll_to
-        }, letters);
+        return m(".MAKER.guide", scroll_spy.mark("villages"), letters);
       }
     });
   });
@@ -6847,9 +6863,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
             return _results;
           })()
         ];
-        return m(".ADMIN.guide", {
-          config: scroll_to
-        }, letters);
+        return m(".ADMIN.guide", scroll_spy.mark("sow_users"), letters);
       }
     });
   });
@@ -6863,11 +6877,15 @@ GUI.if_exist("#buttons", function(dom) {
     controller: function() {},
     view: function() {
       var o;
-      return m("nav", m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-search", {
-        href: "#search"
-      })), m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-pencil", {
-        href: "#pencil"
-      })), (function() {
+      return m("nav", m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-search", GUI.attrs(function() {
+        return this.start(function() {
+          return GUI.ScrollSpy.go("menu");
+        });
+      }))), m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-pencil", GUI.attrs(function() {
+        return this.start(function() {
+          return GUI.ScrollSpy.go("form");
+        });
+      }))), (function() {
         var _i, _len, _ref1, _results;
         _ref1 = [];
         _results = [];
@@ -6924,14 +6942,9 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var v, _i, _len, _ref1, _results;
-        _ref1 = gon.villages;
-        _results = [];
-        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          v = _ref1[_i];
-          _results.push(GUI.message.action(v));
-        }
-        return _results;
+        return scroll_spy.pager(gon.villages, function(v) {
+          return GUI.message.action(v);
+        });
       }
     });
   });
@@ -6942,14 +6955,9 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.byebyes : void 0) != null)
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var v, _i, _len, _ref1, _results;
-        _ref1 = gon.byebyes;
-        _results = [];
-        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          v = _ref1[_i];
-          _results.push(GUI.message.action(v));
-        }
-        return _results;
+        return scroll_spy.pager(gon.byebyes, function(v) {
+          return GUI.message.action(v);
+        });
       }
     });
   });
@@ -6960,14 +6968,9 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var v, _i, _len, _ref1, _results;
-        _ref1 = gon.history;
-        _results = [];
-        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          v = _ref1[_i];
-          _results.push(GUI.message.say(v));
-        }
-        return _results;
+        return scroll_spy.pager(gon.history, function(v) {
+          return GUI.message.say(v);
+        });
       }
     });
   });
@@ -7030,34 +7033,30 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var head, icon, o, storys;
-        storys = touch.by_menu();
+        var head, icon, storys;
+        storys = touch.by_menu().search(Url.prop.search());
         icon = touch_sw.state() ? "glyphicon-resize-small" : "glyphicon-resize-full";
         head = function() {
           return m("thead", m("tr", m("th"), touch_sw.state() ? m("th", "人数") : void 0, touch_sw.state() ? m("th", "ルール") : void 0));
         };
-        return m("div", touch.menu({}, m("h6", "検索する。　　　　"), m("span.btn.btn-default.dropdown-toggle", touch_sw.start(true), m("i.glyphicon." + icon)), m("span.btn.btn-default.dropdown-toggle", touch.start("folder"), m("i.glyphicon.glyphicon-book"), m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("game"), "ルール", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("event"), "事件", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("config"), "役職", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("rating"), "こだわり", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("say_limit"), "発言制限", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("player_length"), "人数", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_at"), "更新時刻", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_interval"), "更新間隔", m("i.caret"))), m("table.table.table-border.table-hover", head(), m("tbody", (function() {
-          var _i, _len, _ref1, _results;
-          _ref1 = storys.list;
-          _results = [];
-          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-            o = _ref1[_i];
-            if (touch_sw.state()) {
-              _results.push(m("tr", m("td", m("a", {
-                href: o.link
-              }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
-                href: o.file
-              }, m.trust(o.name)), o.view.rating, m(".note", " 　　更新 : " + o.view.update_at + " " + o.view.update_interval), m(".note", o.view.configs), m(".note", o.view.events)), m("td.small", "" + o.view.player_length + "人"), m("td.small", m(".note", o.view.say_limit), m(".note", o.view.game_rule))));
-            } else {
-              _results.push(m("tr", m("td", m("a", {
-                href: o.link
-              }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
-                href: o.file
-              }, o.name), o.view.rating)));
-            }
+        return m("div", touch.menu(scroll_spy.mark("menu"), m("h6", "検索する。　　　　"), m("input.form-control", {
+          onkeyup: m.withAttr("value", Url.prop.search),
+          value: Url.prop.search()
+        }), m("span.btn.btn-default.dropdown-toggle", touch_sw.start(true), m("i.glyphicon." + icon)), m("span.btn.btn-default.dropdown-toggle", touch.start("folder"), m("i.glyphicon.glyphicon-book"), m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("game"), "ルール", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("event"), "事件", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("config"), "役職", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("rating"), "こだわり", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("say_limit"), "発言制限", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("player_length"), "人数", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_at"), "更新時刻", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_interval"), "更新間隔", m("i.caret"))), m("table.table.table-border.table-hover", head(), m("tbody", scroll_spy.pager(storys.list(), function(o) {
+          if (touch_sw.state()) {
+            return m("tr", m("td", m("a", {
+              href: o.link
+            }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
+              href: o.file
+            }, m.trust(o.name)), o.view.rating, m(".note", " 　　更新 : " + o.view.update_at + " " + o.view.update_interval), m(".note", o.view.configs), m(".note", o.view.events)), m("td.small", "" + o.view.player_length + "人"), m("td.small", m(".note", o.view.say_limit), m(".note", o.view.game_rule)));
+          } else {
+            return m("tr", m("td", m("a", {
+              href: o.link
+            }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
+              href: o.file
+            }, o.name), o.view.rating));
           }
-          return _results;
-        })()), head()));
+        })), head()));
       }
     });
   });
@@ -7101,7 +7100,7 @@ GUI.if_exist("#headline", function(dom) {
       }, "offparty"), m("br"), m("br"), m("br")), m("td.no_choice", m("a", {
         href: "//giji.check.jp/stories?folder=MORPHE"
       }, "morphe"), m("br"), m("a", {
-        href: "//giji.check.jp/stories?folder=CAFE"
+        href: "//giji.check.jp/stories?folder=CABALA"
       }, "cafe"), m("br"), m("br"), m("br")), m("td.no_choice", m("a", {
         href: "//giji.check.jp/stories?folder=WOLF"
       }, "wolf"), m("br"), m("a", {
@@ -7228,19 +7227,27 @@ GUI.if_exist("#to_root", function(dom) {
 
 m.endComputation();
 if ("onorientationchange" in window) {
-  window.addEventListener('orientationchange', _.throttle(win["do"].resize, DELAY.presto));
+  window.addEventListener('orientationchange', function() {
+    return window.requestAnimationFrame(win["do"].resize);
+  });
   window.addEventListener('orientationchange', _.throttle(win["do"].scroll, DELAY.lento));
 } else {
-  window.addEventListener('resize', _.throttle(win["do"].resize, DELAY.presto));
+  window.addEventListener('resize', function() {
+    return window.requestAnimationFrame(win["do"].resize);
+  });
   window.addEventListener('resize', _.throttle(win["do"].scroll, DELAY.lento));
 }
 
-window.addEventListener('scroll', _.throttle(win["do"].scroll, DELAY.presto));
+window.addEventListener('scroll', function() {
+  return window.requestAnimationFrame(win["do"].scroll);
+});
 
 window.addEventListener('scroll', _.throttle(win["do"].resize, DELAY.lento));
 
 if ("ondevicemotion" in window) {
-  window.addEventListener('devicemotion', _.throttle(win["do"].motion, DELAY.presto));
+  window.addEventListener('devicemotion', function() {
+    return window.requestAnimationFrame(win["do"].motion);
+  });
 }
 
 if ("ongesturestart" in window) {

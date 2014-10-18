@@ -4086,7 +4086,7 @@ list = [];
 
 order = ["ririnra", "wa", "time", "sf", "mad", "ger", "changed", "animal", "school"];
 
-_ref = Cache.faces.all().sort();
+_ref = Cache.faces.sort();
 for (_i = 0, _len = _ref.length; _i < _len; _i++) {
   face = _ref[_i];
   chr_set_id = "all";
@@ -4117,7 +4117,7 @@ Url.bind = LOCATION.bind;
 
 Url.routes = {
   search: {
-    css: new Url("css=:theme-:width-:layout-:font", {
+    css: new Url("css=:theme~:width~:layout~:font", {
       change: function(params) {
         var h, key, val, _ref;
         h = {};
@@ -4133,19 +4133,27 @@ Url.routes = {
   }
 };
 if ("onorientationchange" in window) {
-  window.addEventListener('orientationchange', _.throttle(win["do"].resize, DELAY.presto));
+  window.addEventListener('orientationchange', function() {
+    return window.requestAnimationFrame(win["do"].resize);
+  });
   window.addEventListener('orientationchange', _.throttle(win["do"].scroll, DELAY.lento));
 } else {
-  window.addEventListener('resize', _.throttle(win["do"].resize, DELAY.presto));
+  window.addEventListener('resize', function() {
+    return window.requestAnimationFrame(win["do"].resize);
+  });
   window.addEventListener('resize', _.throttle(win["do"].scroll, DELAY.lento));
 }
 
-window.addEventListener('scroll', _.throttle(win["do"].scroll, DELAY.presto));
+window.addEventListener('scroll', function() {
+  return window.requestAnimationFrame(win["do"].scroll);
+});
 
 window.addEventListener('scroll', _.throttle(win["do"].resize, DELAY.lento));
 
 if ("ondevicemotion" in window) {
-  window.addEventListener('devicemotion', _.throttle(win["do"].motion, DELAY.presto));
+  window.addEventListener('devicemotion', function() {
+    return window.requestAnimationFrame(win["do"].motion);
+  });
 }
 
 if ("ongesturestart" in window) {

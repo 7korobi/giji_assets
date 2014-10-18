@@ -75,7 +75,7 @@ Mithril=m=new function a(b,c){function d(a){return{}.toString.call(a)}function e
 
 this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,"presto":50,"animato":200,"andante":800,"lento":3200} ;
 
-this.LOCATION = {"options":{"search":null,"w":{"type":"Number"},"width":{"current":"std"},"layout":{"current":"center"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"card_win":{"current":"ALL"},"chr_set":{"current":"all"},"order":{"current":"all"},"folder":{"current":"all"},"game":{"current":"all"},"say_limit":{"current":"all"},"player_length":{"current":"all"},"rating":{"current":"all"},"config":{"current":"all"},"event":{"current":"all"},"update_at":{"current":"all"},"update_interval":{"current":"all"}},"bind":{"folder":[{"folder":"all","nation":"- すべて -"},{"folder":"PAN","nation":"似顔絵人狼"},{"folder":"WOLF","nation":"人狼議事標準"},{"folder":"RP","nation":"人狼議事RP:"},{"folder":"PRETENSE","nation":"人狼議事RP:Advance"},{"folder":"XEBEC","nation":"人狼議事RP:Braid XEBEC"},{"folder":"CRAZY","nation":"人狼議事RP:Braid Crazy"},{"folder":"CIEL","nation":"人狼議事RP:Cheat Ciel"},{"folder":"PERJURY","nation":"人狼議事RP:Cheat Perjury"},{"folder":"ULTIMATE","nation":"人狼議事大乱闘:"},{"folder":"ALLSTAR","nation":"人狼議事大乱闘:Allstar"},{"folder":"CABALA","nation":"人狼議事CabalaCafe"},{"folder":"MORPHE","nation":"人狼議事モルペウス"},{"folder":"SOYBEAN","nation":"人狼議事鯖の味噌煮"},{"folder":"LOBBY","nation":"人狼議事ロビー"},{"folder":"OFFPARTY","nation":"人狼議事オフ相談所"},{"folder":"TEST","nation":"人狼議事テスト"}],"width":[{"width":"wide","w":770},{"width":"std","w":580},{"width":"mini","w":458}],"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
+this.LOCATION = {"options":{"scroll":{"type":"Text","current":""},"search":{"type":"Text","current":""},"w":{"type":"Number"},"width":{"current":"std"},"layout":{"current":"center"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"card_win":{"current":"ALL"},"chr_set":{"current":"all"},"order":{"current":"all"},"folder":{"current":"all"},"game":{"current":"all"},"say_limit":{"current":"all"},"player_length":{"current":"all"},"rating":{"current":"all"},"config":{"current":"all"},"event":{"current":"all"},"update_at":{"current":"all"},"update_interval":{"current":"all"}},"bind":{"folder":[{"folder":"all","nation":"- すべて -"},{"folder":"PAN","nation":"似顔絵人狼"},{"folder":"WOLF","nation":"人狼議事標準"},{"folder":"RP","nation":"人狼議事RP:"},{"folder":"PRETENSE","nation":"人狼議事RP:Advance"},{"folder":"XEBEC","nation":"人狼議事RP:Braid XEBEC"},{"folder":"CRAZY","nation":"人狼議事RP:Braid Crazy"},{"folder":"CIEL","nation":"人狼議事RP:Cheat Ciel"},{"folder":"PERJURY","nation":"人狼議事RP:Cheat Perjury"},{"folder":"ULTIMATE","nation":"人狼議事大乱闘:"},{"folder":"ALLSTAR","nation":"人狼議事大乱闘:Allstar"},{"folder":"CABALA","nation":"人狼議事CabalaCafe"},{"folder":"MORPHE","nation":"人狼議事モルペウス"},{"folder":"SOYBEAN","nation":"人狼議事鯖の味噌煮"},{"folder":"LOBBY","nation":"人狼議事ロビー"},{"folder":"OFFPARTY","nation":"人狼議事オフ相談所"},{"folder":"TEST","nation":"人狼議事テスト"}],"width":[{"width":"wide","w":770},{"width":"std","w":580},{"width":"mini","w":458}],"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
 var define;
 
@@ -240,64 +240,126 @@ Cache = (function() {
 
 })();
 
-Cache.Finder = (function() {
-  function Finder(scopes, sort_func) {
-    this.scopes = scopes;
-    this.sort_func = sort_func;
+Cache.Query = (function() {
+  function Query(finder) {
+    this.finder = finder;
+    this.q = {};
   }
 
-  Finder.prototype.where = function(scopes) {
-    var id, kind, kind_hash, kinds, scope, val;
-    this.list = (function() {
+  Query.prototype.where = function(scopes) {
+    var query;
+    query = new Cache.Query(this.finder);
+    query.q = _.extend({}, this.q, scopes);
+    return query;
+  };
+
+  Query.prototype.search = function(text) {
+    var item, list;
+    if (!text) {
+      return this;
+    }
+    list = (function() {
       var _i, _len, _ref, _results;
-      _ref = this.base_map();
+      _ref = text.split(/\s+/);
       _results = [];
-      for (id in _ref) {
-        val = _ref[id];
-        for (scope in scopes) {
-          kinds = scopes[scope];
-          val = null;
-          for (_i = 0, _len = kinds.length; _i < _len; _i++) {
-            kind = kinds[_i];
-            kind_hash = this.scopes[scope].hash[kind];
-            if (!kind_hash) {
-              continue;
-            }
-            val = kind_hash != null ? kind_hash[id] : void 0;
-            if (val) {
-              break;
-            }
-          }
-          if (!val) {
-            break;
-          }
-        }
-        if (!val) {
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        item = _ref[_i];
+        item = item.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        if (!item.length) {
           continue;
         }
-        _results.push(val);
+        _results.push("(" + item + ")");
       }
       return _results;
-    }).call(this);
-    return this;
+    })();
+    if (!list.length) {
+      return this;
+    }
+    this.finder.search(new RegExp(list.join("|"), "ig"));
+    return this.where({
+      search: ["match"]
+    });
   };
 
-  Finder.prototype.all = function() {
-    return this.where();
-  };
-
-  Finder.prototype.find = function(id, kind, scope) {
+  Query.prototype.find = function(id, kind, scope) {
     if (kind == null) {
       kind = "all";
     }
     if (scope == null) {
       scope = "_all";
     }
-    return this.scopes[scope].hash[kind][id];
+    return this.finder.scopes[scope].hash[kind][id];
   };
 
-  Finder.prototype.sort = function(desc) {
-    return this.sort_func(desc, this.list);
+  Query.prototype.sort = function(desc) {
+    return this.finder.sort_func(desc, this.finder.list(this.q));
+  };
+
+  Query.prototype.list = function() {
+    return this.finder.list(this.q);
+  };
+
+  return Query;
+
+})();
+
+Cache.Finder = (function() {
+  function Finder(scopes, sort_func) {
+    this.scopes = scopes;
+    this.sort_func = sort_func;
+    this.all = new Cache.Query(this);
+    this.base_map = (function(_this) {
+      return function() {
+        return _this.scopes._all.hash.all;
+      };
+    })(this);
+    this.map = function(o) {
+      return o._id;
+    };
+  }
+
+  Finder.prototype.search = function(search_regexp) {
+    var all, scope;
+    this.search_regexp = search_regexp;
+    all = _.values(this.base_map());
+    scope = this.scopes.search;
+    scope.hash = {};
+    scope.merge(all);
+    return this.map_reduce({
+      search: this.scopes.search
+    });
+  };
+
+  Finder.prototype.list = function(query) {
+    var id, kind, kind_hash, kinds, scope, val, _i, _len, _ref, _results;
+    _ref = this.base_map();
+    _results = [];
+    for (id in _ref) {
+      val = _ref[id];
+      for (scope in query) {
+        kinds = query[scope];
+        val = null;
+        for (_i = 0, _len = kinds.length; _i < _len; _i++) {
+          kind = kinds[_i];
+          kind_hash = this.scopes[scope].hash[kind];
+          if (!kind_hash) {
+            continue;
+          }
+          val = kind_hash != null ? kind_hash[id] : void 0;
+          if (val) {
+            break;
+          }
+        }
+        if (!val) {
+          break;
+        }
+      }
+      if (!val) {
+        continue;
+      }
+      _results.push(val);
+    }
+    return _results;
   };
 
   Finder.prototype.refresh = function() {
@@ -305,27 +367,33 @@ Cache.Finder = (function() {
     return this.diff = {};
   };
 
-  Finder.prototype.map_reduce = function() {
-    var calc, emit, first, hash, id, init, kind_key, map, reduce, scope, scope_key, target, val, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _results;
+  Finder.prototype.map_reduce = function(scopes) {
+    var calc, emit, first, hash, id, init, kind_key, map, reduce, scope, scope_key, target, val, _base, _ref, _ref1, _ref2, _ref3, _results;
     init = function(val) {
       return {
         count: 0,
         sum: 0
       };
     };
-    this.reduce = {};
+    if (scopes != null) {
+      if ((_base = this.all).reduce == null) {
+        _base.reduce = {};
+      }
+    } else {
+      this.all.reduce = {};
+      scopes = this.scopes;
+    }
     _ref = this.base_map();
     for (id in _ref) {
       val = _ref[id];
-      _ref1 = this.scopes;
-      for (scope_key in _ref1) {
-        scope = _ref1[scope_key];
-        this.reduce[scope_key] = {};
-        _ref2 = scope.hash;
-        for (kind_key in _ref2) {
-          hash = _ref2[kind_key];
+      for (scope_key in scopes) {
+        scope = scopes[scope_key];
+        this.all.reduce[scope_key] = {};
+        _ref1 = scope.hash;
+        for (kind_key in _ref1) {
+          hash = _ref1[kind_key];
           first = this.map(val);
-          this.reduce[scope_key][kind_key] = init(first);
+          this.all.reduce[scope_key][kind_key] = init(first);
         }
       }
       break;
@@ -353,11 +421,11 @@ Cache.Finder = (function() {
     }
     reduce = (function(_this) {
       return function(target, emit, val) {
-        if (!target.max || emit.max < target.max) {
+        if (!(emit.max <= target.max)) {
           target.max = emit.max;
           target.last = val;
         }
-        if (!target.min || target.min < emit.min) {
+        if (!(target.min <= emit.min)) {
           target.min = emit.min;
           target.first = val;
         }
@@ -376,34 +444,32 @@ Cache.Finder = (function() {
         }
       };
     })(this);
-    _ref3 = this.base_map();
-    for (id in _ref3) {
-      val = _ref3[id];
+    _ref2 = this.base_map();
+    for (id in _ref2) {
+      val = _ref2[id];
       emit = map(this.map(val));
-      _ref4 = this.scopes;
-      for (scope_key in _ref4) {
-        scope = _ref4[scope_key];
-        _ref5 = scope.hash;
-        for (kind_key in _ref5) {
-          hash = _ref5[kind_key];
-          target = this.reduce[scope_key][kind_key];
+      for (scope_key in scopes) {
+        scope = scopes[scope_key];
+        _ref3 = scope.hash;
+        for (kind_key in _ref3) {
+          hash = _ref3[kind_key];
+          target = this.all.reduce[scope_key][kind_key];
           if (hash[val._id] != null) {
             reduce(target, emit, val);
           }
         }
       }
     }
-    _ref6 = this.scopes;
     _results = [];
-    for (scope_key in _ref6) {
-      scope = _ref6[scope_key];
+    for (scope_key in scopes) {
+      scope = scopes[scope_key];
       _results.push((function() {
-        var _ref7, _results1;
-        _ref7 = scope.hash;
+        var _ref4, _results1;
+        _ref4 = scope.hash;
         _results1 = [];
-        for (kind_key in _ref7) {
-          hash = _ref7[kind_key];
-          target = this.reduce[scope_key][kind_key];
+        for (kind_key in _ref4) {
+          hash = _ref4[kind_key];
+          target = this.all.reduce[scope_key][kind_key];
           _results1.push(calc(target));
         }
         return _results1;
@@ -420,7 +486,6 @@ Cache.Rule = (function() {
   function Rule(field) {
     this.id = "" + field + "_id";
     this.list_name = "" + field + "s";
-    this.scopes = {};
     this.validates = [];
     this.responses = [];
     this.adjust = {
@@ -438,17 +503,9 @@ Cache.Rule = (function() {
       };
     })(this);
     this.adjust_keys = ["_id", this.id];
-    this.finder = new Cache.Finder(this.scopes, function(list) {
+    this.finder = new Cache.Finder({}, function(list) {
       return list;
     });
-    this.finder.base_map = (function(_this) {
-      return function() {
-        return _this.scopes._all.hash.all;
-      };
-    })(this);
-    this.finder.map = function(o) {
-      return o._id;
-    };
     this.base_scope("_all", {
       kind: function() {
         return ["all"];
@@ -456,13 +513,13 @@ Cache.Rule = (function() {
       finder: this.finder
     });
     Cache.rule[field] = this;
-    Cache[this.list_name] = this.finder;
+    Cache[this.list_name] = this.finder.all;
   }
 
   Rule.prototype.base_scope = function(key, hash) {
     var all, scope;
-    this.scopes[key] = scope = new Cache.Scope(this, hash);
-    this.scope_keys = Object.keys(this.scopes).sort().reverse();
+    this.finder.scopes[key] = scope = new Cache.Scope(this, hash);
+    this.finder.scope_keys = Object.keys(this.finder.scopes).sort().reverse();
     scope.cleanup();
     all = _.values(this.finder.base_map());
     if (0 < (all != null ? all.length : void 0)) {
@@ -502,6 +559,29 @@ Cache.Rule = (function() {
           var cache;
           cache = Cache[_this.list_name];
           return _this.base_scope(key, {
+            kind: kind,
+            finder: _this.finder
+          });
+        };
+      })(this),
+      search: (function(_this) {
+        return function(targets) {
+          var kind;
+          kind = function(o) {
+            var regexp, text, _i, _len, _ref;
+            regexp = _this.finder.search_regexp;
+            if (regexp) {
+              _ref = targets(o);
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                text = _ref[_i];
+                if (text && text.match(regexp)) {
+                  return ["match"];
+                }
+              }
+            }
+            return [];
+          };
+          return _this.base_scope("search", {
             kind: kind,
             finder: _this.finder
           });
@@ -602,10 +682,10 @@ Cache.Rule = (function() {
         this.adjust[key](o, old);
       }
     }
-    _ref2 = this.scope_keys;
+    _ref2 = this.finder.scope_keys;
     for (_l = 0, _len3 = _ref2.length; _l < _len3; _l++) {
       key = _ref2[_l];
-      scope = this.scopes[key];
+      scope = this.finder.scopes[key];
       cb(scope, list);
     }
     this.finder.map_reduce();
@@ -662,11 +742,11 @@ Cache.Rule = (function() {
 
   Rule.prototype.cleanup = function() {
     var key, scope, _i, _len, _ref, _results;
-    _ref = this.scope_keys;
+    _ref = this.finder.scope_keys;
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       key = _ref[_i];
-      scope = this.scopes[key];
+      scope = this.finder.scopes[key];
       _results.push(scope.cleanup());
     }
     return _results;
@@ -683,10 +763,9 @@ Cache.Scope = (function() {
   }
 
   Scope.prototype.adjust = function(list, merge_phase) {
-    var all, o, old, old_kind, _i, _j, _len, _len1, _ref, _results;
+    var all, o, old, old_kind, _i, _j, _len, _len1, _ref;
     all = this.finder.base_map();
     this.finder.refresh();
-    _results = [];
     for (_i = 0, _len = list.length; _i < _len; _i++) {
       o = list[_i];
       if (all != null) {
@@ -702,9 +781,8 @@ Cache.Scope = (function() {
           }
         }
       }
-      _results.push(merge_phase(o));
+      merge_phase(o);
     }
-    return _results;
   };
 
   Scope.prototype.reject = function(list) {
@@ -1082,6 +1160,92 @@ GUI = {
     }
   }
 };
+GUI.ScrollSpy = (function() {
+  ScrollSpy.elems = {};
+
+  ScrollSpy.go = function(id) {
+    var elem, left_by, offset, rect, top_by;
+    elem = GUI.ScrollSpy.elems[id];
+    if (elem) {
+      rect = elem.getBoundingClientRect();
+      offset = Math.min(win.height / 2, rect.height);
+      top_by = rect.top + offset - win.height / 2 - 1;
+      left_by = 0;
+      return window.scrollBy(left_by, top_by);
+    }
+  };
+
+  ScrollSpy.view = function() {
+    var elem, id, key, rect, _ref, _ref1, _ref2;
+    _ref = GUI.ScrollSpy.elems;
+    for (key in _ref) {
+      elem = _ref[key];
+      id = elem.scroll_id;
+      rect = elem.getBoundingClientRect();
+      if (id === key && rect.height && rect.width) {
+        if ((rect.top < (_ref1 = win.height / 2) && _ref1 < rect.bottom) && (rect.left < (_ref2 = win.width / 2) && _ref2 < rect.right)) {
+          return id;
+        }
+      } else {
+        delete GUI.ScrollSpy.elems[key];
+      }
+    }
+    return null;
+  };
+
+  function ScrollSpy(prop) {
+    var scroll;
+    this.prop = prop;
+    this.start();
+    scroll = (function(_this) {
+      return function() {
+        var id;
+        id = GUI.ScrollSpy.view();
+        if (id !== _this.prop()) {
+          return _this.prop(id, true);
+        }
+      };
+    })(this);
+    win.on.scroll.push(_.debounce(scroll, DELAY.andante));
+  }
+
+  ScrollSpy.prototype.start = function() {};
+
+  ScrollSpy.prototype.pager = function(list, cb) {
+    var o, vdom, _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = list.length; _i < _len; _i++) {
+      o = list[_i];
+      vdom = cb(o);
+      vdom.attrs.config = this.mark(o._id).config;
+      _results.push(vdom);
+    }
+    return _results;
+  };
+
+  ScrollSpy.prototype.mark = function(id) {
+    var go;
+    go = function() {
+      return GUI.ScrollSpy.go(id);
+    };
+    return {
+      config: (function(_this) {
+        return function(elem, is_continue, context) {
+          GUI.ScrollSpy.elems[id] = elem;
+          elem.scroll_id = id;
+          if (!is_continue) {
+            if (id === _this.prop()) {
+              return _.debounce(go, DELAY.animato)();
+            }
+          }
+        };
+      })(this)
+    };
+  };
+
+  return ScrollSpy;
+
+})();
 var __slice = [].slice;
 
 GUI.TouchMenu = (function() {
@@ -1095,16 +1259,16 @@ GUI.TouchMenu = (function() {
     hash = {};
     for (menu in this.menus) {
       prop = this.prop[menu]();
-      if (this.finder.reduce[menu][prop]) {
+      if (this.all.reduce[menu][prop]) {
         hash[menu] = [prop];
       }
     }
-    return this.finder.where(hash);
+    return this.all.where(hash);
   };
 
-  TouchMenu.prototype.menu_set = function(finder, prop, sort_by, menus) {
+  TouchMenu.prototype.menu_set = function(all, prop, sort_by, menus) {
     var menu_item;
-    this.finder = finder;
+    this.all = all;
     this.prop = prop;
     this.menus = menus;
     menu_item = (function(_this) {
@@ -1112,12 +1276,12 @@ GUI.TouchMenu = (function() {
         var caption, key, keys, menu, o, reduce;
         menu = _this.state();
         prop = _this.prop[menu];
-        reduce = _this.finder.reduce[menu];
+        reduce = _this.all.reduce[menu];
         keys = Object.keys(reduce).sort(function(a, b) {
           return reduce[b][sort_by] - reduce[a][sort_by];
         });
         return [
-          !((reduce.all != null) && caption_func("all", reduce.all)) ? (o = _this.finder.reduce._all.all, item_func(o[sort_by], _this.btn(prop, "all"), "- すべて -")) : void 0, (function() {
+          !((reduce.all != null) && caption_func("all", reduce.all)) ? (o = _this.all.reduce._all.all, item_func(o[sort_by], _this.btn(prop, "all"), "- すべて -")) : void 0, (function() {
             var _i, _len, _results;
             _results = [];
             for (_i = 0, _len = keys.length; _i < _len; _i++) {
@@ -1361,11 +1525,13 @@ win = {
   },
   "do": {
     resize: function(e) {
-      var body_height, body_width;
-      win.height = Math.max(window.innerHeight, document.documentElement.clientHeight);
-      win.width = Math.max(window.innerWidth, document.documentElement.clientWidth);
-      body_height = Math.max(document.body.clientHeight, document.body.scrollHeight, document.documentElement.scrollHeight, document.documentElement.clientHeight);
-      body_width = Math.max(document.body.clientWidth, document.body.scrollWidth, document.documentElement.scrollWidth, document.documentElement.clientWidth);
+      var body_height, body_width, docBody, docElem;
+      docElem = document.documentElement;
+      docBody = document.body;
+      win.height = Math.max(window.innerHeight, docElem.clientHeight);
+      win.width = Math.max(window.innerWidth, docElem.clientWidth);
+      body_height = Math.max(docBody.clientHeight, docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight);
+      body_width = Math.max(docBody.clientWidth, docBody.scrollWidth, docElem.scrollWidth, docElem.clientWidth);
       win.max = {
         top: body_height - win.height,
         left: body_width - win.width
@@ -1380,8 +1546,14 @@ win = {
       return win.do_event_list(win.on.resize, e);
     },
     scroll: function(e) {
-      win.left = window.pageXOffset;
-      win.top = window.pageYOffset;
+      var docElem;
+      docElem = document.documentElement;
+      win.left = window.pageXOffset || window.scrollX;
+      win.left -= docElem.clientTop;
+      win.top = window.pageYOffset || window.scrollY;
+      win.top -= docElem.clientLeft;
+      win.bottom = win.top + win.height;
+      win.right = win.left + win.width;
       return win.do_event_list(win.on.scroll, e);
     },
     gesture: function(e) {
@@ -1426,7 +1598,10 @@ win = {
     load: []
   },
   top: 0,
+  horizon: 0,
+  bottom: 0,
   left: 0,
+  right: 0,
   width: 0,
   height: 0,
   accel: 0,
@@ -1518,7 +1693,7 @@ Layout = (function() {
 var ID, Serial, func, key, _ref;
 
 Serial = (function() {
-  var c, n, _i, _len, _ref;
+  var c, n, string_parser, string_serializer, _i, _len, _ref;
 
   function Serial() {}
 
@@ -1534,6 +1709,30 @@ Serial = (function() {
   }
 
   Serial.map.size = Serial.map.to_s.length;
+
+  string_parser = function(val) {
+    switch (val) {
+      case "":
+      case null:
+      case void 0:
+        return "";
+      default:
+        return String(val);
+    }
+  };
+
+  string_serializer = function(val) {
+    switch (val) {
+      case "":
+      case null:
+      case void 0:
+        return "";
+      default:
+        return String(val).replace(/[~\/=.&\?\#\[\]()\"'`;]/g, function(s) {
+          return "%" + s.charCodeAt(0).toString(16);
+        });
+    }
+  };
 
   Serial.parser = {
     Array: function(val) {
@@ -1559,9 +1758,10 @@ Serial = (function() {
       return result;
     },
     Number: Number,
-    String: String,
-    "null": String,
-    undefined: String
+    Text: string_parser,
+    String: string_parser,
+    "null": string_parser,
+    undefined: string_parser
   };
 
   Serial.serializer = {
@@ -1582,10 +1782,11 @@ Serial = (function() {
       }
       return result;
     },
-    Number: String,
-    String: String,
-    "null": String,
-    undefined: String
+    Number: string_serializer,
+    Text: string_serializer,
+    String: string_serializer,
+    "null": string_serializer,
+    undefined: string_serializer
   };
 
   Serial.url = {};
@@ -1603,8 +1804,10 @@ for (key in _ref) {
         return "([-]?[\\.0-9]+)";
       case "Date":
         return "([0-9a-zA-Z]+)";
+      case "Text":
+        return "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]*)";
       default:
-        return "([^\\/\\-\\=\\.\\&\\(\\)\\\"\\'\\`\\;]+)";
+        return "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]+)";
     }
   })();
 }
@@ -1835,7 +2038,7 @@ Url = (function() {
   Url.state = _.debounce(function() {
     var new_href;
     new_href = Url.href();
-    if (decodeURI(location.href) !== new_href) {
+    if (decodeURI(location.href) !== decodeURI(new_href)) {
       if (typeof history !== "undefined" && history !== null) {
         history[Url.mode]("pushstate", null, new_href);
       }

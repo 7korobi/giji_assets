@@ -7180,7 +7180,7 @@ list = [];
 
 order = ["ririnra", "wa", "time", "sf", "mad", "ger", "changed", "animal", "school"];
 
-_ref = Cache.faces.all().sort();
+_ref = Cache.faces.sort();
 for (_i = 0, _len = _ref.length; _i < _len; _i++) {
   face = _ref[_i];
   chr_set_id = "all";
@@ -7447,16 +7447,16 @@ describe("Cache", function() {
   });
   describe("form input", function() {
     return it("guard user input", function(done) {
-      expect(Cache.forms.all().list.first.text).toEqual("last submit text.");
-      Cache.forms.all().list.first.text = "new user input.";
-      expect(Cache.forms.all().list.first.text).toEqual("new user input.");
+      expect(Cache.forms.list().first.text).toEqual("last submit text.");
+      Cache.forms.list().first.text = "new user input.";
+      expect(Cache.forms.list().first.text).toEqual("new user input.");
       Cache.rule.form.set([
         {
           _id: form1,
           text: "last submit text."
         }
       ]);
-      expect(Cache.forms.all().list.first.text).toEqual("new user input.");
+      expect(Cache.forms.list().first.text).toEqual("new user input.");
       return done();
     });
   });
@@ -7465,13 +7465,13 @@ describe("Cache", function() {
       var scene;
       expect(Cache.scenes.where({
         event: [event1]
-      }).list).toEqual([]);
-      scene = Cache.scenes.all().list.first;
+      }).list()).toEqual([]);
+      scene = Cache.scenes.list().first;
       scene.event_id = event1;
       Cache.rule.scene.set([scene]);
       expect(Cache.scenes.where({
         event: [event1]
-      }).list.length).toEqual(1);
+      }).list().length).toEqual(1);
       return done();
     });
   });
@@ -7485,38 +7485,38 @@ describe("Cache", function() {
       cache_message();
       expect(Cache.messages.where({
         scene: [scene1]
-      }).list.length).toEqual(1);
+      }).list().length).toEqual(1);
       expect(Cache.messages.where({
         scene: [scene2]
-      }).list.length).toEqual(1);
+      }).list().length).toEqual(1);
       expect(Cache.messages.where({
         scene: [scene3]
-      }).list.length).toEqual(1);
+      }).list().length).toEqual(1);
       expect(Cache.messages.where({
         scene: [scene1]
-      }).list.first.text).toEqual("text 1");
+      }).list().first.text).toEqual("text 1");
       expect(Cache.messages.where({
         scene: [scene2]
-      }).list.first.text).toEqual("text 2");
+      }).list().first.text).toEqual("text 2");
       expect(Cache.messages.where({
         scene: [scene3]
-      }).list.first.text).toEqual("text 3");
+      }).list().first.text).toEqual("text 3");
       return done();
     });
   });
   describe("messages with scope", function() {
     it("sepalate items", function(done) {
       cache_message_with_scope();
-      expect(Cache.messages.all().list.length).toEqual(3);
+      expect(Cache.messages.list().length).toEqual(3);
       expect(Cache.messages.where({
         of: ["also"]
-      }).list.length).toEqual(1);
+      }).list().length).toEqual(1);
       expect(Cache.messages.where({
         of: ["also"]
-      }).list.first.text).toEqual("text 2");
+      }).list().first.text).toEqual("text 2");
       expect(Cache.messages.where({
         of: ["good"]
-      }).list.length).toEqual(2);
+      }).list().length).toEqual(2);
       expect(Cache.messages.where({
         of: ["good"]
       }).sort().first.text).toEqual("text 1");
@@ -7537,10 +7537,10 @@ describe("Cache", function() {
           updated_at: 4
         }
       ]);
-      expect(Cache.messages.all().list.length).toEqual(3);
+      expect(Cache.messages.list().length).toEqual(3);
       expect(Cache.messages.where({
         of: ["also"]
-      }).list.length).toEqual(2);
+      }).list().length).toEqual(2);
       expect(Cache.messages.where({
         of: ["also"]
       }).sort().first.text).toEqual("text 4");
@@ -7549,10 +7549,10 @@ describe("Cache", function() {
       }).sort().last.text).toEqual("text 2");
       expect(Cache.messages.where({
         of: ["good"]
-      }).list.length).toEqual(1);
+      }).list().length).toEqual(1);
       expect(Cache.messages.where({
         of: ["good"]
-      }).list.last.text).toEqual("text 3");
+      }).list().last.text).toEqual("text 3");
       return done();
     });
     return it("append item", function(done) {
@@ -7567,10 +7567,10 @@ describe("Cache", function() {
           updated_at: 5
         }
       ]);
-      expect(Cache.messages.all().list.length).toEqual(4);
+      expect(Cache.messages.list().length).toEqual(4);
       expect(Cache.messages.where({
         of: ["also"]
-      }).list.length).toEqual(2);
+      }).list().length).toEqual(2);
       expect(Cache.messages.where({
         of: ["also"]
       }).sort().first.text).toEqual("text 2");
@@ -7579,7 +7579,7 @@ describe("Cache", function() {
       }).sort().last.text).toEqual("text 5");
       expect(Cache.messages.where({
         of: ["good"]
-      }).list.length).toEqual(2);
+      }).list().length).toEqual(2);
       expect(Cache.messages.where({
         of: ["good"]
       }).sort().first.text).toEqual("text 1");
@@ -7597,11 +7597,11 @@ describe("Cache", function() {
         order: 99999,
         _id: "all"
       });
-      expect(Cache.faces.all().list.length).toEqual(244);
-      expect(Cache.chr_jobs.all().list.length).toEqual(706);
+      expect(Cache.faces.list().length).toEqual(244);
+      expect(Cache.chr_jobs.list().length).toEqual(706);
       expect(Cache.chr_jobs.where({
         chr_set: ["all"]
-      }).list.length).toEqual(244);
+      }).list().length).toEqual(244);
       return done();
     });
     return it("delete item", function(done) {
@@ -7611,11 +7611,11 @@ describe("Cache", function() {
         }
       ]);
       expect(Cache.faces.find("all")).toEqual(void 0);
-      expect(Cache.faces.all().list.length).toEqual(243);
-      expect(Cache.chr_jobs.all().list.length).toEqual(705);
+      expect(Cache.faces.list().length).toEqual(243);
+      expect(Cache.chr_jobs.list().length).toEqual(705);
       expect(Cache.chr_jobs.where({
         chr_set: ["all"]
-      }).list.length).toEqual(243);
+      }).list().length).toEqual(243);
       return done();
     });
   });
@@ -7686,7 +7686,7 @@ describe("Cache", function() {
         event = _ref[_i];
         Cache.rule.message.merge(event.messages);
       }
-      return expect(Cache.messages.all().list.length).toEqual(1604);
+      return expect(Cache.messages.list().length).toEqual(1604);
     });
   });
 });
@@ -7870,7 +7870,7 @@ Url.routes = {
     file: new Url("/:fname.:ext")
   },
   search: {
-    param: new Url("param=:aaa-:bbb-:ccc-:ddd", {
+    param: new Url("param=:aaa~:bbb~:ccc~:ddd", {
       unmatch: "?"
     })
   }
