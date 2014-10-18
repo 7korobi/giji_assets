@@ -1,10 +1,4 @@
-scrolls = []
-scroll_to = (elem, is_continue, context)->
-  if is_continue
-    console.log elem
-  else
-    scrolls.push [elem]
-
+scroll_spy = new GUI.ScrollSpy(Url.prop.scroll)
 
 if gon?.map_reduce?.faces?
   Cache.rule.chr_set.schema ->
@@ -24,13 +18,13 @@ if gon?.map_reduce?.faces?
       controller: ->
       view: ->
         map_order_set = map_orders(Url.prop.order())
-        chrs = Cache.map_faces.where(chr_set:[Url.prop.chr_set()]).sort "desc"
+        chrs = Cache.map_faces.search(Url.prop.search()).where(chr_set:[Url.prop.chr_set()]).sort "desc"
         headline = ""
         if chrs?.length
           headline = [
             m "span.badge.badge-info", Cache.chr_sets.find(Url.prop.chr_set()).caption
             "の#{chrs.length}人を、"
-            m "span.badge.badge-info", map_orders(Url.prop.order()).headline
+            m "span.badge.badge-info", map_order_set.headline
             "回数で並べています"
           ]
 
@@ -60,7 +54,10 @@ if gon?.map_reduce?.faces?
     m.module dom,
       controller: ->
       view: ->
-        touch.menu {},
+        touch.menu scroll_spy.mark("menu"),
+          m "input.form-control",
+            onkeyup: m.withAttr("value", Url.prop.search)
+            value: Url.prop.search()
           "キャラセットを選んでみよう "
           m "span.btn.btn-default.dropdown-toggle", touch.start("order"),
             "並び順"
@@ -113,7 +110,7 @@ if gon?.face?
               m "span.code", Timer.date_time_stamp face.says[0].date.min
               m.trust "&nbsp;〜&nbsp;"
               m "span.code", Timer.date_time_stamp face.says[0].date.max
-          m "table.say.SAY",
+          m "table.say.SAY", scroll_spy.mark("summary"),
             m "tbody",
               m "tr",
                 m "td.img", 
@@ -127,14 +124,14 @@ if gon?.face?
       controller: ->
       view: ->
         says_count_lines = [
-          m "tr.caution", { config: scroll_to },
+          m "tr.caution",
             m "th.msg", {colspan: 2}, "総合値"
             m "th.msg", {style: "text-align:right"}, "一番長い発言"
             m "th.msg", {style: "text-align:right"}, "総文字数"
             m "th.msg", {style: "text-align:right"}, "総発言回数"
         ]
         says_calc_lines = [
-          m "tr.caution", { config: scroll_to },
+          m "tr.caution",
             m "th.msg", {colspan: 2}, "平均値"
             m "th.msg", {style: "text-align:right"}, "／村数"
             m "th.msg", {style: "text-align:right"}, "文字数"
@@ -158,8 +155,8 @@ if gon?.face?
           says_count_lines.push says_count_line
           says_calc_lines.push says_calc_line
           
-        [ m "table.say.info", says_count_lines
-          m "table.say.info", says_calc_lines
+        [ m "table.say.info", scroll_spy.mark("says_count"), says_count_lines
+          m "table.say.info", scroll_spy.mark("says_calc"), says_calc_lines
         ]
 
   GUI.if_exist "#village", (dom)->
@@ -181,7 +178,7 @@ if gon?.face?
                     href: "//7korobi.gehirn.ne.jp/stories/#{story_id[0]}.html"
                   , story_id[0]
         ]
-        m ".MAKER.guide",{ config: scroll_to }, letters
+        m ".MAKER.guide", scroll_spy.mark("villages"), letters
 
   GUI.if_exist "#sow_user", (dom)->
     m.module dom,
@@ -211,7 +208,7 @@ if gon?.face?
               @right 2.0, "x" + sow_auth_id[1]
             ]
         ]
-        m ".ADMIN.guide",{ config: scroll_to }, letters
+        m ".ADMIN.guide", scroll_spy.mark("sow_users"), letters
 
 GUI.if_exist "#buttons", (dom)->
   layout = new Layout -12,-1, dom
@@ -222,10 +219,14 @@ GUI.if_exist "#buttons", (dom)->
       m "nav",
         m "span",
           m "a.btn.btn-default.click.glyphicon.glyphicon-search",
-            href: "#search"
+            GUI.attrs ->
+              @start ->
+                GUI.ScrollSpy.go("menu")
         m "span",
           m "a.btn.btn-default.click.glyphicon.glyphicon-pencil",
-            href: "#pencil"
+            GUI.attrs ->
+              @start ->
+                GUI.ScrollSpy.go("form")
         for o in []
           m "span",
             m "a.btn.click", o.name
@@ -287,21 +288,24 @@ if gon?.villages?
     m.module dom,
       controller: ->
       view: ->
-        GUI.message.action(v) for v in gon.villages
+        scroll_spy.pager gon.villages, (v)->
+          GUI.message.action(v)
 
 if gon?.byebyes?
   GUI.if_exist "#byebyes", (dom)->
     m.module dom,
       controller: ->
       view: ->
-        GUI.message.action(v) for v in gon.byebyes
+        scroll_spy.pager gon.byebyes, (v)->
+          GUI.message.action(v)
 
 if gon?.history?
   GUI.if_exist "#history", (dom)->
     m.module dom,
       controller: ->
       view: ->
-        GUI.message.say(v) for v in gon.history
+        scroll_spy.pager gon.history, (v)->
+          GUI.message.say(v)
 
 if gon?.stories?
   Cache.rule.story.set gon.stories
@@ -334,7 +338,7 @@ if gon?.stories?
     m.module dom,
       controller: ->
       view: ->
-        storys = touch.by_menu()
+        storys = touch.by_menu().search(Url.prop.search())
         icon =
           if touch_sw.state()
             "glyphicon-resize-small"
@@ -350,8 +354,11 @@ if gon?.stories?
                 m "th", "ルール"
 
         m "div",
-          touch.menu {},
+          touch.menu scroll_spy.mark("menu"),
             m "h6", "検索する。　　　　"
+            m "input.form-control",
+              onkeyup: m.withAttr("value", Url.prop.search)
+              value: Url.prop.search()
             m "span.btn.btn-default.dropdown-toggle", touch_sw.start(true),
               m "i.glyphicon.#{icon}"
             m "span.btn.btn-default.dropdown-toggle", touch.start("folder"),
@@ -385,7 +392,7 @@ if gon?.stories?
           m "table.table.table-border.table-hover",
             head()
             m "tbody",
-              for o in storys.list
+              scroll_spy.pager storys.list(), (o)->
                 if touch_sw.state()
                   m "tr",
                     m "td",
@@ -529,7 +536,7 @@ GUI.if_exist "#headline", (dom)->
                 , "morphe"
                 m "br"
                 m "a",
-                  href: "//giji.check.jp/stories?folder=CAFE"
+                  href: "//giji.check.jp/stories?folder=CABALA"
                 , "cafe"
                 m "br"
                 m "br"
