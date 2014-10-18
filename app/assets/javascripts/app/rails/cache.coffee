@@ -4,14 +4,23 @@ new Cache.Rule("map_face").schema ->
     _id: (o)-> 
       o._id = o.face_id
       list = Cache.chr_jobs.where(face:[o.face_id]).sort()
-      o.chr_set_ids = 
-        if list
-          chr_job.chr_set_id for chr_job in list
-        else
-          []
+      if list
+        o.search_words =
+          for chr_job in list
+            chr_job.job 
+        o.chr_set_ids =
+          for chr_job in list
+            chr_job.chr_set_id 
+      else
+        o.search_words = o.chr_set_ids = []
       o.win.value.合計 = o.win.all
+    face_name: (o)->
+      o.search_words.push o.face.name
+      for sow_auth_id of o.sow_auth_id.value
+        o.search_words.push sow_auth_id
 
   @scope "chr_set", (o)-> o.chr_set_ids
+  @search (o)-> o.search_words
 
 new Cache.Rule("map_face_story_log").schema ->
   @scope "folder", (o)-> [o.folder]
@@ -31,6 +40,7 @@ new Cache.Rule("story").schema ->
   @scope "player_length", (o)-> [o.view.player_length]
   @scope "config", (o)-> o.view.config_types
   @scope "event", (o)-> o.view.event_types
+  @search (o)-> [o.name]
 
   caption = (field, key)->
     data = field[key]

@@ -6,19 +6,19 @@ class GUI.TouchMenu
     hash = {}
     for menu of @menus
       prop = @prop[menu]()
-      hash[menu] = [prop] if @finder.reduce[menu][prop]
-    @finder.where hash
+      hash[menu] = [prop] if @all.reduce[menu][prop]
+    @all.where hash
 
-  menu_set: (@finder, @prop, sort_by, @menus)->
+  menu_set: (@all, @prop, sort_by, @menus)->
     menu_item = (caption_func, item_func)=>
       menu = @state()
       prop = @prop[menu]
-      reduce = @finder.reduce[menu]
+      reduce = @all.reduce[menu]
       keys = Object.keys(reduce).sort (a,b)-> 
         reduce[b][sort_by] - reduce[a][sort_by]
 
       [ unless reduce.all? && caption_func "all", reduce.all
-          o = @finder.reduce._all.all
+          o = @all.reduce._all.all
           item_func o[sort_by], @btn(prop, "all"), "- すべて -"
         for key in keys
           o = reduce[key]

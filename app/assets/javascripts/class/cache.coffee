@@ -1,61 +1,87 @@
 class Cache
   @rule = {}
 
-class Cache.Finder
-  constructor: (@scopes, @sort_func)->
-  where: (scopes)->
-    @list =
-      for id, val of @base_map()
-        for scope, kinds of scopes
-          val = null
-          for kind in kinds
-            kind_hash = @scopes[scope].hash[kind]
-            continue unless kind_hash
-            
-            val = kind_hash?[id]
-            break if val
-          break unless val
-        continue unless val
-        val
-    @
 
-  all: ->
-    @where()
+class Cache.Query
+  constructor: (@finder)->
+    @q = {}
+
+  where: (scopes)->
+    query = new Cache.Query(@finder)
+    query.q = _.extend({}, @q, scopes)
+    query
+
+  search: (text)->
+    return @ unless text
+    list = 
+      for item in text.split(/\s+/)
+        item = item.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
+        continue unless item.length
+        "(#{item})"
+    return @ unless list.length
+    @finder.search(new RegExp list.join("|"), "ig")
+    @where search:["match"]
 
   find: (id, kind = "all", scope = "_all")->
-    @scopes[scope].hash[kind][id]
+    @finder.scopes[scope].hash[kind][id]
 
   sort: (desc)->
-    @sort_func desc, @list
+    @finder.sort_func desc, @finder.list @q
+
+  list: ->
+    @finder.list(@q)
+
+
+class Cache.Finder
+  constructor: (@scopes, @sort_func)->
+    @all = new Cache.Query @
+    @base_map = => @scopes._all.hash.all
+    @map = (o)-> o._id
+
+  search: (@search_regexp)->
+    all = _.values @base_map()
+
+    scope = @scopes.search
+    scope.hash = {}
+    scope.merge all
+    @map_reduce
+      search: @scopes.search
+
+  list: (query)->
+    for id, val of @base_map()
+      for scope, kinds of query
+        val = null
+        for kind in kinds
+          kind_hash = @scopes[scope].hash[kind]
+          continue unless kind_hash
+          
+          val = kind_hash?[id]
+          break if val
+        break unless val
+      continue unless val
+      val
 
   refresh: ->
     @cache = {}
     @diff = {}
 
-  # push
-  #   keys
-  # +=
-  #   count
-  # 
-  # first
-  # last
-  # 
-  # created_at last item
-  # created_at 
-  # sum 1
-  # sum text.length
-  map_reduce: ->
+  map_reduce: (scopes)->
     init = (val)->
       count: 0
       sum: 0
 
-    @reduce = {}
+    if scopes?
+      @all.reduce ?= {}
+    else
+      @all.reduce = {}
+      scopes = @scopes
+
     for id, val of @base_map()
-      for scope_key, scope of @scopes
-        @reduce[scope_key] = {}
+      for scope_key, scope of scopes
+        @all.reduce[scope_key] = {}
         for kind_key, hash of scope.hash
           first = @map val
-          @reduce[scope_key][kind_key] = init first
+          @all.reduce[scope_key][kind_key] = init first
       break
 
     switch typeof first
@@ -74,10 +100,10 @@ class Cache.Finder
           count: 1
 
     reduce = (target, emit, val)=>
-      if !(target.max) || emit.max < target.max
+      unless emit.max <= target.max
         target.max = emit.max
         target.last = val
-      if !(target.min) || target.min < emit.min
+      unless target.min <= emit.min
         target.min = emit.min 
         target.first = val
       target.count += emit.count if emit.count
@@ -89,22 +115,22 @@ class Cache.Finder
 
     for id, val of @base_map()
       emit = map @map val
-      for scope_key, scope of @scopes
+      for scope_key, scope of scopes
         for kind_key, hash of scope.hash
-          target = @reduce[scope_key][kind_key]
+          target = @all.reduce[scope_key][kind_key]
           if hash[val._id]?
             reduce target, emit, val
 
-    for scope_key, scope of @scopes
+    for scope_key, scope of scopes
       for kind_key, hash of scope.hash
-        target = @reduce[scope_key][kind_key]
+        target = @all.reduce[scope_key][kind_key]
         calc target
+
 
 class Cache.Rule
   constructor: (field)->
     @id = "#{field}_id"
     @list_name = "#{field}s"
-    @scopes = {}
     @validates = []
     @responses = []
     @adjust =
@@ -112,19 +138,17 @@ class Cache.Rule
     @adjust[@id] = (o)=> o[@id] = o._id unless o[@id]
     @adjust_keys = ["_id", @id]
 
-    @finder = new Cache.Finder @scopes, (list)-> list
-    @finder.base_map = => @scopes._all.hash.all
-    @finder.map = (o)-> o._id
+    @finder = new Cache.Finder {}, (list)-> list
     @base_scope "_all",
       kind: -> ["all"]
       finder: @finder
 
     Cache.rule[field] = @
-    Cache[@list_name] = @finder
+    Cache[@list_name] = @finder.all
 
   base_scope: (key, hash)->
-    @scopes[key] = scope = new Cache.Scope(@, hash)
-    @scope_keys = Object.keys(@scopes).sort().reverse()
+    @finder.scopes[key] = scope = new Cache.Scope(@, hash)
+    @finder.scope_keys = Object.keys(@finder.scopes).sort().reverse()
     scope.cleanup()
 
     all = _.values @finder.base_map()
@@ -154,6 +178,18 @@ class Cache.Rule
       scope: (key, kind)=>
         cache = Cache[@list_name]
         @base_scope key,
+          kind: kind
+          finder: @finder
+
+      search: (targets)=>
+        kind = (o)=>
+          regexp = @finder.search_regexp
+          if regexp
+            for text in targets(o)
+              if text && text.match regexp
+                return ["match"]
+          return []
+        @base_scope "search",
           kind: kind
           finder: @finder
 
@@ -209,8 +245,8 @@ class Cache.Rule
       for key in @adjust_keys
         @adjust[key](o, old)
 
-    for key in @scope_keys
-      scope = @scopes[key]
+    for key in @finder.scope_keys
+      scope = @finder.scopes[key]
       cb scope, list
 
     @finder.map_reduce()
@@ -241,9 +277,10 @@ class Cache.Rule
     @set all
 
   cleanup: ->
-    for key in @scope_keys
-      scope = @scopes[key]
+    for key in @finder.scope_keys
+      scope = @finder.scopes[key]
       scope.cleanup()
+
 
 class Cache.Scope
   constructor: (@rule, {@kind, @finder})->
@@ -262,6 +299,7 @@ class Cache.Scope
             delete @hash[old_kind][o._id]
 
       merge_phase(o)
+    return
   
   reject: (list)->
     @adjust list, ->

@@ -117,23 +117,23 @@ describe "Cache", ->
 
   describe "form input", ->
     it "guard user input", (done)->
-      expect(Cache.forms.all().list.first.text).toEqual "last submit text."
-      Cache.forms.all().list.first.text = "new user input."
-      expect(Cache.forms.all().list.first.text).toEqual "new user input."
+      expect(Cache.forms.list().first.text).toEqual "last submit text."
+      Cache.forms.list().first.text = "new user input."
+      expect(Cache.forms.list().first.text).toEqual "new user input."
       Cache.rule.form.set [
         _id: form1
         text: "last submit text."
       ]
-      expect(Cache.forms.all().list.first.text).toEqual "new user input."
+      expect(Cache.forms.list().first.text).toEqual "new user input."
       done()
 
   describe "replace item", ->
     it "link with data", (done)->
-      expect(Cache.scenes.where(event: [event1]).list).toEqual []
-      scene = Cache.scenes.all().list.first
+      expect(Cache.scenes.where(event: [event1]).list()).toEqual []
+      scene = Cache.scenes.list().first
       scene.event_id = event1
       Cache.rule.scene.set [scene]
-      expect(Cache.scenes.where(event: [event1]).list.length).toEqual 1
+      expect(Cache.scenes.where(event: [event1]).list().length).toEqual 1
       done()
 
   describe "messages", ->
@@ -144,21 +144,21 @@ describe "Cache", ->
 
     it "has scene", (done)->
       cache_message()
-      expect(Cache.messages.where(scene: [scene1]).list.length).toEqual 1
-      expect(Cache.messages.where(scene: [scene2]).list.length).toEqual 1
-      expect(Cache.messages.where(scene: [scene3]).list.length).toEqual 1
-      expect(Cache.messages.where(scene: [scene1]).list.first.text).toEqual "text 1"
-      expect(Cache.messages.where(scene: [scene2]).list.first.text).toEqual "text 2"
-      expect(Cache.messages.where(scene: [scene3]).list.first.text).toEqual "text 3"
+      expect(Cache.messages.where(scene: [scene1]).list().length).toEqual 1
+      expect(Cache.messages.where(scene: [scene2]).list().length).toEqual 1
+      expect(Cache.messages.where(scene: [scene3]).list().length).toEqual 1
+      expect(Cache.messages.where(scene: [scene1]).list().first.text).toEqual "text 1"
+      expect(Cache.messages.where(scene: [scene2]).list().first.text).toEqual "text 2"
+      expect(Cache.messages.where(scene: [scene3]).list().first.text).toEqual "text 3"
       done()
 
   describe "messages with scope", ->
     it "sepalate items", (done)->
       cache_message_with_scope()
-      expect(Cache.messages.all().list.length).toEqual 3
-      expect(Cache.messages.where(of: ["also"]).list.length).toEqual 1
-      expect(Cache.messages.where(of: ["also"]).list.first.text).toEqual "text 2"
-      expect(Cache.messages.where(of: ["good"]).list.length).toEqual 2
+      expect(Cache.messages.list().length).toEqual 3
+      expect(Cache.messages.where(of: ["also"]).list().length).toEqual 1
+      expect(Cache.messages.where(of: ["also"]).list().first.text).toEqual "text 2"
+      expect(Cache.messages.where(of: ["good"]).list().length).toEqual 2
       expect(Cache.messages.where(of: ["good"]).sort().first.text).toEqual "text 1"
       expect(Cache.messages.where(of: ["good"]).sort().last.text).toEqual "text 3"
       done()
@@ -173,12 +173,12 @@ describe "Cache", ->
         created_at: 1
         updated_at: 4
       ]
-      expect(Cache.messages.all().list.length).toEqual 3
-      expect(Cache.messages.where(of: ["also"]).list.length).toEqual 2
+      expect(Cache.messages.list().length).toEqual 3
+      expect(Cache.messages.where(of: ["also"]).list().length).toEqual 2
       expect(Cache.messages.where(of: ["also"]).sort().first.text).toEqual "text 4"
       expect(Cache.messages.where(of: ["also"]).sort().last.text).toEqual "text 2"
-      expect(Cache.messages.where(of: ["good"]).list.length).toEqual 1
-      expect(Cache.messages.where(of: ["good"]).list.last.text).toEqual "text 3"
+      expect(Cache.messages.where(of: ["good"]).list().length).toEqual 1
+      expect(Cache.messages.where(of: ["good"]).list().last.text).toEqual "text 3"
       done()
 
     it "append item", (done)->
@@ -191,11 +191,11 @@ describe "Cache", ->
         created_at: 5
         updated_at: 5
       ]
-      expect(Cache.messages.all().list.length).toEqual 4
-      expect(Cache.messages.where(of: ["also"]).list.length).toEqual 2
+      expect(Cache.messages.list().length).toEqual 4
+      expect(Cache.messages.where(of: ["also"]).list().length).toEqual 2
       expect(Cache.messages.where(of: ["also"]).sort().first.text).toEqual "text 2"
       expect(Cache.messages.where(of: ["also"]).sort().last.text).toEqual "text 5"
-      expect(Cache.messages.where(of: ["good"]).list.length).toEqual 2
+      expect(Cache.messages.where(of: ["good"]).list().length).toEqual 2
       expect(Cache.messages.where(of: ["good"]).sort().first.text).toEqual "text 1"
       expect(Cache.messages.where(of: ["good"]).sort().last.text).toEqual "text 3"
       done()
@@ -203,17 +203,17 @@ describe "Cache", ->
   describe "face data", ->
     it "all values", (done)->
       expect(Cache.faces.find("all")).toEqual face_id: "all", name: "パルック", order: 99999, _id: "all"
-      expect(Cache.faces.all().list.length).toEqual 244
-      expect(Cache.chr_jobs.all().list.length).toEqual 706
-      expect(Cache.chr_jobs.where(chr_set: ["all"]).list.length).toEqual 244
+      expect(Cache.faces.list().length).toEqual 244
+      expect(Cache.chr_jobs.list().length).toEqual 706
+      expect(Cache.chr_jobs.where(chr_set: ["all"]).list().length).toEqual 244
       done()
 
     it "delete item", (done)->
       Cache.rule.face.reject [_id: "all"]
       expect(Cache.faces.find("all")).toEqual undefined
-      expect(Cache.faces.all().list.length).toEqual 243
-      expect(Cache.chr_jobs.all().list.length).toEqual 705
-      expect(Cache.chr_jobs.where(chr_set: ["all"]).list.length).toEqual 243
+      expect(Cache.faces.list().length).toEqual 243
+      expect(Cache.chr_jobs.list().length).toEqual 705
+      expect(Cache.chr_jobs.where(chr_set: ["all"]).list().length).toEqual 243
       done()
 
   describe "import sample data", ->
@@ -265,4 +265,4 @@ describe "Cache", ->
       done()
       for event in sample2.events
         Cache.rule.message.merge event.messages
-      expect(Cache.messages.all().list.length).toEqual 1604
+      expect(Cache.messages.list().length).toEqual 1604
