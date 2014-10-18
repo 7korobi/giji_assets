@@ -17,7 +17,7 @@ Url.routes =
     potof: new Url "/potof/:potofs_order"
 
   search:
-    css: new Url "css=:theme-:width-:layout-:font",
+    css: new Url "css=:theme~:width~:layout~:font",
       unmatch: "?"
       change: (params)->
         h = {}

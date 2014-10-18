@@ -8,6 +8,21 @@ class Serial
     @map.to_i[c] = n
   @map.size = @map.to_s.length
 
+  string_parser = (val)->
+      switch val
+        when "", null, undefined
+          ""
+        else
+          String(val)
+
+  string_serializer = (val)->
+      switch val
+        when "", null, undefined
+          ""
+        else
+          String(val).replace ///[~/=.&\?\#\[\]()\"'`;]///g, (s)->
+            "%" + s.charCodeAt(0).toString(16)    
+
   @parser = 
     Array: (val)->
       if val.split?
@@ -27,9 +42,10 @@ class Serial
       result
 
     Number: Number
-    String: String
-    null:    String
-    undefined: String
+    Text: string_parser
+    String: string_parser 
+    null:    string_parser
+    undefined: string_parser
 
   @serializer = 
     Array: (val)->
@@ -46,10 +62,11 @@ class Serial
         time = Math.floor time / Serial.map.size
       result
 
-    Number: String
-    String: String
-    null:    String
-    undefined: String
+    Number: string_serializer
+    Text: string_serializer
+    String: string_serializer
+    null:    string_serializer
+    undefined: string_serializer
 
     
 
@@ -62,8 +79,10 @@ for key, func of Serial.parser
         "([-]?[\\.0-9]+)"
       when "Date"
         "([0-9a-zA-Z]+)"
+      when "Text"
+        "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]*)"
       else
-        "([^\\/\\-\\=\\.\\&\\(\\)\\\"\\'\\`\\;]+)"
+        "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]+)"
 
 class ID
   @random_size = Serial.map.size * Serial.map.size * Serial.map.size

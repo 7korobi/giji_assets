@@ -8,13 +8,16 @@ Url.routes =
     folder: new Url "folder=:folder",
       unmatch: gon?.stories? && "?"
 
-    stories: new Url "stories=:game-:rating-:event-:config-:say_limit-:player_length-:update_at-:update_interval",
+    stories: new Url "stories=:game~:rating~:event~:config~:say_limit~:player_length~:update_at~:update_interval~:search",
       unmatch: gon?.stories? && "?"
 
-    shape: new Url "shape=:chr_set-:order",
+    faces: new Url "faces=:chr_set~:order~:search",
       unmatch: gon?.map_reduce?.faces? && "?"
 
-    css: new Url "css=:theme-:width-:layout-:font",
+    scroll: new Url "scroll=:scroll",
+      unmatch: "?"
+
+    css: new Url "css=:theme~:width~:layout~:font",
       cookie:
         time: 12
         path: "/"

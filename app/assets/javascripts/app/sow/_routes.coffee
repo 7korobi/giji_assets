@@ -3,7 +3,7 @@ Url.bind = LOCATION.bind
 
 Url.routes =
   search:
-    css: new Url "css=:theme-:width-:layout-:font", 
+    css: new Url "css=:theme~:width~:layout~:font", 
       change: (params)->
         h = {}
         for key, val of params

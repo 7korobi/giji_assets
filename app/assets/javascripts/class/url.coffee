@@ -28,7 +28,7 @@ class Url
 
   @state = _.debounce ->
     new_href = Url.href()
-    if decodeURI(location.href) != new_href
+    if decodeURI(location.href) != decodeURI(new_href)
       history[Url.mode] "pushstate", null, new_href if history?
       Url.popstate()
   , DELAY.presto

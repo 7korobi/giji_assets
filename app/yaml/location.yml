@@ -1,6 +1,11 @@
 
 options:
+  scroll:
+    type: Text
+    current: ""
   search:
+    type: Text
+    current: ""
   w:
     type: Number
   width:
