@@ -1,15 +1,14 @@
 if "onorientationchange" of window
-  window.addEventListener 'orientationchange', _.throttle(win.do.resize, DELAY.presto)
+  window.addEventListener 'orientationchange', -> window.requestAnimationFrame(win.do.resize)
   window.addEventListener 'orientationchange', _.throttle(win.do.scroll, DELAY.lento)
 else
-  window.addEventListener 'resize', _.throttle(win.do.resize, DELAY.presto)
+  window.addEventListener 'resize', -> window.requestAnimationFrame(win.do.resize)
   window.addEventListener 'resize', _.throttle(win.do.scroll, DELAY.lento)
 
-window.addEventListener 'scroll', _.throttle(win.do.scroll, DELAY.presto)
+window.addEventListener 'scroll', -> window.requestAnimationFrame(win.do.scroll)
 window.addEventListener 'scroll', _.throttle(win.do.resize, DELAY.lento)
-
 if "ondevicemotion" of window
-  window.addEventListener 'devicemotion', _.throttle(win.do.motion, DELAY.presto)
+  window.addEventListener 'devicemotion', -> window.requestAnimationFrame(win.do.motion)
 
 if "ongesturestart" of window
   window.addEventListener 'gesturestart', _.throttle(win.do.start, DELAY.presto)
