@@ -5,10 +5,13 @@ win =
 
   do:
     resize: (e)->
-      win.height = Math.max window.innerHeight, document.documentElement.clientHeight
-      win.width  = Math.max window.innerWidth,  document.documentElement.clientWidth
-      body_height = Math.max document.body.clientHeight , document.body.scrollHeight, document.documentElement.scrollHeight, document.documentElement.clientHeight
-      body_width =  Math.max document.body.clientWidth,   document.body.scrollWidth,  document.documentElement.scrollWidth,  document.documentElement.clientWidth
+      docElem = document.documentElement
+      docBody = document.body
+
+      win.height = Math.max window.innerHeight, docElem.clientHeight
+      win.width  = Math.max window.innerWidth,  docElem.clientWidth
+      body_height = Math.max docBody.clientHeight , docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight
+      body_width =  Math.max docBody.clientWidth,   docBody.scrollWidth,  docElem.scrollWidth,  docElem.clientWidth
       win.max =
         top:  body_height - win.height
         left: body_width  - win.width
@@ -23,8 +26,14 @@ win =
       win.do_event_list win.on.resize, e
 
     scroll: (e)->
-      win.left = window.pageXOffset
-      win.top  = window.pageYOffset
+      docElem = document.documentElement
+
+      win.left = window.pageXOffset || window.scrollX
+      win.left -= docElem.clientTop
+      win.top  = window.pageYOffset || window.scrollY
+      win.top -= docElem.clientLeft
+      win.bottom = win.top + win.height
+      win.right = win.left + win.width
 
       #console.log ["scroll", e]
       win.do_event_list win.on.scroll, e
@@ -74,10 +83,13 @@ win =
     end: []
     load: []
 
-  top:    0
-  left:   0
-  width:  0
-  height: 0
+  top:     0
+  horizon: 0
+  bottom:  0
+  left:    0
+  right:   0
+  width:   0
+  height:  0
 
   accel:   0
   gravity: 0
@@ -88,7 +100,6 @@ win =
   max:
     top:  0
     left: 0
-
 
 class Layout
   @list = {}
