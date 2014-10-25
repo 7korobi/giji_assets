@@ -73,12 +73,15 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 1px;
 }
 
-.chrbox,
-.say img {
+.chrbox, .say img {
   float: left;
   max-width:   90px;
   width:       90px;
   margin: 0 auto;
+}
+.say img {
+  max-height: 130px;
+  height:     130px;
 }
 
 .chrblank,

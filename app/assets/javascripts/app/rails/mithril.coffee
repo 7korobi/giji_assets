@@ -1,3 +1,4 @@
+GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll)
 scroll_spy = new GUI.ScrollSpy(Url.prop.scroll)
 
 if gon?.map_reduce?.faces?
@@ -54,9 +55,10 @@ if gon?.map_reduce?.faces?
     m.module dom,
       controller: ->
       view: ->
-        touch.menu scroll_spy.mark("menu"),
+        touch.menu GUI.ScrollSpy.global.mark("menu"),
           m "input.form-control",
-            onkeyup: m.withAttr("value", Url.prop.search)
+            onblur:   m.withAttr("value", Url.prop.search)
+            onchange: m.withAttr("value", Url.prop.search)
             value: Url.prop.search()
           "キャラセットを選んでみよう "
           m "span.btn.btn-default.dropdown-toggle", touch.start("order"),
@@ -288,7 +290,7 @@ if gon?.villages?
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager gon.villages, (v)->
+        scroll_spy.pager "div", gon.villages, (v)->
           GUI.message.action(v)
 
 if gon?.byebyes?
@@ -296,7 +298,7 @@ if gon?.byebyes?
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager gon.byebyes, (v)->
+        scroll_spy.pager "div", gon.byebyes, (v)->
           GUI.message.action(v)
 
 if gon?.history?
@@ -304,12 +306,13 @@ if gon?.history?
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager gon.history, (v)->
+        scroll_spy.pager "div", gon.history, (v)->
           GUI.message.say(v)
 
 if gon?.stories?
   Cache.rule.story.set gon.stories
   GUI.if_exist "#stories", (dom)->
+    scroll_spy.avg_height = 22
     touch_sw = new GUI.TouchMenu()
     touch = new GUI.TouchMenu()
     touch.menu_set Cache.storys, Url.prop, "count", 
@@ -344,20 +347,13 @@ if gon?.stories?
             "glyphicon-resize-small"
           else
             "glyphicon-resize-full"
-        head = ->
-          m "thead",
-            m "tr", 
-              m "th"
-              if touch_sw.state()
-                m "th", "人数"
-              if touch_sw.state()
-                m "th", "ルール"
 
         m "div",
-          touch.menu scroll_spy.mark("menu"),
+          touch.menu GUI.ScrollSpy.global.mark("menu"),
             m "h6", "検索する。　　　　"
             m "input.form-control",
-              onkeyup: m.withAttr("value", Url.prop.search)
+              onblur:   m.withAttr("value", Url.prop.search)
+              onchange: m.withAttr("value", Url.prop.search)
               value: Url.prop.search()
             m "span.btn.btn-default.dropdown-toggle", touch_sw.start(true),
               m "i.glyphicon.#{icon}"
@@ -389,10 +385,12 @@ if gon?.stories?
               "更新間隔"
               m "i.caret"
 
+          # m ".table-swipe",
           m "table.table.table-border.table-hover",
-            head()
-            m "tbody",
-              scroll_spy.pager storys.list(), (o)->
+              m "thead",
+                m "tr", 
+                  m "th"
+              scroll_spy.pager "tbody", storys.list(), (o)->
                 if touch_sw.state()
                   m "tr",
                     m "td",
@@ -404,13 +402,20 @@ if gon?.stories?
                         href: o.file
                       , m.trust o.name
                       o.view.rating
-                      m ".note", " 　　更新 : #{o.view.update_at} #{o.view.update_interval}"
-                      m ".note", o.view.configs
-                      m ".note", o.view.events
-                    m "td.small", "#{o.view.player_length}人"
-                    m "td.small",
-                      m ".note", o.view.say_limit
-                      m ".note", o.view.game_rule
+                      m "table",
+                        m "tbody",
+                          m "tr",
+                            m "th", "更新"
+                            m "td", "#{o.view.update_at} #{o.view.update_interval}"
+                          m "tr",
+                            m "th", "規模"
+                            m "td", "#{o.view.player_length}人 #{o.view.say_limit}"
+                          m "tr",
+                            m "th", "ルール"
+                            m "td", "#{o.view.game_rule}"
+
+                      m "div", o.view.configs
+                      m "div", o.view.events
                 else
                   m "tr",
                     m "td",
@@ -422,7 +427,6 @@ if gon?.stories?
                         href: o.file
                       , o.name
                       o.view.rating
-            head()
 
 GUI.if_exist "#headline", (dom)->
   touch = new GUI.TouchMenu()
@@ -521,66 +525,66 @@ GUI.if_exist "#headline", (dom)->
             m "tr",
               m "td.no_choice",
                 m "a",
-                  href: "//giji.check.jp/stories?folder=LOBBY"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
                 , "lobby"
                 m "br"
                 m "a",
-                  href: "//giji.check.jp/stories?folder=OFFPARTY"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
                 ,"offparty"
                 m "br"
                 m "br"
                 m "br"
               m "td.no_choice",
                 m "a",
-                  href: "//giji.check.jp/stories?folder=MORPHE"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
                 , "morphe"
                 m "br"
                 m "a",
-                  href: "//giji.check.jp/stories?folder=CABALA"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
                 , "cafe"
                 m "br"
                 m "br"
                 m "br"
               m "td.no_choice",
                 m "a",
-                  href: "//giji.check.jp/stories?folder=WOLF"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
                 , "wolf"
                 m "br"
                 m "a",
-                  href: "//giji.check.jp/stories?folder=ULTIMATE"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
                 , "ultimate"
                 m "br"
                 m "a",
-                  href: "//giji.check.jp/stories?folder=ALLSTAR"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
                 , "allstar"
                 m "br"
                 m "a",
-                  href: "//giji.check.jp/stories?folder=CABALA"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
                 , "cabala"
                 m "br"
               m "td.no_choice", 
                 m "a",
-                  href: "//giji.check.jp/stories?folder=RP"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=RP"
                 , "role-play"
                 m "br"
                 m "a",
-                  href: "//giji.check.jp/stories?folder=PRETENSE"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
                 , "advance"
                 m "br"
                 m "a",
-                  href: "//giji.check.jp/stories?folder=PERJURY"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
                 , "perjury"
                 m "br"
                 m "a",
-                  href: "//giji.check.jp/stories?folder=XEBEC"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
                 , "xebec"
                 m "br"
                 m "a",
-                  href: "//giji.check.jp/stories?folder=CRAZY"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
                 , "crazy"
                 m "br"
                 m "a",
-                  href: "//giji.check.jp/stories?folder=CIEL"
+                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
                 , "ciel"
 
 

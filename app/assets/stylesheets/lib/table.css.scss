@@ -72,6 +72,12 @@
 
   .vindex,
   .table {
+    table {
+      margin-left: 3ex;
+      td, th {
+        border: 0;
+      }
+    }
     border: 1px solid;
     border-collapse: collapse; /* CSS2? */
     td, th {
@@ -128,6 +134,12 @@
 
   .vindex,
   .table {
+    table {
+      margin-left: 3ex;
+      td, th {
+        border: 0;
+      }
+    }
     border: 1px solid $border-color;
     border-collapse: collapse; /* CSS2? */
     td, th {

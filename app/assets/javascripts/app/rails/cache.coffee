@@ -67,10 +67,10 @@ new Cache.Rule("story").schema ->
           GUI.names.config o.card.event, (name, size)-> name
         configs:
           GUI.names.config o.card.config, (name, size)->
-            m "span.mark", "#{name}x#{size}"
+            m "kbd", "#{name}x#{size}"
         events:
           GUI.names.config o.card.event, (name, size)->
-            m "span.mark", "#{name}x#{size}"
+            m "kbd", "#{name}x#{size}"
         say_limit: caption(RAILS.saycnt,    o.type.say)  || "――"
         game_rule: caption(RAILS.game_rule, o.type.game) || "タブラの人狼"
 
