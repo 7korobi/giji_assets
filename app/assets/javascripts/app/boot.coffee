@@ -59,3 +59,6 @@ if "onstorage" of window
 
 if "onload" of window
   window.addEventListener "load", win.do.load
+
+scroll = -> GUI.ScrollSpy.scroll()
+win.on.scroll.push _.debounce scroll, DELAY.animato

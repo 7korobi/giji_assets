@@ -109,13 +109,10 @@ class Url
           type = Url.options[key]?.type
           val = Serial.parser[type](val)
 
-          m.startComputation()
           prop @data[key] = val
           if Url.bind[key]?
             for subkey, subval of Url.bind[key][val]
               @prop(subkey)(subval, true) if key != subkey
-
-          m.endComputation()
 
           if is_replace
             Url.replacestate()
