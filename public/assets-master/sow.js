@@ -4132,6 +4132,8 @@ Url.routes = {
     })
   }
 };
+var scroll;
+
 if ("onorientationchange" in window) {
   window.addEventListener('orientationchange', function() {
     return window.requestAnimationFrame(win["do"].resize);
@@ -4222,7 +4224,12 @@ if ("onstorage" in window) {
 if ("onload" in window) {
   window.addEventListener("load", win["do"].load);
 }
-;
+
+scroll = function() {
+  return GUI.ScrollSpy.scroll();
+};
+
+win.on.scroll.push(_.debounce(scroll, DELAY.animato));
 
 
 

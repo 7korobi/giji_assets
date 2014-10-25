@@ -1,3 +1,9 @@
+/**
+ * Bounce.js 0.8.0
+ * MIT license
+ */
+
+!function(a){if("object"==typeof exports)module.exports=a();else if("function"==typeof define&&define.amd)define(a);else{var b;"undefined"!=typeof window?b=window:"undefined"!=typeof global?b=global:"undefined"!=typeof self&&(b=self),b.Bounce=a()}}(function(){return function a(b,c,d){function e(g,h){if(!c[g]){if(!b[g]){var i="function"==typeof require&&require;if(!h&&i)return i(g,!0);if(f)return f(g,!0);throw new Error("Cannot find module '"+g+"'")}var j=c[g]={exports:{}};b[g][0].call(j.exports,function(a){var c=b[g][1][a];return e(c?c:a)},j,j.exports,a,b,c,d)}return c[g].exports}for(var f="function"==typeof require&&require,g=0;g<d.length;g++)e(d[g]);return e}({1:[function(a,b){var c,d,e;e=a("../math/matrix4d"),d={bounce:a("../easing/bounce"),sway:a("../easing/sway"),hardbounce:a("../easing/hardbounce"),hardsway:a("../easing/hardsway")},c=function(){function a(a){a||(a={}),null!=a.easing&&(this.easing=a.easing),null!=a.duration&&(this.duration=a.duration),null!=a.delay&&(this.delay=a.delay),null!=a.from&&(this.from=a.from),null!=a.to&&(this.to=a.to),this.easingObject=new d[this.easing](a)}return a.prototype.easing="bounce",a.prototype.duration=1e3,a.prototype.delay=0,a.prototype.from=null,a.prototype.to=null,a.prototype.calculateEase=function(a){return this.easingObject.calculate(a)},a.prototype.getMatrix=function(){return(new e).identity()},a.prototype.getEasedMatrix=function(){return this.getMatrix()},a.prototype.serialize=function(){var a,b,c,d;b={type:this.constructor.name.toLowerCase(),easing:this.easing,duration:this.duration,delay:this.delay,from:this.from,to:this.to},d=this.easingObject.serialize();for(a in d)c=d[a],b[a]=c;return b},a}(),b.exports=c},{"../easing/bounce":6,"../easing/hardbounce":7,"../easing/hardsway":8,"../easing/sway":10,"../math/matrix4d":12}],2:[function(a,b){var c,d,e,f,g={}.hasOwnProperty,h=function(a,b){function c(){this.constructor=a}for(var d in b)g.call(b,d)&&(a[d]=b[d]);return c.prototype=b.prototype,a.prototype=new c,a.__super__=b.prototype,a};d=a("../math/matrix4d"),f=a("../math/vector2d"),c=a("./index"),e=function(a){function b(){b.__super__.constructor.apply(this,arguments),this.diff=this.to-this.from}return h(b,a),b.prototype.from=0,b.prototype.to=90,b.prototype.getMatrix=function(a){var b,c,e;return c=a/180*Math.PI,b=Math.cos(c),e=Math.sin(c),new d([b,-e,0,0,e,b,0,0,0,0,1,0,0,0,0,1])},b.prototype.getEasedMatrix=function(a){var b,c;return c=this.calculateEase(a),b=this.from+this.diff*c,this.getMatrix(b)},b}(c),b.exports=e},{"../math/matrix4d":12,"../math/vector2d":13,"./index":1}],3:[function(a,b){var c,d,e,f,g={}.hasOwnProperty,h=function(a,b){function c(){this.constructor=a}for(var d in b)g.call(b,d)&&(a[d]=b[d]);return c.prototype=b.prototype,a.prototype=new c,a.__super__=b.prototype,a};d=a("../math/matrix4d"),f=a("../math/vector2d"),c=a("./index"),e=function(a){function b(){b.__super__.constructor.apply(this,arguments),this.fromVector=new f(this.from.x,this.from.y),this.toVector=new f(this.to.x,this.to.y),this.diff=this.toVector.clone().subtract(this.fromVector)}return h(b,a),b.prototype.from={x:.5,y:.5},b.prototype.to={x:1,y:1},b.prototype.getMatrix=function(a,b){var c;return c=1,new d([a,0,0,0,0,b,0,0,0,0,c,0,0,0,0,1])},b.prototype.getEasedMatrix=function(a){var b,c;return b=this.calculateEase(a),c=this.fromVector.clone().add(this.diff.clone().multiply(b)),this.getMatrix(c.x,c.y)},b}(c),b.exports=e},{"../math/matrix4d":12,"../math/vector2d":13,"./index":1}],4:[function(a,b){var c,d,e,f,g={}.hasOwnProperty,h=function(a,b){function c(){this.constructor=a}for(var d in b)g.call(b,d)&&(a[d]=b[d]);return c.prototype=b.prototype,a.prototype=new c,a.__super__=b.prototype,a};d=a("../math/matrix4d"),f=a("../math/vector2d"),c=a("./index"),e=function(a){function b(){b.__super__.constructor.apply(this,arguments),this.fromVector=new f(this.from.x,this.from.y),this.toVector=new f(this.to.x,this.to.y),this.diff=this.toVector.clone().subtract(this.fromVector)}return h(b,a),b.prototype.from={x:0,y:0},b.prototype.to={x:20,y:0},b.prototype.getMatrix=function(a,b){var c,e,f,g;return c=a/180*Math.PI,e=b/180*Math.PI,f=Math.tan(c),g=Math.tan(e),new d([1,f,0,0,g,1,0,0,0,0,1,0,0,0,0,1])},b.prototype.getEasedMatrix=function(a){var b,c;return b=this.calculateEase(a),c=this.fromVector.clone().add(this.diff.clone().multiply(b)),this.getMatrix(c.x,c.y)},b}(c),b.exports=e},{"../math/matrix4d":12,"../math/vector2d":13,"./index":1}],5:[function(a,b){var c,d,e,f,g={}.hasOwnProperty,h=function(a,b){function c(){this.constructor=a}for(var d in b)g.call(b,d)&&(a[d]=b[d]);return c.prototype=b.prototype,a.prototype=new c,a.__super__=b.prototype,a};d=a("../math/matrix4d"),f=a("../math/vector2d"),c=a("./index"),e=function(a){function b(){b.__super__.constructor.apply(this,arguments),this.fromVector=new f(this.from.x,this.from.y),this.toVector=new f(this.to.x,this.to.y),this.diff=this.toVector.clone().subtract(this.fromVector)}return h(b,a),b.prototype.from={x:0,y:0},b.prototype.to={x:0,y:0},b.prototype.getMatrix=function(a,b){var c;return c=0,new d([1,0,0,a,0,1,0,b,0,0,1,c,0,0,0,1])},b.prototype.getEasedMatrix=function(a){var b,c;return b=this.calculateEase(a),c=this.fromVector.clone().add(this.diff.clone().multiply(b)),this.getMatrix(c.x,c.y)},b}(c),b.exports=e},{"../math/matrix4d":12,"../math/vector2d":13,"./index":1}],6:[function(a,b){var c,d,e={}.hasOwnProperty,f=function(a,b){function c(){this.constructor=a}for(var d in b)e.call(b,d)&&(a[d]=b[d]);return c.prototype=b.prototype,a.prototype=new c,a.__super__=b.prototype,a};d=a("./index"),c=function(a){function b(a){var c;null==a&&(a={}),b.__super__.constructor.apply(this,arguments),null!=a.stiffness&&(this.stiffness=a.stiffness),null!=a.bounces&&(this.bounces=a.bounces),this.alpha=this.stiffness/100,c=.005/Math.pow(10,this.stiffness),this.limit=Math.floor(Math.log(c)/-this.alpha),this.omega=this.bounces*Math.PI/this.limit}return f(b,a),b.prototype.bounces=4,b.prototype.stiffness=3,b.prototype.calculate=function(a){var b;return a>=1?1:(b=a*this.limit,1-this.exponent(b)*this.oscillation(b))},b.prototype.exponent=function(a){return Math.pow(Math.E,-this.alpha*a)},b.prototype.oscillation=function(a){return Math.cos(this.omega*a)},b.prototype.serialize=function(){return{stiffness:this.stiffness,bounces:this.bounces}},b}(d),b.exports=c},{"./index":9}],7:[function(a,b){var c,d,e={}.hasOwnProperty,f=function(a,b){function c(){this.constructor=a}for(var d in b)e.call(b,d)&&(a[d]=b[d]);return c.prototype=b.prototype,a.prototype=new c,a.__super__=b.prototype,a};c=a("./bounce"),d=function(a){function b(){return b.__super__.constructor.apply(this,arguments)}return f(b,a),b.prototype.oscillation=function(a){return Math.abs(Math.cos(this.omega*a))},b}(c),b.exports=d},{"./bounce":6}],8:[function(a,b){var c,d,e={}.hasOwnProperty,f=function(a,b){function c(){this.constructor=a}for(var d in b)e.call(b,d)&&(a[d]=b[d]);return c.prototype=b.prototype,a.prototype=new c,a.__super__=b.prototype,a};d=a("./sway"),c=function(a){function b(){return b.__super__.constructor.apply(this,arguments)}return f(b,a),b.prototype.oscillation=function(a){return Math.abs(Math.sin(this.omega*a))},b}(d),b.exports=c},{"./sway":10}],9:[function(a,b){var c;c=function(){function a(){}return a.prototype.calculate=function(a){return a},a.prototype.serialize=function(){return{}},a}(),b.exports=c},{}],10:[function(a,b){var c,d,e={}.hasOwnProperty,f=function(a,b){function c(){this.constructor=a}for(var d in b)e.call(b,d)&&(a[d]=b[d]);return c.prototype=b.prototype,a.prototype=new c,a.__super__=b.prototype,a};c=a("./bounce"),d=function(a){function b(){return b.__super__.constructor.apply(this,arguments)}return f(b,a),b.prototype.calculate=function(a){var b;return a>=1?0:(b=a*this.limit,this.exponent(b)*this.oscillation(b))},b.prototype.oscillation=function(a){return Math.sin(this.omega*a)},b}(c),b.exports=d},{"./bounce":6}],11:[function(a,b){var c,d,e;e=a("./math/matrix4d"),d={scale:a("./components/scale"),rotate:a("./components/rotate"),translate:a("./components/translate"),skew:a("./components/skew")},c=function(){function a(){this.components=[]}return a.FPS=30,a.counter=1,a.prototype.components=null,a.prototype.duration=0,a.prototype.scale=function(a){return this.addComponent(new d.scale(a))},a.prototype.rotate=function(a){return this.addComponent(new d.rotate(a))},a.prototype.translate=function(a){return this.addComponent(new d.translate(a))},a.prototype.skew=function(a){return this.addComponent(new d.skew(a))},a.prototype.addComponent=function(a){return this.components.push(a),this.updateDuration(),this},a.prototype.serialize=function(){var a,b,c,d,e;for(b=[],e=this.components,c=0,d=e.length;d>c;c++)a=e[c],b.push(a.serialize());return b},a.prototype.deserialize=function(a){var b,c,e;for(c=0,e=a.length;e>c;c++)b=a[c],this.addComponent(new d[b.type](b));return this},a.prototype.updateDuration=function(){return this.duration=this.components.map(function(a){return a.duration+a.delay}).reduce(function(a,b){return Math.max(a,b)})},a.prototype.define=function(b){return this.name=b||a.generateName(),this.styleElement=document.createElement("style"),this.styleElement.innerHTML=this.getKeyframeCSS({name:this.name,prefix:!0}),document.body.appendChild(this.styleElement),this},a.prototype.applyTo=function(a,b){var c,d,e,f,g,h,i,j,k,l;for(null==b&&(b={}),this.define(),a.length||(a=[a]),g=this.getPrefixes(),d=null,window.jQuery&&window.jQuery.Deferred&&(d=new window.jQuery.Deferred),h=0,j=a.length;j>h;h++)for(e=a[h],l=g.animation,i=0,k=l.length;k>i;i++)f=l[i],c=[this.name,""+this.duration+"ms","linear","both"],b.loop&&c.push("infinite"),e.style[""+f+"animation"]=c.join(" ");return b.loop||setTimeout(function(a){return function(){return b.remove&&a.remove(),"function"==typeof b.onComplete&&b.onComplete(),d?d.resolve():void 0}}(this),this.duration),d},a.prototype.remove=function(){var a;return null!=(a=this.styleElement)?a.remove():void 0},a.prototype.getPrefixes=function(a){var b,c;return b={transform:[""],animation:[""]},c=document.createElement("dummy").style,(a||!("transform"in c)&&"webkitTransform"in c)&&(b.transform=["-webkit-",""]),(a||!("animation"in c)&&"webkitAnimation"in c)&&(b.animation=["-webkit-",""]),b},a.prototype.getKeyframeCSS=function(b){var c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t;for(null==b&&(b={}),this.name=b.name||a.generateName(),i={transform:[""],animation:[""]},(b.prefix||b.forcePrefix)&&(i=this.getPrefixes(b.forcePrefix)),e=[],f=this.getKeyframes(),r=this.keys,l=0,o=r.length;o>l;l++){for(d=r[l],g=f[d],j="matrix3d"+g,k=[],s=i.transform,m=0,p=s.length;p>m;m++)h=s[m],k.push(""+h+"transform: "+j+";");e.push(""+Math.round(100*d*1e6)/1e6+"% { "+k.join(" ")+" }")}for(c=[],t=i.animation,n=0,q=t.length;q>n;n++)h=t[n],c.push("@"+h+"keyframes "+this.name+" { \n  "+e.join("\n  ")+" \n}");return c.join("\n\n")},a.prototype.getKeyframes=function(){var b,c,d,f,g,h,i,j,k,l,m,n,o,p,q;for(d=Math.round(this.duration/1e3*a.FPS),this.keys=[],f=k=0;d>=0?d>=k:k>=d;f=d>=0?++k:--k)this.keys.push(f/d);for(h={},p=this.keys,l=0,n=p.length;n>l;l++){for(g=p[l],i=(new e).identity(),q=this.components,m=0,o=q.length;o>m;m++)b=q[m],c=g*this.duration,b.delay-c>1e-8||(j=(g-b.delay/this.duration)/(b.duration/this.duration),i.multiply(b.getEasedMatrix(j)));h[g]=i.transpose().toFixed(5)}return h},a.generateName=function(){return"animation-"+a.counter++},a.isSupported=function(){var a,b,c,d,e,f,g,h,i;for(e=document.createElement("dummy").style,d=[["transform","webkitTransform"],["animation","webkitAnimation"]],f=0,h=d.length;h>f;f++){for(c=d[f],b=!1,g=0,i=c.length;i>g;g++)a=c[g],b||(b=a in e);if(!b)return!1}return!0},a}(),b.exports=c},{"./components/rotate":2,"./components/scale":3,"./components/skew":4,"./components/translate":5,"./math/matrix4d":12}],12:[function(a,b){var c;c=function(){function a(a){this._array=(null!=a?a.slice(0):void 0)||[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}return a.prototype._array=null,a.prototype.equals=function(a){return this.toString()===a.toString()},a.prototype.identity=function(){return this.setArray([1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]),this},a.prototype.multiply=function(b){var c,d,e,f,g,h,i,j;for(f=new a,c=h=0;4>h;c=++h)for(d=i=0;4>i;d=++i)for(e=j=0;4>j;e=++j)g=f.get(c,d)+this.get(c,e)*b.get(e,d),f.set(c,d,g);return this.copy(f)},a.prototype.transpose=function(){var a;return a=this.getArray(),this.setArray([a[0],a[4],a[8],a[12],a[1],a[5],a[9],a[13],a[2],a[6],a[10],a[14],a[3],a[7],a[11],a[15]]),this},a.prototype.get=function(a,b){return this.getArray()[4*a+b]},a.prototype.set=function(a,b,c){return this._array[4*a+b]=c},a.prototype.copy=function(a){return this._array=a.getArray(),this},a.prototype.clone=function(){return new a(this.getArray())},a.prototype.getArray=function(){return this._array.slice(0)},a.prototype.setArray=function(a){return this._array=a,this},a.prototype.toString=function(){return"("+this.getArray().join(", ")+")"},a.prototype.toFixed=function(a){var b;return this._array=function(){var c,d,e,f;for(e=this._array,f=[],c=0,d=e.length;d>c;c++)b=e[c],f.push(parseFloat(b.toFixed(a)));return f}.call(this),this},a}(),b.exports=c},{}],13:[function(a,b){var c;c=function(){function a(a,b){this.x=null!=a?a:0,this.y=null!=b?b:0}return a.prototype.x=0,a.prototype.y=0,a.prototype.add=function(b){return a.isVector2D(b)?(this.x+=b.x,this.y+=b.y,this):this._addScalar(b)},a.prototype._addScalar=function(a){return this.x+=a,this.y+=a,this},a.prototype.subtract=function(b){return a.isVector2D(b)?(this.x-=b.x,this.y-=b.y,this):this._subtractScalar(b)},a.prototype._subtractScalar=function(a){return this._addScalar(-a)},a.prototype.multiply=function(b){return a.isVector2D(b)?(this.x*=b.x,this.y*=b.y,this):this._multiplyScalar(b)},a.prototype._multiplyScalar=function(a){return this.x*=a,this.y*=a,this},a.prototype.divide=function(b){return a.isVector2D(b)?(this.x/=b.x,this.y/=b.y,this):this._divideScalar(b)},a.prototype._divideScalar=function(a){return this._multiplyScalar(1/a)},a.prototype.clone=function(){return new a(this.x,this.y)},a.prototype.copy=function(a){return this.x=a.x,this.y=a.y,this},a.prototype.equals=function(a){return a.x===this.x&&a.y===this.y},a.prototype.toString=function(){return"("+this.x+", "+this.y+")"},a.prototype.toFixed=function(a){return this.x=parseFloat(this.x.toFixed(a)),this.y=parseFloat(this.y.toFixed(a)),this},a.prototype.toArray=function(){return[this.x,this.y]},a.isVector2D=function(b){return b instanceof a},a}(),b.exports=c},{}]},{},[11])(11)});
 /*! head.core - v1.0.2 */
 
 (function(n,t){"use strict";function r(n){a[a.length]=n}function k(n){var t=new RegExp(" ?\\b"+n+"\\b");c.className=c.className.replace(t,"")}function p(n,t){for(var i=0,r=n.length;i<r;i++)t.call(n,n[i],i)}function tt(){var t,e,f,o;c.className=c.className.replace(/ (w-|eq-|gt-|gte-|lt-|lte-|portrait|no-portrait|landscape|no-landscape)\d+/g,"");t=n.innerWidth||c.clientWidth;e=n.outerWidth||n.screen.width;u.screen.innerWidth=t;u.screen.outerWidth=e;r("w-"+t);p(i.screens,function(n){t>n?(i.screensCss.gt&&r("gt-"+n),i.screensCss.gte&&r("gte-"+n)):t<n?(i.screensCss.lt&&r("lt-"+n),i.screensCss.lte&&r("lte-"+n)):t===n&&(i.screensCss.lte&&r("lte-"+n),i.screensCss.eq&&r("e-q"+n),i.screensCss.gte&&r("gte-"+n))});f=n.innerHeight||c.clientHeight;o=n.outerHeight||n.screen.height;u.screen.innerHeight=f;u.screen.outerHeight=o;u.feature("portrait",f>t);u.feature("landscape",f<t)}function it(){n.clearTimeout(b);b=n.setTimeout(tt,50)}var y=n.document,rt=n.navigator,ut=n.location,c=y.documentElement,a=[],i={screens:[240,320,480,640,768,800,1024,1280,1440,1680,1920],screensCss:{gt:!0,gte:!1,lt:!0,lte:!1,eq:!1},browsers:[{ie:{min:6,max:11}}],browserCss:{gt:!0,gte:!1,lt:!0,lte:!1,eq:!0},html5:!0,page:"-page",section:"-section",head:"head"},v,u,s,w,o,h,l,d,f,g,nt,e,b;if(n.head_conf)for(v in n.head_conf)n.head_conf[v]!==t&&(i[v]=n.head_conf[v]);u=n[i.head]=function(){u.ready.apply(null,arguments)};u.feature=function(n,t,i){return n?(Object.prototype.toString.call(t)==="[object Function]"&&(t=t.call()),r((t?"":"no-")+n),u[n]=!!t,i||(k("no-"+n),k(n),u.feature()),u):(c.className+=" "+a.join(" "),a=[],u)};u.feature("js",!0);s=rt.userAgent.toLowerCase();w=/mobile|android|kindle|silk|midp|phone|(windows .+arm|touch)/.test(s);u.feature("mobile",w,!0);u.feature("desktop",!w,!0);s=/(chrome|firefox)[ \/]([\w.]+)/.exec(s)||/(iphone|ipad|ipod)(?:.*version)?[ \/]([\w.]+)/.exec(s)||/(android)(?:.*version)?[ \/]([\w.]+)/.exec(s)||/(webkit|opera)(?:.*version)?[ \/]([\w.]+)/.exec(s)||/(msie) ([\w.]+)/.exec(s)||/(trident).+rv:(\w.)+/.exec(s)||[];o=s[1];h=parseFloat(s[2]);switch(o){case"msie":case"trident":o="ie";h=y.documentMode||h;break;case"firefox":o="ff";break;case"ipod":case"ipad":case"iphone":o="ios";break;case"webkit":o="safari"}for(u.browser={name:o,version:h},u.browser[o]=!0,l=0,d=i.browsers.length;l<d;l++)for(f in i.browsers[l])if(o===f)for(r(f),g=i.browsers[l][f].min,nt=i.browsers[l][f].max,e=g;e<=nt;e++)h>e?(i.browserCss.gt&&r("gt-"+f+e),i.browserCss.gte&&r("gte-"+f+e)):h<e?(i.browserCss.lt&&r("lt-"+f+e),i.browserCss.lte&&r("lte-"+f+e)):h===e&&(i.browserCss.lte&&r("lte-"+f+e),i.browserCss.eq&&r("eq-"+f+e),i.browserCss.gte&&r("gte-"+f+e));else r("no-"+f);r(o);r(o+parseInt(h,10));i.html5&&o==="ie"&&h<9&&p("abbr|article|aside|audio|canvas|details|figcaption|figure|footer|header|hgroup|main|mark|meter|nav|output|progress|section|summary|time|video".split("|"),function(n){y.createElement(n)});p(ut.pathname.split("/"),function(n,u){if(this.length>2&&this[u+1]!==t)u&&r(this.slice(u,u+1).join("-").toLowerCase()+i.section);else{var f=n||"index",e=f.indexOf(".");e>0&&(f=f.substring(0,e));c.id=f.toLowerCase()+i.page;u||r("root"+i.section)}});u.screen={height:n.screen.height,width:n.screen.width};tt();b=0;n.addEventListener?n.addEventListener("resize",it,!1):n.attachEvent("onresize",it)})(window);
@@ -1163,79 +1169,235 @@ GUI = {
 GUI.ScrollSpy = (function() {
   ScrollSpy.elems = {};
 
-  ScrollSpy.go = function(id) {
-    var elem, left_by, offset, rect, top_by;
-    elem = GUI.ScrollSpy.elems[id];
+  ScrollSpy.list = [];
+
+  ScrollSpy.go = function(id, offset) {
+    var elem, left_by, rect, top_by;
+    if (offset == null) {
+      offset = false;
+    }
+    elem = ScrollSpy.elems[id];
     if (elem) {
       rect = elem.getBoundingClientRect();
-      offset = Math.min(win.height / 2, rect.height);
-      top_by = rect.top + offset - win.height / 2 - 1;
+      offset || (offset = -1 + Math.min(win.horizon, rect.height));
+      top_by = rect.top - win.horizon + offset;
       left_by = 0;
       return window.scrollBy(left_by, top_by);
     }
   };
 
-  ScrollSpy.view = function() {
-    var elem, id, key, rect, _ref, _ref1, _ref2;
-    _ref = GUI.ScrollSpy.elems;
-    for (key in _ref) {
-      elem = _ref[key];
-      id = elem.scroll_id;
-      rect = elem.getBoundingClientRect();
-      if (id === key && rect.height && rect.width) {
-        if ((rect.top < (_ref1 = win.height / 2) && _ref1 < rect.bottom) && (rect.left < (_ref2 = win.width / 2) && _ref2 < rect.right)) {
-          return id;
-        }
-      } else {
-        delete GUI.ScrollSpy.elems[key];
+  ScrollSpy.scroll = function() {
+    var id, spy, _i, _len, _ref;
+    id = ScrollSpy.view();
+    _ref = ScrollSpy.list;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      spy = _ref[_i];
+      if (id !== spy.prop()) {
+        spy.prop(id, true);
+      }
+      if (spy.list != null) {
+        spy.view();
       }
     }
-    return null;
+    return id;
+  };
+
+  ScrollSpy.view = function() {
+    var elem, id, key, rect, result, spy, _i, _len, _ref, _ref1, _ref2;
+    result = null;
+    _ref = ScrollSpy.elems;
+    for (key in _ref) {
+      elem = _ref[key];
+      id = elem.vision.id;
+      rect = elem.getBoundingClientRect();
+      if (elem.vision.id === key && rect.height && rect.width) {
+        elem.vision = {
+          id: id,
+          over_btm: win.height * 4 < rect.bottom,
+          good_btm: win.height * 3 < rect.bottom,
+          good_top: rect.top < 0,
+          over_top: rect.top < -1 * win.height
+        };
+        if ((rect.top < (_ref1 = win.horizon) && _ref1 < rect.bottom)) {
+          elem.vision.offset = win.horizon - rect.top;
+          result = id;
+        }
+      } else {
+        delete ScrollSpy.elems[key];
+        _ref2 = ScrollSpy.list;
+        for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+          spy = _ref2[_i];
+          delete spy.elems[key];
+        }
+      }
+    }
+    return result;
   };
 
   function ScrollSpy(prop) {
-    var scroll;
     this.prop = prop;
+    GUI.ScrollSpy.list.push(this);
+    this.elems = {};
     this.start();
-    scroll = (function(_this) {
-      return function() {
-        var id;
-        id = GUI.ScrollSpy.view();
-        if (id !== _this.prop()) {
-          return _this.prop(id, true);
-        }
-      };
-    })(this);
-    win.on.scroll.push(_.debounce(scroll, DELAY.andante));
   }
 
-  ScrollSpy.prototype.start = function() {};
+  ScrollSpy.prototype.start = function() {
+    this.avg_height = 150;
+    return this.too_upper = true;
+  };
 
-  ScrollSpy.prototype.pager = function(list, cb) {
-    var o, vdom, _i, _len, _results;
-    _results = [];
-    for (_i = 0, _len = list.length; _i < _len; _i++) {
-      o = list[_i];
-      vdom = cb(o);
-      vdom.attrs.config = this.mark(o._id).config;
-      _results.push(vdom);
+  ScrollSpy.prototype.view = function() {
+    var add_heads, add_tails, cut_heads, cut_tails, elem, idx, in_box, o, vision, _i, _len, _ref;
+    cut_heads = null;
+    cut_tails = null;
+    add_heads = true;
+    add_tails = true;
+    _ref = this.list;
+    for (idx = _i = 0, _len = _ref.length; _i < _len; idx = ++_i) {
+      o = _ref[idx];
+      if (elem = this.elems[o._id]) {
+        if (vision = elem.vision) {
+          if (vision.offset) {
+            this.adjust = vision;
+          }
+          if (vision.over_btm) {
+            if (!cut_tails) {
+              cut_tails = idx;
+            }
+          }
+          if (vision.good_btm) {
+            add_tails = false;
+          }
+          if (vision.good_top) {
+            add_heads = false;
+          }
+          if (vision.over_top) {
+            cut_heads = idx;
+          }
+        }
+      }
     }
-    return _results;
+    in_box = this.elems[this.prop()];
+    if (add_tails && (in_box != null)) {
+      this.tail = null;
+      window.requestAnimationFrame(function() {
+        return m.redraw();
+      });
+    }
+    if (add_heads && (in_box != null)) {
+      this.head = null;
+      window.requestAnimationFrame(function() {
+        return m.redraw();
+      });
+    }
+    if (cut_heads) {
+      console.log("" + (_.now()) + " cut_heads " + cut_heads);
+      this.head = cut_heads;
+      window.requestAnimationFrame(function() {
+        return m.redraw();
+      });
+    }
+    if (cut_tails) {
+      console.log("" + (_.now()) + " cut_tails " + cut_tails);
+      this.tail = cut_tails;
+      return window.requestAnimationFrame(function() {
+        return m.redraw();
+      });
+    }
+  };
+
+  ScrollSpy.prototype.pager = function(tag, list, cb) {
+    var attr, btm, idx, key, o, pager_cb, tail, top, vdom, vdom_items, _ref;
+    if (((_ref = this.list) != null ? _ref.length : void 0) !== (list != null ? list.length : void 0)) {
+      this.head = this.tail = null;
+    }
+    if (this.too_upper) {
+      this.head = tail = null;
+    }
+    this.list = list;
+    top = 0;
+    btm = list.length - 1;
+    idx = _.findIndex(this.list, {
+      _id: typeof this.prop === "function" ? this.prop() : void 0
+    });
+    if (idx < 0) {
+      if (this.too_upper) {
+        idx = top;
+      }
+      if (this.too_under) {
+        idx = btm;
+      }
+    }
+    if (!(this.head < idx)) {
+      this.head = null;
+    }
+    if (!(idx < this.tail)) {
+      this.tail = null;
+    }
+    if (this.head == null) {
+      this.head = Math.max(top, idx - Math.floor(win.height * 1.5 / this.avg_height));
+    }
+    if (this.tail == null) {
+      this.tail = Math.min(btm, idx + Math.floor(win.height * 4.5 / this.avg_height));
+    }
+    pager_cb = (function(_this) {
+      return function(pager_elem, is_continue, context) {
+        var rect, stay, too_under, too_upper;
+        _this.pager_elem = pager_elem;
+        window.requestAnimationFrame(function() {
+          _this.avg_height = rect.height / (1 + _this.tail - _this.head);
+          if (!stay) {
+            return m.redraw();
+          }
+        });
+        rect = _this.pager_elem.getBoundingClientRect();
+        too_under = rect.bottom < win.height;
+        too_upper = 0 < rect.top;
+        stay = too_under === _this.too_under && too_upper === _this.too_upper;
+        _this.too_under = too_under;
+        return _this.too_upper = too_upper;
+      };
+    })(this);
+    vdom_items = (function() {
+      var _i, _len, _ref1, _ref2, _results;
+      _ref1 = this.list.slice(this.head, +this.tail + 1 || 9e9);
+      _results = [];
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        o = _ref1[_i];
+        vdom = cb(o);
+        _ref2 = this.mark(o._id);
+        for (key in _ref2) {
+          attr = _ref2[key];
+          vdom.attrs[key] = attr;
+        }
+        _results.push(vdom);
+      }
+      return _results;
+    }).call(this);
+    return m(tag, {
+      config: pager_cb
+    }, vdom_items);
   };
 
   ScrollSpy.prototype.mark = function(id) {
-    var go;
-    go = function() {
-      return GUI.ScrollSpy.go(id);
-    };
     return {
       config: (function(_this) {
         return function(elem, is_continue, context) {
-          GUI.ScrollSpy.elems[id] = elem;
-          elem.scroll_id = id;
+          var offset;
+          GUI.ScrollSpy.elems[id] = _this.elems[id] = elem;
+          elem.vision = {
+            id: id
+          };
+          if (_this.adjust && id === _this.adjust.id) {
+            offset = _this.adjust.offset;
+            _this.adjust = null;
+            GUI.ScrollSpy.go(id, offset);
+          }
           if (!is_continue) {
             if (id === _this.prop()) {
-              return _.debounce(go, DELAY.animato)();
+              return window.requestAnimationFrame(function() {
+                return GUI.ScrollSpy.go(id);
+              });
             }
           }
         };
@@ -1530,6 +1692,7 @@ win = {
       docBody = document.body;
       win.height = Math.max(window.innerHeight, docElem.clientHeight);
       win.width = Math.max(window.innerWidth, docElem.clientWidth);
+      win.horizon = win.height / 2;
       body_height = Math.max(docBody.clientHeight, docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight);
       body_width = Math.max(docBody.clientWidth, docBody.scrollWidth, docElem.scrollWidth, docElem.clientWidth);
       win.max = {
@@ -2143,7 +2306,6 @@ Url = (function() {
           if (arguments.length) {
             type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
             val = Serial.parser[type](val);
-            m.startComputation();
             prop(_this.data[key] = val);
             if (Url.bind[key] != null) {
               _ref1 = Url.bind[key][val];
@@ -2154,7 +2316,6 @@ Url = (function() {
                 }
               }
             }
-            m.endComputation();
             if (is_replace) {
               return Url.replacestate();
             } else {

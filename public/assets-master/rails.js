@@ -6593,10 +6593,10 @@ new Cache.Rule("story").schema(function() {
           return name;
         }),
         configs: GUI.names.config(o.card.config, function(name, size) {
-          return m("span.mark", "" + name + "x" + size);
+          return m("kbd", "" + name + "x" + size);
         }),
         events: GUI.names.config(o.card.event, function(name, size) {
-          return m("span.mark", "" + name + "x" + size);
+          return m("kbd", "" + name + "x" + size);
         }),
         say_limit: caption(RAILS.saycnt, o.type.say) || "――",
         game_rule: caption(RAILS.game_rule, o.type.game) || "タブラの人狼"
@@ -6605,6 +6605,8 @@ new Cache.Rule("story").schema(function() {
   });
 });
 var face, map_orders, scroll_spy, _ref;
+
+GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
 
 scroll_spy = new GUI.ScrollSpy(Url.prop.scroll);
 
@@ -6678,8 +6680,9 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return touch.menu(scroll_spy.mark("menu"), m("input.form-control", {
-          onkeyup: m.withAttr("value", Url.prop.search),
+        return touch.menu(GUI.ScrollSpy.global.mark("menu"), m("input.form-control", {
+          onblur: m.withAttr("value", Url.prop.search),
+          onchange: m.withAttr("value", Url.prop.search),
           value: Url.prop.search()
         }), "キャラセットを選んでみよう ", m("span.btn.btn-default.dropdown-toggle", touch.start("order"), "並び順", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("chr_set"), "キャラセット", m("i.caret")));
       }
@@ -6942,7 +6945,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return scroll_spy.pager(gon.villages, function(v) {
+        return scroll_spy.pager("div", gon.villages, function(v) {
           return GUI.message.action(v);
         });
       }
@@ -6955,7 +6958,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.byebyes : void 0) != null)
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return scroll_spy.pager(gon.byebyes, function(v) {
+        return scroll_spy.pager("div", gon.byebyes, function(v) {
           return GUI.message.action(v);
         });
       }
@@ -6968,7 +6971,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return scroll_spy.pager(gon.history, function(v) {
+        return scroll_spy.pager("div", gon.history, function(v) {
           return GUI.message.say(v);
         });
       }
@@ -6980,6 +6983,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
   Cache.rule.story.set(gon.stories);
   GUI.if_exist("#stories", function(dom) {
     var touch, touch_sw;
+    scroll_spy.avg_height = 22;
     touch_sw = new GUI.TouchMenu();
     touch = new GUI.TouchMenu();
     touch.menu_set(Cache.storys, Url.prop, "count", {
@@ -7033,22 +7037,20 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var head, icon, storys;
+        var icon, storys;
         storys = touch.by_menu().search(Url.prop.search());
         icon = touch_sw.state() ? "glyphicon-resize-small" : "glyphicon-resize-full";
-        head = function() {
-          return m("thead", m("tr", m("th"), touch_sw.state() ? m("th", "人数") : void 0, touch_sw.state() ? m("th", "ルール") : void 0));
-        };
-        return m("div", touch.menu(scroll_spy.mark("menu"), m("h6", "検索する。　　　　"), m("input.form-control", {
-          onkeyup: m.withAttr("value", Url.prop.search),
+        return m("div", touch.menu(GUI.ScrollSpy.global.mark("menu"), m("h6", "検索する。　　　　"), m("input.form-control", {
+          onblur: m.withAttr("value", Url.prop.search),
+          onchange: m.withAttr("value", Url.prop.search),
           value: Url.prop.search()
-        }), m("span.btn.btn-default.dropdown-toggle", touch_sw.start(true), m("i.glyphicon." + icon)), m("span.btn.btn-default.dropdown-toggle", touch.start("folder"), m("i.glyphicon.glyphicon-book"), m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("game"), "ルール", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("event"), "事件", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("config"), "役職", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("rating"), "こだわり", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("say_limit"), "発言制限", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("player_length"), "人数", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_at"), "更新時刻", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_interval"), "更新間隔", m("i.caret"))), m("table.table.table-border.table-hover", head(), m("tbody", scroll_spy.pager(storys.list(), function(o) {
+        }), m("span.btn.btn-default.dropdown-toggle", touch_sw.start(true), m("i.glyphicon." + icon)), m("span.btn.btn-default.dropdown-toggle", touch.start("folder"), m("i.glyphicon.glyphicon-book"), m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("game"), "ルール", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("event"), "事件", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("config"), "役職", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("rating"), "こだわり", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("say_limit"), "発言制限", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("player_length"), "人数", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_at"), "更新時刻", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_interval"), "更新間隔", m("i.caret"))), m("table.table.table-border.table-hover", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", storys.list(), function(o) {
           if (touch_sw.state()) {
             return m("tr", m("td", m("a", {
               href: o.link
             }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
               href: o.file
-            }, m.trust(o.name)), o.view.rating, m(".note", " 　　更新 : " + o.view.update_at + " " + o.view.update_interval), m(".note", o.view.configs), m(".note", o.view.events)), m("td.small", "" + o.view.player_length + "人"), m("td.small", m(".note", o.view.say_limit), m(".note", o.view.game_rule)));
+            }, m.trust(o.name)), o.view.rating, m("table", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m("div", o.view.configs), m("div", o.view.events)));
           } else {
             return m("tr", m("td", m("a", {
               href: o.link
@@ -7056,7 +7058,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
               href: o.file
             }, o.name), o.view.rating));
           }
-        })), head()));
+        })));
       }
     });
   });
@@ -7094,33 +7096,33 @@ GUI.if_exist("#headline", function(dom) {
       }, "crazy"), m("br"), "" + max_ciel + "村:", m("a", {
         href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
       }, "ciel"))) : void 0, "finish" === touch.state() ? m("tr", m("td.no_choice", m("a", {
-        href: "//giji.check.jp/stories?folder=LOBBY"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
       }, "lobby"), m("br"), m("a", {
-        href: "//giji.check.jp/stories?folder=OFFPARTY"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
       }, "offparty"), m("br"), m("br"), m("br")), m("td.no_choice", m("a", {
-        href: "//giji.check.jp/stories?folder=MORPHE"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
       }, "morphe"), m("br"), m("a", {
-        href: "//giji.check.jp/stories?folder=CABALA"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
       }, "cafe"), m("br"), m("br"), m("br")), m("td.no_choice", m("a", {
-        href: "//giji.check.jp/stories?folder=WOLF"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
       }, "wolf"), m("br"), m("a", {
-        href: "//giji.check.jp/stories?folder=ULTIMATE"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
       }, "ultimate"), m("br"), m("a", {
-        href: "//giji.check.jp/stories?folder=ALLSTAR"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
       }, "allstar"), m("br"), m("a", {
-        href: "//giji.check.jp/stories?folder=CABALA"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
       }, "cabala"), m("br")), m("td.no_choice", m("a", {
-        href: "//giji.check.jp/stories?folder=RP"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=RP"
       }, "role-play"), m("br"), m("a", {
-        href: "//giji.check.jp/stories?folder=PRETENSE"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
       }, "advance"), m("br"), m("a", {
-        href: "//giji.check.jp/stories?folder=PERJURY"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
       }, "perjury"), m("br"), m("a", {
-        href: "//giji.check.jp/stories?folder=XEBEC"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
       }, "xebec"), m("br"), m("a", {
-        href: "//giji.check.jp/stories?folder=CRAZY"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
       }, "crazy"), m("br"), m("a", {
-        href: "//giji.check.jp/stories?folder=CIEL"
+        href: "//7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
       }, "ciel"))) : void 0));
     }
   });
@@ -7226,6 +7228,8 @@ GUI.if_exist("#to_root", function(dom) {
 });
 
 m.endComputation();
+var scroll;
+
 if ("onorientationchange" in window) {
   window.addEventListener('orientationchange', function() {
     return window.requestAnimationFrame(win["do"].resize);
@@ -7316,7 +7320,12 @@ if ("onstorage" in window) {
 if ("onload" in window) {
   window.addEventListener("load", win["do"].load);
 }
-;
+
+scroll = function() {
+  return GUI.ScrollSpy.scroll();
+};
+
+win.on.scroll.push(_.debounce(scroll, DELAY.animato));
 
 
 
