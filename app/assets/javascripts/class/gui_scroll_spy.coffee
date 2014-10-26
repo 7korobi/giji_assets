@@ -27,12 +27,13 @@ class GUI.ScrollSpy
     for key, elem of @elems
       id = elem.vision.id
       rect = elem.getBoundingClientRect()
-      elem.vision.top = rect.top
-      elem.vision.btm = rect.bottom
+      vision = elem.vision
+      vision.top = rect.top
+      vision.btm = rect.bottom
 
       if elem.vision.id == key && rect.height && rect.width
-        if !result && rect.top <= win.horizon <= rect.bottom 
-          elem.vision.offset = win.horizon - rect.top
+        if !result && rect.top < win.horizon < rect.bottom 
+          vision.offset = win.horizon - rect.top
           result = id
       else
         delete @elems[key]
@@ -54,13 +55,19 @@ class GUI.ScrollSpy
     in_box = false
     prop = @prop()
 
+    first_top = null
     for o, idx in @list
       id = o._id
       if elem = GUI.ScrollSpy.elems[id]
         vision = elem.vision
+        first_top ||= vision.top
 
-        @adjust = vision  if vision.offset?
-        in_box  = true    if id == prop
+        if !@adjust && first_top < win.horizon < vision.btm
+          vision.offset = win.horizon - vision.top
+          @adjust = vision
+          @prop prop = vision.id, true
+        if id == prop
+          in_box  = true    
 
         cut_heads = idx   if               vision.top < -1.5 * win.height   # last one
         add_heads = false if  add_heads && vision.top < -0.5 * win.height

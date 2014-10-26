@@ -1203,18 +1203,19 @@ GUI.ScrollSpy = (function() {
   };
 
   ScrollSpy.view = function() {
-    var elem, id, key, rect, result, _ref, _ref1;
+    var elem, id, key, rect, result, vision, _ref, _ref1;
     result = null;
     _ref = ScrollSpy.elems;
     for (key in _ref) {
       elem = _ref[key];
       id = elem.vision.id;
       rect = elem.getBoundingClientRect();
-      elem.vision.top = rect.top;
-      elem.vision.btm = rect.bottom;
+      vision = elem.vision;
+      vision.top = rect.top;
+      vision.btm = rect.bottom;
       if (elem.vision.id === key && rect.height && rect.width) {
-        if (!result && (rect.top <= (_ref1 = win.horizon) && _ref1 <= rect.bottom)) {
-          elem.vision.offset = win.horizon - rect.top;
+        if (!result && (rect.top < (_ref1 = win.horizon) && _ref1 < rect.bottom)) {
+          vision.offset = win.horizon - rect.top;
           result = id;
         }
       } else {
@@ -1236,21 +1237,25 @@ GUI.ScrollSpy = (function() {
   };
 
   ScrollSpy.prototype.view = function() {
-    var add_heads, add_tails, cut_heads, cut_tails, elem, id, idx, in_box, o, prop, vision, _i, _len, _ref;
+    var add_heads, add_tails, cut_heads, cut_tails, elem, first_top, id, idx, in_box, o, prop, vision, _i, _len, _ref, _ref1;
     cut_heads = null;
     cut_tails = null;
     add_heads = true;
     add_tails = true;
     in_box = false;
     prop = this.prop();
+    first_top = null;
     _ref = this.list;
     for (idx = _i = 0, _len = _ref.length; _i < _len; idx = ++_i) {
       o = _ref[idx];
       id = o._id;
       if (elem = GUI.ScrollSpy.elems[id]) {
         vision = elem.vision;
-        if (vision.offset != null) {
+        first_top || (first_top = vision.top);
+        if (!this.adjust && (first_top < (_ref1 = win.horizon) && _ref1 < vision.btm)) {
+          vision.offset = win.horizon - vision.top;
           this.adjust = vision;
+          this.prop(prop = vision.id, true);
         }
         if (id === prop) {
           in_box = true;
