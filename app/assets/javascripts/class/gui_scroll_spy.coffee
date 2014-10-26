@@ -31,10 +31,10 @@ class GUI.ScrollSpy
       if elem.vision.id == key && rect.height && rect.width
         elem.vision =
           id: id
-          over_btm: win.height * 4 < rect.bottom
-          good_btm: win.height * 3 < rect.bottom
-          good_top: rect.top <   0 
-          over_top: rect.top <  -1 * win.height 
+          over_btm: win.height * 3.5 < rect.bottom
+          good_btm: win.height * 2.5 < rect.bottom
+          good_top: rect.top <  -0.5 * win.height
+          over_top: rect.top <  -1.5 * win.height 
 
         if rect.top < (win.horizon) < rect.bottom
           elem.vision.offset = win.horizon - rect.top
@@ -102,8 +102,6 @@ class GUI.ScrollSpy
   pager: (tag, list, cb)->
     unless @list?.length == list?.length
       @head = @tail = null
-    if @too_upper
-      @head = tail = null
 
     @list = list
     top = 0
@@ -111,16 +109,20 @@ class GUI.ScrollSpy
 
     idx = _.findIndex @list, _id: @prop?()
     if idx < 0
-      idx = top if @too_upper
+      @head = @tail = null
+      idx = top
       idx = btm if @too_under
+    else
+      # TODO wait for network read.
+      @head = null unless @head <  idx
+      @tail = null unless  idx  < @tail
 
-    # TODO wait for network read.
+    if @too_upper
+      idx = top
+      @head = @tail = null 
 
-    @head = null unless @head <  idx
-    @tail = null unless  idx  < @tail
-
-    @head ?= Math.max top, idx - Math.floor(win.height * 1.5 / @avg_height)
-    @tail ?= Math.min btm, idx + Math.floor(win.height * 4.5 / @avg_height)
+    @head ?= Math.max top, idx - Math.ceil(win.height * 2 / @avg_height)
+    @tail ?= Math.min btm, idx + Math.ceil(win.height * 4 / @avg_height)
 
     pager_cb = (@pager_elem, is_continue, context)=>
       window.requestAnimationFrame =>

@@ -1213,10 +1213,10 @@ GUI.ScrollSpy = (function() {
       if (elem.vision.id === key && rect.height && rect.width) {
         elem.vision = {
           id: id,
-          over_btm: win.height * 4 < rect.bottom,
-          good_btm: win.height * 3 < rect.bottom,
-          good_top: rect.top < 0,
-          over_top: rect.top < -1 * win.height
+          over_btm: win.height * 3.5 < rect.bottom,
+          good_btm: win.height * 2.5 < rect.bottom,
+          good_top: rect.top < -0.5 * win.height,
+          over_top: rect.top < -1.5 * win.height
         };
         if ((rect.top < (_ref1 = win.horizon) && _ref1 < rect.bottom)) {
           elem.vision.offset = win.horizon - rect.top;
@@ -1305,12 +1305,9 @@ GUI.ScrollSpy = (function() {
   };
 
   ScrollSpy.prototype.pager = function(tag, list, cb) {
-    var attr, btm, idx, key, o, pager_cb, tail, top, vdom, vdom_items, _ref;
+    var attr, btm, idx, key, o, pager_cb, top, vdom, vdom_items, _ref;
     if (((_ref = this.list) != null ? _ref.length : void 0) !== (list != null ? list.length : void 0)) {
       this.head = this.tail = null;
-    }
-    if (this.too_upper) {
-      this.head = tail = null;
     }
     this.list = list;
     top = 0;
@@ -1319,24 +1316,28 @@ GUI.ScrollSpy = (function() {
       _id: typeof this.prop === "function" ? this.prop() : void 0
     });
     if (idx < 0) {
-      if (this.too_upper) {
-        idx = top;
-      }
+      this.head = this.tail = null;
+      idx = top;
       if (this.too_under) {
         idx = btm;
       }
+    } else {
+      if (!(this.head < idx)) {
+        this.head = null;
+      }
+      if (!(idx < this.tail)) {
+        this.tail = null;
+      }
     }
-    if (!(this.head < idx)) {
-      this.head = null;
-    }
-    if (!(idx < this.tail)) {
-      this.tail = null;
+    if (this.too_upper) {
+      idx = top;
+      this.head = this.tail = null;
     }
     if (this.head == null) {
-      this.head = Math.max(top, idx - Math.floor(win.height * 1.5 / this.avg_height));
+      this.head = Math.max(top, idx - Math.ceil(win.height * 2 / this.avg_height));
     }
     if (this.tail == null) {
-      this.tail = Math.min(btm, idx + Math.floor(win.height * 4.5 / this.avg_height));
+      this.tail = Math.min(btm, idx + Math.ceil(win.height * 4 / this.avg_height));
     }
     pager_cb = (function(_this) {
       return function(pager_elem, is_continue, context) {
