@@ -15,6 +15,7 @@ if gon?.map_reduce?.faces?
     order
 
   GUI.if_exist "#map_faces", (dom)->
+    scroll_mark = (id)-> scroll_spy.mark(id)
     m.module dom, 
       controller: ->
       view: ->
@@ -29,7 +30,7 @@ if gon?.map_reduce?.faces?
             "回数で並べています"
           ]
 
-        GUI.chrs chrs, headline, (o, face)->
+        GUI.chrs chrs, headline, scroll_mark, (o, face)->
           chr_job = Cache.chr_jobs.find("#{Url.prop.chr_set()}_#{face._id}")
           job_name = chr_job.job
 

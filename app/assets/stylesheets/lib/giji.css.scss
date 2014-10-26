@@ -64,31 +64,28 @@ h1, h2, h3, h4, h5, h6 {
   width: 2.5ex;
 }
 
-.chrM,
-.chrF,
-.chrblank {
-  float: left;
-  max-width: 88px;
-  width:     88px;
-  margin: 0 1px;
-}
-
 .chrbox, .say img {
-  float: left;
   max-width:   90px;
   width:       90px;
+  float: left;
   margin: 0 auto;
 }
-.say img {
-  max-height: 130px;
-  height:     130px;
+
+.chrbox, .say {
+  img {
+    max-width:   90px;
+    width:       90px;
+    max-height: 130px;
+    height:     130px;
+  }
 }
 
 .chrblank,
 .chrM,
 .chrF {
-  background-repeat: no-repeat;
-  background-position: top;
+  max-width: 88px;
+  width:     88px;
+  margin:  0 1px;
   padding: 2px 0;
 
   -webkit-border-radius: 9px;

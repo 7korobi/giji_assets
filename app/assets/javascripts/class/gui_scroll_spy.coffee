@@ -90,13 +90,11 @@ class GUI.ScrollSpy
         m.redraw()
 
     if cut_heads
-      console.log "#{_.now()} cut_heads #{cut_heads}"
       @head = cut_heads
       window.requestAnimationFrame ->
         m.redraw()
 
     if cut_tails
-      console.log "#{_.now()} cut_tails #{cut_tails}"
       @tail = cut_tails
       window.requestAnimationFrame ->
         m.redraw()

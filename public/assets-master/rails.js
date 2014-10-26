@@ -6455,7 +6455,7 @@ Url.routes = {
       },
       unmatch: "?",
       change: function(params) {
-        var h, key, val, _ref1;
+        var h, key, val, _ref1, _ref2;
         h = {};
         for (key in params) {
           val = params[key];
@@ -6463,7 +6463,16 @@ Url.routes = {
             h["" + val + "-" + key] = true;
           }
         }
-        return GUI.header(Object.keys(h));
+        GUI.header(Object.keys(h));
+        return (_ref2 = Layout.list.buttons) != null ? _ref2.dx = (function() {
+          switch (params.layout) {
+            case "right":
+            case "center":
+              return 12;
+            case "left":
+              return -12;
+          }
+        })() : void 0;
       }
     })
   }
@@ -6632,6 +6641,10 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     return order;
   };
   GUI.if_exist("#map_faces", function(dom) {
+    var scroll_mark;
+    scroll_mark = function(id) {
+      return scroll_spy.mark(id);
+    };
     return m.module(dom, {
       controller: function() {},
       view: function() {
@@ -6644,7 +6657,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
         if (chrs != null ? chrs.length : void 0) {
           headline = [m("span.badge.badge-info", Cache.chr_sets.find(Url.prop.chr_set()).caption), "の" + chrs.length + "人を、", m("span.badge.badge-info", map_order_set.headline), "回数で並べています"];
         }
-        return GUI.chrs(chrs, headline, function(o, face) {
+        return GUI.chrs(chrs, headline, scroll_mark, function(o, face) {
           var chr_job, job_name;
           chr_job = Cache.chr_jobs.find("" + (Url.prop.chr_set()) + "_" + face._id);
           job_name = chr_job.job;

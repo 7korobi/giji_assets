@@ -27,3 +27,10 @@ Url.routes =
         for key, val of params
           h["#{val}-#{key}"] = true if key? && val? && "String" == ((Url.options[key]?.type) || "String")
         GUI.header Object.keys(h)
+
+        Layout.list.buttons?.dx =
+          switch params.layout
+            when "right", "center"
+              12
+            when "left"
+              -12

@@ -1091,7 +1091,7 @@ GUI = {
     style = arguments[0], head = arguments[1], vdom = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
     return [m("h3.mesname", m("b", head)), m("p.text." + style, vdom)];
   },
-  chrs: function(chrs, headline, cb) {
+  chrs: function(chrs, headline, attr_cb, cb) {
     var o;
     return [
       m("hr.black"), m(".mark", headline), (function() {
@@ -1099,7 +1099,7 @@ GUI = {
         _results = [];
         for (_i = 0, _len = chrs.length; _i < _len; _i++) {
           o = chrs[_i];
-          _results.push(m(".chrbox", [GUI.portrate(o.face._id), m(".chrblank", cb(o, o.face))]));
+          _results.push(m(".chrbox", attr_cb(o.face_id), [GUI.portrate(o.face._id), m(".chrblank", cb(o, o.face))]));
         }
         return _results;
       })(), m("hr.black")
@@ -1291,14 +1291,12 @@ GUI.ScrollSpy = (function() {
       });
     }
     if (cut_heads) {
-      console.log("" + (_.now()) + " cut_heads " + cut_heads);
       this.head = cut_heads;
       window.requestAnimationFrame(function() {
         return m.redraw();
       });
     }
     if (cut_tails) {
-      console.log("" + (_.now()) + " cut_tails " + cut_tails);
       this.tail = cut_tails;
       return window.requestAnimationFrame(function() {
         return m.redraw();

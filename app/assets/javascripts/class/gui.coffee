@@ -61,11 +61,11 @@ GUI =
       m "p.text.#{style}", vdom
     ]
 
-  chrs: (chrs, headline, cb)->
+  chrs: (chrs, headline, attr_cb, cb)->
     [ m "hr.black"
       m ".mark", headline
       for o in chrs
-        m ".chrbox", [
+        m ".chrbox", attr_cb(o.face_id), [
           GUI.portrate o.face._id
           m ".chrblank", cb(o, o.face)
         ]

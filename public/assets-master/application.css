@@ -8191,36 +8191,29 @@ h1, h2, h3, h4, h5, h6 {
   width: 2.5ex;
 }
 
-/* line 69, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
-.chrM,
-.chrF,
-.chrblank {
-  float: left;
-  max-width: 88px;
-  width: 88px;
-  margin: 0 1px;
-}
-
-/* line 76, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 67, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .chrbox, .say img {
-  float: left;
   max-width: 90px;
   width: 90px;
+  float: left;
   margin: 0 auto;
 }
 
-/* line 82, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
-.say img {
+/* line 75, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+.chrbox img, .say img {
+  max-width: 90px;
+  width: 90px;
   max-height: 130px;
   height: 130px;
 }
 
-/* line 89, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 85, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .chrblank,
 .chrM,
 .chrF {
-  background-repeat: no-repeat;
-  background-position: top;
+  max-width: 88px;
+  width: 88px;
+  margin: 0 1px;
   padding: 2px 0;
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
@@ -8228,103 +8221,103 @@ h1, h2, h3, h4, h5, h6 {
   min-height: 50px;
 }
 
-/* line 100, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 97, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .chrlist {
   padding: 0px;
   background-color: #000;
 }
 
-/* line 105, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 102, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .chrblank {
   background-color: #444844;
 }
 
-/* line 108, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 105, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .chrM {
   background-color: #444888;
 }
 
-/* line 111, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 108, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .chrF {
   background-color: #884844;
 }
 
-/* line 115, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 112, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .sayfilter_content_enable {
   width: 100%;
 }
 
-/* line 119, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 116, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .sayfilter_content_disenable {
   width: 100%;
 }
 
-/* line 123, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 120, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .sayfilter_incontent input {
   display: none;
 }
 
-/* line 127, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 124, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .sayfilter_content th {
   padding: 1px;
 }
 
-/* line 131, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 128, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 dt, dd {
   padding: 4px 0;
 }
 
-/* line 136, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 133, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 #tab .paragraph th {
   padding: 0 3px 3px 3px;
 }
-/* line 137, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 134, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 #tab .paragraph td {
   padding: 1px 0 0 3px;
 }
-/* line 138, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 135, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 #tab .paragraph .name {
   margin-right: -3ex;
   white-space: nowrap;
 }
-/* line 142, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 139, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 #tab .paragraph .nowrap {
   white-space: nowrap;
 }
 
-/* line 147, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 144, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .say {
   width: 100%;
 }
 
-/* line 148, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 145, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 img {
   border-style: none;
 }
 
-/* line 150, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 147, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .btn.click {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-/* line 155, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 152, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .multicolumn_label {
   display: block;
   float: left;
 }
 
-/* line 160, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 157, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .multicolumn_right {
   width: 70%;
 }
 
-/* line 164, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 161, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .multicolumn_role {
   width: 100%;
 }
 
-/* line 168, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
+/* line 165, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */
 .multicolumn_clear {
   clear: left;
 }
