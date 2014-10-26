@@ -20,35 +20,26 @@ class GUI.ScrollSpy
         spy.prop id, true
       if spy.list?
         spy.view()
-    return id
+    id
 
   @view: =>
     result = null
-
     for key, elem of @elems
       id = elem.vision.id
       rect = elem.getBoundingClientRect()
-      if elem.vision.id == key && rect.height && rect.width
-        elem.vision =
-          id: id
-          over_btm: win.height * 3.5 < rect.bottom
-          good_btm: win.height * 2.5 < rect.bottom
-          good_top: rect.top <  -0.5 * win.height
-          over_top: rect.top <  -1.5 * win.height 
+      elem.vision.top = rect.top
+      elem.vision.btm = rect.bottom
 
-        if rect.top < (win.horizon) < rect.bottom
+      if elem.vision.id == key && rect.height && rect.width
+        if !result && rect.top <= win.horizon <= rect.bottom 
           elem.vision.offset = win.horizon - rect.top
           result = id
       else
         delete @elems[key]
-        for spy in @list
-          delete spy.elems[key]
     result
 
   constructor: (@prop)->
     GUI.ScrollSpy.list.push @
-    @elems = {}
-
     @start()
 
   start: ->
@@ -60,44 +51,30 @@ class GUI.ScrollSpy
     cut_tails = null
     add_heads = true
     add_tails = true
+    in_box = false
+    prop = @prop()
 
     for o, idx in @list
-      if elem = @elems[o._id]
-        if vision = elem.vision
-          if vision.offset
-            @adjust = vision
-          if vision.over_btm
-            unless cut_tails # first one
-              cut_tails = idx
-          if vision.good_btm
-            add_tails = false
-          if vision.good_top
-            add_heads = false
-          if vision.over_top
-            cut_heads = idx
-            # last one
+      id = o._id
+      if elem = GUI.ScrollSpy.elems[id]
+        vision = elem.vision
 
-    in_box = @elems[@prop()]
-    
-    if add_tails && in_box?
-      @tail = null
+        @adjust = vision  if vision.offset?
+        in_box  = true    if id == prop
+
+        cut_heads = idx   if               vision.top < -1.5 * win.height   # last one
+        add_heads = false if  add_heads && vision.top < -0.5 * win.height
+        add_tails = false if  add_tails && win.height *  2.5 < vision.btm 
+        cut_tails = idx   if !cut_tails && win.height *  3.5 < vision.btm  # first one
+
+    if cut_heads || add_heads || add_tails || cut_tails
       window.requestAnimationFrame ->
         m.redraw()
 
-    if add_heads && in_box?
-      @head = null
-      window.requestAnimationFrame ->
-        m.redraw()
-
-    if cut_heads
-      @head = cut_heads
-      window.requestAnimationFrame ->
-        m.redraw()
-
-    if cut_tails
-      @tail = cut_tails
-      window.requestAnimationFrame ->
-        m.redraw()
+    @tail = null      if add_tails && in_box?
+    @tail = cut_tails if cut_tails
+    @head = null      if add_heads && in_box?
+    @head = cut_heads if cut_heads
 
   pager: (tag, list, cb)->
     unless @list?.length == list?.length
@@ -148,14 +125,13 @@ class GUI.ScrollSpy
 
   mark: (id)->
     config: (elem, is_continue, context)=>
-      GUI.ScrollSpy.elems[id] = @elems[id] = elem
+      GUI.ScrollSpy.elems[id] = elem
       elem.vision =
         id: id
 
       if @adjust && id == @adjust.id
-        offset = @adjust.offset
+        GUI.ScrollSpy.go id, @adjust.offset
         @adjust = null
-        GUI.ScrollSpy.go id, offset
 
       if ! is_continue
         if id == @prop()

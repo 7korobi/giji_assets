@@ -1203,32 +1203,22 @@ GUI.ScrollSpy = (function() {
   };
 
   ScrollSpy.view = function() {
-    var elem, id, key, rect, result, spy, _i, _len, _ref, _ref1, _ref2;
+    var elem, id, key, rect, result, _ref, _ref1;
     result = null;
     _ref = ScrollSpy.elems;
     for (key in _ref) {
       elem = _ref[key];
       id = elem.vision.id;
       rect = elem.getBoundingClientRect();
+      elem.vision.top = rect.top;
+      elem.vision.btm = rect.bottom;
       if (elem.vision.id === key && rect.height && rect.width) {
-        elem.vision = {
-          id: id,
-          over_btm: win.height * 3.5 < rect.bottom,
-          good_btm: win.height * 2.5 < rect.bottom,
-          good_top: rect.top < -0.5 * win.height,
-          over_top: rect.top < -1.5 * win.height
-        };
-        if ((rect.top < (_ref1 = win.horizon) && _ref1 < rect.bottom)) {
+        if (!result && (rect.top <= (_ref1 = win.horizon) && _ref1 <= rect.bottom)) {
           elem.vision.offset = win.horizon - rect.top;
           result = id;
         }
       } else {
         delete ScrollSpy.elems[key];
-        _ref2 = ScrollSpy.list;
-        for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-          spy = _ref2[_i];
-          delete spy.elems[key];
-        }
       }
     }
     return result;
@@ -1237,7 +1227,6 @@ GUI.ScrollSpy = (function() {
   function ScrollSpy(prop) {
     this.prop = prop;
     GUI.ScrollSpy.list.push(this);
-    this.elems = {};
     this.start();
   }
 
@@ -1247,60 +1236,55 @@ GUI.ScrollSpy = (function() {
   };
 
   ScrollSpy.prototype.view = function() {
-    var add_heads, add_tails, cut_heads, cut_tails, elem, idx, in_box, o, vision, _i, _len, _ref;
+    var add_heads, add_tails, cut_heads, cut_tails, elem, id, idx, in_box, o, prop, vision, _i, _len, _ref;
     cut_heads = null;
     cut_tails = null;
     add_heads = true;
     add_tails = true;
+    in_box = false;
+    prop = this.prop();
     _ref = this.list;
     for (idx = _i = 0, _len = _ref.length; _i < _len; idx = ++_i) {
       o = _ref[idx];
-      if (elem = this.elems[o._id]) {
-        if (vision = elem.vision) {
-          if (vision.offset) {
-            this.adjust = vision;
-          }
-          if (vision.over_btm) {
-            if (!cut_tails) {
-              cut_tails = idx;
-            }
-          }
-          if (vision.good_btm) {
-            add_tails = false;
-          }
-          if (vision.good_top) {
-            add_heads = false;
-          }
-          if (vision.over_top) {
-            cut_heads = idx;
-          }
+      id = o._id;
+      if (elem = GUI.ScrollSpy.elems[id]) {
+        vision = elem.vision;
+        if (vision.offset != null) {
+          this.adjust = vision;
+        }
+        if (id === prop) {
+          in_box = true;
+        }
+        if (vision.top < -1.5 * win.height) {
+          cut_heads = idx;
+        }
+        if (add_heads && vision.top < -0.5 * win.height) {
+          add_heads = false;
+        }
+        if (add_tails && win.height * 2.5 < vision.btm) {
+          add_tails = false;
+        }
+        if (!cut_tails && win.height * 3.5 < vision.btm) {
+          cut_tails = idx;
         }
       }
     }
-    in_box = this.elems[this.prop()];
+    if (cut_heads || add_heads || add_tails || cut_tails) {
+      window.requestAnimationFrame(function() {
+        return m.redraw();
+      });
+    }
     if (add_tails && (in_box != null)) {
       this.tail = null;
-      window.requestAnimationFrame(function() {
-        return m.redraw();
-      });
-    }
-    if (add_heads && (in_box != null)) {
-      this.head = null;
-      window.requestAnimationFrame(function() {
-        return m.redraw();
-      });
-    }
-    if (cut_heads) {
-      this.head = cut_heads;
-      window.requestAnimationFrame(function() {
-        return m.redraw();
-      });
     }
     if (cut_tails) {
       this.tail = cut_tails;
-      return window.requestAnimationFrame(function() {
-        return m.redraw();
-      });
+    }
+    if (add_heads && (in_box != null)) {
+      this.head = null;
+    }
+    if (cut_heads) {
+      return this.head = cut_heads;
     }
   };
 
@@ -1382,15 +1366,13 @@ GUI.ScrollSpy = (function() {
     return {
       config: (function(_this) {
         return function(elem, is_continue, context) {
-          var offset;
-          GUI.ScrollSpy.elems[id] = _this.elems[id] = elem;
+          GUI.ScrollSpy.elems[id] = elem;
           elem.vision = {
             id: id
           };
           if (_this.adjust && id === _this.adjust.id) {
-            offset = _this.adjust.offset;
+            GUI.ScrollSpy.go(id, _this.adjust.offset);
             _this.adjust = null;
-            GUI.ScrollSpy.go(id, offset);
           }
           if (!is_continue) {
             if (id === _this.prop()) {
