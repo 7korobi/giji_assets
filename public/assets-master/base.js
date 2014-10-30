@@ -1187,16 +1187,21 @@ GUI.ScrollSpy = (function() {
   };
 
   ScrollSpy.scroll = function() {
-    var id, spy, _i, _len, _ref;
+    var id, spy, spy_id, _i, _j, _len, _len1, _ref, _ref1;
     id = ScrollSpy.view();
     _ref = ScrollSpy.list;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       spy = _ref[_i];
+      if (spy.list != null) {
+        spy_id = spy.view();
+      }
+      id || (id = spy_id);
+    }
+    _ref1 = ScrollSpy.list;
+    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+      spy = _ref1[_j];
       if (id !== spy.prop()) {
         spy.prop(id, true);
-      }
-      if (spy.list != null) {
-        spy.view();
       }
     }
     return id;
@@ -1214,8 +1219,7 @@ GUI.ScrollSpy = (function() {
       vision.top = rect.top;
       vision.btm = rect.bottom;
       if (elem.vision.id === key && rect.height && rect.width) {
-        if (!result && (rect.top < (_ref1 = win.horizon) && _ref1 < rect.bottom)) {
-          vision.offset = win.horizon - rect.top;
+        if (!result && (vision.top < (_ref1 = win.horizon) && _ref1 < vision.btm)) {
           result = id;
         }
       } else {
@@ -1233,71 +1237,33 @@ GUI.ScrollSpy = (function() {
 
   ScrollSpy.prototype.start = function() {
     this.avg_height = 150;
-    return this.too_upper = true;
+    return this.show_upper = true;
   };
 
   ScrollSpy.prototype.view = function() {
-    var add_heads, add_tails, cut_heads, cut_tails, elem, first_top, id, idx, in_box, o, prop, vision, _i, _len, _ref, _ref1;
-    cut_heads = null;
-    cut_tails = null;
-    add_heads = true;
-    add_tails = true;
-    in_box = false;
-    prop = this.prop();
-    first_top = null;
+    var elem, id, idx, o, pager_rect, vision, _i, _len, _ref, _ref1, _ref2;
+    pager_rect = this.pager_elem.getBoundingClientRect();
+    this.pager_top = pager_rect.top;
     _ref = this.list;
     for (idx = _i = 0, _len = _ref.length; _i < _len; idx = ++_i) {
       o = _ref[idx];
       id = o._id;
       if (elem = GUI.ScrollSpy.elems[id]) {
         vision = elem.vision;
-        first_top || (first_top = vision.top);
-        if (!this.adjust && (first_top < (_ref1 = win.horizon) && _ref1 < vision.btm)) {
-          vision.offset = win.horizon - vision.top;
+        if (!this.adjust && (this.pager_top < (_ref1 = win.horizon) && _ref1 < vision.btm)) {
+          vision.offset = Math.max(1, win.horizon - vision.top);
           this.adjust = vision;
-          this.prop(prop = vision.id, true);
-        }
-        if (id === prop) {
-          in_box = true;
-        }
-        if (vision.top < -1.5 * win.height) {
-          cut_heads = idx;
-        }
-        if (add_heads && vision.top < -0.5 * win.height) {
-          add_heads = false;
-        }
-        if (add_tails && win.height * 2.5 < vision.btm) {
-          add_tails = false;
-        }
-        if (!cut_tails && win.height * 3.5 < vision.btm) {
-          cut_tails = idx;
         }
       }
     }
-    if (cut_heads || add_heads || add_tails || cut_tails) {
-      window.requestAnimationFrame(function() {
-        return m.redraw();
-      });
-    }
-    if (add_tails && (in_box != null)) {
-      this.tail = null;
-    }
-    if (cut_tails) {
-      this.tail = cut_tails;
-    }
-    if (add_heads && (in_box != null)) {
-      this.head = null;
-    }
-    if (cut_heads) {
-      return this.head = cut_heads;
-    }
+    window.requestAnimationFrame(function() {
+      return m.redraw();
+    });
+    return (_ref2 = this.adjust) != null ? _ref2.id : void 0;
   };
 
   ScrollSpy.prototype.pager = function(tag, list, cb) {
-    var attr, btm, idx, key, o, pager_cb, top, vdom, vdom_items, _ref;
-    if (((_ref = this.list) != null ? _ref.length : void 0) !== (list != null ? list.length : void 0)) {
-      this.head = this.tail = null;
-    }
+    var attr, btm, head, idx, key, o, pager_cb, tail, top, vdom, vdom_items;
     this.list = list;
     top = 0;
     btm = list.length - 1;
@@ -1305,57 +1271,43 @@ GUI.ScrollSpy = (function() {
       _id: typeof this.prop === "function" ? this.prop() : void 0
     });
     if (idx < 0) {
-      this.head = this.tail = null;
       idx = top;
-      if (this.too_under) {
+      if (this.show_under) {
         idx = btm;
       }
     } else {
-      if (!(this.head < idx)) {
-        this.head = null;
-      }
-      if (!(idx < this.tail)) {
-        this.tail = null;
-      }
+
     }
-    if (this.too_upper) {
-      idx = top;
-      this.head = this.tail = null;
-    }
-    if (this.head == null) {
-      this.head = Math.max(top, idx - Math.ceil(win.height * 2 / this.avg_height));
-    }
-    if (this.tail == null) {
-      this.tail = Math.min(btm, idx + Math.ceil(win.height * 4 / this.avg_height));
-    }
+    head = Math.max(top, idx - Math.ceil(win.height * 3 / this.avg_height));
+    tail = Math.min(btm, idx + Math.ceil(win.height * 3 / this.avg_height));
     pager_cb = (function(_this) {
       return function(pager_elem, is_continue, context) {
-        var rect, stay, too_under, too_upper;
+        var rect, show_under, show_upper, stay;
         _this.pager_elem = pager_elem;
         window.requestAnimationFrame(function() {
-          _this.avg_height = rect.height / (1 + _this.tail - _this.head);
+          _this.avg_height = rect.height / (1 + tail - head);
           if (!stay) {
             return m.redraw();
           }
         });
         rect = _this.pager_elem.getBoundingClientRect();
-        too_under = rect.bottom < win.height;
-        too_upper = 0 < rect.top;
-        stay = too_under === _this.too_under && too_upper === _this.too_upper;
-        _this.too_under = too_under;
-        return _this.too_upper = too_upper;
+        show_under = rect.bottom < win.height;
+        show_upper = 0 < rect.top;
+        stay = show_under === _this.show_under && show_upper === _this.show_upper;
+        _this.show_under = show_under;
+        return _this.show_upper = show_upper;
       };
     })(this);
     vdom_items = (function() {
-      var _i, _len, _ref1, _ref2, _results;
-      _ref1 = this.list.slice(this.head, +this.tail + 1 || 9e9);
+      var _i, _len, _ref, _ref1, _results;
+      _ref = this.list.slice(head, +tail + 1 || 9e9);
       _results = [];
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        o = _ref1[_i];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        o = _ref[_i];
         vdom = cb(o);
-        _ref2 = this.mark(o._id);
-        for (key in _ref2) {
-          attr = _ref2[key];
+        _ref1 = this.mark(o._id);
+        for (key in _ref1) {
+          attr = _ref1[key];
           vdom.attrs[key] = attr;
         }
         _results.push(vdom);

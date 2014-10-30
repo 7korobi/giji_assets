@@ -16,10 +16,13 @@ class GUI.ScrollSpy
   @scroll: =>
     id = @view()
     for spy in @list
+      if spy.list?
+        spy_id = spy.view()
+      id ||= spy_id
+
+    for spy in @list
       if id != spy.prop()
         spy.prop id, true
-      if spy.list?
-        spy.view()
     id
 
   @view: =>
@@ -32,8 +35,7 @@ class GUI.ScrollSpy
       vision.btm = rect.bottom
 
       if elem.vision.id == key && rect.height && rect.width
-        if !result && rect.top < win.horizon < rect.bottom 
-          vision.offset = win.horizon - rect.top
+        if !result && vision.top < win.horizon < vision.btm
           result = id
       else
         delete @elems[key]
@@ -45,83 +47,54 @@ class GUI.ScrollSpy
 
   start: ->
     @avg_height = 150
-    @too_upper = true
+    @show_upper = true
 
   view: ()->
-    cut_heads = null
-    cut_tails = null
-    add_heads = true
-    add_tails = true
-    in_box = false
-    prop = @prop()
+    pager_rect = @pager_elem.getBoundingClientRect()
+    @pager_top = pager_rect.top
 
-    first_top = null
     for o, idx in @list
       id = o._id
       if elem = GUI.ScrollSpy.elems[id]
         vision = elem.vision
-        first_top ||= vision.top
 
-        if !@adjust && first_top < win.horizon < vision.btm
-          vision.offset = win.horizon - vision.top
+        if !@adjust && @pager_top < win.horizon < vision.btm
+          vision.offset = Math.max 1, win.horizon - vision.top
           @adjust = vision
-          @prop prop = vision.id, true
-        if id == prop
-          in_box  = true    
 
-        cut_heads = idx   if               vision.top < -1.5 * win.height   # last one
-        add_heads = false if  add_heads && vision.top < -0.5 * win.height
-        add_tails = false if  add_tails && win.height *  2.5 < vision.btm 
-        cut_tails = idx   if !cut_tails && win.height *  3.5 < vision.btm  # first one
+    window.requestAnimationFrame ->
+      m.redraw()
 
-    if cut_heads || add_heads || add_tails || cut_tails
-      window.requestAnimationFrame ->
-        m.redraw()
+    @adjust?.id
 
-    @tail = null      if add_tails && in_box?
-    @tail = cut_tails if cut_tails
-    @head = null      if add_heads && in_box?
-    @head = cut_heads if cut_heads
-
-  pager: (tag, list, cb)->
-    unless @list?.length == list?.length
-      @head = @tail = null
-
-    @list = list
+  pager: (tag, @list, cb)->
     top = 0
     btm = list.length - 1
 
     idx = _.findIndex @list, _id: @prop?()
     if idx < 0
-      @head = @tail = null
       idx = top
-      idx = btm if @too_under
+      idx = btm if @show_under
     else
       # TODO wait for network read.
-      @head = null unless @head <  idx
-      @tail = null unless  idx  < @tail
 
-    if @too_upper
-      idx = top
-      @head = @tail = null 
-
-    @head ?= Math.max top, idx - Math.ceil(win.height * 2 / @avg_height)
-    @tail ?= Math.min btm, idx + Math.ceil(win.height * 4 / @avg_height)
+    head = Math.max top, idx - Math.ceil(win.height * 3 / @avg_height)
+    tail = Math.min btm, idx + Math.ceil(win.height * 3 / @avg_height)
 
     pager_cb = (@pager_elem, is_continue, context)=>
       window.requestAnimationFrame =>
-        @avg_height = rect.height / (1 + @tail - @head)
+        @avg_height = rect.height / (1 + tail - head)
         m.redraw() unless stay
 
       rect = @pager_elem.getBoundingClientRect()
-      too_under = rect.bottom < win.height 
-      too_upper =           0 < rect.top
-      stay = too_under == @too_under && too_upper == @too_upper
-      @too_under = too_under
-      @too_upper = too_upper
+      show_under = rect.bottom < win.height 
+      show_upper =           0 < rect.top
+      stay = show_under == @show_under && show_upper == @show_upper
+      @show_under = show_under
+      @show_upper = show_upper
 
     vdom_items =
-      for o in @list[@head..@tail]
+      for o in @list[head..tail]
         vdom = cb(o)
         for key, attr of @mark o._id
           vdom.attrs[key] = attr
