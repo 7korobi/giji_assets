@@ -81,7 +81,7 @@ Mithril=m=new function a(b,c){function d(a){return{}.toString.call(a)}function e
 
 this.DELAY = {"largo":10000,"grave":25000,"msg_delete":25000,"msg_minute":60000,"presto":50,"animato":200,"andante":800,"lento":3200} ;
 
-this.LOCATION = {"options":{"scroll":{"type":"Text","current":""},"search":{"type":"Text","current":""},"w":{"type":"Number"},"width":{"current":"std"},"layout":{"current":"center"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"card_win":{"current":"ALL"},"chr_set":{"current":"all"},"order":{"current":"all"},"folder":{"current":"all"},"game":{"current":"all"},"say_limit":{"current":"all"},"player_length":{"current":"all"},"rating":{"current":"all"},"config":{"current":"all"},"event":{"current":"all"},"update_at":{"current":"all"},"update_interval":{"current":"all"}},"bind":{"folder":[{"folder":"all","nation":"- すべて -"},{"folder":"PAN","nation":"似顔絵人狼"},{"folder":"WOLF","nation":"人狼議事標準"},{"folder":"RP","nation":"人狼議事RP:"},{"folder":"PRETENSE","nation":"人狼議事RP:Advance"},{"folder":"XEBEC","nation":"人狼議事RP:Braid XEBEC"},{"folder":"CRAZY","nation":"人狼議事RP:Braid Crazy"},{"folder":"CIEL","nation":"人狼議事RP:Cheat Ciel"},{"folder":"PERJURY","nation":"人狼議事RP:Cheat Perjury"},{"folder":"ULTIMATE","nation":"人狼議事大乱闘:"},{"folder":"ALLSTAR","nation":"人狼議事大乱闘:Allstar"},{"folder":"CABALA","nation":"人狼議事CabalaCafe"},{"folder":"MORPHE","nation":"人狼議事モルペウス"},{"folder":"SOYBEAN","nation":"人狼議事鯖の味噌煮"},{"folder":"LOBBY","nation":"人狼議事ロビー"},{"folder":"OFFPARTY","nation":"人狼議事オフ相談所"},{"folder":"TEST","nation":"人狼議事テスト"}],"width":[{"width":"wide","w":770},{"width":"std","w":580},{"width":"mini","w":458}],"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
+this.LOCATION = {"options":{"scroll":{"type":"Text","current":""},"search":{"type":"Text","current":""},"w":{"type":"Number"},"width":{"current":"std"},"layout":{"current":"center"},"font":{"current":"std"},"viewed_at":{"type":"Date","current":10000},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"story_id":null,"event_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"stat_type"},"page":{"type":"Number","current":1},"row":{"type":"Number","current":50},"hide_ids":{"type":"Array","current":[]},"message_ids":{"type":"Array","current":[]},"roletable":{"current":"ALL"},"card_win":{"current":"ALL"},"chr_set":{"current":"all"},"order":{"current":"all"},"folder":{"current":"all"},"game":{"current":"all"},"say_limit":{"current":"all"},"player_length":{"current":"all"},"rating":{"current":"all"},"config":{"current":"all"},"event":{"current":"all"},"gift":{"current":"all"},"role":{"current":"all"},"update_at":{"current":"all"},"update_interval":{"current":"all"}},"bind":{"folder":[{"folder":"all","nation":"- すべて -"},{"folder":"PAN","nation":"似顔絵人狼"},{"folder":"WOLF","nation":"人狼議事標準"},{"folder":"RP","nation":"人狼議事RP:"},{"folder":"PRETENSE","nation":"人狼議事RP:Advance"},{"folder":"XEBEC","nation":"人狼議事RP:Braid XEBEC"},{"folder":"CRAZY","nation":"人狼議事RP:Braid Crazy"},{"folder":"CIEL","nation":"人狼議事RP:Cheat Ciel"},{"folder":"PERJURY","nation":"人狼議事RP:Cheat Perjury"},{"folder":"ULTIMATE","nation":"人狼議事大乱闘:"},{"folder":"ALLSTAR","nation":"人狼議事大乱闘:Allstar"},{"folder":"CABALA","nation":"人狼議事CabalaCafe"},{"folder":"MORPHE","nation":"人狼議事モルペウス"},{"folder":"SOYBEAN","nation":"人狼議事鯖の味噌煮"},{"folder":"LOBBY","nation":"人狼議事ロビー"},{"folder":"OFFPARTY","nation":"人狼議事オフ相談所"},{"folder":"TEST","nation":"人狼議事テスト"}],"width":[{"width":"wide","w":770},{"width":"std","w":580},{"width":"mini","w":458}],"page":[{"page":0}],"theme":[{"theme":"juna","item":"box-msg","color":"white","title":"審問"},{"theme":"sow","item":"box-msg","color":"white","title":"物語"},{"theme":"cinema","item":"speech","color":"white","title":"煉瓦"},{"theme":"wa","item":"speech","color":"white","title":"和の国"},{"theme":"star","item":"speech","color":"black","title":"蒼穹"},{"theme":"night","item":"speech","color":"black","title":"月夜"}]}} ;
 
 var define;
 
@@ -1010,11 +1010,23 @@ var GUI,
   __slice = [].slice;
 
 GUI = {
-  img_head: "//7korobi.gehirn.ne.jp/images/",
+  img_head: "//7korobi.gehirn.ne.jp/images",
   portrate: function(face_id) {
-    return m("img", {
-      src: GUI.img_head + ("/portrate/" + face_id + ".jpg")
+    var attr, dom;
+    dom = null;
+    attr = GUI.attrs(function() {
+      this.over(function() {
+        return GUI.Animate.jelly.up(dom);
+      });
+      return this.out(function() {
+        return GUI.Animate.jelly.down(dom);
+      });
     });
+    attr.config = function(elem, isInit, context) {
+      return dom = elem;
+    };
+    attr.src = GUI.img_head + ("/portrate/" + face_id + ".jpg");
+    return m("img", attr);
   },
   title: function(width, theme, day_or_night) {
     var _ref, _ref1;
@@ -1041,7 +1053,7 @@ GUI = {
     };
     list_cmds = {
       "class": function(str) {
-        return o["class"] = str;
+        return o.className = str;
       },
       start: function(cb) {
         cb = act(cb);
@@ -1058,6 +1070,19 @@ GUI = {
       end: function(cb) {
         cb = act(cb);
         o.onmouseup = cb;
+        o.ongestureend = cb;
+        return o.ontouchend = cb;
+      },
+      over: function(cb) {
+        cb = act(cb);
+        o.onmouseover = cb;
+        o.ongesturestart = cb;
+        return o.ontouchstart = cb;
+      },
+      out: function(cb) {
+        cb = act(cb);
+        o.onmousedown = cb;
+        o.onmouseout = cb;
         o.ongestureend = cb;
         return o.ontouchend = cb;
       }
@@ -1166,6 +1191,255 @@ GUI = {
     }
   }
 };
+GUI.Animate = (function() {
+  var apply, jelly_down, jelly_up, zIndex;
+
+  function Animate() {}
+
+  jelly_up = new Bounce;
+
+  jelly_up.scale({
+    from: {
+      x: 1,
+      y: 1
+    },
+    to: {
+      x: 1,
+      y: 2
+    },
+    easing: "bounce",
+    bounces: 4,
+    stiffness: 1
+  });
+
+  jelly_up.scale({
+    from: {
+      x: 1,
+      y: 1
+    },
+    to: {
+      x: 2,
+      y: 1
+    },
+    easing: "bounce",
+    bounces: 6,
+    stiffness: 1
+  });
+
+  jelly_up.define("jelly-up");
+
+  jelly_down = new Bounce;
+
+  jelly_down.scale({
+    from: {
+      x: 1,
+      y: 2
+    },
+    to: {
+      x: 1,
+      y: 1
+    },
+    easing: "bounce",
+    bounces: 4,
+    stiffness: 1
+  });
+
+  jelly_down.scale({
+    from: {
+      x: 2,
+      y: 1
+    },
+    to: {
+      x: 1,
+      y: 1
+    },
+    easing: "bounce",
+    bounces: 6,
+    stiffness: 1
+  });
+
+  jelly_down.define("jelly-down");
+
+  apply = function(duration, sequence, _arg) {
+    var begin, finish;
+    begin = _arg.begin, finish = _arg.finish;
+    return function(dom) {
+      var style;
+      style = "" + sequence + " " + duration + "ms linear both";
+      if (typeof begin === "function") {
+        begin(dom);
+      }
+      dom.style.animation = style;
+      dom.style.webkitAnimation = style;
+      return setTimeout(function() {
+        return typeof finish === "function" ? finish(dom) : void 0;
+      }, duration);
+    };
+  };
+
+  zIndex = function(z) {
+    return function(dom) {
+      return dom.style.zIndex = z;
+    };
+  };
+
+  Animate.jelly = {
+    up: apply(DELAY.andante, "jelly-up", {
+      begin: zIndex(2)
+    }),
+    down: apply(DELAY.andante, "jelly-down", {
+      begin: zIndex(1),
+      finish: zIndex(0)
+    })
+  };
+
+  return Animate;
+
+})();
+GUI.Layout = (function() {
+  Layout.list = {};
+
+  Layout.resize = function() {
+    var key, o, _ref, _results;
+    _ref = GUI.Layout.list;
+    _results = [];
+    for (key in _ref) {
+      o = _ref[key];
+      _results.push(o.translate());
+    }
+    return _results;
+  };
+
+  function Layout(dx, dy, box, animation) {
+    this.dx = dx;
+    this.dy = dy;
+    this.box = box;
+    this.animation = animation != null ? animation : function() {};
+    if (!this.box) {
+      return;
+    }
+    GUI.Layout.list[this.box.id] = this;
+    this.mode = "show";
+    this.box.style.position = "fixed";
+    this.box.style.top = 0;
+    this.box.style.left = 0;
+    this.box.style.zIndex = _.now();
+  }
+
+  Layout.prototype.show = function() {
+    var height, left, top, width;
+    width = win.width - this.box.offsetWidth;
+    height = win.height - this.box.offsetHeight;
+    if (0 === this.dx) {
+      left = this.box.parentElement.offsetLeft;
+    }
+    if (this.dx < 0) {
+      left = this.dx + width;
+    }
+    if (0 < this.dx) {
+      left = this.dx;
+    }
+    if (this.dy < 0) {
+      top = this.dy + height;
+    }
+    if (0 < this.dy) {
+      top = this.dy;
+    }
+    return {
+      x: left,
+      y: top,
+      w: this.box.offsetWidth,
+      h: this.box.offsetHeight
+    };
+  };
+
+  Layout.prototype.hide = function() {
+    var left, top;
+    if (0 === this.dx) {
+      left = this.box.parentElement.offsetLeft;
+    }
+    if (this.dx < 0) {
+      left = -this.dx + win.width;
+    }
+    if (0 < this.dx) {
+      left = -this.dx - this.box.offsetWidth;
+    }
+    if (this.dy < 0) {
+      top = -this.dy + win.height;
+    }
+    if (0 < this.dy) {
+      top = -this.dy - this.box.offsetHeight;
+    }
+    return {
+      x: left,
+      y: top,
+      w: this.box.offsetWidth,
+      h: this.box.offsetHeight
+    };
+  };
+
+  Layout.prototype.transform = function(_arg) {
+    var transform, x, y;
+    x = _arg.x, y = _arg.y;
+    if (0 === this.dx) {
+      this.box.style.width = "" + this.box.parentElement.offsetWidth + "px";
+    }
+    transform = "translate(" + x + "px, " + y + "px)";
+    this.box.style.webkitTransform = transform;
+    if (head.browser.ie) {
+      this.box.style.msTransform = transform;
+    }
+    if (head.browser.opera) {
+      this.box.style.oTransform = transform;
+    }
+    return this.box.style.transform = transform;
+  };
+
+  Layout.prototype.transition = function(duration) {
+    var transition;
+    this.duration = duration;
+    transition = this.duration ? "all " + duration + "ms ease-in-out 0" : "";
+    this.box.style.webkitTransition = transition;
+    if (head.browser.ie) {
+      this.box.style.msTransition = transition;
+    }
+    if (head.browser.opera) {
+      this.box.style.oTransition = transition;
+    }
+    return this.box.style.transition = transition;
+  };
+
+  Layout.prototype.translate = function() {
+    var to;
+    if (!this.box) {
+      return;
+    }
+    if (!this.from) {
+      window.requestAnimationFrame((function(_this) {
+        return function() {
+          _this.transition(DELAY.andante);
+          return _this.translate();
+        };
+      })(this));
+      this.transform(this.from = this.hide());
+      return;
+    }
+    to = this[this.mode]();
+    if (this.from.x === to.x && this.from.y === to.y && this.from.w === to.w && this.from.h === to.h) {
+      return;
+    }
+    this.transform(to);
+    return setTimeout((function(_this) {
+      return function() {
+        _this.from = to;
+        return _this.translate();
+      };
+    })(this), this.duration);
+  };
+
+  return Layout;
+
+})();
 GUI.ScrollSpy = (function() {
   ScrollSpy.elems = {};
 
@@ -1186,8 +1460,8 @@ GUI.ScrollSpy = (function() {
     }
   };
 
-  ScrollSpy.scroll = function() {
-    var id, spy, spy_id, _i, _j, _len, _len1, _ref, _ref1;
+  ScrollSpy.scroll_cb = function() {
+    var id, spy, spy_id, _i, _j, _len, _len1, _ref, _ref1, _results;
     id = ScrollSpy.view();
     _ref = ScrollSpy.list;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -1198,14 +1472,19 @@ GUI.ScrollSpy = (function() {
       id || (id = spy_id);
     }
     _ref1 = ScrollSpy.list;
+    _results = [];
     for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
       spy = _ref1[_j];
       if (id !== spy.prop()) {
-        spy.prop(id, true);
+        _results.push(spy.prop(id, true));
+      } else {
+        _results.push(void 0);
       }
     }
-    return id;
+    return _results;
   };
+
+  ScrollSpy.scroll = _.debounce(ScrollSpy.scroll_cb, DELAY.animato);
 
   ScrollSpy.view = function() {
     var elem, id, key, rect, result, vision, _ref, _ref1;
@@ -1278,7 +1557,7 @@ GUI.ScrollSpy = (function() {
     } else {
 
     }
-    head = Math.max(top, idx - Math.ceil(win.height * 3 / this.avg_height));
+    head = Math.max(top, idx - Math.ceil(win.height * 2 / this.avg_height));
     tail = Math.min(btm, idx + Math.ceil(win.height * 3 / this.avg_height));
     pager_cb = (function(_this) {
       return function(pager_elem, is_continue, context) {
@@ -1323,16 +1602,22 @@ GUI.ScrollSpy = (function() {
     return {
       config: (function(_this) {
         return function(elem, is_continue, context) {
+          var offset;
           GUI.ScrollSpy.elems[id] = elem;
           elem.vision = {
             id: id
           };
           if (_this.adjust && id === _this.adjust.id) {
-            GUI.ScrollSpy.go(id, _this.adjust.offset);
+            offset = _this.adjust.offset;
             _this.adjust = null;
+            GUI.ScrollSpy.go(id, offset);
+            window.requestAnimationFrame(function() {
+              return GUI.ScrollSpy.go(id, offset);
+            });
           }
           if (!is_continue) {
             if (id === _this.prop()) {
+              GUI.ScrollSpy.go(id);
               return window.requestAnimationFrame(function() {
                 return GUI.ScrollSpy.go(id);
               });
@@ -1349,8 +1634,10 @@ GUI.ScrollSpy = (function() {
 var __slice = [].slice;
 
 GUI.TouchMenu = (function() {
+  TouchMenu.icons = new TouchMenu;
+
   function TouchMenu(menus) {
-    this.menus = menus;
+    this.menus = menus != null ? menus : {};
     this.state = m.prop(false);
   }
 
@@ -1381,7 +1668,7 @@ GUI.TouchMenu = (function() {
           return reduce[b][sort_by] - reduce[a][sort_by];
         });
         return [
-          !((reduce.all != null) && caption_func("all", reduce.all)) ? (o = _this.all.reduce._all.all, item_func(o[sort_by], _this.btn(prop, "all"), "- すべて -")) : void 0, (function() {
+          !((reduce.all != null) && caption_func("all", reduce.all)) ? (o = _this.all.reduce._all.all, item_func(o[sort_by], _this.btn(prop, "all"), "-全体-")) : void 0, (function() {
             var _i, _len, _results;
             _results = [];
             for (_i = 0, _len = keys.length; _i < _len; _i++) {
@@ -1399,27 +1686,28 @@ GUI.TouchMenu = (function() {
       };
     })(this);
     return this.helper = {
-      btn_group: function(caption_func) {
+      btn_group: function(em, caption_func) {
         return menu_item(caption_func, function(size, btn, caption) {
-          return m("a", btn, m("span.badge", size), m("span", caption));
+          btn.style = "width: " + em + "em;";
+          return m("a", btn, m("span", caption), m("span.badge.pull-right", size));
         });
       },
       btn_list: function(caption_func) {
         return m("ul", menu_item(caption_func, function(size, btn, caption) {
-          return m("li.btn-block", btn, m("span.badge", size), m("span", caption));
+          return m("li.btn-block", btn, m("span", caption), m("span.badge.pull-right", size));
         }));
       }
     };
   };
 
   TouchMenu.prototype.menu = function() {
-    var menu_cb, options, vdom;
-    options = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    var menu_cb, vdom;
+    vdom = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
     menu_cb = this.menus[this.state()];
-    if (menu_cb) {
+    if (menu_cb && !this.icon_key) {
       vdom.push(m(".drag", m(".contentframe", menu_cb.call(this.helper, this))));
     }
-    return m(".pagenavi.choice.guide.form-inline", options, vdom);
+    return vdom;
   };
 
   TouchMenu.prototype.start = function(mark) {
@@ -1458,6 +1746,29 @@ GUI.TouchMenu = (function() {
         }
       }
     });
+  };
+
+  TouchMenu.prototype.icon = function(icon_key, menu_cb) {
+    this.icon_key = icon_key;
+    return GUI.TouchMenu.icons.menus[this.icon_key] = {
+      cb: menu_cb,
+      menu: this
+    };
+  };
+
+  TouchMenu.icons.menu = function() {
+    var item, menu_cb, o, vdom;
+    vdom = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    item = this.menus[this.state()];
+    if (item) {
+      o = item.menu;
+      vdom.push(item.cb.call(o.helper, o));
+      menu_cb = o.menus[o.state()];
+      if (menu_cb) {
+        vdom.push(menu_cb.call(o.helper, o));
+      }
+    }
+    return vdom;
   };
 
   return TouchMenu;
@@ -1608,189 +1919,6 @@ Hilitor = function(id, tag) {
     this.hiliteWords(targetNode);
   };
 };
-var Layout, win;
-
-win = {
-  do_event_list: function(list, e) {
-    var cb, _i, _len, _results;
-    if (!list.length) {
-      return;
-    }
-    _results = [];
-    for (_i = 0, _len = list.length; _i < _len; _i++) {
-      cb = list[_i];
-      _results.push(cb(e));
-    }
-    return _results;
-  },
-  "do": {
-    resize: function(e) {
-      var body_height, body_width, docBody, docElem;
-      docElem = document.documentElement;
-      docBody = document.body;
-      win.height = Math.max(window.innerHeight, docElem.clientHeight);
-      win.width = Math.max(window.innerWidth, docElem.clientWidth);
-      win.horizon = win.height / 2;
-      body_height = Math.max(docBody.clientHeight, docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight);
-      body_width = Math.max(docBody.clientWidth, docBody.scrollWidth, docElem.scrollWidth, docElem.clientWidth);
-      win.max = {
-        top: body_height - win.height,
-        left: body_width - win.width
-      };
-      if (win.height > win.width) {
-        win.landscape = false;
-        win.portlate = true;
-      } else {
-        win.landscape = true;
-        win.portlate = false;
-      }
-      return win.do_event_list(win.on.resize, e);
-    },
-    scroll: function(e) {
-      var docElem;
-      docElem = document.documentElement;
-      win.left = window.pageXOffset || window.scrollX;
-      win.left -= docElem.clientTop;
-      win.top = window.pageYOffset || window.scrollY;
-      win.top -= docElem.clientLeft;
-      win.bottom = win.top + win.height;
-      win.right = win.left + win.width;
-      return win.do_event_list(win.on.scroll, e);
-    },
-    gesture: function(e) {
-      return win.do_event_list(win.on.gesture, e);
-    },
-    motion: function(e) {
-      win.accel = e.acceleration;
-      win.gravity = e.accelerationIncludingGravity;
-      win.rotate = e.rotationRate;
-      return win.do_event_list(win.on.motion, e);
-    },
-    start: function(e) {
-      win.is_tap = true;
-      return win.do_event_list(win.on.start, e);
-    },
-    move: function(e) {
-      if (win.is_tap) {
-        return win.do_event_list(win.on.drag, e);
-      } else {
-        return win.do_event_list(win.on.move, e);
-      }
-    },
-    end: function(e) {
-      win.is_tap = false;
-      return win.do_event_list(win.on.end, e);
-    },
-    load: function(e) {
-      win.do_event_list(win.on.load, e);
-      win["do"].resize();
-      return win["do"].scroll();
-    }
-  },
-  on: {
-    resize: [],
-    scroll: [],
-    gesture: [],
-    motion: [],
-    start: [],
-    move: [],
-    drag: [],
-    end: [],
-    load: []
-  },
-  top: 0,
-  horizon: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  width: 0,
-  height: 0,
-  accel: 0,
-  gravity: 0,
-  rotate: 0,
-  is_tap: false,
-  max: {
-    top: 0,
-    left: 0
-  }
-};
-
-Layout = (function() {
-  Layout.list = {};
-
-  function Layout(dx, dy, box) {
-    this.dx = dx;
-    this.dy = dy;
-    this.box = box;
-    if (!this.box) {
-      return;
-    }
-    win.on.resize.push((function(_this) {
-      return function() {
-        return _this.resize();
-      };
-    })(this));
-    win.on.scroll.push((function(_this) {
-      return function() {
-        return _this.scroll();
-      };
-    })(this));
-    Layout.list[this.box.id] = this;
-    this.box.style.position = "fixed";
-    this.box.style.top = 0;
-    this.box.style.zIndex = _.now();
-  }
-
-  Layout.prototype.resize = function() {
-    var height, left, top, width;
-    if (!this.box) {
-      return;
-    }
-    width = win.width - this.box.offsetWidth;
-    height = win.height - this.box.offsetHeight;
-    if (this.dx < 0) {
-      this.left = this.dx + width;
-    }
-    if (0 < this.dx) {
-      this.left = this.dx;
-    }
-    if (this.dy < 0) {
-      this.top = this.dy + height;
-    }
-    if (0 < this.dy) {
-      this.top = this.dy;
-    }
-    left = this.left + win.left;
-    top = this.top;
-    this.translate(left, top);
-    if (0 === this.dx) {
-      return this.box.style.width = "" + this.box.parentElement.offsetWidth + "px";
-    } else {
-      return this.box.style.left = 0;
-    }
-  };
-
-  Layout.prototype.scroll = function() {};
-
-  Layout.prototype.translate = function(left, top) {
-    var transform;
-    transform = "translate(" + left + "px, " + top + "px)";
-    this.box.style.webkitTransform = transform;
-    if (head.browser.mozilla) {
-      this.box.style.mozTransform = transform;
-    }
-    if (head.browser.ie) {
-      this.box.style.msTransform = transform;
-    }
-    if (head.browser.opera) {
-      this.box.style.oTransform = transform;
-    }
-    return this.box.style.transform = transform;
-  };
-
-  return Layout;
-
-})();
 var ID, Serial, func, key, _ref;
 
 Serial = (function() {
@@ -2572,5 +2700,111 @@ InputSow = (function(_super) {
   return InputSow;
 
 })(InputBase);
+var win;
+
+win = {
+  do_event_list: function(list, e) {
+    var cb, _i, _len, _results;
+    if (!list.length) {
+      return;
+    }
+    _results = [];
+    for (_i = 0, _len = list.length; _i < _len; _i++) {
+      cb = list[_i];
+      _results.push(cb(e));
+    }
+    return _results;
+  },
+  "do": {
+    resize: function(e) {
+      var body_height, body_width, docBody, docElem;
+      docElem = document.documentElement;
+      docBody = document.body;
+      win.height = Math.max(window.innerHeight, docElem.clientHeight);
+      win.width = Math.max(window.innerWidth, docElem.clientWidth);
+      win.horizon = win.height / 3;
+      body_height = Math.max(docBody.clientHeight, docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight);
+      body_width = Math.max(docBody.clientWidth, docBody.scrollWidth, docElem.scrollWidth, docElem.clientWidth);
+      win.max = {
+        top: body_height - win.height,
+        left: body_width - win.width
+      };
+      if (win.height > win.width) {
+        win.landscape = false;
+        win.portlate = true;
+      } else {
+        win.landscape = true;
+        win.portlate = false;
+      }
+      return win.do_event_list(win.on.resize, e);
+    },
+    scroll: function(e) {
+      var docElem;
+      docElem = document.documentElement;
+      win.left = window.pageXOffset || window.scrollX;
+      win.left -= docElem.clientTop;
+      win.top = window.pageYOffset || window.scrollY;
+      win.top -= docElem.clientLeft;
+      win.bottom = win.top + win.height;
+      win.right = win.left + win.width;
+      return win.do_event_list(win.on.scroll, e);
+    },
+    gesture: function(e) {
+      return win.do_event_list(win.on.gesture, e);
+    },
+    motion: function(e) {
+      win.accel = e.acceleration;
+      win.gravity = e.accelerationIncludingGravity;
+      win.rotate = e.rotationRate;
+      return win.do_event_list(win.on.motion, e);
+    },
+    start: function(e) {
+      win.is_tap = true;
+      return win.do_event_list(win.on.start, e);
+    },
+    move: function(e) {
+      if (win.is_tap) {
+        return win.do_event_list(win.on.drag, e);
+      } else {
+        return win.do_event_list(win.on.move, e);
+      }
+    },
+    end: function(e) {
+      win.is_tap = false;
+      return win.do_event_list(win.on.end, e);
+    },
+    load: function(e) {
+      win.do_event_list(win.on.load, e);
+      win["do"].resize();
+      return win["do"].scroll();
+    }
+  },
+  on: {
+    resize: [],
+    scroll: [],
+    gesture: [],
+    motion: [],
+    start: [],
+    move: [],
+    drag: [],
+    end: [],
+    load: []
+  },
+  top: 0,
+  horizon: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  width: 0,
+  height: 0,
+  accel: 0,
+  gravity: 0,
+  rotate: 0,
+  is_tap: false,
+  max: {
+    top: 0,
+    left: 0
+  }
+};
 
 

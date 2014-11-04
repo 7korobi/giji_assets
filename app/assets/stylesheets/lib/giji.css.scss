@@ -142,7 +142,10 @@ dt, dd {
 }
 
 .say { width:100%; }
-img { border-style: none; }
+img { 
+  position: relative;
+  border-style: none; 
+}
 
 .btn.click {
   padding-top: 4px;

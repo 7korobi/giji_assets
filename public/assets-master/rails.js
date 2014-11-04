@@ -4685,7 +4685,7 @@ RAILS = {
       "group": "WOLF"
     },
     "werebat": {
-      "name": "コウモリ人間",
+      "name": "蝙蝠人間",
       "win": "PIXI",
       "group": "PIXI"
     },
@@ -6439,7 +6439,7 @@ Url.routes = {
     folder: new Url("folder=:folder", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
-    stories: new Url("stories=:game~:rating~:event~:config~:say_limit~:player_length~:update_at~:update_interval~:search", {
+    stories: new Url("stories=:game~:rating~:event~:role~:say_limit~:player_length~:update_at~:update_interval~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
     faces: new Url("faces=:chr_set~:order~:search", {
@@ -6455,7 +6455,7 @@ Url.routes = {
       },
       unmatch: "?",
       change: function(params) {
-        var h, key, val, _ref1, _ref2;
+        var h, key, val, _ref1;
         h = {};
         for (key in params) {
           val = params[key];
@@ -6464,15 +6464,9 @@ Url.routes = {
           }
         }
         GUI.header(Object.keys(h));
-        return (_ref2 = Layout.list.buttons) != null ? _ref2.dx = (function() {
-          switch (params.layout) {
-            case "right":
-            case "center":
-              return 12;
-            case "left":
-              return -12;
-          }
-        })() : void 0;
+        return window.requestAnimationFrame(function() {
+          return GUI.Layout.resize();
+        });
       }
     })
   }
@@ -6546,7 +6540,7 @@ new Cache.Rule("map_face_story_log").schema(function() {
 });
 
 new Cache.Rule("story").schema(function() {
-  var caption;
+  var all_events, caption;
   this.scope("folder", function(o) {
     return [o.folder];
   });
@@ -6568,8 +6562,8 @@ new Cache.Rule("story").schema(function() {
   this.scope("player_length", function(o) {
     return [o.view.player_length];
   });
-  this.scope("config", function(o) {
-    return o.view.config_types;
+  this.scope("role", function(o) {
+    return o.view.role_types;
   });
   this.scope("event", function(o) {
     return o.view.event_types;
@@ -6586,22 +6580,24 @@ new Cache.Rule("story").schema(function() {
       return null;
     }
   };
+  all_events = Object.keys(RAILS.events);
   return this.fields({
     _id: function(o) {
+      o.card.role = _.difference(o.card.config, all_events);
       return o.view = {
         rating: m("img", {
-          src: "//7korobi.gehirn.ne.jp/images/icon/cd_" + o.rating + ".png"
+          src: GUI.img_head + ("/icon/cd_" + o.rating + ".png")
         }),
         update_at: Timer.hhmm(o.upd.hour, o.upd.minute),
         update_interval: "" + (o.upd.interval * 24) + "時間",
         player_length: o.vpl.last,
-        config_types: GUI.names.config(o.card.config, function(name, size) {
+        role_types: GUI.names.config(o.card.role, function(name, size) {
           return name;
         }),
         event_types: GUI.names.config(o.card.event, function(name, size) {
           return name;
         }),
-        configs: GUI.names.config(o.card.config, function(name, size) {
+        roles: GUI.names.config(o.card.role, function(name, size) {
           return m("kbd", "" + name + "x" + size);
         }),
         events: GUI.names.config(o.card.event, function(name, size) {
@@ -6673,6 +6669,13 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
   GUI.if_exist("#chr_sets", function(dom) {
     var touch;
     touch = new GUI.TouchMenu();
+    touch.icon("th", function() {
+      return m(".guide.form-inline", m("h6", "詳しく検索してみよう"), m("input.form-control", {
+        onblur: m.withAttr("value", Url.prop.search),
+        onchange: m.withAttr("value", Url.prop.search),
+        value: Url.prop.search()
+      }), m("h6", "キャラセットを選んでみよう"), m("span.btn.btn-default.dropdown-toggle", touch.start("order"), "並び順", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("chr_set"), "キャラセット", m("i.caret")));
+    });
     touch.menu_set(Cache.map_faces, Url.prop, "count", {
       order: function() {
         var key, o, _ref1, _results;
@@ -6693,11 +6696,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return touch.menu(GUI.ScrollSpy.global.mark("menu"), m("input.form-control", {
-          onblur: m.withAttr("value", Url.prop.search),
-          onchange: m.withAttr("value", Url.prop.search),
-          value: Url.prop.search()
-        }), "キャラセットを選んでみよう ", m("span.btn.btn-default.dropdown-toggle", touch.start("order"), "並び順", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("chr_set"), "キャラセット", m("i.caret")));
+        return touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.badge.glyphicon.glyphicon-th", GUI.TouchMenu.icons.start("th"), " "), m("span", "キャラセットを選んでみよう")));
       }
     });
   });
@@ -6885,39 +6884,44 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
   });
 }
 
+GUI.if_exist("#contentframe", function(dom) {});
+
 GUI.if_exist("#buttons", function(dom) {
   var layout, touch;
-  layout = new Layout(-12, -1, dom);
-  touch = new GUI.TouchMenu();
+  layout = new GUI.Layout(-1, -1, dom);
+  touch = GUI.TouchMenu.icons;
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      var o;
-      return m("nav", m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-search", GUI.attrs(function() {
-        return this.start(function() {
-          return GUI.ScrollSpy.go("menu");
-        });
-      }))), m("span", m("a.btn.btn-default.click.glyphicon.glyphicon-pencil", GUI.attrs(function() {
-        return this.start(function() {
-          return GUI.ScrollSpy.go("form");
-        });
-      }))), (function() {
+      var icon;
+      switch (Url.prop.layout()) {
+        case "right":
+        case "center":
+          layout.dx = 1;
+          break;
+        case "left":
+          layout.dx = -1;
+      }
+      return m("nav", (function() {
         var _i, _len, _ref1, _results;
-        _ref1 = [];
+        _ref1 = ["list", "th", "cog"];
         _results = [];
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          o = _ref1[_i];
-          _results.push(m("span", m("a.btn.click", o.name)));
+          icon = _ref1[_i];
+          if (!touch.menus[icon]) {
+            continue;
+          }
+          _results.push(m(".bigicon", touch.start(icon), m(".glyphicon.glyphicon-" + icon)));
         }
         return _results;
-      })(), m("a.btn.btn-default", touch.start(), "✗"));
+      })());
     }
   });
 });
 
 GUI.if_exist("#sayfilter", function(dom) {
   var layout;
-  layout = new Layout(1, -1, dom);
+  layout = new GUI.Layout(1, -1, dom);
   return m.module(dom, {
     controller: function() {},
     view: function() {
@@ -6928,27 +6932,26 @@ GUI.if_exist("#sayfilter", function(dom) {
 
 GUI.if_exist("#topviewer", function(dom) {
   var layout;
-  layout = new Layout(0, -1, dom);
+  layout = new GUI.Layout(0, 1, dom);
+  dom.className = "drag";
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      return [];
+      return m(".contentframe", GUI.TouchMenu.icons.menu());
     }
   });
 });
 
 GUI.if_exist("#css_changer", function(dom) {
   var touch;
-  touch = new GUI.TouchMenu({
-    css: function(touch) {
-      return [m("h6", "幅の広さ"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "wide"), "広域"))), m("h6", "位置"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰"))), m("h6", "位置"), m(".form-inline", m(".form-group", m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細")))];
-    }
+  touch = new GUI.TouchMenu();
+  touch.icon("cog", function() {
+    return m(".guide.form-inline", m("h6", "スタイル"), m(".form-group", m("a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a", touch.btn(Url.prop.theme, "night"), "月夜"), m("a", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a", touch.btn(Url.prop.theme, "wa"), "和の国")), m("h6", "幅の広さ"), m(".form-group", m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "wide"), "広域")), m("h6", "位置"), m(".form-group", m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰")), m("h6", "位置"), m(".form-group", m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細")));
   });
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      win["do"].resize();
-      return touch.menu({}, m("a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a.mark", touch.btn(Url.prop.theme, "night"), "月夜"), m("a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"), m("a.bigicon.glyphicon.glyphicon-cog", touch.start("css")));
+      return touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.badge.glyphicon.glyphicon-cog", GUI.TouchMenu.icons.start("cog"), " "), m(".form-group", m("a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a.mark", touch.btn(Url.prop.theme, "night"), "月夜"), m("a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"))));
     }
   });
 });
@@ -7000,70 +7003,77 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
     touch_sw = new GUI.TouchMenu();
     touch = new GUI.TouchMenu();
     touch.menu_set(Cache.storys, Url.prop, "count", {
+      rating: function() {
+        return this.btn_group(27, function(key, o) {
+          return m("span", m("img.pull-left", {
+            src: GUI.img_head + ("/icon/cd_" + o.first.rating + ".png")
+          }), RAILS.rating[key].caption);
+        });
+      },
+      game: function() {
+        return this.btn_group(21, function(key, o) {
+          return o.first.view.game_rule;
+        });
+      },
       folder: function() {
-        return this.btn_list(function(key) {
+        return this.btn_group(15, function(key) {
           var _ref1;
           return (_ref1 = GAME[key]) != null ? _ref1.nation : void 0;
         });
       },
-      game: function() {
-        return this.btn_list(function(key, o) {
-          return o.first.view.game_rule;
-        });
-      },
-      rating: function() {
-        return this.btn_list(function(key, o) {
-          return m("span", o.first.view.rating, RAILS.rating[key].caption);
-        });
-      },
-      config: function() {
-        return this.btn_list(function(key) {
-          return key;
-        });
-      },
-      event: function() {
-        return this.btn_list(function(key) {
-          return key;
-        });
-      },
       say_limit: function() {
-        return this.btn_list(function(key, o) {
+        return this.btn_group(15, function(key, o) {
           return o.first.view.say_limit;
         });
       },
-      player_length: function() {
-        return this.btn_list(function(key, o) {
-          return o.first.view.player_length + "人";
-        });
-      },
       update_at: function() {
-        return this.btn_list(function(key, o) {
+        return this.btn_group(15, function(key, o) {
           return o.first.view.update_at;
         });
       },
       update_interval: function() {
-        return this.btn_list(function(key, o) {
+        return this.btn_group(15, function(key, o) {
           return o.first.view.update_interval;
         });
+      },
+      event: function() {
+        return this.btn_group(12, function(key) {
+          return key;
+        });
+      },
+      role: function() {
+        return this.btn_group(10, function(key) {
+          return key;
+        });
+      },
+      player_length: function() {
+        return this.btn_group(9, function(key, o) {
+          return o.first.view.player_length + "人";
+        });
       }
+    });
+    touch.icon("list", function() {
+      var icon;
+      icon = touch_sw.state() ? "glyphicon-resize-small" : "glyphicon-resize-full";
+      return m(".pagenavi.choice.guide.form-inline", m("h6", "検索する。　　　　"), m("input.form-control", {
+        onblur: m.withAttr("value", Url.prop.search),
+        onchange: m.withAttr("value", Url.prop.search),
+        value: Url.prop.search()
+      }), m("span.btn.btn-default.dropdown-toggle", touch_sw.start(true), m("i.glyphicon." + icon)), m("span.btn.btn-default.dropdown-toggle", touch.start("folder"), m("i.glyphicon.glyphicon-book"), m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("game"), "ルール", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("event"), "事件", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("role"), "役職", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("rating"), "こだわり", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("say_limit"), "発言制限", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("player_length"), "人数", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_at"), "更新時刻", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_interval"), "更新間隔", m("i.caret")));
     });
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var icon, storys;
+        var storys, vdom;
         storys = touch.by_menu().search(Url.prop.search());
-        icon = touch_sw.state() ? "glyphicon-resize-small" : "glyphicon-resize-full";
-        return m("div", touch.menu(GUI.ScrollSpy.global.mark("menu"), m("h6", "検索する。　　　　"), m("input.form-control", {
-          onblur: m.withAttr("value", Url.prop.search),
-          onchange: m.withAttr("value", Url.prop.search),
-          value: Url.prop.search()
-        }), m("span.btn.btn-default.dropdown-toggle", touch_sw.start(true), m("i.glyphicon." + icon)), m("span.btn.btn-default.dropdown-toggle", touch.start("folder"), m("i.glyphicon.glyphicon-book"), m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("game"), "ルール", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("event"), "事件", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("config"), "役職", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("rating"), "こだわり", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("say_limit"), "発言制限", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("player_length"), "人数", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_at"), "更新時刻", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_interval"), "更新間隔", m("i.caret"))), m("table.table.table-border.table-hover", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", storys.list(), function(o) {
+        vdom = touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.badge.glyphicon.glyphicon-list", GUI.TouchMenu.icons.start("list"), " "), m("span", "村を検索してみよう。")));
+        vdom.push(m("table.table.table-border.table-hover", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", storys.list(), function(o) {
           if (touch_sw.state()) {
             return m("tr", m("td", m("a", {
               href: o.link
             }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
               href: o.file
-            }, m.trust(o.name)), o.view.rating, m("table", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m("div", o.view.configs), m("div", o.view.events)));
+            }, m.trust(o.name)), o.view.rating, m("table", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m("div", o.view.roles), m("div", o.view.events)));
           } else {
             return m("tr", m("td", m("a", {
               href: o.link
@@ -7072,6 +7082,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
             }, o.name), o.view.rating));
           }
         })));
+        return vdom;
       }
     });
   });
@@ -7241,25 +7252,32 @@ GUI.if_exist("#to_root", function(dom) {
 });
 
 m.endComputation();
-var scroll;
+var with_throttle;
+
+with_throttle = function(cb, delay) {
+  return _.throttle(cb, delay, {
+    leading: false,
+    trailing: true
+  });
+};
 
 if ("onorientationchange" in window) {
   window.addEventListener('orientationchange', function() {
     return window.requestAnimationFrame(win["do"].resize);
   });
-  window.addEventListener('orientationchange', _.throttle(win["do"].scroll, DELAY.lento));
+  window.addEventListener('orientationchange', with_throttle(win["do"].scroll, DELAY.lento));
 } else {
   window.addEventListener('resize', function() {
     return window.requestAnimationFrame(win["do"].resize);
   });
-  window.addEventListener('resize', _.throttle(win["do"].scroll, DELAY.lento));
+  window.addEventListener('resize', with_throttle(win["do"].scroll, DELAY.lento));
 }
 
 window.addEventListener('scroll', function() {
   return window.requestAnimationFrame(win["do"].scroll);
 });
 
-window.addEventListener('scroll', _.throttle(win["do"].resize, DELAY.lento));
+window.addEventListener('scroll', with_throttle(win["do"].resize, DELAY.lento));
 
 if ("ondevicemotion" in window) {
   window.addEventListener('devicemotion', function() {
@@ -7268,19 +7286,19 @@ if ("ondevicemotion" in window) {
 }
 
 if ("ongesturestart" in window) {
-  window.addEventListener('gesturestart', _.throttle(win["do"].start, DELAY.presto));
-  window.addEventListener('gesturechange', _.throttle(win["do"].move, DELAY.presto));
-  window.addEventListener('gestureend', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('gesturestart', with_throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('gesturechange', with_throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('gestureend', with_throttle(win["do"].end, DELAY.presto));
 }
 
 if ("ontouchstart" in window) {
-  window.addEventListener('touchstart', _.throttle(win["do"].start, DELAY.presto));
-  window.addEventListener('touchmove', _.throttle(win["do"].move, DELAY.presto));
-  window.addEventListener('touchend', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('touchstart', with_throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('touchmove', with_throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('touchend', with_throttle(win["do"].end, DELAY.presto));
 } else {
-  window.addEventListener('mousedown', _.throttle(win["do"].start, DELAY.presto));
-  window.addEventListener('mousemove', _.throttle(win["do"].move, DELAY.presto));
-  window.addEventListener('mouseup', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('mousedown', with_throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('mousemove', with_throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('mouseup', with_throttle(win["do"].end, DELAY.presto));
 }
 
 if ("onhashchange" in window) {
@@ -7334,11 +7352,9 @@ if ("onload" in window) {
   window.addEventListener("load", win["do"].load);
 }
 
-scroll = function() {
-  return GUI.ScrollSpy.scroll();
-};
+win.on.scroll.push(GUI.ScrollSpy.scroll);
 
-win.on.scroll.push(_.debounce(scroll, DELAY.animato));
+win.on.resize.push(GUI.Layout.resize);
 
 
 

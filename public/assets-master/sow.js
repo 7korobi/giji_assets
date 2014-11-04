@@ -4132,25 +4132,32 @@ Url.routes = {
     })
   }
 };
-var scroll;
+var with_throttle;
+
+with_throttle = function(cb, delay) {
+  return _.throttle(cb, delay, {
+    leading: false,
+    trailing: true
+  });
+};
 
 if ("onorientationchange" in window) {
   window.addEventListener('orientationchange', function() {
     return window.requestAnimationFrame(win["do"].resize);
   });
-  window.addEventListener('orientationchange', _.throttle(win["do"].scroll, DELAY.lento));
+  window.addEventListener('orientationchange', with_throttle(win["do"].scroll, DELAY.lento));
 } else {
   window.addEventListener('resize', function() {
     return window.requestAnimationFrame(win["do"].resize);
   });
-  window.addEventListener('resize', _.throttle(win["do"].scroll, DELAY.lento));
+  window.addEventListener('resize', with_throttle(win["do"].scroll, DELAY.lento));
 }
 
 window.addEventListener('scroll', function() {
   return window.requestAnimationFrame(win["do"].scroll);
 });
 
-window.addEventListener('scroll', _.throttle(win["do"].resize, DELAY.lento));
+window.addEventListener('scroll', with_throttle(win["do"].resize, DELAY.lento));
 
 if ("ondevicemotion" in window) {
   window.addEventListener('devicemotion', function() {
@@ -4159,19 +4166,19 @@ if ("ondevicemotion" in window) {
 }
 
 if ("ongesturestart" in window) {
-  window.addEventListener('gesturestart', _.throttle(win["do"].start, DELAY.presto));
-  window.addEventListener('gesturechange', _.throttle(win["do"].move, DELAY.presto));
-  window.addEventListener('gestureend', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('gesturestart', with_throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('gesturechange', with_throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('gestureend', with_throttle(win["do"].end, DELAY.presto));
 }
 
 if ("ontouchstart" in window) {
-  window.addEventListener('touchstart', _.throttle(win["do"].start, DELAY.presto));
-  window.addEventListener('touchmove', _.throttle(win["do"].move, DELAY.presto));
-  window.addEventListener('touchend', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('touchstart', with_throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('touchmove', with_throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('touchend', with_throttle(win["do"].end, DELAY.presto));
 } else {
-  window.addEventListener('mousedown', _.throttle(win["do"].start, DELAY.presto));
-  window.addEventListener('mousemove', _.throttle(win["do"].move, DELAY.presto));
-  window.addEventListener('mouseup', _.throttle(win["do"].end, DELAY.presto));
+  window.addEventListener('mousedown', with_throttle(win["do"].start, DELAY.presto));
+  window.addEventListener('mousemove', with_throttle(win["do"].move, DELAY.presto));
+  window.addEventListener('mouseup', with_throttle(win["do"].end, DELAY.presto));
 }
 
 if ("onhashchange" in window) {
@@ -4225,11 +4232,9 @@ if ("onload" in window) {
   window.addEventListener("load", win["do"].load);
 }
 
-scroll = function() {
-  return GUI.ScrollSpy.scroll();
-};
+win.on.scroll.push(GUI.ScrollSpy.scroll);
 
-win.on.scroll.push(_.debounce(scroll, DELAY.animato));
+win.on.resize.push(GUI.Layout.resize);
 
 
 
