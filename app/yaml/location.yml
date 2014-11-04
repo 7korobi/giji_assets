@@ -70,6 +70,10 @@ options:
     current: all
   event:
     current: all
+  gift:
+    current: all
+  role:
+    current: all
   update_at:
     current: all
   update_interval:

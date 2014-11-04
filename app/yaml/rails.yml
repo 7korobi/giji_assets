@@ -495,7 +495,7 @@ roles:
     win: WOLF
     group: WOLF
   werebat:
-    name: コウモリ人間
+    name: 蝙蝠人間
     win: PIXI
     group: PIXI
   hamster:
