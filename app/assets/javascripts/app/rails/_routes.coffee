@@ -8,7 +8,7 @@ Url.routes =
     folder: new Url "folder=:folder",
       unmatch: gon?.stories? && "?"
 
-    stories: new Url "stories=:game~:rating~:event~:config~:say_limit~:player_length~:update_at~:update_interval~:search",
+    stories: new Url "stories=:game~:rating~:event~:role~:say_limit~:player_length~:update_at~:update_interval~:search",
       unmatch: gon?.stories? && "?"
 
     faces: new Url "faces=:chr_set~:order~:search",
@@ -27,10 +27,5 @@ Url.routes =
         for key, val of params
           h["#{val}-#{key}"] = true if key? && val? && "String" == ((Url.options[key]?.type) || "String")
         GUI.header Object.keys(h)
-
-        Layout.list.buttons?.dx =
-          switch params.layout
-            when "right", "center"
-              12
-            when "left"
-              -12
+        window.requestAnimationFrame ->
+          GUI.Layout.resize()

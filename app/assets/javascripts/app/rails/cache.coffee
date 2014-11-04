@@ -38,7 +38,7 @@ new Cache.Rule("story").schema ->
   @scope "update_at", (o)-> [o.view.update_at]
   @scope "update_interval", (o)-> [o.view.update_interval]
   @scope "player_length", (o)-> [o.view.player_length]
-  @scope "config", (o)-> o.view.config_types
+  @scope "role", (o)-> o.view.role_types
   @scope "event", (o)-> o.view.event_types
   @search (o)-> [o.name]
 
@@ -49,24 +49,27 @@ new Cache.Rule("story").schema ->
     else
       null
 
+  all_events = Object.keys RAILS.events
+
   @fields
     _id: (o)->
+      o.card.role = _.difference o.card.config, all_events
       o.view = 
         rating:
           m "img",
-            src: "//7korobi.gehirn.ne.jp/images/icon/cd_#{o.rating}.png"
+            src: GUI.img_head + "/icon/cd_#{o.rating}.png"
         update_at:
           Timer.hhmm(o.upd.hour, o.upd.minute)
         update_interval:
           "#{o.upd.interval * 24}時間"
         player_length:
           o.vpl.last
-        config_types:
-          GUI.names.config o.card.config, (name, size)-> name
+        role_types:
+          GUI.names.config o.card.role, (name, size)-> name
         event_types:
           GUI.names.config o.card.event, (name, size)-> name
-        configs:
-          GUI.names.config o.card.config, (name, size)->
+        roles:
+          GUI.names.config o.card.role, (name, size)->
             m "kbd", "#{name}x#{size}"
         events:
           GUI.names.config o.card.event, (name, size)->
