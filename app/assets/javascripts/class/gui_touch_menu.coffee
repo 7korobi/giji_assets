@@ -1,5 +1,7 @@
 class GUI.TouchMenu
-  constructor: (@menus)->
+  @icons = new @
+
+  constructor: (@menus = {})->
     @state = m.prop(false)
 
   by_menu: ->
@@ -19,7 +21,7 @@ class GUI.TouchMenu
 
       [ unless reduce.all? && caption_func "all", reduce.all
           o = @all.reduce._all.all
-          item_func o[sort_by], @btn(prop, "all"), "- すべて -"
+          item_func o[sort_by], @btn(prop, "all"), "-全体-"
         for key in keys
           o = reduce[key]
           caption = caption_func key, o
@@ -28,25 +30,25 @@ class GUI.TouchMenu
       ]
 
     @helper = 
-      btn_group: (caption_func)->
+      btn_group: (em, caption_func)->
         menu_item caption_func, (size, btn, caption)->
+          btn.style = "width: #{em}em;"
           m "a", btn,
-            m "span.badge", size
             m "span", caption
+            m "span.badge.pull-right", size
 
       btn_list: (caption_func)->
         m "ul",
           menu_item caption_func, (size, btn, caption)->
             m "li.btn-block", btn,
-              m "span.badge", size
               m "span", caption
+              m "span.badge.pull-right", size
 
-  menu: (options, vdom...)->
+  menu: (vdom...)->
     menu_cb = @menus[@state()]
-    if menu_cb
+    if menu_cb && ! @icon_key
       vdom.push m ".drag", m ".contentframe", menu_cb.call(@helper, @)
-
-    m ".pagenavi.choice.guide.form-inline", options, vdom
+    vdom
 
   start: (mark)->
     state = @state
@@ -71,3 +73,20 @@ class GUI.TouchMenu
           @class "btn btn-success"
         else
           @class "btn btn-default"
+
+  icon: (@icon_key, menu_cb)->
+    GUI.TouchMenu.icons.menus[@icon_key] = 
+      cb: menu_cb
+      menu: @
+
+  @icons.menu = (vdom...)->
+    item = @menus[@state()]
+    if item
+      o = item.menu
+      vdom.push item.cb.call(o.helper, o)
+
+      # sub-menu section
+      menu_cb = o.menus[o.state()]
+      if menu_cb
+        vdom.push menu_cb.call(o.helper, o)
+    vdom
