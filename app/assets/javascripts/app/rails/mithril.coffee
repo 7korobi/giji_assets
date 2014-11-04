@@ -45,6 +45,20 @@ if gon?.map_reduce?.faces?
 
   GUI.if_exist "#chr_sets", (dom)->
     touch = new GUI.TouchMenu()
+    touch.icon "th", ->
+      m ".guide.form-inline",
+        m "h6", "詳しく検索してみよう"
+        m "input.form-control",
+          onblur:   m.withAttr("value", Url.prop.search)
+          onchange: m.withAttr("value", Url.prop.search)
+          value: Url.prop.search()
+        m "h6", "キャラセットを選んでみよう"
+        m "span.btn.btn-default.dropdown-toggle", touch.start("order"),
+          "並び順"
+          m "i.caret"
+        m "span.btn.btn-default.dropdown-toggle", touch.start("chr_set"),
+          "キャラセット"
+          m "i.caret"
     touch.menu_set Cache.map_faces, Url.prop, "count",
       order: ->
         for key, o of RAILS.map_faces_orders
@@ -56,18 +70,9 @@ if gon?.map_reduce?.faces?
     m.module dom,
       controller: ->
       view: ->
-        touch.menu GUI.ScrollSpy.global.mark("menu"),
-          m "input.form-control",
-            onblur:   m.withAttr("value", Url.prop.search)
-            onchange: m.withAttr("value", Url.prop.search)
-            value: Url.prop.search()
-          "キャラセットを選んでみよう "
-          m "span.btn.btn-default.dropdown-toggle", touch.start("order"),
-            "並び順"
-            m "i.caret"
-          m "span.btn.btn-default.dropdown-toggle", touch.start("chr_set"),
-            "キャラセット"
-            m "i.caret"
+        touch.menu m ".pagenavi.choice.guide.form-inline",
+          m "a.badge.glyphicon.glyphicon-th", GUI.TouchMenu.icons.start("th"), " "
+          m "span", "キャラセットを選んでみよう"
 
 if gon?.face?
   face = Cache.map_face_detail = gon.face
@@ -213,78 +218,78 @@ if gon?.face?
         ]
         m ".ADMIN.guide", scroll_spy.mark("sow_users"), letters
 
+GUI.if_exist "#contentframe", (dom)->
+
 GUI.if_exist "#buttons", (dom)->
-  layout = new Layout -12,-1, dom
-  touch = new GUI.TouchMenu()
+  layout = new GUI.Layout -1,-1, dom
+  touch = GUI.TouchMenu.icons
   m.module dom,
     controller: ->
     view: ->
+      switch Url.prop.layout()
+        when "right", "center"
+          layout.dx =  1
+        when "left"
+          layout.dx = -1
+
       m "nav",
-        m "span",
-          m "a.btn.btn-default.click.glyphicon.glyphicon-search",
-            GUI.attrs ->
-              @start ->
-                GUI.ScrollSpy.go("menu")
-        m "span",
-          m "a.btn.btn-default.click.glyphicon.glyphicon-pencil",
-            GUI.attrs ->
-              @start ->
-                GUI.ScrollSpy.go("form")
-        for o in []
-          m "span",
-            m "a.btn.click", o.name
-        m "a.btn.btn-default",
-          touch.start()
-        , "✗"
+        for icon in ["list", "th", "cog"]
+          continue unless touch.menus[icon]
+          m ".bigicon", touch.start(icon),
+            m ".glyphicon.glyphicon-#{icon}"
 
 GUI.if_exist "#sayfilter", (dom)->
-  layout = new Layout   1,-1, dom
+  layout = new GUI.Layout   1,-1, dom
   m.module dom,
     controller: ->
     view: ->
       []
 
 GUI.if_exist "#topviewer", (dom)->
-  layout = new Layout   0, -1, dom
+  layout = new GUI.Layout   0, 1, dom
+  dom.className = "drag"
   m.module dom,
     controller: ->
     view: ->
-      []
+      m ".contentframe", 
+        GUI.TouchMenu.icons.menu()
 
 GUI.if_exist "#css_changer", (dom)->
-  touch = new GUI.TouchMenu
-    css: (touch)-> [
+  touch = new GUI.TouchMenu()
+  touch.icon "cog", ->
+    m ".guide.form-inline",
+      m "h6", "スタイル"
+      m ".form-group",
+        m "a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
+        m "a", touch.btn(Url.prop.theme, "night"), "月夜"
+        m "a", touch.btn(Url.prop.theme, "star"), "蒼穹"
+        m "a", touch.btn(Url.prop.theme, "wa"), "和の国"
       m "h6", "幅の広さ"
-      m ".form-inline",
-        m ".form-group",
-          m "a", touch.btn(Url.prop.width, "mini"), "携帯"
-          m "a", touch.btn(Url.prop.width, "std"),  "普通"
-          m "a", touch.btn(Url.prop.width, "wide"), "広域"
+      m ".form-group",
+        m "a", touch.btn(Url.prop.width, "mini"), "携帯"
+        m "a", touch.btn(Url.prop.width, "std"),  "普通"
+        m "a", touch.btn(Url.prop.width, "wide"), "広域"
       m "h6", "位置"
-      m ".form-inline",
-        m ".form-group",
-          m "a", touch.btn(Url.prop.layout, "left"),   "左詰"
-          m "a", touch.btn(Url.prop.layout, "center"), "中央"
-          m "a", touch.btn(Url.prop.layout, "right"),  "右詰"
+      m ".form-group",
+        m "a", touch.btn(Url.prop.layout, "left"),   "左詰"
+        m "a", touch.btn(Url.prop.layout, "center"), "中央"
+        m "a", touch.btn(Url.prop.layout, "right"),  "右詰"
       m "h6", "位置"
-      m ".form-inline",
-        m ".form-group",
-          m "a", touch.btn(Url.prop.font, "large"),   "大判"
-          m "a", touch.btn(Url.prop.font, "novel"),   "明朝"
-          m "a", touch.btn(Url.prop.font, "std"), "ゴシック"
-          m "a", touch.btn(Url.prop.font, "small"),   "繊細"
-    ]
-
+      m ".form-group",
+        m "a", touch.btn(Url.prop.font, "large"),   "大判"
+        m "a", touch.btn(Url.prop.font, "novel"),   "明朝"
+        m "a", touch.btn(Url.prop.font, "std"), "ゴシック"
+        m "a", touch.btn(Url.prop.font, "small"),   "繊細"
   m.module dom,
     controller: ->
     view: ->
-      win.do.resize()
-      touch.menu {},
-        m "a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
-        m "a.mark", touch.btn(Url.prop.theme, "night"), "月夜"
-        m "a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"
-        m "a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"
-        m "a.bigicon.glyphicon.glyphicon-cog", touch.start("css")
+      touch.menu m ".pagenavi.choice.guide.form-inline",
+        m "a.badge.glyphicon.glyphicon-cog", GUI.TouchMenu.icons.start("cog"), " "
+        m ".form-group",
+          m "a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
+          m "a.mark", touch.btn(Url.prop.theme, "night"), "月夜"
+          m "a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"
+          m "a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"
 
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
@@ -317,117 +322,124 @@ if gon?.stories?
     touch_sw = new GUI.TouchMenu()
     touch = new GUI.TouchMenu()
     touch.menu_set Cache.storys, Url.prop, "count", 
-      folder: ->
-        @btn_list (key)-> GAME[key]?.nation
-      game: ->
-        @btn_list (key, o)-> o.first.view.game_rule
       rating: ->
-        @btn_list (key, o)->
+        @btn_group 27, (key, o)->
           m "span",
-            o.first.view.rating
+            m "img.pull-left",
+              src: GUI.img_head + "/icon/cd_#{o.first.rating}.png"
             RAILS.rating[key].caption
-      config: ->
-        @btn_list (key)-> key
-      event: ->
-        @btn_list (key)-> key
+      game: ->
+        @btn_group 21, (key, o)-> o.first.view.game_rule
+      folder: ->
+        @btn_group 15, (key)-> GAME[key]?.nation
       say_limit: ->
-        @btn_list (key, o)-> o.first.view.say_limit
-      player_length: ->
-        @btn_list (key, o)-> o.first.view.player_length + "人"
+        @btn_group 15, (key, o)-> o.first.view.say_limit
       update_at: ->
-        @btn_list (key, o)-> o.first.view.update_at
+        @btn_group 15, (key, o)-> o.first.view.update_at
       update_interval: ->
-        @btn_list (key, o)-> o.first.view.update_interval
+        @btn_group 15, (key, o)-> o.first.view.update_interval
+      event: ->
+        @btn_group 12, (key)-> key
+      role: ->
+        @btn_group 10, (key)-> key
+      player_length: ->
+        @btn_group  9, (key, o)-> o.first.view.player_length + "人"
+
+    touch.icon "list", ->
+      icon =
+        if touch_sw.state()
+          "glyphicon-resize-small"
+        else
+          "glyphicon-resize-full"
+
+      m ".pagenavi.choice.guide.form-inline",
+        m "h6", "検索する。　　　　"
+        m "input.form-control",
+          onblur:   m.withAttr("value", Url.prop.search)
+          onchange: m.withAttr("value", Url.prop.search)
+          value: Url.prop.search()
+        m "span.btn.btn-default.dropdown-toggle", touch_sw.start(true),
+          m "i.glyphicon.#{icon}"
+        m "span.btn.btn-default.dropdown-toggle", touch.start("folder"),
+          m "i.glyphicon.glyphicon-book"
+          m "i.caret"
+        m "span.btn.btn-default.dropdown-toggle", touch.start("game"),
+          "ルール"
+          m "i.caret"
+        m "span.btn.btn-default.dropdown-toggle", touch.start("event"),
+          "事件"
+          m "i.caret"
+        m "span.btn.btn-default.dropdown-toggle", touch.start("role"),
+          "役職"
+          m "i.caret"
+        m "span.btn.btn-default.dropdown-toggle", touch.start("rating"),
+          "こだわり"
+          m "i.caret"
+        m "span.btn.btn-default.dropdown-toggle", touch.start("say_limit"),
+          "発言制限"
+          m "i.caret"
+        m "span.btn.btn-default.dropdown-toggle", touch.start("player_length"),
+          "人数"
+          m "i.caret"
+        m "span.btn.btn-default.dropdown-toggle", touch.start("update_at"),
+          "更新時刻"
+          m "i.caret"
+        m "span.btn.btn-default.dropdown-toggle", touch.start("update_interval"),
+          "更新間隔"
+          m "i.caret"
 
     m.module dom,
       controller: ->
       view: ->
         storys = touch.by_menu().search(Url.prop.search())
-        icon =
-          if touch_sw.state()
-            "glyphicon-resize-small"
-          else
-            "glyphicon-resize-full"
 
-        m "div",
-          touch.menu GUI.ScrollSpy.global.mark("menu"),
-            m "h6", "検索する。　　　　"
-            m "input.form-control",
-              onblur:   m.withAttr("value", Url.prop.search)
-              onchange: m.withAttr("value", Url.prop.search)
-              value: Url.prop.search()
-            m "span.btn.btn-default.dropdown-toggle", touch_sw.start(true),
-              m "i.glyphicon.#{icon}"
-            m "span.btn.btn-default.dropdown-toggle", touch.start("folder"),
-              m "i.glyphicon.glyphicon-book"
-              m "i.caret"
-            m "span.btn.btn-default.dropdown-toggle", touch.start("game"),
-              "ルール"
-              m "i.caret"
-            m "span.btn.btn-default.dropdown-toggle", touch.start("event"),
-              "事件"
-              m "i.caret"
-            m "span.btn.btn-default.dropdown-toggle", touch.start("config"),
-              "役職"
-              m "i.caret"
-            m "span.btn.btn-default.dropdown-toggle", touch.start("rating"),
-              "こだわり"
-              m "i.caret"
-            m "span.btn.btn-default.dropdown-toggle", touch.start("say_limit"),
-              "発言制限"
-              m "i.caret"
-            m "span.btn.btn-default.dropdown-toggle", touch.start("player_length"),
-              "人数"
-              m "i.caret"
-            m "span.btn.btn-default.dropdown-toggle", touch.start("update_at"),
-              "更新時刻"
-              m "i.caret"
-            m "span.btn.btn-default.dropdown-toggle", touch.start("update_interval"),
-              "更新間隔"
-              m "i.caret"
+        vdom = touch.menu m ".pagenavi.choice.guide.form-inline",
+          m "a.badge.glyphicon.glyphicon-list", GUI.TouchMenu.icons.start("list"), " "
+          m "span", "村を検索してみよう。"          
 
-          # m ".table-swipe",
-          m "table.table.table-border.table-hover",
-              m "thead",
-                m "tr", 
-                  m "th"
-              scroll_spy.pager "tbody", storys.list(), (o)->
-                if touch_sw.state()
-                  m "tr",
-                    m "td",
-                      m "a",
-                        href: o.link
-                      , m "code.glyphicon.glyphicon-film"
-                      m "kbd.note", o._id
-                      m "a",
-                        href: o.file
-                      , m.trust o.name
-                      o.view.rating
-                      m "table",
-                        m "tbody",
-                          m "tr",
-                            m "th", "更新"
-                            m "td", "#{o.view.update_at} #{o.view.update_interval}"
-                          m "tr",
-                            m "th", "規模"
-                            m "td", "#{o.view.player_length}人 #{o.view.say_limit}"
-                          m "tr",
-                            m "th", "ルール"
-                            m "td", "#{o.view.game_rule}"
+        # m ".table-swipe",
+        vdom.push m "table.table.table-border.table-hover",
+            m "thead",
+              m "tr", 
+                m "th"
+            scroll_spy.pager "tbody", storys.list(), (o)->
+              if touch_sw.state()
+                m "tr",
+                  m "td",
+                    m "a",
+                      href: o.link
+                    , m "code.glyphicon.glyphicon-film"
+                    m "kbd.note", o._id
+                    m "a",
+                      href: o.file
+                    , m.trust o.name
+                    o.view.rating
+                    m "table",
+                      m "tbody",
+                        m "tr",
+                          m "th", "更新"
+                          m "td", "#{o.view.update_at} #{o.view.update_interval}"
+                        m "tr",
+                          m "th", "規模"
+                          m "td", "#{o.view.player_length}人 #{o.view.say_limit}"
+                        m "tr",
+                          m "th", "ルール"
+                          m "td", "#{o.view.game_rule}"
 
-                      m "div", o.view.configs
-                      m "div", o.view.events
-                else
-                  m "tr",
-                    m "td",
-                      m "a",
-                        href: o.link
-                      , m "code.glyphicon.glyphicon-film"
-                      m "kbd.note", o._id
-                      m "a",
-                        href: o.file
-                      , o.name
-                      o.view.rating
+                    m "div", o.view.roles
+                    m "div", o.view.events
+              else
+                m "tr",
+                  m "td",
+                    m "a",
+                      href: o.link
+                    , m "code.glyphicon.glyphicon-film"
+                    m "kbd.note", o._id
+                    m "a",
+                      href: o.file
+                    , o.name
+                    o.view.rating
+        vdom
 
 GUI.if_exist "#headline", (dom)->
   touch = new GUI.TouchMenu()
