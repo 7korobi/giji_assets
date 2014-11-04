@@ -1,8 +1,13 @@
 GUI = 
-  img_head: "//7korobi.gehirn.ne.jp/images/"
+  img_head: "//7korobi.gehirn.ne.jp/images"
   portrate: (face_id)->
-    m "img", 
-      src: GUI.img_head + "/portrate/#{face_id}.jpg"
+    dom = null
+    attr = GUI.attrs ->
+      @over -> GUI.Animate.jelly.up dom
+      @out ->  GUI.Animate.jelly.down dom
+    attr.config = (elem, isInit, context)-> dom = elem
+    attr.src = GUI.img_head + "/portrate/#{face_id}.jpg"
+    m "img", attr
 
   title: (width, theme, day_or_night)->
     m "img",
@@ -24,7 +29,7 @@ GUI =
 
     list_cmds =
       class: (str)->
-        o.class = str
+        o.className = str
       start: (cb)->
         cb = act(cb)
         o.onmousedown = cb
@@ -40,6 +45,18 @@ GUI =
         o.onmouseup = cb
         o.ongestureend = cb
         o.ontouchend = cb
+      over: (cb)->
+        cb = act(cb)
+        o.onmouseover = cb
+        o.ongesturestart = cb
+        o.ontouchstart = cb
+      out: (cb)->
+        cb = act(cb)
+        o.onmousedown = cb
+        o.onmouseout = cb
+        o.ongestureend = cb
+        o.ontouchend = cb
+
     dsl.call list_cmds
     o
 
