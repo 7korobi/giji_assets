@@ -3,16 +3,16 @@ with_throttle = (cb, delay)->
     leading: false
     trailing: true
 if "onorientationchange" of window
-  window.addEventListener 'orientationchange', -> window.requestAnimationFrame(win.do.resize)
+  window.addEventListener 'orientationchange', win.do.resize
   window.addEventListener 'orientationchange', with_throttle(win.do.scroll, DELAY.lento)
 else
-  window.addEventListener 'resize', -> window.requestAnimationFrame(win.do.resize)
+  window.addEventListener 'resize', win.do.resize
   window.addEventListener 'resize', with_throttle(win.do.scroll, DELAY.lento)
 
-window.addEventListener 'scroll', -> window.requestAnimationFrame(win.do.scroll)
+window.addEventListener 'scroll', win.do.scroll
 window.addEventListener 'scroll', with_throttle(win.do.resize, DELAY.lento)
 if "ondevicemotion" of window
-  window.addEventListener 'devicemotion', -> window.requestAnimationFrame(win.do.motion)
+  window.addEventListener 'devicemotion', win.do.motion
 
 if "ongesturestart" of window
   window.addEventListener 'gesturestart', with_throttle(win.do.start, DELAY.presto)
@@ -51,11 +51,11 @@ if "onmessage" of window
 
 if "onoffline" of window
   window.addEventListener "offline", (event)->
-    console.log "on offline"
+    console.log "on offline  onLine:#{navigator.onLine}"
 
 if "ononline" of window
   window.addEventListener "online", (event)->
-    console.log "on online"
+    console.log "on online  onLine:#{navigator.onLine}"
 
 if "onstorage" of window
   window.addEventListener "storage", (event)->
@@ -63,6 +63,3 @@ if "onstorage" of window
 
 if "onload" of window
   window.addEventListener "load", win.do.load
-
-win.on.scroll.push GUI.ScrollSpy.scroll
-win.on.resize.push GUI.Layout.resize
