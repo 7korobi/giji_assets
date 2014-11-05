@@ -4142,27 +4142,19 @@ with_throttle = function(cb, delay) {
 };
 
 if ("onorientationchange" in window) {
-  window.addEventListener('orientationchange', function() {
-    return window.requestAnimationFrame(win["do"].resize);
-  });
+  window.addEventListener('orientationchange', win["do"].resize);
   window.addEventListener('orientationchange', with_throttle(win["do"].scroll, DELAY.lento));
 } else {
-  window.addEventListener('resize', function() {
-    return window.requestAnimationFrame(win["do"].resize);
-  });
+  window.addEventListener('resize', win["do"].resize);
   window.addEventListener('resize', with_throttle(win["do"].scroll, DELAY.lento));
 }
 
-window.addEventListener('scroll', function() {
-  return window.requestAnimationFrame(win["do"].scroll);
-});
+window.addEventListener('scroll', win["do"].scroll);
 
 window.addEventListener('scroll', with_throttle(win["do"].resize, DELAY.lento));
 
 if ("ondevicemotion" in window) {
-  window.addEventListener('devicemotion', function() {
-    return window.requestAnimationFrame(win["do"].motion);
-  });
+  window.addEventListener('devicemotion', win["do"].motion);
 }
 
 if ("ongesturestart" in window) {
@@ -4212,13 +4204,13 @@ if ("onmessage" in window) {
 
 if ("onoffline" in window) {
   window.addEventListener("offline", function(event) {
-    return console.log("on offline");
+    return console.log("on offline  onLine:" + navigator.onLine);
   });
 }
 
 if ("ononline" in window) {
   window.addEventListener("online", function(event) {
-    return console.log("on online");
+    return console.log("on online  onLine:" + navigator.onLine);
   });
 }
 
@@ -4231,10 +4223,7 @@ if ("onstorage" in window) {
 if ("onload" in window) {
   window.addEventListener("load", win["do"].load);
 }
-
-win.on.scroll.push(GUI.ScrollSpy.scroll);
-
-win.on.resize.push(GUI.Layout.resize);
+;
 
 
 

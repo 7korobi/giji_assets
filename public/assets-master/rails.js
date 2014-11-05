@@ -6696,7 +6696,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.badge.glyphicon.glyphicon-th", GUI.TouchMenu.icons.start("th"), " "), m("span", "キャラセットを選んでみよう")));
+        return touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.menuicon.glyphicon.glyphicon-th", GUI.TouchMenu.icons.start("th"), " "), m("span", "キャラセットを選んでみよう")));
       }
     });
   });
@@ -6951,7 +6951,7 @@ GUI.if_exist("#css_changer", function(dom) {
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      return touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.badge.glyphicon.glyphicon-cog", GUI.TouchMenu.icons.start("cog"), " "), m(".form-group", m("a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a.mark", touch.btn(Url.prop.theme, "night"), "月夜"), m("a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"))));
+      return touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.menuicon.glyphicon.glyphicon-cog", GUI.TouchMenu.icons.start("cog"), " "), m(".form-group", m("a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a.mark", touch.btn(Url.prop.theme, "night"), "月夜"), m("a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"))));
     }
   });
 });
@@ -7066,7 +7066,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
       view: function() {
         var storys, vdom;
         storys = touch.by_menu().search(Url.prop.search());
-        vdom = touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.badge.glyphicon.glyphicon-list", GUI.TouchMenu.icons.start("list"), " "), m("span", "村を検索してみよう。")));
+        vdom = touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.menuicon.glyphicon.glyphicon-list", GUI.TouchMenu.icons.start("list"), " "), m("span", "村を検索してみよう。")));
         vdom.push(m("table.table.table-border.table-hover", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", storys.list(), function(o) {
           if (touch_sw.state()) {
             return m("tr", m("td", m("a", {
@@ -7262,27 +7262,19 @@ with_throttle = function(cb, delay) {
 };
 
 if ("onorientationchange" in window) {
-  window.addEventListener('orientationchange', function() {
-    return window.requestAnimationFrame(win["do"].resize);
-  });
+  window.addEventListener('orientationchange', win["do"].resize);
   window.addEventListener('orientationchange', with_throttle(win["do"].scroll, DELAY.lento));
 } else {
-  window.addEventListener('resize', function() {
-    return window.requestAnimationFrame(win["do"].resize);
-  });
+  window.addEventListener('resize', win["do"].resize);
   window.addEventListener('resize', with_throttle(win["do"].scroll, DELAY.lento));
 }
 
-window.addEventListener('scroll', function() {
-  return window.requestAnimationFrame(win["do"].scroll);
-});
+window.addEventListener('scroll', win["do"].scroll);
 
 window.addEventListener('scroll', with_throttle(win["do"].resize, DELAY.lento));
 
 if ("ondevicemotion" in window) {
-  window.addEventListener('devicemotion', function() {
-    return window.requestAnimationFrame(win["do"].motion);
-  });
+  window.addEventListener('devicemotion', win["do"].motion);
 }
 
 if ("ongesturestart" in window) {
@@ -7332,13 +7324,13 @@ if ("onmessage" in window) {
 
 if ("onoffline" in window) {
   window.addEventListener("offline", function(event) {
-    return console.log("on offline");
+    return console.log("on offline  onLine:" + navigator.onLine);
   });
 }
 
 if ("ononline" in window) {
   window.addEventListener("online", function(event) {
-    return console.log("on online");
+    return console.log("on online  onLine:" + navigator.onLine);
   });
 }
 
@@ -7351,10 +7343,7 @@ if ("onstorage" in window) {
 if ("onload" in window) {
   window.addEventListener("load", win["do"].load);
 }
-
-win.on.scroll.push(GUI.ScrollSpy.scroll);
-
-win.on.resize.push(GUI.Layout.resize);
+;
 
 
 

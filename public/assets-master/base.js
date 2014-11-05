@@ -1,3 +1,15 @@
+var head_conf;
+
+head_conf = {
+  screens: [460, 580, 770],
+  screensCss: {
+    gt: true,
+    gte: false,
+    lt: true,
+    lte: false,
+    eq: false
+  }
+};
 /**
  * Bounce.js 0.8.0
  * MIT license
@@ -235,6 +247,112 @@ _.mixin({
     return [id.slice(0, 2), time];
   }
 });
+var win;
+
+win = {
+  do_event_list: function(list, e) {
+    var cb, _i, _len, _results;
+    if (!list.length) {
+      return;
+    }
+    _results = [];
+    for (_i = 0, _len = list.length; _i < _len; _i++) {
+      cb = list[_i];
+      _results.push(cb(e));
+    }
+    return _results;
+  },
+  "do": {
+    resize: function(e) {
+      var body_height, body_width, docBody, docElem;
+      docElem = document.documentElement;
+      docBody = document.body;
+      win.height = Math.max(window.innerHeight, docElem.clientHeight);
+      win.width = Math.max(window.innerWidth, docElem.clientWidth);
+      win.horizon = win.height / 3;
+      body_height = Math.max(docBody.clientHeight, docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight);
+      body_width = Math.max(docBody.clientWidth, docBody.scrollWidth, docElem.scrollWidth, docElem.clientWidth);
+      win.max = {
+        top: body_height - win.height,
+        left: body_width - win.width
+      };
+      if (win.height > win.width) {
+        win.landscape = false;
+        win.portlate = true;
+      } else {
+        win.landscape = true;
+        win.portlate = false;
+      }
+      return win.do_event_list(win.on.resize, e);
+    },
+    scroll: function(e) {
+      var docElem;
+      docElem = document.documentElement;
+      win.left = window.pageXOffset || window.scrollX;
+      win.left -= docElem.clientTop;
+      win.top = window.pageYOffset || window.scrollY;
+      win.top -= docElem.clientLeft;
+      win.bottom = win.top + win.height;
+      win.right = win.left + win.width;
+      return win.do_event_list(win.on.scroll, e);
+    },
+    gesture: function(e) {
+      return win.do_event_list(win.on.gesture, e);
+    },
+    motion: function(e) {
+      win.accel = e.acceleration;
+      win.gravity = e.accelerationIncludingGravity;
+      win.rotate = e.rotationRate;
+      return win.do_event_list(win.on.motion, e);
+    },
+    start: function(e) {
+      win.is_tap = true;
+      return win.do_event_list(win.on.start, e);
+    },
+    move: function(e) {
+      if (win.is_tap) {
+        return win.do_event_list(win.on.drag, e);
+      } else {
+        return win.do_event_list(win.on.move, e);
+      }
+    },
+    end: function(e) {
+      win.is_tap = false;
+      return win.do_event_list(win.on.end, e);
+    },
+    load: function(e) {
+      win.do_event_list(win.on.load, e);
+      win["do"].resize();
+      return win["do"].scroll();
+    }
+  },
+  on: {
+    resize: [],
+    scroll: [],
+    gesture: [],
+    motion: [],
+    start: [],
+    move: [],
+    drag: [],
+    end: [],
+    load: []
+  },
+  top: 0,
+  horizon: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  width: 0,
+  height: 0,
+  accel: 0,
+  gravity: 0,
+  rotate: 0,
+  is_tap: false,
+  max: {
+    top: 0,
+    left: 0
+  }
+};
 var Cache;
 
 Cache = (function() {
@@ -1310,6 +1428,8 @@ GUI.Layout = (function() {
     return _results;
   };
 
+  win.on.resize.push(Layout.resize);
+
   function Layout(dx, dy, box, animation) {
     this.dx = dx;
     this.dy = dy;
@@ -1320,9 +1440,6 @@ GUI.Layout = (function() {
     }
     GUI.Layout.list[this.box.id] = this;
     this.mode = "show";
-    this.box.style.position = "fixed";
-    this.box.style.top = 0;
-    this.box.style.left = 0;
     this.box.style.zIndex = _.now();
   }
 
@@ -1349,7 +1466,11 @@ GUI.Layout = (function() {
       x: left,
       y: top,
       w: this.box.offsetWidth,
-      h: this.box.offsetHeight
+      h: this.box.offsetHeight,
+      win: {
+        left: win.left,
+        top: win.top
+      }
     };
   };
 
@@ -1374,7 +1495,11 @@ GUI.Layout = (function() {
       x: left,
       y: top,
       w: this.box.offsetWidth,
-      h: this.box.offsetHeight
+      h: this.box.offsetHeight,
+      win: {
+        left: win.left,
+        top: win.top
+      }
     };
   };
 
@@ -1384,22 +1509,45 @@ GUI.Layout = (function() {
     if (0 === this.dx) {
       this.box.style.width = "" + this.box.parentElement.offsetWidth + "px";
     }
-    transform = "translate(" + x + "px, " + y + "px)";
-    this.box.style.webkitTransform = transform;
-    if (head.browser.ie) {
-      this.box.style.msTransform = transform;
+    if (head.browser.ios) {
+      this.box.style.position = "absolute";
+      this.box.style.left = "" + (x + win.left) + "px";
+      this.box.style.top = "" + (y + win.top) + "px";
+      this.box.style.webkitTransform = "";
+      this.box.style.mozTransform = "";
+      this.box.style.msTransform = "";
+      this.box.style.oTransform = "";
+      return this.box.style.transform = "";
+    } else {
+      this.box.style.position = "fixed";
+      this.box.style.top = 0;
+      this.box.style.left = 0;
+      transform = "translate(" + x + "px, " + y + "px)";
+      this.box.style.webkitTransform = transform;
+      if (head.browser.ff) {
+        this.box.style.mozTransform = transform;
+      }
+      if (head.browser.ie) {
+        this.box.style.msTransform = transform;
+      }
+      if (head.browser.opera) {
+        this.box.style.oTransform = transform;
+      }
+      return this.box.style.transform = transform;
     }
-    if (head.browser.opera) {
-      this.box.style.oTransform = transform;
-    }
-    return this.box.style.transform = transform;
   };
 
   Layout.prototype.transition = function(duration) {
     var transition;
     this.duration = duration;
-    transition = this.duration ? "all " + duration + "ms ease-in-out 0" : "";
-    this.box.style.webkitTransition = transition;
+    if (head.browser.ios) {
+      this.duration /= 4;
+      return;
+    }
+    transition = this.duration ? "all " + this.duration + "ms ease-in-out 0" : "";
+    if (head.browser.ff) {
+      this.box.style.mozTransition = transition;
+    }
     if (head.browser.ie) {
       this.box.style.msTransition = transition;
     }
@@ -1421,11 +1569,12 @@ GUI.Layout = (function() {
           return _this.translate();
         };
       })(this));
-      this.transform(this.from = this.hide());
+      this.from = this.hide();
+      this.transform(this.from);
       return;
     }
     to = this[this.mode]();
-    if (this.from.x === to.x && this.from.y === to.y && this.from.w === to.w && this.from.h === to.h) {
+    if (this.from.x === to.x && this.from.y === to.y && this.from.w === to.w && this.from.h === to.h && this.from.win.left === win.left && this.from.win.top === win.top) {
       return;
     }
     this.transform(to);
@@ -1485,6 +1634,8 @@ GUI.ScrollSpy = (function() {
   };
 
   ScrollSpy.scroll = _.debounce(ScrollSpy.scroll_cb, DELAY.animato);
+
+  win.on.scroll.push(ScrollSpy.scroll);
 
   ScrollSpy.view = function() {
     var elem, id, key, rect, result, vision, _ref, _ref1;
@@ -1774,11 +1925,10 @@ GUI.TouchMenu = (function() {
   return TouchMenu;
 
 })();
-var b, key, _i, _len, _ref, _ref1;
+var b, _ref;
 
 if (head.browser != null) {
   b = head.browser;
-  b.power = "pc";
   b.viewport = "width=device-width, initial-scale=1.0";
   if (navigator.userAgent.toLowerCase().indexOf('windows') !== -1) {
     b.win = true;
@@ -1786,35 +1936,16 @@ if (head.browser != null) {
   if (navigator.userAgent.toLowerCase().indexOf('macintosh') !== -1) {
     b.mac = true;
   }
-  if (navigator.userAgent.toLowerCase().indexOf('safari') !== -1) {
-    b.ios = true;
-  }
   if (navigator.userAgent.toLowerCase().indexOf('android') !== -1) {
     b.android = true;
-    b.power = "simple";
   }
   if (navigator.userAgent.toLowerCase().indexOf('iphone') !== -1) {
     b.viewport = "width=device-width, initial-scale=0.5";
-    b.iphone = true;
-    b.ios = true;
-    b.power = "mobile";
   }
-  if (navigator.userAgent.toLowerCase().indexOf('ipad') !== -1) {
-    b.ios = true;
-    b.power = "mobile";
-  }
-  _ref = ['crios', 'silk', 'mercury'];
-  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-    key = _ref[_i];
-    if (navigator.userAgent.toLowerCase().indexOf(key) !== -1) {
-      b.power = "mobile";
-    }
-  }
-  b[b.power] = true;
 }
 
-if ((_ref1 = document.querySelector("meta[name=viewport]")) != null) {
-  _ref1.attributes.content = head.browser.viewport;
+if ((_ref = document.querySelector("meta[name=viewport]")) != null) {
+  _ref.attributes.content = head.browser.viewport;
 }
 
 head.useragent = navigator.userAgent;
@@ -2700,111 +2831,5 @@ InputSow = (function(_super) {
   return InputSow;
 
 })(InputBase);
-var win;
-
-win = {
-  do_event_list: function(list, e) {
-    var cb, _i, _len, _results;
-    if (!list.length) {
-      return;
-    }
-    _results = [];
-    for (_i = 0, _len = list.length; _i < _len; _i++) {
-      cb = list[_i];
-      _results.push(cb(e));
-    }
-    return _results;
-  },
-  "do": {
-    resize: function(e) {
-      var body_height, body_width, docBody, docElem;
-      docElem = document.documentElement;
-      docBody = document.body;
-      win.height = Math.max(window.innerHeight, docElem.clientHeight);
-      win.width = Math.max(window.innerWidth, docElem.clientWidth);
-      win.horizon = win.height / 3;
-      body_height = Math.max(docBody.clientHeight, docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight);
-      body_width = Math.max(docBody.clientWidth, docBody.scrollWidth, docElem.scrollWidth, docElem.clientWidth);
-      win.max = {
-        top: body_height - win.height,
-        left: body_width - win.width
-      };
-      if (win.height > win.width) {
-        win.landscape = false;
-        win.portlate = true;
-      } else {
-        win.landscape = true;
-        win.portlate = false;
-      }
-      return win.do_event_list(win.on.resize, e);
-    },
-    scroll: function(e) {
-      var docElem;
-      docElem = document.documentElement;
-      win.left = window.pageXOffset || window.scrollX;
-      win.left -= docElem.clientTop;
-      win.top = window.pageYOffset || window.scrollY;
-      win.top -= docElem.clientLeft;
-      win.bottom = win.top + win.height;
-      win.right = win.left + win.width;
-      return win.do_event_list(win.on.scroll, e);
-    },
-    gesture: function(e) {
-      return win.do_event_list(win.on.gesture, e);
-    },
-    motion: function(e) {
-      win.accel = e.acceleration;
-      win.gravity = e.accelerationIncludingGravity;
-      win.rotate = e.rotationRate;
-      return win.do_event_list(win.on.motion, e);
-    },
-    start: function(e) {
-      win.is_tap = true;
-      return win.do_event_list(win.on.start, e);
-    },
-    move: function(e) {
-      if (win.is_tap) {
-        return win.do_event_list(win.on.drag, e);
-      } else {
-        return win.do_event_list(win.on.move, e);
-      }
-    },
-    end: function(e) {
-      win.is_tap = false;
-      return win.do_event_list(win.on.end, e);
-    },
-    load: function(e) {
-      win.do_event_list(win.on.load, e);
-      win["do"].resize();
-      return win["do"].scroll();
-    }
-  },
-  on: {
-    resize: [],
-    scroll: [],
-    gesture: [],
-    motion: [],
-    start: [],
-    move: [],
-    drag: [],
-    end: [],
-    load: []
-  },
-  top: 0,
-  horizon: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  width: 0,
-  height: 0,
-  accel: 0,
-  gravity: 0,
-  rotate: 0,
-  is_tap: false,
-  max: {
-    top: 0,
-    left: 0
-  }
-};
 
 

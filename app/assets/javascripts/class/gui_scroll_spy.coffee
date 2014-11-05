@@ -24,6 +24,7 @@ class GUI.ScrollSpy
       if id != spy.prop()
         spy.prop id, true
   @scroll = _.debounce @scroll_cb, DELAY.animato
+  win.on.scroll.push @scroll
 
   @view: =>
     result = null
@@ -121,5 +122,3 @@ class GUI.ScrollSpy
           GUI.ScrollSpy.go id
           window.requestAnimationFrame ->
             GUI.ScrollSpy.go id
-
-
