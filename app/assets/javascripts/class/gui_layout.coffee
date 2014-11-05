@@ -3,15 +3,13 @@ class GUI.Layout
   @resize: ->
     for key, o of GUI.Layout.list
       o.translate()
+  win.on.resize.push @resize
 
   constructor: (@dx, @dy, @box, @animation = ->)->
     return unless @box
 
     GUI.Layout.list[@box.id] = @
     @mode = "show"
-    @box.style.position = "fixed"
-    @box.style.top = 0
-    @box.style.left = 0
     @box.style.zIndex = _.now()
 
   show: ->
@@ -28,6 +26,9 @@ class GUI.Layout
     y: top
     w: @box.offsetWidth
     h: @box.offsetHeight
+    win:
+      left: win.left
+      top: win.top
 
   hide: ->
     left = @box.parentElement.offsetLeft if 0 == @dx
@@ -40,24 +41,47 @@ class GUI.Layout
     y: top
     w: @box.offsetWidth
     h: @box.offsetHeight
+    win:
+      left: win.left
+      top: win.top
 
   transform: ({x, y})->
     if 0 == @dx
       @box.style.width = "#{@box.parentElement.offsetWidth}px"
 
-    transform  = "translate(#{x}px, #{y}px)"
-    @box.style.webkitTransform = transform
-    @box.style.msTransform = transform if head.browser.ie
-    @box.style.oTransform = transform if head.browser.opera
-    @box.style.transform = transform
+    if head.browser.ios
+      @box.style.position = "absolute"
+      @box.style.left = "#{x + win.left}px"
+      @box.style.top = "#{y + win.top}px"
+      @box.style.webkitTransform = ""
+      @box.style.mozTransform = ""
+      @box.style.msTransform = ""
+      @box.style.oTransform = ""
+      @box.style.transform = ""
+    else
+      @box.style.position = "fixed"
+      @box.style.top = 0
+      @box.style.left = 0
+
+      transform  = "translate(#{x}px, #{y}px)"
+      @box.style.webkitTransform = transform
+      @box.style.mozTransform = transform if head.browser.ff
+      @box.style.msTransform = transform if head.browser.ie
+      @box.style.oTransform = transform if head.browser.opera
+      @box.style.transform = transform
+
 
   transition: (@duration)->
+    if head.browser.ios
+      @duration /= 4
+      return
+
     transition = 
       if @duration
-        "all #{duration}ms ease-in-out 0"
+        "all #{@duration}ms ease-in-out 0"
       else
         ""
-    @box.style.webkitTransition = transition
+    @box.style.mozTransition = transition if head.browser.ff
     @box.style.msTransition = transition if head.browser.ie
     @box.style.oTransition = transition if head.browser.opera
     @box.style.transition = transition
@@ -68,11 +92,12 @@ class GUI.Layout
       window.requestAnimationFrame =>
         @transition DELAY.andante
         @translate()
-      @transform @from = @hide()
+      @from = @hide()
+      @transform @from
       return
 
     to = @[@mode]()
-    return if @from.x == to.x && @from.y == to.y && @from.w == to.w && @from.h == to.h
+    return if @from.x == to.x && @from.y == to.y && @from.w == to.w && @from.h == to.h && @from.win.left == win.left && @from.win.top == win.top
 
     @transform(to)
 
