@@ -71,7 +71,7 @@ if gon?.map_reduce?.faces?
       controller: ->
       view: ->
         touch.menu m ".pagenavi.choice.guide.form-inline",
-          m "a.badge.glyphicon.glyphicon-th", GUI.TouchMenu.icons.start("th"), " "
+          m "a.menuicon.glyphicon.glyphicon-th", GUI.TouchMenu.icons.start("th"), " "
           m "span", "キャラセットを選んでみよう"
 
 if gon?.face?
@@ -284,7 +284,7 @@ GUI.if_exist "#css_changer", (dom)->
     controller: ->
     view: ->
       touch.menu m ".pagenavi.choice.guide.form-inline",
-        m "a.badge.glyphicon.glyphicon-cog", GUI.TouchMenu.icons.start("cog"), " "
+        m "a.menuicon.glyphicon.glyphicon-cog", GUI.TouchMenu.icons.start("cog"), " "
         m ".form-group",
           m "a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
           m "a.mark", touch.btn(Url.prop.theme, "night"), "月夜"
@@ -394,7 +394,7 @@ if gon?.stories?
         storys = touch.by_menu().search(Url.prop.search())
 
         vdom = touch.menu m ".pagenavi.choice.guide.form-inline",
-          m "a.badge.glyphicon.glyphicon-list", GUI.TouchMenu.icons.start("list"), " "
+          m "a.menuicon.glyphicon.glyphicon-list", GUI.TouchMenu.icons.start("list"), " "
           m "span", "村を検索してみよう。"          
 
         # m ".table-swipe",

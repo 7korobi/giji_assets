@@ -14,14 +14,30 @@
   margin-bottom: 4px;
 }
 
+.desktop {
+  a,
+  .btn,
+  .board,
+  .menuicon {
+    transition: all 800ms ease-in-out 0ms;
+    -webkit-transition: all 800ms ease-in-out 0ms;  
+  }
+}
+
 .right-layout, .center-layout {
   .guide {
     text-align: left;
+  }
+  .menuicon {
+    float: left;
   }
 }
 .left-layout {
   .guide {
     text-align: right;
+  }
+  .menuicon {
+    float: right;
   }
 }
 
