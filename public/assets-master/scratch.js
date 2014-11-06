@@ -4165,6 +4165,10 @@ window.addEventListener('scroll', win["do"].scroll);
 
 window.addEventListener('scroll', with_throttle(win["do"].resize, DELAY.lento));
 
+if ("ondeviceorientation" in window) {
+  window.addEventListener('deviceorientation', win["do"].orientation);
+}
+
 if ("ondevicemotion" in window) {
   window.addEventListener('devicemotion', win["do"].motion);
 }

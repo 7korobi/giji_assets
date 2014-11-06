@@ -6539,6 +6539,97 @@ new Cache.Rule("map_face_story_log").schema(function() {
   });
 });
 
+new Cache.Rule("message").schema(function() {
+  this.order_by("created_at");
+  this.belongs_to("face");
+  this.belongs_to("sow_auth");
+  this.scope("logid", function(o) {
+    return [o.logid];
+  });
+  this.scope("unread", function(o) {
+    return null;
+  });
+  this.scope("info", function(o) {
+    return o.is.info && o.security;
+  });
+  this.scope("action", function(o) {
+    return o.is.action && o.security;
+  });
+  this.scope("talk", function(o) {
+    return o.is.talk && o.security;
+  });
+  this.scope("memo", function(o) {
+    return o.is.memo && o.security;
+  });
+  return this.fields({
+    _id: function(o) {
+      o.created_at = new Date(o.date) - 0;
+      o._id = ID.at(o.created_at);
+      return delete o.date;
+    },
+    security: function(o) {
+      o.security = (function() {
+        switch (false) {
+          case !o.logid.match(/^([D].\d+)/):
+            return ["delete", "think", "all"];
+          case !o.logid.match(/^([qcS].\d+)|(MM\d+)/):
+            return ["open", "clan", "think", "all"];
+          case o.mestype !== "MAKER":
+            return ["announce", "open", "clan", "think", "all"];
+          case o.mestype !== "ADMIN":
+            return ["announce", "open", "clan", "think", "all"];
+          case !o.logid.match(/^([I].\d+)|(vilinfo)|(potofs)/):
+            return ["announce", "open", "clan", "think", "all"];
+          case !o.logid.match(/^([Ti].\d+)/):
+            return ["think", "all"];
+          case !o.logid.match(/^([\-WPX].\d+)/):
+            return ["clan", "all"];
+          default:
+            return [];
+        }
+      })();
+      return o.scene_id = o.event_id + "-" + o.security[0];
+    },
+    vdom: function(o) {
+      o.is = {};
+      if (o.mestype === "MAKER") {
+        o.is.info = true;
+      }
+      if (o.mestype === "ADMIN") {
+        o.is.info = true;
+      }
+      if (o.logid.match(/^vilinfo/)) {
+        o.vdom = GUI.story(o);
+        o.is.info = true;
+      }
+      if (o.logid.match(/^potofs/)) {
+        o.vdom = GUI.potofs(o);
+        o.is.info = true;
+      }
+      if (o.logid.match(/^.[I]/)) {
+        o.vdom = GUI.message.info(o);
+        o.is.info = true;
+      }
+      if (o.logid.match(/^.[AB]/)) {
+        o.vdom = GUI.message.action(o);
+        o.is.action = true;
+      }
+      if (o.logid.match(/^.[SX]/)) {
+        o.vdom = GUI.message.talk(o);
+        o.is.talk = true;
+      }
+      if (o.logid.match(/^.[M]/)) {
+        o.vdom = GUI.message.memo(o);
+        return o.is.memo = true;
+      }
+    }
+  });
+});
+
+new Cache.Rule("potof").schema(function() {});
+
+new Cache.Rule("event").schema(function() {});
+
 new Cache.Rule("story").schema(function() {
   var all_events, caption;
   this.scope("folder", function(o) {
@@ -6609,7 +6700,7 @@ new Cache.Rule("story").schema(function() {
     }
   });
 });
-var face, map_orders, scroll_spy, _ref;
+var event, face, map_orders, message, scroll_spy, _i, _j, _len, _len1, _ref, _ref1, _ref2;
 
 GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
 
@@ -6888,6 +6979,34 @@ GUI.if_exist("#contentframe", function(dom) {});
 
 GUI.if_exist("#buttons", function(dom) {
   var layout, touch;
+  if (!head.browser.ios) {
+    win.on.orientation.push(function() {
+      var alpha, anime, beta, box, gamma, rotate, z, _i, _len, _ref1, _ref2, _results;
+      _ref1 = win.orientation, alpha = _ref1.alpha, beta = _ref1.beta, gamma = _ref1.gamma;
+      z = -alpha + beta + gamma;
+      rotate = "rotateZ(" + z + "deg)";
+      anime = function(box) {
+        box.style.webkitTransform = rotate;
+        if (head.browser.ff) {
+          box.style.mozTransform = rotate;
+        }
+        if (head.browser.ie) {
+          box.style.msTransform = rotate;
+        }
+        if (head.browser.opera) {
+          box.style.oTransform = rotate;
+        }
+        return box.style.transform = rotate;
+      };
+      _ref2 = document.querySelectorAll(".glyphicon-cog");
+      _results = [];
+      for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+        box = _ref2[_i];
+        _results.push(anime(box));
+      }
+      return _results;
+    });
+  }
   layout = new GUI.Layout(-1, -1, dom);
   touch = GUI.TouchMenu.icons;
   return m.module(dom, {
@@ -6956,6 +7075,34 @@ GUI.if_exist("#css_changer", function(dom) {
   });
 });
 
+"folder";
+
+"event";
+
+if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) {
+  Cache.rule.potof.set(gon.potofs);
+}
+
+if ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) {
+  Cache.rule.event.merge(gon.events);
+  _ref1 = gon.events;
+  for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+    event = _ref1[_i];
+    if (messages) {
+      _ref2 = event.messages;
+      for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+        message = _ref2[_j];
+        message.event_id = event._id;
+      }
+      Cache.rule.message.merge(event.messages);
+    }
+  }
+}
+
+if ((typeof gon !== "undefined" && gon !== null ? gon.story : void 0) != null) {
+  Cache.rule.story.set([gon.story]);
+}
+
 if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null) {
   GUI.if_exist("#villages", function(dom) {
     return m.module(dom, {
@@ -6988,7 +7135,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
       controller: function() {},
       view: function() {
         return scroll_spy.pager("div", gon.history, function(v) {
-          return GUI.message.say(v);
+          return GUI.message.talk(v);
         });
       }
     });
@@ -7017,8 +7164,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
       },
       folder: function() {
         return this.btn_group(15, function(key) {
-          var _ref1;
-          return (_ref1 = GAME[key]) != null ? _ref1.nation : void 0;
+          var _ref3;
+          return (_ref3 = GAME[key]) != null ? _ref3.nation : void 0;
         });
       },
       say_limit: function() {
@@ -7230,7 +7377,7 @@ GUI.if_exist("#headline", function(dom) {
 GUI.if_exist("#to_root", function(dom) {
   var day_or_night;
   day_or_night = m.prop();
-  return m.module(document.getElementById("to_root"), {
+  return m.module(dom, {
     controller: function() {
       var hour;
       hour = 1000 * 60 * 60;
@@ -7272,6 +7419,10 @@ if ("onorientationchange" in window) {
 window.addEventListener('scroll', win["do"].scroll);
 
 window.addEventListener('scroll', with_throttle(win["do"].resize, DELAY.lento));
+
+if ("ondeviceorientation" in window) {
+  window.addEventListener('deviceorientation', win["do"].orientation);
+}
 
 if ("ondevicemotion" in window) {
   window.addEventListener('devicemotion', win["do"].motion);

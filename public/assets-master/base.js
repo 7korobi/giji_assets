@@ -299,6 +299,11 @@ win = {
     gesture: function(e) {
       return win.do_event_list(win.on.gesture, e);
     },
+    orientation: function(e) {
+      win.orientation = e;
+      win.compass = e.webkitCompassHeading;
+      return win.do_event_list(win.on.orientation, e);
+    },
     motion: function(e) {
       win.accel = e.acceleration;
       win.gravity = e.accelerationIncludingGravity;
@@ -330,6 +335,7 @@ win = {
     resize: [],
     scroll: [],
     gesture: [],
+    orientation: [],
     motion: [],
     start: [],
     move: [],
@@ -344,9 +350,11 @@ win = {
   right: 0,
   width: 0,
   height: 0,
-  accel: 0,
-  gravity: 0,
-  rotate: 0,
+  accel: {},
+  rotate: {},
+  gravity: {},
+  orientation: {},
+  compass: 0,
   is_tap: false,
   max: {
     top: 0,
@@ -1297,8 +1305,20 @@ GUI = {
       return _results;
     }
   },
+  story: function(v) {
+    return m("div", ".U.C");
+  },
+  potofs: function(v) {
+    return m("div", ".U.C");
+  },
   message: {
-    say: function(v) {
+    info: function(v) {
+      return m("div", ".U.C");
+    },
+    memo: function(v) {
+      return m("div", ".U.C");
+    },
+    talk: function(v) {
       return m("table.say." + v.mestype, m("tbody", m("tr", [m("td.img", GUI.portrate(v.face_id)), m("td.field", m(".msg", [GUI.letter(v.style, m.trust(v.name), m.trust(v.log)), m("p.mes_date", m("span.mark", v.anchor))]))])));
     },
     action: function(v) {
