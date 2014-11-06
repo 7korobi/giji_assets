@@ -11,6 +11,9 @@ else
 
 window.addEventListener 'scroll', win.do.scroll
 window.addEventListener 'scroll', with_throttle(win.do.resize, DELAY.lento)
+
+if "ondeviceorientation" of window
+  window.addEventListener 'deviceorientation', win.do.orientation
 if "ondevicemotion" of window
   window.addEventListener 'devicemotion', win.do.motion
 

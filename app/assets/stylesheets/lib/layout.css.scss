@@ -19,8 +19,10 @@
   .btn,
   .board,
   .menuicon {
-    transition: all 800ms ease-in-out 0ms;
-    -webkit-transition: all 800ms ease-in-out 0ms;  
+    transition-delay:      0ms;
+    transition-duration: 800ms;
+    transition-timing-function: ease-in-out;
+    transition-property: color, background, border;
   }
 }
 

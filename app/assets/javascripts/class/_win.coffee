@@ -43,11 +43,15 @@ win =
       #console.log ["touch-gesture", e]
       win.do_event_list win.on.gesture, e
 
+    orientation: (e)->
+      win.orientation = e
+      win.compass = e.webkitCompassHeading
+      win.do_event_list win.on.orientation, e
+
     motion: (e)->
       win.accel   = e.acceleration
       win.gravity = e.accelerationIncludingGravity
       win.rotate  = e.rotationRate
-      #console.log ["touch-motion", e]
       win.do_event_list win.on.motion, e
 
     start: (e)->
@@ -77,6 +81,7 @@ win =
     resize: []
     scroll: []
     gesture: []
+    orientation: []
     motion: []
     start: []
     move: []
@@ -92,9 +97,11 @@ win =
   width:   0
   height:  0
 
-  accel:   0
-  gravity: 0
-  rotate:  0
+  accel: {}
+  rotate: {}
+  gravity: {}
+  orientation: {}
+  compass: 0
 
   is_tap: false
 
