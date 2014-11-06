@@ -221,6 +221,21 @@ if gon?.face?
 GUI.if_exist "#contentframe", (dom)->
 
 GUI.if_exist "#buttons", (dom)->
+  unless head.browser.ios
+    win.on.orientation.push ->
+      {alpha, beta, gamma} = win.orientation
+      z = - alpha + beta + gamma
+      rotate = "rotateZ(#{z}deg)"
+
+      anime = (box)->
+        box.style.webkitTransform = rotate
+        box.style.mozTransform = rotate if head.browser.ff
+        box.style.msTransform = rotate if head.browser.ie
+        box.style.oTransform = rotate if head.browser.opera
+        box.style.transform = rotate
+      for box in document.querySelectorAll(".glyphicon-cog")
+        anime box
+
   layout = new GUI.Layout -1,-1, dom
   touch = GUI.TouchMenu.icons
   m.module dom,
@@ -291,6 +306,23 @@ GUI.if_exist "#css_changer", (dom)->
           m "a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"
           m "a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"
 
+"folder"
+"event"
+
+if gon?.potofs?
+  Cache.rule.potof.set gon.potofs
+
+if gon?.events?
+  Cache.rule.event.merge gon.events
+  for event in gon.events
+    if messages
+      for message in event.messages
+        message.event_id = event._id
+      Cache.rule.message.merge event.messages
+
+if gon?.story?
+  Cache.rule.story.set [gon.story]
+
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
     m.module dom,
@@ -313,7 +345,7 @@ if gon?.history?
       controller: ->
       view: ->
         scroll_spy.pager "div", gon.history, (v)->
-          GUI.message.say(v)
+          GUI.message.talk(v)
 
 if gon?.stories?
   Cache.rule.story.set gon.stories
@@ -677,7 +709,7 @@ GUI.if_exist "#headline", (dom)->
 
 GUI.if_exist "#to_root", (dom)->
   day_or_night = m.prop()
-  m.module document.getElementById("to_root"),
+  m.module dom,
     controller: ->
       hour = 1000 * 60 * 60
 

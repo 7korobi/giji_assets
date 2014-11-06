@@ -121,8 +121,19 @@ GUI =
       for key, size of hash
         cb GUI.name.config(key), size
 
+  story: (v)->
+    m "div", ".U.C"
+
+  potofs: (v)->
+    m "div", ".U.C"
+
   message:
-    say: (v)->
+    info: (v)->
+      m "div", ".U.C"
+    memo: (v)->
+      m "div", ".U.C"
+
+    talk: (v)->
       m "table.say.#{v.mestype}",
         m "tbody",
           m "tr", [

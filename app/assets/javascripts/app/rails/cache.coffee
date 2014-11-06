@@ -30,6 +30,73 @@ new Cache.Rule("map_face_story_log").schema ->
       o.folder = o.logid_head.split("-")[0].toUpperCase()
   @order (o)-> o.date.max
 
+
+new Cache.Rule("message").schema ->
+  @order_by "created_at"
+  @belongs_to "face"
+  @belongs_to "sow_auth"
+  @scope "logid", (o)-> [o.logid]
+  @scope "unread", (o)-> null
+  @scope "info",   (o)-> o.is.info   && o.security
+  @scope "action", (o)-> o.is.action && o.security
+  @scope "talk",   (o)-> o.is.talk   && o.security
+  @scope "memo",   (o)-> o.is.memo   && o.security
+
+  @fields
+    _id: (o)-> 
+      o.created_at = new Date(o.date) - 0
+      o._id = ID.at(o.created_at)
+      delete o.date
+    security: (o)->
+      o.security =
+        switch
+          when o.logid.match /^([D].\d+)/
+            ["delete", "think", "all"]
+          when o.logid.match /^([qcS].\d+)|(MM\d+)/
+            ["open", "clan", "think", "all"]
+          when o.mestype == "MAKER"
+            ["announce", "open", "clan", "think", "all"]
+          when o.mestype == "ADMIN"
+            ["announce", "open", "clan", "think", "all"]
+          when o.logid.match /^([I].\d+)|(vilinfo)|(potofs)/
+            ["announce", "open", "clan", "think", "all"]
+          when o.logid.match /^([Ti].\d+)/
+            ["think", "all"]
+          when o.logid.match /^([\-WPX].\d+)/
+            ["clan", "all"]
+          else
+            []
+      o.scene_id = o.event_id + "-" + o.security[0]
+
+    vdom: (o)->
+      o.is = {}
+      if o.mestype == "MAKER"
+        o.is.info = true
+      if o.mestype == "ADMIN"
+        o.is.info = true
+      if o.logid.match /^vilinfo/
+        o.vdom = GUI.story(o)
+        o.is.info = true
+      if o.logid.match /^potofs/
+        o.vdom = GUI.potofs(o)
+        o.is.info = true
+      if o.logid.match /^.[I]/
+        o.vdom = GUI.message.info(o)
+        o.is.info = true
+      if o.logid.match /^.[AB]/
+        o.vdom = GUI.message.action(o)
+        o.is.action = true
+      if o.logid.match /^.[SX]/
+        o.vdom = GUI.message.talk(o)
+        o.is.talk = true
+      if o.logid.match /^.[M]/
+        o.vdom = GUI.message.memo(o)
+        o.is.memo = true
+
+new Cache.Rule("potof").schema ->
+
+new Cache.Rule("event").schema ->
+
 new Cache.Rule("story").schema ->
   @scope "folder", (o)-> [o.folder]
   @scope "game", (o)-> [o.type.game]
