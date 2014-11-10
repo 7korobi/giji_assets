@@ -3,13 +3,16 @@ Url.bind = LOCATION.bind
 
 Url.routes =
   pathname:
-    folder: new Url "/:folder/stories"
+    events: new Url "/:story_id/file"
   search:
     folder: new Url "folder=:folder",
       unmatch: gon?.stories? && "?"
 
-    stories: new Url "stories=:game~:rating~:event~:role~:say_limit~:player_length~:update_at~:update_interval~:search",
+    stories: new Url "stories=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search",
       unmatch: gon?.stories? && "?"
+
+    events: new Url "event=:event_id",
+      unmatch: gon?.events? && "?"
 
     faces: new Url "faces=:chr_set~:order~:search",
       unmatch: gon?.map_reduce?.faces? && "?"
