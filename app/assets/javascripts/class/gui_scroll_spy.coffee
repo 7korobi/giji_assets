@@ -13,7 +13,7 @@ class GUI.ScrollSpy
       
       window.scrollBy(left_by, top_by)
 
-  @scroll_cb: =>
+  @do_scroll: =>
     id = @view()
     for spy in @list
       if spy.list?
@@ -23,7 +23,7 @@ class GUI.ScrollSpy
     for spy in @list
       if id != spy.prop()
         spy.prop id, true
-  @scroll = _.debounce @scroll_cb, DELAY.animato
+  @scroll = _.debounce @do_scroll, DELAY.animato
   win.on.scroll.push @scroll
 
   @view: =>

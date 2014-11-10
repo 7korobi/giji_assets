@@ -290,14 +290,6 @@ win = {
       return win.do_event_list(win.on.resize, e);
     },
     scroll: function(e) {
-      var docElem;
-      docElem = document.documentElement;
-      win.left = window.pageXOffset || window.scrollX;
-      win.left -= docElem.clientTop;
-      win.top = window.pageYOffset || window.scrollY;
-      win.top -= docElem.clientLeft;
-      win.bottom = win.top + win.height;
-      win.right = win.left + win.width;
       return win.do_event_list(win.on.scroll, e);
     },
     gesture: function(e) {
@@ -365,6 +357,17 @@ win = {
     left: 0
   }
 };
+
+win.on.scroll.push(function() {
+  var docElem;
+  docElem = document.documentElement;
+  win.left = window.pageXOffset || window.scrollX;
+  win.left -= docElem.clientTop;
+  win.top = window.pageYOffset || window.scrollY;
+  win.top -= docElem.clientLeft;
+  win.bottom = win.top + win.height;
+  return win.right = win.left + win.width;
+});
 var Cache;
 
 Cache = (function() {
@@ -1294,43 +1297,6 @@ GUI = {
     var head, style, vdom;
     style = arguments[0], head = arguments[1], vdom = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
     return [m("h3.mesname", m("b", head)), m("p.text." + style, vdom)];
-  },
-  message: {
-    story: function(v) {
-      return m(".ADMIN.guide", GUI.letter(story.name, JSON.stringify(story)));
-    },
-    event: function(v) {
-      return m(".MAKER.guide", GUI.letter(event.name, JSON.stringify(event)));
-    },
-    potofs: function(v) {
-      return m("div", ".U.C");
-    },
-    xxx: function(v) {
-      return m("div", ".U.C");
-    },
-    memo: function(v) {
-      return m("div", ".U.C");
-    },
-    info: function(v) {
-      return m("p.text." + v.mestype, m.trust(v.log));
-    },
-    admin: function(v) {
-      return m(".guide." + v.mestype, m("h3.mesname", m("b", m.trust(v.name))), m("p.text." + v.style, m.trust(v.log)), m("p.mes_date", m("span.mark", v.anchor), Timer.date_time_stamp(v.updated_at)));
-    },
-    action: function(v) {
-      return m("." + v.mestype, m(".action", m("p.text." + v.style, m("b", m.trust(v.name)), m.trust("は、" + v.log)), m("p.mes_date", Timer.date_time_stamp(v.updated_at))));
-    },
-    talk: function(v) {
-      return GUI.message.say_base(v, m("span.mark", v.anchor), Timer.date_time_stamp(v.updated_at));
-    },
-    history: function(v) {
-      return GUI.message.say_base(v, m("span.mark", v.anchor));
-    },
-    say_base: function() {
-      var timer, v;
-      v = arguments[0], timer = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-      return m("table.say." + v.mestype, m("tbody", m("tr", m("td.img", GUI.portrate(v.face_id)), m("td.field", m(".msg", m("h3.mesname", m("b", m.trust(v.name))), m("p.text." + v.style, m.trust(v.log)), m("p.mes_date", timer))))));
-    }
   }
 };
 GUI.Animate = (function() {
@@ -1613,6 +1579,45 @@ GUI.Layout = (function() {
   return Layout;
 
 })();
+var __slice = [].slice;
+
+GUI.message = {
+  story: function(v) {
+    return m(".ADMIN.guide", GUI.letter(story.name, JSON.stringify(story)));
+  },
+  event: function(v) {
+    return m(".MAKER.guide", GUI.letter(event.name, JSON.stringify(event)));
+  },
+  potofs: function(v) {
+    return m("div", ".U.C");
+  },
+  xxx: function(v) {
+    return m("div", ".U.C");
+  },
+  memo: function(v) {
+    return m("div", ".U.C");
+  },
+  info: function(v) {
+    return m("p.text." + v.mestype, m.trust(v.log));
+  },
+  admin: function(v) {
+    return m(".guide." + v.mestype, m("h3.mesname", m("b", m.trust(v.name))), m("p.text." + v.style, m.trust(v.log)), m("p.mes_date", m("span.mark", v.anchor), Timer.date_time_stamp(v.updated_at)));
+  },
+  action: function(v) {
+    return m("." + v.mestype, m(".action", m("p.text." + v.style, m("b", m.trust(v.name)), m.trust("は、" + v.log)), m("p.mes_date", Timer.date_time_stamp(v.updated_at))));
+  },
+  talk: function(v) {
+    return GUI.message.say_base(v, m("span.mark", v.anchor), Timer.date_time_stamp(v.updated_at));
+  },
+  history: function(v) {
+    return GUI.message.say_base(v, m("span.mark", v.anchor));
+  },
+  say_base: function() {
+    var timer, v;
+    v = arguments[0], timer = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    return m("table.say." + v.mestype, m("tbody", m("tr", m("td.img", GUI.portrate(v.face_id)), m("td.field", m(".msg", m("h3.mesname", m("b", m.trust(v.name))), m("p.text." + v.style, m.trust(v.log)), m("p.mes_date", timer))))));
+  }
+};
 GUI.ScrollSpy = (function() {
   ScrollSpy.elems = {};
 
@@ -1632,7 +1637,7 @@ GUI.ScrollSpy = (function() {
     }
   };
 
-  ScrollSpy.scroll_cb = function() {
+  ScrollSpy.do_scroll = function() {
     var id, spy, spy_id, _i, _j, _len, _len1, _ref, _ref1, _results;
     id = ScrollSpy.view();
     _ref = ScrollSpy.list;
@@ -1656,7 +1661,7 @@ GUI.ScrollSpy = (function() {
     return _results;
   };
 
-  ScrollSpy.scroll = _.debounce(ScrollSpy.scroll_cb, DELAY.animato);
+  ScrollSpy.scroll = _.debounce(ScrollSpy.do_scroll, DELAY.animato);
 
   win.on.scroll.push(ScrollSpy.scroll);
 
