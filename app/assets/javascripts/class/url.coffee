@@ -124,7 +124,7 @@ class Url
           if value?
             value
           else
-            (Url.options[key]?.current) || null
+            Url.options[key]?.current
 
     Url.prop[key]
 
