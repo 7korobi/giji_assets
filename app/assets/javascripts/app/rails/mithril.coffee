@@ -15,7 +15,6 @@ if gon?.map_reduce?.faces?
     order
 
   GUI.if_exist "#map_faces", (dom)->
-    scroll_mark = (id)-> scroll_spy.mark(id)
     m.module dom, 
       controller: ->
       view: ->
@@ -30,18 +29,24 @@ if gon?.map_reduce?.faces?
             "回数で並べています"
           ]
 
-        GUI.chrs chrs, headline, scroll_mark, (o, face)->
-          chr_job = Cache.chr_jobs.find("#{Url.prop.chr_set()}_#{face._id}")
-          job_name = chr_job.job
+        [ m "hr.black" 
+          m ".mark", headline
+          for o in chrs
+            chr_job = Cache.chr_jobs.find("#{Url.prop.chr_set()}_#{o.face._id}")
+            job_name = chr_job.job
 
-          [ m "div", job_name
-            m "div", face.name
-            m "div", 
-              m "a.mark",
-                href: "/map_reduce/faces/#{face._id}"
-              , "#{map_order_set.caption} #{map_order_set.func(o)}回"
-            m "div", "♥#{o.sow_auth_id.max_is}"
-          ]
+            m ".chrbox",
+              GUI.portrate o.face._id
+              m ".chrblank", 
+                m "div", job_name
+                m "div", o.face.name
+                m "div", 
+                  m "a.mark",
+                    href: "/map_reduce/faces/#{o.face._id}"
+                  , "#{map_order_set.caption} #{map_order_set.func(o)}回"
+                m "div", "♥#{o.sow_auth_id.max_is}"
+          m "hr.black"
+        ]
 
   GUI.if_exist "#chr_sets", (dom)->
     touch = new GUI.TouchMenu()

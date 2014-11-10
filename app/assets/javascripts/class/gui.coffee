@@ -71,18 +71,6 @@ GUI =
 
     m "ul.mark.inline", cb.call(list_cmds)
 
-  chrs: (chrs, headline, attr_cb, cb)->
-    [ m "hr.black"
-      m ".mark", headline
-      for o in chrs
-        m ".chrbox", attr_cb(o.face_id), [
-          GUI.portrate o.face._id
-          m ".chrblank", cb(o, o.face)
-        ]
-      m "hr.black"
-    ]
-
-
   do_tick: (cb)->
     action = ->
       m.redraw()
