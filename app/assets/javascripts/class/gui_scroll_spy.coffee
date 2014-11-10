@@ -6,7 +6,7 @@ class GUI.ScrollSpy
     elem = @elems[id]
     if elem
       rect = elem.getBoundingClientRect()
-      offset ||= -1 + Math.min win.horizon, rect.height
+      offset ||= -2 + Math.min win.horizon, rect.height
 
       top_by = rect.top - win.horizon + offset 
       left_by = 0
@@ -80,7 +80,7 @@ class GUI.ScrollSpy
       # TODO wait for network read.
 
     head = Math.max top, idx - Math.ceil(win.height * 2 / @avg_height)
-    tail = Math.min btm, idx + Math.ceil(win.height * 3 / @avg_height)
+    tail = Math.min btm, idx + Math.ceil(win.height * 4 / @avg_height)
 
     pager_cb = (@pager_elem, is_continue, context)=>
       window.requestAnimationFrame =>
@@ -110,15 +110,16 @@ class GUI.ScrollSpy
       elem.vision =
         id: id
 
-      if @adjust && id == @adjust.id
-        offset = @adjust.offset
-        @adjust = null
-        GUI.ScrollSpy.go id, offset
-        window.requestAnimationFrame ->
+      if @adjust
+        if id == @adjust.id
+          offset = @adjust.offset
+          @adjust = null
           GUI.ScrollSpy.go id, offset
-
-      if ! is_continue
-        if id == @prop()
-          GUI.ScrollSpy.go id
           window.requestAnimationFrame ->
+            GUI.ScrollSpy.go id, offset
+      else
+        if ! is_continue
+          if id == @prop()
             GUI.ScrollSpy.go id
+            window.requestAnimationFrame ->
+              GUI.ScrollSpy.go id
