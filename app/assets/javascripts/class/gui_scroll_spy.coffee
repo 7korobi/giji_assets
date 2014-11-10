@@ -2,11 +2,11 @@ class GUI.ScrollSpy
   @elems = {}
   @list = []
 
-  @go: (id, offset = false)=>
+  @go: (id, offset)=>
     elem = @elems[id]
     if elem
       rect = elem.getBoundingClientRect()
-      offset ||= -2 + Math.min win.horizon, rect.height
+      offset ?= -2 + Math.min win.horizon, rect.height
 
       top_by = rect.top - win.horizon + offset 
       left_by = 0
@@ -47,6 +47,7 @@ class GUI.ScrollSpy
     @start()
 
   start: ->
+    @head = @tail = 0
     @avg_height = 150
     @show_upper = true
 
@@ -82,9 +83,14 @@ class GUI.ScrollSpy
     head = Math.max top, idx - Math.ceil(win.height * 2 / @avg_height)
     tail = Math.min btm, idx + Math.ceil(win.height * 4 / @avg_height)
 
+    if 3 < Math.abs @head - head
+      @head = head
+    if 3 < Math.abs @tail - tail
+      @tail = tail
+
     pager_cb = (@pager_elem, is_continue, context)=>
       window.requestAnimationFrame =>
-        @avg_height = rect.height / (1 + tail - head)
+        @avg_height = rect.height / (1 + @tail - @head)
         m.redraw() unless stay
 
       rect = @pager_elem.getBoundingClientRect()
@@ -95,7 +101,7 @@ class GUI.ScrollSpy
       @show_upper = show_upper
 
     vdom_items =
-      for o in @list[head..tail]
+      for o in @list[@head..@tail]
         vdom = cb(o)
         for key, attr of @mark o._id
           vdom.attrs[key] = attr
