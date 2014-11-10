@@ -1241,20 +1241,6 @@ GUI = {
     };
     return m("ul.mark.inline", cb.call(list_cmds));
   },
-  chrs: function(chrs, headline, attr_cb, cb) {
-    var o;
-    return [
-      m("hr.black"), m(".mark", headline), (function() {
-        var _i, _len, _results;
-        _results = [];
-        for (_i = 0, _len = chrs.length; _i < _len; _i++) {
-          o = chrs[_i];
-          _results.push(m(".chrbox", attr_cb(o.face_id), [GUI.portrate(o.face._id), m(".chrblank", cb(o, o.face))]));
-        }
-        return _results;
-      })(), m("hr.black")
-    ];
-  },
   do_tick: function(cb) {
     var action;
     action = function() {
@@ -1634,13 +1620,12 @@ GUI.ScrollSpy = (function() {
 
   ScrollSpy.go = function(id, offset) {
     var elem, left_by, rect, top_by;
-    if (offset == null) {
-      offset = false;
-    }
     elem = ScrollSpy.elems[id];
     if (elem) {
       rect = elem.getBoundingClientRect();
-      offset || (offset = -2 + Math.min(win.horizon, rect.height));
+      if (offset == null) {
+        offset = -2 + Math.min(win.horizon, rect.height);
+      }
       top_by = rect.top - win.horizon + offset;
       left_by = 0;
       return window.scrollBy(left_by, top_by);
@@ -1704,6 +1689,7 @@ GUI.ScrollSpy = (function() {
   }
 
   ScrollSpy.prototype.start = function() {
+    this.head = this.tail = 0;
     this.avg_height = 150;
     return this.show_upper = true;
   };
@@ -1748,12 +1734,18 @@ GUI.ScrollSpy = (function() {
     }
     head = Math.max(top, idx - Math.ceil(win.height * 2 / this.avg_height));
     tail = Math.min(btm, idx + Math.ceil(win.height * 4 / this.avg_height));
+    if (3 < Math.abs(this.head - head)) {
+      this.head = head;
+    }
+    if (3 < Math.abs(this.tail - tail)) {
+      this.tail = tail;
+    }
     pager_cb = (function(_this) {
       return function(pager_elem, is_continue, context) {
         var rect, show_under, show_upper, stay;
         _this.pager_elem = pager_elem;
         window.requestAnimationFrame(function() {
-          _this.avg_height = rect.height / (1 + tail - head);
+          _this.avg_height = rect.height / (1 + _this.tail - _this.head);
           if (!stay) {
             return m.redraw();
           }
@@ -1768,7 +1760,7 @@ GUI.ScrollSpy = (function() {
     })(this);
     vdom_items = (function() {
       var _i, _len, _ref, _ref1, _results;
-      _ref = this.list.slice(head, +tail + 1 || 9e9);
+      _ref = this.list.slice(this.head, +this.tail + 1 || 9e9);
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         o = _ref[_i];

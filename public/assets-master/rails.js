@@ -6750,14 +6750,10 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     return order;
   };
   GUI.if_exist("#map_faces", function(dom) {
-    var scroll_mark;
-    scroll_mark = function(id) {
-      return scroll_spy.mark(id);
-    };
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var chrs, headline, map_order_set;
+        var chr_job, chrs, headline, job_name, map_order_set, o;
         map_order_set = map_orders(Url.prop.order());
         chrs = Cache.map_faces.search(Url.prop.search()).where({
           chr_set: [Url.prop.chr_set()]
@@ -6766,16 +6762,21 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
         if (chrs != null ? chrs.length : void 0) {
           headline = [m("span.badge.badge-info", Cache.chr_sets.find(Url.prop.chr_set()).caption), "の" + chrs.length + "人を、", m("span.badge.badge-info", map_order_set.headline), "回数で並べています"];
         }
-        return GUI.chrs(chrs, headline, scroll_mark, function(o, face) {
-          var chr_job, job_name;
-          chr_job = Cache.chr_jobs.find("" + (Url.prop.chr_set()) + "_" + face._id);
-          job_name = chr_job.job;
-          return [
-            m("div", job_name), m("div", face.name), m("div", m("a.mark", {
-              href: "/map_reduce/faces/" + face._id
-            }, "" + map_order_set.caption + " " + (map_order_set.func(o)) + "回")), m("div", "♥" + o.sow_auth_id.max_is)
-          ];
-        });
+        return [
+          m("hr.black"), m(".mark", headline), (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = chrs.length; _i < _len; _i++) {
+              o = chrs[_i];
+              chr_job = Cache.chr_jobs.find("" + (Url.prop.chr_set()) + "_" + o.face._id);
+              job_name = chr_job.job;
+              _results.push(m(".chrbox", GUI.portrate(o.face._id), m(".chrblank", m("div", job_name), m("div", o.face.name), m("div", m("a.mark", {
+                href: "/map_reduce/faces/" + o.face._id
+              }, "" + map_order_set.caption + " " + (map_order_set.func(o)) + "回")), m("div", "♥" + o.sow_auth_id.max_is))));
+            }
+            return _results;
+          })(), m("hr.black")
+        ];
       }
     });
   });

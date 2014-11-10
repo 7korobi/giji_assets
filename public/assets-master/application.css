@@ -8192,7 +8192,7 @@ img {
 }
 /* line 33, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/layout.css.scss */
 .right-layout .menuicon, .center-layout .menuicon {
-  float: left;
+  float: right;
 }
 
 /* line 38, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/layout.css.scss */
@@ -8201,7 +8201,7 @@ img {
 }
 /* line 41, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/layout.css.scss */
 .left-layout .menuicon {
-  float: right;
+  float: left;
 }
 
 /* line 60, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/layout.css.scss */
