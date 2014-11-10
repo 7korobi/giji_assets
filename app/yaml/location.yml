@@ -24,20 +24,13 @@ options:
   color:
   title:
 
-  story_id:
   event_id:
+  story_id:
   mode_id:
     current: talk
 
   potofs_order:
     current: stat_type
-
-  page:
-    type: Number
-    current: 1
-  row:
-    type: Number
-    current: 50
 
   hide_ids:
     type: Array
@@ -68,11 +61,11 @@ options:
     current: all
   config:
     current: all
-  event:
+  event_type:
     current: all
-  gift:
+  gift_type:
     current: all
-  role:
+  role_type:
     current: all
   update_at:
     current: all

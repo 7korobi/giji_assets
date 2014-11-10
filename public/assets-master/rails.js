@@ -5338,7 +5338,6 @@ RAILS = {
   },
   "log": {
     "anchor": {
-      "q": null,
       "m": "#",
       "a": "%",
       "S": "",
@@ -6433,14 +6432,17 @@ Url.bind = LOCATION.bind;
 
 Url.routes = {
   pathname: {
-    folder: new Url("/:folder/stories")
+    events: new Url("/:story_id/file")
   },
   search: {
     folder: new Url("folder=:folder", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
-    stories: new Url("stories=:game~:rating~:event~:role~:say_limit~:player_length~:update_at~:update_interval~:search", {
+    stories: new Url("stories=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
+    }),
+    events: new Url("event=:event_id", {
+      unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "?"
     }),
     faces: new Url("faces=:chr_set~:order~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) && "?"
@@ -6540,7 +6542,8 @@ new Cache.Rule("map_face_story_log").schema(function() {
 });
 
 new Cache.Rule("message").schema(function() {
-  this.order_by("created_at");
+  var patch_no;
+  this.order_by("updated_at");
   this.belongs_to("face");
   this.belongs_to("sow_auth");
   this.scope("logid", function(o) {
@@ -6561,10 +6564,22 @@ new Cache.Rule("message").schema(function() {
   this.scope("memo", function(o) {
     return o.is.memo && o.security;
   });
+  patch_no = {
+    I: 1,
+    S: 2,
+    X: 2,
+    A: 3,
+    B: 3,
+    M: 4
+  };
   return this.fields({
     _id: function(o) {
-      o.created_at = new Date(o.date) - 0;
-      o._id = ID.at(o.created_at);
+      var anchor_num, patch;
+      anchor_num = o.logid.substring(2) - 0 || 0;
+      patch = patch_no[o.logid[1]] || 5;
+      o.updated_at = new Date(o.date) - 0;
+      o._id = o.event_id + "-" + o.logid;
+      o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
       return delete o.date;
     },
     security: function(o) {
@@ -6591,37 +6606,44 @@ new Cache.Rule("message").schema(function() {
       return o.scene_id = o.event_id + "-" + o.security[0];
     },
     vdom: function(o) {
+      var vdom;
+      vdom = GUI.message.xxx;
       o.is = {};
-      if (o.mestype === "MAKER") {
-        o.is.info = true;
-      }
-      if (o.mestype === "ADMIN") {
-        o.is.info = true;
-      }
       if (o.logid.match(/^vilinfo/)) {
-        o.vdom = GUI.story(o);
+        vdom = GUI.story;
         o.is.info = true;
       }
       if (o.logid.match(/^potofs/)) {
-        o.vdom = GUI.potofs(o);
+        vdom = GUI.potofs;
         o.is.info = true;
       }
       if (o.logid.match(/^.[I]/)) {
-        o.vdom = GUI.message.info(o);
+        vdom = GUI.message.info;
         o.is.info = true;
-      }
-      if (o.logid.match(/^.[AB]/)) {
-        o.vdom = GUI.message.action(o);
-        o.is.action = true;
+        o.is.talk = true;
       }
       if (o.logid.match(/^.[SX]/)) {
-        o.vdom = GUI.message.talk(o);
+        vdom = GUI.message.talk;
         o.is.talk = true;
       }
       if (o.logid.match(/^.[M]/)) {
-        o.vdom = GUI.message.memo(o);
-        return o.is.memo = true;
+        vdom = GUI.message.memo;
+        o.is.memo = true;
       }
+      if (o.mestype === "MAKER") {
+        vdom = GUI.message.admin;
+        o.is.info = true;
+      }
+      if (o.mestype === "ADMIN") {
+        vdom = GUI.message.admin;
+        o.is.info = true;
+      }
+      if (o.logid.match(/^.[AB]/)) {
+        vdom = GUI.message.action;
+        o.is.action = true;
+        o.is.talk = true;
+      }
+      return o.vdom = vdom;
     }
   });
 });
@@ -6653,10 +6675,10 @@ new Cache.Rule("story").schema(function() {
   this.scope("player_length", function(o) {
     return [o.view.player_length];
   });
-  this.scope("role", function(o) {
+  this.scope("role_type", function(o) {
     return o.view.role_types;
   });
-  this.scope("event", function(o) {
+  this.scope("event_type", function(o) {
     return o.view.event_types;
   });
   this.search(function(o) {
@@ -6688,10 +6710,10 @@ new Cache.Rule("story").schema(function() {
         event_types: GUI.names.config(o.card.event, function(name, size) {
           return name;
         }),
-        roles: GUI.names.config(o.card.role, function(name, size) {
+        role_cards: GUI.names.config(o.card.role, function(name, size) {
           return m("kbd", "" + name + "x" + size);
         }),
-        events: GUI.names.config(o.card.event, function(name, size) {
+        event_cards: GUI.names.config(o.card.event, function(name, size) {
           return m("kbd", "" + name + "x" + size);
         }),
         say_limit: caption(RAILS.saycnt, o.type.say) || "――",
@@ -7023,7 +7045,7 @@ GUI.if_exist("#buttons", function(dom) {
       }
       return m("nav", (function() {
         var _i, _len, _ref1, _results;
-        _ref1 = ["list", "th", "cog"];
+        _ref1 = ["home", "film", "list", "th", "cog"];
         _results = [];
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           icon = _ref1[_i];
@@ -7083,12 +7105,33 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
   Cache.rule.potof.set(gon.potofs);
 }
 
-if ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) {
+if ((typeof gon !== "undefined" && gon !== null ? gon.story : void 0) != null) {
+  Cache.rule.story.set([gon.story]);
+  GUI.if_exist("#story", function(dom) {
+    var story, touch;
+    story = Cache.storys.list()[0];
+    touch = new GUI.TouchMenu();
+    touch.icon("home", function() {
+      return GUI.message.story(story);
+    });
+    return m.module(dom, {
+      controller: function() {},
+      view: function() {
+        return touch.menu(m("h2", m("a.menuicon.glyphicon.glyphicon-home", GUI.TouchMenu.icons.start("home"), " "), m("span", story.name)));
+      }
+    });
+  });
+}
+
+if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && (gon.event != null)) {
   Cache.rule.event.merge(gon.events);
+  if (gon.event.messages) {
+    Cache.rule.message.merge(gon.event.messages);
+  }
   _ref1 = gon.events;
   for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
     event = _ref1[_i];
-    if (messages) {
+    if (event.messages) {
       _ref2 = event.messages;
       for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
         message = _ref2[_j];
@@ -7097,10 +7140,37 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) 
       Cache.rule.message.merge(event.messages);
     }
   }
-}
-
-if ((typeof gon !== "undefined" && gon !== null ? gon.story : void 0) != null) {
-  Cache.rule.story.set([gon.story]);
+  Url.prop.event_id(Cache.events.list()[0].event_id);
+  GUI.if_exist("#event", function(dom) {
+    var touch;
+    event = null;
+    touch = new GUI.TouchMenu();
+    touch.icon("film", function() {
+      return GUI.message.event(story);
+    });
+    return m.module(dom, {
+      controller: function() {},
+      view: function() {
+        event = Cache.events.find(Url.prop.event_id());
+        return touch.menu(m("h3", m("a.menuicon.glyphicon.glyphicon-film", GUI.TouchMenu.icons.start("film"), " "), m("span", event.name)));
+      }
+    });
+  });
+  GUI.if_exist("#messages", function(dom) {
+    scroll_spy.avg_height = 150;
+    return m.module(dom, {
+      controller: function() {},
+      view: function() {
+        var messages;
+        messages = Cache.messages.where({
+          talk: ["all"]
+        }).sort();
+        return scroll_spy.pager("div", messages, function(o) {
+          return o.vdom(o);
+        });
+      }
+    });
+  });
 }
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null) {
@@ -7135,7 +7205,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
       controller: function() {},
       view: function() {
         return scroll_spy.pager("div", gon.history, function(v) {
-          return GUI.message.talk(v);
+          return GUI.message.history(v);
         });
       }
     });
@@ -7183,12 +7253,12 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
           return o.first.view.update_interval;
         });
       },
-      event: function() {
+      event_type: function() {
         return this.btn_group(12, function(key) {
           return key;
         });
       },
-      role: function() {
+      role_type: function() {
         return this.btn_group(10, function(key) {
           return key;
         });
@@ -7206,7 +7276,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
         onblur: m.withAttr("value", Url.prop.search),
         onchange: m.withAttr("value", Url.prop.search),
         value: Url.prop.search()
-      }), m("span.btn.btn-default.dropdown-toggle", touch_sw.start(true), m("i.glyphicon." + icon)), m("span.btn.btn-default.dropdown-toggle", touch.start("folder"), m("i.glyphicon.glyphicon-book"), m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("game"), "ルール", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("event"), "事件", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("role"), "役職", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("rating"), "こだわり", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("say_limit"), "発言制限", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("player_length"), "人数", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_at"), "更新時刻", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_interval"), "更新間隔", m("i.caret")));
+      }), m("span.btn.btn-default.dropdown-toggle", touch_sw.start(true), m("i.glyphicon." + icon)), m("span.btn.btn-default.dropdown-toggle", touch.start("folder"), m("i.glyphicon.glyphicon-book"), m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("game"), "ルール", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("event_type"), "事件", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("role_type"), "役職", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("rating"), "こだわり", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("say_limit"), "発言制限", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("player_length"), "人数", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_at"), "更新時刻", m("i.caret")), m("span.btn.btn-default.dropdown-toggle", touch.start("update_interval"), "更新間隔", m("i.caret")));
     });
     return m.module(dom, {
       controller: function() {},
@@ -7220,7 +7290,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
               href: o.link
             }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
               href: o.file
-            }, m.trust(o.name)), o.view.rating, m("table", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m("div", o.view.roles), m("div", o.view.events)));
+            }, m.trust(o.name)), o.view.rating, m("table", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m("div", o.view.role_cards), m("div", o.view.event_cards)));
           } else {
             return m("tr", m("td", m("a", {
               href: o.link
