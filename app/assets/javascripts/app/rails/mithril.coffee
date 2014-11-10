@@ -248,7 +248,7 @@ GUI.if_exist "#buttons", (dom)->
           layout.dx = -1
 
       m "nav",
-        for icon in ["list", "th", "cog"]
+        for icon in ["home", "film", "list", "th", "cog"]
           continue unless touch.menus[icon]
           m ".bigicon", touch.start(icon),
             m ".glyphicon.glyphicon-#{icon}"
@@ -312,16 +312,58 @@ GUI.if_exist "#css_changer", (dom)->
 if gon?.potofs?
   Cache.rule.potof.set gon.potofs
 
-if gon?.events?
+if gon?.story?
+  Cache.rule.story.set [gon.story]
+
+  GUI.if_exist "#story", (dom)->
+    story = Cache.storys.list()[0]
+
+    touch = new GUI.TouchMenu()
+    touch.icon "home", ->
+      GUI.message.story story
+    m.module dom,
+      controller: ->
+      view: ->
+        touch.menu m "h2",
+          m "a.menuicon.glyphicon.glyphicon-home", GUI.TouchMenu.icons.start("home"), " "
+          m "span", story.name
+
+if gon?.events? && gon.event?
   Cache.rule.event.merge gon.events
+
+  if gon.event.messages
+    Cache.rule.message.merge gon.event.messages
   for event in gon.events
-    if messages
+    if event.messages
       for message in event.messages
         message.event_id = event._id
       Cache.rule.message.merge event.messages
+  Url.prop.event_id Cache.events.list()[0].event_id
 
-if gon?.story?
-  Cache.rule.story.set [gon.story]
+  GUI.if_exist "#event", (dom)->
+    event = null
+    touch = new GUI.TouchMenu()
+    touch.icon "film", ->
+      GUI.message.event story
+
+    m.module dom,
+      controller: ->
+      view: ->
+        event = Cache.events.find Url.prop.event_id()
+        touch.menu m "h3",
+          m "a.menuicon.glyphicon.glyphicon-film", GUI.TouchMenu.icons.start("film"), " "
+          m "span", event.name
+
+  GUI.if_exist "#messages", (dom)->
+    scroll_spy.avg_height = 150
+    m.module dom,
+      controller: ->
+      view: ->
+        messages = Cache.messages.where(talk:["all"]).sort()
+        scroll_spy.pager "div", messages, (o)->
+          o.vdom(o)
+
+
 
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
@@ -345,7 +387,7 @@ if gon?.history?
       controller: ->
       view: ->
         scroll_spy.pager "div", gon.history, (v)->
-          GUI.message.talk(v)
+          GUI.message.history(v)
 
 if gon?.stories?
   Cache.rule.story.set gon.stories
@@ -370,9 +412,9 @@ if gon?.stories?
         @btn_group 15, (key, o)-> o.first.view.update_at
       update_interval: ->
         @btn_group 15, (key, o)-> o.first.view.update_interval
-      event: ->
+      event_type: ->
         @btn_group 12, (key)-> key
-      role: ->
+      role_type: ->
         @btn_group 10, (key)-> key
       player_length: ->
         @btn_group  9, (key, o)-> o.first.view.player_length + "人"
@@ -398,10 +440,10 @@ if gon?.stories?
         m "span.btn.btn-default.dropdown-toggle", touch.start("game"),
           "ルール"
           m "i.caret"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("event"),
+        m "span.btn.btn-default.dropdown-toggle", touch.start("event_type"),
           "事件"
           m "i.caret"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("role"),
+        m "span.btn.btn-default.dropdown-toggle", touch.start("role_type"),
           "役職"
           m "i.caret"
         m "span.btn.btn-default.dropdown-toggle", touch.start("rating"),
@@ -458,8 +500,8 @@ if gon?.stories?
                           m "th", "ルール"
                           m "td", "#{o.view.game_rule}"
 
-                    m "div", o.view.roles
-                    m "div", o.view.events
+                    m "div", o.view.role_cards
+                    m "div", o.view.event_cards
               else
                 m "tr",
                   m "td",

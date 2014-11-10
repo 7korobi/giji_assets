@@ -32,7 +32,7 @@ new Cache.Rule("map_face_story_log").schema ->
 
 
 new Cache.Rule("message").schema ->
-  @order_by "created_at"
+  @order_by "updated_at"
   @belongs_to "face"
   @belongs_to "sow_auth"
   @scope "logid", (o)-> [o.logid]
@@ -42,10 +42,23 @@ new Cache.Rule("message").schema ->
   @scope "talk",   (o)-> o.is.talk   && o.security
   @scope "memo",   (o)-> o.is.memo   && o.security
 
+  patch_no = 
+    I: 1
+    S: 2
+    X: 2
+    A: 3
+    B: 3
+    M: 4    
   @fields
     _id: (o)-> 
-      o.created_at = new Date(o.date) - 0
-      o._id = ID.at(o.created_at)
+      anchor_num  = o.logid.substring(2) - 0 || 0
+      patch = patch_no[o.logid[1]] || 5
+
+      o.updated_at = new Date(o.date) - 0
+      o._id = o.event_id + "-" + o.logid
+#      o._id = Serial.serializer.Date(o.updated_at + anchor_num + patch)
+
+      o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
       delete o.date
     security: (o)->
       o.security =
@@ -69,29 +82,39 @@ new Cache.Rule("message").schema ->
       o.scene_id = o.event_id + "-" + o.security[0]
 
     vdom: (o)->
+      vdom = GUI.message.xxx
       o.is = {}
-      if o.mestype == "MAKER"
-        o.is.info = true
-      if o.mestype == "ADMIN"
-        o.is.info = true
+
       if o.logid.match /^vilinfo/
-        o.vdom = GUI.story(o)
+        vdom = GUI.story
         o.is.info = true
       if o.logid.match /^potofs/
-        o.vdom = GUI.potofs(o)
+        vdom = GUI.potofs
         o.is.info = true
       if o.logid.match /^.[I]/
-        o.vdom = GUI.message.info(o)
+        vdom = GUI.message.info
         o.is.info = true
-      if o.logid.match /^.[AB]/
-        o.vdom = GUI.message.action(o)
-        o.is.action = true
+        o.is.talk = true
       if o.logid.match /^.[SX]/
-        o.vdom = GUI.message.talk(o)
+        vdom = GUI.message.talk
         o.is.talk = true
       if o.logid.match /^.[M]/
-        o.vdom = GUI.message.memo(o)
+        vdom = GUI.message.memo
         o.is.memo = true
+
+      if o.mestype == "MAKER"
+        vdom = GUI.message.admin
+        o.is.info = true
+      if o.mestype == "ADMIN"
+        vdom = GUI.message.admin
+        o.is.info = true
+
+      if o.logid.match /^.[AB]/
+        vdom = GUI.message.action
+        o.is.action = true
+        o.is.talk = true
+
+      o.vdom = vdom
 
 new Cache.Rule("potof").schema ->
 
@@ -105,8 +128,8 @@ new Cache.Rule("story").schema ->
   @scope "update_at", (o)-> [o.view.update_at]
   @scope "update_interval", (o)-> [o.view.update_interval]
   @scope "player_length", (o)-> [o.view.player_length]
-  @scope "role", (o)-> o.view.role_types
-  @scope "event", (o)-> o.view.event_types
+  @scope "role_type", (o)-> o.view.role_types
+  @scope "event_type", (o)-> o.view.event_types
   @search (o)-> [o.name]
 
   caption = (field, key)->
@@ -135,10 +158,10 @@ new Cache.Rule("story").schema ->
           GUI.names.config o.card.role, (name, size)-> name
         event_types:
           GUI.names.config o.card.event, (name, size)-> name
-        roles:
+        role_cards:
           GUI.names.config o.card.role, (name, size)->
             m "kbd", "#{name}x#{size}"
-        events:
+        event_cards:
           GUI.names.config o.card.event, (name, size)->
             m "kbd", "#{name}x#{size}"
         say_limit: caption(RAILS.saycnt,    o.type.say)  || "――"
