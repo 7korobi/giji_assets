@@ -1,13 +1,34 @@
 GUI.message =
-  story: (v)->
+  story: (story)->
     m ".ADMIN.guide",
-      GUI.letter story.name,
+      GUI.letter "head", story.name,
         JSON.stringify story
 
-  event: (v)->
-    m ".MAKER.guide",
-      GUI.letter event.name,
-        JSON.stringify event
+  ###
+  "eclipse":[],
+  "epilogue":0,
+  "event":null,
+  "grudge":-1,
+  "riot":-1,
+  "say":{},
+  "scapegoat":-1,
+  "seance":{},
+  "turn":0,
+  ###
+  event: (event)->
+    delete event.messages
+    event_card = RAILS.events[event.event]
+    modes = []
+    modes.push RAILS.event_state.grudge    if event.turn == event.grudge 
+    modes.push RAILS.event_state.riot      if event.turn == event.riot 
+    modes.push RAILS.event_state.scapegoat if event.turn == event.scapegoat 
+    modes.push RAILS.event_state.eclipse   if _.find event.eclipse, event.turn
+
+    m ".MAKER.guide",    
+      GUI.letter event.winner + ".head", event.name,
+        RAILS.winner[event.winner] + "の勝利です。"
+        m "br"
+        m "kbd", event_card if event_card
 
   potofs: (v)->
     m "div", ".U.C"

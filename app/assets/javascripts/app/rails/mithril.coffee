@@ -267,12 +267,10 @@ GUI.if_exist "#sayfilter", (dom)->
 
 GUI.if_exist "#topviewer", (dom)->
   layout = new GUI.Layout   0, 1, dom
-  dom.className = "drag"
   m.module dom,
     controller: ->
     view: ->
-      m ".contentframe", 
-        GUI.TouchMenu.icons.menu()
+      GUI.TouchMenu.icons.menu()
 
 GUI.if_exist "#css_changer", (dom)->
   touch = new GUI.TouchMenu()
@@ -311,9 +309,6 @@ GUI.if_exist "#css_changer", (dom)->
           m "a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"
           m "a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"
 
-"folder"
-"event"
-
 if gon?.potofs?
   Cache.rule.potof.set gon.potofs
 
@@ -349,7 +344,7 @@ if gon?.events? && gon.event?
     event = null
     touch = new GUI.TouchMenu()
     touch.icon "film", ->
-      GUI.message.event story
+      GUI.message.event event
 
     m.module dom,
       controller: ->

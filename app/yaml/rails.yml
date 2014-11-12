@@ -250,6 +250,18 @@ wins:
   DISH:
     name: 据え膳
 
+winner:
+  WIN_NONE:     '--'
+  WIN_DISH:     据え膳
+  WIN_LOVER:    恋人陣営
+  WIN_HATER:    邪気陣営
+  WIN_LONEWOLF: 一匹狼
+  WIN_HUMAN:    村人陣営
+  WIN_WOLF:     人狼陣営
+  WIN_PIXI:     妖精
+  WIN_GURU:     笛吹き
+  WIN_EVIL:     裏切りの陣営
+
 groups:
   MOB:
     name: 見物人
@@ -620,6 +632,12 @@ events:
     name: 逃亡
   seance:
     name: 降霊会
+
+event_state
+  grudge:
+  riot:
+  scapegoat:
+  eclipse:
 
 maskstates:
   0b1111111111111111_1111_000_00000: 

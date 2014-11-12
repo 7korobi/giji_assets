@@ -27,6 +27,7 @@
 }
 
 .right-layout, .center-layout {
+  #buttons,
   .guide {
     text-align: left;
   }
@@ -35,6 +36,7 @@
   }
 }
 .left-layout {
+  #buttons,
   .guide {
     text-align: right;
   }
