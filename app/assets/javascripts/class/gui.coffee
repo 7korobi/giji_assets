@@ -1,5 +1,5 @@
 GUI = 
-  img_head: "//7korobi.gehirn.ne.jp/images"
+  img_head: "http://7korobi.gehirn.ne.jp/images"
   portrate: (face_id)->
     dom = null
     attr = GUI.attrs ->
@@ -20,16 +20,71 @@ GUI =
     html.className = html.className.replace GUI.header_style_p, style
     GUI.header_style_p = style
 
-  attrs: (dsl)->
+  attrs_to: (parent, query, cb)->
+    vdom = m query
+    tag = vdom.tag
+    attr = Object.keys(vdom.attrs)[0]
+    attr_cb = (elem, data, cb)->
+      ->
+        cb.apply @, data
+    for elem in parent.querySelectorAll query
+      data = attr && elem.attributes[attr]?.value.split(",")
+      for key, func of GUI.attrs attr_cb(elem, data, cb)
+        elem[key] = func
+
+
+  attrs: (dsl, thru)->
     o = {}
     act = (cb)->
       (e)->
         cb(e)
         e.preventDefault()
 
-    list_cmds =
-      class: (str)->
+    func =
+      className: (str)->
         o.className = str
+
+      swipe: (thru)->
+        if thru
+          act = (cb)-> cb
+
+        start = act (e)->
+          e1 = event.changedTouches?[0]
+          gesture.start(e1 || e)
+        move = act (e)->
+          e1 = event.changedTouches?[0]
+          gesture.move(e1 || e)
+        end = act (e)->
+          gesture.end(e)
+        cancel = act (e)->
+          gesture.cancel(e)
+
+        o.onmousedown = start
+        o.ontouchstart = start
+        o.onmousemove = move
+        o.ontouchmove = move
+        o.onmouseup = end
+        o.ontouchend = end
+        o.ontouchcancel = cancel
+
+        draw = (cb)->
+          (diff, is_fast)->
+            m.startComputation()
+            cb(diff, is_fast)
+            m.endComputation()
+        gesture = new Gesture()
+
+        func.up = (cb)->
+          gesture.onup = draw cb
+        func.down = (cb)->
+          gesture.ondown = draw cb
+        func.left = (cb)->
+          gesture.onleft = draw cb
+        func.right = (cb)->
+          gesture.onright = draw cb
+        func.move = (cb)->
+          gesture.onmove = draw cb
+
       start: (cb)->
         cb = act(cb)
         o.onmousedown = cb
@@ -52,8 +107,16 @@ GUI =
         o.ongestureend = cb
         o.ontouchend = cb
 
-    dsl.call list_cmds
+    dsl.call func
     o
+
+  timer: (query, at)->
+    attr = 
+      config: (elem, is_continue, context)->
+        at.prop = (text)->
+          elem.innerText &&= text
+          elem.textContent &&= text
+    m query, attr, at.text
 
   inline_item: (cb)->
     inline_item_span = (align, em, vdom)->
@@ -68,12 +131,13 @@ GUI =
 
   do_tick: (cb)->
     action = ->
-      m.redraw()
+      m.startComputation()
       tick = cb(_.now())
       if tick
         setTimeout ->
           action()
         , tick
+      m.endComputation()
     action()
 
   if_exist: (query, cb)->
