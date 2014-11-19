@@ -31,6 +31,13 @@ new Cache.Rule("map_face_story_log").schema ->
   @order (o)-> o.date.max
 
 
+new Cache.Rule("item").schema ->
+  @fields
+    timer: (o)->
+      o.updated_timer ?= new Timer o.updated_at,
+        prop: ->
+
+
 new Cache.Rule("message").schema ->
   @order_by "updated_at"
   @belongs_to "face"
@@ -54,12 +61,11 @@ new Cache.Rule("message").schema ->
       anchor_num  = o.logid.substring(2) - 0 || 0
       patch = patch_no[o.logid[1]] || 5
 
-      o.updated_at = new Date(o.date) - 0
       o._id = o.event_id + "-" + o.logid
-#      o._id = Serial.serializer.Date(o.updated_at + anchor_num + patch)
+      # o._id = Serial.serializer.Date(o.updated_at + anchor_num + patch)
 
       o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
-      delete o.date
+
     security: (o)->
       o.security =
         switch
@@ -80,6 +86,12 @@ new Cache.Rule("message").schema ->
           else
             []
       o.scene_id = o.event_id + "-" + o.security[0]
+
+    timer: (o)->
+      o.updated_at ?= new Date(o.date) - 0
+      o.updated_timer ?= new Timer o.updated_at,
+        prop: ->
+      delete o.date
 
     vdom: (o)->
       vdom = GUI.message.xxx
@@ -164,6 +176,6 @@ new Cache.Rule("story").schema ->
         event_cards:
           GUI.names.config o.card.event, (name, size)->
             m "kbd", "#{name}x#{size}"
-        say_limit: caption(RAILS.saycnt,    o.type.say)  || "――"
-        game_rule: caption(RAILS.game_rule, o.type.game) || "タブラの人狼"
+        say_limit: RAILS.saycnt[   o.type.say ]?.CAPTION || "――"
+        game_rule: RAILS.game_rule[o.type.game]?.CAPTION || "タブラの人狼"
 

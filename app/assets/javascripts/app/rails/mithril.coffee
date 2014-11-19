@@ -188,7 +188,7 @@ if gon?.face?
                 GUI.inline_item -> 
                   m "a",
                     style: "display:block; width:#{2.8 + folder.length * 0.65}em; text-align:left;"
-                    href: "//7korobi.gehirn.ne.jp/stories/#{story_id[0]}.html"
+                    href: "http://7korobi.gehirn.ne.jp/stories/#{story_id[0]}.html"
                   , story_id[0]
         ]
         m ".MAKER.guide", scroll_spy.mark("villages"), letters
@@ -273,6 +273,26 @@ GUI.if_exist "#topviewer", (dom)->
       GUI.TouchMenu.icons.menu()
 
 GUI.if_exist "#css_changer", (dom)->
+  GUI.attrs_to document, "body", ->
+    @swipe "thru"
+    @left  (diff, flick)-> 
+      layout = 
+        switch Url.prop.layout()
+          when "right"
+            "center"
+          else
+            "left"
+      Url.prop.layout layout            
+
+    @right (diff, flick)->
+      layout = 
+        switch Url.prop.layout()
+          when "left"
+            "center"
+          else
+            "right"
+      Url.prop.layout layout            
+
   touch = new GUI.TouchMenu()
   touch.icon "cog", ->
     m ".guide.form-inline",
@@ -344,7 +364,7 @@ if gon?.events? && gon.event?
     event = null
     touch = new GUI.TouchMenu()
     touch.icon "film", ->
-      GUI.message.event event
+      GUI.message.event event, story
 
     m.module dom,
       controller: ->
@@ -367,26 +387,29 @@ if gon?.events? && gon.event?
 
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
+    Cache.rule.item.set gon.villages
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager "div", gon.villages, (v)->
+        scroll_spy.pager "div", Cache.items.list(), (v)->
           GUI.message.action(v)
 
 if gon?.byebyes?
   GUI.if_exist "#byebyes", (dom)->
+    Cache.rule.item.set gon.byebyes
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager "div", gon.byebyes, (v)->
+        scroll_spy.pager "div", Cache.items.list(), (v)->
           GUI.message.action(v)
 
 if gon?.history?
   GUI.if_exist "#history", (dom)->
+    Cache.rule.item.set gon.history
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager "div", gon.history, (v)->
+        scroll_spy.pager "div", Cache.items.list(), (v)->
           GUI.message.history(v)
 
 if gon?.stories?
@@ -612,66 +635,66 @@ GUI.if_exist "#headline", (dom)->
             m "tr",
               m "td.no_choice",
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
                 , "lobby"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
                 ,"offparty"
                 m "br"
                 m "br"
                 m "br"
               m "td.no_choice",
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
                 , "morphe"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
                 , "cafe"
                 m "br"
                 m "br"
                 m "br"
               m "td.no_choice",
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
                 , "wolf"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
                 , "ultimate"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
                 , "allstar"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
                 , "cabala"
                 m "br"
               m "td.no_choice", 
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=RP"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
                 , "role-play"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
                 , "advance"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
                 , "perjury"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
                 , "xebec"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
                 , "crazy"
                 m "br"
                 m "a",
-                  href: "//7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
+                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
                 , "ciel"
 
 
