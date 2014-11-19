@@ -10,7 +10,7 @@ win =
 
       win.height = Math.max window.innerHeight, docElem.clientHeight
       win.width  = Math.max window.innerWidth,  docElem.clientWidth
-      win.horizon = win.height / 3
+      win.horizon = win.height / 2
       body_height = Math.max docBody.clientHeight , docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight
       body_width =  Math.max docBody.clientWidth,   docBody.scrollWidth,  docElem.scrollWidth,  docElem.clientWidth
       win.max =
