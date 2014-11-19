@@ -106,9 +106,12 @@ $screen-lg: 770px;
   word-wrap: break-word;
 }
 
-.text .mark,
 .pagenavi .mark {
   display: inline-block;
+}
+
+.text .mark {
+  margin: -5px 0;
 }
 
 .mark {

@@ -633,11 +633,11 @@ events:
   seance:
     name: 降霊会
 
-event_state
-  grudge:
-  riot:
-  scapegoat:
-  eclipse:
+event_state:
+  grudge:    今夜は２名分の襲撃をします。それが奴等への復讐なのです。
+  riot:      今夜は２名分の投票をします。この荒波のような流行に乗らなくては！
+  scapegoat: 今夜の投票相手は決まっています。
+  eclipse:   今日の議論は、誰が発言しているか不明になります。
 
 maskstates:
   0b1111111111111111_1111_000_00000: 
