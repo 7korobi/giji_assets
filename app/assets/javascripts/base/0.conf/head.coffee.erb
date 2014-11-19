@@ -1,0 +1,22 @@
+<%
+%i[DELAY].each do |const|
+  if Kernel.constants.member?(const)
+ %>
+window.<%= const %> = <%= JSON.generate Kernel.const_get( const ) %>
+<%
+  end
+end
+%>
+
+head_conf =
+  screens: [
+    460
+    580
+    770
+  ]
+  screensCss:
+    gt: true
+    gte: false
+    lt: true
+    lte: false
+    eq: false
