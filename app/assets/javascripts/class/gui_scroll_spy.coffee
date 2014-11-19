@@ -64,8 +64,9 @@ class GUI.ScrollSpy
           vision.offset = Math.max 1, win.horizon - vision.top
           @adjust = vision
 
+    m.startComputation()
     window.requestAnimationFrame ->
-      m.redraw()
+      m.endComputation()
 
     @adjust?.id
 
@@ -80,8 +81,8 @@ class GUI.ScrollSpy
     else
       # TODO wait for network read.
 
-    head = Math.max top, idx - Math.ceil(win.height * 2 / @avg_height)
-    tail = Math.min btm, idx + Math.ceil(win.height * 4 / @avg_height)
+    head = Math.max top, idx - 5 - Math.ceil(win.height * 2 / @avg_height)
+    tail = Math.min btm, idx + 5 + Math.ceil(win.height * 3 / @avg_height)
 
     if 3 < Math.abs @head - head
       @head = head
@@ -89,16 +90,29 @@ class GUI.ScrollSpy
       @tail = tail
 
     pager_cb = (@pager_elem, is_continue, context)=>
-      window.requestAnimationFrame =>
-        @avg_height = rect.height / (1 + @tail - @head)
-        m.redraw() unless stay
-
       rect = @pager_elem.getBoundingClientRect()
-      show_under = rect.bottom < win.height 
-      show_upper =           0 < rect.top
-      stay = show_under == @show_under && show_upper == @show_upper
-      @show_under = show_under
-      @show_upper = show_upper
+      show_bottom = win.height - rect.bottom
+      show_under  = 0 < show_bottom
+      show_upper  = 0 < rect.top 
+      @avg_height = rect.height / (1 + @tail - @head)
+
+      scroll_diff = show_bottom - @show_bottom
+      console.log [0, show_bottom, "-", @show_bottom, "=", scroll_diff]
+      if show_under && ! @prop()
+        window.scrollBy 0, scroll_diff
+        unless @show_under
+          m.startComputation()
+          window.requestAnimationFrame ->
+            m.endComputation()
+
+      @show_bottom = show_bottom
+      @show_under  = show_under
+      @show_upper  = show_upper
+
+      unless show_under == @show_under && show_upper == @show_upper
+        m.startComputation()
+        window.requestAnimationFrame ->
+          m.endComputation()
 
     vdom_items =
       for o in @list[@head..@tail]

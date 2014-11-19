@@ -35,11 +35,6 @@ GUI =
         o.onmousedown = cb
         o.ongesturestart = cb
         o.ontouchstart = cb
-      move: (cb)->
-        cb = act(cb)
-        o.onmousemove = cb
-        o.ongesturechange = cb
-        o.ontouchmove = cb
       end: (cb)->
         cb = act(cb)
         o.onmouseup = cb
