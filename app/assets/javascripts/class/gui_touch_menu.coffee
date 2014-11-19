@@ -44,8 +44,10 @@ class GUI.TouchMenu
               m "span", caption
               m "span.badge.pull-right", size
 
+  menu_of = (o)->
+    o.menus[o.state()]
   menu: (vdom...)->
-    menu_cb = @menus[@state()]
+    menu_cb = menu_of(@)
     if menu_cb && ! @icon_key
       vdom.push m ".drag", m ".contentframe", menu_cb.call(@helper, @)
     vdom
@@ -70,23 +72,22 @@ class GUI.TouchMenu
           state false
           prop val
         if val == prop()
-          @class "btn btn-success"
+          @className "btn btn-success"
         else
-          @class "btn btn-default"
+          @className "btn btn-default"
 
   icon: (@icon_key, menu_cb)->
-    GUI.TouchMenu.icons.menus[@icon_key] = 
-      cb: menu_cb
-      menu: @
+    menu_cb.menu = @
+    GUI.TouchMenu.icons.menus[@icon_key] = menu_cb
 
   @icons.menu = (vdom...)->
-    item = @menus[@state()]
-    if item
-      o = item.menu
-      vdom.push item.cb.call(o.helper, o)
-
-      # sub-menu section
-      menu_cb = o.menus[o.state()]
-      if menu_cb
-        vdom.push menu_cb.call(o.helper, o)
-    vdom
+    set_menu = (o, cb)->
+      return unless cb
+      vdom.push cb.call(o.helper, o)
+    menu_cb = menu_of(@)
+    if menu_cb
+      o = menu_cb.menu
+      set_menu(o, menu_cb)
+      set_menu(o, menu_of(o))
+    if vdom.length
+      m ".drag", m ".contentframe", vdom
