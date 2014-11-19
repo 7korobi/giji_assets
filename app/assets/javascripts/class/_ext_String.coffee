@@ -1,13 +1,3 @@
-define = (type, cb)->
-  Object.defineProperties type.prototype, cb()
-
-define Array, ->
-  last:
-    get: -> @[@length - 1]
-  first:
-    get: -> @[0]
-
-
 define String, ->
   player = (log)->
     return log unless log
@@ -23,7 +13,7 @@ define String, ->
   anchor = (log)->
     return log unless log
     log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, a, turn, id)->
-      """<a hogan-click="popup(#{turn},'#{a}')" data="#{a},#{turn},#{id}" class="mark">&gt;&gt;#{id}</a>"""
+      """<a anchor="#{a},#{turn},#{id}" class="mark">&gt;&gt;#{id}</a>"""
 
   anchor_preview = (log)->
     log
@@ -36,11 +26,11 @@ define String, ->
   random = (log)->
     return log unless log
     log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
-      """<a class="mark" hogan-click="inner('#{cmd}','#{val}')">#{val}</a>"""
+      """<a random="#{cmd},#{val}" class="mark">#{val}</a>"""
 
   random_preview = (log)->
     log.replace /\[\[([^\[]+)\]\]/g, (key, val)->
-      """<a class="mark" hogan-click="inner('#{val}','？')">#{val}</a>"""
+      """<a random="#{val},？" class="mark">#{val}</a>"""
 
   link_regexp = ///
       (\w+)://([^/<>）］】」\s]+)([^<>）］】」\s]*)
@@ -53,7 +43,7 @@ define String, ->
   uri_to_link = _.memoize (uri)->
     id_num++
     [uri, protocol, host, path] = uri.match link_regexp
-    """<span class="badge" hogan-click="external('link_#{id_num}','#{uri}','#{protocol}','#{host}','#{path}')">LINK - #{protocol}</span>"""
+    """<span external="link_#{id_num},#{uri},#{protocol},#{host},#{path}" class="badge">LINK - #{protocol}</span>"""
 
   link = (log)->
     return log unless log
@@ -102,13 +92,4 @@ define String, ->
       # countup sjis byte size
       other = @match(/[^\x01-\xff]/g) or []
       @length + other.length
-
-
-Number.MAX_INT32 = 0x7fffffff
-
-_.mixin
-  parseID: (id)->
-    time = Serial.parser.Date id[2..-1]
-    [id[0..1], time]
-
 
