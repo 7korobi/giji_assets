@@ -1971,16 +1971,21 @@ GUI.ScrollSpy = (function() {
   };
 
   ScrollSpy.prototype.pager = function(tag, list, cb) {
-    var attr, btm, head, idx, key, o, pager_cb, tail, top, vdom, vdom_items;
+    var attr, btm, head, idx, key, o, pager_cb, rect, show_bottom, show_under, tail, top, vdom, vdom_items;
     this.list = list;
     top = 0;
     btm = list.length - 1;
+    if (this.pager_elem != null) {
+      rect = this.pager_elem.getBoundingClientRect();
+      show_bottom = win.height - rect.bottom;
+      show_under = 0 < show_bottom;
+    }
     idx = _.findIndex(this.list, {
       _id: typeof this.prop === "function" ? this.prop() : void 0
     });
     if (idx < 0) {
       idx = top;
-      if (this.show_under) {
+      if (show_under) {
         idx = btm;
       }
     } else {
@@ -1996,7 +2001,7 @@ GUI.ScrollSpy = (function() {
     }
     pager_cb = (function(_this) {
       return function(pager_elem, is_continue, context) {
-        var rect, scroll_diff, show_bottom, show_under, show_upper;
+        var scroll_diff, show_upper;
         _this.pager_elem = pager_elem;
         rect = _this.pager_elem.getBoundingClientRect();
         show_bottom = win.height - rect.bottom;
@@ -2004,15 +2009,8 @@ GUI.ScrollSpy = (function() {
         show_upper = 0 < rect.top;
         _this.avg_height = rect.height / (1 + _this.tail - _this.head);
         scroll_diff = show_bottom - _this.show_bottom;
-        console.log([0, show_bottom, "-", _this.show_bottom, "=", scroll_diff]);
         if (show_under && !_this.prop()) {
           window.scrollBy(0, scroll_diff);
-          if (!_this.show_under) {
-            m.startComputation();
-            window.requestAnimationFrame(function() {
-              return m.endComputation();
-            });
-          }
         }
         _this.show_bottom = show_bottom;
         _this.show_under = show_under;

@@ -74,10 +74,15 @@ class GUI.ScrollSpy
     top = 0
     btm = list.length - 1
 
+    if @pager_elem?
+      rect = @pager_elem.getBoundingClientRect()
+      show_bottom = win.height - rect.bottom
+      show_under  = 0 < show_bottom
+
     idx = _.findIndex @list, _id: @prop?()
     if idx < 0
       idx = top
-      idx = btm if @show_under
+      idx = btm if show_under
     else
       # TODO wait for network read.
 
@@ -97,13 +102,8 @@ class GUI.ScrollSpy
       @avg_height = rect.height / (1 + @tail - @head)
 
       scroll_diff = show_bottom - @show_bottom
-      console.log [0, show_bottom, "-", @show_bottom, "=", scroll_diff]
       if show_under && ! @prop()
         window.scrollBy 0, scroll_diff
-        unless @show_under
-          m.startComputation()
-          window.requestAnimationFrame ->
-            m.endComputation()
 
       @show_bottom = show_bottom
       @show_under  = show_under
