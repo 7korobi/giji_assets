@@ -1330,11 +1330,8 @@ GUI = {
         cancel = act(function(e) {
           return gesture.cancel(e);
         });
-        o.onmousedown = start;
         o.ontouchstart = start;
-        o.onmousemove = move;
         o.ontouchmove = move;
-        o.onmouseup = end;
         o.ontouchend = end;
         o.ontouchcancel = cancel;
         draw = function(cb) {
@@ -1610,6 +1607,7 @@ GUI.Layout = (function() {
     }
     GUI.Layout.list[this.box.id] = this;
     this.mode = "show";
+    this.absolute = false;
     this.box.style.zIndex = _.now();
   }
 
@@ -1679,7 +1677,7 @@ GUI.Layout = (function() {
     if (0 === this.dx) {
       this.box.style.width = "" + this.box.parentElement.offsetWidth + "px";
     }
-    if (head.browser.ios) {
+    if (this.absolute) {
       this.box.style.position = "absolute";
       this.box.style.left = "" + (x + win.left) + "px";
       this.box.style.top = "" + (y + win.top) + "px";
@@ -1710,7 +1708,7 @@ GUI.Layout = (function() {
   Layout.prototype.transition = function(duration) {
     var transition;
     this.duration = duration;
-    if (head.browser.ios) {
+    if (this.absolute) {
       this.duration /= 4;
       return;
     }
@@ -1993,26 +1991,24 @@ GUI.ScrollSpy = (function() {
     }
     head = Math.max(top, idx - 5 - Math.ceil(win.height * 2 / this.avg_height));
     tail = Math.min(btm, idx + 5 + Math.ceil(win.height * 3 / this.avg_height));
-    if (3 < Math.abs(this.head - head)) {
+    if (5 < Math.abs(this.head - head)) {
       this.head = head;
     }
-    if (3 < Math.abs(this.tail - tail)) {
-      this.tail = tail;
-    }
+    this.tail = tail;
     pager_cb = (function(_this) {
       return function(pager_elem, is_continue, context) {
-        var scroll_diff, show_upper;
+        var diff_bottom, elem_bottom, show_upper;
         _this.pager_elem = pager_elem;
         rect = _this.pager_elem.getBoundingClientRect();
-        show_bottom = win.height - rect.bottom;
-        show_under = 0 < show_bottom;
+        show_under = rect.bottom < win.height;
         show_upper = 0 < rect.top;
         _this.avg_height = rect.height / (1 + _this.tail - _this.head);
-        scroll_diff = show_bottom - _this.show_bottom;
-        if (show_under && !_this.prop()) {
-          window.scrollBy(0, scroll_diff);
+        elem_bottom = rect.bottom + win.top;
+        diff_bottom = elem_bottom - _this.elem_bottom;
+        if (show_under && !_this.prop() && win.bottom < document.height) {
+          window.scrollBy(0, diff_bottom);
         }
-        _this.show_bottom = show_bottom;
+        _this.elem_bottom = elem_bottom;
         _this.show_under = show_under;
         _this.show_upper = show_upper;
         if (!(show_under === _this.show_under && show_upper === _this.show_upper)) {

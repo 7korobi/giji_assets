@@ -647,7 +647,7 @@ GUI.if_exist("#buttons", function(dom) {
           if (!touch.menus[icon]) {
             continue;
           }
-          _results.push(m(".bigicon", touch.start(icon), m(".glyphicon.glyphicon-" + icon)));
+          _results.push(m("div", touch.start(icon), m(".bigicon", m(".glyphicon.glyphicon-" + icon))));
         }
         return _results;
       })());
@@ -669,6 +669,7 @@ GUI.if_exist("#sayfilter", function(dom) {
 GUI.if_exist("#topviewer", function(dom) {
   var layout;
   layout = new GUI.Layout(0, 1, dom);
+  layout.absolute = head.browser.ios;
   return m.module(dom, {
     controller: function() {},
     view: function() {
