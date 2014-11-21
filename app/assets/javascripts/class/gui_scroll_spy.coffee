@@ -89,23 +89,23 @@ class GUI.ScrollSpy
     head = Math.max top, idx - 5 - Math.ceil(win.height * 2 / @avg_height)
     tail = Math.min btm, idx + 5 + Math.ceil(win.height * 3 / @avg_height)
 
-    if 3 < Math.abs @head - head
+    if 5 < Math.abs @head - head
       @head = head
-    if 3 < Math.abs @tail - tail
-      @tail = tail
+    @tail = tail
 
     pager_cb = (@pager_elem, is_continue, context)=>
       rect = @pager_elem.getBoundingClientRect()
-      show_bottom = win.height - rect.bottom
-      show_under  = 0 < show_bottom
-      show_upper  = 0 < rect.top 
+
+      show_under  = rect.bottom < win.height
+      show_upper  =           0 < rect.top 
       @avg_height = rect.height / (1 + @tail - @head)
 
-      scroll_diff = show_bottom - @show_bottom
-      if show_under && ! @prop()
-        window.scrollBy 0, scroll_diff
+      elem_bottom = rect.bottom + win.top
+      diff_bottom = elem_bottom - @elem_bottom
+      if show_under && ! @prop() && win.bottom < document.height
+        window.scrollBy 0, diff_bottom
+      @elem_bottom = elem_bottom
 
-      @show_bottom = show_bottom
       @show_under  = show_under
       @show_upper  = show_upper
 
