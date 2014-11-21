@@ -59,13 +59,13 @@ GUI =
         cancel = act (e)->
           gesture.cancel(e)
 
-        o.onmousedown = start
         o.ontouchstart = start
-        o.onmousemove = move
         o.ontouchmove = move
-        o.onmouseup = end
         o.ontouchend = end
         o.ontouchcancel = cancel
+        # o.onmousedown = start
+        # o.onmousemove = move
+        # o.onmouseup = end
 
         draw = (cb)->
           (diff, is_fast)->
