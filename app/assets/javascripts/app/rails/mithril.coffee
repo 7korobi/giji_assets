@@ -255,8 +255,9 @@ GUI.if_exist "#buttons", (dom)->
       m "nav",
         for icon in ["home", "film", "list", "th", "cog"]
           continue unless touch.menus[icon]
-          m ".bigicon", touch.start(icon),
-            m ".glyphicon.glyphicon-#{icon}"
+          m "div", touch.start(icon),
+            m ".bigicon",
+              m ".glyphicon.glyphicon-#{icon}"
 
 GUI.if_exist "#sayfilter", (dom)->
   layout = new GUI.Layout   1,-1, dom
@@ -267,6 +268,7 @@ GUI.if_exist "#sayfilter", (dom)->
 
 GUI.if_exist "#topviewer", (dom)->
   layout = new GUI.Layout   0, 1, dom
+  layout.absolute = head.browser.ios
   m.module dom,
     controller: ->
     view: ->

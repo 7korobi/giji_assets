@@ -10,6 +10,7 @@ class GUI.Layout
 
     GUI.Layout.list[@box.id] = @
     @mode = "show"
+    @absolute = false
     @box.style.zIndex = _.now()
 
   show: ->
@@ -49,7 +50,7 @@ class GUI.Layout
     if 0 == @dx
       @box.style.width = "#{@box.parentElement.offsetWidth}px"
 
-    if head.browser.ios
+    if @absolute
       @box.style.position = "absolute"
       @box.style.left = "#{x + win.left}px"
       @box.style.top = "#{y + win.top}px"
@@ -72,7 +73,7 @@ class GUI.Layout
 
 
   transition: (@duration)->
-    if head.browser.ios
+    if @absolute
       @duration /= 4
       return
 
