@@ -14,6 +14,9 @@ Url.routes =
     events: new Url "event=:event_id",
       unmatch: gon?.events? && "?"
 
+    potofs: new Url "potofs=:potofs_order~:potofs_desc",
+      unmatch: gon?.potofs? && "?"
+
     faces: new Url "faces=:chr_set~:order~:search",
       unmatch: gon?.map_reduce?.faces? && "?"
 

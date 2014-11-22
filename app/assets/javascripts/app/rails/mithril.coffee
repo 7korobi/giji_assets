@@ -242,14 +242,16 @@ GUI.if_exist "#buttons", (dom)->
         anime box
 
   layout = new GUI.Layout -1,-1, dom
+  layout.box.style.zIndex = 120
+
   touch = GUI.TouchMenu.icons
   m.module dom,
     controller: ->
     view: ->
       switch Url.prop.layout()
-        when "right", "center"
+        when "right"
           layout.dx =  1
-        when "left"
+        when "left", "center"
           layout.dx = -1
 
       m "nav",
@@ -259,15 +261,9 @@ GUI.if_exist "#buttons", (dom)->
             m ".bigicon",
               m ".glyphicon.glyphicon-#{icon}"
 
-GUI.if_exist "#sayfilter", (dom)->
-  layout = new GUI.Layout   1,-1, dom
-  m.module dom,
-    controller: ->
-    view: ->
-      []
-
 GUI.if_exist "#topviewer", (dom)->
   layout = new GUI.Layout   0, 1, dom
+  layout.box.style.zIndex = 110
   layout.absolute = head.browser.ios
   m.module dom,
     controller: ->
@@ -331,8 +327,69 @@ GUI.if_exist "#css_changer", (dom)->
           m "a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"
           m "a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"
 
+
 if gon?.potofs?
   Cache.rule.potof.set gon.potofs
+
+  GUI.if_exist "#sayfilter", (dom)->
+    touch = new GUI.TouchMenu()
+    layout = new GUI.Layout 1, 1, dom
+    layout.box.style.zIndex = 100
+
+    m.module dom,
+      controller: ->
+      view: ->
+        width = win.width - Url.prop.w()
+        switch Url.prop.layout()
+          when "right"
+            layout.dx =  1
+          when "center"
+            layout.dx = -1
+            width /= 2
+          when "left"
+            layout.dx = -1
+        layout.box.style.width = "#{width}px"
+
+        table = 
+          m "table.potofs",
+            m "tbody",
+              for o in Cache.potofs.list() # Url.prop.potofs_desc()
+                m "tr",
+                  # m "td", {}, o.view.portrate
+                  m "th.calc", {}, o.view.job
+                  m "th", {}, o.view.name
+                  m "td.center", {}, o.view.sow_auth_id
+                  m "td.calc", {}, o.view.stat_at
+                  m "td", {}, o.view.stat_type
+                  m "td.calc", {}, o.view.said_num
+                  m "td.calc", {}, o.view.pt
+                  m "td", {}, o.view.win
+                  m "td.calc", {}, o.view.win_side
+                  m "td", {}, o.view.role
+                  m "td", {}, o.view.select
+                  m "td", {}, o.view.text
+            m "tfoot.head",
+              m "tr",
+                # m "th", m "span", {}, "御尊顔"
+                m "th[colspan=2].center", m "span", {}, "名前"
+                m "th.center", m "span", {}, "プレイヤー"
+                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "stat_at"),   "日程"
+                m "th", m "a", touch.btn(Url.prop.potofs_order, "stat_type"), "状態"
+                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "said_num"),  "発言数"
+                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "pt"),        "残pt"
+                m "th", m "a", touch.btn(Url.prop.potofs_order, "win"),       "勝敗"
+                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "win_side"),  "陣営"
+                m "th", m "a", touch.btn(Url.prop.potofs_order, "role"),      "役割"
+                m "th", m "a", touch.btn(Url.prop.potofs_order, "select"),    "希望"
+                m "th", m "a", touch.btn(Url.prop.potofs_order, "text"),      "補足"
+
+        m "div",
+          m ".sayfilter_heading.bottom"
+          m ".insayfilter",
+            m ".paragraph",
+              m ".table-swipe.sayfilter_content", table
+            m ".paragraph", "(スクロールします。)"
+          m ".sayfilter_heading.bottom"
 
 if gon?.story?
   Cache.rule.story.set [gon.story]

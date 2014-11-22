@@ -31,6 +31,8 @@ options:
 
   potofs_order:
     current: stat_type
+  potofs_desc:
+    current: desc
 
   hide_ids:
     type: Array

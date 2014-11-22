@@ -57,6 +57,17 @@ head_img:
       - r.jpg
       - c.jpg
 
+clearance:
+  - IR-
+  - R-
+  - O-
+  - Y-
+  - G-
+  - B-
+  - I-
+  - V-
+  - UV-
+
 rating:
   default:
     caption: とくになし
@@ -129,6 +140,60 @@ rating:
   alert:
     caption: "要注意"
     alt: ""
+
+folders:
+  PAN:
+    evil: WOLF
+    role_play: false
+
+  OFFPARTY:
+    evil: EVIL
+    role_play: false
+
+  LOBBY:
+    evil: EVIL
+    role_play: false
+
+  RP:
+    evil: WOLF
+    role_play: true
+  PRETENSE:
+    evil: WOLF
+    role_play: true
+  PERJURY:
+    evil: WOLF
+    role_play: true
+  XEBEC:
+    evil: WOLF
+    role_play: true
+  CRAZY:
+    evil: WOLF
+    role_play: true
+  SOYBEAN:
+    evil: WOLF
+    role_play: true
+  BRAID:
+    evil: WOLF
+    role_play: true
+  CIEL:
+    evil: WOLF
+    role_play: true
+
+  WOLF:
+    evil: WOLF
+    role_play: false
+  ULTIMATE:
+    evil: EVIL
+    role_play: false
+  ALLSTAR:
+    evil: EVIL
+    role_play: false
+  CABALA:
+    evil: EVIL
+    role_play: false
+  MORPHE:
+    evil: EVIL
+    role_play: false
 
 map_faces_orders:
   all:

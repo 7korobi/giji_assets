@@ -129,6 +129,106 @@ new Cache.Rule("message").schema ->
       o.vdom = vdom
 
 new Cache.Rule("potof").schema ->
+  maskstate_order = _.sortBy _.keys(RAILS.maskstates), (o)-> -o
+
+  @fields
+    _id: (o)->
+      o._id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
+
+      name = 
+        if o.zapcount
+          "#{RAILS.clearance[o.clearance]}#{o.name}-#{o.zapcount}"
+        else
+          o.name
+
+      stat_at = 
+        if 0 < o.deathday
+          "#{o.deathday}日"
+        else
+          ""
+      pt = 
+        if "live" == o.live
+          o.say.say
+        else
+          o.say.gsay
+
+      (o)->
+        win_by_role = (list)=>
+          for role in @role
+            win = list[role]?.win
+            return win if win
+          null
+        (story, events, event)->
+          win_result = "参加"
+          zombie = 0x040
+
+          switch o.live
+            when "mob"
+              win_juror = 'HUMAN' if ('juror' == story.type.mob)
+            when "suddendead"
+              win_result = ""
+
+          win_love = RAILS.loves[o.love]?.win
+
+          win = win_juror || win_love || win_zombie || win_by_role(RAILS.gifts) || win_by_role(RAILS.roles) || "NONE"
+          win = RAILS.folders[story.folder].evil if win == 'EVIL'
+          switch win
+            when "LONEWOLF"
+              is_dead_lose = 1
+            when "HATER"
+              is_dead_lose = 1 if ! _.include o.role, "HATEDEVIL"
+            when "LOVER"
+              is_lone_lose = 1 if ! _.include o.role, "LOVEANGEL"
+
+          switch story.type.game
+            when "TROUBLE"
+              win_zombie = 'WOLF' if 0 == (o.rolestate & zombie)
+              is_dead_lose = 1    if "HUMAN" == win
+            when "LIVE_TABULA", "LIVE_MILLERHOLLOW", "SECRET"
+              is_dead_lose = 1
+
+          if story.is_finish && ! RAILS.folders[story.folder].role_play
+            winner = event.winner || events? && _.last(events)?.winner
+            win_result = "敗北"
+            win_result = "勝利" if winner == "WIN_" + win
+            win_result = "勝利" if winner != "WIN_HUMAN"  && winner != "WIN_LOVER" && "EVIL" == win
+            win_result = "勝利" if "victim" == o.live && "DISH" == win
+            win_result = "敗北" if is_lone_lose && _.any @potofs, (o)-> o.live != 'live' && _.any o.bonds, o.pno
+            win_result = "敗北" if is_dead_lose && 'live' != @live
+            win_result = "参加" if "NONE" == win
+
+      roles = 
+        for role in o.role
+          GUI.name.config role
+
+      text = []
+      if o.rolestate?
+        rolestate = o.rolestate
+        for mask in maskstate_order
+          if 0 == (rolestate & mask)
+            state = RAILS.maskstates[mask]
+            text.push "#{state} " if state
+            rolestate |= mask
+      text.push "☑" if 'pixi' == o.sheep
+      text.push "♥" if 'love' == o.love
+      text.push "☠" if 'hate' == o.love
+      text.push "<s>♥</s>" if 'love' == o.pseudolove
+      text.push "<s>☠</s>" if 'hate' == o.pseudolove
+
+      o.view = 
+        portrate: GUI.portrate o.face_id
+        job: Cache.chr_jobs.find("#{o.csid.toLowerCase()}_#{o.face_id}").job
+        name: name
+        sow_auth_id: m "kbd", o.sow_auth_id
+        stat_at: stat_at
+        stat_type: RAILS.live[o.live]
+        said_num: "#{o.point.saidcount}回"
+        pt: "#{pt}pt"
+        win: "" # win_result
+        win_side: "" # RAILS.wins[win].name
+        role: roles.join("、")
+        select: m "kbd", GUI.name.config o.select
+        text: o.text
 
 new Cache.Rule("event").schema ->
 

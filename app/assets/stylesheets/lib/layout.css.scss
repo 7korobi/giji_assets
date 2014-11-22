@@ -67,8 +67,6 @@ address * {
 .accordion dd,
 .table th,
 .table td,
-.potofs th,
-.potofs td,
 .board td.no_choice,
 div.mark,
 .form_vmake,
@@ -83,6 +81,7 @@ div.mark,
 .mesname,
 .action,
 .events,
+.left,
 li,
 p
  {
@@ -98,6 +97,7 @@ p
 .exevmake,
 .chrblank,
 .choice,
+.center,
 body {
   text-align: center;
 }
