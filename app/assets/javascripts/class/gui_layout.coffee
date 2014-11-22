@@ -11,7 +11,15 @@ class GUI.Layout
     GUI.Layout.list[@box.id] = @
     @mode = "show"
     @absolute = false
-    @box.style.zIndex = _.now()
+
+  calc: (left, top)->
+    x: left
+    y: top
+    w: @box.offsetWidth
+    h: @box.offsetHeight
+    win:
+      left: win.left
+      top: win.top
 
   show: ->
     width  = win.width  - @box.offsetWidth
@@ -23,13 +31,7 @@ class GUI.Layout
     top = @dy + height if @dy < 0
     top = @dy          if   0 < @dy
 
-    x: left
-    y: top
-    w: @box.offsetWidth
-    h: @box.offsetHeight
-    win:
-      left: win.left
-      top: win.top
+    @calc(left, top)
 
   hide: ->
     left = @box.parentElement.offsetLeft if 0 == @dx
@@ -38,13 +40,7 @@ class GUI.Layout
     top = - @dy + win.height        if @dy < 0
     top = - @dy - @box.offsetHeight if   0 < @dy
 
-    x: left
-    y: top
-    w: @box.offsetWidth
-    h: @box.offsetHeight
-    win:
-      left: win.left
-      top: win.top
+    @calc(left, top)
 
   transform: ({x, y})->
     if 0 == @dx
@@ -76,12 +72,8 @@ class GUI.Layout
     if @absolute
       @duration /= 4
       return
-
-    transition = 
-      if @duration
-        "all #{@duration}ms ease-in-out 0"
-      else
-        ""
+    
+    transition = "all #{@duration}ms ease-in-out 0"
     @box.style.mozTransition = transition if head.browser.ff
     @box.style.msTransition = transition if head.browser.ie
     @box.style.oTransition = transition if head.browser.opera

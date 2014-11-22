@@ -96,8 +96,8 @@ class GUI.ScrollSpy
     pager_cb = (@pager_elem, is_continue, context)=>
       rect = @pager_elem.getBoundingClientRect()
 
-      show_under  = rect.bottom < win.height
-      show_upper  =           0 < rect.top 
+      show_under  = rect.bottom < win.horizon
+      show_upper  = win.horizon < rect.top 
       @avg_height = rect.height / (1 + @tail - @head)
 
       elem_bottom = rect.bottom + win.top

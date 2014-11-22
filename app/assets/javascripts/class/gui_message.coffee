@@ -14,23 +14,22 @@ GUI.message = (->
   story: (story)->
     mob = RAILS.mob[story.type.mob]
     rating = RAILS.rating[story.rating]
-    saycnt = RAILS.saycnt[story.type.say]
+    saycnt = RAILS.saycnt[story.type.say] || {}
     roletable = RAILS.roletable[story.type.roletable]
 
     m ".ADMIN.guide", [
       GUI.letter "head", story.name,
-        m "dl.dl-horizontal.note",
-          m "dt.text", "こだわり"
-          m "dd.text",
-            m "img.pull-left",
-              src: GUI.img_head + "/icon/cd_#{story.rating}.png"
-            rating.caption
-
-          m "dt.text", "発言制限"
-          m "dd.text", m.trust(saycnt?.CAPTION), m("br"), m.trust(saycnt?.HELP)
-
-          m "dt.text", "更新"
-          m "dd.text", story.view.update_at + "(" + story.view.update_interval + "ごと)"
+        m "div",
+          m "code", "こだわり"
+          m "img.pull-left",
+            src: GUI.img_head + "/icon/cd_#{story.rating}.png"
+          rating.caption
+        m "div",
+          m "code", "発言制限"
+          m.trust saycnt.CAPTION + "<br>" + saycnt.HELP
+        m "div",
+          m "code", "更新"
+          story.view.update_at + "(" + story.view.update_interval + "ごと)"
 
 
       GUI.letter "", story.view.game_rule,
@@ -45,16 +44,17 @@ GUI.message = (->
       GUI.letter "head", "#{story.view.player_length}人の配役設定",
         m "div", roletable
         m "div",
-          m "span.mark", "事件"
+          m "code", "事件"
           story.view.event_cards
 
         m "div",
-          m "span.mark", "役職"
+          m "code", "役職"
           story.view.role_cards
 
         m "div",
-          m "span.mark", "見物人"
-          "#{mob.CAPTION} #{mob.HELP}"
+          m "code", "見物人"
+          m "kbd", mob.caption
+          #{mob.HELP}"
 
       m "span.mes_date.pull-right", 
         "managed by "
