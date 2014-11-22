@@ -8226,13 +8226,11 @@ address * {
   text-align: right;
 }
 
-/* line 88, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/layout.css.scss */
+/* line 87, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/layout.css.scss */
 .accordion dt,
 .accordion dd,
 .table th,
 .table td,
-.potofs th,
-.potofs td,
 .board td.no_choice,
 div.mark,
 .form_vmake,
@@ -8247,6 +8245,7 @@ div.mark,
 .mesname,
 .action,
 .events,
+.left,
 li,
 p {
   text-align: left;
@@ -8262,6 +8261,7 @@ p {
 .exevmake,
 .chrblank,
 .choice,
+.center,
 body {
   text-align: center;
 }
@@ -8959,10 +8959,11 @@ hr.black {
 
 /* line 15, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/mithril.css.scss */
 div > .menuicon {
+  padding-top: 3px;
   font-size: 2em;
 }
 
-/* line 19, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/mithril.css.scss */
+/* line 20, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/mithril.css.scss */
 .bigicon {
   padding: 6px;
   font-size: 48px;
@@ -9007,18 +9008,17 @@ table {
 /* line 198, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/table.css.scss */
 .table-swipe {
   width: 100%;
-  margin-bottom: 15px;
   overflow-y: hidden;
   overflow-x: scroll;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   -webkit-overflow-scrolling: touch;
 }
-/* line 208, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/table.css.scss */
+/* line 207, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/table.css.scss */
 .table-swipe > .potofs,
 .table-swipe > .table {
   margin-bottom: 0;
 }
-/* line 217, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/table.css.scss */
+/* line 216, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/table.css.scss */
 .table-swipe > .potofs > thead > tr > th,
 .table-swipe > .potofs > thead > tr > td,
 .table-swipe > .potofs > tbody > tr > th,

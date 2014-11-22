@@ -1608,8 +1608,20 @@ GUI.Layout = (function() {
     GUI.Layout.list[this.box.id] = this;
     this.mode = "show";
     this.absolute = false;
-    this.box.style.zIndex = _.now();
   }
+
+  Layout.prototype.calc = function(left, top) {
+    return {
+      x: left,
+      y: top,
+      w: this.box.offsetWidth,
+      h: this.box.offsetHeight,
+      win: {
+        left: win.left,
+        top: win.top
+      }
+    };
+  };
 
   Layout.prototype.show = function() {
     var height, left, top, width;
@@ -1630,16 +1642,7 @@ GUI.Layout = (function() {
     if (0 < this.dy) {
       top = this.dy;
     }
-    return {
-      x: left,
-      y: top,
-      w: this.box.offsetWidth,
-      h: this.box.offsetHeight,
-      win: {
-        left: win.left,
-        top: win.top
-      }
-    };
+    return this.calc(left, top);
   };
 
   Layout.prototype.hide = function() {
@@ -1659,16 +1662,7 @@ GUI.Layout = (function() {
     if (0 < this.dy) {
       top = -this.dy - this.box.offsetHeight;
     }
-    return {
-      x: left,
-      y: top,
-      w: this.box.offsetWidth,
-      h: this.box.offsetHeight,
-      win: {
-        left: win.left,
-        top: win.top
-      }
-    };
+    return this.calc(left, top);
   };
 
   Layout.prototype.transform = function(_arg) {
@@ -1712,7 +1706,7 @@ GUI.Layout = (function() {
       this.duration /= 4;
       return;
     }
-    transition = this.duration ? "all " + this.duration + "ms ease-in-out 0" : "";
+    transition = "all " + this.duration + "ms ease-in-out 0s, width 0s none 0s";
     if (head.browser.ff) {
       this.box.style.mozTransition = transition;
     }
@@ -1785,12 +1779,12 @@ GUI.message = (function() {
       var mob, option, option_id, rating, roletable, saycnt;
       mob = RAILS.mob[story.type.mob];
       rating = RAILS.rating[story.rating];
-      saycnt = RAILS.saycnt[story.type.say];
+      saycnt = RAILS.saycnt[story.type.say] || {};
       roletable = RAILS.roletable[story.type.roletable];
       return m(".ADMIN.guide", [
-        GUI.letter("head", story.name, m("dl.dl-horizontal.note", m("dt.text", "こだわり"), m("dd.text", m("img.pull-left", {
+        GUI.letter("head", story.name, m("div", m("code", "こだわり"), m("img.pull-left", {
           src: GUI.img_head + ("/icon/cd_" + story.rating + ".png")
-        }), rating.caption), m("dt.text", "発言制限"), m("dd.text", m.trust(saycnt != null ? saycnt.CAPTION : void 0), m("br"), m.trust(saycnt != null ? saycnt.HELP : void 0)), m("dt.text", "更新"), m("dd.text", story.view.update_at + "(" + story.view.update_interval + "ごと)"))), GUI.letter("", story.view.game_rule, m("ul.note", m.trust(RAILS.game_rule[story.type.game].HELP)), m("ul.note", (function() {
+        }), rating.caption), m("div", m("code", "発言制限"), m.trust(saycnt.CAPTION + "<br>" + saycnt.HELP)), m("div", m("code", "更新"), story.view.update_at + "(" + story.view.update_interval + "ごと)")), GUI.letter("", story.view.game_rule, m("ul.note", m.trust(RAILS.game_rule[story.type.game].HELP)), m("ul.note", (function() {
           var _i, _len, _ref, _results;
           _ref = story.options;
           _results = [];
@@ -1803,7 +1797,7 @@ GUI.message = (function() {
             _results.push(m("li", option.help));
           }
           return _results;
-        })())), GUI.letter("head", "" + story.view.player_length + "人の配役設定", m("div", roletable), m("div", m("span.mark", "事件"), story.view.event_cards), m("div", m("span.mark", "役職"), story.view.role_cards), m("div", m("span.mark", "見物人"), "" + mob.CAPTION + " " + mob.HELP)), m("span.mes_date.pull-right", "managed by ", m("kbd", story.sow_auth_id)), GUI.letter("", "設定", m.trust(story.comment)), JSON.stringify(story)
+        })())), GUI.letter("head", "" + story.view.player_length + "人の配役設定", m("div", roletable), m("div", m("code", "事件"), story.view.event_cards), m("div", m("code", "役職"), story.view.role_cards), m("div", m("code", "見物人"), m("kbd", mob.caption))), m("span.mes_date.pull-right", "managed by ", m("kbd", story.sow_auth_id)), GUI.letter("", "設定", m.trust(story.comment)), JSON.stringify(story)
       ]);
     },
 
@@ -2000,8 +1994,8 @@ GUI.ScrollSpy = (function() {
         var diff_bottom, elem_bottom, show_upper;
         _this.pager_elem = pager_elem;
         rect = _this.pager_elem.getBoundingClientRect();
-        show_under = rect.bottom < win.height;
-        show_upper = 0 < rect.top;
+        show_under = rect.bottom < win.horizon;
+        show_upper = win.horizon < rect.top;
         _this.avg_height = rect.height / (1 + _this.tail - _this.head);
         elem_bottom = rect.bottom + win.top;
         diff_bottom = elem_bottom - _this.elem_bottom;
