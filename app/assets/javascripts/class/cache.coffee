@@ -228,7 +228,7 @@ class Cache.Rule
     @adjust_keys = _.keys(@adjust).sort()
 
 
-  set_base: (from, cb)->
+  set_base: (from, parent, cb)->
     all = @finder.base_map()
     list = []
  
@@ -241,6 +241,9 @@ class Cache.Rule
       accept o
 
     for o in list
+      for key, val of parent
+        o[key] = val
+
       old = all?[o._id]
       for key in @adjust_keys
         @adjust[key](o, old)
@@ -249,23 +252,24 @@ class Cache.Rule
       scope = @finder.scopes[key]
       cb scope, list
 
-    @finder.map_reduce()
     return
 
+  map_reduce: ()->
+    @finder.map_reduce()
 
   reject: (list)->
-    @set_base list, (scope, list)->
+    @set_base list, null, (scope, list)->
       scope.reject list
 
     for rule in @responses
       rule.rehash() if @finder.diff.del || @finder.diff.change
 
-  merge: (list)->
-    @set_base list, (scope, list)->
+  merge: (list, parent)->
+    @set_base list, parent, (scope, list)->
       scope.merge list
 
-  set: (list)->
-    @set_base list, (scope, list)->
+  set: (list, parent)->
+    @set_base list, parent, (scope, list)->
       scope.hash = {}
       scope.merge list
 
@@ -321,184 +325,4 @@ class Cache.Scope
     @hash = {}
 
 ###
-new Cache.Append  face: []
 
-new Cache.Replace rule: []
-new Cache.Guard   text: ["potof"], ["target", "targets","text", "style", "count"]
-new Cache.Guard   vote: ["potof"], ["target", "targets"]
-
-new Cache.Replace site:  []
-new Cache.Replace story: ["site"]
-new Cache.Append  event: ["story"]
-new Cache.Append  scene: ["site"]
-
-new Cache.Append message: ["scene"]
-new Cache.Replace  potof: ["scene"]
-
-Cache.data =
-  form:
-    role: {}
-    text:
-      title: "title-write"
-      cmd: "write"
-      csid_cid: ""
-      text: ""
-      style: ""
-      target: ""
-      targets: []
-    vote: {}
-    is_preview: off
-
-    texts:
-      - cmd: entry
-        title:
-        text:
-        style:
-        csid_cid:
-        csid_cids:
-        role:
-        roles:
-        is_preview:
-        img: ->
-        preview: ->
-        request: ->
-      - cmd: action
-        title:
-        text:
-        target:
-        targets:
-        action:
-        actions:
-        no:
-        nos:
-        is_preview:
-        preview: ->
-        request: ->
-
-      targets:
-      - cmd: vote
-        jst: target
-        title:
-        target:
-        target2:
-        targets:
-        request: ->
-      - cmd: entrust
-        title:
-        target:
-        targets:
-        request: ->
-      - cmd: role
-        title:
-        target:
-        target2:
-        targets:
-        request: ->
-      - cmd: gift
-        title:
-        target:
-        target2:
-        targets:
-        request: ->
-
-      commands:
-      - cmd: kick
-        jst: target
-        title:
-        target:
-        request: ->
-      - cmd: maker
-        jst: target
-        title:
-        target:
-        request: ->
-
-      - cmd: muster
-        jst: button
-        title:
-        request: ->
-      - cmd: start
-        jst: button
-        title:
-        request: ->
-      - cmd: update
-        jst: button
-        title:
-        request: ->
-      - cmd: extend
-        jst: button
-        title:
-        request: ->
-      - cmd: scrapvil
-        jst: button
-        title:
-        request: ->
-
-      links:
-      - cmd: exit
-        jst: button
-        title:
-        request: ->
-      - cmd: makevilform
-        title:
-        request: ->
-
-      side:
-      - cmd: rolelist
-        trsid:
-        game:
-        request: ->
-
-  stories:
-  events:
-  potofs:
-  story:
-    story_id:
-  event:
-    story_id:
-    event_id:
-  potof:
-    story_id:
-    potof_id:
-    user_id:
-    sow_autn_id:
-
-    longname:
-    shortname:
-    name:
-
-    win:
-      visible:
-      result:
-    point:
-      actaddpt:
-      saidpoint:
-      saidcount:
-    say:
-      say:
-      tsay:
-      spsay:
-      wsay:
-      gsay:
-      say_act:
-    is:
-      voter:
-      human:
-      enemy:
-      wolf:
-      pixi:
-      sensible:
-      committer:
-    timer:
-      entry:
-      entry_expired:
-
-    live:
-    love:
-    overhear:
-
-    history:
-    status:
-
-
-###

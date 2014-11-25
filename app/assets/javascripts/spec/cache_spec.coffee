@@ -35,17 +35,23 @@ Cache.rule.site.set [
   _id: "b"
   title: "β complex"
 ]
+Cache.rule.site.map_reduce()
+
 Cache.rule.story.set [
   _id: story1
   site_id: "a"
   title: "ストーリー１"
 ]
+Cache.rule.story.map_reduce()
+
 Cache.rule.event.set [
   _id: event1
   site_id: "a"
   story_id: story1
   title: "イベント１"
 ]
+Cache.rule.event.map_reduce()
+
 Cache.rule.scene.set [
   _id: scene1
   site_id: "a"
@@ -55,6 +61,8 @@ Cache.rule.scene.set [
   site_id: "b"
   title: "7korobi-say"
 ]
+Cache.rule.scene.map_reduce()
+
 Cache.rule.fab.set [
   _id: fab1
   message_id: msg3
@@ -62,11 +70,14 @@ Cache.rule.fab.set [
   created_at: 10
   updated_at: 10
 ]
+Cache.rule.fab.map_reduce()
+
 Cache.rule.form.set [
   _id: form1
   scene_id: scene1
   text: "last submit text."
 ]
+Cache.rule.form.map_reduce()
 
 
 describe "Cache", ->
@@ -98,6 +109,7 @@ describe "Cache", ->
       updated_at: 1
     ,
     ]
+    Cache.rule.message.map_reduce()
 
   cache_message_with_scope = ->
     cache_message()
@@ -124,6 +136,8 @@ describe "Cache", ->
         _id: form1
         text: "last submit text."
       ]
+      Cache.rule.form.map_reduce()
+
       expect(Cache.forms.list().first.text).toEqual "new user input."
       done()
 
@@ -133,6 +147,8 @@ describe "Cache", ->
       scene = Cache.scenes.list().first
       scene.event_id = event1
       Cache.rule.scene.set [scene]
+      Cache.rule.scene.map_reduce()
+
       expect(Cache.scenes.where(event: [event1]).list().length).toEqual 1
       done()
 
@@ -173,6 +189,8 @@ describe "Cache", ->
         created_at: 1
         updated_at: 4
       ]
+      Cache.rule.message.map_reduce()
+
       expect(Cache.messages.list().length).toEqual 3
       expect(Cache.messages.where(of: ["also"]).list().length).toEqual 2
       expect(Cache.messages.where(of: ["also"]).sort().first.text).toEqual "text 4"
@@ -191,6 +209,8 @@ describe "Cache", ->
         created_at: 5
         updated_at: 5
       ]
+      Cache.rule.message.map_reduce()
+
       expect(Cache.messages.list().length).toEqual 4
       expect(Cache.messages.where(of: ["also"]).list().length).toEqual 2
       expect(Cache.messages.where(of: ["also"]).sort().first.text).toEqual "text 2"
@@ -265,4 +285,5 @@ describe "Cache", ->
       done()
       for event in sample2.events
         Cache.rule.message.merge event.messages
+      Cache.rule.message.map_reduce()
       expect(Cache.messages.list().length).toEqual 1604

@@ -44,3 +44,8 @@ for face in Cache.faces.sort()
   list.push {chr_set_id, face_id, job, _id} if job?
 
 Cache.rule.chr_job.merge list
+
+Cache.rule.face.map_reduce()
+Cache.rule.chr_set.map_reduce()
+Cache.rule.chr_npc.map_reduce()
+Cache.rule.chr_job.map_reduce()

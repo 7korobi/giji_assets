@@ -792,8 +792,8 @@ Cache.Rule = (function() {
     return this.adjust_keys = _.keys(this.adjust).sort();
   };
 
-  Rule.prototype.set_base = function(from, cb) {
-    var accept, all, key, list, o, old, scope, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2;
+  Rule.prototype.set_base = function(from, parent, cb) {
+    var accept, all, key, list, o, old, scope, val, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2;
     all = this.finder.base_map();
     list = [];
     accept = (function(_this) {
@@ -816,6 +816,10 @@ Cache.Rule = (function() {
     }
     for (_j = 0, _len1 = list.length; _j < _len1; _j++) {
       o = list[_j];
+      for (key in parent) {
+        val = parent[key];
+        o[key] = val;
+      }
       old = all != null ? all[o._id] : void 0;
       _ref1 = this.adjust_keys;
       for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
@@ -829,12 +833,15 @@ Cache.Rule = (function() {
       scope = this.finder.scopes[key];
       cb(scope, list);
     }
-    this.finder.map_reduce();
+  };
+
+  Rule.prototype.map_reduce = function() {
+    return this.finder.map_reduce();
   };
 
   Rule.prototype.reject = function(list) {
     var rule, _i, _len, _ref, _results;
-    this.set_base(list, function(scope, list) {
+    this.set_base(list, null, function(scope, list) {
       return scope.reject(list);
     });
     _ref = this.responses;
@@ -850,15 +857,15 @@ Cache.Rule = (function() {
     return _results;
   };
 
-  Rule.prototype.merge = function(list) {
-    return this.set_base(list, function(scope, list) {
+  Rule.prototype.merge = function(list, parent) {
+    return this.set_base(list, parent, function(scope, list) {
       return scope.merge(list);
     });
   };
 
-  Rule.prototype.set = function(list) {
+  Rule.prototype.set = function(list, parent) {
     var rule, _i, _len, _ref, _results;
-    this.set_base(list, function(scope, list) {
+    this.set_base(list, parent, function(scope, list) {
       scope.hash = {};
       return scope.merge(list);
     });
@@ -958,189 +965,6 @@ Cache.Scope = (function() {
   return Scope;
 
 })();
-
-
-/*
-new Cache.Append  face: []
-
-new Cache.Replace rule: []
-new Cache.Guard   text: ["potof"], ["target", "targets","text", "style", "count"]
-new Cache.Guard   vote: ["potof"], ["target", "targets"]
-
-new Cache.Replace site:  []
-new Cache.Replace story: ["site"]
-new Cache.Append  event: ["story"]
-new Cache.Append  scene: ["site"]
-
-new Cache.Append message: ["scene"]
-new Cache.Replace  potof: ["scene"]
-
-Cache.data =
-  form:
-    role: {}
-    text:
-      title: "title-write"
-      cmd: "write"
-      csid_cid: ""
-      text: ""
-      style: ""
-      target: ""
-      targets: []
-    vote: {}
-    is_preview: off
-
-    texts:
-      - cmd: entry
-        title:
-        text:
-        style:
-        csid_cid:
-        csid_cids:
-        role:
-        roles:
-        is_preview:
-        img: ->
-        preview: ->
-        request: ->
-      - cmd: action
-        title:
-        text:
-        target:
-        targets:
-        action:
-        actions:
-        no:
-        nos:
-        is_preview:
-        preview: ->
-        request: ->
-
-      targets:
-      - cmd: vote
-        jst: target
-        title:
-        target:
-        target2:
-        targets:
-        request: ->
-      - cmd: entrust
-        title:
-        target:
-        targets:
-        request: ->
-      - cmd: role
-        title:
-        target:
-        target2:
-        targets:
-        request: ->
-      - cmd: gift
-        title:
-        target:
-        target2:
-        targets:
-        request: ->
-
-      commands:
-      - cmd: kick
-        jst: target
-        title:
-        target:
-        request: ->
-      - cmd: maker
-        jst: target
-        title:
-        target:
-        request: ->
-
-      - cmd: muster
-        jst: button
-        title:
-        request: ->
-      - cmd: start
-        jst: button
-        title:
-        request: ->
-      - cmd: update
-        jst: button
-        title:
-        request: ->
-      - cmd: extend
-        jst: button
-        title:
-        request: ->
-      - cmd: scrapvil
-        jst: button
-        title:
-        request: ->
-
-      links:
-      - cmd: exit
-        jst: button
-        title:
-        request: ->
-      - cmd: makevilform
-        title:
-        request: ->
-
-      side:
-      - cmd: rolelist
-        trsid:
-        game:
-        request: ->
-
-  stories:
-  events:
-  potofs:
-  story:
-    story_id:
-  event:
-    story_id:
-    event_id:
-  potof:
-    story_id:
-    potof_id:
-    user_id:
-    sow_autn_id:
-
-    longname:
-    shortname:
-    name:
-
-    win:
-      visible:
-      result:
-    point:
-      actaddpt:
-      saidpoint:
-      saidcount:
-    say:
-      say:
-      tsay:
-      spsay:
-      wsay:
-      gsay:
-      say_act:
-    is:
-      voter:
-      human:
-      enemy:
-      wolf:
-      pixi:
-      sensible:
-      committer:
-    timer:
-      entry:
-      entry_expired:
-
-    live:
-    love:
-    overhear:
-
-    history:
-    status:
- */
-;
 var Gesture;
 
 Gesture = (function() {

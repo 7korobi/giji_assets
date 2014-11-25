@@ -7,6 +7,7 @@ if gon?.map_reduce?.faces?
       Cache.map_faces.reduce.chr_set[o._id].count
 
   Cache.rule.map_face.set gon.map_reduce.faces
+  Cache.rule.map_face.map_reduce()
   map_orders = (prop)->
     order = RAILS.map_faces_orders[prop]
     order.func = (o)-> o.win.value[order.order] ?= 0
@@ -82,6 +83,8 @@ if gon?.map_reduce?.faces?
 if gon?.face?
   face = Cache.map_face_detail = gon.face
   Cache.rule.map_face_story_log.set face.story_logs
+  Cache.rule.map_face_story_log.map_reduce()
+
   face.name = Cache.faces.find(face.face_id).name
   face.story_id_of_folders = _.groupBy face.story_ids, ([k,count])->
     k.split("-")?[0]
@@ -328,6 +331,7 @@ GUI.if_exist "#css_changer", (dom)->
 
 if gon?.potofs?
   Cache.rule.potof.set gon.potofs
+  Cache.rule.potof.map_reduce()
 
   GUI.if_exist "#sayfilter", (dom)->
     layout = new GUI.Layout dom, 1, 1, 100
@@ -404,9 +408,10 @@ if gon?.potofs?
 
 if gon?.story?
   Cache.rule.story.set [gon.story]
+  Cache.rule.story.map_reduce()
 
   GUI.if_exist "#story", (dom)->
-    story = Cache.storys.list()[0]
+    story = gon.story
 
     touch = new GUI.TouchMenu()
     touch.icon "home", ->
@@ -420,6 +425,7 @@ if gon?.story?
 
 if gon?.events? && gon.event?
   Cache.rule.event.merge gon.events
+  Cache.rule.event.map_reduce()
 
   GUI.if_exist "#event", (dom)->
     event = null
@@ -430,10 +436,9 @@ if gon?.events? && gon.event?
     m.module dom,
       controller: ->
       view: ->
-        event = Cache.events.find Url.prop.event_id()
         touch.menu m "h3",
           m "a.menuicon.glyphicon.glyphicon-film", GUI.TouchMenu.icons.start("film"), " "
-          m "span", event.name
+          m "span", "---"
 
   GUI.if_exist "#messages", (dom)->
     scroll_spy.avg_height = 150
@@ -456,19 +461,22 @@ if gon?.events? && gon.event?
     m.startComputation()
     setTimeout ->
       if gon.event.messages
-        Cache.rule.message.merge gon.event.messages
+        Cache.rule.message.merge gon.event.messages,
+          event_id: gon.event._id
+
       for event in gon.events
         if event.messages
-          for message in event.messages
-            message.event_id = event._id
-          Cache.rule.message.merge event.messages
-      Url.prop.event_id Cache.events.list()[0].event_id
+          Cache.rule.message.merge event.messages,
+            event_id: event._id
+      Cache.rule.message.map_reduce()
+
       m.endComputation()
     , DELAY.animato
 
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
     Cache.rule.item.set gon.villages
+    Cache.rule.item.map_reduce()
     m.module dom,
       controller: ->
       view: ->
@@ -478,6 +486,7 @@ if gon?.villages?
 if gon?.byebyes?
   GUI.if_exist "#byebyes", (dom)->
     Cache.rule.item.set gon.byebyes
+    Cache.rule.item.map_reduce()
     m.module dom,
       controller: ->
       view: ->
@@ -487,6 +496,7 @@ if gon?.byebyes?
 if gon?.history?
   GUI.if_exist "#history", (dom)->
     Cache.rule.item.set gon.history
+    Cache.rule.item.map_reduce()
     m.module dom,
       controller: ->
       view: ->
@@ -495,6 +505,7 @@ if gon?.history?
 
 if gon?.stories?
   Cache.rule.story.set gon.stories
+  Cache.rule.story.map_reduce()
   GUI.if_exist "#stories", (dom)->
     scroll_spy.avg_height = 22
     touch_sw = new GUI.TouchMenu()

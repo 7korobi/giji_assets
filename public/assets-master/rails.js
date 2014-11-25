@@ -15,7 +15,7 @@ Url.routes = {
     stories: new Url("stories=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
-    events: new Url("event=:event_id~:msg_mode~:msg_security", {
+    events: new Url("event=:msg_mode~:msg_security", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "?"
     }),
     potofs: new Url("potofs=:potofs_order~:potofs_desc", {
@@ -481,6 +481,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     });
   });
   Cache.rule.map_face.set(gon.map_reduce.faces);
+  Cache.rule.map_face.map_reduce();
   map_orders = function(prop) {
     var order;
     order = RAILS.map_faces_orders[prop];
@@ -565,6 +566,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
 if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
   face = Cache.map_face_detail = gon.face;
   Cache.rule.map_face_story_log.set(face.story_logs);
+  Cache.rule.map_face_story_log.map_reduce();
   face.name = Cache.faces.find(face.face_id).name;
   face.story_id_of_folders = _.groupBy(face.story_ids, function(_arg) {
     var count, k, _ref1;
@@ -862,6 +864,7 @@ GUI.if_exist("#css_changer", function(dom) {
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) {
   Cache.rule.potof.set(gon.potofs);
+  Cache.rule.potof.map_reduce();
   GUI.if_exist("#sayfilter", function(dom) {
     var layout, touch;
     layout = new GUI.Layout(dom, 1, 1, 100);
@@ -901,9 +904,10 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.story : void 0) != null) {
   Cache.rule.story.set([gon.story]);
+  Cache.rule.story.map_reduce();
   GUI.if_exist("#story", function(dom) {
     var story, touch;
-    story = Cache.storys.list()[0];
+    story = gon.story;
     touch = new GUI.TouchMenu();
     touch.icon("home", function() {
       return GUI.message.story(story);
@@ -919,6 +923,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.story : void 0) != null) {
 
 if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && (gon.event != null)) {
   Cache.rule.event.merge(gon.events);
+  Cache.rule.event.map_reduce();
   GUI.if_exist("#event", function(dom) {
     var event, touch;
     event = null;
@@ -929,8 +934,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        event = Cache.events.find(Url.prop.event_id());
-        return touch.menu(m("h3", m("a.menuicon.glyphicon.glyphicon-film", GUI.TouchMenu.icons.start("film"), " "), m("span", event.name)));
+        return touch.menu(m("h3", m("a.menuicon.glyphicon.glyphicon-film", GUI.TouchMenu.icons.start("film"), " "), m("span", "---")));
       }
     });
   });
@@ -962,23 +966,22 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     m.startComputation();
     return setTimeout(function() {
-      var event, message, _i, _j, _len, _len1, _ref1, _ref2;
+      var event, _i, _len, _ref1;
       if (gon.event.messages) {
-        Cache.rule.message.merge(gon.event.messages);
+        Cache.rule.message.merge(gon.event.messages, {
+          event_id: gon.event._id
+        });
       }
       _ref1 = gon.events;
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
         event = _ref1[_i];
         if (event.messages) {
-          _ref2 = event.messages;
-          for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-            message = _ref2[_j];
-            message.event_id = event._id;
-          }
-          Cache.rule.message.merge(event.messages);
+          Cache.rule.message.merge(event.messages, {
+            event_id: event._id
+          });
         }
       }
-      Url.prop.event_id(Cache.events.list()[0].event_id);
+      Cache.rule.message.map_reduce();
       return m.endComputation();
     }, DELAY.animato);
   });
@@ -987,6 +990,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
 if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null) {
   GUI.if_exist("#villages", function(dom) {
     Cache.rule.item.set(gon.villages);
+    Cache.rule.item.map_reduce();
     return m.module(dom, {
       controller: function() {},
       view: function() {
@@ -1001,6 +1005,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null
 if ((typeof gon !== "undefined" && gon !== null ? gon.byebyes : void 0) != null) {
   GUI.if_exist("#byebyes", function(dom) {
     Cache.rule.item.set(gon.byebyes);
+    Cache.rule.item.map_reduce();
     return m.module(dom, {
       controller: function() {},
       view: function() {
@@ -1015,6 +1020,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.byebyes : void 0) != null)
 if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null) {
   GUI.if_exist("#history", function(dom) {
     Cache.rule.item.set(gon.history);
+    Cache.rule.item.map_reduce();
     return m.module(dom, {
       controller: function() {},
       view: function() {
@@ -1028,6 +1034,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) {
   Cache.rule.story.set(gon.stories);
+  Cache.rule.story.map_reduce();
   GUI.if_exist("#stories", function(dom) {
     var touch, touch_sw;
     scroll_spy.avg_height = 22;
