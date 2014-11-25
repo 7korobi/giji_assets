@@ -5,46 +5,57 @@ class GUI.Layout
       o.translate()
   win.on.resize.push @resize
 
-  constructor: (@dx, @dy, @box, @animation = ->)->
+  constructor: (@box, @dx, @dy, dz, @absolute = false, @duration = DELAY.andante)->
     return unless @box
 
     GUI.Layout.list[@box.id] = @
+    @box.style.zIndex = dz
     @mode = "show"
-    @absolute = false
 
-  calc: (left, top)->
-    x: left
-    y: top
-    w: @box.offsetWidth
-    h: @box.offsetHeight
-    win:
-      left: win.left
+    @from = @hide()
+    @transform @from
+    @transition()
+
+  move = (cb)->
+    w = @width  || @box.offsetWidth
+    h = @height || @box.offsetHeight
+
+    if @dx
+      x = @dx
+    else
+      @width = @box.parentElement.offsetWidth
+      x = @box.parentElement.offsetLeft
+
+    if @dy
+      y = @dy
+
+    cb x, y, w, h, 
       top: win.top
+      left: win.left
+      width: win.width
+      height: win.height
 
   show: ->
-    width  = win.width  - @box.offsetWidth
-    height = win.height - @box.offsetHeight
-
-    left = @box.parentElement.offsetLeft if 0 == @dx
-    left = @dx + width if @dx < 0
-    left = @dx         if   0 < @dx
-    top = @dy + height if @dy < 0
-    top = @dy          if   0 < @dy
-
-    @calc(left, top)
+    move.call @, (x, y, w, h, win)->
+      x += win.width  - w if x < 0
+      y += win.height - h if y < 0
+      {x, y, w, h, win}
 
   hide: ->
-    left = @box.parentElement.offsetLeft if 0 == @dx
-    left = - @dx + win.width        if @dx < 0
-    left = - @dx - @box.offsetWidth if   0 < @dx
-    top = - @dy + win.height        if @dy < 0
-    top = - @dy - @box.offsetHeight if   0 < @dy
-
-    @calc(left, top)
+    move.call @, (x, y, w, h, win)->
+      x = - x +
+        switch 
+          when 0 < x then - w
+          when x < 0 then win.width
+      y = - y +
+        switch 
+          when 0 < y then - h
+          when y < 0 then win.height
+      {x, y, w, h, win}
 
   transform: ({x, y})->
-    if 0 == @dx
-      @box.style.width = "#{@box.parentElement.offsetWidth}px"
+    @box.style.width  = "#{@width}px"  if @width
+    @box.style.height = "#{@height}px" if @height
 
     if @absolute
       @box.style.position = "absolute"
@@ -68,12 +79,12 @@ class GUI.Layout
       @box.style.transform = transform
 
 
-  transition: (@duration)->
-    if @absolute
-      @duration /= 4
-      return
-    
-    transition = "all #{@duration}ms ease-in-out 0"
+  transition: ()->
+    transition = 
+      if @duration && ! @absolute
+        "all #{@duration}ms ease-in-out 0"
+      else
+        ""
     @box.style.mozTransition = transition if head.browser.ff
     @box.style.msTransition = transition if head.browser.ie
     @box.style.oTransition = transition if head.browser.opera
@@ -81,23 +92,18 @@ class GUI.Layout
 
   translate: ->
     return unless @box
-    unless @from
-      window.requestAnimationFrame =>
-        @transition DELAY.andante
-        @translate()
-      @from = @hide()
-      @transform @from
-      return
 
     to = @[@mode]()
-    return if @from.x == to.x && @from.y == to.y && @from.w == to.w && @from.h == to.h && @from.win.left == win.left && @from.win.top == win.top
+    return if _.isEqual(@from, to)
 
     @transform(to)
 
+    duration = @duration
+    duration /= 4 if @absolute
     setTimeout =>
       @from = to
       @translate()
-    , @duration
+    , duration
 
 
 

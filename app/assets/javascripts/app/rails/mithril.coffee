@@ -241,17 +241,16 @@ GUI.if_exist "#buttons", (dom)->
       for box in document.querySelectorAll(".glyphicon-cog")
         anime box
 
-  layout = new GUI.Layout -1,-1, dom
-  layout.box.style.zIndex = 120
-
+  layout = new GUI.Layout dom, -1, -1, 120
+  layout.transition()
   touch = GUI.TouchMenu.icons
   m.module dom,
     controller: ->
     view: ->
       switch Url.prop.layout()
-        when "right"
+        when "right", "center"
           layout.dx =  1
-        when "left", "center"
+        when "left"
           layout.dx = -1
 
       m "nav",
@@ -262,9 +261,8 @@ GUI.if_exist "#buttons", (dom)->
               m ".glyphicon.glyphicon-#{icon}"
 
 GUI.if_exist "#topviewer", (dom)->
-  layout = new GUI.Layout   0, 1, dom
-  layout.box.style.zIndex = 110
-  layout.absolute = head.browser.ios
+  layout = new GUI.Layout dom, 0, 1, 110, head.browser.ios, 0
+
   m.module dom,
     controller: ->
     view: ->
@@ -332,30 +330,42 @@ if gon?.potofs?
   Cache.rule.potof.set gon.potofs
 
   GUI.if_exist "#sayfilter", (dom)->
+    layout = new GUI.Layout dom, 1, 1, 100
     touch = new GUI.TouchMenu()
-    layout = new GUI.Layout 1, 1, dom
-    layout.box.style.zIndex = 100
 
     m.module dom,
       controller: ->
       view: ->
-        width = win.width - Url.prop.w()
+        layout.width = win.width - Url.prop.w() - 4
         switch Url.prop.layout()
           when "right"
             layout.dx =  1
           when "center"
             layout.dx = -1
-            width /= 2
+            layout.width /= 2
           when "left"
             layout.dx = -1
-        layout.box.style.width = "#{width}px"
 
-        table = 
+        filter = 
+          m "div",
+            m "a", touch.btn(Url.prop.msg_mode, "info"  ), "情報"
+            m "a", touch.btn(Url.prop.msg_mode, "action"), "行動"
+            m "a", touch.btn(Url.prop.msg_mode, "talk"  ), "発言"
+            m "a", touch.btn(Url.prop.msg_mode, "memo"  ), "メモ"
+            m "span", " "
+            m "a", touch.btn(Url.prop.msg_security, "delete"  ), "削除"
+            m "a", touch.btn(Url.prop.msg_security, "announce"), "告知"
+            m "span", " "
+            m "a", touch.btn(Url.prop.msg_security, "open"    ), "公開"
+            m "a", touch.btn(Url.prop.msg_security, "clan"    ), "仲間"
+            m "a", touch.btn(Url.prop.msg_security, "think"   ), "独り言"
+            m "a", touch.btn(Url.prop.msg_security, "all"     ), "全表示"
+
+        potofs = 
           m "table.potofs",
             m "tbody",
               for o in Cache.potofs.list() # Url.prop.potofs_desc()
                 m "tr",
-                  # m "td", {}, o.view.portrate
                   m "th.calc", {}, o.view.job
                   m "th", {}, o.view.name
                   m "td.center", {}, o.view.sow_auth_id
@@ -370,25 +380,26 @@ if gon?.potofs?
                   m "td", {}, o.view.text
             m "tfoot.head",
               m "tr",
-                # m "th", m "span", {}, "御尊顔"
-                m "th[colspan=2].center", m "span", {}, "名前"
-                m "th.center", m "span", {}, "プレイヤー"
-                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "stat_at"),   "日程"
-                m "th", m "a", touch.btn(Url.prop.potofs_order, "stat_type"), "状態"
-                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "said_num"),  "発言数"
-                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "pt"),        "残pt"
-                m "th", m "a", touch.btn(Url.prop.potofs_order, "win"),       "勝敗"
-                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "win_side"),  "陣営"
-                m "th", m "a", touch.btn(Url.prop.potofs_order, "role"),      "役割"
-                m "th", m "a", touch.btn(Url.prop.potofs_order, "select"),    "希望"
-                m "th", m "a", touch.btn(Url.prop.potofs_order, "text"),      "補足"
+                m "th[colspan=3].center", m "sup", "(スクロールします。)"
+                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "stat_at"),  "日程"
+                m "th", m "a", touch.btn(Url.prop.potofs_order, "stat_type"),     "状態"
+                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "said_num"), "発言数"
+                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "pt"),       "残pt"
+                m "th", m "a", touch.btn(Url.prop.potofs_order, "win"),           "勝敗"
+                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "win_side"), "陣営"
+                m "th", m "a", touch.btn(Url.prop.potofs_order, "role"),          "役割"
+                m "th", m "a", touch.btn(Url.prop.potofs_order, "select"),        "希望"
+                m "th", m "a", touch.btn(Url.prop.potofs_order, "text"),          "補足"
 
         m "div",
           m ".sayfilter_heading.bottom"
           m ".insayfilter",
             m ".paragraph",
-              m ".table-swipe.sayfilter_content", table
-            m ".paragraph", "(スクロールします。)"
+              m ".table-swipe.sayfilter_content", potofs
+            m ".paragraph",
+              m ".sayfilter_content.form-inline",
+                m "h6", "スタイル"
+                m ".form-group", filter
           m ".sayfilter_heading.bottom"
 
 if gon?.story?
@@ -410,15 +421,6 @@ if gon?.story?
 if gon?.events? && gon.event?
   Cache.rule.event.merge gon.events
 
-  if gon.event.messages
-    Cache.rule.message.merge gon.event.messages
-  for event in gon.events
-    if event.messages
-      for message in event.messages
-        message.event_id = event._id
-      Cache.rule.message.merge event.messages
-  Url.prop.event_id Cache.events.list()[0].event_id
-
   GUI.if_exist "#event", (dom)->
     event = null
     touch = new GUI.TouchMenu()
@@ -438,11 +440,31 @@ if gon?.events? && gon.event?
     m.module dom,
       controller: ->
       view: ->
-        messages = Cache.messages.where(talk:["all"]).sort()
+        q = {}
+        q[Url.prop.msg_mode()] = [Url.prop.msg_security()]
+        messages = Cache.messages.where(q).sort()
+
         scroll_spy.pager "div", messages, (o)->
+          anchor_num  = o.logid.substring(2) - 0 || 0
+          o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
+          o.updated_at ?= new Date(o.date) - 0
+          o.updated_timer ?= new Timer o.updated_at,
+            prop: ->
+          delete o.date
           o.vdom(o)
 
-
+    m.startComputation()
+    setTimeout ->
+      if gon.event.messages
+        Cache.rule.message.merge gon.event.messages
+      for event in gon.events
+        if event.messages
+          for message in event.messages
+            message.event_id = event._id
+          Cache.rule.message.merge event.messages
+      Url.prop.event_id Cache.events.list()[0].event_id
+      m.endComputation()
+    , DELAY.animato
 
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
