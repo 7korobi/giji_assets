@@ -1,5 +1,8 @@
 new Cache.Rule("map_face").schema ->
   @belongs_to "face", dependent: true
+  @scope "chr_set", (o)-> o.chr_set_ids
+  @search (o)-> o.search_words
+
   @fields
     _id: (o)-> 
       o._id = o.face_id
@@ -19,16 +22,14 @@ new Cache.Rule("map_face").schema ->
       for sow_auth_id of o.sow_auth_id.value
         o.search_words.push sow_auth_id
 
-  @scope "chr_set", (o)-> o.chr_set_ids
-  @search (o)-> o.search_words
-
 new Cache.Rule("map_face_story_log").schema ->
   @scope "folder", (o)-> [o.folder]
+  @order (o)-> o.date.max
+
   @fields
     _id: (o)->
       o._id = o.logid_head
       o.folder = o.logid_head.split("-")[0].toUpperCase()
-  @order (o)-> o.date.max
 
 
 new Cache.Rule("item").schema ->
@@ -48,23 +49,11 @@ new Cache.Rule("message").schema ->
   @scope "action", (o)-> o.is.action && o.security
   @scope "talk",   (o)-> o.is.talk   && o.security
   @scope "memo",   (o)-> o.is.memo   && o.security
+  @search (o)-> [o.log]
 
-  patch_no = 
-    I: 1
-    S: 2
-    X: 2
-    A: 3
-    B: 3
-    M: 4    
   @fields
     _id: (o)-> 
-      anchor_num  = o.logid.substring(2) - 0 || 0
-      patch = patch_no[o.logid[1]] || 5
-
       o._id = o.event_id + "-" + o.logid
-      # o._id = Serial.serializer.Date(o.updated_at + anchor_num + patch)
-
-      o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
 
     security: (o)->
       o.security =
@@ -88,6 +77,8 @@ new Cache.Rule("message").schema ->
       o.scene_id = o.event_id + "-" + o.security[0]
 
     timer: (o)->
+      anchor_num  = o.logid.substring(2) - 0 || 0
+      o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
       o.updated_at ?= new Date(o.date) - 0
       o.updated_timer ?= new Timer o.updated_at,
         prop: ->

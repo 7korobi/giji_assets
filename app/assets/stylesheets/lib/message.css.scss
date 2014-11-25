@@ -110,6 +110,7 @@ h6 {
 
 .mes_maker,
 .MAKER .action,
+.MAKER.memo,
 .MAKER.guide {
   color: #ccf !important;
 }
@@ -121,6 +122,7 @@ h6 {
 
 .mes_admin,
 .ADMIN .action,
+.ADMIN.memo,
 .ADMIN.guide {
   color: #c99;
 }
@@ -133,10 +135,12 @@ h6 {
 .mes_maker,
 .MAKER .msg,
 .MAKER .action,
+.MAKER.memo,
 .MAKER.guide ,
 .mes_admin,
 .ADMIN .msg,
 .ADMIN .action,
+.ADMIN.memo,
 .ADMIN.guide {
   background: #000 !important;
 }

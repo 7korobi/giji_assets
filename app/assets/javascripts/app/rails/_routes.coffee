@@ -11,7 +11,7 @@ Url.routes =
     stories: new Url "stories=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search",
       unmatch: gon?.stories? && "?"
 
-    events: new Url "event=:event_id",
+    events: new Url "event=:event_id~:msg_mode~:msg_security",
       unmatch: gon?.events? && "?"
 
     potofs: new Url "potofs=:potofs_order~:potofs_desc",

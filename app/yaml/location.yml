@@ -37,9 +37,13 @@ options:
   hide_ids:
     type: Array
     current: []
-  message_ids:
+  msg_ids:
     type: Array
     current: []
+  msg_mode:
+    current: talk
+  msg_security:
+    current: open
 
   roletable:
     current: ALL
