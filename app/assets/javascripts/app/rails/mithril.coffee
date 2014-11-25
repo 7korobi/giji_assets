@@ -352,6 +352,12 @@ if gon?.potofs?
 
         filter = 
           m "div",
+            m "h6", "検索する。"
+            m "input.form-control",
+              onblur:   m.withAttr("value", Url.prop.search)
+              onchange: m.withAttr("value", Url.prop.search)
+              value: Url.prop.search()
+            m "h6", "スタイル"
             m "a", touch.btn(Url.prop.msg_mode, "info"  ), "情報"
             m "a", touch.btn(Url.prop.msg_mode, "action"), "行動"
             m "a", touch.btn(Url.prop.msg_mode, "talk"  ), "発言"
@@ -402,7 +408,6 @@ if gon?.potofs?
               m ".table-swipe.sayfilter_content", potofs
             m ".paragraph",
               m ".sayfilter_content.form-inline",
-                m "h6", "スタイル"
                 m ".form-group", filter
           m ".sayfilter_heading.bottom"
 
@@ -428,17 +433,20 @@ if gon?.events? && gon.event?
   Cache.rule.event.map_reduce()
 
   GUI.if_exist "#event", (dom)->
-    event = null
+    story = gon.story
     touch = new GUI.TouchMenu()
-    touch.icon "film", ->
-      GUI.message.event event, story
 
     m.module dom,
       controller: ->
       view: ->
-        touch.menu m "h3",
-          m "a.menuicon.glyphicon.glyphicon-film", GUI.TouchMenu.icons.start("film"), " "
-          m "span", "---"
+        event_id = Url.prop.scroll()?.split("-")[0..2].join("-")
+        event = Cache.events.find event_id
+        if event?
+          touch.icon "film", ->
+            GUI.message.event event, story
+          touch.menu m "h3",
+            m "a.menuicon.glyphicon.glyphicon-film", GUI.TouchMenu.icons.start("film"), " "
+            m "span", event.name
 
   GUI.if_exist "#messages", (dom)->
     scroll_spy.avg_height = 150
@@ -447,7 +455,8 @@ if gon?.events? && gon.event?
       view: ->
         q = {}
         q[Url.prop.msg_mode()] = [Url.prop.msg_security()]
-        messages = Cache.messages.where(q).sort()
+
+        messages = Cache.messages.search(Url.prop.search()).where(q).sort()
 
         scroll_spy.pager "div", messages, (o)->
           anchor_num  = o.logid.substring(2) - 0 || 0

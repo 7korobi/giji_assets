@@ -9,20 +9,20 @@ Url.routes = {
     events: new Url("/:story_id/file")
   },
   search: {
-    folder: new Url("folder=:folder", {
-      unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
+    faces: new Url("faces=:chr_set~:order~:search", {
+      unmatch: ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) && "?"
     }),
     stories: new Url("stories=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
-    events: new Url("event=:msg_mode~:msg_security", {
+    events: new Url("event=:msg_mode~:msg_security~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "?"
     }),
     potofs: new Url("potofs=:potofs_order~:potofs_desc", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) && "?"
     }),
-    faces: new Url("faces=:chr_set~:order~:search", {
-      unmatch: ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) && "?"
+    folder: new Url("folder=:folder", {
+      unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
     scroll: new Url("scroll=:scroll", {
       unmatch: "?"
@@ -885,7 +885,11 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           case "left":
             layout.dx = -1;
         }
-        filter = m("div", m("a", touch.btn(Url.prop.msg_mode, "info"), "情報"), m("a", touch.btn(Url.prop.msg_mode, "action"), "行動"), m("a", touch.btn(Url.prop.msg_mode, "talk"), "発言"), m("a", touch.btn(Url.prop.msg_mode, "memo"), "メモ"), m("span", " "), m("a", touch.btn(Url.prop.msg_security, "delete"), "削除"), m("a", touch.btn(Url.prop.msg_security, "announce"), "告知"), m("span", " "), m("a", touch.btn(Url.prop.msg_security, "open"), "公開"), m("a", touch.btn(Url.prop.msg_security, "clan"), "仲間"), m("a", touch.btn(Url.prop.msg_security, "think"), "独り言"), m("a", touch.btn(Url.prop.msg_security, "all"), "全表示"));
+        filter = m("div", m("h6", "検索する。"), m("input.form-control", {
+          onblur: m.withAttr("value", Url.prop.search),
+          onchange: m.withAttr("value", Url.prop.search),
+          value: Url.prop.search()
+        }), m("h6", "スタイル"), m("a", touch.btn(Url.prop.msg_mode, "info"), "情報"), m("a", touch.btn(Url.prop.msg_mode, "action"), "行動"), m("a", touch.btn(Url.prop.msg_mode, "talk"), "発言"), m("a", touch.btn(Url.prop.msg_mode, "memo"), "メモ"), m("span", " "), m("a", touch.btn(Url.prop.msg_security, "delete"), "削除"), m("a", touch.btn(Url.prop.msg_security, "announce"), "告知"), m("span", " "), m("a", touch.btn(Url.prop.msg_security, "open"), "公開"), m("a", touch.btn(Url.prop.msg_security, "clan"), "仲間"), m("a", touch.btn(Url.prop.msg_security, "think"), "独り言"), m("a", touch.btn(Url.prop.msg_security, "all"), "全表示"));
         potofs = m("table.potofs", m("tbody", (function() {
           var _i, _len, _ref1, _results;
           _ref1 = Cache.potofs.list();
@@ -896,7 +900,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           }
           return _results;
         })()), m("tfoot.head", m("tr", m("th[colspan=3].center", m("sup", "(スクロールします。)")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "stat_at"), "日程")), m("th", m("a", touch.btn(Url.prop.potofs_order, "stat_type"), "状態")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "said_num"), "発言数")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "pt"), "残pt")), m("th", m("a", touch.btn(Url.prop.potofs_order, "win"), "勝敗")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "win_side"), "陣営")), m("th", m("a", touch.btn(Url.prop.potofs_order, "role"), "役割")), m("th", m("a", touch.btn(Url.prop.potofs_order, "select"), "希望")), m("th", m("a", touch.btn(Url.prop.potofs_order, "text"), "補足")))));
-        return m("div", m(".sayfilter_heading.bottom"), m(".insayfilter", m(".paragraph", m(".table-swipe.sayfilter_content", potofs)), m(".paragraph", m(".sayfilter_content.form-inline", m("h6", "スタイル"), m(".form-group", filter)))), m(".sayfilter_heading.bottom"));
+        return m("div", m(".sayfilter_heading.bottom"), m(".insayfilter", m(".paragraph", m(".table-swipe.sayfilter_content", potofs)), m(".paragraph", m(".sayfilter_content.form-inline", m(".form-group", filter)))), m(".sayfilter_heading.bottom"));
       }
     });
   });
@@ -925,16 +929,21 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
   Cache.rule.event.merge(gon.events);
   Cache.rule.event.map_reduce();
   GUI.if_exist("#event", function(dom) {
-    var event, touch;
-    event = null;
+    var story, touch;
+    story = gon.story;
     touch = new GUI.TouchMenu();
-    touch.icon("film", function() {
-      return GUI.message.event(event, story);
-    });
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return touch.menu(m("h3", m("a.menuicon.glyphicon.glyphicon-film", GUI.TouchMenu.icons.start("film"), " "), m("span", "---")));
+        var event, event_id, _ref1;
+        event_id = (_ref1 = Url.prop.scroll()) != null ? _ref1.split("-").slice(0, 3).join("-") : void 0;
+        event = Cache.events.find(event_id);
+        if (event != null) {
+          touch.icon("film", function() {
+            return GUI.message.event(event, story);
+          });
+          return touch.menu(m("h3", m("a.menuicon.glyphicon.glyphicon-film", GUI.TouchMenu.icons.start("film"), " "), m("span", event.name)));
+        }
       }
     });
   });
@@ -946,7 +955,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         var messages, q;
         q = {};
         q[Url.prop.msg_mode()] = [Url.prop.msg_security()];
-        messages = Cache.messages.where(q).sort();
+        messages = Cache.messages.search(Url.prop.search()).where(q).sort();
         return scroll_spy.pager("div", messages, function(o) {
           var anchor_num;
           anchor_num = o.logid.substring(2) - 0 || 0;

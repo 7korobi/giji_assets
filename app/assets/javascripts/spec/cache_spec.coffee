@@ -239,33 +239,22 @@ describe "Cache", ->
   describe "import sample data", ->
     it "get all item", (done)->
       new Cache.Rule("message").schema ->
-        @order_by "created_at"
+        @order_by "updated_at"
         @belongs_to "scene"
         @belongs_to "face"
         @belongs_to "sow_auth"
         @scope "logid", (o)-> [o.logid]
         @scope "unread", (o)-> null
-        @scope "info", (o)->
-          if o.logid.match /^([aAmM].\d+)|(vilinfo)|(potofs)/
-            o.security
-
-        @scope "action", (o)->
-          if o.logid.match /^.[AB]/
-            o.security
-
-        @scope "talk", (o)->
-          if o.logid.match /^.[SX]/
-            o.security
-
-        @scope "memo", (o)->
-          if o.logid.match /^.[M]/
-            o.security
+        @scope "info",   (o)-> o.is.info   && o.security
+        @scope "action", (o)-> o.is.action && o.security
+        @scope "talk",   (o)-> o.is.talk   && o.security
+        @scope "memo",   (o)-> o.is.memo   && o.security
+        @search (o)-> [o.log]
 
         @fields
           _id: (o)-> 
-            o.created_at = new Date(o.date) - 0
-            o._id = ID.at(o.created_at)
-            delete o.date
+            o._id = o.event_id + "-" + o.logid
+
           security: (o)->
             o.security =
               switch
@@ -273,7 +262,11 @@ describe "Cache", ->
                   ["delete", "think", "all"]
                 when o.logid.match /^([qcS].\d+)|(MM\d+)/
                   ["open", "clan", "think", "all"]
-                when o.logid.match /^([aAmMI].\d+)|(vilinfo)|(potofs)/
+                when o.mestype == "MAKER"
+                  ["announce", "open", "clan", "think", "all"]
+                when o.mestype == "ADMIN"
+                  ["announce", "open", "clan", "think", "all"]
+                when o.logid.match /^([I].\d+)|(vilinfo)|(potofs)/
                   ["announce", "open", "clan", "think", "all"]
                 when o.logid.match /^([Ti].\d+)/
                   ["think", "all"]
@@ -281,9 +274,56 @@ describe "Cache", ->
                   ["clan", "all"]
                 else
                   []
-            o.scene_id = o.event_id + o.security[0]
+            o.scene_id = o.event_id + "-" + o.security[0]
+
+          timer: (o)->
+            anchor_num  = o.logid.substring(2) - 0 || 0
+            o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
+            o.updated_at ?= new Date(o.date) - 0
+            o.updated_timer ?= new Timer o.updated_at,
+              prop: ->
+            delete o.date
+
+          vdom: (o)->
+            vdom = GUI.message.xxx
+            o.is = {}
+
+            if o.logid.match /^vilinfo/
+              vdom = GUI.story
+              o.is.info = true
+            if o.logid.match /^potofs/
+              vdom = GUI.potofs
+              o.is.info = true
+            if o.logid.match /^.[I]/
+              vdom = GUI.message.info
+              o.is.info = true
+              o.is.talk = true
+            if o.logid.match /^.[SX]/
+              vdom = GUI.message.talk
+              o.is.talk = true
+            if o.logid.match /^.[M]/
+              vdom = GUI.message.memo
+              o.is.memo = true
+
+            if o.mestype == "MAKER"
+              vdom = GUI.message.admin
+              o.is.info = true
+            if o.mestype == "ADMIN"
+              vdom = GUI.message.admin
+              o.is.info = true
+
+            if o.logid.match /^.[AB]/
+              vdom = GUI.message.action
+              o.is.action = true
+              o.is.talk = true
+
+            o.vdom = vdom
       done()
-      for event in sample2.events
-        Cache.rule.message.merge event.messages
+      if sample.messages?
+        Cache.rule.message.merge sample.messages
+      if sample.events?
+        for event in sample.events
+          Cache.rule.message.merge event.messages,
+            event_id: event._id
       Cache.rule.message.map_reduce()
       expect(Cache.messages.list().length).toEqual 1604

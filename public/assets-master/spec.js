@@ -7726,7 +7726,7 @@ describe("Cache", function() {
     return it("get all item", function(done) {
       var event, _i, _len, _ref;
       new Cache.Rule("message").schema(function() {
-        this.order_by("created_at");
+        this.order_by("updated_at");
         this.belongs_to("scene");
         this.belongs_to("face");
         this.belongs_to("sow_auth");
@@ -7737,30 +7737,23 @@ describe("Cache", function() {
           return null;
         });
         this.scope("info", function(o) {
-          if (o.logid.match(/^([aAmM].\d+)|(vilinfo)|(potofs)/)) {
-            return o.security;
-          }
+          return o.is.info && o.security;
         });
         this.scope("action", function(o) {
-          if (o.logid.match(/^.[AB]/)) {
-            return o.security;
-          }
+          return o.is.action && o.security;
         });
         this.scope("talk", function(o) {
-          if (o.logid.match(/^.[SX]/)) {
-            return o.security;
-          }
+          return o.is.talk && o.security;
         });
         this.scope("memo", function(o) {
-          if (o.logid.match(/^.[M]/)) {
-            return o.security;
-          }
+          return o.is.memo && o.security;
+        });
+        this.search(function(o) {
+          return [o.log];
         });
         return this.fields({
           _id: function(o) {
-            o.created_at = new Date(o.date) - 0;
-            o._id = ID.at(o.created_at);
-            return delete o.date;
+            return o._id = o.event_id + "-" + o.logid;
           },
           security: function(o) {
             o.security = (function() {
@@ -7769,7 +7762,11 @@ describe("Cache", function() {
                   return ["delete", "think", "all"];
                 case !o.logid.match(/^([qcS].\d+)|(MM\d+)/):
                   return ["open", "clan", "think", "all"];
-                case !o.logid.match(/^([aAmMI].\d+)|(vilinfo)|(potofs)/):
+                case o.mestype !== "MAKER":
+                  return ["announce", "open", "clan", "think", "all"];
+                case o.mestype !== "ADMIN":
+                  return ["announce", "open", "clan", "think", "all"];
+                case !o.logid.match(/^([I].\d+)|(vilinfo)|(potofs)/):
                   return ["announce", "open", "clan", "think", "all"];
                 case !o.logid.match(/^([Ti].\d+)/):
                   return ["think", "all"];
@@ -7779,15 +7776,76 @@ describe("Cache", function() {
                   return [];
               }
             })();
-            return o.scene_id = o.event_id + o.security[0];
+            return o.scene_id = o.event_id + "-" + o.security[0];
+          },
+          timer: function(o) {
+            var anchor_num;
+            anchor_num = o.logid.substring(2) - 0 || 0;
+            o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
+            if (o.updated_at == null) {
+              o.updated_at = new Date(o.date) - 0;
+            }
+            if (o.updated_timer == null) {
+              o.updated_timer = new Timer(o.updated_at, {
+                prop: function() {}
+              });
+            }
+            return delete o.date;
+          },
+          vdom: function(o) {
+            var vdom;
+            vdom = GUI.message.xxx;
+            o.is = {};
+            if (o.logid.match(/^vilinfo/)) {
+              vdom = GUI.story;
+              o.is.info = true;
+            }
+            if (o.logid.match(/^potofs/)) {
+              vdom = GUI.potofs;
+              o.is.info = true;
+            }
+            if (o.logid.match(/^.[I]/)) {
+              vdom = GUI.message.info;
+              o.is.info = true;
+              o.is.talk = true;
+            }
+            if (o.logid.match(/^.[SX]/)) {
+              vdom = GUI.message.talk;
+              o.is.talk = true;
+            }
+            if (o.logid.match(/^.[M]/)) {
+              vdom = GUI.message.memo;
+              o.is.memo = true;
+            }
+            if (o.mestype === "MAKER") {
+              vdom = GUI.message.admin;
+              o.is.info = true;
+            }
+            if (o.mestype === "ADMIN") {
+              vdom = GUI.message.admin;
+              o.is.info = true;
+            }
+            if (o.logid.match(/^.[AB]/)) {
+              vdom = GUI.message.action;
+              o.is.action = true;
+              o.is.talk = true;
+            }
+            return o.vdom = vdom;
           }
         });
       });
       done();
-      _ref = sample2.events;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        event = _ref[_i];
-        Cache.rule.message.merge(event.messages);
+      if (sample.messages != null) {
+        Cache.rule.message.merge(sample.messages);
+      }
+      if (sample.events != null) {
+        _ref = sample.events;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          event = _ref[_i];
+          Cache.rule.message.merge(event.messages, {
+            event_id: event._id
+          });
+        }
       }
       Cache.rule.message.map_reduce();
       return expect(Cache.messages.list().length).toEqual(1604);
