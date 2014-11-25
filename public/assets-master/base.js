@@ -1582,6 +1582,8 @@ GUI.Animate = (function() {
 
 })();
 GUI.Layout = (function() {
+  var move;
+
   Layout.list = {};
 
   Layout.resize = function() {
@@ -1597,79 +1599,98 @@ GUI.Layout = (function() {
 
   win.on.resize.push(Layout.resize);
 
-  function Layout(dx, dy, box, animation) {
+  function Layout(box, dx, dy, dz, absolute, duration) {
+    this.box = box;
     this.dx = dx;
     this.dy = dy;
-    this.box = box;
-    this.animation = animation != null ? animation : function() {};
+    this.absolute = absolute != null ? absolute : false;
+    this.duration = duration != null ? duration : DELAY.andante;
     if (!this.box) {
       return;
     }
     GUI.Layout.list[this.box.id] = this;
+    this.box.style.zIndex = dz;
     this.mode = "show";
-    this.absolute = false;
+    this.from = this.hide();
+    this.transform(this.from);
+    this.transition();
   }
 
-  Layout.prototype.calc = function(left, top) {
-    return {
-      x: left,
-      y: top,
-      w: this.box.offsetWidth,
-      h: this.box.offsetHeight,
-      win: {
-        left: win.left,
-        top: win.top
-      }
-    };
+  move = function(cb) {
+    var h, w, x, y;
+    w = this.width || this.box.offsetWidth;
+    h = this.height || this.box.offsetHeight;
+    if (this.dx) {
+      x = this.dx;
+    } else {
+      this.width = this.box.parentElement.offsetWidth;
+      x = this.box.parentElement.offsetLeft;
+    }
+    if (this.dy) {
+      y = this.dy;
+    }
+    return cb(x, y, w, h, {
+      top: win.top,
+      left: win.left,
+      width: win.width,
+      height: win.height
+    });
   };
 
   Layout.prototype.show = function() {
-    var height, left, top, width;
-    width = win.width - this.box.offsetWidth;
-    height = win.height - this.box.offsetHeight;
-    if (0 === this.dx) {
-      left = this.box.parentElement.offsetLeft;
-    }
-    if (this.dx < 0) {
-      left = this.dx + width;
-    }
-    if (0 < this.dx) {
-      left = this.dx;
-    }
-    if (this.dy < 0) {
-      top = this.dy + height;
-    }
-    if (0 < this.dy) {
-      top = this.dy;
-    }
-    return this.calc(left, top);
+    return move.call(this, function(x, y, w, h, win) {
+      if (x < 0) {
+        x += win.width - w;
+      }
+      if (y < 0) {
+        y += win.height - h;
+      }
+      return {
+        x: x,
+        y: y,
+        w: w,
+        h: h,
+        win: win
+      };
+    });
   };
 
   Layout.prototype.hide = function() {
-    var left, top;
-    if (0 === this.dx) {
-      left = this.box.parentElement.offsetLeft;
-    }
-    if (this.dx < 0) {
-      left = -this.dx + win.width;
-    }
-    if (0 < this.dx) {
-      left = -this.dx - this.box.offsetWidth;
-    }
-    if (this.dy < 0) {
-      top = -this.dy + win.height;
-    }
-    if (0 < this.dy) {
-      top = -this.dy - this.box.offsetHeight;
-    }
-    return this.calc(left, top);
+    return move.call(this, function(x, y, w, h, win) {
+      x = -x + (function() {
+        switch (false) {
+          case !(0 < x):
+            return -w;
+          case !(x < 0):
+            return win.width;
+        }
+      })();
+      y = -y + (function() {
+        switch (false) {
+          case !(0 < y):
+            return -h;
+          case !(y < 0):
+            return win.height;
+        }
+      })();
+      return {
+        x: x,
+        y: y,
+        w: w,
+        h: h,
+        win: win
+      };
+    });
   };
 
   Layout.prototype.transform = function(_arg) {
     var transform, x, y;
     x = _arg.x, y = _arg.y;
-    if (0 === this.dx) {
-      this.box.style.width = "" + this.box.parentElement.offsetWidth + "px";
+    if (this.width) {
+      this.box.style.width = "" + this.width + "px";
+    }
+    if (this.height) {
+      this.box.style.height = "" + this.height + "px";
     }
     if (this.absolute) {
       this.box.style.position = "absolute";
@@ -1699,14 +1720,9 @@ GUI.Layout = (function() {
     }
   };
 
-  Layout.prototype.transition = function(duration) {
+  Layout.prototype.transition = function() {
     var transition;
-    this.duration = duration;
-    if (this.absolute) {
-      this.duration /= 4;
-      return;
-    }
-    transition = "all " + this.duration + "ms ease-in-out 0s, width 0s none 0s";
+    transition = this.duration && !this.absolute ? "all " + this.duration + "ms ease-in-out 0" : "";
     if (head.browser.ff) {
       this.box.style.mozTransition = transition;
     }
@@ -1720,32 +1736,25 @@ GUI.Layout = (function() {
   };
 
   Layout.prototype.translate = function() {
-    var to;
+    var duration, to;
     if (!this.box) {
       return;
     }
-    if (!this.from) {
-      window.requestAnimationFrame((function(_this) {
-        return function() {
-          _this.transition(DELAY.andante);
-          return _this.translate();
-        };
-      })(this));
-      this.from = this.hide();
-      this.transform(this.from);
-      return;
-    }
     to = this[this.mode]();
-    if (this.from.x === to.x && this.from.y === to.y && this.from.w === to.w && this.from.h === to.h && this.from.win.left === win.left && this.from.win.top === win.top) {
+    if (_.isEqual(this.from, to)) {
       return;
     }
     this.transform(to);
+    duration = this.duration;
+    if (this.absolute) {
+      duration /= 4;
+    }
     return setTimeout((function(_this) {
       return function() {
         _this.from = to;
         return _this.translate();
       };
-    })(this), this.duration);
+    })(this), duration);
   };
 
   return Layout;
@@ -1797,7 +1806,7 @@ GUI.message = (function() {
             _results.push(m("li", option.help));
           }
           return _results;
-        })())), GUI.letter("head", "" + story.view.player_length + "人の配役設定", m("div", roletable), m("div", m("code", "事件"), story.view.event_cards), m("div", m("code", "役職"), story.view.role_cards), m("div", m("code", "見物人"), m("kbd", mob.caption))), m("span.mes_date.pull-right", "managed by ", m("kbd", story.sow_auth_id)), GUI.letter("", "設定", m.trust(story.comment)), JSON.stringify(story)
+        })())), GUI.letter("head", "" + story.view.player_length + "人の配役設定", m("div", roletable), m("div", m("code", "事件"), story.view.event_cards), m("div", m("code", "役職"), story.view.role_cards), m("div", m("code", "見物人"), m("kbd", mob.caption), "" + mob.HELP)), m("span.mes_date.pull-right", "managed by ", m("kbd", story.sow_auth_id)), GUI.letter("", "設定", m.trust(story.comment)), JSON.stringify(story)
       ]);
     },
 
@@ -1834,7 +1843,7 @@ GUI.message = (function() {
       return m("div", ".U.C");
     },
     memo: function(v) {
-      return m("div", ".U.C");
+      return m("table.memo." + v.mestype, m("tbody", m("tr", m("td.memoleft", m("div", GUI.portrate(v.face_id)), m("div", m("h5", v.name))), m("td.memoright", m("p.text." + v.style, deco_action, m.trust(v.log.deco_text)), m("p.mes_date", GUI.timer("span", v.updated_timer))))));
     },
     info: function(v) {
       return m("p.text." + v.mestype, deco_action, m.trust(v.log.deco_text));
@@ -1843,7 +1852,7 @@ GUI.message = (function() {
       return m(".guide." + v.mestype, m("h3.mesname", m("b", m.trust(v.name))), m("p.text." + v.style, deco_action, m.trust(v.log.deco_text)), m("p.mes_date", m("span.mark", v.anchor), GUI.timer("span", v.updated_timer)));
     },
     action: function(v) {
-      return m("." + v.mestype, m(".action", m("p.text." + v.style, deco_action), m("b", m.trust(v.name)), "は、", m("span", m.trust(v.log.deco_text)), GUI.timer("p.mes_date", v.updated_timer)));
+      return m("." + v.mestype, m(".action", m("p.text." + v.style, deco_action, m("b", m.trust(v.name)), "は、", m("span", m.trust(v.log.deco_text))), GUI.timer("p.mes_date", v.updated_timer)));
     },
     talk: function(v) {
       return GUI.message.say_base(v, m("span.mark", v.anchor), GUI.timer("span", v.updated_timer));
@@ -1963,10 +1972,13 @@ GUI.ScrollSpy = (function() {
   };
 
   ScrollSpy.prototype.pager = function(tag, list, cb) {
-    var attr, btm, head, idx, key, o, pager_cb, rect, show_bottom, show_under, tail, top, vdom, vdom_items;
+    var attr, btm, head, idx, key, o, pager_cb, rect, show_bottom, show_under, tail, top, vdom, vdom_items, _ref;
     this.list = list;
+    if (!((_ref = this.list) != null ? _ref.length : void 0)) {
+      return;
+    }
     top = 0;
-    btm = list.length - 1;
+    btm = this.list.length - 1;
     if (this.pager_elem != null) {
       rect = this.pager_elem.getBoundingClientRect();
       show_bottom = win.height - rect.bottom;
@@ -2014,15 +2026,15 @@ GUI.ScrollSpy = (function() {
       };
     })(this);
     vdom_items = (function() {
-      var _i, _len, _ref, _ref1, _results;
-      _ref = this.list.slice(this.head, +this.tail + 1 || 9e9);
+      var _i, _len, _ref1, _ref2, _results;
+      _ref1 = this.list.slice(this.head, +this.tail + 1 || 9e9);
       _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        o = _ref[_i];
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        o = _ref1[_i];
         vdom = cb(o);
-        _ref1 = this.mark(o._id);
-        for (key in _ref1) {
-          attr = _ref1[key];
+        _ref2 = this.mark(o._id);
+        for (key in _ref2) {
+          attr = _ref2[key];
           vdom.attrs[key] = attr;
         }
         _results.push(vdom);

@@ -15,7 +15,7 @@ Url.routes = {
     stories: new Url("stories=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
-    events: new Url("event=:event_id", {
+    events: new Url("event=:event_id~:msg_mode~:msg_security", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "?"
     }),
     potofs: new Url("potofs=:potofs_order~:potofs_desc", {
@@ -54,7 +54,13 @@ new Cache.Rule("map_face").schema(function() {
   this.belongs_to("face", {
     dependent: true
   });
-  this.fields({
+  this.scope("chr_set", function(o) {
+    return o.chr_set_ids;
+  });
+  this.search(function(o) {
+    return o.search_words;
+  });
+  return this.fields({
     _id: function(o) {
       var chr_job, list;
       o._id = o.face_id;
@@ -95,26 +101,20 @@ new Cache.Rule("map_face").schema(function() {
       return _results;
     }
   });
-  this.scope("chr_set", function(o) {
-    return o.chr_set_ids;
-  });
-  return this.search(function(o) {
-    return o.search_words;
-  });
 });
 
 new Cache.Rule("map_face_story_log").schema(function() {
   this.scope("folder", function(o) {
     return [o.folder];
   });
-  this.fields({
+  this.order(function(o) {
+    return o.date.max;
+  });
+  return this.fields({
     _id: function(o) {
       o._id = o.logid_head;
       return o.folder = o.logid_head.split("-")[0].toUpperCase();
     }
-  });
-  return this.order(function(o) {
-    return o.date.max;
   });
 });
 
@@ -129,7 +129,6 @@ new Cache.Rule("item").schema(function() {
 });
 
 new Cache.Rule("message").schema(function() {
-  var patch_no;
   this.order_by("updated_at");
   this.belongs_to("face");
   this.belongs_to("sow_auth");
@@ -151,21 +150,12 @@ new Cache.Rule("message").schema(function() {
   this.scope("memo", function(o) {
     return o.is.memo && o.security;
   });
-  patch_no = {
-    I: 1,
-    S: 2,
-    X: 2,
-    A: 3,
-    B: 3,
-    M: 4
-  };
+  this.search(function(o) {
+    return [o.log];
+  });
   return this.fields({
     _id: function(o) {
-      var anchor_num, patch;
-      anchor_num = o.logid.substring(2) - 0 || 0;
-      patch = patch_no[o.logid[1]] || 5;
-      o._id = o.event_id + "-" + o.logid;
-      return o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
+      return o._id = o.event_id + "-" + o.logid;
     },
     security: function(o) {
       o.security = (function() {
@@ -191,6 +181,9 @@ new Cache.Rule("message").schema(function() {
       return o.scene_id = o.event_id + "-" + o.security[0];
     },
     timer: function(o) {
+      var anchor_num;
+      anchor_num = o.logid.substring(2) - 0 || 0;
+      o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
       if (o.updated_at == null) {
         o.updated_at = new Date(o.date) - 0;
       }
@@ -475,7 +468,7 @@ new Cache.Rule("story").schema(function() {
     }
   });
 });
-var event, face, map_orders, message, scroll_spy, _i, _j, _len, _len1, _ref, _ref1, _ref2;
+var face, map_orders, scroll_spy, _ref;
 
 GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
 
@@ -783,8 +776,8 @@ GUI.if_exist("#buttons", function(dom) {
       return _results;
     });
   }
-  layout = new GUI.Layout(-1, -1, dom);
-  layout.box.style.zIndex = 120;
+  layout = new GUI.Layout(dom, -1, -1, 120);
+  layout.transition();
   touch = GUI.TouchMenu.icons;
   return m.module(dom, {
     controller: function() {},
@@ -792,10 +785,10 @@ GUI.if_exist("#buttons", function(dom) {
       var icon;
       switch (Url.prop.layout()) {
         case "right":
+        case "center":
           layout.dx = 1;
           break;
         case "left":
-        case "center":
           layout.dx = -1;
       }
       return m("nav", (function() {
@@ -817,9 +810,7 @@ GUI.if_exist("#buttons", function(dom) {
 
 GUI.if_exist("#topviewer", function(dom) {
   var layout;
-  layout = new GUI.Layout(0, 1, dom);
-  layout.box.style.zIndex = 110;
-  layout.absolute = head.browser.ios;
+  layout = new GUI.Layout(dom, 0, 1, 110, head.browser.ios, 0);
   return m.module(dom, {
     controller: function() {},
     view: function() {
@@ -873,27 +864,26 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
   Cache.rule.potof.set(gon.potofs);
   GUI.if_exist("#sayfilter", function(dom) {
     var layout, touch;
+    layout = new GUI.Layout(dom, 1, 1, 100);
     touch = new GUI.TouchMenu();
-    layout = new GUI.Layout(1, 1, dom);
-    layout.box.style.zIndex = 100;
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var o, table, width;
-        width = win.width - Url.prop.w();
+        var filter, o, potofs;
+        layout.width = win.width - Url.prop.w() - 4;
         switch (Url.prop.layout()) {
           case "right":
             layout.dx = 1;
             break;
           case "center":
             layout.dx = -1;
-            width /= 2;
+            layout.width /= 2;
             break;
           case "left":
             layout.dx = -1;
         }
-        layout.box.style.width = "" + width + "px";
-        table = m("table.potofs", m("tbody", (function() {
+        filter = m("div", m("a", touch.btn(Url.prop.msg_mode, "info"), "情報"), m("a", touch.btn(Url.prop.msg_mode, "action"), "行動"), m("a", touch.btn(Url.prop.msg_mode, "talk"), "発言"), m("a", touch.btn(Url.prop.msg_mode, "memo"), "メモ"), m("span", " "), m("a", touch.btn(Url.prop.msg_security, "delete"), "削除"), m("a", touch.btn(Url.prop.msg_security, "announce"), "告知"), m("span", " "), m("a", touch.btn(Url.prop.msg_security, "open"), "公開"), m("a", touch.btn(Url.prop.msg_security, "clan"), "仲間"), m("a", touch.btn(Url.prop.msg_security, "think"), "独り言"), m("a", touch.btn(Url.prop.msg_security, "all"), "全表示"));
+        potofs = m("table.potofs", m("tbody", (function() {
           var _i, _len, _ref1, _results;
           _ref1 = Cache.potofs.list();
           _results = [];
@@ -902,8 +892,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
             _results.push(m("tr", m("th.calc", {}, o.view.job), m("th", {}, o.view.name), m("td.center", {}, o.view.sow_auth_id), m("td.calc", {}, o.view.stat_at), m("td", {}, o.view.stat_type), m("td.calc", {}, o.view.said_num), m("td.calc", {}, o.view.pt), m("td", {}, o.view.win), m("td.calc", {}, o.view.win_side), m("td", {}, o.view.role), m("td", {}, o.view.select), m("td", {}, o.view.text)));
           }
           return _results;
-        })()), m("tfoot.head", m("tr", m("th[colspan=2].center", m("span", {}, "名前")), m("th.center", m("span", {}, "プレイヤー")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "stat_at"), "日程")), m("th", m("a", touch.btn(Url.prop.potofs_order, "stat_type"), "状態")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "said_num"), "発言数")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "pt"), "残pt")), m("th", m("a", touch.btn(Url.prop.potofs_order, "win"), "勝敗")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "win_side"), "陣営")), m("th", m("a", touch.btn(Url.prop.potofs_order, "role"), "役割")), m("th", m("a", touch.btn(Url.prop.potofs_order, "select"), "希望")), m("th", m("a", touch.btn(Url.prop.potofs_order, "text"), "補足")))));
-        return m("div", m(".sayfilter_heading.bottom"), m(".insayfilter", m(".paragraph", m(".table-swipe.sayfilter_content", table)), m(".paragraph", "(スクロールします。)")), m(".sayfilter_heading.bottom"));
+        })()), m("tfoot.head", m("tr", m("th[colspan=3].center", m("sup", "(スクロールします。)")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "stat_at"), "日程")), m("th", m("a", touch.btn(Url.prop.potofs_order, "stat_type"), "状態")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "said_num"), "発言数")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "pt"), "残pt")), m("th", m("a", touch.btn(Url.prop.potofs_order, "win"), "勝敗")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "win_side"), "陣営")), m("th", m("a", touch.btn(Url.prop.potofs_order, "role"), "役割")), m("th", m("a", touch.btn(Url.prop.potofs_order, "select"), "希望")), m("th", m("a", touch.btn(Url.prop.potofs_order, "text"), "補足")))));
+        return m("div", m(".sayfilter_heading.bottom"), m(".insayfilter", m(".paragraph", m(".table-swipe.sayfilter_content", potofs)), m(".paragraph", m(".sayfilter_content.form-inline", m("h6", "スタイル"), m(".form-group", filter)))), m(".sayfilter_heading.bottom"));
       }
     });
   });
@@ -929,24 +919,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.story : void 0) != null) {
 
 if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && (gon.event != null)) {
   Cache.rule.event.merge(gon.events);
-  if (gon.event.messages) {
-    Cache.rule.message.merge(gon.event.messages);
-  }
-  _ref1 = gon.events;
-  for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-    event = _ref1[_i];
-    if (event.messages) {
-      _ref2 = event.messages;
-      for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-        message = _ref2[_j];
-        message.event_id = event._id;
-      }
-      Cache.rule.message.merge(event.messages);
-    }
-  }
-  Url.prop.event_id(Cache.events.list()[0].event_id);
   GUI.if_exist("#event", function(dom) {
-    var touch;
+    var event, touch;
     event = null;
     touch = new GUI.TouchMenu();
     touch.icon("film", function() {
@@ -962,18 +936,51 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
   });
   GUI.if_exist("#messages", function(dom) {
     scroll_spy.avg_height = 150;
-    return m.module(dom, {
+    m.module(dom, {
       controller: function() {},
       view: function() {
-        var messages;
-        messages = Cache.messages.where({
-          talk: ["all"]
-        }).sort();
+        var messages, q;
+        q = {};
+        q[Url.prop.msg_mode()] = [Url.prop.msg_security()];
+        messages = Cache.messages.where(q).sort();
         return scroll_spy.pager("div", messages, function(o) {
+          var anchor_num;
+          anchor_num = o.logid.substring(2) - 0 || 0;
+          o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
+          if (o.updated_at == null) {
+            o.updated_at = new Date(o.date) - 0;
+          }
+          if (o.updated_timer == null) {
+            o.updated_timer = new Timer(o.updated_at, {
+              prop: function() {}
+            });
+          }
+          delete o.date;
           return o.vdom(o);
         });
       }
     });
+    m.startComputation();
+    return setTimeout(function() {
+      var event, message, _i, _j, _len, _len1, _ref1, _ref2;
+      if (gon.event.messages) {
+        Cache.rule.message.merge(gon.event.messages);
+      }
+      _ref1 = gon.events;
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        event = _ref1[_i];
+        if (event.messages) {
+          _ref2 = event.messages;
+          for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+            message = _ref2[_j];
+            message.event_id = event._id;
+          }
+          Cache.rule.message.merge(event.messages);
+        }
+      }
+      Url.prop.event_id(Cache.events.list()[0].event_id);
+      return m.endComputation();
+    }, DELAY.animato);
   });
 }
 
@@ -1041,8 +1048,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
       },
       folder: function() {
         return this.btn_group(15, function(key) {
-          var _ref3;
-          return (_ref3 = GAME[key]) != null ? _ref3.nation : void 0;
+          var _ref1;
+          return (_ref1 = GAME[key]) != null ? _ref1.nation : void 0;
         });
       },
       say_limit: function() {
