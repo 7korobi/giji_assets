@@ -71,8 +71,9 @@ class GUI.ScrollSpy
     @adjust?.id
 
   pager: (tag, @list, cb)->
+    return unless @list?.length
     top = 0
-    btm = list.length - 1
+    btm = @list.length - 1
 
     if @pager_elem?
       rect = @pager_elem.getBoundingClientRect()
