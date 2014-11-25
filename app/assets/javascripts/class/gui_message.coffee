@@ -54,7 +54,7 @@ GUI.message = (->
         m "div",
           m "code", "見物人"
           m "kbd", mob.caption
-          #{mob.HELP}"
+          "#{mob.HELP}"
 
       m "span.mes_date.pull-right", 
         "managed by "
@@ -91,12 +91,21 @@ GUI.message = (->
   potofs: (v)->
     m "div", ".U.C"
 
-
   xxx: (v)->
     m "div", ".U.C"
 
   memo: (v)->
-    m "div", ".U.C"
+    m "table.memo.#{v.mestype}",
+      m "tbody",
+        m "tr",
+          m "td.memoleft",
+            m "div", GUI.portrate v.face_id
+            m "div", m "h5", v.name
+
+          m "td.memoright",
+            m "p.text.#{v.style}", deco_action, m.trust v.log.deco_text
+              m "p.mes_date",
+                GUI.timer "span", v.updated_timer
 
   info: (v)->
     m "p.text.#{v.mestype}", deco_action, m.trust v.log.deco_text
@@ -113,7 +122,7 @@ GUI.message = (->
   action: (v)->
     m ".#{v.mestype}",
       m ".action",
-        m "p.text.#{v.style}", deco_action 
+        m "p.text.#{v.style}", deco_action,
           m "b", m.trust v.name
           "は、"
           m "span",
