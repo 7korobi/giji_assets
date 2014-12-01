@@ -1,5 +1,5 @@
 GUI.message = (->
-  deco_action = 
+  deco_action =
     config: (parent, is_continue, context)->
       GUI.attrs_to parent, "a[anchor]", (a, turn, id)->
         @start (e)->
@@ -17,7 +17,7 @@ GUI.message = (->
     saycnt = RAILS.saycnt[story.type.say] || {}
     roletable = RAILS.roletable[story.type.roletable]
 
-    m ".ADMIN.guide", [
+    m ".ADMIN.guide", {key: story._id}, [
       GUI.letter "head", story.name,
         m "div",
           m "code", "こだわり"
@@ -82,7 +82,7 @@ GUI.message = (->
     modes.push RAILS.event_state.scapegoat if event.turn == event.scapegoat 
     modes.push RAILS.event_state.eclipse   if _.find event.eclipse, event.turn
 
-    m ".MAKER.guide",    
+    m ".MAKER.guide", {key: event._id},   
       GUI.letter event.winner + ".head", event.name,
         RAILS.winner[event.winner] + "の勝利です。"
         m "br"
@@ -95,7 +95,7 @@ GUI.message = (->
     m "div", ".U.C"
 
   memo: (v)->
-    m "table.memo.#{v.mestype}",
+    m "table.memo.#{v.mestype}", {key: v._id},
       m "tbody",
         m "tr",
           m "td.memoleft",
@@ -108,10 +108,11 @@ GUI.message = (->
                 GUI.timer "span", v.updated_timer
 
   info: (v)->
-    m "p.text.#{v.mestype}", deco_action, m.trust v.log.deco_text
+    m ".#{v.mestype}", {key: v._id},
+      m "p.text", deco_action, m.trust v.log.deco_text
 
   admin: (v)->
-    m ".guide.#{v.mestype}",
+    m ".guide.#{v.mestype}", {key: v._id},
       m "h3.mesname",
         m "b", m.trust v.name
       m "p.text.#{v.style}", deco_action, m.trust v.log.deco_text
@@ -120,7 +121,7 @@ GUI.message = (->
         GUI.timer "span", v.updated_timer
 
   action: (v)->
-    m ".#{v.mestype}",
+    m ".#{v.mestype}", {key: v._id},
       m ".action",
         m "p.text.#{v.style}", deco_action,
           m "b", m.trust v.name
@@ -139,7 +140,7 @@ GUI.message = (->
       m "span.mark", v.anchor
 
   say_base: (v, timer...)->
-    m "table.say.#{v.mestype}",
+    m "table.say.#{v.mestype}", {key: v._id},
       m "tbody",
         m "tr",
           m "td.img",

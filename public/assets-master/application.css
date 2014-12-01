@@ -11709,21 +11709,16 @@ table {
 }
 
 /* line 113, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
-.text .mark {
-  margin: -5px 0;
-}
-
-/* line 117, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 .mark {
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
   border-radius: 9px;
-  padding: 5px 0.25em;
+  padding: 2px 0.25em;
   font-weight: bold;
   background-color: rgba(255, 255, 255, 0.25);
 }
 
-/* line 126, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 122, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 .pagenavi ul {
   border-radius: 9px;
   padding: 0.10em 0.25em;
@@ -11733,7 +11728,7 @@ table {
   background-color: rgba(255, 255, 255, 0.75);
 }
 
-/* line 139, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 135, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 .footnote,
 .toppage .paragraph,
 .accordion dt,
@@ -11741,36 +11736,36 @@ table {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* line 143, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 139, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 body {
   color: #333333;
   padding: 0;
 }
 
-/* line 149, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 145, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 h2,
 h2 a {
   color: #333333;
 }
 
-/* line 152, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 148, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 h2 {
   border-bottom: 1px solid #333333;
 }
 
-/* line 156, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 152, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 a {
   color: #333333;
   text-decoration: none;
 }
 
-/* line 162, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 158, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 code a,
 .btn a {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-/* line 166, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
+/* line 162, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/app/base.css.scss */
 ul.unstyled, ol.unstyled {
   margin-left: 0;
   list-style: none;

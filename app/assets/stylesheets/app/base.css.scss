@@ -110,15 +110,11 @@ $screen-lg: 770px;
   display: inline-block;
 }
 
-.text .mark {
-  margin: -5px 0;
-}
-
 .mark {
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
   border-radius: 9px;
-  padding: 5px 0.25em;
+  padding: 2px 0.25em;
   font-weight: bold;
   background-color: rgba(255, 255, 255, 0.25);
 }

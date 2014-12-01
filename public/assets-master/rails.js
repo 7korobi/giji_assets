@@ -131,6 +131,7 @@ new Cache.Rule("item").schema(function() {
 new Cache.Rule("message").schema(function() {
   this.order_by("updated_at");
   this.belongs_to("face");
+  this.belongs_to("event");
   this.belongs_to("sow_auth");
   this.scope("logid", function(o) {
     return [o.logid];
@@ -468,7 +469,7 @@ new Cache.Rule("story").schema(function() {
     }
   });
 });
-var face, map_orders, scroll_spy, _ref;
+var face, map_orders, messages_search, scroll_spy, _ref;
 
 GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
 
@@ -517,7 +518,9 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
               o = chrs[_i];
               chr_job = Cache.chr_jobs.find("" + (Url.prop.chr_set()) + "_" + o.face._id);
               job_name = chr_job.job;
-              _results.push(m(".chrbox", GUI.portrate(o.face._id), m(".chrblank", m("div", job_name), m("div", o.face.name), m("div", m("a.mark", {
+              _results.push(m(".chrbox", {
+                key: o._id
+              }, GUI.portrate(o.face._id), m(".chrblank", m("div", job_name), m("div", o.face.name), m("div", m("a.mark", {
                 href: "/map_reduce/faces/" + o.face._id
               }, "" + map_order_set.caption + " " + (map_order_set.func(o)) + "回")), m("div", "♥" + o.sow_auth_id.max_is))));
             }
@@ -795,7 +798,7 @@ GUI.if_exist("#buttons", function(dom) {
       }
       return m("nav", (function() {
         var _i, _len, _ref1, _results;
-        _ref1 = ["home", "film", "list", "th", "cog"];
+        _ref1 = ["home", "book", "info-sign", "time", "envelope", "comment", "search", "film", "list", "th", "cog"];
         _results = [];
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           icon = _ref1[_i];
@@ -872,7 +875,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var filter, o, potofs;
+        var event, event_id, filter, o, potofs, _ref1;
         layout.width = win.width - Url.prop.w() - 4;
         switch (Url.prop.layout()) {
           case "right":
@@ -885,11 +888,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           case "left":
             layout.dx = -1;
         }
-        filter = m("div", m("h6", "検索する。"), m("input.form-control", {
-          onblur: m.withAttr("value", Url.prop.search),
-          onchange: m.withAttr("value", Url.prop.search),
-          value: Url.prop.search()
-        }), m("h6", "スタイル"), m("a", touch.btn(Url.prop.msg_mode, "info"), "情報"), m("a", touch.btn(Url.prop.msg_mode, "action"), "行動"), m("a", touch.btn(Url.prop.msg_mode, "talk"), "発言"), m("a", touch.btn(Url.prop.msg_mode, "memo"), "メモ"), m("span", " "), m("a", touch.btn(Url.prop.msg_security, "delete"), "削除"), m("a", touch.btn(Url.prop.msg_security, "announce"), "告知"), m("span", " "), m("a", touch.btn(Url.prop.msg_security, "open"), "公開"), m("a", touch.btn(Url.prop.msg_security, "clan"), "仲間"), m("a", touch.btn(Url.prop.msg_security, "think"), "独り言"), m("a", touch.btn(Url.prop.msg_security, "all"), "全表示"));
+        filter = m("div", m("h6", "スタイル"), m("a", touch.btn(Url.prop.msg_mode, "info"), "情報"), m("a", touch.btn(Url.prop.msg_mode, "action"), "行動"), m("a", touch.btn(Url.prop.msg_mode, "talk"), "発言"), m("a", touch.btn(Url.prop.msg_mode, "memo"), "メモ"), m("span", " "), m("a", touch.btn(Url.prop.msg_security, "delete"), "削除"), m("a", touch.btn(Url.prop.msg_security, "announce"), "告知"), m("span", " "), m("a", touch.btn(Url.prop.msg_security, "open"), "公開"), m("a", touch.btn(Url.prop.msg_security, "clan"), "仲間"), m("a", touch.btn(Url.prop.msg_security, "think"), "独り言"), m("a", touch.btn(Url.prop.msg_security, "all"), "全表示"));
         potofs = m("table.potofs", m("tbody", (function() {
           var _i, _len, _ref1, _results;
           _ref1 = Cache.potofs.list();
@@ -900,38 +899,48 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           }
           return _results;
         })()), m("tfoot.head", m("tr", m("th[colspan=3].center", m("sup", "(スクロールします。)")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "stat_at"), "日程")), m("th", m("a", touch.btn(Url.prop.potofs_order, "stat_type"), "状態")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "said_num"), "発言数")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "pt"), "残pt")), m("th", m("a", touch.btn(Url.prop.potofs_order, "win"), "勝敗")), m("th.calc", m("a", touch.btn(Url.prop.potofs_order, "win_side"), "陣営")), m("th", m("a", touch.btn(Url.prop.potofs_order, "role"), "役割")), m("th", m("a", touch.btn(Url.prop.potofs_order, "select"), "希望")), m("th", m("a", touch.btn(Url.prop.potofs_order, "text"), "補足")))));
-        return m("div", m(".sayfilter_heading.bottom"), m(".insayfilter", m(".paragraph", m(".table-swipe.sayfilter_content", potofs)), m(".paragraph", m(".sayfilter_content.form-inline", m(".form-group", filter)))), m(".sayfilter_heading.bottom"));
+        event_id = (_ref1 = Url.prop.scroll()) != null ? _ref1.split("-").slice(0, 3).join("-") : void 0;
+        event = Cache.events.find(event_id);
+        return m("div", event != null ? m(".sayfilter_heading", event.name) : m(".sayfilter_heading.bottom"), m(".insayfilter", m(".paragraph", m(".table-swipe.sayfilter_content", potofs)), m(".paragraph", m(".sayfilter_content.form-inline", m(".form-group", filter)))), m(".sayfilter_heading.bottom"));
       }
     });
   });
 }
 
-if ((typeof gon !== "undefined" && gon !== null ? gon.story : void 0) != null) {
-  Cache.rule.story.set([gon.story]);
-  Cache.rule.story.map_reduce();
+messages_search = function() {
+  var event_id, mode, q, security, _ref1;
+  event_id = (_ref1 = Url.prop.scroll()) != null ? _ref1.split("-").slice(0, 3).join("-") : void 0;
+  mode = Url.prop.msg_mode();
+  security = Url.prop.msg_security();
+  q = {};
+  if (event_id) {
+    q["event"] = [event_id];
+  }
+  switch (mode) {
+    case "time":
+      break;
+    default:
+      q[mode] = [security];
+  }
+  return Cache.messages.where(q).search(Url.prop.search()).sort();
+};
+
+if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && (gon.event != null)) {
+  if ((typeof gon !== "undefined" && gon !== null ? gon.story : void 0) != null) {
+    Cache.rule.story.set([gon.story]);
+    Cache.rule.story.map_reduce();
+  }
+  Cache.rule.event.merge(gon.events);
+  Cache.rule.event.map_reduce();
   GUI.if_exist("#story", function(dom) {
     var story, touch;
     story = gon.story;
     touch = new GUI.TouchMenu();
     touch.icon("home", function() {
-      return GUI.message.story(story);
+      Url.prop.msg_mode("info");
+      return Url.prop.scroll(messages_search().first._id);
     });
-    return m.module(dom, {
-      controller: function() {},
-      view: function() {
-        return touch.menu(m("h2", m("a.menuicon.glyphicon.glyphicon-home", GUI.TouchMenu.icons.start("home"), " "), m("span", story.name)));
-      }
-    });
-  });
-}
-
-if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && (gon.event != null)) {
-  Cache.rule.event.merge(gon.events);
-  Cache.rule.event.map_reduce();
-  GUI.if_exist("#event", function(dom) {
-    var story, touch;
-    story = gon.story;
-    touch = new GUI.TouchMenu();
+    touch.icon("book", function() {});
     return m.module(dom, {
       controller: function() {},
       view: function() {
@@ -942,21 +951,53 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
           touch.icon("film", function() {
             return GUI.message.event(event, story);
           });
-          return touch.menu(m("h3", m("a.menuicon.glyphicon.glyphicon-film", GUI.TouchMenu.icons.start("film"), " "), m("span", event.name)));
+        } else {
+          touch.icon("film");
+        }
+        if (story != null) {
+          switch (Url.prop.msg_mode()) {
+            case "info":
+              return GUI.message.story(story);
+            default:
+              return touch.menu(m("h2", m("a.menuicon.glyphicon.glyphicon-book", GUI.TouchMenu.icons.start("book"), " "), m("span", story.name)));
+          }
         }
       }
     });
   });
   GUI.if_exist("#messages", function(dom) {
+    var touch;
     scroll_spy.avg_height = 150;
+    touch = new GUI.TouchMenu();
+    touch.icon("time", function() {
+      Url.prop.msg_mode("time");
+      return Url.prop.scroll(messages_search().first._id);
+    });
+    touch.icon("comment", function() {
+      Url.prop.msg_mode("talk");
+      return Url.prop.scroll(messages_search().first._id);
+    });
+    touch.icon("envelope", function() {
+      Url.prop.msg_mode("memo");
+      return Url.prop.scroll(messages_search().first._id);
+    });
+    touch.icon("lock", function() {});
+    touch.icon("info-sign", function() {
+      Url.prop.msg_mode("action");
+      Url.prop.scroll(messages_search().first._id);
+      return m(".pagenavi.choice.guide.form-inline", m("h6", "アクション。"));
+    });
+    touch.icon("search", function() {
+      return m(".pagenavi.choice.guide.form-inline", m("h6", "検索する。"), m("input.form-control", {
+        onblur: m.withAttr("value", Url.prop.search),
+        onchange: m.withAttr("value", Url.prop.search),
+        value: Url.prop.search()
+      }));
+    });
     m.module(dom, {
       controller: function() {},
       view: function() {
-        var messages, q;
-        q = {};
-        q[Url.prop.msg_mode()] = [Url.prop.msg_security()];
-        messages = Cache.messages.search(Url.prop.search()).where(q).sort();
-        return scroll_spy.pager("div", messages, function(o) {
+        return scroll_spy.pager("div", messages_search(), function(o) {
           var anchor_num;
           anchor_num = o.logid.substring(2) - 0 || 0;
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
@@ -1115,19 +1156,17 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
         storys = touch.by_menu().search(Url.prop.search());
         vdom = touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.menuicon.glyphicon.glyphicon-list", GUI.TouchMenu.icons.start("list"), " "), m("span", "村を検索してみよう。")));
         vdom.push(m("table.table.table-border.table-hover", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", storys.list(), function(o) {
-          if (touch_sw.state()) {
-            return m("tr", m("td", m("a", {
-              href: o.link
-            }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
-              href: o.file
-            }, m.trust(o.name)), o.view.rating, m("table", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m("div", o.view.role_cards), m("div", o.view.event_cards)));
-          } else {
-            return m("tr", m("td", m("a", {
-              href: o.link
-            }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
-              href: o.file
-            }, o.name), o.view.rating));
-          }
+          return m("tr", {
+            key: o._id
+          }, touch_sw.state() ? m("td", m("a", {
+            href: o.link
+          }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
+            href: o.file
+          }, m.trust(o.name)), o.view.rating, m("table", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m("div", o.view.role_cards), m("div", o.view.event_cards)) : m("td", m("a", {
+            href: o.link
+          }, m("code.glyphicon.glyphicon-film")), m("kbd.note", o._id), m("a", {
+            href: o.file
+          }, o.name), o.view.rating));
         })));
         return vdom;
       }

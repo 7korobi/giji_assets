@@ -77,8 +77,11 @@ class GUI.TouchMenu
           @className "btn btn-default"
 
   icon: (@icon_key, menu_cb)->
-    menu_cb.menu = @
-    GUI.TouchMenu.icons.menus[@icon_key] = menu_cb
+    if menu_cb?
+      menu_cb.menu = @
+      GUI.TouchMenu.icons.menus[@icon_key] = menu_cb
+    else
+      delete GUI.TouchMenu.icons.menus[@icon_key]
 
   @icons.menu = (vdom...)->
     set_menu = (o, cb)->

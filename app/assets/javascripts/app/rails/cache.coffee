@@ -42,8 +42,9 @@ new Cache.Rule("item").schema ->
 new Cache.Rule("message").schema ->
   @order_by "updated_at"
   @belongs_to "face"
+  @belongs_to "event"
   @belongs_to "sow_auth"
-  @scope "logid", (o)-> [o.logid]
+  @scope "logid",  (o)-> [o.logid]
   @scope "unread", (o)-> null
   @scope "info",   (o)-> o.is.info   && o.security
   @scope "action", (o)-> o.is.action && o.security

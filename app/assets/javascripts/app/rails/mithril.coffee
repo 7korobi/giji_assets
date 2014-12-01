@@ -36,7 +36,7 @@ if gon?.map_reduce?.faces?
             chr_job = Cache.chr_jobs.find("#{Url.prop.chr_set()}_#{o.face._id}")
             job_name = chr_job.job
 
-            m ".chrbox",
+            m ".chrbox", {key: o._id},
               GUI.portrate o.face._id
               m ".chrblank", 
                 m "div", job_name
@@ -257,7 +257,7 @@ GUI.if_exist "#buttons", (dom)->
           layout.dx = -1
 
       m "nav",
-        for icon in ["home", "film", "list", "th", "cog"]
+        for icon in ["home", "book", "info-sign", "time", "envelope", "comment", "search", "film", "list", "th", "cog"] # lock
           continue unless touch.menus[icon]
           m "div", touch.start(icon),
             m ".bigicon",
@@ -352,11 +352,6 @@ if gon?.potofs?
 
         filter = 
           m "div",
-            m "h6", "検索する。"
-            m "input.form-control",
-              onblur:   m.withAttr("value", Url.prop.search)
-              onchange: m.withAttr("value", Url.prop.search)
-              value: Url.prop.search()
             m "h6", "スタイル"
             m "a", touch.btn(Url.prop.msg_mode, "info"  ), "情報"
             m "a", touch.btn(Url.prop.msg_mode, "action"), "行動"
@@ -401,8 +396,14 @@ if gon?.potofs?
                 m "th", m "a", touch.btn(Url.prop.potofs_order, "select"),        "希望"
                 m "th", m "a", touch.btn(Url.prop.potofs_order, "text"),          "補足"
 
+        event_id = Url.prop.scroll()?.split("-")[0..2].join("-")
+        event = Cache.events.find event_id
+
         m "div",
-          m ".sayfilter_heading.bottom"
+          if event?
+            m ".sayfilter_heading", event.name
+          else
+            m ".sayfilter_heading.bottom"
           m ".insayfilter",
             m ".paragraph",
               m ".table-swipe.sayfilter_content", potofs
@@ -411,54 +412,98 @@ if gon?.potofs?
                 m ".form-group", filter
           m ".sayfilter_heading.bottom"
 
-if gon?.story?
-  Cache.rule.story.set [gon.story]
-  Cache.rule.story.map_reduce()
+
+messages_search = ()->
+  event_id = Url.prop.scroll()?.split("-")[0..2].join("-")
+  mode = Url.prop.msg_mode()
+  security = Url.prop.msg_security()
+
+  q = {}
+  if event_id
+    q["event"] = [event_id]
+
+  switch mode
+    when "time"
+    else
+      q[mode] = [security]
+
+  Cache.messages.where(q).search(Url.prop.search()).sort()
+
+if gon?.events? && gon.event?
+  if gon?.story?
+    Cache.rule.story.set [gon.story]
+    Cache.rule.story.map_reduce()
+
+  Cache.rule.event.merge gon.events
+  Cache.rule.event.map_reduce()
 
   GUI.if_exist "#story", (dom)->
     story = gon.story
 
     touch = new GUI.TouchMenu()
-    touch.icon "home", ->
-      GUI.message.story story
-    m.module dom,
-      controller: ->
-      view: ->
-        touch.menu m "h2",
-          m "a.menuicon.glyphicon.glyphicon-home", GUI.TouchMenu.icons.start("home"), " "
-          m "span", story.name
+    touch.icon "home", -> # 情報
+      Url.prop.msg_mode "info"
+      Url.prop.scroll messages_search().first._id
 
-if gon?.events? && gon.event?
-  Cache.rule.event.merge gon.events
-  Cache.rule.event.map_reduce()
+    touch.icon "book", ->
 
-  GUI.if_exist "#event", (dom)->
-    story = gon.story
-    touch = new GUI.TouchMenu()
 
     m.module dom,
       controller: ->
       view: ->
         event_id = Url.prop.scroll()?.split("-")[0..2].join("-")
         event = Cache.events.find event_id
+
         if event?
           touch.icon "film", ->
             GUI.message.event event, story
-          touch.menu m "h3",
-            m "a.menuicon.glyphicon.glyphicon-film", GUI.TouchMenu.icons.start("film"), " "
-            m "span", event.name
+        else
+          touch.icon "film"
+
+        if story?
+          switch Url.prop.msg_mode()
+            when "info"
+              GUI.message.story story
+            else
+              touch.menu m "h2",
+                m "a.menuicon.glyphicon.glyphicon-book", GUI.TouchMenu.icons.start("book"), " "
+                m "span", story.name
 
   GUI.if_exist "#messages", (dom)->
     scroll_spy.avg_height = 150
+    touch = new GUI.TouchMenu()
+    touch.icon "time", -> # 新着
+      Url.prop.msg_mode "time"
+      Url.prop.scroll messages_search().first._id
+
+    touch.icon "comment", -> # 議事録
+      Url.prop.msg_mode "talk"
+      Url.prop.scroll messages_search().first._id
+
+    touch.icon "envelope", -> # メモ
+      Url.prop.msg_mode "memo"
+      Url.prop.scroll messages_search().first._id
+
+    touch.icon "lock", -> # 
+    touch.icon "info-sign", -> # 
+      Url.prop.msg_mode "action"
+      Url.prop.scroll messages_search().first._id
+
+      m ".pagenavi.choice.guide.form-inline",
+        m "h6", "アクション。"
+
+    touch.icon "search", -> # 検索
+      m ".pagenavi.choice.guide.form-inline",
+        m "h6", "検索する。"
+        m "input.form-control",
+          onblur:   m.withAttr("value", Url.prop.search)
+          onchange: m.withAttr("value", Url.prop.search)
+          value: Url.prop.search()
+
     m.module dom,
       controller: ->
       view: ->
-        q = {}
-        q[Url.prop.msg_mode()] = [Url.prop.msg_security()]
-
-        messages = Cache.messages.search(Url.prop.search()).where(q).sort()
-
-        scroll_spy.pager "div", messages, (o)->
+        scroll_spy.pager "div", messages_search(), (o)->
           anchor_num  = o.logid.substring(2) - 0 || 0
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
           o.updated_at ?= new Date(o.date) - 0
@@ -601,8 +646,8 @@ if gon?.stories?
               m "tr", 
                 m "th"
             scroll_spy.pager "tbody", storys.list(), (o)->
-              if touch_sw.state()
-                m "tr",
+              m "tr", {key: o._id },
+                if touch_sw.state()
                   m "td",
                     m "a",
                       href: o.link
@@ -626,8 +671,7 @@ if gon?.stories?
 
                     m "div", o.view.role_cards
                     m "div", o.view.event_cards
-              else
-                m "tr",
+                else
                   m "td",
                     m "a",
                       href: o.link

@@ -382,15 +382,16 @@ Cache = (function() {
 })();
 
 Cache.Query = (function() {
-  function Query(finder) {
+  function Query(finder, q) {
     this.finder = finder;
-    this.q = {};
+    this.q = q;
+    this.json = JSON.stringify(this.q);
+    this.finder.query[this.json] = this;
   }
 
   Query.prototype.where = function(scopes) {
     var query;
-    query = new Cache.Query(this.finder);
-    query.q = _.extend({}, this.q, scopes);
+    query = new Cache.Query(this.finder, _.extend({}, this.q, scopes));
     return query;
   };
 
@@ -448,7 +449,8 @@ Cache.Finder = (function() {
   function Finder(scopes, sort_func) {
     this.scopes = scopes;
     this.sort_func = sort_func;
-    this.all = new Cache.Query(this);
+    this.query = {};
+    this.all = new Cache.Query(this, {});
     this.base_map = (function(_this) {
       return function() {
         return _this.scopes._all.hash.all;
@@ -1614,7 +1616,9 @@ GUI.message = (function() {
       rating = RAILS.rating[story.rating];
       saycnt = RAILS.saycnt[story.type.say] || {};
       roletable = RAILS.roletable[story.type.roletable];
-      return m(".ADMIN.guide", [
+      return m(".ADMIN.guide", {
+        key: story._id
+      }, [
         GUI.letter("head", story.name, m("div", m("code", "こだわり"), m("img.pull-left", {
           src: GUI.img_head + ("/icon/cd_" + story.rating + ".png")
         }), rating.caption), m("div", m("code", "発言制限"), m.trust(saycnt.CAPTION + "<br>" + saycnt.HELP)), m("div", m("code", "更新"), story.view.update_at + "(" + story.view.update_interval + "ごと)")), GUI.letter("", story.view.game_rule, m("ul.note", m.trust(RAILS.game_rule[story.type.game].HELP)), m("ul.note", (function() {
@@ -1658,7 +1662,9 @@ GUI.message = (function() {
       if (_.find(event.eclipse, event.turn)) {
         modes.push(RAILS.event_state.eclipse);
       }
-      return m(".MAKER.guide", GUI.letter(event.winner + ".head", event.name, RAILS.winner[event.winner] + "の勝利です。", m("br"), event_card ? m("kbd", event_card) : void 0));
+      return m(".MAKER.guide", {
+        key: event._id
+      }, GUI.letter(event.winner + ".head", event.name, RAILS.winner[event.winner] + "の勝利です。", m("br"), event_card ? m("kbd", event_card) : void 0));
     },
     potofs: function(v) {
       return m("div", ".U.C");
@@ -1667,16 +1673,24 @@ GUI.message = (function() {
       return m("div", ".U.C");
     },
     memo: function(v) {
-      return m("table.memo." + v.mestype, m("tbody", m("tr", m("td.memoleft", m("div", GUI.portrate(v.face_id)), m("div", m("h5", v.name))), m("td.memoright", m("p.text." + v.style, deco_action, m.trust(v.log.deco_text)), m("p.mes_date", GUI.timer("span", v.updated_timer))))));
+      return m("table.memo." + v.mestype, {
+        key: v._id
+      }, m("tbody", m("tr", m("td.memoleft", m("div", GUI.portrate(v.face_id)), m("div", m("h5", v.name))), m("td.memoright", m("p.text." + v.style, deco_action, m.trust(v.log.deco_text)), m("p.mes_date", GUI.timer("span", v.updated_timer))))));
     },
     info: function(v) {
-      return m("p.text." + v.mestype, deco_action, m.trust(v.log.deco_text));
+      return m("." + v.mestype, {
+        key: v._id
+      }, m("p.text", deco_action, m.trust(v.log.deco_text)));
     },
     admin: function(v) {
-      return m(".guide." + v.mestype, m("h3.mesname", m("b", m.trust(v.name))), m("p.text." + v.style, deco_action, m.trust(v.log.deco_text)), m("p.mes_date", m("span.mark", v.anchor), GUI.timer("span", v.updated_timer)));
+      return m(".guide." + v.mestype, {
+        key: v._id
+      }, m("h3.mesname", m("b", m.trust(v.name))), m("p.text." + v.style, deco_action, m.trust(v.log.deco_text)), m("p.mes_date", m("span.mark", v.anchor), GUI.timer("span", v.updated_timer)));
     },
     action: function(v) {
-      return m("." + v.mestype, m(".action", m("p.text." + v.style, deco_action, m("b", m.trust(v.name)), "は、", m("span", m.trust(v.log.deco_text))), GUI.timer("p.mes_date", v.updated_timer)));
+      return m("." + v.mestype, {
+        key: v._id
+      }, m(".action", m("p.text." + v.style, deco_action, m("b", m.trust(v.name)), "は、", m("span", m.trust(v.log.deco_text))), GUI.timer("p.mes_date", v.updated_timer)));
     },
     talk: function(v) {
       return GUI.message.say_base(v, m("span.mark", v.anchor), GUI.timer("span", v.updated_timer));
@@ -1687,7 +1701,9 @@ GUI.message = (function() {
     say_base: function() {
       var timer, v;
       v = arguments[0], timer = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-      return m("table.say." + v.mestype, m("tbody", m("tr", m("td.img", GUI.portrate(v.face_id)), m("td.field", m(".msg", m("h3.mesname", m("b", m.trust(v.name))), m("p.text." + v.style, deco_action, m.trust(v.log.deco_text)), m("p.mes_date", timer))))));
+      return m("table.say." + v.mestype, {
+        key: v._id
+      }, m("tbody", m("tr", m("td.img", GUI.portrate(v.face_id)), m("td.field", m(".msg", m("h3.mesname", m("b", m.trust(v.name))), m("p.text." + v.style, deco_action, m.trust(v.log.deco_text)), m("p.mes_date", timer))))));
     }
   };
 })();
@@ -2031,8 +2047,12 @@ GUI.TouchMenu = (function() {
 
   TouchMenu.prototype.icon = function(icon_key, menu_cb) {
     this.icon_key = icon_key;
-    menu_cb.menu = this;
-    return GUI.TouchMenu.icons.menus[this.icon_key] = menu_cb;
+    if (menu_cb != null) {
+      menu_cb.menu = this;
+      return GUI.TouchMenu.icons.menus[this.icon_key] = menu_cb;
+    } else {
+      return delete GUI.TouchMenu.icons.menus[this.icon_key];
+    }
   };
 
   TouchMenu.icons.menu = function() {
