@@ -64,6 +64,9 @@ class Url
       Serial.url[type]
     , "i"
 
+  values: ->
+    Url.prop[key]() for key in @keys_in_url
+
   popstate: (path, target)->
     @data = {}
     @match = @scanner.exec(path)

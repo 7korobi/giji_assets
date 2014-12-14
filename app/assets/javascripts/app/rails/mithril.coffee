@@ -4,23 +4,16 @@ scroll_spy = new GUI.ScrollSpy(Url.prop.scroll)
 if gon?.map_reduce?.faces?
   Cache.rule.chr_set.schema ->
     @order (o)->
-      Cache.map_faces.reduce.chr_set[o._id].count
+      Cache.map_faces.reduce().chr_set[o._id].count
 
   Cache.rule.map_face.set gon.map_reduce.faces
-  Cache.rule.map_face.map_reduce()
-  map_orders = (prop)->
-    order = RAILS.map_faces_orders[prop]
-    order.func = (o)-> o.win.value[order.order] ?= 0
-    Cache.rule.map_face.schema ->
-      @order (o)-> order.func(o)
-    order
 
   GUI.if_exist "#map_faces", (dom)->
     m.module dom, 
       controller: ->
       view: ->
-        map_order_set = map_orders(Url.prop.order())
-        chrs = Cache.map_faces.search(Url.prop.search()).where(chr_set:[Url.prop.chr_set()]).sort "desc"
+        map_order_set = RAILS.map_faces_orders[Url.prop.order()]
+        chrs = Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list()
         headline = ""
         if chrs?.length
           headline = [
@@ -36,22 +29,28 @@ if gon?.map_reduce?.faces?
             chr_job = Cache.chr_jobs.find("#{Url.prop.chr_set()}_#{o.face._id}")
             job_name = chr_job.job
 
+            attr = GUI.attrs ->
+              elem = null
+              @over -> GUI.Animate.jelly.up elem
+              @out ->  GUI.Animate.jelly.down elem
+              @config (_elem)-> elem = _elem
+
             m ".chrbox", {key: o._id},
-              GUI.portrate o.face._id
-              m ".chrblank", 
+              GUI.portrate o.face._id, attr
+              m ".chrblank",
                 m "div", job_name
                 m "div", o.face.name
                 m "div", 
                   m "a.mark",
                     href: "/map_reduce/faces/#{o.face._id}"
-                  , "#{map_order_set.caption} #{map_order_set.func(o)}回"
+                  , "#{map_order_set.caption} #{o.win.value[map_order_set.order]}回"
                 m "div", "♥#{o.sow_auth_id.max_is}"
           m "hr.black"
         ]
 
   GUI.if_exist "#chr_sets", (dom)->
     touch = new GUI.TouchMenu()
-    touch.icon "th", ->
+    touch.icon "th-large", ->
       m ".guide.form-inline",
         m "h6", "詳しく検索してみよう"
         m "input.form-control",
@@ -59,13 +58,13 @@ if gon?.map_reduce?.faces?
           onchange: m.withAttr("value", Url.prop.search)
           value: Url.prop.search()
         m "h6", "キャラセットを選んでみよう"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("order"),
+        m "span.btn.btn-default", touch.start("order"),
           "並び順"
-          m "i.caret"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("chr_set"),
+          m "span.note", "▼"
+        m "span.btn.btn-default", touch.start("chr_set"),
           "キャラセット"
-          m "i.caret"
-    touch.menu_set Cache.map_faces, Url.prop, "count",
+          m "span.note", "▼"
+    touch.menu_set Url.prop, "count",
       order: ->
         for key, o of RAILS.map_faces_orders
           m "a", touch.btn(Url.prop.order, key), o.caption
@@ -76,14 +75,14 @@ if gon?.map_reduce?.faces?
     m.module dom,
       controller: ->
       view: ->
+        touch.query = Cache.map_faces
         touch.menu m ".pagenavi.choice.guide.form-inline",
-          m "a.menuicon.glyphicon.glyphicon-th", GUI.TouchMenu.icons.start("th"), " "
+          m "a.menuicon.icon-th", GUI.TouchMenu.icons.start("th-large"), " "
           m "span", "キャラセットを選んでみよう"
 
 if gon?.face?
   face = Cache.map_face_detail = gon.face
   Cache.rule.map_face_story_log.set face.story_logs
-  Cache.rule.map_face_story_log.map_reduce()
 
   face.name = Cache.faces.find(face.face_id).name
   face.story_id_of_folders = _.groupBy face.story_ids, ([k,count])->
@@ -241,7 +240,7 @@ GUI.if_exist "#buttons", (dom)->
         box.style.msTransform = rotate if head.browser.ie
         box.style.oTransform = rotate if head.browser.opera
         box.style.transform = rotate
-      for box in document.querySelectorAll(".glyphicon-cog")
+      for box in document.querySelectorAll(".icon-cog")
         anime box
 
   layout = new GUI.Layout dom, -1, -1, 120
@@ -257,11 +256,11 @@ GUI.if_exist "#buttons", (dom)->
           layout.dx = -1
 
       m "nav",
-        for icon in ["home", "book", "info-sign", "time", "envelope", "comment", "search", "film", "list", "th", "cog"] # lock
+        for icon in ["home", "book", "info-sign", "time", "envelope", "comment", "search", "film", "list", "th-large", "cog"] # lock
           continue unless touch.menus[icon]
           m "div", touch.start(icon),
             m ".bigicon",
-              m ".glyphicon.glyphicon-#{icon}"
+              m ".icon-#{icon}"
 
 GUI.if_exist "#topviewer", (dom)->
   layout = new GUI.Layout dom, 0, 1, 110, head.browser.ios, 0
@@ -321,7 +320,7 @@ GUI.if_exist "#css_changer", (dom)->
     controller: ->
     view: ->
       touch.menu m ".pagenavi.choice.guide.form-inline",
-        m "a.menuicon.glyphicon.glyphicon-cog", GUI.TouchMenu.icons.start("cog"), " "
+        m "a.menuicon.icon-cog", GUI.TouchMenu.icons.start("cog"), " "
         m ".form-group",
           m "a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
           m "a.mark", touch.btn(Url.prop.theme, "night"), "月夜"
@@ -331,7 +330,6 @@ GUI.if_exist "#css_changer", (dom)->
 
 if gon?.potofs?
   Cache.rule.potof.set gon.potofs
-  Cache.rule.potof.map_reduce()
 
   GUI.if_exist "#sayfilter", (dom)->
     layout = new GUI.Layout dom, 1, 1, 100
@@ -417,25 +415,15 @@ messages_search = ()->
   event_id = Url.prop.scroll()?.split("-")[0..2].join("-")
   mode = Url.prop.msg_mode()
   security = Url.prop.msg_security()
+  search = Url.prop.search()
 
-  q = {}
-  if event_id
-    q["event"] = [event_id]
-
-  switch mode
-    when "time"
-    else
-      q[mode] = [security]
-
-  Cache.messages.where(q).search(Url.prop.search()).sort()
+  Cache.messages.in_page(mode, security, event_id, search).list()
 
 if gon?.events? && gon.event?
   if gon?.story?
     Cache.rule.story.set [gon.story]
-    Cache.rule.story.map_reduce()
 
   Cache.rule.event.merge gon.events
-  Cache.rule.event.map_reduce()
 
   GUI.if_exist "#story", (dom)->
     story = gon.story
@@ -466,7 +454,7 @@ if gon?.events? && gon.event?
               GUI.message.story story
             else
               touch.menu m "h2",
-                m "a.menuicon.glyphicon.glyphicon-book", GUI.TouchMenu.icons.start("book"), " "
+                m "a.menuicon.icon-book", GUI.TouchMenu.icons.start("book"), " "
                 m "span", story.name
 
   GUI.if_exist "#messages", (dom)->
@@ -522,7 +510,6 @@ if gon?.events? && gon.event?
         if event.messages
           Cache.rule.message.merge event.messages,
             event_id: event._id
-      Cache.rule.message.map_reduce()
 
       m.endComputation()
     , DELAY.animato
@@ -530,7 +517,6 @@ if gon?.events? && gon.event?
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
     Cache.rule.item.set gon.villages
-    Cache.rule.item.map_reduce()
     m.module dom,
       controller: ->
       view: ->
@@ -540,7 +526,6 @@ if gon?.villages?
 if gon?.byebyes?
   GUI.if_exist "#byebyes", (dom)->
     Cache.rule.item.set gon.byebyes
-    Cache.rule.item.map_reduce()
     m.module dom,
       controller: ->
       view: ->
@@ -550,7 +535,6 @@ if gon?.byebyes?
 if gon?.history?
   GUI.if_exist "#history", (dom)->
     Cache.rule.item.set gon.history
-    Cache.rule.item.map_reduce()
     m.module dom,
       controller: ->
       view: ->
@@ -559,41 +543,40 @@ if gon?.history?
 
 if gon?.stories?
   Cache.rule.story.set gon.stories
-  Cache.rule.story.map_reduce()
   GUI.if_exist "#stories", (dom)->
     scroll_spy.avg_height = 22
     touch_sw = new GUI.TouchMenu()
     touch = new GUI.TouchMenu()
-    touch.menu_set Cache.storys, Url.prop, "count", 
+    touch.menu_set Url.prop, "count", 
       rating: ->
         @btn_group 27, (key, o)->
           m "span",
             m "img.pull-left",
-              src: GUI.img_head + "/icon/cd_#{o.first.rating}.png"
+              src: GUI.img_head + "/icon/cd_#{o.min_is.rating}.png"
             RAILS.rating[key].caption
       game: ->
-        @btn_group 21, (key, o)-> o.first.view.game_rule
+        @btn_group 21, (key, o)-> o.min_is.view.game_rule
       folder: ->
         @btn_group 15, (key)-> GAME[key]?.nation
       say_limit: ->
-        @btn_group 15, (key, o)-> o.first.view.say_limit
+        @btn_group 15, (key, o)-> o.min_is.view.say_limit
       update_at: ->
-        @btn_group 15, (key, o)-> o.first.view.update_at
+        @btn_group 15, (key, o)-> o.min_is.view.update_at
       update_interval: ->
-        @btn_group 15, (key, o)-> o.first.view.update_interval
+        @btn_group 15, (key, o)-> o.min_is.view.update_interval
       event_type: ->
         @btn_group 12, (key)-> key
       role_type: ->
         @btn_group 10, (key)-> key
       player_length: ->
-        @btn_group  9, (key, o)-> o.first.view.player_length + "人"
+        @btn_group  9, (key, o)-> o.min_is.view.player_length + "人"
 
-    touch.icon "list", ->
+    touch.icon "home", ->
       icon =
         if touch_sw.state()
-          "glyphicon-resize-small"
+          "icon-resize-normal"
         else
-          "glyphicon-resize-full"
+          "icon-resize-full"
 
       m ".pagenavi.choice.guide.form-inline",
         m "h6", "検索する。　　　　"
@@ -601,43 +584,42 @@ if gon?.stories?
           onblur:   m.withAttr("value", Url.prop.search)
           onchange: m.withAttr("value", Url.prop.search)
           value: Url.prop.search()
-        m "span.btn.btn-default.dropdown-toggle", touch_sw.start(true),
-          m "i.glyphicon.#{icon}"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("folder"),
-          m "i.glyphicon.glyphicon-book"
-          m "i.caret"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("game"),
+        m "span.btn.btn-default", touch_sw.start(true),
+          m "i.#{icon}"
+        m "span.btn.btn-default", touch.start("folder"),
+          m "i.icon-book"
+          m "span.note", "▼"
+        m "span.btn.btn-default", touch.start("game"),
           "ルール"
-          m "i.caret"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("event_type"),
+          m "span.note", "▼"
+        m "span.btn.btn-default", touch.start("event_type"),
           "事件"
-          m "i.caret"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("role_type"),
+          m "span.note", "▼"
+        m "span.btn.btn-default", touch.start("role_type"),
           "役職"
-          m "i.caret"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("rating"),
+          m "span.note", "▼"
+        m "span.btn.btn-default", touch.start("rating"),
           "こだわり"
-          m "i.caret"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("say_limit"),
+          m "span.note", "▼"
+        m "span.btn.btn-default", touch.start("say_limit"),
           "発言制限"
-          m "i.caret"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("player_length"),
+          m "span.note", "▼"
+        m "span.btn.btn-default", touch.start("player_length"),
           "人数"
-          m "i.caret"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("update_at"),
+          m "span.note", "▼"
+        m "span.btn.btn-default", touch.start("update_at"),
           "更新時刻"
-          m "i.caret"
-        m "span.btn.btn-default.dropdown-toggle", touch.start("update_interval"),
+          m "span.note", "▼"
+        m "span.btn.btn-default", touch.start("update_interval"),
           "更新間隔"
-          m "i.caret"
+          m "span.note", "▼"
 
     m.module dom,
       controller: ->
       view: ->
-        storys = touch.by_menu().search(Url.prop.search())
-
+        touch.query = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
         vdom = touch.menu m ".pagenavi.choice.guide.form-inline",
-          m "a.menuicon.glyphicon.glyphicon-list", GUI.TouchMenu.icons.start("list"), " "
+          m "a.menuicon.icon-home", GUI.TouchMenu.icons.start("home"), " "
           m "span", "村を検索してみよう。"          
 
         # m ".table-swipe",
@@ -645,13 +627,13 @@ if gon?.stories?
             m "thead",
               m "tr", 
                 m "th"
-            scroll_spy.pager "tbody", storys.list(), (o)->
+            scroll_spy.pager "tbody", touch.query.list(), (o)->
               m "tr", {key: o._id },
                 if touch_sw.state()
                   m "td",
                     m "a",
                       href: o.link
-                    , m "code.glyphicon.glyphicon-film"
+                    , m "code.icon-download"
                     m "kbd.note", o._id
                     m "a",
                       href: o.file
@@ -675,7 +657,7 @@ if gon?.stories?
                   m "td",
                     m "a",
                       href: o.link
-                    , m "code.glyphicon.glyphicon-film"
+                    , m "code.icon-download"
                     m "kbd.note", o._id
                     m "a",
                       href: o.file
@@ -914,7 +896,7 @@ GUI.if_exist "#headline", (dom)->
         input.form-control.input-medium(type="text" ng-model="search_input" ng-blur="search.value = search_input" placeholder="ログを探す")
       | &thinsp;
       .form-group(ng-if="event.is_progress")
-        a.mark.click.glyphicon.glyphicon-pencil(ng-click="go.form()")
+        a.mark.click.icon-pencil(ng-click="go.form()")
 ###
 
 GUI.if_exist "#to_root", (dom)->

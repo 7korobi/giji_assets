@@ -1,7 +1,7 @@
 new Cache.Rule("face").schema ->
-  @order_by "order"
+  @order "order"
 new Cache.Rule("chr_set").schema ->
-  @order_by "caption"
+  @order "caption"
 new Cache.Rule("chr_npc").schema ->
   @belongs_to "chr_set", dependent: true
   @belongs_to "face", dependent: true
@@ -9,6 +9,26 @@ new Cache.Rule("chr_job").schema ->
   @order (o)-> o.face.order
   @belongs_to "chr_set", dependent: true
   @belongs_to "face", dependent: true
+  @deploy (o)->
+    o.chr_job_id = o._id
+    o.chr_set_idx = order.indexOf o.chr_set_id
+
+  order = [
+    "ririnra"
+    "wa"
+    "time"
+    "sf"
+    "mad"
+    "ger"
+    "changed"
+    "animal"
+    "school"
+    "all"
+  ]
+
+  @scope (all)->
+    face: (face_id)->
+      all.where((o)-> face_id == o.face_id).sort(false, (o)-> o.chr_set_idx )
 
 Cache.rule.face.set <%= JSON.generate FACE %>
 
@@ -22,30 +42,14 @@ Cache.rule.chr_job.merge <%= JSON.generate(data.chr_job) %>
 <%
 end
 %>
-list = []
-order = [
-  "ririnra"
-  "wa"
-  "time"
-  "sf"
-  "mad"
-  "ger"
-  "changed"
-  "animal"
-  "school"
-]
-for face in Cache.faces.sort()
-  chr_set_id = "all"
-  face_id = face._id
-  _id = "all_#{face_id}"
-  faced_jobs = Cache.chr_jobs.where(face:[face_id]).sort()
-  if faced_jobs?
-    job = _.sortBy(faced_jobs, (o)-> order.indexOf o.chr_set_id )?.first?.job
-  list.push {chr_set_id, face_id, job, _id} if job?
+
+list = 
+  for face in Cache.faces.list()
+    chr_set_id = "all"
+    face_id = face._id
+    _id = "all_#{face_id}"
+    job = Cache.chr_jobs.face(face_id).list()?.first?.job
+    continue unless job?
+    {chr_set_id, face_id, job, _id}
 
 Cache.rule.chr_job.merge list
-
-Cache.rule.face.map_reduce()
-Cache.rule.chr_set.map_reduce()
-Cache.rule.chr_npc.map_reduce()
-Cache.rule.chr_job.map_reduce()

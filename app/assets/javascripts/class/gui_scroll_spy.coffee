@@ -71,7 +71,8 @@ class GUI.ScrollSpy
     @adjust?.id
 
   pager: (tag, @list, cb)->
-    return unless @list?.length
+    unless @list?.length
+      return m tag, {config: (@pager_elem)=> }
     top = 0
     btm = @list.length - 1
 

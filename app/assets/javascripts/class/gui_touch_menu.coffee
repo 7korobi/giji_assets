@@ -4,29 +4,30 @@ class GUI.TouchMenu
   constructor: (@menus = {})->
     @state = m.prop(false)
 
-  by_menu: ->
-    hash = {}
-    for menu of @menus
-      prop = @prop[menu]()
-      hash[menu] = [prop] if @all.reduce[menu][prop]
-    @all.where hash
-
-  menu_set: (@all, @prop, sort_by, @menus)->
+  menu_set: (@prop, sort_by, @menus)->
     menu_item = (caption_func, item_func)=>
       menu = @state()
       prop = @prop[menu]
-      reduce = @all.reduce[menu]
+      reduce = @query.reduce()[menu]
+      return [] unless reduce?
+
       keys = Object.keys(reduce).sort (a,b)-> 
         reduce[b][sort_by] - reduce[a][sort_by]
 
       [ unless reduce.all? && caption_func "all", reduce.all
-          o = @all.reduce._all.all
-          item_func o[sort_by], @btn(prop, "all"), "-全体-"
+          o = @query.reduce().all.all
+
+          btn = @btn(prop, "all")
+          btn.key = "all"
+          item_func o[sort_by], btn, "-全体-"
         for key in keys
           o = reduce[key]
           caption = caption_func key, o
           continue unless caption
-          item_func o[sort_by], @btn(prop, key), caption
+
+          btn = @btn(prop, key)
+          btn.key = key
+          item_func o[sort_by], btn, caption
       ]
 
     @helper = 
@@ -64,14 +65,14 @@ class GUI.TouchMenu
       @end ->
         state false
 
-  btn: (prop, val)->
+  btn: (prop, key)->
     state = @state
     GUI.attrs ->
       if prop
         @end ->
           state false
-          prop val
-        if val == prop()
+          prop key
+        if key == prop()
           @className "btn btn-success"
         else
           @className "btn btn-default"
