@@ -1,5 +1,11 @@
 class GUI.Animate
 
+  spin = new Bounce
+  spin.rotate
+    from: 0
+    to: 360
+  spin.define("spin")
+
   jelly_up = new Bounce
   jelly_up.scale
     from: {x: 1, y: 1}
@@ -42,6 +48,9 @@ class GUI.Animate
 
   zIndex = (z)->
     (dom)-> dom.style.zIndex = z
+
+  @spin: apply DELAY.lento, "spin", {}
+
 
   @jelly:
     up: apply DELAY.andante, "jelly-up",

@@ -37,8 +37,7 @@ $screen-lg: 770px;
 
 // Components
 @import "bootstrap/component-animations";
-@import "bootstrap/glyphicons";
-@import "bootstrap/dropdowns";
+// @import "bootstrap/dropdowns";
 @import "bootstrap/button-groups";
 @import "bootstrap/input-groups";
 @import "bootstrap/navs";
@@ -48,7 +47,7 @@ $screen-lg: 770px;
 @import "bootstrap/pager";
 @import "bootstrap/labels";
 @import "bootstrap/badges";
-@import "bootstrap/jumbotron";
+// @import "bootstrap/jumbotron";
 @import "bootstrap/thumbnails";
 @import "bootstrap/alerts";
 @import "bootstrap/progress-bars";
@@ -72,6 +71,7 @@ $screen-lg: 770px;
 @import "lib/box";
 @import "lib/font";
 @import "lib/giji";
+@import "lib/icon";
 @import "lib/layout";
 @import "lib/message";
 @import "lib/mithril";

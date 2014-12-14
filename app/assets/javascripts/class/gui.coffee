@@ -1,11 +1,6 @@
 GUI = 
   img_head: "http://7korobi.gehirn.ne.jp/images"
-  portrate: (face_id)->
-    dom = null
-    attr = GUI.attrs ->
-      @over -> GUI.Animate.jelly.up dom
-      @out ->  GUI.Animate.jelly.down dom
-    attr.config = (elem, isInit, context)-> dom = elem
+  portrate: (face_id, attr = {})->
     attr.src = GUI.img_head + "/portrate/#{face_id}.jpg"
     m "img", attr
 
@@ -37,7 +32,7 @@ GUI =
     o = {}
     act = (cb)->
       (e)->
-        cb(e)
+        cb(e, e.srcElement, e.toElement)
         e.preventDefault()
 
     func =
@@ -49,10 +44,12 @@ GUI =
           act = (cb)-> cb
 
         start = act (e)->
-          e1 = event.changedTouches?[0]
+          console.log e.changedTouches
+          e1 = e.changedTouches?[0]
           gesture.start(e1 || e)
         move = act (e)->
-          e1 = event.changedTouches?[0]
+          console.log e.changedTouches
+          e1 = e.changedTouches?[0]
           gesture.move(e1 || e)
         end = act (e)->
           gesture.end(e)
@@ -106,6 +103,8 @@ GUI =
         o.onmouseout = cb
         o.ongestureend = cb
         o.ontouchend = cb
+      config: (cb)->
+        o.config = cb
 
     dsl.call func
     o

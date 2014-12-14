@@ -1,0 +1,192 @@
+@font-face {
+  font-family: 'giji';
+  src: url('../font/giji.eot');
+  src: url('../font/giji.eot') format('embedded-opentype'),
+       url('../font/giji.woff') format('woff'),
+       url('../font/giji.ttf') format('truetype'),
+       url('../font/giji.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'giji';
+    src: url('../font/giji.svg') format('svg');
+  }
+}
+*/
+ 
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "giji";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 3ex;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+     
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+ 
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+ 
+.icon-balance:before { content: '\79e4'; } /* '秤' */
+.icon-car:before { content: '\8eca'; } /* '車' */
+.icon-bike:before { content: '\8d70'; } /* '走' */
+.icon-sheep:before { content: '\7f8a'; } /* '羊' */
+.icon-rss:before { content: '\72'; } /* 'r' */
+
+.icon-bat:before { content: '\31'; } /* '1' */
+.icon-bat2:before { content: '\32'; } /* '2' */
+.icon-bat3:before { content: '\33'; } /* '3' */
+.icon-bat4:before { content: '\34'; } /* '4' */
+.icon-bat-charge:before { content: '\35'; } /* '5' */
+.icon-html5:before { content: '\39'; } /* '9' */
+.icon-android:before { content: '\41'; } /* 'A' */
+.icon-chrome:before { content: '\43'; } /* 'C' */
+.icon-dropbox:before { content: '\44'; } /* 'D' */
+.icon-ie:before { content: '\45'; } /* 'E' */
+.icon-firefox:before { content: '\46'; } /* 'F' */
+.icon-googleplus-rect:before { content: '\47'; } /* 'G' */
+.icon-icq:before { content: '\49'; } /* 'I' */
+.icon-appstore:before { content: '\4d'; } /* 'M' */
+.icon-opera:before { content: '\4f'; } /* 'O' */
+.icon-paypal:before { content: '\50'; } /* 'P' */
+.icon-skype:before { content: '\53'; } /* 'S' */
+.icon-twitter-bird:before { content: '\54'; } /* 'T' */
+.icon-windows:before { content: '\57'; } /* 'W' */
+.icon-picasa:before { content: '\63'; } /* 'c' */
+.icon-discover:before { content: '\64'; } /* 'd' */
+.icon-github:before { content: '\67'; } /* 'g' */
+.icon-instagram:before { content: '\69'; } /* 'i' */
+.icon-lego:before { content: '\6c'; } /* 'l' */
+.icon-mail:before { content: '\6d'; } /* 'm' */
+.icon-stackoverflow:before { content: '\73'; } /* 's' */
+.icon-tumblr-rect:before { content: '\74'; } /* 't' */
+.icon-vimeo:before { content: '\76'; } /* 'v' */
+.icon-win8:before { content: '\77'; } /* 'w' */
+.icon-cancel:before { content: '\d7'; } /* '×' */
+.icon-infinity:before { content: '\221e'; } /* '∞' */
+.icon-star:before { content: '\2606'; } /* '☆' */
+.icon-heart:before { content: '\2661'; } /* '♡' */
+.icon-music:before { content: '\266b'; } /* '♫' */
+.icon-ok:before { content: '\2713'; } /* '✓' */
+.icon-up:before { content: '\4e0a'; } /* '上' */
+.icon-down:before { content: '\4e0b'; } /* '下' */
+.icon-user:before { content: '\4eba'; } /* '人' */
+.icon-wifi:before { content: '\4fe1'; } /* '信' */
+.icon-chart-pie:before { content: '\5186'; } /* '円' */
+.icon-cw:before { content: '\518d'; } /* '再' */
+.icon-camera:before { content: '\5199'; } /* '写' */
+.icon-crown:before { content: '\51a0'; } /* '冠' */
+.icon-stopwatch:before { content: '\523b'; } /* '刻' */
+.icon-download:before { content: '\53d6'; } /* '取' */
+.icon-right:before { content: '\53f3'; } /* '右' */
+.icon-comment:before { content: '\545f'; } /* '呟' */
+.icon-doc:before { content: '\54c1'; } /* '品' */
+.icon-direction:before { content: '\5834'; } /* '場' */
+.icon-users:before { content: '\59e6'; } /* '姦' */
+.icon-diamond:before { content: '\5b9d'; } /* '宝' */
+.icon-home:before { content: '\5bb6'; } /* '家' */
+.icon-location:before { content: '\5c45'; } /* '居' */
+.icon-chart-alt:before { content: '\5c71'; } /* '山' */
+.icon-wrench:before { content: '\5de5'; } /* '工' */
+.icon-left:before { content: '\5de6'; } /* '左' */
+.icon-recycle:before { content: '\5faa'; } /* '循' */
+.icon-cancel-alt:before { content: '\623b'; } /* '戻' */
+.icon-thumbs-down:before { content: '\62d2'; } /* '拒' */
+.icon-zoom-in:before { content: '\62e1'; } /* '拡' */
+.icon-trash:before { content: '\6368'; } /* '捨' */
+.icon-flag:before { content: '\65d7'; } /* '旗' */
+.icon-clock:before { content: '\6642'; } /* '時' */
+.icon-sun:before { content: '\6674'; } /* '晴' */
+.icon-cloud:before { content: '\66c7'; } /* '曇' */
+.icon-moon:before { content: '\6708'; } /* '月' */
+.icon-attach:before { content: '\675f'; } /* '束' */
+.icon-bookmark:before { content: '\681e'; } /* '栞' */
+.icon-chart-bar:before { content: '\68d2'; } /* '棒' */
+.icon-tags:before { content: '\6a19'; } /* '標' */
+.icon-cog:before { content: '\6b6f'; } /* '歯' */
+.icon-warning-empty:before { content: '\6ce8'; } /* '注' */
+.icon-upload:before { content: '\6e21'; } /* '渡' */
+.icon-temperatire:before { content: '\6e29'; } /* '温' */
+.icon-gauge:before { content: '\6e2c'; } /* '測' */
+.icon-lightbulb:before { content: '\706f'; } /* '灯' */
+.icon-certificate:before { content: '\7206'; } /* '爆' */
+.icon-pin:before { content: '\7559'; } /* '留' */
+.icon-anchor:before { content: '\7887'; } /* '碇' */
+.icon-block:before { content: '\7981'; } /* '禁' */
+.icon-move:before { content: '\79fb'; } /* '移' */
+.icon-pencil:before { content: '\7b46'; } /* '筆' */
+.icon-calc:before { content: '\7b97'; } /* '算' */
+.icon-sitemap:before { content: '\7d44'; } /* '組' */
+.icon-chart:before { content: '\7dda'; } /* '線' */
+.icon-zoom-out:before { content: '\7e2e'; } /* '縮' */
+.icon-link:before { content: '\7e4b'; } /* '繋' */
+.icon-search:before { content: '\898b'; } /* '見' */
+.icon-menu:before { content: '\89a7'; } /* '覧' */
+.icon-tag:before { content: '\8a18'; } /* '記' */
+.icon-chat-alt:before { content: '\8a71'; } /* '話' */
+.icon-gift:before { content: '\8d08'; } /* '贈' */
+.icon-thumbs-up:before { content: '\8fce'; } /* '迎' */
+.icon-fast-fw:before { content: '\9032'; } /* '進' */
+.icon-rewind:before { content: '\9061'; } /* '遡' */
+.icon-scissors:before { content: '\92cf'; } /* '鋏' */
+.icon-lock:before { content: '\9320'; } /* '錠' */
+.icon-key:before { content: '\9375'; } /* '鍵' */
+.icon-lock-open:before { content: '\958b'; } /* '開' */
+.icon-cloud-sun:before { content: '\9670'; } /* '陰' */
+.icon-eject:before { content: '\96e2'; } /* '離' */
+.icon-snow:before { content: '\96ea'; } /* '雪' */
+.icon-flash:before { content: '\96f7'; } /* '雷' */
+.icon-briefcase:before { content: '\9784'; } /* '鞄' */
+.icon-visa:before { content: '\e810'; } /* '' */
+.icon-codepen:before { content: '\e811'; } /* '' */
+.icon-mastercard:before { content: '\e81b'; } /* '' */
+.icon-gmail:before { content: '\e829'; } /* '' */
+.icon-amex:before { content: '\e834'; } /* '' */
+.icon-flickr:before { content: '\e83a'; } /* '' */
+.icon-facebook-rect:before { content: '\e84c'; } /* '' */
+.icon-user-delete:before { content: '\e857'; } /* '' */
+.icon-user-add:before { content: '\e85b'; } /* '' */
+.icon-th-large:before { content: '\e85d'; } /* '' */
+.icon-rain:before { content: '\e873'; } /* '' */
+.icon-emo-happy:before { content: '\e879'; } /* '' */
+.icon-emo-unhappy:before { content: '\e87a'; } /* '' */
+.icon-emo-sleep:before { content: '\e87b'; } /* '' */
+.icon-emo-devil:before { content: '\e87c'; } /* '' */
+.icon-emo-surprised:before { content: '\e87d'; } /* '' */
+.icon-emo-tongue:before { content: '\e87e'; } /* '' */
+.icon-emo-coffee:before { content: '\e87f'; } /* '' */
+.icon-emo-sunglasses:before { content: '\e880'; } /* '' */
+.icon-emo-grin:before { content: '\e881'; } /* '' */
+.icon-emo-angry:before { content: '\e882'; } /* '' */
+.icon-emo-cry:before { content: '\e883'; } /* '' */
+.icon-emo-squint:before { content: '\e884'; } /* '' */
+.icon-emo-laugh:before { content: '\e885'; } /* '' */
+.icon-emo-wink:before { content: '\e886'; } /* '' */
+.icon-doc-add:before { content: '\e888'; } /* '' */
+.icon-folder-add:before { content: '\e889'; } /* '' */
+.icon-resize-full:before { content: '\e88b'; } /* '' */
+.icon-resize-normal:before { content: '\e88c'; } /* '' */
+.icon-folder-delete:before { content: '\e88d'; } /* '' */
+.icon-doc-remove:before { content: '\e88e'; } /* '' */
+.icon-sort-numeric:before { content: '\ff11'; } /* '１' */
+.icon-sort-alphabet:before { content: '\ff21'; } /* 'Ａ' */
