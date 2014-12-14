@@ -3,13 +3,70 @@ class Cache
 
 
 class Cache.Query
-  constructor: (@finder)->
-    @q = {}
+  constructor: (@finder, @match, @desc, @sort_by)->
+    @_hash = {}
 
-  where: (scopes)->
-    query = new Cache.Query(@finder)
-    query.q = _.extend({}, @q, scopes)
-    query
+  _match: (query, cb)->
+    return @ unless Object.keys(query).length
+    match = @match.concat()
+    for target, req of query
+      is_object = "object" == typeof req
+      match.push cb target, req,
+        switch typeof req
+          when "object"
+            switch 
+              when req.test?
+                RegExp 
+              when req.length?
+                Array
+              else
+                Object
+          when "number"
+            Number
+          when "string"
+            String
+
+    new Cache.Query @finder, match, @desc, @sort_by
+
+  in: (query)->
+    switch typeof query
+      when "object"
+        @_match query, (target, req, type)->
+          switch type
+            when Array
+              (o)-> 
+                for key in req
+                  for val in o[target]
+                    return true if val == key
+                false
+            when RegExp
+              (o)->
+                for val in o[target]
+                  return true if req.test val
+                false
+            else
+              (o)-> 
+                for val in o[target]
+                  return true if val == req
+                false
+
+  where: (query)->
+    switch typeof query
+      when "object"
+        @_match query, (target, req, type)->
+          switch type
+            when Array
+              (o)-> 
+                for key in req
+                  return true if o[target] == key
+                false
+            when RegExp
+              (o)-> req.test o[target]
+            else
+              (o)-> o[target] == req
+      when "function"
+        match = @match.concat query
+        new Cache.Query @finder, match, @desc, @sort_by
 
   search: (text)->
     return @ unless text
@@ -19,113 +76,117 @@ class Cache.Query
         continue unless item.length
         "(#{item})"
     return @ unless list.length
-    @finder.search(new RegExp list.join("|"), "ig")
-    @where search:["match"]
+    regexp = (new RegExp list.join("|"), "ig")
+    @in search_words: regexp
 
-  find: (id, kind = "all", scope = "_all")->
-    @finder.scopes[scope].hash[kind][id]
+  sort: (desc, order = @sort_by)->
+    sort_by = 
+      switch typeof order
+        when "function"
+          order
+        when "string"
+          (o)-> o[order]
+    return @ if desc == @desc && sort_by == @sort_by
+    new Cache.Query @finder, @match, desc, sort_by
 
-  sort: (desc)->
-    @finder.sort_func desc, @finder.list @q
+  reduce: ->
+    @finder.calculate(@) unless @_reduce?
+    @_reduce
 
   list: ->
-    @finder.list(@q)
+    @finder.calculate(@) unless @_list?
+    @_list
+
+  find: (id)->
+    @finder.calculate(@) unless @_hash?
+    @_hash[id]?.item
 
 
 class Cache.Finder
-  constructor: (@scopes, @sort_func)->
-    @all = new Cache.Query @
-    @base_map = => @scopes._all.hash.all
-    @map = (o)-> o._id
+  constructor: (@sort_by)->
+    all = new Cache.Query @, [], false, @sort_by
+    @scope = {all}
+    @query = {all}
 
-  search: (@search_regexp)->
-    all = _.values @base_map()
+  rehash: (rules)->
+    return unless @diff.del || @diff.change
+    @query = 
+      all: @query.all
+    for rule in rules
+      rule
+    return
 
-    scope = @scopes.search
-    scope.hash = {}
-    scope.merge all
-    @map_reduce
-      search: @scopes.search
+  calculate_map_reduce: (query)->
+    init = (map)=>
+      o = {}
+      o.count = 0 if map.count
+      o.all   = 0 if map.all
+      o
 
-  list: (query)->
-    for id, val of @base_map()
-      for scope, kinds of query
-        val = null
-        for kind in kinds
-          kind_hash = @scopes[scope].hash[kind]
-          continue unless kind_hash
-          
-          val = kind_hash?[id]
-          break if val
-        break unless val
-      continue unless val
-      val
+    reduce = (item, o, map)=>
+      unless map.max <= o.max
+        o.max_is = item
+        o.max = map.max
+      unless o.min <= map.min
+        o.min_is = item
+        o.min = map.min 
+      o.count += map.count if map.count
+      o.all += map.all if map.all
 
-  refresh: ->
-    @cache = {}
-    @diff = {}
+    calc = (o)=>
+      o.avg = o.all / o.count if o.all && o.count
 
-  map_reduce: (scopes)->
-    init = (val)->
-      count: 0
-      sum: 0
+    # map_reduce
+    base = {}
+    for id, {item, emits} of query._hash
+      for emit in emits 
+        [group, key, map] = emit
+        o = base
+        o = o[group] ||= {}
+        o = o[key] ||= init map
+        reduce item, o, map
 
-    if scopes?
-      @all.reduce ?= {}
-    else
-      @all.reduce = {}
-      scopes = @scopes
+    for group, emits of base
+      for key, map of emits
+        calc map
+    query._reduce = base
 
-    for id, val of @base_map()
-      for scope_key, scope of scopes
-        @all.reduce[scope_key] = {}
-        for kind_key, hash of scope.hash
-          first = @map val
-          @all.reduce[scope_key][kind_key] = init first
-      break
+  calculate_sort: (query)->
+    list = query._list
 
-    switch typeof first
-      when "number"
-        @reduce_calc = true
-        map = (val)->
-          max: val
-          min: val
-          count: 1
-          sum: val
-
+    [lt, gt] =
+      if query.desc 
+        [1, -1]
       else
-        map = (val)->
-          max: val
-          min: val
-          count: 1
+        [-1, 1]
 
-    reduce = (target, emit, val)=>
-      unless emit.max <= target.max
-        target.max = emit.max
-        target.last = val
-      unless target.min <= emit.min
-        target.min = emit.min 
-        target.first = val
-      target.count += emit.count if emit.count
-      target.sum += emit.sum if emit.sum
+    query.orders = s = {}
+    for o in list
+      s[o._id] = query.sort_by(o)
+    query._list =
+      list.sort (a,b)->
+        return lt if s[a._id] < s[b._id]
+        return gt if s[a._id] > s[b._id]
+        return  0
 
-    calc = (target)=>
-      if @reduce_calc
-        target.avg = target.sum / target.count 
+  calculate_list: (query, all)->
+    # list and hash
+    query._list = 
+      for id, o of all._hash
+        {item} = o
+        for match in query.match
+          o = null unless match item
+          break unless o
+        continue unless o
 
-    for id, val of @base_map()
-      emit = map @map val
-      for scope_key, scope of scopes
-        for kind_key, hash of scope.hash
-          target = @all.reduce[scope_key][kind_key]
-          if hash[val._id]?
-            reduce target, emit, val
+        query._hash[id] = o
+        item
 
-    for scope_key, scope of scopes
-      for kind_key, hash of scope.hash
-        target = @all.reduce[scope_key][kind_key]
-        calc target
-
+  calculate: (query)->
+    @calculate_list       query, @query.all
+    @calculate_sort       query
+    @calculate_map_reduce query if @map_reduce?
+    return
 
 class Cache.Rule
   constructor: (field)->
@@ -133,196 +194,112 @@ class Cache.Rule
     @list_name = "#{field}s"
     @validates = []
     @responses = []
-    @adjust =
-      _id: (o)-> o._id = o[@id] unless o._id
-    @adjust[@id] = (o)=> o[@id] = o._id unless o[@id]
-    @adjust_keys = ["_id", @id]
+    @map_reduce = ->
+    @protect = ->
+    @deploy = (o)=>
+      o._id = o[@id] unless o._id
+      o[@id] = o._id unless o[@id]
 
-    @finder = new Cache.Finder {}, (list)-> list
-    @base_scope "_all",
-      kind: -> ["all"]
-      finder: @finder
+    @finder = new Cache.Finder (list)-> list
 
     Cache.rule[field] = @
-    Cache[@list_name] = @finder.all
-
-  base_scope: (key, hash)->
-    @finder.scopes[key] = scope = new Cache.Scope(@, hash)
-    @finder.scope_keys = Object.keys(@finder.scopes).sort().reverse()
-    scope.cleanup()
-
-    all = _.values @finder.base_map()
-    if 0 < all?.length
-      scope.merge all
-    scope
+    Cache[@list_name] = @finder.query.all
 
   schema: (cb)->
-    order_base = (func)=>
-      @finder.map = func
-      @finder.sort_func = (desc, list)=>
-        [lt, gt] =
-          if desc 
-            [1, -1]
-          else
-            [-1, 1]
-
-        @finder.orders = s = {}
-        for o in list
-          s[o._id] = func(o)
-        list.sort (a,b)->
-          return lt if s[a._id] < s[b._id]
-          return gt if s[a._id] > s[b._id]
-          return  0
-
     definer =
-      scope: (key, kind)=>
-        cache = Cache[@list_name]
-        @base_scope key,
-          kind: kind
-          finder: @finder
-
-      search: (targets)=>
-        kind = (o)=>
-          regexp = @finder.search_regexp
-          if regexp
-            for text in targets(o)
-              if text && text.match regexp
-                return ["match"]
-          return []
-        @base_scope "search",
-          kind: kind
-          finder: @finder
-
-      pager: (key, items)=>
+      scope: (cb)=>
+        @finder.scope = cb @finder.query.all
+        for key, query_call of @finder.scope
+          @finder.query.all[key] = (args...)=>
+            @finder.query["#{key}:#{args.join(',')}"] ||= query_call args...
 
       belongs_to: (parent, option)=>
-        cache = Cache[@list_name]
         parents = "#{parent}s"
         parent_id = "#{parent}_id"
 
-        @base_scope parent,
-          kind: (o)-> [o[parent_id]]
-          finder: @finder
+        dependent = option?.dependent?
+        if dependent
+          Cache.rule[parent].responses.push @ 
 
-        if option?.dependent?
-          @validates.push (o)->
-            that = Cache[parents]?.find(o[parent_id])
-            o[parent] = that if that?
-          Cache.rule[parent].responses.push @
+        @validates.push (o)->
+          that = Cache[parents]?.find(o[parent_id])
+          if that?
+            o[parent] = that 
+          else
+            ! dependent
 
-      order: (func)=>
-        order_base func
+      order: (order)=>
+        query = @finder.query.all.sort false, order
+        query._hash = @finder.query.all._hash
+        Cache[@list_name] = @finder.query.all = query
 
-      order_by: (key)=>
-        order_base (o)-> o[key]
+      protect: (keys...)=>
+        @protect = (o, old)->
+          for key in keys
+            o[key] = old[key]
 
-      fields: (adjust)=>
-        for key, cb of adjust
-          @adjust[key] = cb
-
-      protect: (key)=>
-        @adjust[key] = (o, old)->
-          o[key] = old[key] if old?
+      deploy: (@deploy)=>
+      map_reduce: (@map_reduce)=>
 
     cb.call(definer, @)
-    @adjust_keys = _.keys(@adjust).sort()
 
 
-  set_base: (from, parent, cb)->
-    all = @finder.base_map()
-    list = []
+  set_base: (mode, from, parent)->
+    finder = @finder
+    diff = finder.diff
+    all = finder.query.all._hash
  
-    accept = (o)=>
+    validate_item = (item)=>
       for validate in @validates
-        return unless validate(o)
-      list.push o
+        return false unless validate item
+      true
 
-    for o in from || []
-      accept o
+    switch mode
+      when "merge"
+        for item in from || []
+          continue unless validate_item item
+          for key, val of parent
+            item[key] = val
 
-    for o in list
-      for key, val of parent
-        o[key] = val
+          @deploy item
+          o = {item, emits: []}
+          old = all[item._id]
+          if old?
+            @protect item, old.item
+            diff.change = true 
+          else
+            diff.add = true
+          all[item._id] = o
 
-      old = all?[o._id]
-      for key in @adjust_keys
-        @adjust[key](o, old)
+          emit = (group, key, map)=>
+            finder.map_reduce = true
+            o.emits.push [group, key, map]
+          @map_reduce o.item, emit
 
-    for key in @finder.scope_keys
-      scope = @finder.scopes[key]
-      cb scope, list
+      else
+        for item in from || []
+          @deploy item
+          o = {item, emits: []}
+          old = all[item._id]
+          if old?
+            diff.del = true
+            delete all[item._id]
 
+    finder.rehash @responses
     return
-
-  map_reduce: ()->
-    @finder.map_reduce()
-
-  reject: (list)->
-    @set_base list, null, (scope, list)->
-      scope.reject list
-
-    for rule in @responses
-      rule.rehash() if @finder.diff.del || @finder.diff.change
-
-  merge: (list, parent)->
-    @set_base list, parent, (scope, list)->
-      scope.merge list
 
   set: (list, parent)->
-    @set_base list, parent, (scope, list)->
-      scope.hash = {}
-      scope.merge list
+    @finder.diff = {}
+    for key, val of @finder.query.all._hash 
+      @finder.query.all._hash = {}
+      @finder.diff.del = true
+      break
+    @set_base "merge", list, parent, "merge"
 
-    for rule in @responses
-      rule.rehash() if @finder.diff.del || @finder.diff.change
-
-  rehash: ->
-    all = _.values @finder.base_map()
-    @set all
-
-  cleanup: ->
-    for key in @finder.scope_keys
-      scope = @finder.scopes[key]
-      scope.cleanup()
-
-
-class Cache.Scope
-  constructor: (@rule, {@kind, @finder})->
-
-  adjust: (list, merge_phase)->
-    all = @finder.base_map()
-    @finder.refresh()
-
-    for o in list
-      if all?
-        old = all[o._id]
-      if old?
-        for old_kind in @kind(old) || []
-          if @hash[old_kind]?
-            @finder.diff.del = true
-            delete @hash[old_kind][o._id]
-
-      merge_phase(o)
-    return
-  
   reject: (list)->
-    @adjust list, ->
+    @finder.diff = {}
+    @set_base false, list, null
 
-  merge: (list)->
-    @adjust list, (o)=>
-      for kind in @kind(o) || []
-        if kind || kind == 0
-          @hash[kind] ||= {}
-          if @hash[kind][o._id]
-            @finder.diff.change = true 
-          else
-            @finder.diff.add = true
-          @hash[kind][o._id] = o
-      return
-
-
-  cleanup: ->
-    @hash = {}
-
-###
-
+  merge: (list, parent)->
+    @finder.diff = {}
+    @set_base "merge", list, parent
