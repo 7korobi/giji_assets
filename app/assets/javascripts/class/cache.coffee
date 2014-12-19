@@ -50,6 +50,11 @@ class Cache.Query
                   return true if val == req
                 false
 
+  distinct: (reduce, target)->
+    query = new Cache.Query @finder, @match, @desc, @sort_by
+    query._distinct = {reduce, target}
+    query
+
   where: (query)->
     switch typeof query
       when "object"
@@ -97,10 +102,12 @@ class Cache.Query
     @finder.calculate(@) unless @_list?
     @_list
 
-  find: (id)->
+  hash: ->
     @finder.calculate(@) unless @_hash?
-    @_hash[id]?.item
+    @_hash
 
+  find: (id)->
+    @hash()[id]?.item
 
 class Cache.Finder
   constructor: (@sort_by)->
@@ -160,19 +167,25 @@ class Cache.Finder
       else
         [-1, 1]
 
-    query.orders = s = {}
+    s = query.orders = {}
     for o in list
       s[o._id] = query.sort_by(o)
+
     query._list =
       list.sort (a,b)->
         return lt if s[a._id] < s[b._id]
         return gt if s[a._id] > s[b._id]
         return  0
 
+  calculate_group: (query, all)->
+    {reduce, target} = query._distinct
+    query._list =
+      for id, o of all[reduce]
+        o[target]
+
   calculate_list: (query, all)->
-    # list and hash
-    query._list = 
-      for id, o of all._hash
+    query._list =
+      for id, o of all
         {item} = o
         for match in query.match
           o = null unless match item
@@ -183,9 +196,10 @@ class Cache.Finder
         item
 
   calculate: (query)->
-    @calculate_list       query, @query.all
-    @calculate_sort       query
+    @calculate_list       query, @query.all._hash
     @calculate_map_reduce query if @map_reduce?
+    @calculate_group      query, query._reduce if query._distinct?
+    @calculate_sort       query
     return
 
 class Cache.Rule

@@ -51,24 +51,11 @@ new Cache.Rule("message").schema ->
   @belongs_to "event"
   @belongs_to "sow_auth"
 
-  scope = ->
-  scope "logid",  (o)-> [o.logid]
-  scope "unread", (o)-> null
-  scope "info",   (o)-> o.is.info   && o.security
-  scope "action", (o)-> o.is.action && o.security
-  scope "talk",   (o)-> o.is.talk   && o.security
-  scope "memo",   (o)-> o.is.memo   && o.security
   @scope (all)->
-    in_page: (mode, security, event_id, search)->
-      query = 
-        if event_id
-          all.where (o)->
-            o[mode] == security && o.event_id == event_id 
-        else
-          all.where (o)->
-            o[mode] == security 
+    in_page: (mode, security, reduce, search)->
+      query = all.where (o)-> o.is[mode] && o.security[security]
+      query = query.distinct(reduce, "max_is") if reduce
       query.search search
-
 
   @deploy (o)-> 
     o._id = o.event_id + "-" + o.logid
@@ -76,23 +63,22 @@ new Cache.Rule("message").schema ->
     o.security =
       switch
         when o.logid.match /^([D].\d+)/
-          ["delete", "think", "all"]
+          {delete:1, think:1, all:1}
         when o.logid.match /^([qcS].\d+)|(MM\d+)/
-          ["open", "clan", "think", "all"]
+          {open:1, clan:1, think:1, all:1}
         when o.mestype == "MAKER"
-          ["announce", "open", "clan", "think", "all"]
+          {announce:1, open:1, clan:1, think:1, all:1}
         when o.mestype == "ADMIN"
-          ["announce", "open", "clan", "think", "all"]
+          {announce:1, open:1, clan:1, think:1, all:1}
         when o.logid.match /^([I].\d+)|(vilinfo)|(potofs)/
-          ["announce", "open", "clan", "think", "all"]
+          {announce:1, open:1, clan:1, think:1, all:1}
         when o.logid.match /^([Ti].\d+)/
-          ["think", "all"]
+          {think:1, all:1}
         when o.logid.match /^([\-WPX].\d+)/
-          ["clan", "all"]
+          {clan:1, all:1}
         else
-          []
-    o.scene_id = o.event_id + "-" + o.security[0]
-
+          {}
+    o.security_list = Object.keys(o.security)
     anchor_num  = o.logid.substring(2) - 0 || 0
     o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
     o.updated_at ?= new Date(o.date) - 0
@@ -135,6 +121,21 @@ new Cache.Rule("message").schema ->
     o.vdom = vdom
 
     o.search_words = [o.log]
+
+  @map_reduce (o, emit)->
+    item = 
+      count: 1
+      max: o.updated_at
+      min: o.updated_at
+    emit "all", "all", item
+    emit "event", o.event_id, item
+    emit "face", o.face_id, item
+    for security in o.security_list
+      emit "all", security, item
+      emit "info", security, item if o.is.info
+      emit "action", security, item if o.is.action
+      emit "talk", security, item if o.is.talk
+      emit "memo", security, item if o.is.memo
 
 new Cache.Rule("potof").schema ->
   maskstate_order = _.sortBy _.keys(RAILS.maskstates), (o)-> -o
