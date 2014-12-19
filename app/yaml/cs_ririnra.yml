@@ -409,4 +409,5 @@ chr_job:
   - face_id: c114
     job: "革命家"
 
-
+  - face_id: c115
+    job: "廃品回収"

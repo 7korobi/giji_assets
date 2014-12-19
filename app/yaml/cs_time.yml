@@ -79,3 +79,8 @@ chr_job:
   - face_id: t20
     job: "MI:18"
 
+  - face_id: t21
+    job: "九未知会"
+
+  - face_id: t22
+    job: "学園特警"

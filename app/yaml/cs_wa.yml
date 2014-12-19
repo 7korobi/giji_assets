@@ -169,3 +169,6 @@ chr_job:
   - face_id: w52
     job: "看板娘"
 
+  - face_id: w53
+    job: "旅籠"
+
