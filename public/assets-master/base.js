@@ -370,7 +370,8 @@ win = {
     left: 0
   }
 };
-var Cache;
+var Cache,
+  __slice = [].slice;
 
 Cache = (function() {
   function Cache() {}
@@ -382,21 +383,139 @@ Cache = (function() {
 })();
 
 Cache.Query = (function() {
-  function Query(finder, q) {
+  function Query(finder, match, desc, sort_by) {
     this.finder = finder;
-    this.q = q;
-    this.json = JSON.stringify(this.q);
-    this.finder.query[this.json] = this;
+    this.match = match;
+    this.desc = desc;
+    this.sort_by = sort_by;
+    this._hash = {};
   }
 
-  Query.prototype.where = function(scopes) {
+  Query.prototype._match = function(query, cb) {
+    var is_object, match, req, target;
+    if (!Object.keys(query).length) {
+      return this;
+    }
+    match = this.match.concat();
+    for (target in query) {
+      req = query[target];
+      is_object = "object" === typeof req;
+      match.push(cb(target, req, (function() {
+        switch (typeof req) {
+          case "object":
+            switch (false) {
+              case req.test == null:
+                return RegExp;
+              case req.length == null:
+                return Array;
+              default:
+                return Object;
+            }
+            break;
+          case "number":
+            return Number;
+          case "string":
+            return String;
+        }
+      })()));
+    }
+    return new Cache.Query(this.finder, match, this.desc, this.sort_by);
+  };
+
+  Query.prototype["in"] = function(query) {
+    switch (typeof query) {
+      case "object":
+        return this._match(query, function(target, req, type) {
+          switch (type) {
+            case Array:
+              return function(o) {
+                var key, val, _i, _j, _len, _len1, _ref;
+                for (_i = 0, _len = req.length; _i < _len; _i++) {
+                  key = req[_i];
+                  _ref = o[target];
+                  for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+                    val = _ref[_j];
+                    if (val === key) {
+                      return true;
+                    }
+                  }
+                }
+                return false;
+              };
+            case RegExp:
+              return function(o) {
+                var val, _i, _len, _ref;
+                _ref = o[target];
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                  val = _ref[_i];
+                  if (req.test(val)) {
+                    return true;
+                  }
+                }
+                return false;
+              };
+            default:
+              return function(o) {
+                var val, _i, _len, _ref;
+                _ref = o[target];
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                  val = _ref[_i];
+                  if (val === req) {
+                    return true;
+                  }
+                }
+                return false;
+              };
+          }
+        });
+    }
+  };
+
+  Query.prototype.distinct = function(reduce, target) {
     var query;
-    query = new Cache.Query(this.finder, _.extend({}, this.q, scopes));
+    query = new Cache.Query(this.finder, this.match, this.desc, this.sort_by);
+    query._distinct = {
+      reduce: reduce,
+      target: target
+    };
     return query;
   };
 
+  Query.prototype.where = function(query) {
+    var match;
+    switch (typeof query) {
+      case "object":
+        return this._match(query, function(target, req, type) {
+          switch (type) {
+            case Array:
+              return function(o) {
+                var key, _i, _len;
+                for (_i = 0, _len = req.length; _i < _len; _i++) {
+                  key = req[_i];
+                  if (o[target] === key) {
+                    return true;
+                  }
+                }
+                return false;
+              };
+            case RegExp:
+              return function(o) {
+                return req.test(o[target]);
+              };
+            default:
+              return function(o) {
+                return o[target] === req;
+              };
+          }
+        });
+      case "function":
+        match = this.match.concat(query);
+        return new Cache.Query(this.finder, match, this.desc, this.sort_by);
+    }
+  };
+
   Query.prototype.search = function(text) {
-    var item, list;
+    var item, list, regexp;
     if (!text) {
       return this;
     }
@@ -417,28 +536,57 @@ Cache.Query = (function() {
     if (!list.length) {
       return this;
     }
-    this.finder.search(new RegExp(list.join("|"), "ig"));
-    return this.where({
-      search: ["match"]
+    regexp = new RegExp(list.join("|"), "ig");
+    return this["in"]({
+      search_words: regexp
     });
   };
 
-  Query.prototype.find = function(id, kind, scope) {
-    if (kind == null) {
-      kind = "all";
+  Query.prototype.sort = function(desc, order) {
+    var sort_by;
+    if (order == null) {
+      order = this.sort_by;
     }
-    if (scope == null) {
-      scope = "_all";
+    sort_by = (function() {
+      switch (typeof order) {
+        case "function":
+          return order;
+        case "string":
+          return function(o) {
+            return o[order];
+          };
+      }
+    })();
+    if (desc === this.desc && sort_by === this.sort_by) {
+      return this;
     }
-    return this.finder.scopes[scope].hash[kind][id];
+    return new Cache.Query(this.finder, this.match, desc, sort_by);
   };
 
-  Query.prototype.sort = function(desc) {
-    return this.finder.sort_func(desc, this.finder.list(this.q));
+  Query.prototype.reduce = function() {
+    if (this._reduce == null) {
+      this.finder.calculate(this);
+    }
+    return this._reduce;
   };
 
   Query.prototype.list = function() {
-    return this.finder.list(this.q);
+    if (this._list == null) {
+      this.finder.calculate(this);
+    }
+    return this._list;
+  };
+
+  Query.prototype.hash = function() {
+    if (this._hash == null) {
+      this.finder.calculate(this);
+    }
+    return this._hash;
+  };
+
+  Query.prototype.find = function(id) {
+    var _ref;
+    return (_ref = this.hash()[id]) != null ? _ref.item : void 0;
   };
 
   return Query;
@@ -446,179 +594,167 @@ Cache.Query = (function() {
 })();
 
 Cache.Finder = (function() {
-  function Finder(scopes, sort_func) {
-    this.scopes = scopes;
-    this.sort_func = sort_func;
-    this.query = {};
-    this.all = new Cache.Query(this, {});
-    this.base_map = (function(_this) {
-      return function() {
-        return _this.scopes._all.hash.all;
-      };
-    })(this);
-    this.map = function(o) {
-      return o._id;
+  function Finder(sort_by) {
+    var all;
+    this.sort_by = sort_by;
+    all = new Cache.Query(this, [], false, this.sort_by);
+    this.scope = {
+      all: all
+    };
+    this.query = {
+      all: all
     };
   }
 
-  Finder.prototype.search = function(search_regexp) {
-    var all, scope;
-    this.search_regexp = search_regexp;
-    all = _.values(this.base_map());
-    scope = this.scopes.search;
-    scope.hash = {};
-    scope.merge(all);
-    return this.map_reduce({
-      search: this.scopes.search
-    });
-  };
-
-  Finder.prototype.list = function(query) {
-    var id, kind, kind_hash, kinds, scope, val, _i, _len, _ref, _results;
-    _ref = this.base_map();
-    _results = [];
-    for (id in _ref) {
-      val = _ref[id];
-      for (scope in query) {
-        kinds = query[scope];
-        val = null;
-        for (_i = 0, _len = kinds.length; _i < _len; _i++) {
-          kind = kinds[_i];
-          kind_hash = this.scopes[scope].hash[kind];
-          if (!kind_hash) {
-            continue;
-          }
-          val = kind_hash != null ? kind_hash[id] : void 0;
-          if (val) {
-            break;
-          }
-        }
-        if (!val) {
-          break;
-        }
-      }
-      if (!val) {
-        continue;
-      }
-      _results.push(val);
+  Finder.prototype.rehash = function(rules) {
+    var rule, _i, _len;
+    if (!(this.diff.del || this.diff.change)) {
+      return;
     }
-    return _results;
-  };
-
-  Finder.prototype.refresh = function() {
-    this.cache = {};
-    return this.diff = {};
-  };
-
-  Finder.prototype.map_reduce = function(scopes) {
-    var calc, emit, first, hash, id, init, kind_key, map, reduce, scope, scope_key, target, val, _base, _ref, _ref1, _ref2, _ref3, _results;
-    init = function(val) {
-      return {
-        count: 0,
-        sum: 0
-      };
+    this.query = {
+      all: this.query.all
     };
-    if (scopes != null) {
-      if ((_base = this.all).reduce == null) {
-        _base.reduce = {};
-      }
-    } else {
-      this.all.reduce = {};
-      scopes = this.scopes;
+    for (_i = 0, _len = rules.length; _i < _len; _i++) {
+      rule = rules[_i];
+      rule;
     }
-    _ref = this.base_map();
-    for (id in _ref) {
-      val = _ref[id];
-      for (scope_key in scopes) {
-        scope = scopes[scope_key];
-        this.all.reduce[scope_key] = {};
-        _ref1 = scope.hash;
-        for (kind_key in _ref1) {
-          hash = _ref1[kind_key];
-          first = this.map(val);
-          this.all.reduce[scope_key][kind_key] = init(first);
+  };
+
+  Finder.prototype.calculate_map_reduce = function(query) {
+    var base, calc, emit, emits, group, id, init, item, key, map, o, reduce, _i, _len, _ref, _ref1;
+    init = (function(_this) {
+      return function(map) {
+        var o;
+        o = {};
+        if (map.count) {
+          o.count = 0;
         }
-      }
-      break;
-    }
-    switch (typeof first) {
-      case "number":
-        this.reduce_calc = true;
-        map = function(val) {
-          return {
-            max: val,
-            min: val,
-            count: 1,
-            sum: val
-          };
-        };
-        break;
-      default:
-        map = function(val) {
-          return {
-            max: val,
-            min: val,
-            count: 1
-          };
-        };
-    }
+        if (map.all) {
+          o.all = 0;
+        }
+        return o;
+      };
+    })(this);
     reduce = (function(_this) {
-      return function(target, emit, val) {
-        if (!(emit.max <= target.max)) {
-          target.max = emit.max;
-          target.last = val;
+      return function(item, o, map) {
+        if (!(map.max <= o.max)) {
+          o.max_is = item;
+          o.max = map.max;
         }
-        if (!(target.min <= emit.min)) {
-          target.min = emit.min;
-          target.first = val;
+        if (!(o.min <= map.min)) {
+          o.min_is = item;
+          o.min = map.min;
         }
-        if (emit.count) {
-          target.count += emit.count;
+        if (map.count) {
+          o.count += map.count;
         }
-        if (emit.sum) {
-          return target.sum += emit.sum;
+        if (map.all) {
+          return o.all += map.all;
         }
       };
     })(this);
     calc = (function(_this) {
-      return function(target) {
-        if (_this.reduce_calc) {
-          return target.avg = target.sum / target.count;
+      return function(o) {
+        if (o.all && o.count) {
+          return o.avg = o.all / o.count;
         }
       };
     })(this);
-    _ref2 = this.base_map();
-    for (id in _ref2) {
-      val = _ref2[id];
-      emit = map(this.map(val));
-      for (scope_key in scopes) {
-        scope = scopes[scope_key];
-        _ref3 = scope.hash;
-        for (kind_key in _ref3) {
-          hash = _ref3[kind_key];
-          target = this.all.reduce[scope_key][kind_key];
-          if (hash[val._id] != null) {
-            reduce(target, emit, val);
-          }
-        }
+    base = {};
+    _ref = query._hash;
+    for (id in _ref) {
+      _ref1 = _ref[id], item = _ref1.item, emits = _ref1.emits;
+      for (_i = 0, _len = emits.length; _i < _len; _i++) {
+        emit = emits[_i];
+        group = emit[0], key = emit[1], map = emit[2];
+        o = base;
+        o = o[group] || (o[group] = {});
+        o = o[key] || (o[key] = init(map));
+        reduce(item, o, map);
       }
     }
-    _results = [];
-    for (scope_key in scopes) {
-      scope = scopes[scope_key];
-      _results.push((function() {
-        var _ref4, _results1;
-        _ref4 = scope.hash;
-        _results1 = [];
-        for (kind_key in _ref4) {
-          hash = _ref4[kind_key];
-          target = this.all.reduce[scope_key][kind_key];
-          _results1.push(calc(target));
-        }
-        return _results1;
-      }).call(this));
+    for (group in base) {
+      emits = base[group];
+      for (key in emits) {
+        map = emits[key];
+        calc(map);
+      }
     }
-    return _results;
+    return query._reduce = base;
+  };
+
+  Finder.prototype.calculate_sort = function(query) {
+    var gt, list, lt, o, s, _i, _len, _ref;
+    list = query._list;
+    _ref = query.desc ? [1, -1] : [-1, 1], lt = _ref[0], gt = _ref[1];
+    s = query.orders = {};
+    for (_i = 0, _len = list.length; _i < _len; _i++) {
+      o = list[_i];
+      s[o._id] = query.sort_by(o);
+    }
+    return query._list = list.sort(function(a, b) {
+      if (s[a._id] < s[b._id]) {
+        return lt;
+      }
+      if (s[a._id] > s[b._id]) {
+        return gt;
+      }
+      return 0;
+    });
+  };
+
+  Finder.prototype.calculate_group = function(query, all) {
+    var id, o, reduce, target, _ref;
+    _ref = query._distinct, reduce = _ref.reduce, target = _ref.target;
+    return query._list = (function() {
+      var _ref1, _results;
+      _ref1 = all[reduce];
+      _results = [];
+      for (id in _ref1) {
+        o = _ref1[id];
+        _results.push(o[target]);
+      }
+      return _results;
+    })();
+  };
+
+  Finder.prototype.calculate_list = function(query, all) {
+    var id, item, match, o;
+    return query._list = (function() {
+      var _i, _len, _ref, _results;
+      _results = [];
+      for (id in all) {
+        o = all[id];
+        item = o.item;
+        _ref = query.match;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          match = _ref[_i];
+          if (!match(item)) {
+            o = null;
+          }
+          if (!o) {
+            break;
+          }
+        }
+        if (!o) {
+          continue;
+        }
+        query._hash[id] = o;
+        _results.push(item);
+      }
+      return _results;
+    })();
+  };
+
+  Finder.prototype.calculate = function(query) {
+    this.calculate_list(query, this.query.all._hash);
+    if (this.map_reduce != null) {
+      this.calculate_map_reduce(query);
+    }
+    if (query._distinct != null) {
+      this.calculate_group(query, query._reduce);
+    }
+    this.calculate_sort(query);
   };
 
   return Finder;
@@ -631,340 +767,197 @@ Cache.Rule = (function() {
     this.list_name = "" + field + "s";
     this.validates = [];
     this.responses = [];
-    this.adjust = {
-      _id: function(o) {
-        if (!o._id) {
-          return o._id = o[this.id];
-        }
-      }
-    };
-    this.adjust[this.id] = (function(_this) {
+    this.map_reduce = function() {};
+    this.protect = function() {};
+    this.deploy = (function(_this) {
       return function(o) {
+        if (!o._id) {
+          o._id = o[_this.id];
+        }
         if (!o[_this.id]) {
           return o[_this.id] = o._id;
         }
       };
     })(this);
-    this.adjust_keys = ["_id", this.id];
-    this.finder = new Cache.Finder({}, function(list) {
+    this.finder = new Cache.Finder(function(list) {
       return list;
     });
-    this.base_scope("_all", {
-      kind: function() {
-        return ["all"];
-      },
-      finder: this.finder
-    });
     Cache.rule[field] = this;
-    Cache[this.list_name] = this.finder.all;
+    Cache[this.list_name] = this.finder.query.all;
   }
 
-  Rule.prototype.base_scope = function(key, hash) {
-    var all, scope;
-    this.finder.scopes[key] = scope = new Cache.Scope(this, hash);
-    this.finder.scope_keys = Object.keys(this.finder.scopes).sort().reverse();
-    scope.cleanup();
-    all = _.values(this.finder.base_map());
-    if (0 < (all != null ? all.length : void 0)) {
-      scope.merge(all);
-    }
-    return scope;
-  };
-
   Rule.prototype.schema = function(cb) {
-    var definer, order_base;
-    order_base = (function(_this) {
-      return function(func) {
-        _this.finder.map = func;
-        return _this.finder.sort_func = function(desc, list) {
-          var gt, lt, o, s, _i, _len, _ref;
-          _ref = desc ? [1, -1] : [-1, 1], lt = _ref[0], gt = _ref[1];
-          _this.finder.orders = s = {};
-          for (_i = 0, _len = list.length; _i < _len; _i++) {
-            o = list[_i];
-            s[o._id] = func(o);
-          }
-          return list.sort(function(a, b) {
-            if (s[a._id] < s[b._id]) {
-              return lt;
-            }
-            if (s[a._id] > s[b._id]) {
-              return gt;
-            }
-            return 0;
-          });
-        };
-      };
-    })(this);
+    var definer;
     definer = {
       scope: (function(_this) {
-        return function(key, kind) {
-          var cache;
-          cache = Cache[_this.list_name];
-          return _this.base_scope(key, {
-            kind: kind,
-            finder: _this.finder
-          });
-        };
-      })(this),
-      search: (function(_this) {
-        return function(targets) {
-          var kind;
-          kind = function(o) {
-            var regexp, text, _i, _len, _ref;
-            regexp = _this.finder.search_regexp;
-            if (regexp) {
-              _ref = targets(o);
-              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                text = _ref[_i];
-                if (text && text.match(regexp)) {
-                  return ["match"];
-                }
-              }
-            }
-            return [];
-          };
-          return _this.base_scope("search", {
-            kind: kind,
-            finder: _this.finder
-          });
-        };
-      })(this),
-      pager: (function(_this) {
-        return function(key, items) {};
-      })(this),
-      belongs_to: (function(_this) {
-        return function(parent, option) {
-          var cache, parent_id, parents;
-          cache = Cache[_this.list_name];
-          parents = "" + parent + "s";
-          parent_id = "" + parent + "_id";
-          _this.base_scope(parent, {
-            kind: function(o) {
-              return [o[parent_id]];
-            },
-            finder: _this.finder
-          });
-          if ((option != null ? option.dependent : void 0) != null) {
-            _this.validates.push(function(o) {
-              var that, _ref;
-              that = (_ref = Cache[parents]) != null ? _ref.find(o[parent_id]) : void 0;
-              if (that != null) {
-                return o[parent] = that;
-              }
-            });
-            return Cache.rule[parent].responses.push(_this);
-          }
-        };
-      })(this),
-      order: (function(_this) {
-        return function(func) {
-          return order_base(func);
-        };
-      })(this),
-      order_by: (function(_this) {
-        return function(key) {
-          return order_base(function(o) {
-            return o[key];
-          });
-        };
-      })(this),
-      fields: (function(_this) {
-        return function(adjust) {
-          var key, _results;
+        return function(cb) {
+          var key, query_call, _ref, _results;
+          _this.finder.scope = cb(_this.finder.query.all);
+          _ref = _this.finder.scope;
           _results = [];
-          for (key in adjust) {
-            cb = adjust[key];
-            _results.push(_this.adjust[key] = cb);
+          for (key in _ref) {
+            query_call = _ref[key];
+            _results.push(_this.finder.query.all[key] = function() {
+              var args, _base, _name;
+              args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+              return (_base = _this.finder.query)[_name = "" + key + ":" + (args.join(','))] || (_base[_name] = query_call.apply(null, args));
+            });
           }
           return _results;
         };
       })(this),
-      protect: (function(_this) {
-        return function(key) {
-          return _this.adjust[key] = function(o, old) {
-            if (old != null) {
-              return o[key] = old[key];
+      belongs_to: (function(_this) {
+        return function(parent, option) {
+          var dependent, parent_id, parents;
+          parents = "" + parent + "s";
+          parent_id = "" + parent + "_id";
+          dependent = (option != null ? option.dependent : void 0) != null;
+          if (dependent) {
+            Cache.rule[parent].responses.push(_this);
+          }
+          return _this.validates.push(function(o) {
+            var that, _ref;
+            that = (_ref = Cache[parents]) != null ? _ref.find(o[parent_id]) : void 0;
+            if (that != null) {
+              return o[parent] = that;
+            } else {
+              return !dependent;
             }
+          });
+        };
+      })(this),
+      order: (function(_this) {
+        return function(order) {
+          var query;
+          query = _this.finder.query.all.sort(false, order);
+          query._hash = _this.finder.query.all._hash;
+          return Cache[_this.list_name] = _this.finder.query.all = query;
+        };
+      })(this),
+      protect: (function(_this) {
+        return function() {
+          var keys;
+          keys = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+          return _this.protect = function(o, old) {
+            var key, _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = keys.length; _i < _len; _i++) {
+              key = keys[_i];
+              _results.push(o[key] = old[key]);
+            }
+            return _results;
           };
+        };
+      })(this),
+      deploy: (function(_this) {
+        return function(deploy) {
+          _this.deploy = deploy;
+        };
+      })(this),
+      map_reduce: (function(_this) {
+        return function(map_reduce) {
+          _this.map_reduce = map_reduce;
         };
       })(this)
     };
-    cb.call(definer, this);
-    return this.adjust_keys = _.keys(this.adjust).sort();
+    return cb.call(definer, this);
   };
 
-  Rule.prototype.set_base = function(from, parent, cb) {
-    var accept, all, key, list, o, old, scope, val, _i, _j, _k, _l, _len, _len1, _len2, _len3, _ref, _ref1, _ref2;
-    all = this.finder.base_map();
-    list = [];
-    accept = (function(_this) {
-      return function(o) {
+  Rule.prototype.set_base = function(mode, from, parent) {
+    var all, diff, emit, finder, item, key, o, old, val, validate_item, _i, _j, _len, _len1, _ref, _ref1;
+    finder = this.finder;
+    diff = finder.diff;
+    all = finder.query.all._hash;
+    validate_item = (function(_this) {
+      return function(item) {
         var validate, _i, _len, _ref;
         _ref = _this.validates;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           validate = _ref[_i];
-          if (!validate(o)) {
-            return;
+          if (!validate(item)) {
+            return false;
           }
         }
-        return list.push(o);
+        return true;
       };
     })(this);
-    _ref = from || [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      o = _ref[_i];
-      accept(o);
+    switch (mode) {
+      case "merge":
+        _ref = from || [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          item = _ref[_i];
+          if (!validate_item(item)) {
+            continue;
+          }
+          for (key in parent) {
+            val = parent[key];
+            item[key] = val;
+          }
+          this.deploy(item);
+          o = {
+            item: item,
+            emits: []
+          };
+          old = all[item._id];
+          if (old != null) {
+            this.protect(item, old.item);
+            diff.change = true;
+          } else {
+            diff.add = true;
+          }
+          all[item._id] = o;
+          emit = (function(_this) {
+            return function(group, key, map) {
+              finder.map_reduce = true;
+              return o.emits.push([group, key, map]);
+            };
+          })(this);
+          this.map_reduce(o.item, emit);
+        }
+        break;
+      default:
+        _ref1 = from || [];
+        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+          item = _ref1[_j];
+          this.deploy(item);
+          o = {
+            item: item,
+            emits: []
+          };
+          old = all[item._id];
+          if (old != null) {
+            diff.del = true;
+            delete all[item._id];
+          }
+        }
     }
-    for (_j = 0, _len1 = list.length; _j < _len1; _j++) {
-      o = list[_j];
-      for (key in parent) {
-        val = parent[key];
-        o[key] = val;
-      }
-      old = all != null ? all[o._id] : void 0;
-      _ref1 = this.adjust_keys;
-      for (_k = 0, _len2 = _ref1.length; _k < _len2; _k++) {
-        key = _ref1[_k];
-        this.adjust[key](o, old);
-      }
-    }
-    _ref2 = this.finder.scope_keys;
-    for (_l = 0, _len3 = _ref2.length; _l < _len3; _l++) {
-      key = _ref2[_l];
-      scope = this.finder.scopes[key];
-      cb(scope, list);
-    }
-  };
-
-  Rule.prototype.map_reduce = function() {
-    return this.finder.map_reduce();
-  };
-
-  Rule.prototype.reject = function(list) {
-    var rule, _i, _len, _ref, _results;
-    this.set_base(list, null, function(scope, list) {
-      return scope.reject(list);
-    });
-    _ref = this.responses;
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      rule = _ref[_i];
-      if (this.finder.diff.del || this.finder.diff.change) {
-        _results.push(rule.rehash());
-      } else {
-        _results.push(void 0);
-      }
-    }
-    return _results;
-  };
-
-  Rule.prototype.merge = function(list, parent) {
-    return this.set_base(list, parent, function(scope, list) {
-      return scope.merge(list);
-    });
+    finder.rehash(this.responses);
   };
 
   Rule.prototype.set = function(list, parent) {
-    var rule, _i, _len, _ref, _results;
-    this.set_base(list, parent, function(scope, list) {
-      scope.hash = {};
-      return scope.merge(list);
-    });
-    _ref = this.responses;
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      rule = _ref[_i];
-      if (this.finder.diff.del || this.finder.diff.change) {
-        _results.push(rule.rehash());
-      } else {
-        _results.push(void 0);
-      }
+    var key, val, _ref;
+    this.finder.diff = {};
+    _ref = this.finder.query.all._hash;
+    for (key in _ref) {
+      val = _ref[key];
+      this.finder.query.all._hash = {};
+      this.finder.diff.del = true;
+      break;
     }
-    return _results;
+    return this.set_base("merge", list, parent, "merge");
   };
 
-  Rule.prototype.rehash = function() {
-    var all;
-    all = _.values(this.finder.base_map());
-    return this.set(all);
+  Rule.prototype.reject = function(list) {
+    this.finder.diff = {};
+    return this.set_base(false, list, null);
   };
 
-  Rule.prototype.cleanup = function() {
-    var key, scope, _i, _len, _ref, _results;
-    _ref = this.finder.scope_keys;
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      key = _ref[_i];
-      scope = this.finder.scopes[key];
-      _results.push(scope.cleanup());
-    }
-    return _results;
+  Rule.prototype.merge = function(list, parent) {
+    this.finder.diff = {};
+    return this.set_base("merge", list, parent);
   };
 
   return Rule;
-
-})();
-
-Cache.Scope = (function() {
-  function Scope(rule, _arg) {
-    this.rule = rule;
-    this.kind = _arg.kind, this.finder = _arg.finder;
-  }
-
-  Scope.prototype.adjust = function(list, merge_phase) {
-    var all, o, old, old_kind, _i, _j, _len, _len1, _ref;
-    all = this.finder.base_map();
-    this.finder.refresh();
-    for (_i = 0, _len = list.length; _i < _len; _i++) {
-      o = list[_i];
-      if (all != null) {
-        old = all[o._id];
-      }
-      if (old != null) {
-        _ref = this.kind(old) || [];
-        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-          old_kind = _ref[_j];
-          if (this.hash[old_kind] != null) {
-            this.finder.diff.del = true;
-            delete this.hash[old_kind][o._id];
-          }
-        }
-      }
-      merge_phase(o);
-    }
-  };
-
-  Scope.prototype.reject = function(list) {
-    return this.adjust(list, function() {});
-  };
-
-  Scope.prototype.merge = function(list) {
-    return this.adjust(list, (function(_this) {
-      return function(o) {
-        var kind, _base, _i, _len, _ref;
-        _ref = _this.kind(o) || [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          kind = _ref[_i];
-          if (kind || kind === 0) {
-            (_base = _this.hash)[kind] || (_base[kind] = {});
-            if (_this.hash[kind][o._id]) {
-              _this.finder.diff.change = true;
-            } else {
-              _this.finder.diff.add = true;
-            }
-            _this.hash[kind][o._id] = o;
-          }
-        }
-      };
-    })(this));
-  };
-
-  Scope.prototype.cleanup = function() {
-    return this.hash = {};
-  };
-
-  return Scope;
 
 })();
 var Gesture;
@@ -1061,20 +1054,10 @@ var GUI,
 
 GUI = {
   img_head: "http://7korobi.gehirn.ne.jp/images",
-  portrate: function(face_id) {
-    var attr, dom;
-    dom = null;
-    attr = GUI.attrs(function() {
-      this.over(function() {
-        return GUI.Animate.jelly.up(dom);
-      });
-      return this.out(function() {
-        return GUI.Animate.jelly.down(dom);
-      });
-    });
-    attr.config = function(elem, isInit, context) {
-      return dom = elem;
-    };
+  portrate: function(face_id, attr) {
+    if (attr == null) {
+      attr = {};
+    }
     attr.src = GUI.img_head + ("/portrate/" + face_id + ".jpg");
     return m("img", attr);
   },
@@ -1125,7 +1108,7 @@ GUI = {
     o = {};
     act = function(cb) {
       return function(e) {
-        cb(e);
+        cb(e, e.srcElement, e.toElement);
         return e.preventDefault();
       };
     };
@@ -1142,12 +1125,14 @@ GUI = {
         }
         start = act(function(e) {
           var e1, _ref;
-          e1 = (_ref = event.changedTouches) != null ? _ref[0] : void 0;
+          console.log(e.changedTouches);
+          e1 = (_ref = e.changedTouches) != null ? _ref[0] : void 0;
           return gesture.start(e1 || e);
         });
         move = act(function(e) {
           var e1, _ref;
-          e1 = (_ref = event.changedTouches) != null ? _ref[0] : void 0;
+          console.log(e.changedTouches);
+          e1 = (_ref = e.changedTouches) != null ? _ref[0] : void 0;
           return gesture.move(e1 || e);
         });
         end = act(function(e) {
@@ -1208,6 +1193,9 @@ GUI = {
         o.onmouseout = cb;
         o.ongestureend = cb;
         return o.ontouchend = cb;
+      },
+      config: function(cb) {
+        return o.config = cb;
       }
     };
     dsl.call(func);
@@ -1303,9 +1291,18 @@ GUI = {
   }
 };
 GUI.Animate = (function() {
-  var apply, jelly_down, jelly_up, zIndex;
+  var apply, jelly_down, jelly_up, spin, zIndex;
 
   function Animate() {}
+
+  spin = new Bounce;
+
+  spin.rotate({
+    from: 0,
+    to: 360
+  });
+
+  spin.define("spin");
 
   jelly_up = new Bounce;
 
@@ -1393,6 +1390,8 @@ GUI.Animate = (function() {
       return dom.style.zIndex = z;
     };
   };
+
+  Animate.spin = apply(DELAY.lento, "spin", {});
 
   Animate.jelly = {
     up: apply(DELAY.andante, "jelly-up", {
@@ -1815,7 +1814,13 @@ GUI.ScrollSpy = (function() {
     var attr, btm, head, idx, key, o, pager_cb, rect, show_bottom, show_under, tail, top, vdom, vdom_items, _ref;
     this.list = list;
     if (!((_ref = this.list) != null ? _ref.length : void 0)) {
-      return;
+      return m(tag, {
+        config: (function(_this) {
+          return function(pager_elem) {
+            _this.pager_elem = pager_elem;
+          };
+        })(this)
+      });
     }
     top = 0;
     btm = this.list.length - 1;
@@ -1934,34 +1939,24 @@ GUI.TouchMenu = (function() {
     this.state = m.prop(false);
   }
 
-  TouchMenu.prototype.by_menu = function() {
-    var hash, menu, prop;
-    hash = {};
-    for (menu in this.menus) {
-      prop = this.prop[menu]();
-      if (this.all.reduce[menu][prop]) {
-        hash[menu] = [prop];
-      }
-    }
-    return this.all.where(hash);
-  };
-
-  TouchMenu.prototype.menu_set = function(all, prop, sort_by, menus) {
+  TouchMenu.prototype.menu_set = function(prop, sort_by, menus) {
     var menu_item;
-    this.all = all;
     this.prop = prop;
     this.menus = menus;
     menu_item = (function(_this) {
       return function(caption_func, item_func) {
-        var caption, key, keys, menu, o, reduce;
+        var btn, caption, key, keys, menu, o, reduce;
         menu = _this.state();
         prop = _this.prop[menu];
-        reduce = _this.all.reduce[menu];
+        reduce = _this.query.reduce()[menu];
+        if (reduce == null) {
+          return [];
+        }
         keys = Object.keys(reduce).sort(function(a, b) {
           return reduce[b][sort_by] - reduce[a][sort_by];
         });
         return [
-          !((reduce.all != null) && caption_func("all", reduce.all)) ? (o = _this.all.reduce._all.all, item_func(o[sort_by], _this.btn(prop, "all"), "-全体-")) : void 0, (function() {
+          !((reduce.all != null) && caption_func("all", reduce.all)) ? (o = _this.query.reduce().all.all, btn = _this.btn(prop, "all"), btn.key = "all", item_func(o[sort_by], btn, "-全体-")) : void 0, (function() {
             var _i, _len, _results;
             _results = [];
             for (_i = 0, _len = keys.length; _i < _len; _i++) {
@@ -1971,7 +1966,9 @@ GUI.TouchMenu = (function() {
               if (!caption) {
                 continue;
               }
-              _results.push(item_func(o[sort_by], this.btn(prop, key), caption));
+              btn = this.btn(prop, key);
+              btn.key = key;
+              _results.push(item_func(o[sort_by], btn, caption));
             }
             return _results;
           }).call(_this)
@@ -2027,16 +2024,16 @@ GUI.TouchMenu = (function() {
     });
   };
 
-  TouchMenu.prototype.btn = function(prop, val) {
+  TouchMenu.prototype.btn = function(prop, key) {
     var state;
     state = this.state;
     return GUI.attrs(function() {
       if (prop) {
         this.end(function() {
           state(false);
-          return prop(val);
+          return prop(key);
         });
-        if (val === prop()) {
+        if (key === prop()) {
           return this.className("btn btn-success");
         } else {
           return this.className("btn btn-default");
@@ -2601,6 +2598,17 @@ Url = (function() {
       };
     })(this), "i"));
   }
+
+  Url.prototype.values = function() {
+    var key, _i, _len, _ref, _results;
+    _ref = this.keys_in_url;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      key = _ref[_i];
+      _results.push(Url.prop[key]());
+    }
+    return _results;
+  };
 
   Url.prototype.popstate = function(path, target) {
     var i, key, val, _base, _i, _len, _ref;

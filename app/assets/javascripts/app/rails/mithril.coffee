@@ -256,7 +256,7 @@ GUI.if_exist "#buttons", (dom)->
           layout.dx = -1
 
       m "nav",
-        for icon in ["home", "book", "info-sign", "time", "envelope", "comment", "search", "film", "list", "th-large", "cog"] # lock
+        for icon in ["warning-empty", "sitemap", "stopwatch", "home", "mail", "pin", "search", "pencil", "th-large", "cog"] # lock
           continue unless touch.menus[icon]
           m "div", touch.start(icon),
             m ".bigicon",
@@ -351,18 +351,19 @@ if gon?.potofs?
         filter = 
           m "div",
             m "h6", "スタイル"
-            m "a", touch.btn(Url.prop.msg_mode, "info"  ), "情報"
-            m "a", touch.btn(Url.prop.msg_mode, "action"), "行動"
-            m "a", touch.btn(Url.prop.msg_mode, "talk"  ), "発言"
-            m "a", touch.btn(Url.prop.msg_mode, "memo"  ), "メモ"
-            m "span", " "
-            m "a", touch.btn(Url.prop.msg_security, "delete"  ), "削除"
-            m "a", touch.btn(Url.prop.msg_security, "announce"), "告知"
-            m "span", " "
-            m "a", touch.btn(Url.prop.msg_security, "open"    ), "公開"
-            m "a", touch.btn(Url.prop.msg_security, "clan"    ), "仲間"
-            m "a", touch.btn(Url.prop.msg_security, "think"   ), "独り言"
-            m "a", touch.btn(Url.prop.msg_security, "all"     ), "全表示"
+            m "span",
+              m "a.menuicon.icon-home", touch.btn(Url.prop.msg_mode, "info"  ), " "
+              m "a.menuicon.icon-warning-empty", touch.btn(Url.prop.msg_mode, "action"), " "
+              m "a.menuicon.icon-chat-alt", touch.btn(Url.prop.msg_mode, "talk"  ), " "
+              m "a.menuicon.icon-mail", touch.btn(Url.prop.msg_mode, "memo"  ), " "
+            m "span",
+              m "a.menuicon.icon-trash", touch.btn(Url.prop.msg_security, "delete"  ), " "
+              m "a.menuicon.icon-warning-empty", touch.btn(Url.prop.msg_security, "announce"), " "
+            m "span",
+              m "a.menuicon.icon-sun", touch.btn(Url.prop.msg_security, "open"    ), " "
+              m "a.menuicon.icon-moon", touch.btn(Url.prop.msg_security, "clan"    ), " "
+              m "a.menuicon.icon-comment", touch.btn(Url.prop.msg_security, "think"   ), " "
+              m "a.menuicon.icon-chat-alt", touch.btn(Url.prop.msg_security, "all"     ), " "
 
         potofs = 
           m "table.potofs",
@@ -414,10 +415,11 @@ if gon?.potofs?
 messages_search = ()->
   event_id = Url.prop.scroll()?.split("-")[0..2].join("-")
   mode = Url.prop.msg_mode()
-  security = Url.prop.msg_security()
+  reduce = Url.prop.reduce()
   search = Url.prop.search()
+  security = Url.prop.msg_security()
 
-  Cache.messages.in_page(mode, security, event_id, search).list()
+  Cache.messages.in_page(mode, security, reduce, search).list()
 
 if gon?.events? && gon.event?
   if gon?.story?
@@ -433,9 +435,6 @@ if gon?.events? && gon.event?
       Url.prop.msg_mode "info"
       Url.prop.scroll messages_search().first._id
 
-    touch.icon "book", ->
-
-
     m.module dom,
       controller: ->
       view: ->
@@ -443,10 +442,10 @@ if gon?.events? && gon.event?
         event = Cache.events.find event_id
 
         if event?
-          touch.icon "film", ->
+          touch.icon "sitemap", ->
             GUI.message.event event, story
         else
-          touch.icon "film"
+          touch.icon "sitemap"
 
         if story?
           switch Url.prop.msg_mode()
@@ -454,31 +453,33 @@ if gon?.events? && gon.event?
               GUI.message.story story
             else
               touch.menu m "h2",
-                m "a.menuicon.icon-book", GUI.TouchMenu.icons.start("book"), " "
+                m "a.menuicon.icon-book", GUI.TouchMenu.icons.start("sitemap"), " "
                 m "span", story.name
 
   GUI.if_exist "#messages", (dom)->
     scroll_spy.avg_height = 150
     touch = new GUI.TouchMenu()
-    touch.icon "time", -> # 新着
+
+
+    touch.icon "pin", -> # アンカー
+      Url.prop.msg_mode "pin"
+      Url.prop.scroll messages_search().first._id
+
+    touch.icon "stopwatch", -> # 新着
       Url.prop.msg_mode "time"
       Url.prop.scroll messages_search().first._id
 
-    touch.icon "comment", -> # 議事録
-      Url.prop.msg_mode "talk"
-      Url.prop.scroll messages_search().first._id
-
-    touch.icon "envelope", -> # メモ
+    touch.icon "mail", -> # メモ
       Url.prop.msg_mode "memo"
       Url.prop.scroll messages_search().first._id
 
-    touch.icon "lock", -> # 
-    touch.icon "info-sign", -> # 
-      Url.prop.msg_mode "action"
-      Url.prop.scroll messages_search().first._id
+    touch.icon "warning-empty", -> # アクションオンリー
+      Url.prop.msg_security "announce"
 
       m ".pagenavi.choice.guide.form-inline",
         m "h6", "アクション。"
+
+    touch.icon "pencil", -> # 書き込み
 
     touch.icon "search", -> # 検索
       m ".pagenavi.choice.guide.form-inline",

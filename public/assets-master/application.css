@@ -2991,1194 +2991,6 @@ tbody.collapse.in {
   transition: height 0.35s ease;
 }
 
-@font-face {
-  font-family: 'Glyphicons Halflings';
-  src: url("/assets/bootstrap/glyphicons-halflings-regular.eot");
-  src: url("/assets/bootstrap/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("/assets/bootstrap/glyphicons-halflings-regular.woff") format("woff"), url("/assets/bootstrap/glyphicons-halflings-regular.ttf") format("truetype"), url("/assets/bootstrap/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
-}
-
-/* line 25, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-family: 'Glyphicons Halflings';
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* line 38, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-asterisk:before {
-  content: "\2a";
-}
-
-/* line 39, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-plus:before {
-  content: "\2b";
-}
-
-/* line 40, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-euro:before {
-  content: "\20ac";
-}
-
-/* line 41, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-minus:before {
-  content: "\2212";
-}
-
-/* line 42, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-cloud:before {
-  content: "\2601";
-}
-
-/* line 43, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-envelope:before {
-  content: "\2709";
-}
-
-/* line 44, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-pencil:before {
-  content: "\270f";
-}
-
-/* line 45, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-glass:before {
-  content: "\e001";
-}
-
-/* line 46, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-music:before {
-  content: "\e002";
-}
-
-/* line 47, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-search:before {
-  content: "\e003";
-}
-
-/* line 48, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-heart:before {
-  content: "\e005";
-}
-
-/* line 49, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-star:before {
-  content: "\e006";
-}
-
-/* line 50, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-star-empty:before {
-  content: "\e007";
-}
-
-/* line 51, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-user:before {
-  content: "\e008";
-}
-
-/* line 52, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-film:before {
-  content: "\e009";
-}
-
-/* line 53, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-th-large:before {
-  content: "\e010";
-}
-
-/* line 54, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-th:before {
-  content: "\e011";
-}
-
-/* line 55, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-th-list:before {
-  content: "\e012";
-}
-
-/* line 56, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-ok:before {
-  content: "\e013";
-}
-
-/* line 57, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-remove:before {
-  content: "\e014";
-}
-
-/* line 58, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-zoom-in:before {
-  content: "\e015";
-}
-
-/* line 59, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-zoom-out:before {
-  content: "\e016";
-}
-
-/* line 60, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-off:before {
-  content: "\e017";
-}
-
-/* line 61, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-signal:before {
-  content: "\e018";
-}
-
-/* line 62, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-cog:before {
-  content: "\e019";
-}
-
-/* line 63, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-trash:before {
-  content: "\e020";
-}
-
-/* line 64, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-home:before {
-  content: "\e021";
-}
-
-/* line 65, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-file:before {
-  content: "\e022";
-}
-
-/* line 66, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-time:before {
-  content: "\e023";
-}
-
-/* line 67, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-road:before {
-  content: "\e024";
-}
-
-/* line 68, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-download-alt:before {
-  content: "\e025";
-}
-
-/* line 69, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-download:before {
-  content: "\e026";
-}
-
-/* line 70, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-upload:before {
-  content: "\e027";
-}
-
-/* line 71, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-inbox:before {
-  content: "\e028";
-}
-
-/* line 72, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-play-circle:before {
-  content: "\e029";
-}
-
-/* line 73, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-repeat:before {
-  content: "\e030";
-}
-
-/* line 74, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-refresh:before {
-  content: "\e031";
-}
-
-/* line 75, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-list-alt:before {
-  content: "\e032";
-}
-
-/* line 76, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-lock:before {
-  content: "\e033";
-}
-
-/* line 77, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-flag:before {
-  content: "\e034";
-}
-
-/* line 78, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-headphones:before {
-  content: "\e035";
-}
-
-/* line 79, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-volume-off:before {
-  content: "\e036";
-}
-
-/* line 80, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-volume-down:before {
-  content: "\e037";
-}
-
-/* line 81, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-volume-up:before {
-  content: "\e038";
-}
-
-/* line 82, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-qrcode:before {
-  content: "\e039";
-}
-
-/* line 83, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-barcode:before {
-  content: "\e040";
-}
-
-/* line 84, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-tag:before {
-  content: "\e041";
-}
-
-/* line 85, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-tags:before {
-  content: "\e042";
-}
-
-/* line 86, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-book:before {
-  content: "\e043";
-}
-
-/* line 87, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-bookmark:before {
-  content: "\e044";
-}
-
-/* line 88, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-print:before {
-  content: "\e045";
-}
-
-/* line 89, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-camera:before {
-  content: "\e046";
-}
-
-/* line 90, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-font:before {
-  content: "\e047";
-}
-
-/* line 91, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-bold:before {
-  content: "\e048";
-}
-
-/* line 92, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-italic:before {
-  content: "\e049";
-}
-
-/* line 93, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-text-height:before {
-  content: "\e050";
-}
-
-/* line 94, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-text-width:before {
-  content: "\e051";
-}
-
-/* line 95, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-align-left:before {
-  content: "\e052";
-}
-
-/* line 96, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-align-center:before {
-  content: "\e053";
-}
-
-/* line 97, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-align-right:before {
-  content: "\e054";
-}
-
-/* line 98, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-align-justify:before {
-  content: "\e055";
-}
-
-/* line 99, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-list:before {
-  content: "\e056";
-}
-
-/* line 100, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-indent-left:before {
-  content: "\e057";
-}
-
-/* line 101, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-indent-right:before {
-  content: "\e058";
-}
-
-/* line 102, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-facetime-video:before {
-  content: "\e059";
-}
-
-/* line 103, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-picture:before {
-  content: "\e060";
-}
-
-/* line 104, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-map-marker:before {
-  content: "\e062";
-}
-
-/* line 105, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-adjust:before {
-  content: "\e063";
-}
-
-/* line 106, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-tint:before {
-  content: "\e064";
-}
-
-/* line 107, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-edit:before {
-  content: "\e065";
-}
-
-/* line 108, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-share:before {
-  content: "\e066";
-}
-
-/* line 109, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-check:before {
-  content: "\e067";
-}
-
-/* line 110, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-move:before {
-  content: "\e068";
-}
-
-/* line 111, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-step-backward:before {
-  content: "\e069";
-}
-
-/* line 112, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-fast-backward:before {
-  content: "\e070";
-}
-
-/* line 113, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-backward:before {
-  content: "\e071";
-}
-
-/* line 114, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-play:before {
-  content: "\e072";
-}
-
-/* line 115, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-pause:before {
-  content: "\e073";
-}
-
-/* line 116, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-stop:before {
-  content: "\e074";
-}
-
-/* line 117, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-forward:before {
-  content: "\e075";
-}
-
-/* line 118, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-fast-forward:before {
-  content: "\e076";
-}
-
-/* line 119, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-step-forward:before {
-  content: "\e077";
-}
-
-/* line 120, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-eject:before {
-  content: "\e078";
-}
-
-/* line 121, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-chevron-left:before {
-  content: "\e079";
-}
-
-/* line 122, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-chevron-right:before {
-  content: "\e080";
-}
-
-/* line 123, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-plus-sign:before {
-  content: "\e081";
-}
-
-/* line 124, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-minus-sign:before {
-  content: "\e082";
-}
-
-/* line 125, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-remove-sign:before {
-  content: "\e083";
-}
-
-/* line 126, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-ok-sign:before {
-  content: "\e084";
-}
-
-/* line 127, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-question-sign:before {
-  content: "\e085";
-}
-
-/* line 128, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-info-sign:before {
-  content: "\e086";
-}
-
-/* line 129, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-screenshot:before {
-  content: "\e087";
-}
-
-/* line 130, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-remove-circle:before {
-  content: "\e088";
-}
-
-/* line 131, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-ok-circle:before {
-  content: "\e089";
-}
-
-/* line 132, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-ban-circle:before {
-  content: "\e090";
-}
-
-/* line 133, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-arrow-left:before {
-  content: "\e091";
-}
-
-/* line 134, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-arrow-right:before {
-  content: "\e092";
-}
-
-/* line 135, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-arrow-up:before {
-  content: "\e093";
-}
-
-/* line 136, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-arrow-down:before {
-  content: "\e094";
-}
-
-/* line 137, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-share-alt:before {
-  content: "\e095";
-}
-
-/* line 138, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-resize-full:before {
-  content: "\e096";
-}
-
-/* line 139, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-resize-small:before {
-  content: "\e097";
-}
-
-/* line 140, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-exclamation-sign:before {
-  content: "\e101";
-}
-
-/* line 141, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-gift:before {
-  content: "\e102";
-}
-
-/* line 142, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-leaf:before {
-  content: "\e103";
-}
-
-/* line 143, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-fire:before {
-  content: "\e104";
-}
-
-/* line 144, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-eye-open:before {
-  content: "\e105";
-}
-
-/* line 145, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-eye-close:before {
-  content: "\e106";
-}
-
-/* line 146, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-warning-sign:before {
-  content: "\e107";
-}
-
-/* line 147, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-plane:before {
-  content: "\e108";
-}
-
-/* line 148, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-calendar:before {
-  content: "\e109";
-}
-
-/* line 149, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-random:before {
-  content: "\e110";
-}
-
-/* line 150, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-comment:before {
-  content: "\e111";
-}
-
-/* line 151, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-magnet:before {
-  content: "\e112";
-}
-
-/* line 152, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-chevron-up:before {
-  content: "\e113";
-}
-
-/* line 153, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-chevron-down:before {
-  content: "\e114";
-}
-
-/* line 154, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-retweet:before {
-  content: "\e115";
-}
-
-/* line 155, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-shopping-cart:before {
-  content: "\e116";
-}
-
-/* line 156, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-folder-close:before {
-  content: "\e117";
-}
-
-/* line 157, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-folder-open:before {
-  content: "\e118";
-}
-
-/* line 158, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-resize-vertical:before {
-  content: "\e119";
-}
-
-/* line 159, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-resize-horizontal:before {
-  content: "\e120";
-}
-
-/* line 160, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-hdd:before {
-  content: "\e121";
-}
-
-/* line 161, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-bullhorn:before {
-  content: "\e122";
-}
-
-/* line 162, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-bell:before {
-  content: "\e123";
-}
-
-/* line 163, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-certificate:before {
-  content: "\e124";
-}
-
-/* line 164, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-thumbs-up:before {
-  content: "\e125";
-}
-
-/* line 165, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-thumbs-down:before {
-  content: "\e126";
-}
-
-/* line 166, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-hand-right:before {
-  content: "\e127";
-}
-
-/* line 167, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-hand-left:before {
-  content: "\e128";
-}
-
-/* line 168, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-hand-up:before {
-  content: "\e129";
-}
-
-/* line 169, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-hand-down:before {
-  content: "\e130";
-}
-
-/* line 170, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-circle-arrow-right:before {
-  content: "\e131";
-}
-
-/* line 171, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-circle-arrow-left:before {
-  content: "\e132";
-}
-
-/* line 172, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-circle-arrow-up:before {
-  content: "\e133";
-}
-
-/* line 173, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-circle-arrow-down:before {
-  content: "\e134";
-}
-
-/* line 174, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-globe:before {
-  content: "\e135";
-}
-
-/* line 175, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-wrench:before {
-  content: "\e136";
-}
-
-/* line 176, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-tasks:before {
-  content: "\e137";
-}
-
-/* line 177, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-filter:before {
-  content: "\e138";
-}
-
-/* line 178, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-briefcase:before {
-  content: "\e139";
-}
-
-/* line 179, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-fullscreen:before {
-  content: "\e140";
-}
-
-/* line 180, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-dashboard:before {
-  content: "\e141";
-}
-
-/* line 181, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-paperclip:before {
-  content: "\e142";
-}
-
-/* line 182, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-heart-empty:before {
-  content: "\e143";
-}
-
-/* line 183, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-link:before {
-  content: "\e144";
-}
-
-/* line 184, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-phone:before {
-  content: "\e145";
-}
-
-/* line 185, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-pushpin:before {
-  content: "\e146";
-}
-
-/* line 186, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-usd:before {
-  content: "\e148";
-}
-
-/* line 187, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-gbp:before {
-  content: "\e149";
-}
-
-/* line 188, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sort:before {
-  content: "\e150";
-}
-
-/* line 189, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sort-by-alphabet:before {
-  content: "\e151";
-}
-
-/* line 190, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sort-by-alphabet-alt:before {
-  content: "\e152";
-}
-
-/* line 191, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sort-by-order:before {
-  content: "\e153";
-}
-
-/* line 192, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sort-by-order-alt:before {
-  content: "\e154";
-}
-
-/* line 193, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sort-by-attributes:before {
-  content: "\e155";
-}
-
-/* line 194, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sort-by-attributes-alt:before {
-  content: "\e156";
-}
-
-/* line 195, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-unchecked:before {
-  content: "\e157";
-}
-
-/* line 196, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-expand:before {
-  content: "\e158";
-}
-
-/* line 197, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-collapse-down:before {
-  content: "\e159";
-}
-
-/* line 198, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-collapse-up:before {
-  content: "\e160";
-}
-
-/* line 199, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-log-in:before {
-  content: "\e161";
-}
-
-/* line 200, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-flash:before {
-  content: "\e162";
-}
-
-/* line 201, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-log-out:before {
-  content: "\e163";
-}
-
-/* line 202, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-new-window:before {
-  content: "\e164";
-}
-
-/* line 203, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-record:before {
-  content: "\e165";
-}
-
-/* line 204, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-save:before {
-  content: "\e166";
-}
-
-/* line 205, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-open:before {
-  content: "\e167";
-}
-
-/* line 206, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-saved:before {
-  content: "\e168";
-}
-
-/* line 207, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-import:before {
-  content: "\e169";
-}
-
-/* line 208, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-export:before {
-  content: "\e170";
-}
-
-/* line 209, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-send:before {
-  content: "\e171";
-}
-
-/* line 210, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-floppy-disk:before {
-  content: "\e172";
-}
-
-/* line 211, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-floppy-saved:before {
-  content: "\e173";
-}
-
-/* line 212, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-floppy-remove:before {
-  content: "\e174";
-}
-
-/* line 213, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-floppy-save:before {
-  content: "\e175";
-}
-
-/* line 214, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-floppy-open:before {
-  content: "\e176";
-}
-
-/* line 215, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-credit-card:before {
-  content: "\e177";
-}
-
-/* line 216, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-transfer:before {
-  content: "\e178";
-}
-
-/* line 217, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-cutlery:before {
-  content: "\e179";
-}
-
-/* line 218, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-header:before {
-  content: "\e180";
-}
-
-/* line 219, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-compressed:before {
-  content: "\e181";
-}
-
-/* line 220, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-earphone:before {
-  content: "\e182";
-}
-
-/* line 221, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-phone-alt:before {
-  content: "\e183";
-}
-
-/* line 222, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-tower:before {
-  content: "\e184";
-}
-
-/* line 223, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-stats:before {
-  content: "\e185";
-}
-
-/* line 224, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sd-video:before {
-  content: "\e186";
-}
-
-/* line 225, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-hd-video:before {
-  content: "\e187";
-}
-
-/* line 226, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-subtitles:before {
-  content: "\e188";
-}
-
-/* line 227, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sound-stereo:before {
-  content: "\e189";
-}
-
-/* line 228, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sound-dolby:before {
-  content: "\e190";
-}
-
-/* line 229, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sound-5-1:before {
-  content: "\e191";
-}
-
-/* line 230, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sound-6-1:before {
-  content: "\e192";
-}
-
-/* line 231, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-sound-7-1:before {
-  content: "\e193";
-}
-
-/* line 232, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-copyright-mark:before {
-  content: "\e194";
-}
-
-/* line 233, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-registration-mark:before {
-  content: "\e195";
-}
-
-/* line 234, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-cloud-download:before {
-  content: "\e197";
-}
-
-/* line 235, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-cloud-upload:before {
-  content: "\e198";
-}
-
-/* line 236, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-tree-conifer:before {
-  content: "\e199";
-}
-
-/* line 237, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_glyphicons.scss */
-.glyphicon-tree-deciduous:before {
-  content: "\e200";
-}
-
-/* line 7, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.caret {
-  display: inline-block;
-  width: 0;
-  height: 0;
-  margin-left: 2px;
-  vertical-align: middle;
-  border-top: 4px solid;
-  border-right: 4px solid transparent;
-  border-left: 4px solid transparent;
-}
-
-/* line 19, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown {
-  position: relative;
-}
-
-/* line 24, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-toggle:focus {
-  outline: 0;
-}
-
-/* line 29, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  z-index: 1000;
-  display: none;
-  float: left;
-  min-width: 160px;
-  padding: 5px 0;
-  margin: 2px 0 0;
-  list-style: none;
-  font-size: 14px;
-  text-align: left;
-  background-color: white;
-  border: 1px solid #cccccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 9px;
-  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  background-clip: padding-box;
-}
-/* line 52, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-menu.pull-right {
-  right: 0;
-  left: auto;
-}
-/* line 58, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-menu .divider {
-  height: 1px;
-  margin: 9px 0;
-  overflow: hidden;
-  background-color: #e5e5e5;
-}
-/* line 63, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-menu > li > a {
-  display: block;
-  padding: 3px 20px;
-  clear: both;
-  font-weight: normal;
-  line-height: 1.428571429;
-  color: #333333;
-  white-space: nowrap;
-}
-
-/* line 77, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
-  text-decoration: none;
-  color: #262626;
-  background-color: whitesmoke;
-}
-
-/* line 88, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
-  color: white;
-  text-decoration: none;
-  outline: 0;
-  background-color: #428bca;
-}
-
-/* line 103, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
-  color: #999999;
-}
-
-/* line 110, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
-  text-decoration: none;
-  background-color: transparent;
-  background-image: none;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  cursor: not-allowed;
-}
-
-/* line 122, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.open > .dropdown-menu {
-  display: block;
-}
-/* line 127, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.open > a {
-  outline: 0;
-}
-
-/* line 136, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-menu-right {
-  left: auto;
-  right: 0;
-}
-
-/* line 146, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-menu-left {
-  left: 0;
-  right: auto;
-}
-
-/* line 152, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-header {
-  display: block;
-  padding: 3px 20px;
-  font-size: 12px;
-  line-height: 1.428571429;
-  color: #999999;
-}
-
-/* line 161, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropdown-backdrop {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  z-index: 990;
-}
-
-/* line 171, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.pull-right > .dropdown-menu {
-  right: 0;
-  left: auto;
-}
-
-/* line 184, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropup .caret,
-.navbar-fixed-bottom .dropdown .caret {
-  border-top: 0;
-  border-bottom: 4px solid;
-  content: "";
-}
-/* line 190, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-.dropup .dropdown-menu,
-.navbar-fixed-bottom .dropdown .dropdown-menu {
-  top: auto;
-  bottom: 100%;
-  margin-bottom: 1px;
-}
-
-@media (min-width: 300px) {
-  /* line 204, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-  .navbar-right .dropdown-menu {
-    right: 0;
-    left: auto;
-  }
-  /* line 209, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_dropdowns.scss */
-  .navbar-right .dropdown-menu-left {
-    left: 0;
-    right: auto;
-  }
-}
 /* line 7, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_button-groups.scss */
 .btn-group,
 .btn-group-vertical {
@@ -5642,54 +4454,6 @@ a.badge:hover, a.badge:focus {
   color: white;
   text-decoration: none;
   cursor: pointer;
-}
-
-/* line 6, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_jumbotron.scss */
-.jumbotron {
-  padding: 30px;
-  margin-bottom: 30px;
-  color: inherit;
-  background-color: #eeeeee;
-}
-/* line 13, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_jumbotron.scss */
-.jumbotron h1,
-.jumbotron .h1 {
-  color: inherit;
-}
-/* line 16, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_jumbotron.scss */
-.jumbotron p {
-  margin-bottom: 15px;
-  font-size: 21px;
-  font-weight: 200;
-}
-/* line 22, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_jumbotron.scss */
-.jumbotron > hr {
-  border-top-color: #d5d5d5;
-}
-/* line 26, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_jumbotron.scss */
-.container .jumbotron {
-  border-radius: 12px;
-}
-/* line 30, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_jumbotron.scss */
-.jumbotron .container {
-  max-width: 100%;
-}
-@media screen and (min-width: 300px) {
-  /* line 6, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_jumbotron.scss */
-  .jumbotron {
-    padding-top: 48px;
-    padding-bottom: 48px;
-  }
-  /* line 38, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_jumbotron.scss */
-  .container .jumbotron {
-    padding-left: 60px;
-    padding-right: 60px;
-  }
-  /* line 44, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_jumbotron.scss */
-  .jumbotron h1,
-  .jumbotron .h1 {
-    font-size: 63px;
-  }
 }
 
 /* line 7, /Users/7korobi/.rbenv/versions/2.1.3/lib/ruby/gems/2.1.0/gems/bootstrap-sass-3.1.1.1/vendor/assets/stylesheets/bootstrap/_thumbnails.scss */
@@ -8154,6 +6918,899 @@ img {
   clear: left;
 }
 
+@font-face {
+  font-family: 'giji';
+  src: url("../font/giji.eot");
+  src: url("../font/giji.eot") format("embedded-opentype"), url("../font/giji.woff") format("woff"), url("../font/giji.ttf") format("truetype"), url("../font/giji.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'giji';
+    src: url('../font/giji.svg') format('svg');
+  }
+}
+*/
+/* line 22, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+[class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "giji";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 3ex;
+  text-align: center;
+  /* opacity: .8; */
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+  /* Animation center compensation - margins should be symmetric */
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+/* line 50, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-balance:before {
+  content: '\79e4';
+}
+
+/* '秤' */
+/* line 51, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-car:before {
+  content: '\8eca';
+}
+
+/* '車' */
+/* line 52, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-bike:before {
+  content: '\8d70';
+}
+
+/* '走' */
+/* line 53, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-sheep:before {
+  content: '\7f8a';
+}
+
+/* '羊' */
+/* line 54, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-rss:before {
+  content: '\72';
+}
+
+/* 'r' */
+/* line 56, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-bat:before {
+  content: '\31';
+}
+
+/* '1' */
+/* line 57, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-bat2:before {
+  content: '\32';
+}
+
+/* '2' */
+/* line 58, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-bat3:before {
+  content: '\33';
+}
+
+/* '3' */
+/* line 59, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-bat4:before {
+  content: '\34';
+}
+
+/* '4' */
+/* line 60, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-bat-charge:before {
+  content: '\35';
+}
+
+/* '5' */
+/* line 61, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-html5:before {
+  content: '\39';
+}
+
+/* '9' */
+/* line 62, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-android:before {
+  content: '\41';
+}
+
+/* 'A' */
+/* line 63, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-chrome:before {
+  content: '\43';
+}
+
+/* 'C' */
+/* line 64, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-dropbox:before {
+  content: '\44';
+}
+
+/* 'D' */
+/* line 65, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-ie:before {
+  content: '\45';
+}
+
+/* 'E' */
+/* line 66, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-firefox:before {
+  content: '\46';
+}
+
+/* 'F' */
+/* line 67, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-googleplus-rect:before {
+  content: '\47';
+}
+
+/* 'G' */
+/* line 68, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-icq:before {
+  content: '\49';
+}
+
+/* 'I' */
+/* line 69, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-appstore:before {
+  content: '\4d';
+}
+
+/* 'M' */
+/* line 70, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-opera:before {
+  content: '\4f';
+}
+
+/* 'O' */
+/* line 71, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-paypal:before {
+  content: '\50';
+}
+
+/* 'P' */
+/* line 72, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-skype:before {
+  content: '\53';
+}
+
+/* 'S' */
+/* line 73, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-twitter-bird:before {
+  content: '\54';
+}
+
+/* 'T' */
+/* line 74, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-windows:before {
+  content: '\57';
+}
+
+/* 'W' */
+/* line 75, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-picasa:before {
+  content: '\63';
+}
+
+/* 'c' */
+/* line 76, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-discover:before {
+  content: '\64';
+}
+
+/* 'd' */
+/* line 77, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-github:before {
+  content: '\67';
+}
+
+/* 'g' */
+/* line 78, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-instagram:before {
+  content: '\69';
+}
+
+/* 'i' */
+/* line 79, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-lego:before {
+  content: '\6c';
+}
+
+/* 'l' */
+/* line 80, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-mail:before {
+  content: '\6d';
+}
+
+/* 'm' */
+/* line 81, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-stackoverflow:before {
+  content: '\73';
+}
+
+/* 's' */
+/* line 82, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-tumblr-rect:before {
+  content: '\74';
+}
+
+/* 't' */
+/* line 83, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-vimeo:before {
+  content: '\76';
+}
+
+/* 'v' */
+/* line 84, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-win8:before {
+  content: '\77';
+}
+
+/* 'w' */
+/* line 85, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-cancel:before {
+  content: '\d7';
+}
+
+/* '×' */
+/* line 86, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-infinity:before {
+  content: '\221e';
+}
+
+/* '∞' */
+/* line 87, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-star:before {
+  content: '\2606';
+}
+
+/* '☆' */
+/* line 88, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-heart:before {
+  content: '\2661';
+}
+
+/* '♡' */
+/* line 89, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-music:before {
+  content: '\266b';
+}
+
+/* '♫' */
+/* line 90, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-ok:before {
+  content: '\2713';
+}
+
+/* '✓' */
+/* line 91, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-up:before {
+  content: '\4e0a';
+}
+
+/* '上' */
+/* line 92, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-down:before {
+  content: '\4e0b';
+}
+
+/* '下' */
+/* line 93, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-user:before {
+  content: '\4eba';
+}
+
+/* '人' */
+/* line 94, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-wifi:before {
+  content: '\4fe1';
+}
+
+/* '信' */
+/* line 95, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-chart-pie:before {
+  content: '\5186';
+}
+
+/* '円' */
+/* line 96, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-cw:before {
+  content: '\518d';
+}
+
+/* '再' */
+/* line 97, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-camera:before {
+  content: '\5199';
+}
+
+/* '写' */
+/* line 98, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-crown:before {
+  content: '\51a0';
+}
+
+/* '冠' */
+/* line 99, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-stopwatch:before {
+  content: '\523b';
+}
+
+/* '刻' */
+/* line 100, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-download:before {
+  content: '\53d6';
+}
+
+/* '取' */
+/* line 101, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-right:before {
+  content: '\53f3';
+}
+
+/* '右' */
+/* line 102, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-comment:before {
+  content: '\545f';
+}
+
+/* '呟' */
+/* line 103, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-doc:before {
+  content: '\54c1';
+}
+
+/* '品' */
+/* line 104, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-direction:before {
+  content: '\5834';
+}
+
+/* '場' */
+/* line 105, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-users:before {
+  content: '\59e6';
+}
+
+/* '姦' */
+/* line 106, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-diamond:before {
+  content: '\5b9d';
+}
+
+/* '宝' */
+/* line 107, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-home:before {
+  content: '\5bb6';
+}
+
+/* '家' */
+/* line 108, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-location:before {
+  content: '\5c45';
+}
+
+/* '居' */
+/* line 109, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-chart-alt:before {
+  content: '\5c71';
+}
+
+/* '山' */
+/* line 110, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-wrench:before {
+  content: '\5de5';
+}
+
+/* '工' */
+/* line 111, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-left:before {
+  content: '\5de6';
+}
+
+/* '左' */
+/* line 112, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-recycle:before {
+  content: '\5faa';
+}
+
+/* '循' */
+/* line 113, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-cancel-alt:before {
+  content: '\623b';
+}
+
+/* '戻' */
+/* line 114, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-thumbs-down:before {
+  content: '\62d2';
+}
+
+/* '拒' */
+/* line 115, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-zoom-in:before {
+  content: '\62e1';
+}
+
+/* '拡' */
+/* line 116, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-trash:before {
+  content: '\6368';
+}
+
+/* '捨' */
+/* line 117, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-flag:before {
+  content: '\65d7';
+}
+
+/* '旗' */
+/* line 118, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-clock:before {
+  content: '\6642';
+}
+
+/* '時' */
+/* line 119, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-sun:before {
+  content: '\6674';
+}
+
+/* '晴' */
+/* line 120, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-cloud:before {
+  content: '\66c7';
+}
+
+/* '曇' */
+/* line 121, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-moon:before {
+  content: '\6708';
+}
+
+/* '月' */
+/* line 122, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-attach:before {
+  content: '\675f';
+}
+
+/* '束' */
+/* line 123, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-bookmark:before {
+  content: '\681e';
+}
+
+/* '栞' */
+/* line 124, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-chart-bar:before {
+  content: '\68d2';
+}
+
+/* '棒' */
+/* line 125, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-tags:before {
+  content: '\6a19';
+}
+
+/* '標' */
+/* line 126, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-cog:before {
+  content: '\6b6f';
+}
+
+/* '歯' */
+/* line 127, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-warning-empty:before {
+  content: '\6ce8';
+}
+
+/* '注' */
+/* line 128, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-upload:before {
+  content: '\6e21';
+}
+
+/* '渡' */
+/* line 129, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-temperatire:before {
+  content: '\6e29';
+}
+
+/* '温' */
+/* line 130, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-gauge:before {
+  content: '\6e2c';
+}
+
+/* '測' */
+/* line 131, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-lightbulb:before {
+  content: '\706f';
+}
+
+/* '灯' */
+/* line 132, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-certificate:before {
+  content: '\7206';
+}
+
+/* '爆' */
+/* line 133, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-pin:before {
+  content: '\7559';
+}
+
+/* '留' */
+/* line 134, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-anchor:before {
+  content: '\7887';
+}
+
+/* '碇' */
+/* line 135, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-block:before {
+  content: '\7981';
+}
+
+/* '禁' */
+/* line 136, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-move:before {
+  content: '\79fb';
+}
+
+/* '移' */
+/* line 137, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-pencil:before {
+  content: '\7b46';
+}
+
+/* '筆' */
+/* line 138, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-calc:before {
+  content: '\7b97';
+}
+
+/* '算' */
+/* line 139, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-sitemap:before {
+  content: '\7d44';
+}
+
+/* '組' */
+/* line 140, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-chart:before {
+  content: '\7dda';
+}
+
+/* '線' */
+/* line 141, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-zoom-out:before {
+  content: '\7e2e';
+}
+
+/* '縮' */
+/* line 142, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-link:before {
+  content: '\7e4b';
+}
+
+/* '繋' */
+/* line 143, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-search:before {
+  content: '\898b';
+}
+
+/* '見' */
+/* line 144, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-menu:before {
+  content: '\89a7';
+}
+
+/* '覧' */
+/* line 145, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-tag:before {
+  content: '\8a18';
+}
+
+/* '記' */
+/* line 146, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-chat-alt:before {
+  content: '\8a71';
+}
+
+/* '話' */
+/* line 147, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-gift:before {
+  content: '\8d08';
+}
+
+/* '贈' */
+/* line 148, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-thumbs-up:before {
+  content: '\8fce';
+}
+
+/* '迎' */
+/* line 149, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-fast-fw:before {
+  content: '\9032';
+}
+
+/* '進' */
+/* line 150, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-rewind:before {
+  content: '\9061';
+}
+
+/* '遡' */
+/* line 151, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-scissors:before {
+  content: '\92cf';
+}
+
+/* '鋏' */
+/* line 152, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-lock:before {
+  content: '\9320';
+}
+
+/* '錠' */
+/* line 153, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-key:before {
+  content: '\9375';
+}
+
+/* '鍵' */
+/* line 154, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-lock-open:before {
+  content: '\958b';
+}
+
+/* '開' */
+/* line 155, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-cloud-sun:before {
+  content: '\9670';
+}
+
+/* '陰' */
+/* line 156, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-eject:before {
+  content: '\96e2';
+}
+
+/* '離' */
+/* line 157, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-snow:before {
+  content: '\96ea';
+}
+
+/* '雪' */
+/* line 158, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-flash:before {
+  content: '\96f7';
+}
+
+/* '雷' */
+/* line 159, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-briefcase:before {
+  content: '\9784';
+}
+
+/* '鞄' */
+/* line 160, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-visa:before {
+  content: '\e810';
+}
+
+/* '' */
+/* line 161, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-codepen:before {
+  content: '\e811';
+}
+
+/* '' */
+/* line 162, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-mastercard:before {
+  content: '\e81b';
+}
+
+/* '' */
+/* line 163, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-gmail:before {
+  content: '\e829';
+}
+
+/* '' */
+/* line 164, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-amex:before {
+  content: '\e834';
+}
+
+/* '' */
+/* line 165, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-flickr:before {
+  content: '\e83a';
+}
+
+/* '' */
+/* line 166, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-facebook-rect:before {
+  content: '\e84c';
+}
+
+/* '' */
+/* line 167, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-user-delete:before {
+  content: '\e857';
+}
+
+/* '' */
+/* line 168, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-user-add:before {
+  content: '\e85b';
+}
+
+/* '' */
+/* line 169, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-th-large:before {
+  content: '\e85d';
+}
+
+/* '' */
+/* line 170, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-rain:before {
+  content: '\e873';
+}
+
+/* '' */
+/* line 171, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-happy:before {
+  content: '\e879';
+}
+
+/* '' */
+/* line 172, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-unhappy:before {
+  content: '\e87a';
+}
+
+/* '' */
+/* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-sleep:before {
+  content: '\e87b';
+}
+
+/* '' */
+/* line 174, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-devil:before {
+  content: '\e87c';
+}
+
+/* '' */
+/* line 175, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-surprised:before {
+  content: '\e87d';
+}
+
+/* '' */
+/* line 176, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-tongue:before {
+  content: '\e87e';
+}
+
+/* '' */
+/* line 177, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-coffee:before {
+  content: '\e87f';
+}
+
+/* '' */
+/* line 178, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-sunglasses:before {
+  content: '\e880';
+}
+
+/* '' */
+/* line 179, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-grin:before {
+  content: '\e881';
+}
+
+/* '' */
+/* line 180, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-angry:before {
+  content: '\e882';
+}
+
+/* '' */
+/* line 181, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-cry:before {
+  content: '\e883';
+}
+
+/* '' */
+/* line 182, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-squint:before {
+  content: '\e884';
+}
+
+/* '' */
+/* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-laugh:before {
+  content: '\e885';
+}
+
+/* '' */
+/* line 184, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-emo-wink:before {
+  content: '\e886';
+}
+
+/* '' */
+/* line 185, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-doc-add:before {
+  content: '\e888';
+}
+
+/* '' */
+/* line 186, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-folder-add:before {
+  content: '\e889';
+}
+
+/* '' */
+/* line 187, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-resize-full:before {
+  content: '\e88b';
+}
+
+/* '' */
+/* line 188, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-resize-normal:before {
+  content: '\e88c';
+}
+
+/* '' */
+/* line 189, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-folder-delete:before {
+  content: '\e88d';
+}
+
+/* '' */
+/* line 190, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-doc-remove:before {
+  content: '\e88e';
+}
+
+/* '' */
+/* line 191, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-sort-numeric:before {
+  content: '\ff11';
+}
+
+/* '１' */
+/* line 192, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
+.icon-sort-alphabet:before {
+  content: '\ff21';
+}
+
+/* 'Ａ' */
 /* line 1, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/layout.css.scss */
 #sayfilter {
   padding-right: 6px;
