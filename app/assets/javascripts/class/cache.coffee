@@ -4,7 +4,6 @@ class Cache
 
 class Cache.Query
   constructor: (@finder, @match, @desc, @sort_by)->
-    @_hash = {}
 
   _match: (query, cb)->
     return @ unless Object.keys(query).length
@@ -112,18 +111,21 @@ class Cache.Query
 class Cache.Finder
   constructor: (@sort_by)->
     all = new Cache.Query @, [], false, @sort_by
+    all._hash = {}
     @scope = {all}
     @query = {all}
 
   rehash: (rules)->
-    return unless @diff.del || @diff.change
+    @query.all._list = null
+    @query.all._reduce = null
     @query = 
       all: @query.all
+    return unless @diff.del || @diff.change
     for rule in rules
       rule
     return
 
-  calculate_map_reduce: (query)->
+  calculate_reduce: (query)->
     init = (map)=>
       o = {}
       o.count = 0 if map.count
@@ -177,29 +179,37 @@ class Cache.Finder
         return gt if s[a._id] > s[b._id]
         return  0
 
-  calculate_group: (query, all)->
+  calculate_group: (query)->
     {reduce, target} = query._distinct
     query._list =
-      for id, o of all[reduce]
+      for id, o of query._reduce[reduce]
         o[target]
 
   calculate_list: (query, all)->
+    unless query._hash == all
+      query._hash = {}
+      deploy = (id, o)->
+        query._hash[id] = o
+        o.item
+    else
+      deploy = (id, o)->
+        o.item
+
     query._list =
       for id, o of all
-        {item} = o
         for match in query.match
-          o = null unless match item
+          o = null unless match o.item
           break unless o
         continue unless o
-
-        query._hash[id] = o
-        item
+        deploy(id, o)
 
   calculate: (query)->
-    @calculate_list       query, @query.all._hash
-    @calculate_map_reduce query if @map_reduce?
-    @calculate_group      query, query._reduce if query._distinct?
-    @calculate_sort       query
+    @calculate_list query, @query.all._hash
+    if query._list.length && @map_reduce?
+      @calculate_reduce query 
+      if query._distinct?
+        @calculate_group query 
+    @calculate_sort query
     return
 
 class Cache.Rule
@@ -223,9 +233,11 @@ class Cache.Rule
     definer =
       scope: (cb)=>
         @finder.scope = cb @finder.query.all
+        set_scope = (key, finder, query_call)->
+          finder.query.all[key] = (args...)->
+            finder.query["#{key}:#{args.join(',')}"] ?= query_call args...
         for key, query_call of @finder.scope
-          @finder.query.all[key] = (args...)=>
-            @finder.query["#{key}:#{args.join(',')}"] ||= query_call args...
+          set_scope(key, @finder, query_call)
 
       belongs_to: (parent, option)=>
         parents = "#{parent}s"

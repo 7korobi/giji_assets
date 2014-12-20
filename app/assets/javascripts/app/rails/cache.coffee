@@ -51,72 +51,121 @@ new Cache.Rule("message").schema ->
   @belongs_to "event"
   @belongs_to "sow_auth"
 
+  is_show = 
+    home:
+      village:     0b1110000000
+      cast:        0b0110000000
+      announce:    0b0010000000
+    warning:
+      all:         0b0001000000
+    talk:
+      open:        0b0000100000
+      clan:        0b0000110000
+      think:       0b0000101000
+      all:         0b0000111000
+    memo:
+      open:        0b0000000100
+      clan:        0b0000000110
+      think:       0b0000000101
+      all:         0b0000000111
+
+  bit = 
+    VILLAGE:       0b1110000000
+    CAST:          0b0110100000
+    INFO:          0b0010000000
+    ACTION:        0b0001111000
+    TALK:          0b0000111000
+    MEMO:          0b0000000111
+
+  mask =
+    ALL:           0b1111111111
+    NOT_OPEN:      0b1111011011
+    CLAN:          0b1111010010
+    THINK:         0b1111001001
+    DELETE:        0b0000001001
+
   @scope (all)->
-    in_page: (mode, security, reduce, search)->
-      query = all.where (o)-> o.is[mode] && o.security[security]
-      query = query.distinct(reduce, "max_is") if reduce
+    home: (mode)->
+      all.where (o)-> o.show & is_show.home[mode]
+
+    talk: (mode, open, search)->
+      show_search = is_show.talk[mode]
+      show_search &= mask.NOT_OPEN unless open
+      query = all.where (o)-> o.show & show_search
       query.search search
+
+    memo: (mode, uniq, search)->
+      query = all.where (o)-> o.show & is_show.memo[mode]
+      query = query.distinct("pen", "max_is") if uniq
+      query.search search
+
+    warning: ->
+      all.where (o)-> o.show & is_show.warning.all
+
+    after: (updated_at)->
+      query = all.where (o)-> updated_at <= o.updated_at
+
+#    event: (event_id, search)->
+#      query = all.where (o)-> event_id == o.event_id 
+#      query.search search
 
   @deploy (o)-> 
     o._id = o.event_id + "-" + o.logid
-
-    o.security =
-      switch
-        when o.logid.match /^([D].\d+)/
-          {delete:1, think:1, all:1}
-        when o.logid.match /^([qcS].\d+)|(MM\d+)/
-          {open:1, clan:1, think:1, all:1}
-        when o.mestype == "MAKER"
-          {announce:1, open:1, clan:1, think:1, all:1}
-        when o.mestype == "ADMIN"
-          {announce:1, open:1, clan:1, think:1, all:1}
-        when o.logid.match /^([I].\d+)|(vilinfo)|(potofs)/
-          {announce:1, open:1, clan:1, think:1, all:1}
-        when o.logid.match /^([Ti].\d+)/
-          {think:1, all:1}
-        when o.logid.match /^([\-WPX].\d+)/
-          {clan:1, all:1}
-        else
-          {}
-    o.security_list = Object.keys(o.security)
-    anchor_num  = o.logid.substring(2) - 0 || 0
+    anchor_num  = o.logid[2..-1] - 0 || 0
     o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
+    o.pen = "#{o.logid[0..1]}-#{o.face_id}"
+
     o.updated_at ?= new Date(o.date) - 0
     o.updated_timer ?= new Timer o.updated_at,
       prop: ->
     delete o.date
 
     vdom = GUI.message.xxx
-    o.is = {}
+    o.show =
+      switch
+        when o.logid.match /^vilinfo/
+          vdom = GUI.story
+          bit.VILLAGE
+        when o.logid.match /^potofs/
+          vdom = GUI.potofs
+          bit.CAST
+        when o.logid.match /^.[I]/
+          vdom = GUI.message.info
+          bit.TALK | bit.INFO
+        when o.logid.match /^.[SX]/
+          vdom = GUI.message.talk
+          bit.TALK
+        when o.logid.match /^.[M]/
+          vdom = GUI.message.memo
+          bit.MEMO
+        else
+          0
 
-    if o.logid.match /^vilinfo/
-      vdom = GUI.story
-      o.is.info = true
-    if o.logid.match /^potofs/
-      vdom = GUI.potofs
-      o.is.info = true
-    if o.logid.match /^.[I]/
-      vdom = GUI.message.info
-      o.is.info = true
-      o.is.talk = true
-    if o.logid.match /^.[SX]/
-      vdom = GUI.message.talk
-      o.is.talk = true
-    if o.logid.match /^.[M]/
-      vdom = GUI.message.memo
-      o.is.memo = true
-
-    if o.mestype == "MAKER"
-      vdom = GUI.message.admin
-      o.is.info = true
-    if o.mestype == "ADMIN"
-      vdom = GUI.message.admin
-      o.is.info = true
+    o.show |=
+      switch
+        when o.mestype == "MAKER"
+          vdom = GUI.message.admin
+          bit.INFO
+        when o.mestype == "ADMIN"
+          vdom = GUI.message.admin
+          bit.INFO
+        else
+          0
 
     if o.logid.match /^.[AB]/
       vdom = GUI.message.action
-      o.is.action = true
-      o.is.talk = true
+      o.show |= bit.ACTION
+
+    o.show &=
+      switch
+        when o.logid.match /^([D].\d+)/
+          mask.DELETE
+        when o.logid.match /^([Ti].\d+)/
+          mask.THINK
+        when o.logid.match /^([\-WPX].\d+)/
+          mask.CLAN
+        else
+          mask.ALL
 
     o.vdom = vdom
 
@@ -127,15 +176,9 @@ new Cache.Rule("message").schema ->
       count: 1
       max: o.updated_at
       min: o.updated_at
-    emit "all", "all", item
+
     emit "event", o.event_id, item
-    emit "face", o.face_id, item
-    for security in o.security_list
-      emit "all", security, item
-      emit "info", security, item if o.is.info
-      emit "action", security, item if o.is.action
-      emit "talk", security, item if o.is.talk
-      emit "memo", security, item if o.is.memo
+    emit "pen", o.pen, item
 
 new Cache.Rule("potof").schema ->
   maskstate_order = _.sortBy _.keys(RAILS.maskstates), (o)-> -o
