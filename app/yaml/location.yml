@@ -14,9 +14,6 @@ options:
     current: center
   font:
     current: std
-  viewed_at:
-    type: Date
-    current: 10000
 
   theme:
     current: cinema
@@ -40,13 +37,24 @@ options:
   msg_ids:
     type: Array
     current: []
-  msg_mode:
+
+  scope:
     current: talk
-  msg_security:
+  home:
+    current: village
+  talk:
     current: open
-  reduce:
-    type: Text
-    current: ""
+  memo:
+    current: all
+  open:
+    type: Bool
+    current: true
+  uniq:
+    type: Bool
+    current: true
+  human:
+    type: Bool
+    current: true
 
   roletable:
     current: ALL

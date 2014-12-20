@@ -41,6 +41,9 @@ class Serial
         base *= Serial.map.size
       result
 
+    Bool: (str)->
+      str == "T"
+
     Number: Number
     Text: string_parser
     String: string_parser 
@@ -61,6 +64,9 @@ class Serial
         result += Serial.map.to_s[time % Serial.map.size]
         time = Math.floor time / Serial.map.size
       result
+
+    Bool: (bool)->
+      if bool then "T" else "F"
 
     Number: string_serializer
     Text: string_serializer

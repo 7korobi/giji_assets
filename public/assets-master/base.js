@@ -388,7 +388,6 @@ Cache.Query = (function() {
     this.match = match;
     this.desc = desc;
     this.sort_by = sort_by;
-    this._hash = {};
   }
 
   Query.prototype._match = function(query, cb) {
@@ -598,6 +597,7 @@ Cache.Finder = (function() {
     var all;
     this.sort_by = sort_by;
     all = new Cache.Query(this, [], false, this.sort_by);
+    all._hash = {};
     this.scope = {
       all: all
     };
@@ -608,19 +608,21 @@ Cache.Finder = (function() {
 
   Finder.prototype.rehash = function(rules) {
     var rule, _i, _len;
-    if (!(this.diff.del || this.diff.change)) {
-      return;
-    }
+    this.query.all._list = null;
+    this.query.all._reduce = null;
     this.query = {
       all: this.query.all
     };
+    if (!(this.diff.del || this.diff.change)) {
+      return;
+    }
     for (_i = 0, _len = rules.length; _i < _len; _i++) {
       rule = rules[_i];
       rule;
     }
   };
 
-  Finder.prototype.calculate_map_reduce = function(query) {
+  Finder.prototype.calculate_reduce = function(query) {
     var base, calc, emit, emits, group, id, init, item, key, map, o, reduce, _i, _len, _ref, _ref1;
     init = (function(_this) {
       return function(map) {
@@ -703,12 +705,12 @@ Cache.Finder = (function() {
     });
   };
 
-  Finder.prototype.calculate_group = function(query, all) {
+  Finder.prototype.calculate_group = function(query) {
     var id, o, reduce, target, _ref;
     _ref = query._distinct, reduce = _ref.reduce, target = _ref.target;
     return query._list = (function() {
       var _ref1, _results;
-      _ref1 = all[reduce];
+      _ref1 = query._reduce[reduce];
       _results = [];
       for (id in _ref1) {
         o = _ref1[id];
@@ -719,17 +721,27 @@ Cache.Finder = (function() {
   };
 
   Finder.prototype.calculate_list = function(query, all) {
-    var id, item, match, o;
+    var deploy, id, match, o;
+    if (query._hash !== all) {
+      query._hash = {};
+      deploy = function(id, o) {
+        query._hash[id] = o;
+        return o.item;
+      };
+    } else {
+      deploy = function(id, o) {
+        return o.item;
+      };
+    }
     return query._list = (function() {
       var _i, _len, _ref, _results;
       _results = [];
       for (id in all) {
         o = all[id];
-        item = o.item;
         _ref = query.match;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           match = _ref[_i];
-          if (!match(item)) {
+          if (!match(o.item)) {
             o = null;
           }
           if (!o) {
@@ -739,8 +751,7 @@ Cache.Finder = (function() {
         if (!o) {
           continue;
         }
-        query._hash[id] = o;
-        _results.push(item);
+        _results.push(deploy(id, o));
       }
       return _results;
     })();
@@ -748,11 +759,11 @@ Cache.Finder = (function() {
 
   Finder.prototype.calculate = function(query) {
     this.calculate_list(query, this.query.all._hash);
-    if (this.map_reduce != null) {
-      this.calculate_map_reduce(query);
-    }
-    if (query._distinct != null) {
-      this.calculate_group(query, query._reduce);
+    if (query._list.length && (this.map_reduce != null)) {
+      this.calculate_reduce(query);
+      if (query._distinct != null) {
+        this.calculate_group(query);
+      }
     }
     this.calculate_sort(query);
   };
@@ -791,17 +802,20 @@ Cache.Rule = (function() {
     definer = {
       scope: (function(_this) {
         return function(cb) {
-          var key, query_call, _ref, _results;
+          var key, query_call, set_scope, _ref, _results;
           _this.finder.scope = cb(_this.finder.query.all);
+          set_scope = function(key, finder, query_call) {
+            return finder.query.all[key] = function() {
+              var args, _base, _name;
+              args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+              return (_base = finder.query)[_name = "" + key + ":" + (args.join(','))] != null ? _base[_name] : _base[_name] = query_call.apply(null, args);
+            };
+          };
           _ref = _this.finder.scope;
           _results = [];
           for (key in _ref) {
             query_call = _ref[key];
-            _results.push(_this.finder.query.all[key] = function() {
-              var args, _base, _name;
-              args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-              return (_base = _this.finder.query)[_name = "" + key + ":" + (args.join(','))] || (_base[_name] = query_call.apply(null, args));
-            });
+            _results.push(set_scope(key, _this.finder, query_call));
           }
           return _results;
         };
@@ -2042,6 +2056,15 @@ GUI.TouchMenu = (function() {
     });
   };
 
+  TouchMenu.prototype.badge = function(icon_key, badge_cb) {
+    this.icon_key = icon_key;
+    if (badge_cb != null) {
+      return GUI.TouchMenu.icons.badge[this.icon_key] = badge_cb;
+    } else {
+      return delete GUI.TouchMenu.icons.badge[this.icon_key];
+    }
+  };
+
   TouchMenu.prototype.icon = function(icon_key, menu_cb) {
     this.icon_key = icon_key;
     if (menu_cb != null) {
@@ -2051,6 +2074,8 @@ GUI.TouchMenu = (function() {
       return delete GUI.TouchMenu.icons.menus[this.icon_key];
     }
   };
+
+  TouchMenu.icons.badge = {};
 
   TouchMenu.icons.menu = function() {
     var menu_cb, o, set_menu, vdom;
@@ -2267,6 +2292,9 @@ Serial = (function() {
       }
       return result;
     },
+    Bool: function(str) {
+      return str === "T";
+    },
     Number: Number,
     Text: string_parser,
     String: string_parser,
@@ -2291,6 +2319,13 @@ Serial = (function() {
         time = Math.floor(time / Serial.map.size);
       }
       return result;
+    },
+    Bool: function(bool) {
+      if (bool) {
+        return "T";
+      } else {
+        return "F";
+      }
     },
     Number: string_serializer,
     Text: string_serializer,

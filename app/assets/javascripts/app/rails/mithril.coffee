@@ -256,11 +256,14 @@ GUI.if_exist "#buttons", (dom)->
           layout.dx = -1
 
       m "nav",
-        for icon in ["warning-empty", "sitemap", "stopwatch", "home", "mail", "pin", "search", "pencil", "th-large", "cog"] # lock
+        for icon in ["pin", "warning-empty", "sitemap", "stopwatch", "home", "chat-alt", "mail", "search", "pencil", "th-large", "cog"] # lock
           continue unless touch.menus[icon]
           m "div", touch.start(icon),
             m ".bigicon",
               m ".icon-#{icon}"
+            m ".badge.pull-right", touch.badge[icon]() if touch.badge[icon]?
+
+
 
 GUI.if_exist "#topviewer", (dom)->
   layout = new GUI.Layout dom, 0, 1, 110, head.browser.ios, 0
@@ -352,18 +355,10 @@ if gon?.potofs?
           m "div",
             m "h6", "スタイル"
             m "span",
-              m "a.menuicon.icon-home", touch.btn(Url.prop.msg_mode, "info"  ), " "
-              m "a.menuicon.icon-warning-empty", touch.btn(Url.prop.msg_mode, "action"), " "
-              m "a.menuicon.icon-chat-alt", touch.btn(Url.prop.msg_mode, "talk"  ), " "
-              m "a.menuicon.icon-mail", touch.btn(Url.prop.msg_mode, "memo"  ), " "
-            m "span",
-              m "a.menuicon.icon-trash", touch.btn(Url.prop.msg_security, "delete"  ), " "
-              m "a.menuicon.icon-warning-empty", touch.btn(Url.prop.msg_security, "announce"), " "
-            m "span",
-              m "a.menuicon.icon-sun", touch.btn(Url.prop.msg_security, "open"    ), " "
-              m "a.menuicon.icon-moon", touch.btn(Url.prop.msg_security, "clan"    ), " "
-              m "a.menuicon.icon-comment", touch.btn(Url.prop.msg_security, "think"   ), " "
-              m "a.menuicon.icon-chat-alt", touch.btn(Url.prop.msg_security, "all"     ), " "
+              m "a.menuicon.icon-home", touch.btn(Url.prop.scope, "info"  ), " "
+              m "a.menuicon.icon-warning-empty", touch.btn(Url.prop.scope, "action"), " "
+              m "a.menuicon.icon-chat-alt", touch.btn(Url.prop.scope, "talk"  ), " "
+              m "a.menuicon.icon-mail", touch.btn(Url.prop.scope, "memo"  ), " "
 
         potofs = 
           m "table.potofs",
@@ -412,28 +407,35 @@ if gon?.potofs?
           m ".sayfilter_heading.bottom"
 
 
-messages_search = ()->
-  event_id = Url.prop.scroll()?.split("-")[0..2].join("-")
-  mode = Url.prop.msg_mode()
-  reduce = Url.prop.reduce()
-  search = Url.prop.search()
-  security = Url.prop.msg_security()
-
-  Cache.messages.in_page(mode, security, reduce, search).list()
-
 if gon?.events? && gon.event?
   if gon?.story?
     Cache.rule.story.set [gon.story]
 
   Cache.rule.event.merge gon.events
 
+  messages =
+    home: ({home})->
+      Cache.messages.home(home())
+    after: ({scroll})->
+      updated_at = Cache.messages.find(scroll())?.updated_at || 0
+      Cache.messages.after(updated_at)
+    talk: ({talk, open, search})->
+      Cache.messages.talk(talk(), open(), search())
+    memo: ({memo, uniq, search})->
+      Cache.messages.memo(memo(), uniq(), search())
+    warning: ->
+      Cache.messages.warning()
+
+
   GUI.if_exist "#story", (dom)->
     story = gon.story
 
     touch = new GUI.TouchMenu()
+    touch.badge "home", ->
+      Cache.messages.home("announce").list().length
     touch.icon "home", -> # 情報
-      Url.prop.msg_mode "info"
-      Url.prop.scroll messages_search().first._id
+      Url.prop.scope "home"
+      Url.prop.scroll messages.home(Url.prop).list().first?._id
 
     m.module dom,
       controller: ->
@@ -448,33 +450,41 @@ if gon?.events? && gon.event?
           touch.icon "sitemap"
 
         if story?
-          switch Url.prop.msg_mode()
-            when "info"
+          switch Url.prop.scope()
+            when "home"
               GUI.message.story story
-            else
-              touch.menu m "h2",
-                m "a.menuicon.icon-book", GUI.TouchMenu.icons.start("sitemap"), " "
-                m "span", story.name
 
   GUI.if_exist "#messages", (dom)->
     scroll_spy.avg_height = 150
     touch = new GUI.TouchMenu()
 
-
     touch.icon "pin", -> # アンカー
-      Url.prop.msg_mode "pin"
-      Url.prop.scroll messages_search().first._id
+      # {home} = Url.prop
+      # Url.prop.scope "pin"
+      # Url.prop.scroll messages.pin(Url.prop).list().first?._id
 
+    touch.badge "stopwatch", ->
+      messages.after(Url.prop).list().length
     touch.icon "stopwatch", -> # 新着
-      Url.prop.msg_mode "time"
-      Url.prop.scroll messages_search().first._id
+      Url.prop.scope "after"
 
+    touch.badge "chat-alt", ->
+      Cache.messages.talk("all", true, "").list().length
+    touch.icon "chat-alt", -> # 発言
+      Url.prop.scope "talk"
+      Url.prop.scroll messages.talk(Url.prop).list().first?._id
+
+    touch.badge "mail", ->
+      Cache.messages.memo("all", true, "").list().length
     touch.icon "mail", -> # メモ
-      Url.prop.msg_mode "memo"
-      Url.prop.scroll messages_search().first._id
+      Url.prop.scope "memo"
+      Url.prop.scroll messages.memo(Url.prop).list().first?._id
 
-    touch.icon "warning-empty", -> # アクションオンリー
-      Url.prop.msg_security "announce"
+
+    touch.badge "warning-empty", ->
+      Cache.messages.warning().list().length
+    touch.icon "warning-empty", -> 
+      Url.prop.scope "warning"
 
       m ".pagenavi.choice.guide.form-inline",
         m "h6", "アクション。"
@@ -492,7 +502,7 @@ if gon?.events? && gon.event?
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager "div", messages_search(), (o)->
+        scroll_spy.pager "div", messages[Url.prop.scope()](Url.prop).list(), (o)->
           anchor_num  = o.logid.substring(2) - 0 || 0
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
           o.updated_at ?= new Date(o.date) - 0
@@ -545,7 +555,6 @@ if gon?.history?
 if gon?.stories?
   Cache.rule.story.set gon.stories
   GUI.if_exist "#stories", (dom)->
-    scroll_spy.avg_height = 22
     touch_sw = new GUI.TouchMenu()
     touch = new GUI.TouchMenu()
     touch.menu_set Url.prop, "count", 
@@ -618,6 +627,10 @@ if gon?.stories?
     m.module dom,
       controller: ->
       view: ->
+        if touch_sw.state()
+          scroll_spy.avg_height = 120
+        else
+          scroll_spy.avg_height = 22
         touch.query = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
         vdom = touch.menu m ".pagenavi.choice.guide.form-inline",
           m "a.menuicon.icon-home", GUI.TouchMenu.icons.start("home"), " "
@@ -827,62 +840,6 @@ GUI.if_exist "#headline", (dom)->
 
 
 ###
-  css: new Url "css=:theme-:width-:layout-:font", (params)->
-
-  .pagenavi
-    h6(ng-if="mode" style="text-align:left;") 見るログを選ぶ
-    .form-inline(ng-if="mode" style="text-align:left;")
-      .form-group
-        a.mark(ng-click="event.show_info()") 情報
-      | &thinsp;
-      .form-group(ng-repeat="e in events")
-        a.mark(ng-click="e.show_talk()") {{e.name}}
-      .form-group(ng-if="story.news().is_progress")
-        | &thinsp;/&thinsp;
-        a.mark(ng-click="story.news().show_news()") 最新
-        | &thinsp;
-        a.mark(ng-click="story.news().show_unread()") 未読
-
-    h6(ng-if="show_style_navi && msg_style") ログの表示方法
-    .form-inline(ng-if="show_style_navi && msg_style")
-      .form-group
-        label
-          select.form-control.input-medium(ng-model="css.value" ng-options="o.val as o.name group by o.group for o in css.select")
-      | &thinsp;
-      .form-group
-        label
-          select.form-control.input-mini(ng-model="msg_styles.power"   ng-options="key as selectors.power[key] for key in selector_keys.power" )
-        | &thinsp;
-      .form-group
-        label
-          select.form-control.input-mini(ng-model="msg_styles.order"   ng-options="key as selectors.order[key] for key in selector_keys.order" )
-        | &thinsp;
-      .form-group
-        label
-          select.form-control.input-mini(ng-model="msg_styles.row"   ng-options="key as selectors.row[key] for key in selector_keys.row" )
-        | &thinsp;
-
-    h6(ng-if="show_style_navi && mode") ログから表示する部分を選ぶ
-    .form-inline(ng-if="show_style_navi && mode")
-      .form-group.mark
-        label
-          input(type="radio" tabindex="-1" value="open"  ng-model="modes.view") 公開
-        label
-          input(type="radio" tabindex="-1" value="clan"  ng-model="modes.view") 内緒話
-        label
-          input(type="radio" tabindex="-1" value="think" ng-model="modes.view") 独り言
-        label
-          input(type="radio" tabindex="-1" value="all"   ng-model="modes.view") 全部
-      | &thinsp;
-      .form-group.mark
-        label.checkbox
-          input(type="checkbox" tabindex="-1" ng-model="modes.last") 最後の言葉
-        label.checkbox
-          input(type="checkbox" tabindex="-1" ng-model="modes.open") 公開発言
-        label.checkbox
-          input(type="checkbox" tabindex="-1" ng-model="msg_styles.pl") 中身発言
-
-
     h6(ng-if="event") ページ移動
     .form-inline(ng-if="event" style="text-align:right;")
       .form-group(ng-if="page && ! event.is_news" template="navi/paginate")

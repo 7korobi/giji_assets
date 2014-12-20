@@ -77,6 +77,12 @@ class GUI.TouchMenu
         else
           @className "btn btn-default"
 
+  badge: (@icon_key, badge_cb)->
+    if badge_cb?
+      GUI.TouchMenu.icons.badge[@icon_key] = badge_cb
+    else
+      delete GUI.TouchMenu.icons.badge[@icon_key]
+
   icon: (@icon_key, menu_cb)->
     if menu_cb?
       menu_cb.menu = @
@@ -84,6 +90,7 @@ class GUI.TouchMenu
     else
       delete GUI.TouchMenu.icons.menus[@icon_key]
 
+  @icons.badge = {}
   @icons.menu = (vdom...)->
     set_menu = (o, cb)->
       return unless cb

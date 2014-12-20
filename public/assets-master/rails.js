@@ -15,7 +15,7 @@ Url.routes = {
     stories: new Url("stories=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
-    events: new Url("event=:msg_mode~:msg_security~:reduce~:search", {
+    messages: new Url("messages=:scope~:home~:talk~:memo~:open~:uniq~:human~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "?"
     }),
     potofs: new Url("potofs=:potofs_order~:potofs_desc", {
@@ -135,83 +135,95 @@ new Cache.Rule("item").schema(function() {
 });
 
 new Cache.Rule("message").schema(function() {
+  var bit, is_show, mask;
   this.order("updated_at");
   this.belongs_to("face");
   this.belongs_to("event");
   this.belongs_to("sow_auth");
+  is_show = {
+    home: {
+      village: 0x380,
+      cast: 0x180,
+      announce: 0x80
+    },
+    warning: {
+      all: 0x40
+    },
+    talk: {
+      open: 0x20,
+      clan: 0x30,
+      think: 0x28,
+      all: 0x38
+    },
+    memo: {
+      open: 0x4,
+      clan: 0x6,
+      think: 0x5,
+      all: 0x7
+    }
+  };
+  bit = {
+    VILLAGE: 0x380,
+    CAST: 0x1a0,
+    INFO: 0x80,
+    ACTION: 0x78,
+    TALK: 0x38,
+    MEMO: 0x7
+  };
+  mask = {
+    ALL: 0x3ff,
+    NOT_OPEN: 0x3db,
+    CLAN: 0x3d2,
+    THINK: 0x3c9,
+    DELETE: 0x9
+  };
   this.scope(function(all) {
     return {
-      in_page: function(mode, security, reduce, search) {
+      home: function(mode) {
+        return all.where(function(o) {
+          return o.show & is_show.home[mode];
+        });
+      },
+      talk: function(mode, open, search) {
+        var query, show_search;
+        show_search = is_show.talk[mode];
+        if (!open) {
+          show_search &= mask.NOT_OPEN;
+        }
+        query = all.where(function(o) {
+          return o.show & show_search;
+        });
+        return query.search(search);
+      },
+      memo: function(mode, uniq, search) {
         var query;
         query = all.where(function(o) {
-          return o.is[mode] && o.security[security];
+          return o.show & is_show.memo[mode];
         });
-        if (reduce) {
-          query = query.distinct(reduce, "max_is");
+        if (uniq) {
+          query = query.distinct("pen", "max_is");
         }
         return query.search(search);
+      },
+      warning: function() {
+        return all.where(function(o) {
+          return o.show & is_show.warning.all;
+        });
+      },
+      after: function(updated_at) {
+        var query;
+        return query = all.where(function(o) {
+          return updated_at <= o.updated_at;
+        });
       }
     };
   });
   this.deploy(function(o) {
     var anchor_num, vdom;
     o._id = o.event_id + "-" + o.logid;
-    o.security = (function() {
-      switch (false) {
-        case !o.logid.match(/^([D].\d+)/):
-          return {
-            "delete": 1,
-            think: 1,
-            all: 1
-          };
-        case !o.logid.match(/^([qcS].\d+)|(MM\d+)/):
-          return {
-            open: 1,
-            clan: 1,
-            think: 1,
-            all: 1
-          };
-        case o.mestype !== "MAKER":
-          return {
-            announce: 1,
-            open: 1,
-            clan: 1,
-            think: 1,
-            all: 1
-          };
-        case o.mestype !== "ADMIN":
-          return {
-            announce: 1,
-            open: 1,
-            clan: 1,
-            think: 1,
-            all: 1
-          };
-        case !o.logid.match(/^([I].\d+)|(vilinfo)|(potofs)/):
-          return {
-            announce: 1,
-            open: 1,
-            clan: 1,
-            think: 1,
-            all: 1
-          };
-        case !o.logid.match(/^([Ti].\d+)/):
-          return {
-            think: 1,
-            all: 1
-          };
-        case !o.logid.match(/^([\-WPX].\d+)/):
-          return {
-            clan: 1,
-            all: 1
-          };
-        default:
-          return {};
-      }
-    })();
-    o.security_list = Object.keys(o.security);
-    anchor_num = o.logid.substring(2) - 0 || 0;
+    anchor_num = o.logid.slice(2) - 0 || 0;
     o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
+    o.pen = "" + o.logid.slice(0, 2) + "-" + o.face_id;
     if (o.updated_at == null) {
       o.updated_at = new Date(o.date) - 0;
     }
@@ -222,75 +234,67 @@ new Cache.Rule("message").schema(function() {
     }
     delete o.date;
     vdom = GUI.message.xxx;
-    o.is = {};
-    if (o.logid.match(/^vilinfo/)) {
-      vdom = GUI.story;
-      o.is.info = true;
-    }
-    if (o.logid.match(/^potofs/)) {
-      vdom = GUI.potofs;
-      o.is.info = true;
-    }
-    if (o.logid.match(/^.[I]/)) {
-      vdom = GUI.message.info;
-      o.is.info = true;
-      o.is.talk = true;
-    }
-    if (o.logid.match(/^.[SX]/)) {
-      vdom = GUI.message.talk;
-      o.is.talk = true;
-    }
-    if (o.logid.match(/^.[M]/)) {
-      vdom = GUI.message.memo;
-      o.is.memo = true;
-    }
-    if (o.mestype === "MAKER") {
-      vdom = GUI.message.admin;
-      o.is.info = true;
-    }
-    if (o.mestype === "ADMIN") {
-      vdom = GUI.message.admin;
-      o.is.info = true;
-    }
+    o.show = (function() {
+      switch (false) {
+        case !o.logid.match(/^vilinfo/):
+          vdom = GUI.story;
+          return bit.VILLAGE;
+        case !o.logid.match(/^potofs/):
+          vdom = GUI.potofs;
+          return bit.CAST;
+        case !o.logid.match(/^.[I]/):
+          vdom = GUI.message.info;
+          return bit.TALK | bit.INFO;
+        case !o.logid.match(/^.[SX]/):
+          vdom = GUI.message.talk;
+          return bit.TALK;
+        case !o.logid.match(/^.[M]/):
+          vdom = GUI.message.memo;
+          return bit.MEMO;
+        default:
+          return 0;
+      }
+    })();
+    o.show |= (function() {
+      switch (false) {
+        case o.mestype !== "MAKER":
+          vdom = GUI.message.admin;
+          return bit.INFO;
+        case o.mestype !== "ADMIN":
+          vdom = GUI.message.admin;
+          return bit.INFO;
+        default:
+          return 0;
+      }
+    })();
     if (o.logid.match(/^.[AB]/)) {
       vdom = GUI.message.action;
-      o.is.action = true;
-      o.is.talk = true;
+      o.show |= bit.ACTION;
     }
+    o.show &= (function() {
+      switch (false) {
+        case !o.logid.match(/^([D].\d+)/):
+          return mask.DELETE;
+        case !o.logid.match(/^([Ti].\d+)/):
+          return mask.THINK;
+        case !o.logid.match(/^([\-WPX].\d+)/):
+          return mask.CLAN;
+        default:
+          return mask.ALL;
+      }
+    })();
     o.vdom = vdom;
     return o.search_words = [o.log];
   });
   return this.map_reduce(function(o, emit) {
-    var item, security, _i, _len, _ref, _results;
+    var item;
     item = {
       count: 1,
       max: o.updated_at,
       min: o.updated_at
     };
-    emit("all", "all", item);
     emit("event", o.event_id, item);
-    emit("face", o.face_id, item);
-    _ref = o.security_list;
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      security = _ref[_i];
-      emit("all", security, item);
-      if (o.is.info) {
-        emit("info", security, item);
-      }
-      if (o.is.action) {
-        emit("action", security, item);
-      }
-      if (o.is.talk) {
-        emit("talk", security, item);
-      }
-      if (o.is.memo) {
-        _results.push(emit("memo", security, item));
-      } else {
-        _results.push(void 0);
-      }
-    }
-    return _results;
+    return emit("pen", o.pen, item);
   });
 });
 
@@ -563,7 +567,7 @@ new Cache.Rule("story").schema(function() {
     return _results;
   });
 });
-var face, messages_search, scroll_spy, _ref,
+var face, messages, scroll_spy, _ref,
   __slice = [].slice;
 
 GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
@@ -889,14 +893,14 @@ GUI.if_exist("#buttons", function(dom) {
       }
       return m("nav", (function() {
         var _i, _len, _ref1, _results;
-        _ref1 = ["warning-empty", "sitemap", "stopwatch", "home", "mail", "pin", "search", "pencil", "th-large", "cog"];
+        _ref1 = ["pin", "warning-empty", "sitemap", "stopwatch", "home", "chat-alt", "mail", "search", "pencil", "th-large", "cog"];
         _results = [];
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           icon = _ref1[_i];
           if (!touch.menus[icon]) {
             continue;
           }
-          _results.push(m("div", touch.start(icon), m(".bigicon", m(".icon-" + icon))));
+          _results.push(m("div", touch.start(icon), m(".bigicon", m(".icon-" + icon)), touch.badge[icon] != null ? m(".badge.pull-right", touch.badge[icon]()) : void 0));
         }
         return _results;
       })());
@@ -978,7 +982,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           case "left":
             layout.dx = -1;
         }
-        filter = m("div", m("h6", "スタイル"), m("span", m("a.menuicon.icon-home", touch.btn(Url.prop.msg_mode, "info"), " "), m("a.menuicon.icon-warning-empty", touch.btn(Url.prop.msg_mode, "action"), " "), m("a.menuicon.icon-chat-alt", touch.btn(Url.prop.msg_mode, "talk"), " "), m("a.menuicon.icon-mail", touch.btn(Url.prop.msg_mode, "memo"), " ")), m("span", m("a.menuicon.icon-trash", touch.btn(Url.prop.msg_security, "delete"), " "), m("a.menuicon.icon-warning-empty", touch.btn(Url.prop.msg_security, "announce"), " ")), m("span", m("a.menuicon.icon-sun", touch.btn(Url.prop.msg_security, "open"), " "), m("a.menuicon.icon-moon", touch.btn(Url.prop.msg_security, "clan"), " "), m("a.menuicon.icon-comment", touch.btn(Url.prop.msg_security, "think"), " "), m("a.menuicon.icon-chat-alt", touch.btn(Url.prop.msg_security, "all"), " ")));
+        filter = m("div", m("h6", "スタイル"), m("span", m("a.menuicon.icon-home", touch.btn(Url.prop.scope, "info"), " "), m("a.menuicon.icon-warning-empty", touch.btn(Url.prop.scope, "action"), " "), m("a.menuicon.icon-chat-alt", touch.btn(Url.prop.scope, "talk"), " "), m("a.menuicon.icon-mail", touch.btn(Url.prop.scope, "memo"), " ")));
         potofs = m("table.potofs", m("tbody", (function() {
           var _i, _len, _ref1, _results;
           _ref1 = Cache.potofs.list();
@@ -997,28 +1001,48 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
   });
 }
 
-messages_search = function() {
-  var event_id, mode, reduce, search, security, _ref1;
-  event_id = (_ref1 = Url.prop.scroll()) != null ? _ref1.split("-").slice(0, 3).join("-") : void 0;
-  mode = Url.prop.msg_mode();
-  reduce = Url.prop.reduce();
-  search = Url.prop.search();
-  security = Url.prop.msg_security();
-  return Cache.messages.in_page(mode, security, reduce, search).list();
-};
-
 if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && (gon.event != null)) {
   if ((typeof gon !== "undefined" && gon !== null ? gon.story : void 0) != null) {
     Cache.rule.story.set([gon.story]);
   }
   Cache.rule.event.merge(gon.events);
+  messages = {
+    home: function(_arg) {
+      var home;
+      home = _arg.home;
+      return Cache.messages.home(home());
+    },
+    after: function(_arg) {
+      var scroll, updated_at, _ref1;
+      scroll = _arg.scroll;
+      updated_at = ((_ref1 = Cache.messages.find(scroll())) != null ? _ref1.updated_at : void 0) || 0;
+      return Cache.messages.after(updated_at);
+    },
+    talk: function(_arg) {
+      var open, search, talk;
+      talk = _arg.talk, open = _arg.open, search = _arg.search;
+      return Cache.messages.talk(talk(), open(), search());
+    },
+    memo: function(_arg) {
+      var memo, search, uniq;
+      memo = _arg.memo, uniq = _arg.uniq, search = _arg.search;
+      return Cache.messages.memo(memo(), uniq(), search());
+    },
+    warning: function() {
+      return Cache.messages.warning();
+    }
+  };
   GUI.if_exist("#story", function(dom) {
     var story, touch;
     story = gon.story;
     touch = new GUI.TouchMenu();
+    touch.badge("home", function() {
+      return Cache.messages.home("announce").list().length;
+    });
     touch.icon("home", function() {
-      Url.prop.msg_mode("info");
-      return Url.prop.scroll(messages_search().first._id);
+      var _ref1;
+      Url.prop.scope("home");
+      return Url.prop.scroll((_ref1 = messages.home(Url.prop).list().first) != null ? _ref1._id : void 0);
     });
     return m.module(dom, {
       controller: function() {},
@@ -1034,11 +1058,9 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
           touch.icon("sitemap");
         }
         if (story != null) {
-          switch (Url.prop.msg_mode()) {
-            case "info":
+          switch (Url.prop.scope()) {
+            case "home":
               return GUI.message.story(story);
-            default:
-              return touch.menu(m("h2", m("a.menuicon.icon-book", GUI.TouchMenu.icons.start("sitemap"), " "), m("span", story.name)));
           }
         }
       }
@@ -1048,20 +1070,34 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     var touch;
     scroll_spy.avg_height = 150;
     touch = new GUI.TouchMenu();
-    touch.icon("pin", function() {
-      Url.prop.msg_mode("pin");
-      return Url.prop.scroll(messages_search().first._id);
+    touch.icon("pin", function() {});
+    touch.badge("stopwatch", function() {
+      return messages.after(Url.prop).list().length;
     });
     touch.icon("stopwatch", function() {
-      Url.prop.msg_mode("time");
-      return Url.prop.scroll(messages_search().first._id);
+      return Url.prop.scope("after");
+    });
+    touch.badge("chat-alt", function() {
+      return Cache.messages.talk("all", true, "").list().length;
+    });
+    touch.icon("chat-alt", function() {
+      var _ref1;
+      Url.prop.scope("talk");
+      return Url.prop.scroll((_ref1 = messages.talk(Url.prop).list().first) != null ? _ref1._id : void 0);
+    });
+    touch.badge("mail", function() {
+      return Cache.messages.memo("all", true, "").list().length;
     });
     touch.icon("mail", function() {
-      Url.prop.msg_mode("memo");
-      return Url.prop.scroll(messages_search().first._id);
+      var _ref1;
+      Url.prop.scope("memo");
+      return Url.prop.scroll((_ref1 = messages.memo(Url.prop).list().first) != null ? _ref1._id : void 0);
+    });
+    touch.badge("warning-empty", function() {
+      return Cache.messages.warning().list().length;
     });
     touch.icon("warning-empty", function() {
-      Url.prop.msg_security("announce");
+      Url.prop.scope("warning");
       return m(".pagenavi.choice.guide.form-inline", m("h6", "アクション。"));
     });
     touch.icon("pencil", function() {});
@@ -1075,7 +1111,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     m.module(dom, {
       controller: function() {},
       view: function() {
-        return scroll_spy.pager("div", messages_search(), function(o) {
+        return scroll_spy.pager("div", messages[Url.prop.scope()](Url.prop).list(), function(o) {
           var anchor_num;
           anchor_num = o.logid.substring(2) - 0 || 0;
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
@@ -1160,7 +1196,6 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
   Cache.rule.story.set(gon.stories);
   GUI.if_exist("#stories", function(dom) {
     var touch, touch_sw;
-    scroll_spy.avg_height = 22;
     touch_sw = new GUI.TouchMenu();
     touch = new GUI.TouchMenu();
     touch.menu_set(Url.prop, "count", {
@@ -1226,6 +1261,11 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
       controller: function() {},
       view: function() {
         var vdom, _ref1;
+        if (touch_sw.state()) {
+          scroll_spy.avg_height = 120;
+        } else {
+          scroll_spy.avg_height = 22;
+        }
         touch.query = (_ref1 = Cache.storys).menu.apply(_ref1, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values())));
         vdom = touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.menuicon.icon-home", GUI.TouchMenu.icons.start("home"), " "), m("span", "村を検索してみよう。")));
         vdom.push(m("table.table.table-border.table-hover", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", touch.query.list(), function(o) {
@@ -1313,62 +1353,6 @@ GUI.if_exist("#headline", function(dom) {
 
 
 /*
-  css: new Url "css=:theme-:width-:layout-:font", (params)->
-
-  .pagenavi
-    h6(ng-if="mode" style="text-align:left;") 見るログを選ぶ
-    .form-inline(ng-if="mode" style="text-align:left;")
-      .form-group
-        a.mark(ng-click="event.show_info()") 情報
-      | &thinsp;
-      .form-group(ng-repeat="e in events")
-        a.mark(ng-click="e.show_talk()") {{e.name}}
-      .form-group(ng-if="story.news().is_progress")
-        | &thinsp;/&thinsp;
-        a.mark(ng-click="story.news().show_news()") 最新
-        | &thinsp;
-        a.mark(ng-click="story.news().show_unread()") 未読
-
-    h6(ng-if="show_style_navi && msg_style") ログの表示方法
-    .form-inline(ng-if="show_style_navi && msg_style")
-      .form-group
-        label
-          select.form-control.input-medium(ng-model="css.value" ng-options="o.val as o.name group by o.group for o in css.select")
-      | &thinsp;
-      .form-group
-        label
-          select.form-control.input-mini(ng-model="msg_styles.power"   ng-options="key as selectors.power[key] for key in selector_keys.power" )
-        | &thinsp;
-      .form-group
-        label
-          select.form-control.input-mini(ng-model="msg_styles.order"   ng-options="key as selectors.order[key] for key in selector_keys.order" )
-        | &thinsp;
-      .form-group
-        label
-          select.form-control.input-mini(ng-model="msg_styles.row"   ng-options="key as selectors.row[key] for key in selector_keys.row" )
-        | &thinsp;
-
-    h6(ng-if="show_style_navi && mode") ログから表示する部分を選ぶ
-    .form-inline(ng-if="show_style_navi && mode")
-      .form-group.mark
-        label
-          input(type="radio" tabindex="-1" value="open"  ng-model="modes.view") 公開
-        label
-          input(type="radio" tabindex="-1" value="clan"  ng-model="modes.view") 内緒話
-        label
-          input(type="radio" tabindex="-1" value="think" ng-model="modes.view") 独り言
-        label
-          input(type="radio" tabindex="-1" value="all"   ng-model="modes.view") 全部
-      | &thinsp;
-      .form-group.mark
-        label.checkbox
-          input(type="checkbox" tabindex="-1" ng-model="modes.last") 最後の言葉
-        label.checkbox
-          input(type="checkbox" tabindex="-1" ng-model="modes.open") 公開発言
-        label.checkbox
-          input(type="checkbox" tabindex="-1" ng-model="msg_styles.pl") 中身発言
-
-
     h6(ng-if="event") ページ移動
     .form-inline(ng-if="event" style="text-align:right;")
       .form-group(ng-if="page && ! event.is_news" template="navi/paginate")
