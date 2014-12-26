@@ -286,7 +286,7 @@ new Cache.Rule("event").schema ->
 new Cache.Rule("story").schema ->
   @scope (all)->
     menu: (folder, game, rating, event_type, role_type, say_limit, player_length, update_at, update_interval, search)->
-      all.search(search).where (o)->
+      all.sort("desc", "order").search(search).where (o)->
         tf = true
         tf &&= o.folder == folder if folder != "all"
         tf &&= o.rating == rating if rating != "all"
@@ -309,6 +309,7 @@ new Cache.Rule("story").schema ->
   all_events = Object.keys RAILS.events
 
   @deploy (o)->
+    o.order = o.folder + GUI.field(o.vid, 4)
     o.rating = "default" unless o.rating
     o.card.role = _.difference o.card.config, all_events
     o.view = 

@@ -7,8 +7,6 @@ define Array, ->
   first:
     get: -> @[0]
 
-
-
 Number.MAX_INT32 = 0x7fffffff
 
 _.mixin

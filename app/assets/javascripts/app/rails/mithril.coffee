@@ -355,7 +355,7 @@ if gon?.potofs?
           m "div",
             m "h6", "スタイル"
             m "span",
-              m "a.menuicon.icon-home", touch.btn(Url.prop.scope, "info"  ), " "
+              m "a.menuicon.icon-home", touch.btn(Url.prop.scope, "home"  ), " "
               m "a.menuicon.icon-warning-empty", touch.btn(Url.prop.scope, "action"), " "
               m "a.menuicon.icon-chat-alt", touch.btn(Url.prop.scope, "talk"  ), " "
               m "a.menuicon.icon-mail", touch.btn(Url.prop.scope, "memo"  ), " "

@@ -147,6 +147,9 @@ GUI =
   comma: (num)->
     (String Math.round num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
 
+  field: (num, length)->  
+    "0000000000".substring(10 - length).substring("#{num}".length) + num
+
   name:
     config: (o)->
       RAILS.roles[o]?.name || RAILS.gifts[o]?.name || RAILS.events[o]?.name || o || ""
