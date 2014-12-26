@@ -258,118 +258,146 @@ define(String, function() {
 });
 var win;
 
-win = {
-  do_event_list: function(list, e) {
-    var cb, _i, _len, _results;
-    if (!list.length) {
-      return;
-    }
-    _results = [];
-    for (_i = 0, _len = list.length; _i < _len; _i++) {
-      cb = list[_i];
-      _results.push(cb(e));
-    }
-    return _results;
-  },
-  "do": {
-    resize: function(e) {
-      var body_height, body_width, docBody, docElem;
-      docElem = document.documentElement;
-      docBody = document.body;
-      win.height = Math.max(window.innerHeight, docElem.clientHeight);
-      win.width = Math.max(window.innerWidth, docElem.clientWidth);
-      win.horizon = win.height / 2;
-      body_height = Math.max(docBody.clientHeight, docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight);
-      body_width = Math.max(docBody.clientWidth, docBody.scrollWidth, docElem.scrollWidth, docElem.clientWidth);
-      win.max = {
-        top: body_height - win.height,
-        left: body_width - win.width
-      };
-      if (win.height > win.width) {
-        win.landscape = false;
-        win.portlate = true;
-      } else {
-        win.landscape = true;
-        win.portlate = false;
+win = (function() {
+  var scroll_end, set_scroll;
+  set_scroll = function(win) {
+    win.left = window.pageXOffset || window.scrollX;
+    return win.top = window.pageYOffset || window.scrollY;
+  };
+  scroll_end = function() {
+    var chk, list, scan;
+    chk = function() {
+      var _ref, _ref1;
+      return 3 === list.length && (list[0].left === (_ref = list[1].left) && _ref === list[2].left) && (list[0].top === (_ref1 = list[1].top) && _ref1 === list[2].top);
+    };
+    scan = function() {
+      var val;
+      if (3 <= list.length) {
+        list.shift;
       }
-      return win.do_event_list(win.on.resize, e);
+      list.push(val = {});
+      set_scroll(val);
+      if (chk()) {
+        win.do_event_list(win.on.scroll_end);
+      }
+      return window.requestAnimationFrame(scan);
+    };
+    list = [];
+    return scan();
+  };
+  return {
+    do_event_list: function(list, e) {
+      var cb, _i, _len, _results;
+      if (!list.length) {
+        return;
+      }
+      _results = [];
+      for (_i = 0, _len = list.length; _i < _len; _i++) {
+        cb = list[_i];
+        _results.push(cb(e));
+      }
+      return _results;
     },
-    scroll: function(e) {
-      var docElem;
-      docElem = document.documentElement;
-      win.left = window.pageXOffset || window.scrollX;
-      win.left -= docElem.clientTop;
-      win.top = window.pageYOffset || window.scrollY;
-      win.top -= docElem.clientLeft;
-      win.bottom = win.top + win.height;
-      win.right = win.left + win.width;
-      return win.do_event_list(win.on.scroll, e);
-    },
-    gesture: function(e) {
-      return win.do_event_list(win.on.gesture, e);
-    },
-    orientation: function(e) {
-      win.orientation = e;
-      win.compass = e.webkitCompassHeading;
-      return win.do_event_list(win.on.orientation, e);
-    },
-    motion: function(e) {
-      win.accel = e.acceleration;
-      win.gravity = e.accelerationIncludingGravity;
-      win.rotate = e.rotationRate;
-      return win.do_event_list(win.on.motion, e);
-    },
-    start: function(e) {
-      win.is_tap = true;
-      return win.do_event_list(win.on.start, e);
-    },
-    move: function(e) {
-      if (win.is_tap) {
-        return win.do_event_list(win.on.drag, e);
-      } else {
-        return win.do_event_list(win.on.move, e);
+    "do": {
+      resize: function(e) {
+        var body_height, body_width, docBody, docElem;
+        docElem = document.documentElement;
+        docBody = document.body;
+        win.height = Math.max(window.innerHeight, docElem.clientHeight);
+        win.width = Math.max(window.innerWidth, docElem.clientWidth);
+        win.horizon = win.height / 2;
+        body_height = Math.max(docBody.clientHeight, docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight);
+        body_width = Math.max(docBody.clientWidth, docBody.scrollWidth, docElem.scrollWidth, docElem.clientWidth);
+        win.max = {
+          top: body_height - win.height,
+          left: body_width - win.width
+        };
+        if (win.height > win.width) {
+          win.landscape = false;
+          win.portlate = true;
+        } else {
+          win.landscape = true;
+          win.portlate = false;
+        }
+        return win.do_event_list(win.on.resize, e);
+      },
+      scroll_end: _.debounce(scroll_end, DELAY.presto),
+      scroll: function(e) {
+        var docElem;
+        docElem = document.documentElement;
+        set_scroll(win);
+        win.right = win.left + win.width;
+        win.bottom = win.top + win.height;
+        win.do_event_list(win.on.scroll, e);
+        return win["do"].scroll_end();
+      },
+      gesture: function(e) {
+        return win.do_event_list(win.on.gesture, e);
+      },
+      orientation: function(e) {
+        win.orientation = e;
+        win.compass = e.webkitCompassHeading;
+        return win.do_event_list(win.on.orientation, e);
+      },
+      motion: function(e) {
+        win.accel = e.acceleration;
+        win.gravity = e.accelerationIncludingGravity;
+        win.rotate = e.rotationRate;
+        return win.do_event_list(win.on.motion, e);
+      },
+      start: function(e) {
+        win.is_tap = true;
+        return win.do_event_list(win.on.start, e);
+      },
+      move: function(e) {
+        if (win.is_tap) {
+          return win.do_event_list(win.on.drag, e);
+        } else {
+          return win.do_event_list(win.on.move, e);
+        }
+      },
+      end: function(e) {
+        win.is_tap = false;
+        return win.do_event_list(win.on.end, e);
+      },
+      load: function(e) {
+        win.do_event_list(win.on.load, e);
+        win["do"].resize();
+        return win["do"].scroll();
       }
     },
-    end: function(e) {
-      win.is_tap = false;
-      return win.do_event_list(win.on.end, e);
+    on: {
+      resize: [],
+      scroll: [],
+      scroll_end: [],
+      gesture: [],
+      orientation: [],
+      motion: [],
+      start: [],
+      move: [],
+      drag: [],
+      end: [],
+      load: []
     },
-    load: function(e) {
-      win.do_event_list(win.on.load, e);
-      win["do"].resize();
-      return win["do"].scroll();
-    }
-  },
-  on: {
-    resize: [],
-    scroll: [],
-    gesture: [],
-    orientation: [],
-    motion: [],
-    start: [],
-    move: [],
-    drag: [],
-    end: [],
-    load: []
-  },
-  top: 0,
-  horizon: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  width: 0,
-  height: 0,
-  accel: {},
-  rotate: {},
-  gravity: {},
-  orientation: {},
-  compass: 0,
-  is_tap: false,
-  max: {
     top: 0,
-    left: 0
-  }
-};
+    horizon: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: 0,
+    height: 0,
+    accel: {},
+    rotate: {},
+    gravity: {},
+    orientation: {},
+    compass: 0,
+    is_tap: false,
+    max: {
+      top: 0,
+      left: 0
+    }
+  };
+})();
 var Cache,
   __slice = [].slice;
 
@@ -1275,6 +1303,9 @@ GUI = {
   comma: function(num) {
     return (String(Math.round(num))).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
   },
+  field: function(num, length) {
+    return "0000000000".substring(10 - length).substring(("" + num).length) + num;
+  },
   name: {
     config: function(o) {
       var _ref, _ref1, _ref2;
@@ -1739,7 +1770,7 @@ GUI.ScrollSpy = (function() {
     }
   };
 
-  ScrollSpy.do_scroll = function() {
+  win.on.scroll_end.push(function() {
     var id, spy, spy_id, _i, _j, _len, _len1, _ref, _ref1, _results;
     id = ScrollSpy.view();
     _ref = ScrollSpy.list;
@@ -1761,11 +1792,7 @@ GUI.ScrollSpy = (function() {
       }
     }
     return _results;
-  };
-
-  ScrollSpy.scroll = _.debounce(ScrollSpy.do_scroll, DELAY.animato);
-
-  win.on.scroll.push(ScrollSpy.scroll);
+  });
 
   ScrollSpy.view = function() {
     var elem, id, key, rect, result, vision, _ref, _ref1;
@@ -1825,7 +1852,7 @@ GUI.ScrollSpy = (function() {
   };
 
   ScrollSpy.prototype.pager = function(tag, list, cb) {
-    var attr, btm, head, idx, key, o, pager_cb, rect, show_bottom, show_under, tail, top, vdom, vdom_items, _ref;
+    var attr, btm, head, idx, key, o, pager_cb, rect, show_bottom, show_under, size, top, vdom, vdom_items, _ref;
     this.list = list;
     if (!((_ref = this.list) != null ? _ref.length : void 0)) {
       return m(tag, {
@@ -1854,34 +1881,26 @@ GUI.ScrollSpy = (function() {
     } else {
 
     }
-    head = Math.max(top, idx - 5 - Math.ceil(win.height * 2 / this.avg_height));
-    tail = Math.min(btm, idx + 5 + Math.ceil(win.height * 3 / this.avg_height));
+    size = 5 + Math.ceil(win.height * 3 / this.avg_height);
+    this.tail = Math.min(btm, idx + size);
+    head = Math.max(top, idx - size);
     if (5 < Math.abs(this.head - head)) {
       this.head = head;
     }
-    this.tail = tail;
     pager_cb = (function(_this) {
       return function(pager_elem, is_continue, context) {
-        var diff_bottom, elem_bottom, show_upper;
+        var diff_bottom, elem_bottom;
         _this.pager_elem = pager_elem;
         rect = _this.pager_elem.getBoundingClientRect();
-        show_under = rect.bottom < win.horizon;
-        show_upper = win.horizon < rect.top;
+        _this.show_under = rect.bottom < win.horizon;
+        _this.show_upper = win.horizon < rect.top;
         _this.avg_height = rect.height / (1 + _this.tail - _this.head);
         elem_bottom = rect.bottom + win.top;
         diff_bottom = elem_bottom - _this.elem_bottom;
-        if (show_under && !_this.prop() && win.bottom < document.height) {
+        if (_this.show_under && !_this.prop() && win.bottom < document.height) {
           window.scrollBy(0, diff_bottom);
         }
-        _this.elem_bottom = elem_bottom;
-        _this.show_under = show_under;
-        _this.show_upper = show_upper;
-        if (!(show_under === _this.show_under && show_upper === _this.show_upper)) {
-          m.startComputation();
-          return window.requestAnimationFrame(function() {
-            return m.endComputation();
-          });
-        }
+        return _this.elem_bottom = elem_bottom;
       };
     })(this);
     vdom_items = (function() {
@@ -1918,18 +1937,12 @@ GUI.ScrollSpy = (function() {
             if (id === _this.adjust.id) {
               offset = _this.adjust.offset;
               _this.adjust = null;
-              GUI.ScrollSpy.go(id, offset);
-              return window.requestAnimationFrame(function() {
-                return GUI.ScrollSpy.go(id, offset);
-              });
+              return GUI.ScrollSpy.go(id, offset);
             }
           } else {
             if (!is_continue) {
               if (id === _this.prop()) {
-                GUI.ScrollSpy.go(id);
-                return window.requestAnimationFrame(function() {
-                  return GUI.ScrollSpy.go(id);
-                });
+                return GUI.ScrollSpy.go(id);
               }
             }
           }

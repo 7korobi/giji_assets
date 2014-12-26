@@ -461,7 +461,7 @@ new Cache.Rule("story").schema(function() {
   this.scope(function(all) {
     return {
       menu: function(folder, game, rating, event_type, role_type, say_limit, player_length, update_at, update_interval, search) {
-        return all.search(search).where(function(o) {
+        return all.sort("desc", "order").search(search).where(function(o) {
           var tf;
           tf = true;
           if (folder !== "all") {
@@ -512,6 +512,7 @@ new Cache.Rule("story").schema(function() {
   all_events = Object.keys(RAILS.events);
   this.deploy(function(o) {
     var _ref, _ref1;
+    o.order = o.folder + GUI.field(o.vid, 4);
     if (!o.rating) {
       o.rating = "default";
     }
@@ -982,7 +983,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           case "left":
             layout.dx = -1;
         }
-        filter = m("div", m("h6", "スタイル"), m("span", m("a.menuicon.icon-home", touch.btn(Url.prop.scope, "info"), " "), m("a.menuicon.icon-warning-empty", touch.btn(Url.prop.scope, "action"), " "), m("a.menuicon.icon-chat-alt", touch.btn(Url.prop.scope, "talk"), " "), m("a.menuicon.icon-mail", touch.btn(Url.prop.scope, "memo"), " ")));
+        filter = m("div", m("h6", "スタイル"), m("span", m("a.menuicon.icon-home", touch.btn(Url.prop.scope, "home"), " "), m("a.menuicon.icon-warning-empty", touch.btn(Url.prop.scope, "action"), " "), m("a.menuicon.icon-chat-alt", touch.btn(Url.prop.scope, "talk"), " "), m("a.menuicon.icon-mail", touch.btn(Url.prop.scope, "memo"), " ")));
         potofs = m("table.potofs", m("tbody", (function() {
           var _i, _len, _ref1, _results;
           _ref1 = Cache.potofs.list();

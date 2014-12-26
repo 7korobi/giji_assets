@@ -13,7 +13,7 @@ class GUI.ScrollSpy
       
       window.scrollBy(left_by, top_by)
 
-  @do_scroll: =>
+  win.on.scroll_end.push =>
     id = @view()
     for spy in @list
       if spy.list?
@@ -23,8 +23,6 @@ class GUI.ScrollSpy
     for spy in @list
       if id != spy.prop()
         spy.prop id, true
-  @scroll = _.debounce @do_scroll, DELAY.animato
-  win.on.scroll.push @scroll
 
   @view: =>
     result = null
@@ -88,33 +86,25 @@ class GUI.ScrollSpy
     else
       # TODO wait for network read.
 
-    head = Math.max top, idx - 5 - Math.ceil(win.height * 2 / @avg_height)
-    tail = Math.min btm, idx + 5 + Math.ceil(win.height * 3 / @avg_height)
+    size = 5 + Math.ceil(win.height * 3 / @avg_height)
 
+    @tail = Math.min btm, idx + size
+    head  = Math.max top, idx - size
     if 5 < Math.abs @head - head
       @head = head
-    @tail = tail
 
     pager_cb = (@pager_elem, is_continue, context)=>
       rect = @pager_elem.getBoundingClientRect()
 
-      show_under  = rect.bottom < win.horizon
-      show_upper  = win.horizon < rect.top 
+      @show_under  = rect.bottom < win.horizon
+      @show_upper  = win.horizon < rect.top 
       @avg_height = rect.height / (1 + @tail - @head)
 
       elem_bottom = rect.bottom + win.top
       diff_bottom = elem_bottom - @elem_bottom
-      if show_under && ! @prop() && win.bottom < document.height
+      if @show_under && ! @prop() && win.bottom < document.height
         window.scrollBy 0, diff_bottom
       @elem_bottom = elem_bottom
-
-      @show_under  = show_under
-      @show_upper  = show_upper
-
-      unless show_under == @show_under && show_upper == @show_upper
-        m.startComputation()
-        window.requestAnimationFrame ->
-          m.endComputation()
 
     vdom_items =
       for o in @list[@head..@tail]
@@ -137,11 +127,7 @@ class GUI.ScrollSpy
           offset = @adjust.offset
           @adjust = null
           GUI.ScrollSpy.go id, offset
-          window.requestAnimationFrame ->
-            GUI.ScrollSpy.go id, offset
       else
         if ! is_continue
           if id == @prop()
             GUI.ScrollSpy.go id
-            window.requestAnimationFrame ->
-              GUI.ScrollSpy.go id
