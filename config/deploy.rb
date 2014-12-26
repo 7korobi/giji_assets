@@ -1,4 +1,4 @@
-lock '3.2.1'
+lock '3.3.5'
 
 set :application, "giji_assets"
 set :org, "7korobi"

@@ -1,7 +1,7 @@
 require 'capistrano/setup'
 
 set :rbenv_type, :user
-set :rbenv_ruby, "2.1.3"
+set :rbenv_ruby, "2.2.0"
 
 require 'capistrano/console'
 import 'lib/capistrano/logger/utage.rb'
