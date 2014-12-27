@@ -172,12 +172,26 @@ class Cache.Finder
     s = query.orders = {}
     for o in list
       s[o._id] = query.sort_by(o)
+    if list.length
+      is_array = Array.isArray query.sort_by(list[0])
 
     query._list =
-      list.sort (a,b)->
-        return lt if s[a._id] < s[b._id]
-        return gt if s[a._id] > s[b._id]
-        return  0
+      if is_array
+        list.sort (a,b)->
+          a_list = s[a._id]
+          b_list = s[b._id]
+          for a_val, index in a_list
+            b_val = b_list[index]
+            return lt if a_val < b_val
+            return gt if a_val > b_val
+          return 0
+      else
+        list.sort (a,b)->
+          a_val = s[a._id]
+          b_val = s[b._id]
+          return lt if a_val < b_val
+          return gt if a_val > b_val
+          return 0
 
   calculate_group: (query)->
     {reduce, target} = query._distinct
