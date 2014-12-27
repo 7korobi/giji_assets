@@ -6638,64 +6638,28 @@ button.close {
   margin: 0px 8px 16px 8px;
   padding: 4px;
 }
-/* line 51, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
-.box .formpl_commit,
-.box .formpl_undef,
-.box .formpl_vil,
-.box .formpl_seer,
-.box .formpl_medium,
-.box .formpl_guard,
-.box .formpl_fm,
-.box .formpl_stigma,
-.box .formpl_sympathy,
-.box .formpl_love,
-.box .formpl_wolf,
-.box .formpl_possess,
-.box .formpl_fanatic,
-.box .formpl_cpossess,
-.box .formpl_cwolf,
-.box .formpl_intwolf,
-.box .formpl_pixi,
-.box .formpl_trickster,
-.box .formpl_hamster,
-.box .formpl_werebat,
-.box .formpl_gm,
-.box .WIN_NONE,
-.box .WIN_HUMAN,
-.box .WIN_DISH,
-.box .WIN_LONEWOLF,
-.box .WIN_PIXI,
-.box .WIN_GURU,
-.box .WIN_HATER,
-.box .WIN_LOVER,
-.box .WIN_WOLF,
-.box .WIN_EVIL {
-  padding: 4px 0px;
-  border-style: double none;
-  border-width: 3px 0;
-}
-/* line 58, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
+/* line 22, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
 .box .say .chrblank,
 .box .say .chrblank {
   width: 80px;
 }
-/* line 61, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
+/* line 25, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
 .box .say .msg {
   margin: 0 4px 6px 0px;
   padding: 0 4px 0 0;
 }
-/* line 67, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
+/* line 31, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
 .box .formpl_common {
   margin: 0px 8px 16px 8px;
   padding: 4px;
   border-style: solid;
   border-width: 1px;
 }
-/* line 74, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
+/* line 38, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
 .box .row_all {
   font-weight: bold;
 }
-/* line 78, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
+/* line 42, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
 .box .img img {
   transform-origin: 150% 0%;
   -o-transform-origin: 150% 0%;
@@ -6711,14 +6675,14 @@ button.close {
   -moz-transition: all 1s linear 0;
   -webkit-transition: all 1s linear 0;
 }
-/* line 94, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
+/* line 58, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
 .box .img img:hover {
   transform: rotate(10deg);
   -o-transform: rotate(10deg);
   -moz-transform: rotate(10deg);
   -webkit-transform: rotate(10deg);
 }
-/* line 101, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
+/* line 65, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/box.css.scss */
 .box .handler {
   opacity: 0.3 !important;
 }
@@ -10154,45 +10118,7 @@ table {
   color: #FFF;
 }
 
-/* line 100, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
-.formpl_common,
-.formpl_commit,
-.formpl_undef,
-.formpl_vil,
-.formpl_seer,
-.formpl_medium,
-.formpl_guard,
-.formpl_fm,
-.formpl_stigma,
-.formpl_sympathy,
-.formpl_love,
-.formpl_wolf,
-.formpl_possess,
-.formpl_fanatic,
-.formpl_cpossess,
-.formpl_cwolf,
-.formpl_intwolf,
-.formpl_pixi,
-.formpl_trickster,
-.formpl_hamster,
-.formpl_werebat,
-.formpl_gm,
-.WIN_NONE,
-.WIN_HUMAN,
-.WIN_DISH,
-.WIN_LONEWOLF,
-.WIN_PIXI,
-.WIN_GURU,
-.WIN_HATER,
-.WIN_LOVER,
-.WIN_WOLF,
-.WIN_EVIL {
-  width: 100%;
-  border-style: double none;
-  border-width: 3px 0;
-}
-
-/* line 117, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
+/* line 80, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
 .white-color .formpl_vil,
 .white-color .formpl_seer,
 .white-color .formpl_medium,
@@ -10207,7 +10133,7 @@ table {
   color: #330;
   background: #a97;
 }
-/* line 124, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
+/* line 87, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
 .white-color .WIN_LONEWOLF,
 .white-color .WIN_PIXI,
 .white-color .WIN_GURU {
@@ -10215,20 +10141,20 @@ table {
   color: #226;
   background: #a9d;
 }
-/* line 129, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
+/* line 92, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
 .white-color .WIN_HATER {
   border-color: #664;
   color: #444;
   background: #aaa;
 }
-/* line 135, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
+/* line 98, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
 .white-color .formpl_love,
 .white-color .WIN_LOVER {
   border-color: #664;
   color: #654;
   background: #dcb;
 }
-/* line 146, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
+/* line 109, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
 .white-color .formpl_wolf,
 .white-color .formpl_possess,
 .white-color .formpl_fanatic,
@@ -10240,7 +10166,7 @@ table {
   color: #600;
   background: #a55;
 }
-/* line 155, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
+/* line 118, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
 .white-color .formpl_pixi,
 .white-color .formpl_trickster,
 .white-color .formpl_hamster,
@@ -10250,7 +10176,7 @@ table {
   color: #130;
   background: #9a7;
 }
-/* line 170, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
+/* line 133, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
 .white-color .WIN_NONE a,
 .white-color .WIN_HUMAN a,
 .white-color .WIN_DISH a,
@@ -10262,44 +10188,6 @@ table {
 .white-color .WIN_WOLF a,
 .white-color .WIN_EVIL a {
   color: #111;
-}
-
-/* line 206, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/win.css.scss */
-.formpl_common,
-.formpl_commit,
-.formpl_undef,
-.formpl_vil,
-.formpl_seer,
-.formpl_medium,
-.formpl_guard,
-.formpl_fm,
-.formpl_stigma,
-.formpl_sympathy,
-.formpl_love,
-.formpl_wolf,
-.formpl_possess,
-.formpl_fanatic,
-.formpl_cpossess,
-.formpl_cwolf,
-.formpl_intwolf,
-.formpl_pixi,
-.formpl_trickster,
-.formpl_hamster,
-.formpl_werebat,
-.formpl_gm,
-.WIN_NONE,
-.WIN_HUMAN,
-.WIN_DISH,
-.WIN_LONEWOLF,
-.WIN_PIXI,
-.WIN_GURU,
-.WIN_HATER,
-.WIN_LOVER,
-.WIN_WOLF,
-.WIN_EVIL {
-  width: 100%;
-  border-style: double none;
-  border-width: 3px 0;
 }
 
 /* line 3, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */

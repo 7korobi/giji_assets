@@ -30,9 +30,13 @@ GUI =
 
   attrs: (dsl, thru)->
     o = {}
+    actioned_cb = null
     act = (cb)->
       (e)->
         cb(e, e.srcElement, e.toElement)
+        if actioned_cb
+          window.requestAnimationFrame actioned_cb
+
         e.preventDefault()
 
     func =
@@ -105,6 +109,8 @@ GUI =
         o.ontouchend = cb
       config: (cb)->
         o.config = cb
+      actioned: (cb)->
+        actioned_cb = cb
 
     dsl.call func
     o
@@ -167,4 +173,16 @@ GUI =
     [ m "h3.mesname",
         m "b", head
       m "p.text.#{style}", vdom
+    ]
+
+  portrates: (chrs, headline, attr_cb)->
+    [ m "hr.black" 
+      m "h6", headline
+      for o in chrs
+        attr = GUI.attrs attr_cb
+        m ".chrbox", {key: o._id},
+          GUI.portrate o.face_id, attr
+          m ".chrblank",
+            m "div", o.name
+      m "hr.black"
     ]

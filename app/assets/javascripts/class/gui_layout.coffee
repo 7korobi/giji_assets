@@ -5,7 +5,7 @@ class GUI.Layout
       o.translate()
   win.on.resize.push @resize
 
-  constructor: (@box, @dx, @dy, dz, @absolute = false, @duration = DELAY.andante)->
+  constructor: (@box, @dx, @dy, dz, @absolute = false, @duration = DELAY.animato)->
     return unless @box
 
     GUI.Layout.list[@box.id] = @

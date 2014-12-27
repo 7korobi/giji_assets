@@ -90,7 +90,7 @@ if gon?.face?
 
   face.role_of_wins = _.groupBy face.roles, ([k,count])->
     role = RAILS.gifts[k] || RAILS.roles[k] || {group: "OTHER"}
-    RAILS.groups[role.group].name
+    RAILS.wins[role.group].name
 
   GUI.if_exist "#summary", (dom)->
     m.module dom,
@@ -332,11 +332,29 @@ GUI.if_exist "#css_changer", (dom)->
 
 
 if gon?.potofs?
-  Cache.rule.potof.set gon.potofs
+  Cache.rule.potof.set gon.potofs,
+    story_folder: gon.story?.folder
+    story_type: gon.story?.type
+    story_epilogue: gon.story?.is_epilogue
+    event_winner: (gon.event?.winner || gon.events?.last?.winner)
 
   GUI.if_exist "#sayfilter", (dom)->
     layout = new GUI.Layout dom, 1, 1, 100
     touch = new GUI.TouchMenu()
+
+    toggle_desc = (prop, value)->
+      if prop() == value
+        attr = touch.btn Url.prop.potofs_desc, {asc: "desc", desc: "asc"}[Url.prop.potofs_desc()]
+        attr.className = "btn btn-success"
+        attr
+      else
+        touch.btn prop, value
+
+    wide_attr = GUI.attrs ->
+      @start -> 
+        layout.large_mode = ! layout.large_mode
+      @actioned ->
+        layout.translate()
 
     m.module dom,
       controller: ->
@@ -351,6 +369,8 @@ if gon?.potofs?
           when "left"
             layout.dx = -1
 
+        layout.width += Url.prop.w() if layout.large_mode
+
         filter = 
           m "div",
             m "h6", "スタイル"
@@ -362,33 +382,36 @@ if gon?.potofs?
 
         potofs = 
           m "table.potofs",
-            m "tbody",
-              for o in Cache.potofs.list() # Url.prop.potofs_desc()
-                m "tr",
+            m "tfoot.head",
+              m "tr.center",
+                m "th[colspan=2]", m "sup", "(スクロールします。)"
+                m "th", m "a", toggle_desc(Url.prop.potofs_order, "stat_at"),  "日程"
+                m "th", m "a", toggle_desc(Url.prop.potofs_order, "stat_type"),"状態"
+                m "th", m "a", toggle_desc(Url.prop.potofs_order, "said_num"), "発言"
+                m "th", m "a", toggle_desc(Url.prop.potofs_order, "pt"),       "残り"
+                m "th", m "a", toggle_desc(Url.prop.potofs_order, "urge"),     "促"
+                m "th", m "span.icon-user", " "
+                m "th", m "a", toggle_desc(Url.prop.potofs_order, "select"),     "希望"
+                m "th", m "a", toggle_desc(Url.prop.potofs_order, "win_result"), "勝敗"
+                m "th", m "a", toggle_desc(Url.prop.potofs_order, "win_side"),   "陣営"
+                m "th", m "a", toggle_desc(Url.prop.potofs_order, "role"),       "役割"
+                m "th", m "a", toggle_desc(Url.prop.potofs_order, "text"),       "補足"
+            m "tbody", wide_attr,
+              for o in Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
+                m "tr.",
                   m "th.calc", {}, o.view.job
-                  m "th", {}, o.view.name
-                  m "td.center", {}, o.view.sow_auth_id
+                  m "th", {}, o.name
                   m "td.calc", {}, o.view.stat_at
                   m "td", {}, o.view.stat_type
                   m "td.calc", {}, o.view.said_num
                   m "td.calc", {}, o.view.pt
-                  m "td", {}, o.view.win
-                  m "td.calc", {}, o.view.win_side
-                  m "td", {}, o.view.role
-                  m "td", {}, o.view.select
-                  m "td", {}, o.view.text
-            m "tfoot.head",
-              m "tr",
-                m "th[colspan=3].center", m "sup", "(スクロールします。)"
-                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "stat_at"),  "日程"
-                m "th", m "a", touch.btn(Url.prop.potofs_order, "stat_type"),     "状態"
-                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "said_num"), "発言数"
-                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "pt"),       "残pt"
-                m "th", m "a", touch.btn(Url.prop.potofs_order, "win"),           "勝敗"
-                m "th.calc", m "a", touch.btn(Url.prop.potofs_order, "win_side"), "陣営"
-                m "th", m "a", touch.btn(Url.prop.potofs_order, "role"),          "役割"
-                m "th", m "a", touch.btn(Url.prop.potofs_order, "select"),        "希望"
-                m "th", m "a", touch.btn(Url.prop.potofs_order, "text"),          "補足"
+                  m "td.center", {}, o.view.urge
+                  m "td.center", {}, o.view.sow_auth_id
+                  m "td.center", {}, o.view.select
+                  m "td.WIN_#{o.view.win}.center", {}, o.view.win_result
+                  m "td.WIN_#{o.view.win}.calc", {}, o.view.win_side
+                  m "td.WIN_#{o.view.win}", {}, o.view.role
+                  m "td.WIN_#{o.view.win}", {}, o.view.text
 
         event_id = Url.prop.scroll()?.split("-")[0..2].join("-")
         event = Cache.events.find event_id
@@ -426,6 +449,14 @@ if gon?.events? && gon.event?
     warning: ->
       Cache.messages.warning()
 
+  potofs_portrates = ->
+    potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
+    GUI.portrates potofs, "キャラクターフィルタ", ->
+      elem = null
+      @over -> GUI.Animate.jelly.up elem
+      @out ->  GUI.Animate.jelly.down elem
+      @config (_elem)-> elem = _elem
+
 
   GUI.if_exist "#story", (dom)->
     story = gon.story
@@ -436,6 +467,8 @@ if gon?.events? && gon.event?
     touch.icon "home", -> # 情報
       Url.prop.scope "home"
       Url.prop.scroll messages.home(Url.prop).list().first?._id
+      m ".pagenavi.choice.guide.form-inline",
+        potofs_portrates()
 
     m.module dom,
       controller: ->
@@ -445,7 +478,9 @@ if gon?.events? && gon.event?
 
         if event?
           touch.icon "sitemap", ->
-            GUI.message.event event, story
+            m ".pagenavi.choice.guide.form-inline",
+              GUI.message.event event, story
+              potofs_portrates()
         else
           touch.icon "sitemap"
 
@@ -467,27 +502,32 @@ if gon?.events? && gon.event?
       messages.after(Url.prop).list().length
     touch.icon "stopwatch", -> # 新着
       Url.prop.scope "after"
+      m ".pagenavi.choice.guide.form-inline",
+        potofs_portrates()
 
     touch.badge "chat-alt", ->
       Cache.messages.talk("all", true, "").list().length
     touch.icon "chat-alt", -> # 発言
       Url.prop.scope "talk"
       Url.prop.scroll messages.talk(Url.prop).list().first?._id
+      m ".pagenavi.choice.guide.form-inline",
+        potofs_portrates()
 
     touch.badge "mail", ->
       Cache.messages.memo("all", true, "").list().length
     touch.icon "mail", -> # メモ
       Url.prop.scope "memo"
       Url.prop.scroll messages.memo(Url.prop).list().first?._id
+      m ".pagenavi.choice.guide.form-inline",
+        potofs_portrates()
 
 
     touch.badge "warning-empty", ->
       Cache.messages.warning().list().length
     touch.icon "warning-empty", -> 
       Url.prop.scope "warning"
-
       m ".pagenavi.choice.guide.form-inline",
-        m "h6", "アクション。"
+        potofs_portrates()
 
     touch.icon "pencil", -> # 書き込み
 
@@ -498,10 +538,15 @@ if gon?.events? && gon.event?
           onblur:   m.withAttr("value", Url.prop.search)
           onchange: m.withAttr("value", Url.prop.search)
           value: Url.prop.search()
+        potofs_portrates()
 
     m.module dom,
       controller: ->
       view: ->
+        [folder, vid, turn, logid] = Url.prop.scroll().split("-")
+        subview = Cache.messages.search("#{logid},#{turn},").list()
+        console.log subview
+
         scroll_spy.pager "div", messages[Url.prop.scope()](Url.prop).list(), (o)->
           anchor_num  = o.logid.substring(2) - 0 || 0
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""

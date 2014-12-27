@@ -714,7 +714,7 @@ Cache.Finder = (function() {
   };
 
   Finder.prototype.calculate_sort = function(query) {
-    var gt, list, lt, o, s, _i, _len, _ref;
+    var gt, is_array, list, lt, o, s, _i, _len, _ref;
     list = query._list;
     _ref = query.desc ? [1, -1] : [-1, 1], lt = _ref[0], gt = _ref[1];
     s = query.orders = {};
@@ -722,11 +722,32 @@ Cache.Finder = (function() {
       o = list[_i];
       s[o._id] = query.sort_by(o);
     }
-    return query._list = list.sort(function(a, b) {
-      if (s[a._id] < s[b._id]) {
+    if (list.length) {
+      is_array = Array.isArray(query.sort_by(list[0]));
+    }
+    return query._list = is_array ? list.sort(function(a, b) {
+      var a_list, a_val, b_list, b_val, index, _j, _len1;
+      a_list = s[a._id];
+      b_list = s[b._id];
+      for (index = _j = 0, _len1 = a_list.length; _j < _len1; index = ++_j) {
+        a_val = a_list[index];
+        b_val = b_list[index];
+        if (a_val < b_val) {
+          return lt;
+        }
+        if (a_val > b_val) {
+          return gt;
+        }
+      }
+      return 0;
+    }) : list.sort(function(a, b) {
+      var a_val, b_val;
+      a_val = s[a._id];
+      b_val = s[b._id];
+      if (a_val < b_val) {
         return lt;
       }
-      if (s[a._id] > s[b._id]) {
+      if (a_val > b_val) {
         return gt;
       }
       return 0;
@@ -1146,11 +1167,15 @@ GUI = {
     return _results;
   },
   attrs: function(dsl, thru) {
-    var act, func, o;
+    var act, actioned_cb, func, o;
     o = {};
+    actioned_cb = null;
     act = function(cb) {
       return function(e) {
         cb(e, e.srcElement, e.toElement);
+        if (actioned_cb) {
+          window.requestAnimationFrame(actioned_cb);
+        }
         return e.preventDefault();
       };
     };
@@ -1238,6 +1263,9 @@ GUI = {
       },
       config: function(cb) {
         return o.config = cb;
+      },
+      actioned: function(cb) {
+        return actioned_cb = cb;
       }
     };
     dsl.call(func);
@@ -1333,6 +1361,23 @@ GUI = {
     var head, style, vdom;
     style = arguments[0], head = arguments[1], vdom = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
     return [m("h3.mesname", m("b", head)), m("p.text." + style, vdom)];
+  },
+  portrates: function(chrs, headline, attr_cb) {
+    var attr, o;
+    return [
+      m("hr.black"), m("h6", headline), (function() {
+        var _i, _len, _results;
+        _results = [];
+        for (_i = 0, _len = chrs.length; _i < _len; _i++) {
+          o = chrs[_i];
+          attr = GUI.attrs(attr_cb);
+          _results.push(m(".chrbox", {
+            key: o._id
+          }, GUI.portrate(o.face_id, attr), m(".chrblank", m("div", o.name))));
+        }
+        return _results;
+      })(), m("hr.black")
+    ];
   }
 };
 GUI.Animate = (function() {
@@ -1474,7 +1519,7 @@ GUI.Layout = (function() {
     this.dx = dx;
     this.dy = dy;
     this.absolute = absolute != null ? absolute : false;
-    this.duration = duration != null ? duration : DELAY.andante;
+    this.duration = duration != null ? duration : DELAY.animato;
     if (!this.box) {
       return;
     }

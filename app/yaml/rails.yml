@@ -1,3 +1,52 @@
+maskstates:
+  0b1111111111111111_1111_000_00000: 
+  0b0000000000000000_0100_000_00000: 投票対象外
+  0b0000000000000000_0010_000_00000: 恩恵対象外
+  0b0000000000000000_0001_000_00000: 能力対象外
+  0b0000000000000000_0000_010_00000: 感染
+  0b0000000000000000_0000_001_00000: 負傷
+  0b0000000000000000_0000_000_01000: <s>投票</s>
+  0b0000000000000000_0000_000_00111: <s>全能力</s>
+  0b0000000000000000_0000_000_00100: <s>恩恵</s>
+  0b0000000000000000_0000_000_00011: <s>能力</s>
+  0b0000000000000000_0000_000_00010: <s>毒薬</s>
+  0b0000000000000000_0000_000_00001: <s>蘇生薬</s>
+
+message:
+  visible:
+    home:
+      village:     0b111_0_000_000
+      cast:        0b011_0_000_000
+      announce:    0b001_0_000_000
+    warning:
+      all:         0b000_1_000_000
+    talk:
+      open:        0b000_0_100_000
+      clan:        0b000_0_110_000
+      think:       0b000_0_101_000
+      all:         0b000_0_111_000
+    memo:
+      open:        0b000_0_000_100
+      clan:        0b000_0_000_110
+      think:       0b000_0_000_101
+      all:         0b000_0_000_111
+
+  bit:
+    VILLAGE:       0b111_0_000_000
+    CAST:          0b011_0_100_000
+    INFO:          0b001_0_000_000
+    ACTION:        0b000_1_111_000
+    TALK:          0b000_0_111_000
+    MEMO:          0b000_0_000_111
+
+  mask:
+    ALL:           0b111_1_111_111
+    NOT_OPEN:      0b111_1_011_011
+    CLAN:          0b111_1_010_010
+    THINK:         0b111_1_001_001
+    DELETE:        0b000_0_001_001
+
+
 head_img:
   770:
     cinema:
@@ -292,28 +341,42 @@ loves:
     win: HATER
 
 wins:
-  MOB:
-    name: 見物人
-  NONE:
-    name: その他
   HUMAN:
     name: 村人陣営
-  WOLF:
-    name: 人狼陣営
+    order: 1
   EVIL:
     name: 敵側の人間
-  GURU:
-    name: 笛吹き
-  PIXI:
-    name: 妖精
+    order: 2
+  WOLF:
+    name: 人狼陣営
+    order: 3
   LONEWOLF:
     name: 一匹狼
+    order: 4
+  PIXI:
+    name: 妖精
+    order: 5
+  OTHER:
+    name: その他
+    order: 6
+  GURU:
+    name: 笛吹き
+    order: 6
   LOVER:
     name: 恋人陣営
+    order: 7
   HATER:
     name: 邪気陣営
+    order: 8
   DISH:
     name: 据え膳
+    order: 9
+  NONE:
+    name: (なし)
+    order: 98
+  MOB:
+    name: 見物人
+    order: 99
 
 winner:
   WIN_NONE:     '--'
@@ -326,20 +389,6 @@ winner:
   WIN_PIXI:     妖精
   WIN_GURU:     笛吹き
   WIN_EVIL:     裏切りの陣営
-
-groups:
-  MOB:
-    name: 見物人
-  OTHER:
-    name: その他
-  HUMAN:
-    name: 村人陣営
-  WOLF:
-    name: 人狼陣営
-  EVIL:
-    name: 敵側の人間
-  PIXI:
-    name: 妖精
 
 specials:
   mob:
@@ -704,30 +753,34 @@ event_state:
   scapegoat: 今夜の投票相手は決まっています。
   eclipse:   今日の議論は、誰が発言しているか不明になります。
 
-maskstates:
-  0b1111111111111111_1111_000_00000: 
-  0b0000000000000000_0100_000_00000: 投票対象外
-  0b0000000000000000_0010_000_00000: 恩恵対象外
-  0b0000000000000000_0001_000_00000: 能力対象外
-  0b0000000000000000_0000_010_00000: 感染
-  0b0000000000000000_0000_001_00000: 負傷
-  0b0000000000000000_0000_000_01000: <s>投票</s>
-  0b0000000000000000_0000_000_00111: <s>全能力</s>
-  0b0000000000000000_0000_000_00100: <s>恩恵</s>
-  0b0000000000000000_0000_000_00011: <s>能力</s>
-  0b0000000000000000_0000_000_00010: <s>毒薬</s>
-  0b0000000000000000_0000_000_00001: <s>蘇生薬</s>
-
 live:
-  live:       生存者
-  executed:   処刑
-  victim:     襲撃
-  cursed:     呪詛
-  droop:      衰退
-  suicide:    後追
-  feared:     恐怖
-  suddendead: 突然死
-  mob:        見物人
+  mob:
+    name: 見物人
+    order: 1
+  live:
+    name: 生存者
+    order: 2
+  executed:
+    name: 処刑
+    order: 3
+  victim:
+    name: 襲撃
+    order: 4
+  cursed:
+    name: 呪詛
+    order: 5
+  droop:
+    name: 衰退
+    order: 6
+  suicide:
+    name: 後追
+    order: 7
+  feared:
+    name: 恐怖
+    order: 8
+  suddendead:
+    name: 突然死
+    order: 9
 
 live_caption:
   live:       生存者

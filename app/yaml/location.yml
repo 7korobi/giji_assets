@@ -27,7 +27,7 @@ options:
     current: talk
 
   potofs_order:
-    current: stat_type
+    current: said_num
   potofs_desc:
     current: desc
 
