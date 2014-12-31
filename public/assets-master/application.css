@@ -7029,7 +7029,7 @@ h1, h2, h3, h4, h5, h6 {
   -webkit-border-radius: 9px;
   -moz-border-radius: 9px;
   border-radius: 9px;
-  min-height: 50px;
+  min-height: 100px;
 }
 
 /* line 97, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/giji.css.scss */

@@ -613,6 +613,7 @@ CABALA:
     pl:  /www/giji_log/cafe/config.pl
     is_angular: show-fix
 
+
 ALLSTAR:
   server: jinro.jksy.org
   oldlog:   /~nanakorobi?cmd=oldlog&rowall=on

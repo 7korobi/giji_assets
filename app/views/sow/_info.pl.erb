@@ -75,7 +75,7 @@ sub OutHTMLAdminInfo {
 　<br>
 <td class="$choice_cabala" style="text-align:left;">
   $max_morphe村:<a href="<%= GAME[:MORPHE]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">morphe</a><br>
-　<br>
+  $max_cafe村:<a href="<%= GAME[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">cafe</a><br>
 　<br>
 　<br>
 　<br>
@@ -83,7 +83,7 @@ sub OutHTMLAdminInfo {
   wolf<br>
   ultimate<br>
   allstar<br>
-  $max_cafe村:<a href="<%= GAME[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">cafe</a><br>
+　<br>
 　<br>
 <td class="$choice_braid" style="text-align:left;">
   role-play<br>
@@ -107,7 +107,7 @@ sub OutHTMLAdminInfo {
 　<br>
 <td class="$choice_cabala" style="text-align:left;">
   <a href="http://giji.check.jp/MORPHE/stories">morphe</a><br>
-　<br>
+  <a href="http://giji.check.jp/CABALA/stories">cafe</a><br>
 　<br>
 　<br>
 　<br>
@@ -115,7 +115,7 @@ sub OutHTMLAdminInfo {
   <a href="http://giji.check.jp/WOLF/stories">wolf</a><br>
   <a href="http://giji.check.jp/ULTIMATE/stories">ultimate</a><br>
   <a href="http://giji.check.jp/ALLSTAR/stories">allstar</a><br>
-  <a href="http://giji.check.jp/CABALA/stories">cafe</a><br>
+　<br>
 　<br>
 <td class="$choice_braid" style="text-align:left;">
   <a href="http://giji.check.jp/RP/stories">role-play</a><br>
@@ -237,10 +237,10 @@ _HTML_
 gon.top_info = [
 { mesicon:'',
   name:'ようこそ！',
-  text:'<span class="mark">陰謀を弄び、他人を陥れ、濡れ手に粟を求める村</span>用に、このページは調整してある。\\
-作ったばかりの州なので、意図しない動作をするかもね。\\
-それでも泣いたり困ったりしない、逞しい大人だけがハカリゴトを楽しめる。',
-updated_at:new Date(1370662886000),template:"message/say",mestype:"SAY",csid:"all",face_id:"c78"}
+  text:'こちらのページは<span class="mark">RP村も、勝負も楽しみたい村</span>用に調整してあるよ。\\
+早い者勝ちが原則だけれど、企画村予\定\表\という便利なページも見てみよう。\\
+もし君がRPに没頭したいなら、専用の州でどっぷり楽しもう。きっとそのほうが楽しめる。',
+updated_at:new Date(1420047938191),template:"message/say",mestype:"SAY",csid:"all",face_id:"c78"}
 ];
 </script>
 </div>
@@ -251,7 +251,7 @@ _HTML_
   if( 'MORPHE' eq $cfg->{'RULE'} ){
     print <<"_HTML_";
 こちらのページは、<span style="color:#FFF">RP村も、勝負も楽しみたい村</span>用に調整してあるよ。早い者勝ちが原則だけれど、企画村予\定\表\という便利なページも見てみよう。<br>
-もし君がRPに没頭したいか、ガチガチの勝負に魂を燃やすなら、それぞれ専用の州でどっぷり楽しもう。きっとそのほうが楽しめる。<br>
+もし君がRPに没頭したいなら、それぞれ専用の州でどっぷり楽しもう。きっとそのほうが楽しめる。<br>
 _HTML_
   }
 

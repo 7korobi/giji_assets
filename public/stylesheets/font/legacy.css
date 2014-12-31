@@ -64,3 +64,29 @@ button,
 .mesname {
   line-height: 1.5em;
 }
+
+.chrblank {
+  background-color: #444844
+}
+.chrM {
+  background-color: #444888
+}
+.chrF {
+  background-color: #884844
+}
+
+.chrblank,
+.chrM,
+.chrF {
+  max-width: 88px;
+  width:     88px;
+  margin:  0 1px;
+  padding: 2px 0;
+  font-size: 80%;
+  line-height: 1.1em;
+
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+  min-height: 50px;
+}

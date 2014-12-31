@@ -611,7 +611,6 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.new_chr_faces : void 0) !
     return o.face.order;
   }).list();
   links = {
-    "ツイッター（こちらで相談しましょう）": "https://twitter.com/search?f=realtime&q=%23人狼議事2015&src=typd",
     "アルミニウム赤泥流出事故": "http://ja.wikipedia.org/wiki/ハンガリーアルミニウム赤泥流出事故",
     "未来ロードマップ": "http://forevision.jp/wiki/?未来ロードマップ",
     "蒼井印の創作忍者bot": "https://twitter.com/Aonnj_bot",
@@ -687,7 +686,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.new_chr_faces : void 0) !
               } : {};
               _results.push(m(".chrbox", {
                 key: o._id
-              }, GUI.portrate(o.face_id, attr), m(".chrblank", blank_attr, m("div", o.job), m("div", o.face.name))));
+              }, GUI.portrate(o.face_id, attr), m(".chrblank", blank_attr, m("div", m.trust(o.job)), m("div", m.trust(o.face.name)))));
             }
             return _results;
           })(), m("hr.black")
