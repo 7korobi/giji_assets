@@ -55,6 +55,7 @@ class Cache.Query
     query
 
   where: (query)->
+    return @ unless query
     switch typeof query
       when "object"
         @_match query, (target, req, type)->

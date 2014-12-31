@@ -30,10 +30,10 @@ options:
     current: said_num
   potofs_desc:
     current: desc
-
-  hide_ids:
+  potofs_hide:
     type: Array
     current: []
+
   msg_ids:
     type: Array
     current: []

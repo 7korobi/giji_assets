@@ -57,25 +57,47 @@ new Cache.Rule("message").schema ->
   mask = RAILS.message.mask
 
   @scope (all)->
+    hide_mask = (hide_list)->
+      return unless hide_list && hide_list.length
+      hides = {}
+      for hide in hide_list
+        hides[hide] = true
+      (o)-> ! hides[o.face_id]
+
     home: (mode)->
-      all.where (o)-> o.show & is_show.home[mode]
+      enables = is_show.home[mode]
+      all
+      .where (o)-> o.show & enables
 
-    talk: (mode, open, search)->
-      show_search = is_show.talk[mode]
-      show_search &= mask.NOT_OPEN unless open
-      query = all.where (o)-> o.show & show_search
-      query.search search
+    talk: (mode, open, hides, search)->
+      enables = is_show.talk[mode]
+      enables &= mask.NOT_OPEN unless open
+      all
+      .where (o)-> o.show & enables
+      .where hide_mask(hides)
+      .search search
 
-    memo: (mode, uniq, search)->
-      query = all.where (o)-> o.show & is_show.memo[mode]
+    memo: (mode, uniq, hides, search)->
+      enables = is_show.memo[mode]
+      query = all
+      .sort("desc", "updated_at")
+      .where (o)-> o.show & enables
+      .where hide_mask(hides)
+      .search search
+
       query = query.distinct("pen", "max_is") if uniq
-      query.search search
+      query
 
-    warning: ->
-      all.where (o)-> o.show & is_show.warning.all
+    warning: (hides)->
+      enables = is_show.warning.all
+      all
+      .where (o)-> o.show & enables
+      .where hide_mask(hides)
 
-    after: (updated_at)->
-      query = all.where (o)-> updated_at <= o.updated_at
+    after: (updated_at, hides)->
+      all
+      .where (o)-> updated_at <= o.updated_at
+      .where hide_mask(hides)
 
 #    event: (event_id, search)->
 #      query = all.where (o)-> event_id == o.event_id 

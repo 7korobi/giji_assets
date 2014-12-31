@@ -14,7 +14,7 @@ Url.routes =
     messages: new Url "messages=:scope~:home~:talk~:memo~:open~:uniq~:human~:search",
       unmatch: gon?.events? && "?"
 
-    potofs: new Url "potofs=:potofs_order~:potofs_desc",
+    potofs: new Url "potofs=:potofs_order~:potofs_desc~:potofs_hide",
       unmatch: gon?.potofs? && "?"
 
     folder: new Url "folder=:folder",

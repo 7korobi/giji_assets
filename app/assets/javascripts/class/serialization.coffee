@@ -26,7 +26,10 @@ class Serial
   @parser = 
     Array: (val)->
       if val.split?
-        val.split ","
+        if val.length
+          val.split ","
+        else
+          []
       else
         [val]
 
@@ -55,7 +58,7 @@ class Serial
       if val.join?
         val.join ","
       else
-        [val]
+        "#{val}"
 
     Date: (val)->
       time = Math.ceil val
@@ -85,7 +88,7 @@ for key, func of Serial.parser
         "([-]?[\\.0-9]+)"
       when "Date"
         "([0-9a-zA-Z]+)"
-      when "Text"
+      when "Text", "Array"
         "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]*)"
       else
         "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]+)"
