@@ -9,7 +9,6 @@ if gon?.new_chr_faces? && gon?.new_chr_jobs?
   chrs = Cache.chr_jobs.where(chr_set_id:"sf").sort(false, (o)-> o.face.order ).list()
 
   links =
-    "ツイッター（こちらで相談しましょう）": "https://twitter.com/search?f=realtime&q=%23人狼議事2015&src=typd"
     "アルミニウム赤泥流出事故": "http://ja.wikipedia.org/wiki/ハンガリーアルミニウム赤泥流出事故"
     "未来ロードマップ": "http://forevision.jp/wiki/?未来ロードマップ"
     "蒼井印の創作忍者bot": "https://twitter.com/Aonnj_bot"
@@ -64,15 +63,15 @@ if gon?.new_chr_faces? && gon?.new_chr_jobs?
 
             blank_attr = 
               if /sf\d\d\d/.test(o.face_id)
-                {style: 'background-color: #126'}
+                {style: 'background-color: #126; min-height: 100px;'}
               else
-                {}
+                {style: 'min-height: 100px;'}
 
             m ".chrbox", {key: o._id},
               GUI.portrate o.face_id, attr
               m ".chrblank", blank_attr,
-                m "div", o.job
-                m "div", o.face.name
+                m "div", m.trust o.job
+                m "div", m.trust o.face.name
           m "hr.black"
         ]
 

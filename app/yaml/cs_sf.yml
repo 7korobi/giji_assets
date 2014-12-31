@@ -81,27 +81,27 @@ chr_job:
     job: "測量士"
 
   - face_id: sf021
-    job: ""
+    job: "星間帆走"
   - face_id: sf022
-    job: ""
+    job: "鉱滓地区"
   - face_id: sf023
-    job: ""
+    job: "地下軌道"
   - face_id: sf024
-    job: ""
+    job: "光彩楽団"
   - face_id: sf025
-    job: ""
+    job: "救星隊"
   - face_id: sf026
-    job: ""
+    job: "星先案内"
   - face_id: sf027
-    job: ""
+    job: "鉱滓皇帝"
   - face_id: sf028
-    job: ""
+    job: "溶接技師"
   - face_id: sf029
-    job: ""
+    job: "機巧忍軍"
   - face_id: sf030
-    job: ""
+    job: "閉鎖管理"
   - face_id: sf031
-    job: ""
+    job: "意匠造形"
   - face_id: sf032
-    job: ""
+    job: "鉱滓地区"
 
