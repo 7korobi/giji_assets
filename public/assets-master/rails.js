@@ -18,7 +18,7 @@ Url.routes = {
     messages: new Url("messages=:scope~:home~:talk~:memo~:open~:uniq~:human~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "?"
     }),
-    potofs: new Url("potofs=:potofs_order~:potofs_desc", {
+    potofs: new Url("potofs=:potofs_order~:potofs_desc~:potofs_hide", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) && "?"
     }),
     folder: new Url("folder=:folder", {
@@ -144,43 +144,61 @@ new Cache.Rule("message").schema(function() {
   bit = RAILS.message.bit;
   mask = RAILS.message.mask;
   this.scope(function(all) {
+    var hide_mask;
+    hide_mask = function(hide_list) {
+      var hide, hides, _i, _len;
+      if (!(hide_list && hide_list.length)) {
+        return;
+      }
+      hides = {};
+      for (_i = 0, _len = hide_list.length; _i < _len; _i++) {
+        hide = hide_list[_i];
+        hides[hide] = true;
+      }
+      return function(o) {
+        return !hides[o.face_id];
+      };
+    };
     return {
       home: function(mode) {
+        var enables;
+        enables = is_show.home[mode];
         return all.where(function(o) {
-          return o.show & is_show.home[mode];
+          return o.show & enables;
         });
       },
-      talk: function(mode, open, search) {
-        var query, show_search;
-        show_search = is_show.talk[mode];
+      talk: function(mode, open, hides, search) {
+        var enables;
+        enables = is_show.talk[mode];
         if (!open) {
-          show_search &= mask.NOT_OPEN;
+          enables &= mask.NOT_OPEN;
         }
-        query = all.where(function(o) {
-          return o.show & show_search;
-        });
-        return query.search(search);
+        return all.where(function(o) {
+          return o.show & enables;
+        }).where(hide_mask(hides)).search(search);
       },
-      memo: function(mode, uniq, search) {
-        var query;
-        query = all.where(function(o) {
-          return o.show & is_show.memo[mode];
-        });
+      memo: function(mode, uniq, hides, search) {
+        var enables, query;
+        enables = is_show.memo[mode];
+        query = all.sort("desc", "updated_at").where(function(o) {
+          return o.show & enables;
+        }).where(hide_mask(hides)).search(search);
         if (uniq) {
           query = query.distinct("pen", "max_is");
         }
-        return query.search(search);
+        return query;
       },
-      warning: function() {
+      warning: function(hides) {
+        var enables;
+        enables = is_show.warning.all;
         return all.where(function(o) {
-          return o.show & is_show.warning.all;
-        });
+          return o.show & enables;
+        }).where(hide_mask(hides));
       },
-      after: function(updated_at) {
-        var query;
-        return query = all.where(function(o) {
+      after: function(updated_at, hides) {
+        return all.where(function(o) {
           return updated_at <= o.updated_at;
-        });
+        }).where(hide_mask(hides));
       }
     };
   });
@@ -576,12 +594,108 @@ new Cache.Rule("story").schema(function() {
     return _results;
   });
 });
-var face, messages, potofs_portrates, scroll_spy, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6,
+var chrs, face, links, messages, potofs_portrates, scroll_spy, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6,
   __slice = [].slice;
 
 GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
 
 scroll_spy = new GUI.ScrollSpy(Url.prop.scroll);
+
+if (((typeof gon !== "undefined" && gon !== null ? gon.new_chr_faces : void 0) != null) && ((typeof gon !== "undefined" && gon !== null ? gon.new_chr_jobs : void 0) != null)) {
+  Cache.faces._hash.t12.item.order = 100000;
+  Cache.rule.face.merge(gon.new_chr_faces);
+  Cache.rule.chr_job.merge(gon.new_chr_jobs);
+  chrs = Cache.chr_jobs.where({
+    chr_set_id: "sf"
+  }).sort(false, function(o) {
+    return o.face.order;
+  }).list();
+  links = {
+    "ツイッター（こちらで相談しましょう）": "https://twitter.com/search?f=realtime&q=%23人狼議事2015&src=typd",
+    "アルミニウム赤泥流出事故": "http://ja.wikipedia.org/wiki/ハンガリーアルミニウム赤泥流出事故",
+    "未来ロードマップ": "http://forevision.jp/wiki/?未来ロードマップ",
+    "蒼井印の創作忍者bot": "https://twitter.com/Aonnj_bot",
+    "宇宙人": "http://ja.wikipedia.org/wiki/宇宙人",
+    "創世記": "http://ja.wikipedia.org/wiki/創世記",
+    "ケイ素生物": "http://ja.wikipedia.org/wiki/ケイ素生物",
+    "赤ちゃん命名辞典": "http://www.baby-name.jp",
+    "架空の人名": "http://ja.wikipedia.org/wiki/Category:架空の人物"
+  };
+  setTimeout(function() {
+    Cache.chr_jobs._hash.all_t12.item.chr_set_id = "sf";
+    Cache.chr_jobs._hash.all_c71.item.chr_set_id = "sf";
+    Cache.faces._hash.sf15.item.order = 21 - 0.1;
+    Cache.faces._hash.sf10.item.order = 21 + 0.1;
+    Cache.faces._hash.sf028.item.order = 22 - 0.1;
+    Cache.faces._hash.sf027.item.order = 22 + 0.1;
+    Cache.faces._hash.sf032.item.order = 22 + 0.2;
+    Cache.faces._hash.sf16.item.order = 22 + 0.3;
+    Cache.faces._hash.t12.item.order = 23 - 0.1;
+    Cache.faces._hash.sf06.item.order = 25 - 0.1;
+    Cache.faces._hash.c71.item.order = 26 - 0.1;
+    Cache.faces._hash.sf04.item.order = 29 - 0.1;
+    Cache.faces._hash.sf05.item.order = 29 + 0.1;
+    Cache.faces._hash.sf20.item.order = 30 - 0.1;
+    Cache.faces._hash.sf07.item.order = 30 + 0.1;
+    Cache.faces._hash.sf024.item.order = 31 - 0.2;
+    Cache.faces._hash.sf08.item.order = 31 - 0.1;
+    Cache.rule.chr_job.reject([]);
+    chrs = Cache.chr_jobs.where({
+      chr_set_id: "sf"
+    }).sort(false, function(o) {
+      return o.face.order;
+    }).list();
+    return m.redraw();
+  }, 10000);
+  GUI.if_exist("#map_faces", function(dom) {
+    return m.module(dom, {
+      controller: function() {},
+      view: function() {
+        var attr, blank_attr, link, o, title;
+        return [
+          m("h6", "参考文献"), m(".paragraph", (function() {
+            var _results;
+            _results = [];
+            for (title in links) {
+              link = links[title];
+              _results.push(m("a.btn.btn-default.mark", {
+                href: link,
+                target: "_blank"
+              }, title));
+            }
+            return _results;
+          })()), m("hr.black"), m(".mark", "明後日の道標 〜 新人さん歓迎パーティー"), m("h6", "１０秒経つと、親近感のある人たちが新人さんのまわりに集まります。"), m("h6", "いま記述のある新人さんの肩書、名前は仮のものです。"), m("h6", ""), (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = chrs.length; _i < _len; _i++) {
+              o = chrs[_i];
+              attr = GUI.attrs(function() {
+                var elem;
+                elem = null;
+                this.over(function() {
+                  return GUI.Animate.jelly.up(elem);
+                });
+                this.out(function() {
+                  return GUI.Animate.jelly.down(elem);
+                });
+                return this.config(function(_elem) {
+                  return elem = _elem;
+                });
+              });
+              blank_attr = /sf\d\d\d/.test(o.face_id) ? {
+                style: 'background-color: #126'
+              } : {};
+              _results.push(m(".chrbox", {
+                key: o._id
+              }, GUI.portrate(o.face_id, attr), m(".chrblank", blank_attr, m("div", o.job), m("div", o.face.name))));
+            }
+            return _results;
+          })(), m("hr.black")
+        ];
+      }
+    });
+  });
+}
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.chr_set.schema(function() {
@@ -594,7 +708,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var attr, chr_job, chrs, headline, job_name, map_order_set, o;
+        var attr, chr_job, headline, job_name, map_order_set, o;
         map_order_set = RAILS.map_faces_orders[Url.prop.order()];
         chrs = Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list();
         headline = "";
@@ -725,7 +839,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
             return _results;
           })()
         ];
-        return [m("h2", face.name + " の活躍"), face.says[0] != null ? m("h6", m("span.code", Timer.date_time_stamp(face.says[0].date.min)), m.trust("&nbsp;〜&nbsp;"), m("span.code", Timer.date_time_stamp(face.says[0].date.max))) : void 0, m("table.say.SAY", scroll_spy.mark("summary"), m("tbody", m("tr", m("td.img", GUI.portrate(face.face_id)), m("td.field", m(".msg", letters)))))];
+        return [m("h2", face.name + " の活躍"), face.says[0] != null ? m("h6", m("span.code", Timer.date_time_stamp(new Date(face.says[0].date.min))), m("span", m.trust("&nbsp;〜&nbsp;")), m("span.code", Timer.date_time_stamp(new Date(face.says[0].date.max)))) : void 0, m("table.say.SAY", scroll_spy.mark("summary"), m("tbody", m("tr", m("td.img", GUI.portrate(face.face_id)), m("td.field", m(".msg", letters)))))];
       }
     });
   });
@@ -929,34 +1043,29 @@ GUI.if_exist("#topviewer", function(dom) {
 });
 
 GUI.if_exist("#css_changer", function(dom) {
+
+  /*
+  GUI.attrs_to document, "body", ->
+    @swipe "thru"
+    @left  (diff, flick)-> 
+      layout = 
+        switch Url.prop.layout()
+          when "right"
+            "center"
+          else
+            "left"
+      Url.prop.layout layout            
+  
+    @right (diff, flick)->
+      layout = 
+        switch Url.prop.layout()
+          when "left"
+            "center"
+          else
+            "right"
+      Url.prop.layout layout
+   */
   var touch;
-  GUI.attrs_to(document, "body", function() {
-    this.swipe("thru");
-    this.left(function(diff, flick) {
-      var layout;
-      layout = (function() {
-        switch (Url.prop.layout()) {
-          case "right":
-            return "center";
-          default:
-            return "left";
-        }
-      })();
-      return Url.prop.layout(layout);
-    });
-    return this.right(function(diff, flick) {
-      var layout;
-      layout = (function() {
-        switch (Url.prop.layout()) {
-          case "left":
-            return "center";
-          default:
-            return "right";
-        }
-      })();
-      return Url.prop.layout(layout);
-    });
-  });
   touch = new GUI.TouchMenu();
   touch.icon("cog", function() {
     return m(".guide.form-inline", m("h6", "スタイル"), m(".form-group", m("a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a", touch.btn(Url.prop.theme, "night"), "月夜"), m("a", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a", touch.btn(Url.prop.theme, "wa"), "和の国")), m("h6", "幅の広さ"), m(".form-group", m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "wide"), "広域")), m("h6", "位置"), m(".form-group", m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰")), m("h6", "位置"), m(".form-group", m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細")));
@@ -1051,23 +1160,25 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       return Cache.messages.home(home());
     },
     after: function(_arg) {
-      var scroll, updated_at, _ref7;
-      scroll = _arg.scroll;
+      var potofs_hide, scroll, updated_at, _ref7;
+      scroll = _arg.scroll, potofs_hide = _arg.potofs_hide;
       updated_at = ((_ref7 = Cache.messages.find(scroll())) != null ? _ref7.updated_at : void 0) || 0;
-      return Cache.messages.after(updated_at);
+      return Cache.messages.after(updated_at, potofs_hide());
     },
     talk: function(_arg) {
-      var open, search, talk;
-      talk = _arg.talk, open = _arg.open, search = _arg.search;
-      return Cache.messages.talk(talk(), open(), search());
+      var open, potofs_hide, search, talk;
+      talk = _arg.talk, open = _arg.open, potofs_hide = _arg.potofs_hide, search = _arg.search;
+      return Cache.messages.talk(talk(), open(), potofs_hide(), search());
     },
     memo: function(_arg) {
-      var memo, search, uniq;
-      memo = _arg.memo, uniq = _arg.uniq, search = _arg.search;
-      return Cache.messages.memo(memo(), uniq(), search());
+      var memo, potofs_hide, search, uniq;
+      memo = _arg.memo, uniq = _arg.uniq, potofs_hide = _arg.potofs_hide, search = _arg.search;
+      return Cache.messages.memo(memo(), uniq(), potofs_hide(), search());
     },
-    warning: function() {
-      return Cache.messages.warning();
+    warning: function(_arg) {
+      var potofs_hide;
+      potofs_hide = _arg.potofs_hide;
+      return Cache.messages.warning(potofs_hide());
     }
   };
   potofs_portrates = function() {
@@ -1098,7 +1209,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       var _ref7;
       Url.prop.scope("home");
       Url.prop.scroll((_ref7 = messages.home(Url.prop).list().first) != null ? _ref7._id : void 0);
-      return m(".pagenavi.choice.guide.form-inline", potofs_portrates());
+      return m(".pagenavi.choice.guide.form-inline", m("h6", "村の情報"), m("p", "村に関する情報、アナウンスを表示します。"), potofs_portrates());
     });
     return m.module(dom, {
       controller: function() {},
@@ -1108,7 +1219,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         event = Cache.events.find(event_id);
         if (event != null) {
           touch.icon("sitemap", function() {
-            return m(".pagenavi.choice.guide.form-inline", GUI.message.event(event, story), potofs_portrates());
+            return m(".pagenavi.choice.guide.form-inline", m("h6", "ステータス"), GUI.message.event(event, story), potofs_portrates());
           });
         } else {
           touch.icon("sitemap");
@@ -1132,32 +1243,32 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     touch.icon("stopwatch", function() {
       Url.prop.scope("after");
-      return m(".pagenavi.choice.guide.form-inline", potofs_portrates());
+      return m(".pagenavi.choice.guide.form-inline", m("h6", "新着状況"), m("p", "今見ている発言より新しい、新着情報を表示します。"), potofs_portrates());
     });
     touch.badge("chat-alt", function() {
-      return Cache.messages.talk("all", true, "").list().length;
+      return Cache.messages.talk("all", true, [], "").list().length;
     });
     touch.icon("chat-alt", function() {
       var _ref7;
       Url.prop.scope("talk");
       Url.prop.scroll((_ref7 = messages.talk(Url.prop).list().first) != null ? _ref7._id : void 0);
-      return m(".pagenavi.choice.guide.form-inline", potofs_portrates());
+      return m(".pagenavi.choice.guide.form-inline", m("h6", "発言"), m("p", "村内の発言を表示します。"), potofs_portrates());
     });
     touch.badge("mail", function() {
-      return Cache.messages.memo("all", true, "").list().length;
+      return Cache.messages.memo("all", true, [], "").list().length;
     });
     touch.icon("mail", function() {
       var _ref7;
       Url.prop.scope("memo");
       Url.prop.scroll((_ref7 = messages.memo(Url.prop).list().first) != null ? _ref7._id : void 0);
-      return m(".pagenavi.choice.guide.form-inline", potofs_portrates());
+      return m(".pagenavi.choice.guide.form-inline", m("h6", "メモ"), m("p", "メモを表示します。"), potofs_portrates());
     });
     touch.badge("warning-empty", function() {
-      return Cache.messages.warning().list().length;
+      return Cache.messages.warning([]).list().length;
     });
     touch.icon("warning-empty", function() {
       Url.prop.scope("warning");
-      return m(".pagenavi.choice.guide.form-inline", potofs_portrates());
+      return m(".pagenavi.choice.guide.form-inline", m("h6", "警報"), m("p", "アラートを表示します。"), potofs_portrates());
     });
     touch.icon("pencil", function() {});
     touch.icon("search", function() {
@@ -1209,7 +1320,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         }
       }
       return m.endComputation();
-    }, DELAY.animato);
+    }, DELAY.presto);
   });
 }
 

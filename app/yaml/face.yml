@@ -1201,7 +1201,80 @@
     comment: "三拾糎程の「もふもふねこひよこ」　せんいち"
     order: 90053
 
+#########################
+# 2015-01-01 update 
 
+-   _id: sf021
+    face_id: sf021
+    name: ""
+    comment: ""
+    order: 80021
+
+-   _id: sf022
+    face_id: sf022
+    name: ""
+    comment: ""
+    order: 80022
+
+-   _id: sf023
+    face_id: sf023
+    name: ""
+    comment: ""
+    order: 80023
+
+-   _id: sf024
+    face_id: sf024
+    name: ""
+    comment: ""
+    order: 80024
+
+-   _id: sf025
+    face_id: sf025
+    name: ""
+    comment: ""
+    order: 80025
+
+-   _id: sf026
+    face_id: sf026
+    name: ""
+    comment: ""
+    order: 80026
+
+-   _id: sf027
+    face_id: sf027
+    name: ""
+    comment: ""
+    order: 80027
+
+-   _id: sf028
+    face_id: sf028
+    name: ""
+    comment: ""
+    order: 80028
+
+-   _id: sf029
+    face_id: sf029
+    name: ""
+    comment: ""
+    order: 80029
+
+-   _id: sf030
+    face_id: sf030
+    name: ""
+    comment: ""
+    order: 80030
+
+-   _id: sf031
+    face_id: sf031
+    name: ""
+    comment: ""
+    order: 80031
+
+-   _id: sf032
+    face_id: sf032
+    name: ""
+    comment: ""
+    order: 80032
 
 #########################
 # xxxx-xx-xx update

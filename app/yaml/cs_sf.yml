@@ -80,3 +80,28 @@ chr_job:
   - face_id: sf20
     job: "測量士"
 
+  - face_id: sf021
+    job: ""
+  - face_id: sf022
+    job: ""
+  - face_id: sf023
+    job: ""
+  - face_id: sf024
+    job: ""
+  - face_id: sf025
+    job: ""
+  - face_id: sf026
+    job: ""
+  - face_id: sf027
+    job: ""
+  - face_id: sf028
+    job: ""
+  - face_id: sf029
+    job: ""
+  - face_id: sf030
+    job: ""
+  - face_id: sf031
+    job: ""
+  - face_id: sf032
+    job: ""
+

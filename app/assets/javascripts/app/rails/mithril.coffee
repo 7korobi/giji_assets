@@ -1,6 +1,81 @@
 GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll)
 scroll_spy = new GUI.ScrollSpy(Url.prop.scroll)
 
+if gon?.new_chr_faces? && gon?.new_chr_jobs?
+  Cache.faces._hash.t12.item.order = 100000
+
+  Cache.rule.face.merge    gon.new_chr_faces
+  Cache.rule.chr_job.merge gon.new_chr_jobs
+  chrs = Cache.chr_jobs.where(chr_set_id:"sf").sort(false, (o)-> o.face.order ).list()
+
+  links =
+    "ツイッター（こちらで相談しましょう）": "https://twitter.com/search?f=realtime&q=%23人狼議事2015&src=typd"
+    "アルミニウム赤泥流出事故": "http://ja.wikipedia.org/wiki/ハンガリーアルミニウム赤泥流出事故"
+    "未来ロードマップ": "http://forevision.jp/wiki/?未来ロードマップ"
+    "蒼井印の創作忍者bot": "https://twitter.com/Aonnj_bot"
+    "宇宙人": "http://ja.wikipedia.org/wiki/宇宙人"
+    "創世記": "http://ja.wikipedia.org/wiki/創世記"
+    "ケイ素生物": "http://ja.wikipedia.org/wiki/ケイ素生物"
+    "赤ちゃん命名辞典": "http://www.baby-name.jp"
+    "架空の人名": "http://ja.wikipedia.org/wiki/Category:架空の人物"
+  setTimeout ->
+    Cache.chr_jobs._hash.all_t12.item.chr_set_id = "sf"
+    Cache.chr_jobs._hash.all_c71.item.chr_set_id = "sf"
+    Cache.faces._hash.sf15.item.order  = 21 - 0.1
+    Cache.faces._hash.sf10.item.order  = 21 + 0.1
+    Cache.faces._hash.sf028.item.order = 22 - 0.1
+    Cache.faces._hash.sf027.item.order = 22 + 0.1
+    Cache.faces._hash.sf032.item.order = 22 + 0.2
+    Cache.faces._hash.sf16.item.order  = 22 + 0.3
+    Cache.faces._hash.t12.item.order   = 23 - 0.1
+    Cache.faces._hash.sf06.item.order  = 25 - 0.1
+    Cache.faces._hash.c71.item.order   = 26 - 0.1
+    Cache.faces._hash.sf04.item.order  = 29 - 0.1
+    Cache.faces._hash.sf05.item.order  = 29 + 0.1
+    Cache.faces._hash.sf20.item.order  = 30 - 0.1
+    Cache.faces._hash.sf07.item.order  = 30 + 0.1
+    Cache.faces._hash.sf024.item.order = 31 - 0.2
+    Cache.faces._hash.sf08.item.order  = 31 - 0.1
+    Cache.rule.chr_job.reject []
+
+    chrs = Cache.chr_jobs.where(chr_set_id:"sf").sort(false, (o)-> o.face.order ).list()
+    m.redraw()
+  , 10000
+  GUI.if_exist "#map_faces", (dom)->
+    m.module dom,
+      controller: ->
+      view: ->  
+        [ 
+          m "h6", "参考文献"
+          m ".paragraph",
+            for title, link of links
+              m "a.btn.btn-default.mark", {href: link, target: "_blank"}, title 
+          m "hr.black" 
+          m ".mark", "明後日の道標 〜 新人さん歓迎パーティー"
+          m "h6", "１０秒経つと、親近感のある人たちが新人さんのまわりに集まります。"
+          m "h6", "いま記述のある新人さんの肩書、名前は仮のものです。"
+          m "h6", ""
+          for o in chrs
+            attr = GUI.attrs ->
+              elem = null
+              @over -> GUI.Animate.jelly.up elem
+              @out ->  GUI.Animate.jelly.down elem
+              @config (_elem)-> elem = _elem
+
+            blank_attr = 
+              if /sf\d\d\d/.test(o.face_id)
+                {style: 'background-color: #126'}
+              else
+                {}
+
+            m ".chrbox", {key: o._id},
+              GUI.portrate o.face_id, attr
+              m ".chrblank", blank_attr,
+                m "div", o.job
+                m "div", o.face.name
+          m "hr.black"
+        ]
+
 if gon?.map_reduce?.faces?
   Cache.rule.chr_set.schema ->
     @order (o)->
@@ -122,9 +197,9 @@ if gon?.face?
         [ m "h2", face.name + " の活躍"
           if face.says[0]?
             m "h6", 
-              m "span.code", Timer.date_time_stamp face.says[0].date.min
-              m.trust "&nbsp;〜&nbsp;"
-              m "span.code", Timer.date_time_stamp face.says[0].date.max
+              m "span.code", Timer.date_time_stamp new Date face.says[0].date.min
+              m "span", m.trust "&nbsp;〜&nbsp;"
+              m "span.code", Timer.date_time_stamp new Date face.says[0].date.max
           m "table.say.SAY", scroll_spy.mark("summary"),
             m "tbody",
               m "tr",
@@ -274,6 +349,7 @@ GUI.if_exist "#topviewer", (dom)->
       GUI.TouchMenu.icons.menu()
 
 GUI.if_exist "#css_changer", (dom)->
+  ###
   GUI.attrs_to document, "body", ->
     @swipe "thru"
     @left  (diff, flick)-> 
@@ -293,7 +369,7 @@ GUI.if_exist "#css_changer", (dom)->
           else
             "right"
       Url.prop.layout layout            
-
+  ###
   touch = new GUI.TouchMenu()
   touch.icon "cog", ->
     m ".guide.form-inline",
@@ -439,15 +515,15 @@ if gon?.events? && gon.event?
   messages =
     home: ({home})->
       Cache.messages.home(home())
-    after: ({scroll})->
+    after: ({scroll, potofs_hide})->
       updated_at = Cache.messages.find(scroll())?.updated_at || 0
-      Cache.messages.after(updated_at)
-    talk: ({talk, open, search})->
-      Cache.messages.talk(talk(), open(), search())
-    memo: ({memo, uniq, search})->
-      Cache.messages.memo(memo(), uniq(), search())
-    warning: ->
-      Cache.messages.warning()
+      Cache.messages.after(updated_at, potofs_hide())
+    talk: ({talk, open, potofs_hide, search})->
+      Cache.messages.talk(talk(), open(), potofs_hide(), search())
+    memo: ({memo, uniq, potofs_hide, search})->
+      Cache.messages.memo(memo(), uniq(), potofs_hide(), search())
+    warning: ({potofs_hide})->
+      Cache.messages.warning(potofs_hide())
 
   potofs_portrates = ->
     potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
@@ -468,6 +544,8 @@ if gon?.events? && gon.event?
       Url.prop.scope "home"
       Url.prop.scroll messages.home(Url.prop).list().first?._id
       m ".pagenavi.choice.guide.form-inline",
+        m "h6", "村の情報"
+        m "p", "村に関する情報、アナウンスを表示します。"
         potofs_portrates()
 
     m.module dom,
@@ -479,6 +557,7 @@ if gon?.events? && gon.event?
         if event?
           touch.icon "sitemap", ->
             m ".pagenavi.choice.guide.form-inline",
+              m "h6", "ステータス"
               GUI.message.event event, story
               potofs_portrates()
         else
@@ -503,30 +582,38 @@ if gon?.events? && gon.event?
     touch.icon "stopwatch", -> # 新着
       Url.prop.scope "after"
       m ".pagenavi.choice.guide.form-inline",
+        m "h6", "新着状況"
+        m "p", "今見ている発言より新しい、新着情報を表示します。"
         potofs_portrates()
 
     touch.badge "chat-alt", ->
-      Cache.messages.talk("all", true, "").list().length
+      Cache.messages.talk("all", true, [], "").list().length
     touch.icon "chat-alt", -> # 発言
       Url.prop.scope "talk"
       Url.prop.scroll messages.talk(Url.prop).list().first?._id
       m ".pagenavi.choice.guide.form-inline",
+        m "h6", "発言"
+        m "p", "村内の発言を表示します。"
         potofs_portrates()
 
     touch.badge "mail", ->
-      Cache.messages.memo("all", true, "").list().length
+      Cache.messages.memo("all", true, [], "").list().length
     touch.icon "mail", -> # メモ
       Url.prop.scope "memo"
       Url.prop.scroll messages.memo(Url.prop).list().first?._id
       m ".pagenavi.choice.guide.form-inline",
+        m "h6", "メモ"
+        m "p", "メモを表示します。"
         potofs_portrates()
 
 
     touch.badge "warning-empty", ->
-      Cache.messages.warning().list().length
+      Cache.messages.warning([]).list().length
     touch.icon "warning-empty", -> 
       Url.prop.scope "warning"
       m ".pagenavi.choice.guide.form-inline",
+        m "h6", "警報"
+        m "p", "アラートを表示します。"
         potofs_portrates()
 
     touch.icon "pencil", -> # 書き込み
@@ -568,7 +655,7 @@ if gon?.events? && gon.event?
             event_id: event._id
 
       m.endComputation()
-    , DELAY.animato
+    , DELAY.presto
 
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->

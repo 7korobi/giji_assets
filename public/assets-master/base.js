@@ -510,6 +510,9 @@ Cache.Query = (function() {
 
   Query.prototype.where = function(query) {
     var match;
+    if (!query) {
+      return this;
+    }
     switch (typeof query) {
       case "object":
         return this._match(query, function(target, req, type) {
@@ -2330,7 +2333,11 @@ Serial = (function() {
   Serial.parser = {
     Array: function(val) {
       if (val.split != null) {
-        return val.split(",");
+        if (val.length) {
+          return val.split(",");
+        } else {
+          return [];
+        }
       } else {
         return [val];
       }
@@ -2365,7 +2372,7 @@ Serial = (function() {
       if (val.join != null) {
         return val.join(",");
       } else {
-        return [val];
+        return "" + val;
       }
     },
     Date: function(val) {
@@ -2408,6 +2415,7 @@ for (key in _ref) {
       case "Date":
         return "([0-9a-zA-Z]+)";
       case "Text":
+      case "Array":
         return "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]*)";
       default:
         return "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]+)";
