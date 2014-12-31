@@ -3916,37 +3916,37 @@ Cache.rule.face.set([
     "name": "カリュクス"
   }, {
     "_id": "sf01",
-    "order": 80001,
+    "order": 80000,
     "face_id": "sf01",
     "name": "ラッシード",
     "comment": "りしあさん＆かれやなぎさん"
   }, {
     "_id": "sf02",
-    "order": 80002,
+    "order": 80001,
     "face_id": "sf02",
     "name": "エスペラント",
     "comment": "ふらぅさん＆かれやなぎさん"
   }, {
     "_id": "sf03",
-    "order": 80003,
+    "order": 80002,
     "face_id": "sf03",
     "name": "ピート",
     "comment": "たるっとさん＆りちゃさん"
   }, {
     "_id": "sf04",
-    "order": 80004,
+    "order": 80003,
     "face_id": "sf04",
     "name": "アシモフ",
     "comment": "あすたん＆りりんら"
   }, {
     "_id": "sf05",
-    "order": 80005,
+    "order": 80004,
     "face_id": "sf05",
     "name": "モナリザ",
     "comment": "ななころび＆りりんら"
   }, {
     "_id": "sf06",
-    "order": 80006,
+    "order": 80005,
     "face_id": "sf06",
     "name": "ワレンチナ",
     "comment": "まりもさん＆あずまさん"
@@ -4526,75 +4526,75 @@ Cache.rule.face.set([
   }, {
     "_id": "sf021",
     "face_id": "sf021",
-    "name": "",
-    "comment": "",
-    "order": 80021
-  }, {
-    "_id": "sf022",
-    "face_id": "sf022",
-    "name": "",
+    "name": "アンタレス",
     "comment": "",
     "order": 80022
   }, {
     "_id": "sf023",
     "face_id": "sf023",
-    "name": "",
+    "name": "エフ",
     "comment": "",
     "order": 80023
   }, {
     "_id": "sf024",
     "face_id": "sf024",
-    "name": "",
+    "name": "アイライト",
     "comment": "",
     "order": 80024
   }, {
     "_id": "sf025",
     "face_id": "sf025",
-    "name": "",
+    "name": "アマルテア",
     "comment": "",
-    "order": 80025
+    "order": 80006
   }, {
     "_id": "sf026",
     "face_id": "sf026",
-    "name": "",
+    "name": "ポーラ",
     "comment": "",
     "order": 80026
   }, {
-    "_id": "sf027",
-    "face_id": "sf027",
-    "name": "",
+    "_id": "sf022",
+    "face_id": "sf022",
+    "name": "チェビイ",
     "comment": "",
     "order": 80027
   }, {
-    "_id": "sf028",
-    "face_id": "sf028",
-    "name": "",
+    "_id": "sf027",
+    "face_id": "sf027",
+    "name": "モスキート",
     "comment": "",
     "order": 80028
   }, {
-    "_id": "sf029",
-    "face_id": "sf029",
-    "name": "",
+    "_id": "sf032",
+    "face_id": "sf032",
+    "name": "ワクラバ",
     "comment": "",
     "order": 80029
   }, {
-    "_id": "sf030",
-    "face_id": "sf030",
-    "name": "",
+    "_id": "sf028",
+    "face_id": "sf028",
+    "name": "コータ",
     "comment": "",
     "order": 80030
   }, {
-    "_id": "sf031",
-    "face_id": "sf031",
-    "name": "",
+    "_id": "sf029",
+    "face_id": "sf029",
+    "name": "ミツボシ",
     "comment": "",
     "order": 80031
   }, {
-    "_id": "sf032",
-    "face_id": "sf032",
-    "name": "",
+    "_id": "sf030",
+    "face_id": "sf030",
+    "name": "クレパスキュール",
     "comment": "",
     "order": 80032
+  }, {
+    "_id": "sf031",
+    "face_id": "sf031",
+    "name": "シルク",
+    "comment": "",
+    "order": 80033
   }
 ]);
 
@@ -5449,62 +5449,62 @@ Cache.rule.chr_job.merge([
     "chr_set_id": "sf"
   }, {
     "face_id": "sf021",
-    "job": "",
+    "job": "星間帆走",
     "_id": "sf_sf021",
     "chr_set_id": "sf"
   }, {
     "face_id": "sf022",
-    "job": "",
+    "job": "鉱滓地区",
     "_id": "sf_sf022",
     "chr_set_id": "sf"
   }, {
     "face_id": "sf023",
-    "job": "",
+    "job": "地下軌道",
     "_id": "sf_sf023",
     "chr_set_id": "sf"
   }, {
     "face_id": "sf024",
-    "job": "",
+    "job": "光彩楽団",
     "_id": "sf_sf024",
     "chr_set_id": "sf"
   }, {
     "face_id": "sf025",
-    "job": "",
+    "job": "救星隊",
     "_id": "sf_sf025",
     "chr_set_id": "sf"
   }, {
     "face_id": "sf026",
-    "job": "",
+    "job": "星先案内",
     "_id": "sf_sf026",
     "chr_set_id": "sf"
   }, {
     "face_id": "sf027",
-    "job": "",
+    "job": "鉱滓皇帝",
     "_id": "sf_sf027",
     "chr_set_id": "sf"
   }, {
     "face_id": "sf028",
-    "job": "",
+    "job": "溶接技師",
     "_id": "sf_sf028",
     "chr_set_id": "sf"
   }, {
     "face_id": "sf029",
-    "job": "",
+    "job": "機巧忍軍",
     "_id": "sf_sf029",
     "chr_set_id": "sf"
   }, {
     "face_id": "sf030",
-    "job": "",
+    "job": "閉鎖管理",
     "_id": "sf_sf030",
     "chr_set_id": "sf"
   }, {
     "face_id": "sf031",
-    "job": "",
+    "job": "意匠造形",
     "_id": "sf_sf031",
     "chr_set_id": "sf"
   }, {
     "face_id": "sf032",
-    "job": "",
+    "job": "鉱滓地区",
     "_id": "sf_sf032",
     "chr_set_id": "sf"
   }

@@ -682,8 +682,10 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.new_chr_faces : void 0) !
                 });
               });
               blank_attr = /sf\d\d\d/.test(o.face_id) ? {
-                style: 'background-color: #126'
-              } : {};
+                style: 'background-color: #126; min-height: 100px;'
+              } : {
+                style: 'min-height: 100px;'
+              };
               _results.push(m(".chrbox", {
                 key: o._id
               }, GUI.portrate(o.face_id, attr), m(".chrblank", blank_attr, m("div", m.trust(o.job)), m("div", m.trust(o.face.name)))));
@@ -1483,7 +1485,7 @@ GUI.if_exist("#headline", function(dom) {
         href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
       }, "morphe"), m("br"), "" + max_cafe + "村:", m("a", {
         href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
-      }, "cafe"), m("br"), m("br"), m("br")), m("td.no_choice", "wolf", m("br"), "ultimate", m("br"), "allstar", m("br"), "cabala", m("br")), m("td.no_choice", "role-play", m("br"), "RP-advance", m("br"), "" + max_vage + "村:", m("a", {
+      }, "cafe"), m("br"), m("br"), m("br")), m("td.no_choice", "wolf", m("br"), "ultimate", m("br"), "allstar", m("br"), m("br")), m("td.no_choice", "role-play", m("br"), "RP-advance", m("br"), "" + max_vage + "村:", m("a", {
         href: GAME.PERJURY.config.cfg.URL_SW + "/sow.cgi"
       }, "perjury"), m("br"), "" + max_xebec + "村:", m("a", {
         href: GAME.XEBEC.config.cfg.URL_SW + "/sow.cgi"
@@ -1505,9 +1507,7 @@ GUI.if_exist("#headline", function(dom) {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
       }, "ultimate"), m("br"), m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
-      }, "allstar"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
-      }, "cabala"), m("br")), m("td.no_choice", m("a", {
+      }, "allstar"), m("br"), m("br")), m("td.no_choice", m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
       }, "role-play"), m("br"), m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"

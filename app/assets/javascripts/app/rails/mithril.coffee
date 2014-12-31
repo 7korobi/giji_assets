@@ -877,7 +877,6 @@ GUI.if_exist "#headline", (dom)->
                 m "br"
                 "allstar"
                 m "br"
-                "cabala"
                 m "br"
               m "td.no_choice",
                 "role-play"
@@ -940,9 +939,6 @@ GUI.if_exist "#headline", (dom)->
                   href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
                 , "allstar"
                 m "br"
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
-                , "cabala"
                 m "br"
               m "td.no_choice", 
                 m "a",
