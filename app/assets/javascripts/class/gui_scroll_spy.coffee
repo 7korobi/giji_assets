@@ -86,7 +86,7 @@ class GUI.ScrollSpy
     else
       # TODO wait for network read.
 
-    size = 5 + Math.ceil(win.height * 3 / @avg_height)
+    size = 5 + Math.ceil(win.height * 4 / @avg_height)
 
     @tail = Math.min btm, idx + size
     head  = Math.max top, idx - size

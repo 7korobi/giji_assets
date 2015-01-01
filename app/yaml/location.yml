@@ -31,8 +31,8 @@ options:
   potofs_desc:
     current: desc
   potofs_hide:
-    type: Array
-    current: []
+    type: Keys
+    current: {}
 
   msg_ids:
     type: Array

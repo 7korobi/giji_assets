@@ -62,8 +62,6 @@ GUI.message = (->
 
       GUI.letter "", "設定",
         m.trust story.comment
-
-      JSON.stringify story
     ]
 
   ###

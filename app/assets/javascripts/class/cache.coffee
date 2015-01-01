@@ -250,7 +250,7 @@ class Cache.Rule
         @finder.scope = cb @finder.query.all
         set_scope = (key, finder, query_call)->
           finder.query.all[key] = (args...)->
-            finder.query["#{key}:#{args.join(',')}"] ?= query_call args...
+            finder.query["#{key}:#{JSON.stringify args}"] ?= query_call args...
         for key, query_call of @finder.scope
           set_scope(key, @finder, query_call)
 

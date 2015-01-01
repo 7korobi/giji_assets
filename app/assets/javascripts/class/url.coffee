@@ -106,16 +106,31 @@ class Url
 
   prop: (key)->
     unless Url.prop[key]
+      {type, current} = Url.options[key] || {}
+      prop_base = @prop.bind(@)
+      bind_base = Url.bind[key]
+      parser = Serial.parser[type]
+      type ?= "String"
       prop = m.prop()
+      bind = 
+        if bind_base
+          switch typeof bind_base
+            when "object"
+              (key, val, prop_field)->
+                for subkey, subval of bind_base[val]
+                  prop_field(subkey)(subval, true) if key != subkey
+                return
+            when "function"
+              bind_base
+        else
+          ->
+
       Url.prop[key] = (val, is_replace)=>
         if arguments.length
-          type = Url.options[key]?.type
-          val = Serial.parser[type](val)
+          val = parser(val)
 
           prop @data[key] = val
-          if Url.bind[key]?
-            for subkey, subval of Url.bind[key][val]
-              @prop(subkey)(subval, true) if key != subkey
+          bind(key, val, prop_base)
 
           if is_replace
             Url.replacestate()
@@ -127,7 +142,7 @@ class Url
           if value?
             value
           else
-            Url.options[key]?.current
+            current
 
     Url.prop[key]
 

@@ -1,8 +1,3 @@
-for key, binds of LOCATION.bind
-  LOCATION.bind[key] = {}
-  for bind in binds
-    LOCATION.bind[key][bind[key]] = bind
-
 
 with_throttle = (cb, delay)->
   _.throttle cb, delay,

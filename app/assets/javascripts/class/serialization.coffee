@@ -23,15 +23,29 @@ class Serial
           String(val).replace ///[~/=.&\?\#\[\]()\"'`;]///g, (s)->
             "%" + s.charCodeAt(0).toString(16)    
 
+  array_base = (val)->
+    if Array.isArray(val)
+      val
+    else
+      "#{val}".split "," 
+
   @parser = 
-    Array: (val)->
-      if val.split?
-        if val.length
-          val.split ","
-        else
-          []
+    Keys: (val)->
+      hash = {}
+      if val.length
+        list = array_base(val)
+        for key in list
+          hash[key] = true
       else
-        [val]
+        for key, bool of val
+          hash[key] = true if bool
+      hash
+
+    Array: (val)->
+      if val.length
+        array_base(val)
+      else
+        []
 
     Date: (code)->
       base = 1
@@ -54,8 +68,18 @@ class Serial
     undefined: string_parser
 
   @serializer = 
+    Keys: (val)->
+      list =
+        if Array.isArray(val)
+          val
+        else
+          for key, item of val
+            continue unless item
+            key
+      Serial.serializer.Array list.sort()
+
     Array: (val)->
-      if val.join?
+      if Array.isArray(val)
         val.join ","
       else
         "#{val}"
@@ -88,7 +112,9 @@ for key, func of Serial.parser
         "([-]?[\\.0-9]+)"
       when "Date"
         "([0-9a-zA-Z]+)"
-      when "Text", "Array"
+      when "Array", "Keys"
+        "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]*)"
+      when "Text"
         "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]*)"
       else
         "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]+)"
