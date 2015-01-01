@@ -271,7 +271,7 @@ GUI.if_exist "#buttons", (dom)->
           layout.dx = -1
 
       m "nav",
-        for icon in ["pin", "warning-empty", "sitemap", "stopwatch", "home", "chat-alt", "mail", "search", "pencil", "th-large", "cog"] # lock
+        for icon in ["pin", "warning", "sitemap", "stopwatch", "home", "chat-alt", "mail", "search", "pencil", "th-large", "cog"] # lock
           continue unless touch.menus[icon]
           m "div", touch.start(icon),
             m ".bigicon",
@@ -393,7 +393,7 @@ if gon?.potofs?
             m "h6", "スタイル"
             m "span",
               m "a.menuicon.icon-home", touch.btn(Url.prop.scope, "home"  ), " "
-              m "a.menuicon.icon-warning-empty", touch.btn(Url.prop.scope, "action"), " "
+              m "a.menuicon.icon-warning", touch.btn(Url.prop.scope, "action"), " "
               m "a.menuicon.icon-chat-alt", touch.btn(Url.prop.scope, "talk"  ), " "
               m "a.menuicon.icon-mail", touch.btn(Url.prop.scope, "memo"  ), " "
 
@@ -583,9 +583,9 @@ if gon?.events? && gon.event?
         potofs_portrates(touch)
 
 
-    touch.badge "warning-empty", ->
+    touch.badge "warning", ->
       messages.warning(Url.prop).list().length
-    touch.icon "warning-empty", -> 
+    touch.icon "warning", -> 
       Url.prop.scope "warning"
       m ".pagenavi.choice.guide.form-inline",
         m "h6", "警報"
