@@ -41,11 +41,30 @@ new Cache.Rule("message").schema ->
       all
       .where (o)-> updated_at <= o.updated_at && ! hides[o.face_id]
 
-  @deploy (o)-> 
+  @deploy (o)->
+    logtype = o.logid[0..1]
+    lognumber = o.logid[2..-1]
+    switch o.mestype
+      when "QUEUE"
+        o.mestype = "SAY"
+    switch logtype
+      when "IS"
+        o.logid = "II#{lognumber}"
+      when "iS"
+        o.logid = "iI#{lognumber}"
+      when "CS"
+        o.logid = "cI#{lognumber}"
+      when "DS"
+        o.mestype = "DELETED"
+      when "TS"
+        o.mestype = "TSAY"
+    # legacy support
+
     o._id = o.event_id + "-" + o.logid
-    anchor_num  = o.logid[2..-1] - 0 || 0
+    anchor_num = o.logid[2..-1] - 0 || 0
     o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
     o.pen = "#{o.logid[0..1]}-#{o.face_id}"
+    o.potof_id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
 
     o.updated_at ?= new Date(o.date) - 0
     o.updated_timer ?= new Timer o.updated_at,
@@ -61,13 +80,13 @@ new Cache.Rule("message").schema ->
         when o.logid.match /^potofs/
           vdom = GUI.potofs
           bit.CAST
-        when o.logid.match /^I./
+        when o.logid.match /^.I/
           vdom = GUI.message.info
           bit.TALK | bit.INFO
-        when o.logid.match /^[SX]./
+        when o.logid.match /^.[SX]/
           vdom = GUI.message.talk
           bit.TALK
-        when o.logid.match /^[M]./
+        when o.logid.match /^.[M]/
           vdom = GUI.message.memo
           bit.MEMO
         else
@@ -90,14 +109,18 @@ new Cache.Rule("message").schema ->
 
     o.show &=
       switch
-        when o.logid.match /^([D].\d+)/
+        when o.logid.match /^vilinfo/
+          mask.ALL
+        when o.logid.match /^potofs/
+          mask.ALL
+        when o.logid.match /^[D]./
           mask.DELETE
-        when o.logid.match /^([Ti].\d+)/
+        when o.logid.match /^[Ti]./
           mask.THINK
-        when o.logid.match /^([\-WPX].\d+)/
+        when o.logid.match /^[\-WPX]./
           mask.CLAN
         else
-          mask.ALL
+          mask.OPEN
 
     o.vdom = vdom
 
@@ -108,10 +131,9 @@ new Cache.Rule("message").schema ->
 
   @map_reduce (o, emit)->
     has_face[o.face_id] = true
-    item = 
-      max: o.updated_at
-      min: o.updated_at
 
-    emit "event", o.event_id, item
-    emit "pen", o.pen, item
+    emit "event", o.event_id,
+      max: o.updated_at
+    emit "pen", o.pen,
+      max: o.updated_at
 
