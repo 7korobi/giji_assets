@@ -65,21 +65,27 @@ class GUI.TouchMenu
       @end ->
         state false
 
-  btn: (prop, key, serializer)->
-    state = @state
+  basic_btn = (state, prop, key, cb)->
     GUI.attrs ->
       if prop
         @end ->
           state false
           prop key
         val = prop()
-        if serializer
-          key = serializer key
-          val = serializer val
-        if key == val
+        if cb(key, val)
           @className "btn btn-success"
         else
           @className "btn btn-default"
+
+  btn: (prop, key, serializer)-> 
+    basic_btn @state, prop, key, (key, val)->
+      if serializer
+        key = serializer key
+        val = serializer val
+      key == val
+
+  toggle: (prop)->
+    basic_btn @state, prop, !prop(), (key, val)-> val
 
   badge: (@icon_key, badge_cb)->
     if badge_cb?

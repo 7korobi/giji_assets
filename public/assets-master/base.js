@@ -1720,27 +1720,6 @@ GUI.message = (function() {
     "seance":{},
     "turn":0,
      */
-    event: function(event, story) {
-      var event_card, modes;
-      delete event.messages;
-      event_card = RAILS.events[event.event];
-      modes = [];
-      if (event.turn === event.grudge) {
-        modes.push(RAILS.event_state.grudge);
-      }
-      if (event.turn === event.riot) {
-        modes.push(RAILS.event_state.riot);
-      }
-      if (event.turn === event.scapegoat) {
-        modes.push(RAILS.event_state.scapegoat);
-      }
-      if (_.find(event.eclipse, event.turn)) {
-        modes.push(RAILS.event_state.eclipse);
-      }
-      return m(".MAKER.guide", {
-        key: event._id
-      }, GUI.letter(event.winner + ".head", event.name, RAILS.winner[event.winner] + "の勝利です。", m("br"), event_card ? m("kbd", event_card) : void 0));
-    },
     potofs: function(v) {
       return m("div", ".U.C");
     },
@@ -1988,7 +1967,7 @@ GUI.ScrollSpy = (function() {
 var __slice = [].slice;
 
 GUI.TouchMenu = (function() {
-  var menu_of;
+  var basic_btn, menu_of;
 
   TouchMenu.icons = new TouchMenu;
 
@@ -2082,9 +2061,7 @@ GUI.TouchMenu = (function() {
     });
   };
 
-  TouchMenu.prototype.btn = function(prop, key, serializer) {
-    var state;
-    state = this.state;
+  basic_btn = function(state, prop, key, cb) {
     return GUI.attrs(function() {
       var val;
       if (prop) {
@@ -2093,16 +2070,28 @@ GUI.TouchMenu = (function() {
           return prop(key);
         });
         val = prop();
-        if (serializer) {
-          key = serializer(key);
-          val = serializer(val);
-        }
-        if (key === val) {
+        if (cb(key, val)) {
           return this.className("btn btn-success");
         } else {
           return this.className("btn btn-default");
         }
       }
+    });
+  };
+
+  TouchMenu.prototype.btn = function(prop, key, serializer) {
+    return basic_btn(this.state, prop, key, function(key, val) {
+      if (serializer) {
+        key = serializer(key);
+        val = serializer(val);
+      }
+      return key === val;
+    });
+  };
+
+  TouchMenu.prototype.toggle = function(prop) {
+    return basic_btn(this.state, prop, !prop(), function(key, val) {
+      return val;
     });
   };
 
@@ -2278,7 +2267,7 @@ Hilitor = function(id, tag) {
 var ID, Serial, func, key, _ref;
 
 Serial = (function() {
-  var array_base, c, n, string_parser, string_serializer, _i, _len, _ref;
+  var array_base_parser, c, n, string_parser, string_serializer, _i, _len, _ref;
 
   function Serial() {}
 
@@ -2319,7 +2308,7 @@ Serial = (function() {
     }
   };
 
-  array_base = function(val) {
+  array_base_parser = function(val) {
     if (Array.isArray(val)) {
       return val;
     } else {
@@ -2332,7 +2321,7 @@ Serial = (function() {
       var bool, hash, key, list, _j, _len1;
       hash = {};
       if (val.length) {
-        list = array_base(val);
+        list = array_base_parser(val);
         for (_j = 0, _len1 = list.length; _j < _len1; _j++) {
           key = list[_j];
           hash[key] = true;
@@ -2349,7 +2338,7 @@ Serial = (function() {
     },
     Array: function(val) {
       if (val.length) {
-        return array_base(val);
+        return array_base_parser(val);
       } else {
         return [];
       }
@@ -2369,8 +2358,17 @@ Serial = (function() {
       }
       return result;
     },
-    Bool: function(str) {
-      return str === "T";
+    Bool: function(val) {
+      switch (val) {
+        case true:
+        case "T":
+          return true;
+        case false:
+        case "F":
+          return false;
+        default:
+          return Number.NaN;
+      }
     },
     Number: Number,
     Text: string_parser,
@@ -2728,7 +2726,6 @@ Url = (function() {
         type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
         _this.keys.push(key);
         _this.keys_in_url.push(key);
-        _this.parse(key);
         return Serial.url[type];
       };
     })(this), "i"));
@@ -2751,7 +2748,7 @@ Url = (function() {
     this.match = this.scanner.exec(path);
     if (this.match) {
       this.match.shift();
-      _ref = this.keys;
+      _ref = this.keys_in_url;
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         key = _ref[i];
         val = decodeURI(this.match[i]);
@@ -2759,7 +2756,7 @@ Url = (function() {
       }
       this.params = Object.keys(this.data);
       if (typeof (_base = this.options).change === "function") {
-        _base.change(this.data);
+        _base.change(this.data, this.prop.bind(this));
       }
     }
     return Url.replacestate();
@@ -2807,7 +2804,7 @@ Url = (function() {
         if (bind_base) {
           switch (typeof bind_base) {
             case "object":
-              return function(key, val, prop_field) {
+              return function(val, prop_field) {
                 var subkey, subval, _ref1;
                 _ref1 = bind_base[val];
                 for (subkey in _ref1) {
@@ -2830,7 +2827,7 @@ Url = (function() {
           if (arguments.length) {
             val = parser(val);
             prop(_this.data[key] = val);
-            bind(key, val, prop_base);
+            bind(val, prop_base);
             if (is_replace) {
               return Url.replacestate();
             } else {
@@ -2848,32 +2845,6 @@ Url = (function() {
       })(this);
     }
     return Url.prop[key];
-  };
-
-  Url.prototype.parse = function(key) {
-    var obj, subkey, subval, value, _ref, _results;
-    this.prop(key);
-    if (Url.bind[key] != null) {
-      _ref = Url.bind[key];
-      _results = [];
-      for (value in _ref) {
-        obj = _ref[value];
-        _results.push((function() {
-          var _results1;
-          _results1 = [];
-          for (subkey in obj) {
-            subval = obj[subkey];
-            if (!Url.prop[subkey]) {
-              _results1.push(this.parse(subkey));
-            } else {
-              _results1.push(void 0);
-            }
-          }
-          return _results1;
-        }).call(this));
-      }
-      return _results;
-    }
   };
 
   Url.prototype.set_cookie = function(value) {

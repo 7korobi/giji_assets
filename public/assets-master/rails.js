@@ -14,18 +14,6 @@ for (key in _ref) {
 
 Url.bind = LOCATION.bind;
 
-Url.bind.scroll = function(__, scroll, prop) {
-  var folder, logid, turn, vid, _ref1;
-  _ref1 = scroll.split("-"), folder = _ref1[0], vid = _ref1[1], turn = _ref1[2], logid = _ref1[3];
-  if (logid != null) {
-    prop("event_id")("" + folder + "-" + vid + "-" + turn, true);
-    prop("message_id")("" + folder + "-" + vid + "-" + turn + "-" + logid, true);
-  } else {
-    prop("event_id");
-    prop("message_id");
-  }
-};
-
 Url.routes = {
   pathname: {
     events: new Url("/:story_id/file")
@@ -50,7 +38,19 @@ Url.routes = {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
     scroll: new Url("scroll=:scroll", {
-      unmatch: "?"
+      unmatch: "?",
+      change: function(params, prop) {
+        var folder, logid, turn, vid, _ref2;
+        GUI.ScrollSpy.global.prop = Url.prop.scroll;
+        _ref2 = params.scroll.split("-"), folder = _ref2[0], vid = _ref2[1], turn = _ref2[2], logid = _ref2[3];
+        if (logid != null) {
+          prop("event_id")("" + folder + "-" + vid + "-" + turn, true);
+          prop("message_id")("" + folder + "-" + vid + "-" + turn + "-" + logid, true);
+        } else {
+          prop("event_id");
+          prop("message_id");
+        }
+      }
     }),
     css: new Url("css=:theme~:width~:layout~:font", {
       cookie: {
@@ -58,7 +58,7 @@ Url.routes = {
         path: "/"
       },
       unmatch: "?",
-      change: function(params) {
+      change: function(params, prop) {
         var h, val, _ref2;
         h = {};
         for (key in params) {
@@ -66,6 +66,9 @@ Url.routes = {
           if ((key != null) && (val != null) && "String" === (((_ref2 = Url.options[key]) != null ? _ref2.type : void 0) || "String")) {
             h["" + val + "-" + key] = true;
           }
+        }
+        if (!prop("human")()) {
+          h["no-player"] = true;
         }
         GUI.header(Object.keys(h));
         return window.requestAnimationFrame(function() {
@@ -334,11 +337,34 @@ new Cache.Rule("message").schema(function() {
     };
   });
   this.deploy(function(o) {
-    var anchor_num, vdom;
+    var anchor_num, lognumber, logtype, vdom;
+    logtype = o.logid.slice(0, 2);
+    lognumber = o.logid.slice(2);
+    switch (o.mestype) {
+      case "QUEUE":
+        o.mestype = "SAY";
+    }
+    switch (logtype) {
+      case "IS":
+        o.logid = "II" + lognumber;
+        break;
+      case "iS":
+        o.logid = "iI" + lognumber;
+        break;
+      case "CS":
+        o.logid = "cI" + lognumber;
+        break;
+      case "DS":
+        o.mestype = "DELETED";
+        break;
+      case "TS":
+        o.mestype = "TSAY";
+    }
     o._id = o.event_id + "-" + o.logid;
     anchor_num = o.logid.slice(2) - 0 || 0;
     o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
     o.pen = "" + o.logid.slice(0, 2) + "-" + o.face_id;
+    o.potof_id = "" + o.event_id + "-" + o.csid + "-" + o.face_id;
     if (o.updated_at == null) {
       o.updated_at = new Date(o.date) - 0;
     }
@@ -357,13 +383,13 @@ new Cache.Rule("message").schema(function() {
         case !o.logid.match(/^potofs/):
           vdom = GUI.potofs;
           return bit.CAST;
-        case !o.logid.match(/^I./):
+        case !o.logid.match(/^.I/):
           vdom = GUI.message.info;
           return bit.TALK | bit.INFO;
-        case !o.logid.match(/^[SX]./):
+        case !o.logid.match(/^.[SX]/):
           vdom = GUI.message.talk;
           return bit.TALK;
-        case !o.logid.match(/^[M]./):
+        case !o.logid.match(/^.[M]/):
           vdom = GUI.message.memo;
           return bit.MEMO;
         default:
@@ -388,14 +414,18 @@ new Cache.Rule("message").schema(function() {
     }
     o.show &= (function() {
       switch (false) {
-        case !o.logid.match(/^([D].\d+)/):
+        case !o.logid.match(/^vilinfo/):
+          return mask.ALL;
+        case !o.logid.match(/^potofs/):
+          return mask.ALL;
+        case !o.logid.match(/^[D]./):
           return mask.DELETE;
-        case !o.logid.match(/^([Ti].\d+)/):
+        case !o.logid.match(/^[Ti]./):
           return mask.THINK;
-        case !o.logid.match(/^([\-WPX].\d+)/):
+        case !o.logid.match(/^[\-WPX]./):
           return mask.CLAN;
         default:
-          return mask.ALL;
+          return mask.OPEN;
       }
     })();
     o.vdom = vdom;
@@ -404,14 +434,13 @@ new Cache.Rule("message").schema(function() {
   has_face = {};
   Cache.messages.has_face = has_face;
   return this.map_reduce(function(o, emit) {
-    var item;
     has_face[o.face_id] = true;
-    item = {
-      max: o.updated_at,
-      min: o.updated_at
-    };
-    emit("event", o.event_id, item);
-    return emit("pen", o.pen, item);
+    emit("event", o.event_id, {
+      max: o.updated_at
+    });
+    return emit("pen", o.pen, {
+      max: o.updated_at
+    });
   });
 });
 new Cache.Rule("potof").schema(function() {
@@ -445,7 +474,7 @@ new Cache.Rule("potof").schema(function() {
     };
   });
   this.deploy(function(o) {
-    var is_dead_lose, is_lone_lose, mask, name, pt, pt_no, role, role_text, roles, rolestate, said_num, say_type, select, stat_at, stat_order, stat_type, state, text, text_str, urge, win, win_juror, win_love, win_result, win_side_order, win_zombie, winner, zombie, _i, _len, _ref;
+    var chr_job, is_dead_lose, is_lone_lose, job, mask, name, pt, pt_no, role, role_text, roles, rolestate, said_num, say_type, select, stat_at, stat_order, stat_type, state, text, text_str, urge, win, win_juror, win_love, win_result, win_side_order, win_zombie, winner, zombie, _i, _len, _ref;
     o._id = "" + o.event_id + "-" + o.csid + "-" + o.face_id;
     name = o.zapcount ? "" + RAILS.clearance[o.clearance] + o.name + "-" + o.zapcount : o.name;
     stat_at = 0 < o.deathday ? "" + o.deathday + "日" : "";
@@ -592,9 +621,11 @@ new Cache.Rule("potof").schema(function() {
       select: [select, win_side_order, role_text, text_str],
       text: [text_str, win_side_order, role_text, select]
     };
+    chr_job = Cache.chr_jobs.find("" + (o.csid.toLowerCase()) + "_" + o.face_id);
+    job = chr_job ? chr_job.job : "***";
     return o.view = {
       portrate: GUI.portrate(o.face_id),
-      job: Cache.chr_jobs.find("" + (o.csid.toLowerCase()) + "_" + o.face_id).job,
+      job: job,
       sow_auth_id: m("kbd", o.sow_auth_id),
       stat_at: stat_at,
       stat_type: stat_type,
@@ -615,7 +646,7 @@ new Cache.Rule("potof").schema(function() {
     return has_face[o.face_id] = o;
   });
 });
-var face, messages, potofs_portrates, scroll_spy, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6,
+var face, messages, potofs_portrates, scroll_spy, security_modes, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6,
   __slice = [].slice;
 
 Cache.potofs.has_faces = {
@@ -646,7 +677,7 @@ Cache.potofs.has_faces = {
 
 GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
 
-scroll_spy = new GUI.ScrollSpy(Url.prop.scroll);
+scroll_spy = GUI.ScrollSpy.global;
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.chr_set.schema(function() {
@@ -1081,7 +1112,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
         if (layout.large_mode) {
           layout.width += Url.prop.w();
         }
-        filter = m("div", m("h6", "スタイル"), m("span", m("a.menuicon.icon-home", touch.btn(Url.prop.scope, "home"), " "), m("a.menuicon.icon-warning", touch.btn(Url.prop.scope, "action"), " "), m("a.menuicon.icon-chat-alt", touch.btn(Url.prop.scope, "talk"), " "), m("a.menuicon.icon-mail", touch.btn(Url.prop.scope, "memo"), " ")));
+        filter = m("div", m("h6", "スタイル"));
         potofs = m("table.potofs", m("tfoot.head", m("tr.center", m("th[colspan=2]", m("sup", "(スクロールします。)")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_at"), "日程")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_type"), "状態")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "said_num"), "発言")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "pt"), "残り")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "urge"), "促")), m("th", m("span.icon-user", " ")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "select"), "希望")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_result"), "勝敗")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_side"), "陣営")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "role"), "役割")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "text"), "補足")))), m("tbody", wide_attr, (function() {
           var _i, _len, _ref7, _results;
           _ref7 = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
@@ -1113,6 +1144,11 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       home = _arg.home;
       return Cache.messages.home(home());
     },
+    warning: function(_arg) {
+      var event_id, potofs_hide;
+      event_id = _arg.event_id, potofs_hide = _arg.potofs_hide;
+      return Cache.messages.warning(event_id(), potofs_hide());
+    },
     after: function(_arg) {
       var potofs_hide, scroll, updated_at, _ref7;
       scroll = _arg.scroll, potofs_hide = _arg.potofs_hide;
@@ -1128,12 +1164,10 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       var memo, potofs_hide, search, uniq;
       memo = _arg.memo, uniq = _arg.uniq, potofs_hide = _arg.potofs_hide, search = _arg.search;
       return Cache.messages.memo(memo(), uniq(), potofs_hide(), search());
-    },
-    warning: function(_arg) {
-      var event_id, potofs_hide;
-      event_id = _arg.event_id, potofs_hide = _arg.potofs_hide;
-      return Cache.messages.warning(event_id(), potofs_hide());
     }
+  };
+  security_modes = function(touch, prop) {
+    return [m("a", touch.btn(prop, "all"), "すべて"), m("a", touch.btn(prop, "think"), "独り言/内緒話"), m("a", touch.btn(prop, "clan"), "仲間の会話"), m("a", touch.btn(prop, "open"), "公開情報のみ"), m.trust("&nbsp;"), m("a", touch.toggle(Url.prop.open), "公開情報"), m("a", touch.toggle(Url.prop.human), "/*中の人*/")];
   };
   potofs_portrates = function(touch) {
     var attr, hides, o, potofs;
@@ -1193,15 +1227,6 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var event;
-        event = Cache.events.find(Url.prop.event_id());
-        if (event != null) {
-          touch.icon("sitemap", function() {
-            return m(".pagenavi.choice.guide.form-inline", m("h6", "ステータス"), GUI.message.event(event, story), potofs_portrates(touch));
-          });
-        } else {
-          touch.icon("sitemap");
-        }
         if (story != null) {
           switch (Url.prop.scope()) {
             case "home":
@@ -1242,7 +1267,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       var _ref7;
       Url.prop.scope("talk");
       Url.prop.scroll((_ref7 = messages.talk(Url.prop).list().first) != null ? _ref7._id : void 0);
-      return m(".pagenavi.choice.guide.form-inline", m("h6", "発言"), m("p", "村内の発言を表示します。"), potofs_portrates(touch));
+      return m(".pagenavi.choice.guide.form-inline", m("h6", "発言"), security_modes(touch, Url.prop.talk), m("p", "村内の発言を表示します。"), potofs_portrates(touch));
     });
     touch.badge("mail", function() {
       var prop;
@@ -1263,14 +1288,49 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       var _ref7;
       Url.prop.scope("memo");
       Url.prop.scroll((_ref7 = messages.memo(Url.prop).list().first) != null ? _ref7._id : void 0);
-      return m(".pagenavi.choice.guide.form-inline", m("h6", "メモ"), m("p", "メモを表示します。"), potofs_portrates(touch));
+      return m(".pagenavi.choice.guide.form-inline", m("h6", "メモ"), security_modes(touch, Url.prop.memo), m("p", "メモを表示します。"), potofs_portrates(touch));
     });
     touch.badge("warning", function() {
       return messages.warning(Url.prop).list().length;
     });
     touch.icon("warning", function() {
+      var event, event_card, text, texts;
+      event = Cache.events.find(Url.prop.event_id());
       Url.prop.scope("warning");
-      return m(".pagenavi.choice.guide.form-inline", m("h6", "警報"), m("p", "アラートを表示します。"), potofs_portrates(touch));
+      if (event) {
+        event_card = RAILS.events[event.event];
+        texts = [];
+        if ("WIN_NONE" !== event.winner) {
+          texts.push(RAILS.winner[event.winner] + "の勝利です。");
+        }
+        if (event_card) {
+          texts.push(m("kbd", event_card));
+        }
+        if (event.turn === event.grudge) {
+          texts.push(RAILS.event_state.grudge);
+        }
+        if (event.turn === event.riot) {
+          texts.push(RAILS.event_state.riot);
+        }
+        if (event.turn === event.scapegoat) {
+          texts.push(RAILS.event_state.scapegoat);
+        }
+        if (_.find(event.eclipse, event.turn)) {
+          texts.push(RAILS.event_state.eclipse);
+        }
+        texts.push("アラートを表示します。");
+        return m(".pagenavi.choice.guide.form-inline", m("h6", "警報"), m("div." + event.winner, m("h3.mesname", m("b", event.name)), (function() {
+          var _i, _len, _results;
+          _results = [];
+          for (_i = 0, _len = texts.length; _i < _len; _i++) {
+            text = texts[_i];
+            _results.push(m("p.text", text));
+          }
+          return _results;
+        })()), potofs_portrates(touch));
+      } else {
+        return m(".pagenavi.choice.guide.form-inline", m("h6", "警報"), m("div.WIN_NONE", m("h3.mesname")), potofs_portrates(touch));
+      }
     });
     touch.icon("pencil", function() {});
     touch.icon("search", function() {

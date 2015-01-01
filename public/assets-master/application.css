@@ -8842,15 +8842,16 @@ ul.inline li {
 /* line 11, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/mithril.css.scss */
 hr.black {
   border-color: black;
+  margin: 2px;
 }
 
-/* line 15, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/mithril.css.scss */
+/* line 16, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/mithril.css.scss */
 div > .menuicon {
   padding-top: 3px;
   font-size: 2em;
 }
 
-/* line 20, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/mithril.css.scss */
+/* line 21, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/mithril.css.scss */
 .bigicon {
   padding: 6px;
   font-size: 48px;

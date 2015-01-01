@@ -6,16 +6,6 @@ for key, binds of LOCATION.bind
     LOCATION.bind[key][bind[key]] = bind
 Url.bind = LOCATION.bind
 
-Url.bind.scroll = (__, scroll, prop)->
-  [folder, vid, turn, logid] = scroll.split("-")
-  if logid?
-    prop("event_id")   "#{folder}-#{vid}-#{turn}", true
-    prop("message_id") "#{folder}-#{vid}-#{turn}-#{logid}", true
-  else
-    prop("event_id")
-    prop("message_id")
-  return
-
 Url.routes =
   pathname:
     events: new Url "/:story_id/file"
@@ -39,16 +29,29 @@ Url.routes =
 
     scroll: new Url "scroll=:scroll",
       unmatch: "?"
+      change: (params, prop)->
+        GUI.ScrollSpy.global.prop = Url.prop.scroll
+
+        [folder, vid, turn, logid] = params.scroll.split("-")
+        if logid?
+          prop("event_id")   "#{folder}-#{vid}-#{turn}", true
+          prop("message_id") "#{folder}-#{vid}-#{turn}-#{logid}", true
+        else
+          prop("event_id")
+          prop("message_id")
+        return
 
     css: new Url "css=:theme~:width~:layout~:font",
       cookie:
         time: 12
         path: "/"
       unmatch: "?"
-      change: (params)->
+      change: (params, prop)->
         h = {}
         for key, val of params
           h["#{val}-#{key}"] = true if key? && val? && "String" == ((Url.options[key]?.type) || "String")
+        unless prop("human")()
+          h["no-player"] = true
         GUI.header Object.keys(h)
         window.requestAnimationFrame ->
           GUI.Layout.resize()

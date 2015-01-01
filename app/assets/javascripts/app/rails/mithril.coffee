@@ -13,7 +13,7 @@ Cache.potofs.has_faces =
       face_id
 
 GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll)
-scroll_spy = new GUI.ScrollSpy(Url.prop.scroll)
+scroll_spy = GUI.ScrollSpy.global
 
 
 if gon?.map_reduce?.faces?
@@ -391,11 +391,6 @@ if gon?.potofs?
         filter = 
           m "div",
             m "h6", "スタイル"
-            m "span",
-              m "a.menuicon.icon-home", touch.btn(Url.prop.scope, "home"  ), " "
-              m "a.menuicon.icon-warning", touch.btn(Url.prop.scope, "action"), " "
-              m "a.menuicon.icon-chat-alt", touch.btn(Url.prop.scope, "talk"  ), " "
-              m "a.menuicon.icon-mail", touch.btn(Url.prop.scope, "memo"  ), " "
 
         potofs = 
           m "table.potofs",
@@ -459,6 +454,8 @@ if gon?.events? && gon.event?
   messages =
     home: ({home})->
       Cache.messages.home(home())
+    warning: ({event_id, potofs_hide})->
+      Cache.messages.warning(event_id(), potofs_hide())
     after: ({scroll, potofs_hide})->
       updated_at = Cache.messages.find(scroll())?.updated_at || 0
       Cache.messages.after(updated_at, potofs_hide())
@@ -466,8 +463,17 @@ if gon?.events? && gon.event?
       Cache.messages.talk(event_id(), talk(), open(), potofs_hide(), search())
     memo: ({memo, uniq, potofs_hide, search})->
       Cache.messages.memo(memo(), uniq(), potofs_hide(), search())
-    warning: ({event_id, potofs_hide})->
-      Cache.messages.warning(event_id(), potofs_hide())
+
+  security_modes = (touch, prop)->
+    [
+      m "a", touch.btn(prop, "all"),   "すべて"
+      m "a", touch.btn(prop, "think"), "独り言/内緒話"
+      m "a", touch.btn(prop, "clan"),  "仲間の会話"
+      m "a", touch.btn(prop, "open"),  "公開情報のみ"
+      m.trust "&nbsp;"
+      m "a", touch.toggle(Url.prop.open),  "公開情報"      
+      m "a", touch.toggle(Url.prop.human), "/*中の人*/"
+    ]
 
   potofs_portrates = (touch)->
     potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
@@ -518,16 +524,6 @@ if gon?.events? && gon.event?
     m.module dom,
       controller: ->
       view: ->
-        event = Cache.events.find Url.prop.event_id()
-        if event?
-          touch.icon "sitemap", ->
-            m ".pagenavi.choice.guide.form-inline",
-              m "h6", "ステータス"
-              GUI.message.event event, story
-              potofs_portrates(touch)
-        else
-          touch.icon "sitemap"
-
         if story?
           switch Url.prop.scope()
             when "home"
@@ -564,6 +560,7 @@ if gon?.events? && gon.event?
       Url.prop.scroll messages.talk(Url.prop).list().first?._id
       m ".pagenavi.choice.guide.form-inline",
         m "h6", "発言"
+        security_modes touch, Url.prop.talk
         m "p", "村内の発言を表示します。"
         potofs_portrates(touch)
 
@@ -579,6 +576,7 @@ if gon?.events? && gon.event?
       Url.prop.scroll messages.memo(Url.prop).list().first?._id
       m ".pagenavi.choice.guide.form-inline",
         m "h6", "メモ"
+        security_modes touch, Url.prop.memo
         m "p", "メモを表示します。"
         potofs_portrates(touch)
 
@@ -586,11 +584,36 @@ if gon?.events? && gon.event?
     touch.badge "warning", ->
       messages.warning(Url.prop).list().length
     touch.icon "warning", -> 
+      event = Cache.events.find Url.prop.event_id()
       Url.prop.scope "warning"
-      m ".pagenavi.choice.guide.form-inline",
-        m "h6", "警報"
-        m "p", "アラートを表示します。"
-        potofs_portrates(touch)
+
+      if event
+        event_card = RAILS.events[event.event]
+
+        texts = []
+        texts.push RAILS.winner[event.winner] + "の勝利です。" if "WIN_NONE" != event.winner
+        texts.push m "kbd", event_card if event_card
+        texts.push RAILS.event_state.grudge    if event.turn == event.grudge 
+        texts.push RAILS.event_state.riot      if event.turn == event.riot 
+        texts.push RAILS.event_state.scapegoat if event.turn == event.scapegoat 
+        texts.push RAILS.event_state.eclipse   if _.find event.eclipse, event.turn
+        texts.push "アラートを表示します。"
+
+        m ".pagenavi.choice.guide.form-inline",
+          m "h6", "警報"
+          m "div.#{event.winner}",
+            m "h3.mesname",
+              m "b", event.name
+            for text in texts
+              m "p.text", text
+          potofs_portrates(touch)
+
+      else
+        m ".pagenavi.choice.guide.form-inline",
+          m "h6", "警報"
+          m "div.WIN_NONE",
+            m "h3.mesname"
+          potofs_portrates(touch)
 
 
     touch.icon "pencil", -> # 書き込み

@@ -23,7 +23,7 @@ class Serial
           String(val).replace ///[~/=.&\?\#\[\]()\"'`;]///g, (s)->
             "%" + s.charCodeAt(0).toString(16)    
 
-  array_base = (val)->
+  array_base_parser = (val)->
     if Array.isArray(val)
       val
     else
@@ -33,7 +33,7 @@ class Serial
     Keys: (val)->
       hash = {}
       if val.length
-        list = array_base(val)
+        list = array_base_parser(val)
         for key in list
           hash[key] = true
       else
@@ -43,7 +43,7 @@ class Serial
 
     Array: (val)->
       if val.length
-        array_base(val)
+        array_base_parser(val)
       else
         []
 
@@ -58,8 +58,14 @@ class Serial
         base *= Serial.map.size
       result
 
-    Bool: (str)->
-      str == "T"
+    Bool: (val)->
+      switch val
+        when true, "T"
+          true
+        when false, "F"
+          false
+        else
+          Number.NaN
 
     Number: Number
     Text: string_parser

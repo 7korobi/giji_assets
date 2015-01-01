@@ -59,7 +59,6 @@ class Url
       type = Url.options[key]?.type
       @keys.push key
       @keys_in_url.push key
-      @parse key
 
       Serial.url[type]
     , "i"
@@ -72,12 +71,12 @@ class Url
     @match = @scanner.exec(path)
     if @match
       @match.shift()
-      for key, i in @keys
+      for key, i in @keys_in_url
         val = decodeURI @match[i]
         @prop(key)(val, true)
 
       @params = Object.keys @data
-      @options.change?(@data)
+      @options.change?(@data, @prop.bind(@))
     Url.replacestate()
 
   pushstate: (path, target)->
@@ -116,7 +115,7 @@ class Url
         if bind_base
           switch typeof bind_base
             when "object"
-              (key, val, prop_field)->
+              (val, prop_field)->
                 for subkey, subval of bind_base[val]
                   prop_field(subkey)(subval, true) if key != subkey
                 return
@@ -124,13 +123,12 @@ class Url
               bind_base
         else
           ->
-
       Url.prop[key] = (val, is_replace)=>
         if arguments.length
           val = parser(val)
 
           prop @data[key] = val
-          bind(key, val, prop_base)
+          bind(val, prop_base)
 
           if is_replace
             Url.replacestate()
@@ -145,14 +143,6 @@ class Url
             current
 
     Url.prop[key]
-
-  parse: (key)->
-    @prop(key)
-
-    if Url.bind[key]?
-      for value, obj of Url.bind[key]
-        for subkey, subval of obj
-          @parse(subkey) unless Url.prop[subkey]
 
   set_cookie: (value)->
     ary = [value]
