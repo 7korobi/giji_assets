@@ -77,6 +77,9 @@ new Cache.Rule("story").schema ->
     o.order = o.folder + GUI.field(o.vid, 4)
     o.rating = "default" unless o.rating
     o.card.role = _.difference o.card.config, all_events
+
+    o.type.game ?= "TABULA"
+    o.type.mob  ?= "visiter"
     o.view = 
       rating:
         m "img",

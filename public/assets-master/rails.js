@@ -217,12 +217,18 @@ new Cache.Rule("story").schema(function() {
   };
   all_events = Object.keys(RAILS.events);
   this.deploy(function(o) {
-    var _ref, _ref1;
+    var _base, _base1, _ref, _ref1;
     o.order = o.folder + GUI.field(o.vid, 4);
     if (!o.rating) {
       o.rating = "default";
     }
     o.card.role = _.difference(o.card.config, all_events);
+    if ((_base = o.type).game == null) {
+      _base.game = "TABULA";
+    }
+    if ((_base1 = o.type).mob == null) {
+      _base1.mob = "visiter";
+    }
     o.view = {
       rating: m("img", {
         src: GUI.img_head + ("/icon/cd_" + o.rating + ".png")
@@ -961,7 +967,7 @@ GUI.if_exist("#buttons", function(dom) {
       }
       return m("nav", (function() {
         var _i, _len, _ref1, _results;
-        _ref1 = ["pin", "warning-empty", "sitemap", "stopwatch", "home", "chat-alt", "mail", "search", "pencil", "th-large", "cog"];
+        _ref1 = ["pin", "warning", "sitemap", "stopwatch", "home", "chat-alt", "mail", "search", "pencil", "th-large", "cog"];
         _results = [];
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           icon = _ref1[_i];
@@ -1075,7 +1081,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
         if (layout.large_mode) {
           layout.width += Url.prop.w();
         }
-        filter = m("div", m("h6", "スタイル"), m("span", m("a.menuicon.icon-home", touch.btn(Url.prop.scope, "home"), " "), m("a.menuicon.icon-warning-empty", touch.btn(Url.prop.scope, "action"), " "), m("a.menuicon.icon-chat-alt", touch.btn(Url.prop.scope, "talk"), " "), m("a.menuicon.icon-mail", touch.btn(Url.prop.scope, "memo"), " ")));
+        filter = m("div", m("h6", "スタイル"), m("span", m("a.menuicon.icon-home", touch.btn(Url.prop.scope, "home"), " "), m("a.menuicon.icon-warning", touch.btn(Url.prop.scope, "action"), " "), m("a.menuicon.icon-chat-alt", touch.btn(Url.prop.scope, "talk"), " "), m("a.menuicon.icon-mail", touch.btn(Url.prop.scope, "memo"), " ")));
         potofs = m("table.potofs", m("tfoot.head", m("tr.center", m("th[colspan=2]", m("sup", "(スクロールします。)")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_at"), "日程")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_type"), "状態")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "said_num"), "発言")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "pt"), "残り")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "urge"), "促")), m("th", m("span.icon-user", " ")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "select"), "希望")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_result"), "勝敗")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_side"), "陣営")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "role"), "役割")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "text"), "補足")))), m("tbody", wide_attr, (function() {
           var _i, _len, _ref7, _results;
           _ref7 = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
@@ -1259,10 +1265,10 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       Url.prop.scroll((_ref7 = messages.memo(Url.prop).list().first) != null ? _ref7._id : void 0);
       return m(".pagenavi.choice.guide.form-inline", m("h6", "メモ"), m("p", "メモを表示します。"), potofs_portrates(touch));
     });
-    touch.badge("warning-empty", function() {
+    touch.badge("warning", function() {
       return messages.warning(Url.prop).list().length;
     });
-    touch.icon("warning-empty", function() {
+    touch.icon("warning", function() {
       Url.prop.scope("warning");
       return m(".pagenavi.choice.guide.form-inline", m("h6", "警報"), m("p", "アラートを表示します。"), potofs_portrates(touch));
     });

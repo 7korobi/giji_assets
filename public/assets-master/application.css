@@ -7642,7 +7642,7 @@ img {
 
 /* '歯' */
 /* line 127, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/icon.css.scss */
-.icon-warning-empty:before {
+.icon-warning:before {
   content: '\6ce8';
 }
 
