@@ -1,79 +1,20 @@
+Cache.potofs.has_faces =
+  all:    -> 
+    delete Cache.messages.has_face.undefined
+    delete Cache.messages.has_face.null
+    delete Cache.messages.has_face.admin
+    delete Cache.messages.has_face.maker
+    Object.keys(Cache.messages.has_face).sort()
+  potofs: ->
+    Object.keys(Cache.potofs.has_face).sort()
+  others: -> 
+    for face_id in Cache.potofs.has_faces.all()
+      continue if Cache.potofs.has_face[face_id]
+      face_id
+
 GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll)
 scroll_spy = new GUI.ScrollSpy(Url.prop.scroll)
 
-if gon?.new_chr_faces? && gon?.new_chr_jobs?
-  Cache.faces._hash.t12.item.order = 100000
-
-  Cache.rule.face.merge    gon.new_chr_faces
-  Cache.rule.chr_job.merge gon.new_chr_jobs
-  chrs = Cache.chr_jobs.where(chr_set_id:"sf").sort(false, (o)-> o.face.order ).list()
-
-  links =
-    "アルミニウム赤泥流出事故": "http://ja.wikipedia.org/wiki/ハンガリーアルミニウム赤泥流出事故"
-    "未来ロードマップ": "http://forevision.jp/wiki/?未来ロードマップ"
-    "蒼井印の創作忍者bot": "https://twitter.com/Aonnj_bot"
-    "宇宙人": "http://ja.wikipedia.org/wiki/宇宙人"
-    "創世記": "http://ja.wikipedia.org/wiki/創世記"
-    "ケイ素生物": "http://ja.wikipedia.org/wiki/ケイ素生物"
-    "赤ちゃん命名辞典": "http://www.baby-name.jp"
-    "架空の人名": "http://ja.wikipedia.org/wiki/Category:架空の人物"
-  setTimeout ->
-    Cache.chr_jobs._hash.all_t12.item.chr_set_id = "sf"
-    Cache.chr_jobs._hash.all_c71.item.chr_set_id = "sf"
-    Cache.faces._hash.sf15.item.order  = 21 - 0.1
-    Cache.faces._hash.sf10.item.order  = 21 + 0.1
-    Cache.faces._hash.sf028.item.order = 22 - 0.1
-    Cache.faces._hash.sf027.item.order = 22 + 0.1
-    Cache.faces._hash.sf032.item.order = 22 + 0.2
-    Cache.faces._hash.sf16.item.order  = 22 + 0.3
-    Cache.faces._hash.t12.item.order   = 23 - 0.1
-    Cache.faces._hash.sf06.item.order  = 25 - 0.1
-    Cache.faces._hash.c71.item.order   = 26 - 0.1
-    Cache.faces._hash.sf04.item.order  = 29 - 0.1
-    Cache.faces._hash.sf05.item.order  = 29 + 0.1
-    Cache.faces._hash.sf20.item.order  = 30 - 0.1
-    Cache.faces._hash.sf07.item.order  = 30 + 0.1
-    Cache.faces._hash.sf024.item.order = 31 - 0.2
-    Cache.faces._hash.sf08.item.order  = 31 - 0.1
-    Cache.rule.chr_job.reject []
-
-    chrs = Cache.chr_jobs.where(chr_set_id:"sf").sort(false, (o)-> o.face.order ).list()
-    m.redraw()
-  , 10000
-  GUI.if_exist "#map_faces", (dom)->
-    m.module dom,
-      controller: ->
-      view: ->  
-        [ 
-          m "h6", "参考文献"
-          m ".paragraph",
-            for title, link of links
-              m "a.btn.btn-default.mark", {href: link, target: "_blank"}, title 
-          m "hr.black" 
-          m ".mark", "明後日の道標 〜 新人さん歓迎パーティー"
-          m "h6", "１０秒経つと、親近感のある人たちが新人さんのまわりに集まります。"
-          m "h6", "いま記述のある新人さんの肩書、名前は仮のものです。"
-          m "h6", ""
-          for o in chrs
-            attr = GUI.attrs ->
-              elem = null
-              @over -> GUI.Animate.jelly.up elem
-              @out ->  GUI.Animate.jelly.down elem
-              @config (_elem)-> elem = _elem
-
-            blank_attr = 
-              if /sf\d\d\d/.test(o.face_id)
-                {style: 'background-color: #126; min-height: 100px;'}
-              else
-                {style: 'min-height: 100px;'}
-
-            m ".chrbox", {key: o._id},
-              GUI.portrate o.face_id, attr
-              m ".chrblank", blank_attr,
-                m "div", m.trust o.job
-                m "div", m.trust o.face.name
-          m "hr.black"
-        ]
 
 if gon?.map_reduce?.faces?
   Cache.rule.chr_set.schema ->
@@ -434,6 +375,7 @@ if gon?.potofs?
     m.module dom,
       controller: ->
       view: ->
+        hides = Url.prop.potofs_hide()
         layout.width = win.width - Url.prop.w() - 4
         switch Url.prop.layout()
           when "right"
@@ -473,7 +415,12 @@ if gon?.potofs?
                 m "th", m "a", toggle_desc(Url.prop.potofs_order, "text"),       "補足"
             m "tbody", wide_attr,
               for o in Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
-                m "tr.",
+                filter_class = 
+                  if hides[o.face_id]
+                    "filter-hide"
+                  else
+                    ""
+                m "tr", {className: filter_class},
                   m "th.calc", {}, o.view.job
                   m "th", {}, o.name
                   m "td.calc", {}, o.view.stat_at
@@ -488,9 +435,7 @@ if gon?.potofs?
                   m "td.WIN_#{o.view.win}", {}, o.view.role
                   m "td.WIN_#{o.view.win}", {}, o.view.text
 
-        event_id = Url.prop.scroll()?.split("-")[0..2].join("-")
-        event = Cache.events.find event_id
-
+        event = Cache.events.find Url.prop.event_id()
         m "div",
           if event?
             m ".sayfilter_heading", event.name
@@ -517,21 +462,44 @@ if gon?.events? && gon.event?
     after: ({scroll, potofs_hide})->
       updated_at = Cache.messages.find(scroll())?.updated_at || 0
       Cache.messages.after(updated_at, potofs_hide())
-    talk: ({talk, open, potofs_hide, search})->
-      Cache.messages.talk(talk(), open(), potofs_hide(), search())
+    talk: ({event_id, talk, open, potofs_hide, search})->
+      Cache.messages.talk(event_id(), talk(), open(), potofs_hide(), search())
     memo: ({memo, uniq, potofs_hide, search})->
       Cache.messages.memo(memo(), uniq(), potofs_hide(), search())
-    warning: ({potofs_hide})->
-      Cache.messages.warning(potofs_hide())
+    warning: ({event_id, potofs_hide})->
+      Cache.messages.warning(event_id(), potofs_hide())
 
-  potofs_portrates = ->
+  potofs_portrates = (touch)->
     potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
-    GUI.portrates potofs, "キャラクターフィルタ", ->
-      elem = null
-      @over -> GUI.Animate.jelly.up elem
-      @out ->  GUI.Animate.jelly.down elem
-      @config (_elem)-> elem = _elem
+    hides = Url.prop.potofs_hide()
 
+    [ m "h6", "キャラクターフィルタ"
+      m "hr.black" 
+      m ".chrbox", {key: "other-buttons"},
+        m ".chrblank", {style: "min-height: 179px; margin-top: 1px"},
+          m ".mark[style='display:block']", touch.btn(Url.prop.potofs_hide, [],                             Serial.serializer.Keys), "全員表示"
+          m ".mark[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.others(),Serial.serializer.Keys), "参加者表示"
+          m ".mark[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.potofs(),Serial.serializer.Keys), "その他を表示"
+          m ".mark[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.all(),   Serial.serializer.Keys), "全員隠す"
+      for o in potofs
+        attr = (o)->
+          GUI.attrs ->
+            @className(if hides[o.face_id] then "filter-hide" else "")
+
+            elem = null
+            @config (_elem)-> elem = _elem
+            @over -> GUI.Animate.jelly.up elem
+            @out -> GUI.Animate.jelly.down elem
+            @end ->
+              hides[o.face_id] = ! hides[o.face_id]
+              Url.prop.potofs_hide hides
+
+        m ".chrbox", {key: o._id},
+          GUI.portrate o.face_id, attr(o)
+          m ".chrblank",
+            m "div", o.name
+      m "hr.black"
+    ]
 
   GUI.if_exist "#story", (dom)->
     story = gon.story
@@ -545,20 +513,18 @@ if gon?.events? && gon.event?
       m ".pagenavi.choice.guide.form-inline",
         m "h6", "村の情報"
         m "p", "村に関する情報、アナウンスを表示します。"
-        potofs_portrates()
+        potofs_portrates(touch)
 
     m.module dom,
       controller: ->
       view: ->
-        event_id = Url.prop.scroll()?.split("-")[0..2].join("-")
-        event = Cache.events.find event_id
-
+        event = Cache.events.find Url.prop.event_id()
         if event?
           touch.icon "sitemap", ->
             m ".pagenavi.choice.guide.form-inline",
               m "h6", "ステータス"
               GUI.message.event event, story
-              potofs_portrates()
+              potofs_portrates(touch)
         else
           touch.icon "sitemap"
 
@@ -576,6 +542,7 @@ if gon?.events? && gon.event?
       # Url.prop.scope "pin"
       # Url.prop.scroll messages.pin(Url.prop).list().first?._id
 
+
     touch.badge "stopwatch", ->
       messages.after(Url.prop).list().length
     touch.icon "stopwatch", -> # 新着
@@ -583,39 +550,51 @@ if gon?.events? && gon.event?
       m ".pagenavi.choice.guide.form-inline",
         m "h6", "新着状況"
         m "p", "今見ている発言より新しい、新着情報を表示します。"
-        potofs_portrates()
+        potofs_portrates(touch)
+
 
     touch.badge "chat-alt", ->
-      Cache.messages.talk("all", true, [], "").list().length
+      prop = _.merge {}, Url.prop,
+        talk: -> "all"
+        open: -> true
+        search: -> ""
+      messages.talk(prop).list().length
     touch.icon "chat-alt", -> # 発言
       Url.prop.scope "talk"
       Url.prop.scroll messages.talk(Url.prop).list().first?._id
       m ".pagenavi.choice.guide.form-inline",
         m "h6", "発言"
         m "p", "村内の発言を表示します。"
-        potofs_portrates()
+        potofs_portrates(touch)
+
 
     touch.badge "mail", ->
-      Cache.messages.memo("all", true, [], "").list().length
+      prop = _.merge {}, Url.prop,
+        memo: -> "all"
+        uniq: -> true
+        search: -> ""
+      messages.memo(prop).list().length
     touch.icon "mail", -> # メモ
       Url.prop.scope "memo"
       Url.prop.scroll messages.memo(Url.prop).list().first?._id
       m ".pagenavi.choice.guide.form-inline",
         m "h6", "メモ"
         m "p", "メモを表示します。"
-        potofs_portrates()
+        potofs_portrates(touch)
 
 
     touch.badge "warning-empty", ->
-      Cache.messages.warning([]).list().length
+      messages.warning(Url.prop).list().length
     touch.icon "warning-empty", -> 
       Url.prop.scope "warning"
       m ".pagenavi.choice.guide.form-inline",
         m "h6", "警報"
         m "p", "アラートを表示します。"
-        potofs_portrates()
+        potofs_portrates(touch)
+
 
     touch.icon "pencil", -> # 書き込み
+
 
     touch.icon "search", -> # 検索
       m ".pagenavi.choice.guide.form-inline",
@@ -624,7 +603,8 @@ if gon?.events? && gon.event?
           onblur:   m.withAttr("value", Url.prop.search)
           onchange: m.withAttr("value", Url.prop.search)
           value: Url.prop.search()
-        potofs_portrates()
+        potofs_portrates(touch)
+
 
     m.module dom,
       controller: ->
@@ -640,7 +620,10 @@ if gon?.events? && gon.event?
           o.updated_timer ?= new Timer o.updated_at,
             prop: ->
           delete o.date
-          o.vdom(o)
+          if o.vdom
+            o.vdom(o)
+          else
+            m ".paragraph", JSON.stringify o
 
     m.startComputation()
     setTimeout ->
