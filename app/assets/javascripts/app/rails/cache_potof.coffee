@@ -122,9 +122,11 @@ new Cache.Rule("potof").schema ->
       select: [select, win_side_order, role_text, text_str]
       text:   [text_str, win_side_order, role_text, select]
 
+    chr_job = Cache.chr_jobs.find("#{o.csid.toLowerCase()}_#{o.face_id}")
+    job = if chr_job then chr_job.job else "***"
     o.view = 
       portrate: GUI.portrate o.face_id
-      job: Cache.chr_jobs.find("#{o.csid.toLowerCase()}_#{o.face_id}").job
+      job: job
       sow_auth_id: m "kbd", o.sow_auth_id
       stat_at: stat_at
       stat_type: stat_type
