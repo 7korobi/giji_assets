@@ -860,7 +860,7 @@ Cache.Rule = (function() {
             return finder.query.all[key] = function() {
               var args, _base, _name;
               args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-              return (_base = finder.query)[_name = "" + key + ":" + (args.join(','))] != null ? _base[_name] : _base[_name] = query_call.apply(null, args);
+              return (_base = finder.query)[_name = "" + key + ":" + (JSON.stringify(args))] != null ? _base[_name] : _base[_name] = query_call.apply(null, args);
             };
           };
           _ref = _this.finder.scope;
@@ -1364,23 +1364,6 @@ GUI = {
     var head, style, vdom;
     style = arguments[0], head = arguments[1], vdom = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
     return [m("h3.mesname", m("b", head)), m("p.text." + style, vdom)];
-  },
-  portrates: function(chrs, headline, attr_cb) {
-    var attr, o;
-    return [
-      m("hr.black"), m("h6", headline), (function() {
-        var _i, _len, _results;
-        _results = [];
-        for (_i = 0, _len = chrs.length; _i < _len; _i++) {
-          o = chrs[_i];
-          attr = GUI.attrs(attr_cb);
-          _results.push(m(".chrbox", {
-            key: o._id
-          }, GUI.portrate(o.face_id, attr), m(".chrblank", m("div", o.name))));
-        }
-        return _results;
-      })(), m("hr.black")
-    ];
   }
 };
 GUI.Animate = (function() {
@@ -1726,7 +1709,7 @@ GUI.message = (function() {
             _results.push(m("li", option.help));
           }
           return _results;
-        })())), GUI.letter("head", "" + story.view.player_length + "人の配役設定", m("div", roletable), m("div", m("code", "事件"), story.view.event_cards), m("div", m("code", "役職"), story.view.role_cards), m("div", m("code", "見物人"), m("kbd", mob.caption), "" + mob.HELP)), m("span.mes_date.pull-right", "managed by ", m("kbd", story.sow_auth_id)), GUI.letter("", "設定", m.trust(story.comment)), JSON.stringify(story)
+        })())), GUI.letter("head", "" + story.view.player_length + "人の配役設定", m("div", roletable), m("div", m("code", "事件"), story.view.event_cards), m("div", m("code", "役職"), story.view.role_cards), m("div", m("code", "見物人"), m("kbd", mob.caption), "" + mob.HELP)), m("span.mes_date.pull-right", "managed by ", m("kbd", story.sow_auth_id)), GUI.letter("", "設定", m.trust(story.comment))
       ]);
     },
 
@@ -1929,7 +1912,7 @@ GUI.ScrollSpy = (function() {
     } else {
 
     }
-    size = 5 + Math.ceil(win.height * 3 / this.avg_height);
+    size = 5 + Math.ceil(win.height * 4 / this.avg_height);
     this.tail = Math.min(btm, idx + size);
     head = Math.max(top, idx - size);
     if (5 < Math.abs(this.head - head)) {
@@ -2099,16 +2082,22 @@ GUI.TouchMenu = (function() {
     });
   };
 
-  TouchMenu.prototype.btn = function(prop, key) {
+  TouchMenu.prototype.btn = function(prop, key, serializer) {
     var state;
     state = this.state;
     return GUI.attrs(function() {
+      var val;
       if (prop) {
         this.end(function() {
           state(false);
           return prop(key);
         });
-        if (key === prop()) {
+        val = prop();
+        if (serializer) {
+          key = serializer(key);
+          val = serializer(val);
+        }
+        if (key === val) {
           return this.className("btn btn-success");
         } else {
           return this.className("btn btn-default");
@@ -2289,7 +2278,7 @@ Hilitor = function(id, tag) {
 var ID, Serial, func, key, _ref;
 
 Serial = (function() {
-  var c, n, string_parser, string_serializer, _i, _len, _ref;
+  var array_base, c, n, string_parser, string_serializer, _i, _len, _ref;
 
   function Serial() {}
 
@@ -2330,16 +2319,39 @@ Serial = (function() {
     }
   };
 
+  array_base = function(val) {
+    if (Array.isArray(val)) {
+      return val;
+    } else {
+      return ("" + val).split(",");
+    }
+  };
+
   Serial.parser = {
-    Array: function(val) {
-      if (val.split != null) {
-        if (val.length) {
-          return val.split(",");
-        } else {
-          return [];
+    Keys: function(val) {
+      var bool, hash, key, list, _j, _len1;
+      hash = {};
+      if (val.length) {
+        list = array_base(val);
+        for (_j = 0, _len1 = list.length; _j < _len1; _j++) {
+          key = list[_j];
+          hash[key] = true;
         }
       } else {
-        return [val];
+        for (key in val) {
+          bool = val[key];
+          if (bool) {
+            hash[key] = true;
+          }
+        }
+      }
+      return hash;
+    },
+    Array: function(val) {
+      if (val.length) {
+        return array_base(val);
+      } else {
+        return [];
       }
     },
     Date: function(code) {
@@ -2368,8 +2380,28 @@ Serial = (function() {
   };
 
   Serial.serializer = {
+    Keys: function(val) {
+      var item, key, list;
+      list = (function() {
+        var _results;
+        if (Array.isArray(val)) {
+          return val;
+        } else {
+          _results = [];
+          for (key in val) {
+            item = val[key];
+            if (!item) {
+              continue;
+            }
+            _results.push(key);
+          }
+          return _results;
+        }
+      })();
+      return Serial.serializer.Array(list.sort());
+    },
     Array: function(val) {
-      if (val.join != null) {
+      if (Array.isArray(val)) {
         return val.join(",");
       } else {
         return "" + val;
@@ -2414,8 +2446,10 @@ for (key in _ref) {
         return "([-]?[\\.0-9]+)";
       case "Date":
         return "([0-9a-zA-Z]+)";
-      case "Text":
       case "Array":
+      case "Keys":
+        return "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]*)";
+      case "Text":
         return "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]*)";
       default:
         return "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]+)";
@@ -2759,25 +2793,44 @@ Url = (function() {
   };
 
   Url.prototype.prop = function(key) {
-    var prop;
+    var bind, bind_base, current, parser, prop, prop_base, type, _ref;
     if (!Url.prop[key]) {
+      _ref = Url.options[key] || {}, type = _ref.type, current = _ref.current;
+      prop_base = this.prop.bind(this);
+      bind_base = Url.bind[key];
+      parser = Serial.parser[type];
+      if (type == null) {
+        type = "String";
+      }
       prop = m.prop();
+      bind = (function() {
+        if (bind_base) {
+          switch (typeof bind_base) {
+            case "object":
+              return function(key, val, prop_field) {
+                var subkey, subval, _ref1;
+                _ref1 = bind_base[val];
+                for (subkey in _ref1) {
+                  subval = _ref1[subkey];
+                  if (key !== subkey) {
+                    prop_field(subkey)(subval, true);
+                  }
+                }
+              };
+            case "function":
+              return bind_base;
+          }
+        } else {
+          return function() {};
+        }
+      })();
       Url.prop[key] = (function(_this) {
         return function(val, is_replace) {
-          var subkey, subval, type, value, _ref, _ref1, _ref2;
+          var value;
           if (arguments.length) {
-            type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
-            val = Serial.parser[type](val);
+            val = parser(val);
             prop(_this.data[key] = val);
-            if (Url.bind[key] != null) {
-              _ref1 = Url.bind[key][val];
-              for (subkey in _ref1) {
-                subval = _ref1[subkey];
-                if (key !== subkey) {
-                  _this.prop(subkey)(subval, true);
-                }
-              }
-            }
+            bind(key, val, prop_base);
             if (is_replace) {
               return Url.replacestate();
             } else {
@@ -2788,7 +2841,7 @@ Url = (function() {
             if (value != null) {
               return value;
             } else {
-              return (_ref2 = Url.options[key]) != null ? _ref2.current : void 0;
+              return current;
             }
           }
         };

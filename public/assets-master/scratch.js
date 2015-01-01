@@ -31,17 +31,7 @@ Url.routes = {
     })
   }
 };
-var bind, binds, key, with_throttle, _i, _len, _ref;
-
-_ref = LOCATION.bind;
-for (key in _ref) {
-  binds = _ref[key];
-  LOCATION.bind[key] = {};
-  for (_i = 0, _len = binds.length; _i < _len; _i++) {
-    bind = binds[_i];
-    LOCATION.bind[key][bind[key]] = bind;
-  }
-}
+var with_throttle;
 
 with_throttle = function(cb, delay) {
   return _.throttle(cb, delay, {
