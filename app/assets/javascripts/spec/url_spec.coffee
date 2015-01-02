@@ -1,4 +1,4 @@
-Url.bind =
+url_bind =
   fname:
     jasmine:
       fname: "jasmine"
@@ -7,7 +7,7 @@ Url.bind =
       fname: "other"
       title: "変更"
 
-Url.options =
+url_props =
   aaa:
     current: 1
     type: "Number"
@@ -29,6 +29,8 @@ Url.options =
   title:
     current: null
     type: "String"
+
+Url.define url_props, url_bind
 
 Url.routes =
   pathname:

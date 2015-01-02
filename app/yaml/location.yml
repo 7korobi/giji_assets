@@ -1,5 +1,5 @@
 
-options:
+props:
   scroll:
     type: Text
     current: ""
@@ -20,7 +20,9 @@ options:
   item:
   color:
   title:
+  nation:
 
+  message_id:
   event_id:
   story_id:
   mode_id:

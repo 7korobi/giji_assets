@@ -1,16 +1,9 @@
-Url.options = LOCATION.options
-
-for key, binds of LOCATION.bind
-  LOCATION.bind[key] = {}
-  for bind in binds
-    LOCATION.bind[key][bind[key]] = bind
-Url.bind = LOCATION.bind
-
+Url.define LOCATION.props, LOCATION.bind
 Url.routes =
   pathname:
     events: new Url "/:story_id/file"
-  pathname:
     story:  new Url "/:story_id.html"
+
   search:
     faces: new Url "faces=:chr_set~:order~:search",
       unmatch: gon?.map_reduce?.faces? && "?"
@@ -29,16 +22,13 @@ Url.routes =
 
     scroll: new Url "scroll=:scroll",
       unmatch: "?"
-      change: (params, prop)->
+      change: (params)->
         GUI.ScrollSpy.global.prop = Url.prop.scroll
 
         [folder, vid, turn, logid] = params.scroll.split("-")
         if logid?
-          prop("event_id")   "#{folder}-#{vid}-#{turn}", true
-          prop("message_id") "#{folder}-#{vid}-#{turn}-#{logid}", true
-        else
-          prop("event_id")
-          prop("message_id")
+          Url.prop.event_id  "#{folder}-#{vid}-#{turn}", true
+          Url.prop.message_id "#{folder}-#{vid}-#{turn}-#{logid}", true
         return
 
     css: new Url "css=:theme~:width~:layout~:font",
@@ -46,13 +36,12 @@ Url.routes =
         time: 12
         path: "/"
       unmatch: "?"
-      change: (params, prop)->
-        h = {}
-        for key, val of params
-          h["#{val}-#{key}"] = true if key? && val? && "String" == ((Url.options[key]?.type) || "String")
-        unless prop("human")()
-          h["no-player"] = true
-        GUI.header Object.keys(h)
+      change: (params)->
+        list = 
+          for key in ["theme", "width", "layout", "font", "w", "item", "color"]
+            "#{Url.prop[key]()}-#{key}"
+        list.push "no-player" unless Url.prop.human()
+        GUI.header list
         window.requestAnimationFrame ->
           GUI.Layout.resize()
 

@@ -12,6 +12,56 @@ class Url
     search:   location.search
     hash:     location.hash
 
+  @define = (bind_table...)->
+    do_define = (key, option)->
+      {type, current} = option
+      bind_base = Url.bind[key]
+      parser = Serial.parser[type]
+      prop = m.prop()
+      bind = 
+        if bind_base
+          switch typeof bind_base
+            when "object"
+              binder = {}
+              for bind in bind_base
+                binder[bind[key]] = bind
+              (val)->
+                for subkey, subval of binder[val]
+                  console.log [subkey, subval, binder[val]] unless Url.prop[subkey]
+                  Url.prop[subkey](subval, true) if key != subkey
+                return
+            when "function"
+              bind_base
+        else
+          ->
+      Url.prop[key] = (val, is_replace)=>
+        if arguments.length
+          val = parser(val)
+
+          prop val
+          bind(val)
+
+          if is_replace
+            Url.replacestate()
+          else
+            Url.pushstate()
+
+        else
+          value = prop()
+          if value?
+            value
+          else
+            current
+
+    props = bind_table[0]
+    bind_table[0] = {}
+    Url.bind = _.merge(bind_table...)
+    Url.options = props
+    for key, prop_option of props
+      props[key] = prop_option = {} unless prop_option
+      prop_option.type ?= "String"
+      do_define key, prop_option
+
   @each = (cb)->
     Url.routes.cookie = Url.cookie
     targets = Url.location()
@@ -47,17 +97,13 @@ class Url
     link.protocol + "//" + link.host + link.pathname + link.search + link.hash
 
   constructor: (@format, @options = {})->
-    @keys = []
     @keys_in_url = []
-
-    @data = {}
 
     if @options.cookie
       Url.cookie[ID.now()] = @
 
     @scanner = new RegExp @format.replace(/[.]/ig,(key)-> "\\#{key}" ).replace /:([a-z_]+)/ig, (_, key)=>
       type = Url.options[key]?.type
-      @keys.push key
       @keys_in_url.push key
 
       Serial.url[type]
@@ -67,16 +113,16 @@ class Url
     Url.prop[key]() for key in @keys_in_url
 
   popstate: (path, target)->
-    @data = {}
+    data = {}
     @match = @scanner.exec(path)
     if @match
       @match.shift()
       for key, i in @keys_in_url
         val = decodeURI @match[i]
-        @prop(key)(val, true)
+        data[key] = val
+        Url.prop[key](val, true)
 
-      @params = Object.keys @data
-      @options.change?(@data, @prop.bind(@))
+      @options.change?(data)
     Url.replacestate()
 
   pushstate: (path, target)->
@@ -99,50 +145,9 @@ class Url
     path = @format
     for key in @keys_in_url
       type = Url.options[key]?.type
-      val = @prop(key)()
+      val = Url.prop[key]()
       path = path.replace ///:#{key}///ig, Serial.serializer[type](val)
     path 
-
-  prop: (key)->
-    unless Url.prop[key]
-      {type, current} = Url.options[key] || {}
-      prop_base = @prop.bind(@)
-      bind_base = Url.bind[key]
-      parser = Serial.parser[type]
-      type ?= "String"
-      prop = m.prop()
-      bind = 
-        if bind_base
-          switch typeof bind_base
-            when "object"
-              (val, prop_field)->
-                for subkey, subval of bind_base[val]
-                  prop_field(subkey)(subval, true) if key != subkey
-                return
-            when "function"
-              bind_base
-        else
-          ->
-      Url.prop[key] = (val, is_replace)=>
-        if arguments.length
-          val = parser(val)
-
-          prop @data[key] = val
-          bind(val, prop_base)
-
-          if is_replace
-            Url.replacestate()
-          else
-            Url.pushstate()
-
-        else
-          value = prop()
-          if value?
-            value
-          else
-            current
-
-    Url.prop[key]
 
   set_cookie: (value)->
     ary = [value]
