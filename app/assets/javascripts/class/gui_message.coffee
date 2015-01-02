@@ -11,11 +11,37 @@ GUI.message = (->
         @start (e)->
           console.log [id, uri, protocol, host, path]
 
-  story: (story)->
+  game: (story, event)->
+    roletable = RAILS.roletable[story.type.roletable]
     mob = RAILS.mob[story.type.mob]
+
+    [ GUI.letter "", story.view.game_rule,
+        m "ul.note", 
+          m.trust RAILS.game_rule[story.type.game].HELP
+        m "ul.note",
+          for option_id in story.options
+            option = RAILS.options[option_id]
+            continue unless option
+            m "li", option.help
+      
+      GUI.letter "", "#{roletable} / #{story.view.player_length}人",
+        m "div",
+          m "code", "事件"
+          story.view.event_cards
+
+        m "div",
+          m "code", "役職"
+          story.view.role_cards
+
+        m "div",
+          m "code", mob.CAPTION
+          m "kbd", "#{mob.HELP}"
+
+    ]
+
+  story: (story)->
     rating = RAILS.rating[story.rating]
     saycnt = RAILS.saycnt[story.type.say] || {}
-    roletable = RAILS.roletable[story.type.roletable]
 
     m ".ADMIN.guide", {key: story._id}, [
       GUI.letter "head", story.name,
@@ -31,37 +57,11 @@ GUI.message = (->
           m "code", "更新"
           story.view.update_at + "(" + story.view.update_interval + "ごと)"
 
-
-      GUI.letter "", story.view.game_rule,
-        m "ul.note", 
-          m.trust RAILS.game_rule[story.type.game].HELP
-        m "ul.note",
-          for option_id in story.options
-            option = RAILS.options[option_id]
-            continue unless option
-            m "li", option.help
-
-      GUI.letter "head", "#{story.view.player_length}人の配役設定",
-        m "div", roletable
-        m "div",
-          m "code", "事件"
-          story.view.event_cards
-
-        m "div",
-          m "code", "役職"
-          story.view.role_cards
-
-        m "div",
-          m "code", "見物人"
-          m "kbd", mob.caption
-          "#{mob.HELP}"
-
+      GUI.letter "", "設定",
+        m.trust story.comment
       m "span.mes_date.pull-right", 
         "managed by "
         m "kbd", story.sow_auth_id
-
-      GUI.letter "", "設定",
-        m.trust story.comment
     ]
 
   ###

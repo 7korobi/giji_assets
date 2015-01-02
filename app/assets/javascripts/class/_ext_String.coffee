@@ -67,6 +67,9 @@ define String, ->
   unbr = (log)->
     log.replace /<br>/gm, (br)-> "\n"
 
+  nowrap = (log)->
+    log.replace /<br>|\n/gm, (br)-> " "
+
   unhtml = (log)->
     log.replace /&/g, "&amp;"
        .replace /</g, "&lt;"
@@ -82,6 +85,10 @@ define String, ->
   deco_text:
     get: ->
       space player anchor link random @
+
+  line_text:
+    get: ->
+      nowrap player anchor link random @
 
   undecolate:
     get: ->

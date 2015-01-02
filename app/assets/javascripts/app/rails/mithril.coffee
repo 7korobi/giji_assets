@@ -275,8 +275,8 @@ GUI.if_exist "#buttons", (dom)->
           continue unless touch.menus[icon]
           m "div", touch.start(icon),
             m ".bigicon",
-              m ".icon-#{icon}"
-            m ".badge.pull-right", touch.badge[icon]() if touch.badge[icon]?
+              m ".icon-#{icon}", {style: "opacity: 0.8"}, " "
+            m ".badge.pull-right", {style: "position:relative; margin-top: -5ex;"}, touch.badge[icon]() if touch.badge[icon]?
 
 
 
@@ -387,11 +387,22 @@ if gon?.potofs?
             layout.dx = -1
 
         layout.width += Url.prop.w() if layout.large_mode
+        message = Cache.messages.find Url.prop.scroll()
+        anchor = message?.anchor || ""
+        subview =
+          if message
+            [folder, vid, turn, logid] = Url.prop.scroll().split("-")
+            Cache.messages.search("#{logid},#{turn},").list()
+          else
+            []
 
         filter = 
-          m "div",
-            m "h6", "スタイル"
-
+          m "div", wide_attr,
+            m "h6", ">>#{anchor} 参照ログ"
+            for o in subview
+              m ".#{o.mestype}", {style: "white-space: nowrap; overflow: hidden;"},
+                m "kbd.line", "#{o.turn}:#{o.anchor}"
+                m "span.text", m.trust o.log.line_text
         potofs = 
           m "table.potofs",
             m "tfoot.head",
@@ -440,8 +451,7 @@ if gon?.potofs?
             m ".paragraph",
               m ".table-swipe.sayfilter_content", potofs
             m ".paragraph",
-              m ".sayfilter_content.form-inline",
-                m ".form-group", filter
+              m ".sayfilter_content.form-inline", filter
           m ".sayfilter_heading.bottom"
 
 
@@ -479,7 +489,8 @@ if gon?.events? && gon.event?
     potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
     hides = Url.prop.potofs_hide()
 
-    [ m "h6", "キャラクターフィルタ"
+    m ".chrlist",
+      m "h6", "キャラクターフィルタ"
       m "hr.black" 
       m ".chrbox", {key: "other-buttons"},
         m ".chrblank", {style: "min-height: 179px; margin-top: 1px"},
@@ -505,7 +516,6 @@ if gon?.events? && gon.event?
           m ".chrblank",
             m "div", o.name
       m "hr.black"
-    ]
 
   GUI.if_exist "#story", (dom)->
     story = gon.story
@@ -516,10 +526,11 @@ if gon?.events? && gon.event?
     touch.icon "home", -> # 情報
       Url.prop.scope "home"
       Url.prop.scroll messages.home(Url.prop).list().first?._id
-      m ".pagenavi.choice.guide.form-inline",
-        m "h6", "村の情報"
-        m "p", "村に関する情報、アナウンスを表示します。"
+      [ m ".pagenavi.choice.guide.form-inline",
+          m "h6", "村の情報"
+          m "p", "村に関する情報、アナウンスを表示します。"
         potofs_portrates(touch)
+      ]
 
     m.module dom,
       controller: ->
@@ -543,10 +554,11 @@ if gon?.events? && gon.event?
       messages.after(Url.prop).list().length
     touch.icon "stopwatch", -> # 新着
       Url.prop.scope "after"
-      m ".pagenavi.choice.guide.form-inline",
-        m "h6", "新着状況"
-        m "p", "今見ている発言より新しい、新着情報を表示します。"
+      [ m ".pagenavi.choice.guide.form-inline",
+          m "h6", "新着状況"
+          m "p", "今見ている発言より新しい、新着情報を表示します。"
         potofs_portrates(touch)
+      ]
 
 
     touch.badge "chat-alt", ->
@@ -558,11 +570,12 @@ if gon?.events? && gon.event?
     touch.icon "chat-alt", -> # 発言
       Url.prop.scope "talk"
       Url.prop.scroll messages.talk(Url.prop).list().first?._id
-      m ".pagenavi.choice.guide.form-inline",
-        m "h6", "発言"
-        security_modes touch, Url.prop.talk
-        m "p", "村内の発言を表示します。"
+      [ m ".pagenavi.choice.guide.form-inline",
+          m "h6", "発言"
+          security_modes touch, Url.prop.talk
+          m "p", "村内の発言を表示します。"
         potofs_portrates(touch)
+      ]
 
 
     touch.badge "mail", ->
@@ -574,16 +587,18 @@ if gon?.events? && gon.event?
     touch.icon "mail", -> # メモ
       Url.prop.scope "memo"
       Url.prop.scroll messages.memo(Url.prop).list().first?._id
-      m ".pagenavi.choice.guide.form-inline",
-        m "h6", "メモ"
-        security_modes touch, Url.prop.memo
-        m "p", "メモを表示します。"
+      [ m ".pagenavi.choice.guide.form-inline",
+          m "h6", "メモ"
+          security_modes touch, Url.prop.memo
+          m "p", "メモを表示します。"
         potofs_portrates(touch)
+      ]
 
 
     touch.badge "warning", ->
       messages.warning(Url.prop).list().length
     touch.icon "warning", -> 
+      story = gon.story
       event = Cache.events.find Url.prop.event_id()
       Url.prop.scope "warning"
 
@@ -597,45 +612,44 @@ if gon?.events? && gon.event?
         texts.push RAILS.event_state.riot      if event.turn == event.riot 
         texts.push RAILS.event_state.scapegoat if event.turn == event.scapegoat 
         texts.push RAILS.event_state.eclipse   if _.find event.eclipse, event.turn
-        texts.push "アラートを表示します。"
 
-        m ".pagenavi.choice.guide.form-inline",
-          m "h6", "警報"
-          m "div.#{event.winner}",
-            m "h3.mesname",
-              m "b", event.name
-            for text in texts
-              m "p.text", text
+        [ m ".choice.guide.form-inline",
+            m "h6", "ゲーム情報"
+            m "div.#{event.winner}",
+              m "h3.mesname",
+                m "b", event.name
+              for text in texts
+                m "p.text", text
+              GUI.message.game story, event
           potofs_portrates(touch)
+        ]
 
       else
-        m ".pagenavi.choice.guide.form-inline",
-          m "h6", "警報"
-          m "div.WIN_NONE",
-            m "h3.mesname"
+        [ m ".choice.guide.form-inline",
+            m "h6", "ゲーム情報"
+            m "div.WIN_NONE",
+              GUI.message.game story
           potofs_portrates(touch)
+        ]
 
 
     touch.icon "pencil", -> # 書き込み
 
 
     touch.icon "search", -> # 検索
-      m ".pagenavi.choice.guide.form-inline",
-        m "h6", "検索する。"
-        m "input.form-control",
-          onblur:   m.withAttr("value", Url.prop.search)
-          onchange: m.withAttr("value", Url.prop.search)
-          value: Url.prop.search()
+      [ m ".pagenavi.choice.guide.form-inline",
+          m "h6", "検索する。"
+          m "input.form-control",
+            onblur:   m.withAttr("value", Url.prop.search)
+            onchange: m.withAttr("value", Url.prop.search)
+            value: Url.prop.search()
         potofs_portrates(touch)
+      ]
 
 
     m.module dom,
       controller: ->
       view: ->
-        [folder, vid, turn, logid] = Url.prop.scroll().split("-")
-        subview = Cache.messages.search("#{logid},#{turn},").list()
-        console.log subview
-
         scroll_spy.pager "div", messages[Url.prop.scope()](Url.prop).list(), (o)->
           anchor_num  = o.logid.substring(2) - 0 || 0
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
@@ -653,11 +667,13 @@ if gon?.events? && gon.event?
       if gon.event.messages
         Cache.rule.message.merge gon.event.messages,
           event_id: gon.event._id
+          turn:     gon.event.turn
 
       for event in gon.events
         if event.messages
           Cache.rule.message.merge event.messages,
             event_id: event._id
+            turn:     event.turn
 
       m.endComputation()
     , DELAY.presto

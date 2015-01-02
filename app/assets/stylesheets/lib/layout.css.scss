@@ -26,6 +26,17 @@
   }
 }
 
+.right-layout {
+  .insayfilter .paragraph {
+    margin-left: 95px !important;
+  }  
+}
+.left-layout {
+  .insayfilter .paragraph {
+    margin-right: 75px !important;
+  }
+}
+
 .right-layout, .center-layout {
   #buttons,
   .guide {

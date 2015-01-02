@@ -54,6 +54,8 @@ new Cache.Rule("message").schema ->
         o.logid = "iI#{lognumber}"
       when "CS"
         o.logid = "cI#{lognumber}"
+      when "AS"
+        o.mestype = "ADMIN"
       when "DS"
         o.mestype = "DELETED"
       when "TS"
@@ -74,12 +76,6 @@ new Cache.Rule("message").schema ->
     vdom = GUI.message.xxx
     o.show =
       switch
-        when o.logid.match /^vilinfo/
-          vdom = GUI.story
-          bit.VILLAGE
-        when o.logid.match /^potofs/
-          vdom = GUI.potofs
-          bit.CAST
         when o.logid.match /^.I/
           vdom = GUI.message.info
           bit.TALK | bit.INFO
@@ -105,15 +101,13 @@ new Cache.Rule("message").schema ->
 
     if o.logid.match /^.[AB]/
       vdom = GUI.message.action
+      o.anchor = "act"
       o.show |= bit.ACTION
 
     o.show &=
       switch
-        when o.logid.match /^vilinfo/
-          mask.ALL
-        when o.logid.match /^potofs/
-          mask.ALL
         when o.logid.match /^[D]./
+          o.anchor = "del"
           mask.DELETE
         when o.logid.match /^[Ti]./
           mask.THINK

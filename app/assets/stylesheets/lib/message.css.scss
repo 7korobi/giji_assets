@@ -1,5 +1,6 @@
 @mixin msg-color($color, $background){
   .msg,
+  .line,
   .action,
   .memoleft,
   .memoright {
@@ -10,7 +11,7 @@
 
 @mixin main-theme($color, $background, $border-color){
   .MSAY,
-  TABLE.SAY,
+  .SAY,
   .QUEUE,
   .mes_nom { @include msg-color($color, $background);}
 
@@ -187,7 +188,7 @@ h6 {
   .SAY .action, .action_nom {  color: #ddf;  background-color: rgba(  0,  0,  0, 0.33); border-color: #999 #ddf; }
 
   .MSAY,
-  TABLE.SAY,
+  .SAY,
   .QUEUE,   .mes_nom   { @include msg-color(#ddf, rgba(  0,  0,  0, 0.33)); }
   .DELETEDADMIN,
   .DELETED, .mes_del   { @include msg-color(#444, rgba( 40, 40, 40, 0.33)); border-color: #222 #444; }

@@ -1,4 +1,4 @@
-Url.options = LOCATION.options;
+Url.define(LOCATION.props, LOCATION.bind);
 
 Url.bind = LOCATION.bind;
 
@@ -6,15 +6,24 @@ Url.routes = {
   search: {
     css: new Url("css=:theme~:width~:layout~:font", {
       change: function(params) {
-        var h, key, val, _ref;
-        h = {};
-        for (key in params) {
-          val = params[key];
-          if ((key != null) && (val != null) && "String" === (((_ref = Url.options[key]) != null ? _ref.type : void 0) || "String")) {
-            h["" + val + "-" + key] = true;
+        var key, list;
+        list = (function() {
+          var _i, _len, _ref, _results;
+          _ref = ["theme", "width", "layout", "font", "w", "item", "color"];
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            key = _ref[_i];
+            _results.push("" + (Url.prop[key]()) + "-" + key);
           }
+          return _results;
+        })();
+        if (!Url.prop.human()) {
+          list.push("no-player");
         }
-        return GUI.header(Object.keys(h));
+        GUI.header(list);
+        return window.requestAnimationFrame(function() {
+          return GUI.Layout.resize();
+        });
       }
     })
   }

@@ -136,7 +136,7 @@ _.mixin({
   }
 });
 define(String, function() {
-  var anchor, anchor_preview, br, id_num, link, link_regexp, link_regexp_g, player, random, random_preview, space, unanchor, unbr, unhtml, unrandom, uri_to_link;
+  var anchor, anchor_preview, br, id_num, link, link_regexp, link_regexp_g, nowrap, player, random, random_preview, space, unanchor, unbr, unhtml, unrandom, uri_to_link;
   player = function(log) {
     if (!log) {
       return log;
@@ -228,6 +228,11 @@ define(String, function() {
       return "\n";
     });
   };
+  nowrap = function(log) {
+    return log.replace(/<br>|\n/gm, function(br) {
+      return " ";
+    });
+  };
   unhtml = function(log) {
     return log.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;").replace(/\//g, "&#x2f;");
   };
@@ -240,6 +245,11 @@ define(String, function() {
     deco_text: {
       get: function() {
         return space(player(anchor(link(random(this)))));
+      }
+    },
+    line_text: {
+      get: function() {
+        return nowrap(player(anchor(link(random(this)))));
       }
     },
     undecolate: {
@@ -1685,18 +1695,12 @@ GUI.message = (function() {
     }
   };
   return {
-    story: function(story) {
-      var mob, option, option_id, rating, roletable, saycnt;
-      mob = RAILS.mob[story.type.mob];
-      rating = RAILS.rating[story.rating];
-      saycnt = RAILS.saycnt[story.type.say] || {};
+    game: function(story, event) {
+      var mob, option, option_id, roletable;
       roletable = RAILS.roletable[story.type.roletable];
-      return m(".ADMIN.guide", {
-        key: story._id
-      }, [
-        GUI.letter("head", story.name, m("div", m("code", "こだわり"), m("img.pull-left", {
-          src: GUI.img_head + ("/icon/cd_" + story.rating + ".png")
-        }), rating.caption), m("div", m("code", "発言制限"), m.trust(saycnt.CAPTION + "<br>" + saycnt.HELP)), m("div", m("code", "更新"), story.view.update_at + "(" + story.view.update_interval + "ごと)")), GUI.letter("", story.view.game_rule, m("ul.note", m.trust(RAILS.game_rule[story.type.game].HELP)), m("ul.note", (function() {
+      mob = RAILS.mob[story.type.mob];
+      return [
+        GUI.letter("", story.view.game_rule, m("ul.note", m.trust(RAILS.game_rule[story.type.game].HELP)), m("ul.note", (function() {
           var _i, _len, _ref, _results;
           _ref = story.options;
           _results = [];
@@ -1709,7 +1713,19 @@ GUI.message = (function() {
             _results.push(m("li", option.help));
           }
           return _results;
-        })())), GUI.letter("head", "" + story.view.player_length + "人の配役設定", m("div", roletable), m("div", m("code", "事件"), story.view.event_cards), m("div", m("code", "役職"), story.view.role_cards), m("div", m("code", "見物人"), m("kbd", mob.caption), "" + mob.HELP)), m("span.mes_date.pull-right", "managed by ", m("kbd", story.sow_auth_id)), GUI.letter("", "設定", m.trust(story.comment))
+        })())), GUI.letter("", "" + roletable + " / " + story.view.player_length + "人", m("div", m("code", "事件"), story.view.event_cards), m("div", m("code", "役職"), story.view.role_cards), m("div", m("code", mob.CAPTION), m("kbd", "" + mob.HELP)))
+      ];
+    },
+    story: function(story) {
+      var rating, saycnt;
+      rating = RAILS.rating[story.rating];
+      saycnt = RAILS.saycnt[story.type.say] || {};
+      return m(".ADMIN.guide", {
+        key: story._id
+      }, [
+        GUI.letter("head", story.name, m("div", m("code", "こだわり"), m("img.pull-left", {
+          src: GUI.img_head + ("/icon/cd_" + story.rating + ".png")
+        }), rating.caption), m("div", m("code", "発言制限"), m.trust(saycnt.CAPTION + "<br>" + saycnt.HELP)), m("div", m("code", "更新"), story.view.update_at + "(" + story.view.update_interval + "ごと)")), GUI.letter("", "設定", m.trust(story.comment)), m("span.mes_date.pull-right", "managed by ", m("kbd", story.sow_auth_id))
       ]);
     },
 
@@ -2638,7 +2654,8 @@ log.cancel_btn =
     text: ""
  */
 ;
-var Url;
+var Url,
+  __slice = [].slice;
 
 Url = (function() {
   Url.routes = {};
@@ -2656,6 +2673,86 @@ Url = (function() {
       search: location.search,
       hash: location.hash
     };
+  };
+
+  Url.define = function() {
+    var bind_table, do_define, key, prop_option, props, _results;
+    bind_table = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    do_define = function(key, option) {
+      var bind, bind_base, binder, current, parser, prop, type;
+      type = option.type, current = option.current;
+      bind_base = Url.bind[key];
+      parser = Serial.parser[type];
+      prop = m.prop();
+      bind = (function() {
+        var _i, _len;
+        if (bind_base) {
+          switch (typeof bind_base) {
+            case "object":
+              binder = {};
+              for (_i = 0, _len = bind_base.length; _i < _len; _i++) {
+                bind = bind_base[_i];
+                binder[bind[key]] = bind;
+              }
+              return function(val) {
+                var subkey, subval, _ref;
+                _ref = binder[val];
+                for (subkey in _ref) {
+                  subval = _ref[subkey];
+                  if (!Url.prop[subkey]) {
+                    console.log([subkey, subval, binder[val]]);
+                  }
+                  if (key !== subkey) {
+                    Url.prop[subkey](subval, true);
+                  }
+                }
+              };
+            case "function":
+              return bind_base;
+          }
+        } else {
+          return function() {};
+        }
+      })();
+      return Url.prop[key] = (function(_this) {
+        return function(val, is_replace) {
+          var value;
+          if (arguments.length) {
+            val = parser(val);
+            prop(val);
+            bind(val);
+            if (is_replace) {
+              return Url.replacestate();
+            } else {
+              return Url.pushstate();
+            }
+          } else {
+            value = prop();
+            if (value != null) {
+              return value;
+            } else {
+              return current;
+            }
+          }
+        };
+      })(this);
+    };
+    props = bind_table[0];
+    bind_table[0] = {};
+    Url.bind = _.merge.apply(_, bind_table);
+    Url.options = props;
+    _results = [];
+    for (key in props) {
+      prop_option = props[key];
+      if (!prop_option) {
+        props[key] = prop_option = {};
+      }
+      if (prop_option.type == null) {
+        prop_option.type = "String";
+      }
+      _results.push(do_define(key, prop_option));
+    }
+    return _results;
   };
 
   Url.each = function(cb) {
@@ -2712,9 +2809,7 @@ Url = (function() {
   function Url(format, options) {
     this.format = format;
     this.options = options != null ? options : {};
-    this.keys = [];
     this.keys_in_url = [];
-    this.data = {};
     if (this.options.cookie) {
       Url.cookie[ID.now()] = this;
     }
@@ -2724,7 +2819,6 @@ Url = (function() {
       return function(_, key) {
         var type, _ref;
         type = (_ref = Url.options[key]) != null ? _ref.type : void 0;
-        _this.keys.push(key);
         _this.keys_in_url.push(key);
         return Serial.url[type];
       };
@@ -2743,8 +2837,8 @@ Url = (function() {
   };
 
   Url.prototype.popstate = function(path, target) {
-    var i, key, val, _base, _i, _len, _ref;
-    this.data = {};
+    var data, i, key, val, _base, _i, _len, _ref;
+    data = {};
     this.match = this.scanner.exec(path);
     if (this.match) {
       this.match.shift();
@@ -2752,11 +2846,11 @@ Url = (function() {
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         key = _ref[i];
         val = decodeURI(this.match[i]);
-        this.prop(key)(val, true);
+        data[key] = val;
+        Url.prop[key](val, true);
       }
-      this.params = Object.keys(this.data);
       if (typeof (_base = this.options).change === "function") {
-        _base.change(this.data, this.prop.bind(this));
+        _base.change(data);
       }
     }
     return Url.replacestate();
@@ -2783,68 +2877,10 @@ Url = (function() {
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       key = _ref[_i];
       type = (_ref1 = Url.options[key]) != null ? _ref1.type : void 0;
-      val = this.prop(key)();
+      val = Url.prop[key]();
       path = path.replace(RegExp(":" + key, "ig"), Serial.serializer[type](val));
     }
     return path;
-  };
-
-  Url.prototype.prop = function(key) {
-    var bind, bind_base, current, parser, prop, prop_base, type, _ref;
-    if (!Url.prop[key]) {
-      _ref = Url.options[key] || {}, type = _ref.type, current = _ref.current;
-      prop_base = this.prop.bind(this);
-      bind_base = Url.bind[key];
-      parser = Serial.parser[type];
-      if (type == null) {
-        type = "String";
-      }
-      prop = m.prop();
-      bind = (function() {
-        if (bind_base) {
-          switch (typeof bind_base) {
-            case "object":
-              return function(val, prop_field) {
-                var subkey, subval, _ref1;
-                _ref1 = bind_base[val];
-                for (subkey in _ref1) {
-                  subval = _ref1[subkey];
-                  if (key !== subkey) {
-                    prop_field(subkey)(subval, true);
-                  }
-                }
-              };
-            case "function":
-              return bind_base;
-          }
-        } else {
-          return function() {};
-        }
-      })();
-      Url.prop[key] = (function(_this) {
-        return function(val, is_replace) {
-          var value;
-          if (arguments.length) {
-            val = parser(val);
-            prop(_this.data[key] = val);
-            bind(val, prop_base);
-            if (is_replace) {
-              return Url.replacestate();
-            } else {
-              return Url.pushstate();
-            }
-          } else {
-            value = prop();
-            if (value != null) {
-              return value;
-            } else {
-              return current;
-            }
-          }
-        };
-      })(this);
-    }
-    return Url.prop[key];
   };
 
   Url.prototype.set_cookie = function(value) {
