@@ -10,7 +10,9 @@ win = (->
       list.shift if 3 <= list.length
       list.push val = {}
       set_scroll(val)
-      win.do_event_list win.on.scroll_end if chk()
+      if chk()
+        win.do_event_list win.on.scroll_end
+        win.do.resize()
       window.requestAnimationFrame scan
 
     list = []
@@ -55,10 +57,6 @@ win = (->
       win.do_event_list win.on.scroll, e
       win.do.scroll_end()
 
-    gesture: (e)->
-      #console.log ["touch-gesture", e]
-      win.do_event_list win.on.gesture, e
-
     orientation: (e)->
       win.orientation = e
       win.compass = e.webkitCompassHeading
@@ -70,24 +68,6 @@ win = (->
       win.rotate  = e.rotationRate
       win.do_event_list win.on.motion, e
 
-    start: (e)->
-      win.is_tap = true
-      #console.log ["touch-start", e]
-      win.do_event_list win.on.start, e 
-
-    move: (e)->
-      if win.is_tap
-        #console.log ["touch-drag", e]
-        win.do_event_list win.on.drag, e
-      else
-        #console.log ["touch-move", e]
-        win.do_event_list win.on.move, e
-
-    end: (e)->
-      win.is_tap = false
-      #console.log ["touch-end", e]
-      win.do_event_list win.on.end, e
-
     load: (e)->
       win.do_event_list win.on.load, e
       win.do.resize()
@@ -97,13 +77,8 @@ win = (->
     resize: []
     scroll: []
     scroll_end: []
-    gesture: []
     orientation: []
     motion: []
-    start: []
-    move: []
-    drag: []
-    end: []
     load: []
 
   top:     0
