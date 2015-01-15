@@ -61,7 +61,8 @@ GUI.message = (->
         m.trust story.comment
       m "span.mes_date.pull-right", 
         "managed by "
-        m "kbd", story.sow_auth_id
+        m ".emboss", story.user_id
+      m "hr.black"
     ]
 
   ###
@@ -73,31 +74,21 @@ GUI.message = (->
   ###
 
   potofs: (v)->
-    m "div", ".U.C"
+    m "div", {key: v._id}, ".U.C #{v._id}"
 
   xxx: (v)->
-    m "div", ".U.C"
+    m "div", {key: v._id}, ".U.C #{v._id}"
 
-  memo: (v)->
-    m "table.memo.#{v.mestype}", {key: v._id},
-      m "tbody",
-        m "tr",
-          m "td.memoleft",
-            m "div", GUI.portrate v.face_id
-            m "div", m "h5", v.name
-
-          m "td.memoright",
-            m "p.text.#{v.style}", deco_action, m.trust v.log.deco_text
-              m "p.mes_date",
-                GUI.timer "span", v.updated_timer
+  event: (v)->
+    m "h3", {key: v._id}, v.name
 
   info: (v)->
-    m ".#{v.mestype}", {key: v._id},
+    m ".#{v.mestype}.info", {key: v._id},
       m "p.text", deco_action, m.trust v.log.deco_text
 
-  admin: (v)->
-    m ".guide.#{v.mestype}", {key: v._id},
-      m "h3.mesname",
+  guide: (v)->
+    m ".#{v.mestype}.guide", {key: v._id},
+      m "p.name",
         m "b", m.trust v.name
       m "p.text.#{v.style}", deco_action, m.trust v.log.deco_text
       m "p.mes_date",
@@ -105,14 +96,25 @@ GUI.message = (->
         GUI.timer "span", v.updated_timer
 
   action: (v)->
-    m ".#{v.mestype}", {key: v._id},
-      m ".action",
-        m "p.text.#{v.style}", deco_action,
-          m "b", m.trust v.name
-          "は、"
-          m "span",
-            m.trust v.log.deco_text
-        GUI.timer "p.mes_date", v.updated_timer
+    m ".#{v.mestype}.action", {key: v._id},
+      m "p.text.#{v.style}", deco_action,
+        m "b", m.trust v.name
+        "は、"
+        m "span",
+          m.trust v.log.deco_text
+      GUI.timer "p.mes_date", v.updated_timer
+
+  memo: (v)->
+    m "table.#{v.mestype}.memo", {key: v._id},
+      m "tr",
+          m "th",
+            m "div", GUI.portrate v.face_id
+            m "div", m "h5", v.name
+
+          m "td",
+            m "p.text.#{v.style}", deco_action, m.trust v.log.deco_text
+            m "p.mes_date",
+              GUI.timer "span", v.updated_timer
 
   talk: (v)->
     GUI.message.say_base v,
@@ -124,17 +126,17 @@ GUI.message = (->
       m "span.mark", v.anchor
 
   say_base: (v, timer...)->
-    m "table.say.#{v.mestype}", {key: v._id},
-      m "tbody",
-        m "tr",
-          m "td.img",
-            GUI.portrate v.face_id
+    m "table.#{v.mestype}.talk", {key: v._id},
+      m "tr",
+        m "th",
+          GUI.portrate v.face_id
 
-          m "td.field",
-            m ".msg",
-              m "h3.mesname",
-                m "b", m.trust v.name
-              m "p.text.#{v.style}", deco_action, m.trust v.log.deco_text
-              m "p.mes_date", timer
+        m "td",
+          m ".msg",
+            m "p.name",
+              m "b", m.trust v.name
+              m ".emboss.pull-right", v.user_id
+            m "p.text.#{v.style}", deco_action, m.trust v.log.deco_text
+            m "p.mes_date", timer
 )()
 

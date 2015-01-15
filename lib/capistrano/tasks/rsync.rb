@@ -37,12 +37,15 @@ namespace :rsync do
   desc "public rsync."
   task :public do
     open(fetch(:rsync_script),"w") do |f|
+      options = "--links --recursive --exclude='.git' --exclude='.svn'"
       f.puts %Q[FILE_TO=/home/7korobi/public_html]
+      f.puts %Q|TARGET=/www/giji_assets/public/|
+      f.puts %Q|rsync #{options} ~/Dropbox/web_work/images/ /www/giji_assets/public/images/|
       on roles(:file) do |server|
-        options = "--links --recursive --exclude='.git' --exclude='.svn'"
-        f.puts %Q|rsync #{options} ~/Dropbox/web_work/images/ /www/giji_assets/public/images/|
-        f.puts %Q|TARGET=/www/giji_assets/public/|
         f.puts %Q|rsync -e "ssh -p #{server.port || 22}" #{options} --exclude='stories' $TARGET #{server.user}@#{server.hostname}:$FILE_TO &|
+      end
+      on roles(:ftp) do |server|
+        f.puts %Q|lftp -u #{server.user} #{server.hostname} -e "set ftp:ssl-allow off; mirror -X .htaccess --only-newer -R /www/giji_assets/public/ /;" &|
       end
     end
     run_locally do

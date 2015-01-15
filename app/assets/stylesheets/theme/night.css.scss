@@ -35,7 +35,11 @@
 
   @include border-theme-black(#000, #55a, #224);
   @include vivid(#100, #55a, #eed);
-  @include main-theme(#ffa, rgba(0,0,0, 0.33), #224);
+  @include main-theme(#eeb, rgba(0,0,0, 0.33), #224);
+  .MSAY,
+  .SAY,
+  .QUEUE,
+  .mes_nom { @include msg-color-black(#eeb, rgba(0,0,0, 0.33));}
 
   &.large-layout,
   &.center-layout {
@@ -94,9 +98,7 @@
   }
 
   .MAKER.guide,
-  .mes_maker,
   .ADMIN.guide,
-  .mes_admin,
   .INFONOM,
   .INFOSP,
   .INFOWOLF,
@@ -108,24 +110,19 @@
   }
 
   .MAKER.guide,
-  .mes_maker,
-  .ADMIN.guide,
-  .mes_admin {
+  .ADMIN.guide {
     border-color: #720;
   }
 
-  .INFONOM,
-  .info {
+  .INFONOM {
     border-color: #113;
     background-color: #001;
   }
-  .INFOSP,
-  .infosp {
+  .INFOSP {
     border-color: #113;
     background-color: #010;
   }
-  .INFOWOLF,
-  .infowolf {
+  .INFOWOLF {
     border-color: #113;
     background-color: #100;
   }
@@ -134,12 +131,15 @@
     border-color: #ccc;
     background-color: #111;
   }
-  .memoleft {
-    border-color: #113;
-    background-color: #000 !important;
-  }
-  .memoright {
-    border-color: #113;
+
+  .memo {
+    th {
+      border-color: #113;
+      background-color: #000;
+    }
+    td {
+      border-color: #113;
+    }
   }
 
   .formpl_gm ,
@@ -159,14 +159,20 @@
   }
 
   h1 a img {
-    @include box-shadow(#806 0 2px 2px);
+    box-shadow: #806 0 2px 2px;
   }
 
   h2 {
     background: #224;
+    &:before, &:after {
+      border-color: transparent #448;
+    }
   }
 
   h3 {
     background: #113;
+    &:before, &:after {
+      border-color: transparent #226;
+    }
   }
 }

@@ -7,19 +7,44 @@
   padding: 0px 0px 0px 16px;
 }
 
-.MAKER, .ADMIN, .mes_maker, .mes_admin {
-  .action, .guide {
+.MAKER, 
+.ADMIN, {
+  .action,
+  .guide {
     margin:  0 0 0 6px;
   }
 }
 
-.memo {
+table.talk,
+table.memo {
+  width: 100%;
+  th {
+    vertical-align: top;
+  }
+  td {
+    vertical-align: middle;
+  }
+}
+
+table.talk th {
+  text-align: left;
+}
+
+table.memo {
   border-width: 0;
   border-collapse: separate;
-}
-.memoleft,
-.memoright {
-  padding: 1px;
+  th {
+    border-style: none dashed solid none;
+    border-width: 0 1px 1px 0;
+    border-collapse: collapse; /* CSS2? */
+    padding: 1px;
+  }
+  td {
+    border-style: none none solid none;
+    border-width: 0 0 1px 0;
+    border-collapse: collapse; /* CSS2? */
+    padding: 1px;
+  }
 }
 
 .vindex,
@@ -30,6 +55,7 @@
 .turnnavi  ,
 .pagenavi  ,
 .row_all   { padding: 0 0 0 10px;}
+
 .mes_maker ,
 .mes_admin ,
 .info      ,
@@ -50,34 +76,32 @@
     width: $full-width;
   }
 
-  .memoleft {
-    width: $outer-width;
-  }
-  .memoright {
-    width: $full-width - $outer-width;
+  table.memo {
+    th { width:               $outer-width; }
+    td { width: $full-width - $outer-width; }
   }
 
-  .say {
-    .field{
-      width: $full-width - $left-width;
-    }
+  table.talk {
+    th {  }
+    td { width: $full-width - $left-width; }
   }
 
-  .msg p,
-  .action p {
-    width: $full-width - $outer-width;
+  table.talk td .msg p,
+  .action {
+    p { width: $full-width - $outer-width; }
   }
 
   .CAST code {
     width: 90px;
   }
 }
+
 @mixin film($film-top) {
   .accordion dd,
   .CAST code,
   .paragraph,
-  .say .chrblank,
-  .say img {
+  table.talk th .chrblank,
+  table.talk th img {
     margin-left: $film-top;
   }
 
@@ -85,22 +109,6 @@
   .drag_foot .badge {
     width:  84px;
     margin-left: ( $film-top - 3px ) * 2;
-  }
-}
-
-
-.center-layout {
-  .drag,
-  .outframe,
-  .contentframe {
-    background-position: center;
-  }
-}
-.right-layout, .mini-layout {
-  .drag,
-  .outframe,
-  .contentframe {
-    background-position: right;
   }
 }
 
@@ -114,11 +122,9 @@
   .CAST {
     margin-bottom: 4px
   }
-  .say {
-    .msg{
-      margin: 0 3px 4px 3px;
-      padding: 0px 4px;
-    }
+  table.talk td .msg {
+    margin: 0 3px 4px 3px;
+    padding: 0px 4px;
   }
 
   &.box {
@@ -136,10 +142,9 @@
     }
   }
   &.speech-item {
-    .say .img{
+    table.talk th {
       padding: 0 0 4px 0;
     }
-    .action_nom,
     .action {
       margin: 0 0 4px 99px;
       padding: 4px 12px 0px 4px;
@@ -157,11 +162,9 @@
   .CAST {
     margin-bottom: 9px
   }
-  .say {
-    .msg{
-      margin: 0 4px 6px 6px;
-      padding: 0 4px;
-    }
+  table.talk td .msg {
+    margin: 0 4px 6px 6px;
+    padding: 0 4px;
   }
 
   &.box {
@@ -180,11 +183,10 @@
   }
 
   &.speech-item {
-    .say .img{
+    table.talk th {
       margin: 0 4px 6px 12px;
       padding: 0 4px;
     }
-    .action_nom,
     .action {
       margin: 0 0 6px 107px;
       padding: 4px 12px 4px 4px;
@@ -201,11 +203,9 @@
   .CAST {
     margin-bottom: 9px
   }
-  .say {
-    .msg{
-      margin: 0 4px 6px 6px;
-      padding: 0 4px;
-    }
+  table.talk td .msg {
+    margin: 0 4px 6px 6px;
+    padding: 0 4px;
   }
 
   &.box {
@@ -224,11 +224,10 @@
   }
 
   &.speech-item {
-    .say .img{
+    table.talk th {
       margin: 0 4px 6px 12px;
       padding: 0 4px;
     }
-    .action_nom,
     .action {
       margin: 0 0 6px 107px;
       padding: 4px 12px 4px 4px;

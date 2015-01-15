@@ -1,3 +1,13 @@
+#buttons {
+  .bigicon {
+    opacity: 0.8;
+  }
+  .badge {
+    position: relative;
+    margin-top: -1.5rem;
+  }
+}
+
 .simple {
   #topviewer,
   #sayfilter,
@@ -26,6 +36,30 @@ h1 {
   margin-top: 0;
 }
 
+/*
+h2, h3 {
+  position: relative;
+  margin-right: -10px;
+  margin-left: -10px;
+  &:before,
+  &:after {
+    top: 100%;
+    z-index: -1;
+    content: “”;
+    border-style: solid;
+    position: absolute;
+  }
+  &:before {
+    border-width: 0 10px 20px 0;
+    left: 0px;
+  }
+  &:after {
+    border-width: 0 0 20px 10px;
+    right: 0px;
+  }
+}
+*/
+
 h1, h2, h3, h4, h5, h6 {
   clear: both;
 }
@@ -43,21 +77,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 .pagination .btn {
   width: 4ex;
-}
-
-.board {
-  margin: 0 0 0 5%;
-  width: 90%;
-
-  .choice {
-    border-bottom: none;
-    th, td {
-      border-top: none;
-    }
-    .link A{
-      display: block;
-    }
-  }
 }
 
 .rolebox input {
@@ -124,22 +143,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .sayfilter_content th {
   padding: 1px;
-}
-
-dt, dd {
-  padding: 4px 0
-}
-
-#tab .paragraph {
-  th {padding: 0 3px 3px 3px;}
-  td {padding: 1px 0 0 3px;}
-  .name {
-    margin-right: -3ex;
-    white-space: nowrap;
-  }
-  .nowrap {
-    white-space: nowrap;
-  }
 }
 
 .say { width:100%; }

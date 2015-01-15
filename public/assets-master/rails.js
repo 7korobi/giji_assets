@@ -26,10 +26,12 @@ Url.routes = {
     scroll: new Url("scroll=:scroll", {
       unmatch: "?",
       change: function(params) {
-        var folder, logid, turn, vid, _ref1;
+        var folder, logid, turn, updated_at, vid, _ref1, _ref2;
         GUI.ScrollSpy.global.prop = Url.prop.scroll;
         _ref1 = params.scroll.split("-"), folder = _ref1[0], vid = _ref1[1], turn = _ref1[2], logid = _ref1[3];
         if (logid != null) {
+          updated_at = ((_ref2 = Cache.messages.find(params.scroll)) != null ? _ref2.updated_at : void 0) || 0;
+          Url.prop.updated_at(updated_at, true);
           Url.prop.event_id("" + folder + "-" + vid + "-" + turn, true);
           Url.prop.message_id("" + folder + "-" + vid + "-" + turn + "-" + logid, true);
         }
@@ -83,38 +85,25 @@ new Cache.Rule("map_face").schema(function() {
     };
   });
   this.deploy(function(o) {
-    var chr_job, list, sow_auth_id, _results;
+    var list, search_words, sow_auth_id;
     o._id = o.face_id;
     o.win.value.合計 = o.win.all;
     list = Cache.chr_jobs.face(o.face_id).list();
     if (list) {
-      o.search_words = (function() {
-        var _i, _len, _results;
-        _results = [];
-        for (_i = 0, _len = list.length; _i < _len; _i++) {
-          chr_job = list[_i];
-          _results.push(chr_job.job);
-        }
-        return _results;
-      })();
-      o.chr_set_ids = (function() {
-        var _i, _len, _results;
-        _results = [];
-        for (_i = 0, _len = list.length; _i < _len; _i++) {
-          chr_job = list[_i];
-          _results.push(chr_job.chr_set_id);
-        }
-        return _results;
-      })();
+      search_words = list.map(function(o) {
+        return o.job;
+      });
+      o.chr_set_ids = list.map(function(o) {
+        return o.chr_set_id;
+      });
     } else {
-      o.search_words = o.chr_set_ids = [];
+      search_words = o.chr_set_ids = [];
     }
-    o.search_words.push(o.face.name);
-    _results = [];
+    search_words.push(o.face.name);
     for (sow_auth_id in o.sow_auth_id.value) {
-      _results.push(o.search_words.push(sow_auth_id));
+      search_words.push(sow_auth_id);
     }
-    return _results;
+    return o.search_words = search_words.join("\t");
   });
   item = {
     count: 1
@@ -149,7 +138,14 @@ new Cache.Rule("item").schema(function() {
   });
 });
 
-new Cache.Rule("event").schema(function() {});
+new Cache.Rule("event").schema(function() {
+  var bit, mask, visible, _ref;
+  this.order("_id");
+  _ref = RAILS.message, visible = _ref.visible, bit = _ref.bit, mask = _ref.mask;
+  return this.deploy(function(o) {
+    return o.event_id = o._id;
+  });
+});
 
 new Cache.Rule("story").schema(function() {
   var all_events, caption;
@@ -211,6 +207,7 @@ new Cache.Rule("story").schema(function() {
     if (!o.rating) {
       o.rating = "default";
     }
+    o.user_id = o.sow_auth_id;
     o.card.role = _.difference(o.card.config, all_events);
     if ((_base = o.type).game == null) {
       _base.game = "TABULA";
@@ -240,7 +237,7 @@ new Cache.Rule("story").schema(function() {
       say_limit: ((_ref = RAILS.saycnt[o.type.say]) != null ? _ref.CAPTION : void 0) || "――",
       game_rule: ((_ref1 = RAILS.game_rule[o.type.game]) != null ? _ref1.CAPTION : void 0) || "タブラの人狼"
     };
-    return o.search_words = [o.name];
+    return o.search_words = o.name;
   });
   return this.map_reduce(function(o, emit) {
     var event_type, item, role_type, _i, _j, _len, _len1, _ref, _ref1, _results;
@@ -270,26 +267,66 @@ new Cache.Rule("story").schema(function() {
   });
 });
 new Cache.Rule("message").schema(function() {
-  var bit, has_face, is_show, mask;
+  var bit, has_face, mask, timespan, visible, _ref;
   this.order("updated_at");
   this.belongs_to("face");
   this.belongs_to("event");
   this.belongs_to("sow_auth");
-  is_show = RAILS.message.visible;
-  bit = RAILS.message.bit;
-  mask = RAILS.message.mask;
+  timespan = 1000 * 3600;
+  Cache.messages.has_face = has_face = {};
+  _ref = RAILS.message, visible = _ref.visible, bit = _ref.bit, mask = _ref.mask;
   this.scope(function(all) {
     return {
-      home: function(mode) {
+      timeline: function(mode) {
         var enables;
-        enables = is_show.home[mode];
+        enables = visible.talk[mode];
         return all.where(function(o) {
           return o.show & enables;
         });
       },
+      anchor: function(mode, scroll) {
+        var enables, folder, logid, message, regexp, turn, vid, _ref1;
+        enables = RAILS.message.visible.talk[mode];
+        message = Cache.messages.find(scroll);
+        if (message) {
+          _ref1 = Url.prop.scroll().split("-"), folder = _ref1[0], vid = _ref1[1], turn = _ref1[2], logid = _ref1[3];
+          regexp = RegExp("<mw " + logid + "," + turn + ",");
+          return all.where(function(o) {
+            return (o.show & enables) && regexp.test(o.search_words);
+          });
+        } else {
+          return all.where(function(o) {
+            return false;
+          });
+        }
+      },
+      in_event: function(event_id) {
+        var enables;
+        enables = visible.talk.all;
+        return all.where(function(o) {
+          return (o.show & enables) && (event_id === o.event_id);
+        });
+      },
+      home: function(mode) {
+        var enables;
+        enables = visible.home[mode];
+        return all.where(function(o) {
+          return o.show & enables;
+        });
+      },
+      after: function(updated_at, mode, open, hides) {
+        var enables;
+        enables = visible.talk[mode];
+        if (!open) {
+          enables &= mask.NOT_OPEN;
+        }
+        return all.where(function(o) {
+          return (o.show & enables) && updated_at <= o.updated_at && !hides[o.face_id];
+        });
+      },
       talk: function(event_id, mode, open, hides, search) {
         var enables;
-        enables = is_show.talk[mode];
+        enables = visible.talk[mode];
         if (!open) {
           enables &= mask.NOT_OPEN;
         }
@@ -299,7 +336,7 @@ new Cache.Rule("message").schema(function() {
       },
       memo: function(mode, uniq, hides, search) {
         var enables, query;
-        enables = is_show.memo[mode];
+        enables = visible.memo[mode];
         query = all.sort("desc", "updated_at").where(function(o) {
           return (o.show & enables) && !hides[o.face_id];
         }).search(search);
@@ -310,14 +347,9 @@ new Cache.Rule("message").schema(function() {
       },
       warning: function(event_id, hides) {
         var enables;
-        enables = is_show.warning.all;
+        enables = visible.warning.all;
         return all.where(function(o) {
           return (o.show & enables) && !(event_id > o.event_id) && !hides[o.face_id];
-        });
-      },
-      after: function(updated_at, hides) {
-        return all.where(function(o) {
-          return updated_at <= o.updated_at && !hides[o.face_id];
         });
       }
     };
@@ -350,6 +382,13 @@ new Cache.Rule("message").schema(function() {
         o.mestype = "TSAY";
     }
     o._id = o.event_id + "-" + o.logid;
+    if (o.csid == null) {
+      o.csid = null;
+    }
+    if (o.face_id == null) {
+      o.face_id = null;
+    }
+    o.user_id = o.sow_auth_id;
     anchor_num = o.logid.slice(2) - 0 || 0;
     o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
     o.pen = "" + o.logid.slice(0, 2) + "-" + o.face_id;
@@ -364,58 +403,71 @@ new Cache.Rule("message").schema(function() {
     }
     delete o.date;
     vdom = GUI.message.xxx;
+    o.mask = (function() {
+      switch (false) {
+        case !o.logid.match(/^[\-WPX]./):
+          return "CLAN";
+        case !o.logid.match(/^[Ti]./):
+          return "THINK";
+        case !o.logid.match(/^[D]./):
+          o.anchor = "del";
+          return "DELETE";
+        default:
+          return "OPEN";
+      }
+    })();
     o.show = (function() {
       switch (false) {
-        case !o.logid.match(/^.I/):
-          vdom = GUI.message.info;
-          return bit.TALK | bit.INFO;
         case !o.logid.match(/^.[SX]/):
           vdom = GUI.message.talk;
           return bit.TALK;
+        case !o.logid.match(/^.[AB]/):
+          vdom = GUI.message.action;
+          o.anchor = "act";
+          return bit.ACTION;
         case !o.logid.match(/^.[M]/):
           vdom = GUI.message.memo;
+          o.anchor = "memo";
           return bit.MEMO;
-        default:
-          return 0;
-      }
-    })();
-    o.show |= (function() {
-      switch (false) {
-        case o.mestype !== "MAKER":
-          vdom = GUI.message.admin;
-          return bit.INFO;
-        case o.mestype !== "ADMIN":
-          vdom = GUI.message.admin;
+        case !o.logid.match(/^.I/):
+          vdom = GUI.message.info;
+          o.anchor = "info";
           return bit.INFO;
         default:
-          return 0;
+          return bit.EVENT;
       }
     })();
-    if (o.logid.match(/^.[AB]/)) {
-      vdom = GUI.message.action;
-      o.anchor = "act";
-      o.show |= bit.ACTION;
+    switch (o.mestype) {
+      case "MAKER":
+      case "ADMIN":
+        if (o.show !== bit.ACTION) {
+          vdom = GUI.message.guide;
+        }
+        o.mask = "ANNOUNCE";
+        break;
+      case "EVENT":
+        vdom = GUI.message.event;
+        o.pen = o.event_id;
+        o.mask = "ANNOUNCE";
+        o.anchor = "info";
     }
-    o.show &= (function() {
-      switch (false) {
-        case !o.logid.match(/^[D]./):
-          o.anchor = "del";
-          return mask.DELETE;
-        case !o.logid.match(/^[Ti]./):
-          return mask.THINK;
-        case !o.logid.match(/^[\-WPX]./):
-          return mask.CLAN;
-        default:
-          return mask.OPEN;
-      }
-    })();
+    o.show &= mask[o.mask];
     o.vdom = vdom;
-    return o.search_words = [o.log];
+    return o.search_words = o.log;
   });
-  has_face = {};
-  Cache.messages.has_face = has_face;
   return this.map_reduce(function(o, emit) {
+    var item, time_id;
     has_face[o.face_id] = true;
+    if (o.vdom === GUI.message.talk || o.vdom === GUI.message.guide) {
+      time_id = Serial.serializer.Date(o.updated_at / timespan);
+      item = {
+        count: o.log.length,
+        min: o.updated_at,
+        max: o.updated_at
+      };
+      emit("mask", time_id, o.mestype, item);
+      emit("mask", time_id, "all", item);
+    }
     emit("event", o.event_id, {
       max: o.updated_at
     });
@@ -455,8 +507,9 @@ new Cache.Rule("potof").schema(function() {
     };
   });
   this.deploy(function(o) {
-    var chr_job, is_dead_lose, is_lone_lose, job, mask, name, pt, pt_no, role, role_text, roles, rolestate, said_num, say_type, select, stat_at, stat_order, stat_type, state, text, text_str, urge, win, win_juror, win_love, win_result, win_side_order, win_zombie, winner, zombie, _i, _len, _ref;
+    var chr_job, is_dead_lose, is_lone_lose, job, mask, name, pt, pt_no, role, role_side_order, role_text, roles, rolestate, said_num, say_type, select, stat_at, stat_order, stat_type, state, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie, _i, _len, _ref;
     o._id = "" + o.event_id + "-" + o.csid + "-" + o.face_id;
+    o.user_id = o.sow_auth_id;
     name = o.zapcount ? "" + RAILS.clearance[o.clearance] + o.name + "-" + o.zapcount : o.name;
     stat_at = 0 < o.deathday ? "" + o.deathday + "日" : "";
     said_num = o.point.saidcount;
@@ -506,7 +559,8 @@ new Cache.Rule("potof").schema(function() {
         win_result = "";
     }
     win_love = (_ref = RAILS.loves[o.love]) != null ? _ref.win : void 0;
-    win = win_juror || win_love || win_zombie || win_by_role(o, RAILS.gifts) || win_by_role(o, RAILS.roles) || "NONE";
+    win_role = win_by_role(o, RAILS.gifts) || win_by_role(o, RAILS.roles) || "NONE";
+    win = win_juror || win_love || win_zombie || win_role;
     if (win === 'EVIL') {
       win = RAILS.folders[o.story_folder].evil;
     }
@@ -524,7 +578,7 @@ new Cache.Rule("potof").schema(function() {
           is_lone_lose = 1;
         }
     }
-    if (o.story_epilogue) {
+    if (o.story_epilogue && "suddendead" !== o.live) {
       winner = o.event_winner;
       win_result = "敗北";
       if (winner === "WIN_" + win) {
@@ -548,6 +602,7 @@ new Cache.Rule("potof").schema(function() {
         win_result = "参加";
       }
     }
+    role_side_order = RAILS.wins[win_role].order;
     win_side_order = RAILS.wins[win].order;
     roles = (function() {
       var _i, _len, _ref1, _results;
@@ -598,16 +653,16 @@ new Cache.Rule("potof").schema(function() {
       urge: [urge, pt_no, said_num],
       win_result: [win_result, win_side_order, text_str, role_text],
       win_side: [win_side_order, win_result, text_str, role_text],
-      role: [role_text, win_side_order, select, text_str],
-      select: [select, win_side_order, role_text, text_str],
-      text: [text_str, win_side_order, role_text, select]
+      role: [role_side_order, role_text, win_side_order, select, text_str],
+      select: [select, role_side_order, role_text, win_side_order, text_str],
+      text: [text_str, win_side_order, role_side_order, role_text, select]
     };
     chr_job = Cache.chr_jobs.find("" + (o.csid.toLowerCase()) + "_" + o.face_id);
     job = chr_job ? chr_job.job : "***";
     return o.view = {
       portrate: GUI.portrate(o.face_id),
       job: job,
-      sow_auth_id: m("kbd", o.sow_auth_id),
+      user_id: m("kbd", o.user_id),
       stat_at: stat_at,
       stat_type: stat_type,
       said_num: "" + said_num + "回",
@@ -676,7 +731,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
         chrs = Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list();
         headline = "";
         if (chrs != null ? chrs.length : void 0) {
-          headline = [m("span.badge.badge-info", Cache.chr_sets.find(Url.prop.chr_set()).caption), "の" + chrs.length + "人を、", m("span.badge.badge-info", map_order_set.headline), "回数で並べています"];
+          headline = [m(".GSAY.badge", Cache.chr_sets.find(Url.prop.chr_set()).caption), "の" + chrs.length + "人を、", m(".GSAY.badge", map_order_set.headline), "回数で並べています"];
         }
         return [
           m("hr.black"), m(".mark", headline), (function() {
@@ -879,7 +934,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
                   story_id = _ref2[_j];
                   _results1.push(GUI.inline_item(function() {
                     return m("a", {
-                      style: "display:block; width:" + (2.8 + folder.length * 0.65) + "em; text-align:left;",
+                      style: "display:block; width:" + (2.8 + folder.length * 0.65) + "rem; text-align:left;",
                       href: "http://7korobi.gehirn.ne.jp/stories/" + story_id[0] + ".html"
                     }, story_id[0]);
                   }));
@@ -963,6 +1018,7 @@ GUI.if_exist("#buttons", function(dom) {
     });
   }
   layout = new GUI.Layout(dom, -1, -1, 120);
+  layout.width = 90;
   layout.transition();
   touch = GUI.TouchMenu.icons;
   return m.module(dom, {
@@ -986,11 +1042,7 @@ GUI.if_exist("#buttons", function(dom) {
           if (!touch.menus[icon]) {
             continue;
           }
-          _results.push(m("div", touch.start(icon), m(".bigicon", m(".icon-" + icon, {
-            style: "opacity: 0.8"
-          }, " ")), touch.badge[icon] != null ? m(".badge.pull-right", {
-            style: "position:relative; margin-top: -5ex;"
-          }, touch.badge[icon]()) : void 0));
+          _results.push(m("div", touch.start(icon), m(".bigicon", m(".icon-" + icon, " ")), touch.badge[icon] != null ? m(".badge.pull-right", touch.badge[icon]()) : void 0));
         }
         return _results;
       })());
@@ -1070,7 +1122,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
       }
     };
     wide_attr = GUI.attrs(function() {
-      this.start(function() {
+      this.click(function() {
         return layout.large_mode = !layout.large_mode;
       });
       return this.actioned(function() {
@@ -1080,7 +1132,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var anchor, event, filter, filter_class, folder, hides, logid, message, o, potofs, subview, turn, vid, _ref7;
+        var event, filter, filter_class, hides, o, potofs, subview;
         hides = Url.prop.potofs_hide();
         layout.width = win.width - Url.prop.w() - 4;
         switch (Url.prop.layout()) {
@@ -1097,30 +1149,26 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
         if (layout.large_mode) {
           layout.width += Url.prop.w();
         }
-        message = Cache.messages.find(Url.prop.scroll());
-        anchor = (message != null ? message.anchor : void 0) || "";
-        subview = message ? ((_ref7 = Url.prop.scroll().split("-"), folder = _ref7[0], vid = _ref7[1], turn = _ref7[2], logid = _ref7[3], _ref7), Cache.messages.search("" + logid + "," + turn + ",").list()) : [];
-        filter = m("div", wide_attr, m("h6", ">>" + anchor + " 参照ログ"), (function() {
+        subview = messages.anchor(Url.prop).list();
+        filter = m("div", wide_attr, m("h6", "参照ログ"), (function() {
           var _i, _len, _results;
           _results = [];
           for (_i = 0, _len = subview.length; _i < _len; _i++) {
             o = subview[_i];
-            _results.push(m("." + o.mestype, {
-              style: "white-space: nowrap; overflow: hidden;"
-            }, m("kbd.line", "" + o.turn + ":" + o.anchor), m("span.text", m.trust(o.log.line_text))));
+            _results.push(m(".line_text." + o.mestype, m(".badge", "" + o.turn + ":" + o.anchor), m.trust(o.log.line_text)));
           }
           return _results;
         })());
         potofs = m("table.potofs", m("tfoot.head", m("tr.center", m("th[colspan=2]", m("sup", "(スクロールします。)")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_at"), "日程")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_type"), "状態")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "said_num"), "発言")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "pt"), "残り")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "urge"), "促")), m("th", m("span.icon-user", " ")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "select"), "希望")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_result"), "勝敗")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_side"), "陣営")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "role"), "役割")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "text"), "補足")))), m("tbody", wide_attr, (function() {
-          var _i, _len, _ref8, _results;
-          _ref8 = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
+          var _i, _len, _ref7, _results;
+          _ref7 = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
           _results = [];
-          for (_i = 0, _len = _ref8.length; _i < _len; _i++) {
-            o = _ref8[_i];
+          for (_i = 0, _len = _ref7.length; _i < _len; _i++) {
+            o = _ref7[_i];
             filter_class = hides[o.face_id] ? "filter-hide" : "";
             _results.push(m("tr", {
               className: filter_class
-            }, m("th.calc", {}, o.view.job), m("th", {}, o.name), m("td.calc", {}, o.view.stat_at), m("td", {}, o.view.stat_type), m("td.calc", {}, o.view.said_num), m("td.calc", {}, o.view.pt), m("td.center", {}, o.view.urge), m("td.center", {}, o.view.sow_auth_id), m("td.center", {}, o.view.select), m("td.WIN_" + o.view.win + ".center", {}, o.view.win_result), m("td.WIN_" + o.view.win + ".calc", {}, o.view.win_side), m("td.WIN_" + o.view.win, {}, o.view.role), m("td.WIN_" + o.view.win, {}, o.view.text)));
+            }, m("th.calc", {}, o.view.job), m("th", {}, o.name), m("td.calc", {}, o.view.stat_at), m("td", {}, o.view.stat_type), m("td.calc", {}, o.view.said_num), m("td.calc", {}, o.view.pt), m("td.center", {}, o.view.urge), m("td.center", {}, o.view.user_id), m("td.center", {}, o.view.select), m("td.WIN_" + o.view.win + ".center", {}, o.view.win_result), m("td.WIN_" + o.view.win + ".calc", {}, o.view.win_side), m("td.WIN_" + o.view.win, {}, o.view.role), m("td.WIN_" + o.view.win, {}, o.view.text)));
           }
           return _results;
         })()));
@@ -1137,6 +1185,11 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
   }
   Cache.rule.event.merge(gon.events);
   messages = {
+    anchor: function(_arg) {
+      var scroll, talk;
+      talk = _arg.talk, scroll = _arg.scroll;
+      return Cache.messages.anchor(talk(), scroll());
+    },
     home: function(_arg) {
       var home;
       home = _arg.home;
@@ -1148,10 +1201,9 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       return Cache.messages.warning(event_id(), potofs_hide());
     },
     after: function(_arg) {
-      var potofs_hide, scroll, updated_at, _ref7;
-      scroll = _arg.scroll, potofs_hide = _arg.potofs_hide;
-      updated_at = ((_ref7 = Cache.messages.find(scroll())) != null ? _ref7.updated_at : void 0) || 0;
-      return Cache.messages.after(updated_at, potofs_hide());
+      var open, potofs_hide, talk, updated_at;
+      updated_at = _arg.updated_at, talk = _arg.talk, open = _arg.open, potofs_hide = _arg.potofs_hide;
+      return Cache.messages.after(updated_at(), talk(), open(), potofs_hide());
     },
     talk: function(_arg) {
       var event_id, open, potofs_hide, search, talk;
@@ -1188,13 +1240,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
             this.config(function(_elem) {
               return elem = _elem;
             });
-            this.over(function() {
-              return GUI.Animate.jelly.up(elem);
-            });
-            this.out(function() {
-              return GUI.Animate.jelly.down(elem);
-            });
-            return this.end(function() {
+            return this.click(function() {
               hides[o.face_id] = !hides[o.face_id];
               return Url.prop.potofs_hide(hides);
             });
@@ -1215,20 +1261,22 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       return Cache.messages.home("announce").list().length;
     });
     touch.icon("home", function() {
-      var _ref7;
       Url.prop.scope("home");
-      Url.prop.scroll((_ref7 = messages.home(Url.prop).list().first) != null ? _ref7._id : void 0);
       return [m(".pagenavi.choice.guide.form-inline", m("h6", "村の情報"), m("p", "村に関する情報、アナウンスを表示します。")), potofs_portrates(touch)];
     });
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        if (story != null) {
-          switch (Url.prop.scope()) {
-            case "home":
-              return GUI.message.story(story);
-          }
-        }
+        return [
+          GUI.timeline(Url.prop.w(), messages.after(Url.prop)), (function() {
+            if (story != null) {
+              switch (Url.prop.scope()) {
+                case "home":
+                  return GUI.message.story(story);
+              }
+            }
+          })()
+        ];
       }
     });
   });
@@ -1260,9 +1308,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       return messages.talk(prop).list().length;
     });
     touch.icon("chat-alt", function() {
-      var _ref7;
       Url.prop.scope("talk");
-      Url.prop.scroll((_ref7 = messages.talk(Url.prop).list().first) != null ? _ref7._id : void 0);
       return [m(".pagenavi.choice.guide.form-inline", m("h6", "発言"), security_modes(touch, Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates(touch)];
     });
     touch.badge("mail", function() {
@@ -1281,9 +1327,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       return messages.memo(prop).list().length;
     });
     touch.icon("mail", function() {
-      var _ref7;
       Url.prop.scope("memo");
-      Url.prop.scroll((_ref7 = messages.memo(Url.prop).list().first) != null ? _ref7._id : void 0);
       return [m(".pagenavi.choice.guide.form-inline", m("h6", "メモ"), security_modes(touch, Url.prop.memo), m("p", "メモを表示します。")), potofs_portrates(touch)];
     });
     touch.badge("warning", function() {
@@ -1316,7 +1360,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
           texts.push(RAILS.event_state.eclipse);
         }
         return [
-          m(".choice.guide.form-inline", m("h6", "ゲーム情報"), m("div." + event.winner, m("h3.mesname", m("b", event.name)), (function() {
+          m(".choice.guide.form-inline", m("h6", "ゲーム情報"), m("div." + event.winner, m("p.name", m("b", event.name)), (function() {
             var _i, _len, _results;
             _results = [];
             for (_i = 0, _len = texts.length; _i < _len; _i++) {
@@ -1365,26 +1409,35 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       }
     });
     m.startComputation();
-    return setTimeout(function() {
-      var event, _i, _len, _ref7;
-      if (gon.event.messages) {
-        Cache.rule.message.merge(gon.event.messages, {
-          event_id: gon.event._id,
-          turn: gon.event.turn
+    return window.requestAnimationFrame(function() {
+      var event, set_event_messages, _i, _len, _ref7;
+      set_event_messages = function(event) {
+        var first;
+        first = event.messages[0];
+        event.messages.unshift({
+          name: event.name,
+          log: event.name,
+          logid: "EVENT",
+          mestype: "EVENT",
+          updated_at: new Date(first.date) - 1
         });
+        return Cache.rule.message.merge(event.messages, {
+          event_id: event._id,
+          turn: event.turn
+        });
+      };
+      if (gon.event.messages) {
+        set_event_messages(gon.event);
       }
       _ref7 = gon.events;
       for (_i = 0, _len = _ref7.length; _i < _len; _i++) {
         event = _ref7[_i];
         if (event.messages) {
-          Cache.rule.message.merge(event.messages, {
-            event_id: event._id,
-            turn: event.turn
-          });
+          set_event_messages(event);
         }
       }
       return m.endComputation();
-    }, DELAY.presto);
+    });
   });
 }
 
@@ -1525,68 +1578,6 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
   });
 }
 
-GUI.if_exist("#headline", function(dom) {
-  var touch;
-  touch = new GUI.TouchMenu();
-  touch.state("finish");
-  return m.module(dom, {
-    controller: function() {},
-    view: function() {
-      var max_all, max_cafe, max_ciel, max_crazy, max_morphe, max_pan, max_vage, max_xebec;
-      max_vage = GAME.PERJURY.config.cfg.MAX_VILLAGES;
-      max_crazy = GAME.CRAZY.config.cfg.MAX_VILLAGES;
-      max_xebec = GAME.XEBEC.config.cfg.MAX_VILLAGES;
-      max_ciel = GAME.CIEL.config.cfg.MAX_VILLAGES;
-      max_cafe = GAME.CABALA.config.cfg.MAX_VILLAGES;
-      max_pan = GAME.PAN.config.cfg.MAX_VILLAGES;
-      max_morphe = GAME.MORPHE.config.cfg.MAX_VILLAGES;
-      max_all = max_vage + max_crazy + max_xebec + max_ciel;
-      max_all += max_cafe + max_morphe;
-      return m(".choice", m("table.board", "progress" === touch.state() ? m("tr", m("th.choice[colspan=2]", m("strong", "進行中の村")), m("th.no_choice[colspan=2]", m("a", touch.start("finish"), "終了した村を見る"))) : void 0, "finish" === touch.state() ? m("tr", m("th.no_choice[colspan=2]", m("a", touch.start("progress"), "進行中の村を見る")), m("th.choice[colspan=2]", m("strong", "終了した村"))) : void 0, m("tr.link", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ")), "progress" === touch.state() ? m("tr", m("td.no_choice", m("a", {
-        href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
-      }, "lobby"), m("br"), "offparty", m("br"), m("br"), m("br")), m("td.no_choice", "" + max_morphe + "村:", m("a", {
-        href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
-      }, "morphe"), m("br"), "" + max_cafe + "村:", m("a", {
-        href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
-      }, "cafe"), m("br"), m("br"), m("br")), m("td.no_choice", "wolf", m("br"), "ultimate", m("br"), "allstar", m("br"), m("br")), m("td.no_choice", "role-play", m("br"), "RP-advance", m("br"), "" + max_vage + "村:", m("a", {
-        href: GAME.PERJURY.config.cfg.URL_SW + "/sow.cgi"
-      }, "perjury"), m("br"), "" + max_xebec + "村:", m("a", {
-        href: GAME.XEBEC.config.cfg.URL_SW + "/sow.cgi"
-      }, "xebec"), m("br"), "" + max_crazy + "村:", m("a", {
-        href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
-      }, "crazy"), m("br"), "" + max_ciel + "村:", m("a", {
-        href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
-      }, "ciel"))) : void 0, "finish" === touch.state() ? m("tr", m("td.no_choice", m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
-      }, "lobby"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
-      }, "offparty"), m("br"), m("br"), m("br")), m("td.no_choice", m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
-      }, "morphe"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
-      }, "cafe"), m("br"), m("br"), m("br")), m("td.no_choice", m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
-      }, "wolf"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
-      }, "ultimate"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
-      }, "allstar"), m("br"), m("br")), m("td.no_choice", m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
-      }, "role-play"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
-      }, "advance"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
-      }, "perjury"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
-      }, "xebec"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
-      }, "crazy"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
-      }, "ciel"))) : void 0));
-    }
-  });
-});
-
 
 /*
     h6(ng-if="event") ページ移動
@@ -1631,6 +1622,91 @@ GUI.if_exist("#to_root", function(dom) {
 });
 
 m.endComputation();
+GUI.if_exist("#headline", function(dom) {
+  var touch;
+  touch = new GUI.TouchMenu();
+  touch.state("finish");
+  return m.module(dom, {
+    controller: function() {},
+    view: function() {
+      var max_all, max_cafe, max_ciel, max_crazy, max_morphe, max_pan, max_vage, max_xebec;
+      max_vage = GAME.PERJURY.config.cfg.MAX_VILLAGES;
+      max_crazy = GAME.CRAZY.config.cfg.MAX_VILLAGES;
+      max_xebec = GAME.XEBEC.config.cfg.MAX_VILLAGES;
+      max_ciel = GAME.CIEL.config.cfg.MAX_VILLAGES;
+      max_cafe = GAME.CABALA.config.cfg.MAX_VILLAGES;
+      max_pan = GAME.PAN.config.cfg.MAX_VILLAGES;
+      max_morphe = GAME.MORPHE.config.cfg.MAX_VILLAGES;
+      max_all = max_vage + max_crazy + max_xebec + max_ciel;
+      max_all += max_cafe + max_morphe;
+      return m(".choice", m("table.board", "progress" === touch.state() ? m("tr", m("th.choice[colspan=2]", {
+        key: "p"
+      }, m("strong", "進行中の村")), m("th.no_choice[colspan=2]", {
+        key: "f"
+      }, m("a", touch.start("finish"), "終了した村を見る"))) : void 0, "finish" === touch.state() ? m("tr", m("th.no_choice[colspan=2]", {
+        key: "p"
+      }, m("a", touch.start("progress"), "進行中の村を見る")), m("th.choice[colspan=2]", {
+        key: "f"
+      }, m("strong", "終了した村"))) : void 0, m("tr", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ")), "progress" === touch.state() ? m("tr", m("td.no_choice", {
+        key: "L"
+      }, m("a", {
+        href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
+      }, "lobby"), m("br"), "offparty", m("br"), m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+        key: "D"
+      }, "" + max_morphe + "村:", m("a", {
+        href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
+      }, "morphe"), m("br"), "" + max_cafe + "村:", m("a", {
+        href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
+      }, "cafe"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+        key: "C"
+      }, "wolf", m("br"), "ultimate", m("br"), "allstar", m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+        key: "R"
+      }, "role-play", m("br"), "RP-advance", m("br"), "" + max_vage + "村:", m("a", {
+        href: GAME.PERJURY.config.cfg.URL_SW + "/sow.cgi"
+      }, "perjury"), m("br"), "" + max_xebec + "村:", m("a", {
+        href: GAME.XEBEC.config.cfg.URL_SW + "/sow.cgi"
+      }, "xebec"), m("br"), "" + max_crazy + "村:", m("a", {
+        href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
+      }, "crazy"), m("br"), "" + max_ciel + "村:", m("a", {
+        href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
+      }, "ciel"))) : void 0, "finish" === touch.state() ? m("tr", m("td.no_choice", {
+        key: "P"
+      }, m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
+      }, "lobby"), m("br"), m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
+      }, "offparty"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+        key: "D"
+      }, m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
+      }, "morphe"), m("br"), m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
+      }, "cafe"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+        key: "C"
+      }, m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
+      }, "wolf"), m("br"), m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
+      }, "ultimate"), m("br"), m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
+      }, "allstar"), m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+        key: "R"
+      }, m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
+      }, "role-play"), m("br"), m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
+      }, "advance"), m("br"), m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
+      }, "perjury"), m("br"), m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
+      }, "xebec"), m("br"), m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
+      }, "crazy"), m("br"), m("a", {
+        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
+      }, "ciel"))) : void 0));
+    }
+  });
+});
 var chrs, links;
 
 if (((typeof gon !== "undefined" && gon !== null ? gon.new_chr_faces : void 0) != null) && ((typeof gon !== "undefined" && gon !== null ? gon.new_chr_jobs : void 0) != null)) {
@@ -1730,26 +1806,13 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.new_chr_faces : void 0) !
   });
 }
 ;
-var with_throttle;
-
-with_throttle = function(cb, delay) {
-  return _.throttle(cb, delay, {
-    leading: false,
-    trailing: true
-  });
-};
-
 if ("onorientationchange" in window) {
-  window.addEventListener('orientationchange', win["do"].resize);
-  window.addEventListener('orientationchange', with_throttle(win["do"].scroll, DELAY.lento));
+  window.addEventListener('orientationchange', win["do"].scroll);
 } else {
-  window.addEventListener('resize', win["do"].resize);
-  window.addEventListener('resize', with_throttle(win["do"].scroll, DELAY.lento));
+  window.addEventListener('resize', win["do"].scroll);
 }
 
 window.addEventListener('scroll', win["do"].scroll);
-
-window.addEventListener('scroll', with_throttle(win["do"].resize, DELAY.lento));
 
 if ("ondeviceorientation" in window) {
   window.addEventListener('deviceorientation', win["do"].orientation);
@@ -1757,22 +1820,6 @@ if ("ondeviceorientation" in window) {
 
 if ("ondevicemotion" in window) {
   window.addEventListener('devicemotion', win["do"].motion);
-}
-
-if ("ongesturestart" in window) {
-  window.addEventListener('gesturestart', with_throttle(win["do"].start, DELAY.presto));
-  window.addEventListener('gesturechange', with_throttle(win["do"].move, DELAY.presto));
-  window.addEventListener('gestureend', with_throttle(win["do"].end, DELAY.presto));
-}
-
-if ("ontouchstart" in window) {
-  window.addEventListener('touchstart', with_throttle(win["do"].start, DELAY.presto));
-  window.addEventListener('touchmove', with_throttle(win["do"].move, DELAY.presto));
-  window.addEventListener('touchend', with_throttle(win["do"].end, DELAY.presto));
-} else {
-  window.addEventListener('mousedown', with_throttle(win["do"].start, DELAY.presto));
-  window.addEventListener('mousemove', with_throttle(win["do"].move, DELAY.presto));
-  window.addEventListener('mouseup', with_throttle(win["do"].end, DELAY.presto));
 }
 
 if ("onhashchange" in window) {

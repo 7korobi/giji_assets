@@ -3,6 +3,7 @@ props:
   scroll:
     type: Text
     current: ""
+
   search:
     type: Text
     current: ""
@@ -21,6 +22,9 @@ props:
   color:
   title:
   nation:
+
+  updated_at:
+    type: Date
 
   message_id:
   event_id:
@@ -90,6 +94,7 @@ props:
     current: all
   update_interval:
     current: all
+
 
 bind:
   folder:

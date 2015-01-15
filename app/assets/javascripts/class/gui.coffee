@@ -86,27 +86,49 @@ GUI =
         func.move = (cb)->
           gesture.onmove = draw cb
 
+      click: (cb)->
+        cb = act(cb)
+        o.onclick = cb
       start: (cb)->
         cb = act(cb)
         o.onmousedown = cb
-        o.ongesturestart = cb
         o.ontouchstart = cb
       end: (cb)->
         cb = act(cb)
         o.onmouseup = cb
-        o.ongestureend = cb
         o.ontouchend = cb
+      move: (cb)->
+        cb = act(cb)
+        o.onmousemove = cb
+        o.ontouchmove = cb
       over: (cb)->
         cb = act(cb)
         o.onmouseover = cb
-        o.ongesturestart = cb
-        o.ontouchstart = cb
+        o.ontouchmove = cb
       out: (cb)->
         cb = act(cb)
-        o.onmousedown = cb
+        o.onmouseup  = cb
         o.onmouseout = cb
-        o.ongestureend = cb
         o.ontouchend = cb
+
+      canvas: (width, height, options)->
+        size = "#{width}x#{height}"
+        o.width = width * 2
+        o.height = height * 2
+        o.style = "width: #{width}px; height: #{height}px;"
+        o.config = (canvas, is_continue, context)->
+          ctx = canvas.getContext "2d"
+
+          cache = options.cache?()
+          if cache
+            cache.canvas ?= {}
+            if image = cache.canvas[size]
+              ctx.putImageData image, 0, 0
+              return
+          options.draw ctx
+          if cache
+            cache.canvas[size] = ctx.getImageData 0, 0, o.width, o.height
+
       config: (cb)->
         o.config = cb
       actioned: (cb)->
@@ -124,13 +146,13 @@ GUI =
     m query, attr, at.text
 
   inline_item: (cb)->
-    inline_item_span = (align, em, vdom)->
+    inline_item_span = (align, rem, vdom)->
       m "li",
-        style: "width:#{em}em; text-align:#{align};"
+        style: "width:#{rem}rem; text-align:#{align};"
       , vdom
     list_cmds =
-      center: (em, vdom...)-> inline_item_span "center", em, vdom
-      right:  (em, vdom...)-> inline_item_span "right", em, vdom
+      center: (rem, vdom...)-> inline_item_span "center", rem, vdom
+      right:  (rem, vdom...)-> inline_item_span "right", rem, vdom
 
     m "ul.mark.inline", cb.call(list_cmds)
 
@@ -170,7 +192,7 @@ GUI =
         cb GUI.name.config(key), size
 
   letter: (style, head, vdom...)->
-    [ m "h3.mesname",
+    [ m "p.name",
         m "b", head
       m "p.text.#{style}", vdom
     ]

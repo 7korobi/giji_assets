@@ -32,9 +32,9 @@ if gon?.map_reduce?.faces?
         headline = ""
         if chrs?.length
           headline = [
-            m "span.badge.badge-info", Cache.chr_sets.find(Url.prop.chr_set()).caption
+            m ".GSAY.badge", Cache.chr_sets.find(Url.prop.chr_set()).caption
             "の#{chrs.length}人を、"
-            m "span.badge.badge-info", map_order_set.headline
+            m ".GSAY.badge", map_order_set.headline
             "回数で並べています"
           ]
 
@@ -204,7 +204,7 @@ if gon?.face?
               for story_id in face.story_id_of_folders[folder]
                 GUI.inline_item -> 
                   m "a",
-                    style: "display:block; width:#{2.8 + folder.length * 0.65}em; text-align:left;"
+                    style: "display:block; width:#{2.8 + folder.length * 0.65}rem; text-align:left;"
                     href: "http://7korobi.gehirn.ne.jp/stories/#{story_id[0]}.html"
                   , story_id[0]
         ]
@@ -259,6 +259,7 @@ GUI.if_exist "#buttons", (dom)->
         anime box
 
   layout = new GUI.Layout dom, -1, -1, 120
+  layout.width = 90
   layout.transition()
   touch = GUI.TouchMenu.icons
   m.module dom,
@@ -275,9 +276,8 @@ GUI.if_exist "#buttons", (dom)->
           continue unless touch.menus[icon]
           m "div", touch.start(icon),
             m ".bigicon",
-              m ".icon-#{icon}", {style: "opacity: 0.8"}, " "
-            m ".badge.pull-right", {style: "position:relative; margin-top: -5ex;"}, touch.badge[icon]() if touch.badge[icon]?
-
+              m ".icon-#{icon}", " "
+            m ".badge.pull-right", touch.badge[icon]() if touch.badge[icon]?
 
 
 GUI.if_exist "#topviewer", (dom)->
@@ -367,7 +367,7 @@ if gon?.potofs?
         touch.btn prop, value
 
     wide_attr = GUI.attrs ->
-      @start -> 
+      @click -> 
         layout.large_mode = ! layout.large_mode
       @actioned ->
         layout.translate()
@@ -387,22 +387,15 @@ if gon?.potofs?
             layout.dx = -1
 
         layout.width += Url.prop.w() if layout.large_mode
-        message = Cache.messages.find Url.prop.scroll()
-        anchor = message?.anchor || ""
-        subview =
-          if message
-            [folder, vid, turn, logid] = Url.prop.scroll().split("-")
-            Cache.messages.search("#{logid},#{turn},").list()
-          else
-            []
-
+        subview = messages.anchor(Url.prop).list()
         filter = 
           m "div", wide_attr,
-            m "h6", ">>#{anchor} 参照ログ"
+            m "h6", "参照ログ"
             for o in subview
-              m ".#{o.mestype}", {style: "white-space: nowrap; overflow: hidden;"},
-                m "kbd.line", "#{o.turn}:#{o.anchor}"
-                m "span.text", m.trust o.log.line_text
+              m ".line_text.#{o.mestype}",
+                m ".badge", "#{o.turn}:#{o.anchor}"
+                m.trust o.log.line_text
+
         potofs = 
           m "table.potofs",
             m "tfoot.head",
@@ -434,7 +427,7 @@ if gon?.potofs?
                   m "td.calc", {}, o.view.said_num
                   m "td.calc", {}, o.view.pt
                   m "td.center", {}, o.view.urge
-                  m "td.center", {}, o.view.sow_auth_id
+                  m "td.center", {}, o.view.user_id
                   m "td.center", {}, o.view.select
                   m "td.WIN_#{o.view.win}.center", {}, o.view.win_result
                   m "td.WIN_#{o.view.win}.calc", {}, o.view.win_side
@@ -462,13 +455,14 @@ if gon?.events? && gon.event?
   Cache.rule.event.merge gon.events
 
   messages =
+    anchor: ({talk, scroll})->
+      Cache.messages.anchor(talk(), scroll())
     home: ({home})->
       Cache.messages.home(home())
     warning: ({event_id, potofs_hide})->
       Cache.messages.warning(event_id(), potofs_hide())
-    after: ({scroll, potofs_hide})->
-      updated_at = Cache.messages.find(scroll())?.updated_at || 0
-      Cache.messages.after(updated_at, potofs_hide())
+    after: ({updated_at, talk, open, potofs_hide})->
+      Cache.messages.after(updated_at(), talk(), open(), potofs_hide())
     talk: ({event_id, talk, open, potofs_hide, search})->
       Cache.messages.talk(event_id(), talk(), open(), potofs_hide(), search())
     memo: ({memo, uniq, potofs_hide, search})->
@@ -505,9 +499,7 @@ if gon?.events? && gon.event?
 
             elem = null
             @config (_elem)-> elem = _elem
-            @over -> GUI.Animate.jelly.up elem
-            @out -> GUI.Animate.jelly.down elem
-            @end ->
+            @click ->
               hides[o.face_id] = ! hides[o.face_id]
               Url.prop.potofs_hide hides
 
@@ -525,7 +517,6 @@ if gon?.events? && gon.event?
       Cache.messages.home("announce").list().length
     touch.icon "home", -> # 情報
       Url.prop.scope "home"
-      Url.prop.scroll messages.home(Url.prop).list().first?._id
       [ m ".pagenavi.choice.guide.form-inline",
           m "h6", "村の情報"
           m "p", "村に関する情報、アナウンスを表示します。"
@@ -535,10 +526,12 @@ if gon?.events? && gon.event?
     m.module dom,
       controller: ->
       view: ->
-        if story?
-          switch Url.prop.scope()
-            when "home"
-              GUI.message.story story
+        [ GUI.timeline Url.prop.w(), messages.after(Url.prop)
+          if story?
+            switch Url.prop.scope()
+              when "home"
+                GUI.message.story story
+        ]
 
   GUI.if_exist "#messages", (dom)->
     scroll_spy.avg_height = 150
@@ -547,7 +540,6 @@ if gon?.events? && gon.event?
     touch.icon "pin", -> # アンカー
       # {home} = Url.prop
       # Url.prop.scope "pin"
-      # Url.prop.scroll messages.pin(Url.prop).list().first?._id
 
 
     touch.badge "stopwatch", ->
@@ -569,7 +561,6 @@ if gon?.events? && gon.event?
       messages.talk(prop).list().length
     touch.icon "chat-alt", -> # 発言
       Url.prop.scope "talk"
-      Url.prop.scroll messages.talk(Url.prop).list().first?._id
       [ m ".pagenavi.choice.guide.form-inline",
           m "h6", "発言"
           security_modes touch, Url.prop.talk
@@ -586,7 +577,6 @@ if gon?.events? && gon.event?
       messages.memo(prop).list().length
     touch.icon "mail", -> # メモ
       Url.prop.scope "memo"
-      Url.prop.scroll messages.memo(Url.prop).list().first?._id
       [ m ".pagenavi.choice.guide.form-inline",
           m "h6", "メモ"
           security_modes touch, Url.prop.memo
@@ -616,7 +606,7 @@ if gon?.events? && gon.event?
         [ m ".choice.guide.form-inline",
             m "h6", "ゲーム情報"
             m "div.#{event.winner}",
-              m "h3.mesname",
+              m "p.name",
                 m "b", event.name
               for text in texts
                 m "p.text", text
@@ -663,20 +653,28 @@ if gon?.events? && gon.event?
             m ".paragraph", JSON.stringify o
 
     m.startComputation()
-    setTimeout ->
+    window.requestAnimationFrame ->
+      set_event_messages = (event)->
+        first = event.messages[0]
+        event.messages.unshift
+          name: event.name
+          log: event.name
+          logid: "EVENT"
+          mestype: "EVENT"
+          updated_at: new Date(first.date) - 1
+
+        Cache.rule.message.merge event.messages,
+          event_id: event._id
+          turn:     event.turn
+
       if gon.event.messages
-        Cache.rule.message.merge gon.event.messages,
-          event_id: gon.event._id
-          turn:     gon.event.turn
+        set_event_messages gon.event
 
       for event in gon.events
         if event.messages
-          Cache.rule.message.merge event.messages,
-            event_id: event._id
-            turn:     event.turn
+          set_event_messages event
 
       m.endComputation()
-    , DELAY.presto
 
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
@@ -832,160 +830,6 @@ if gon?.stories?
                     o.view.rating
         vdom
 
-GUI.if_exist "#headline", (dom)->
-  touch = new GUI.TouchMenu()
-  touch.state "finish"
-
-  m.module dom,
-    controller: ->
-    view: ->
-      max_vage    = GAME.PERJURY.config.cfg.MAX_VILLAGES
-      max_crazy   = GAME.CRAZY  .config.cfg.MAX_VILLAGES
-      max_xebec   = GAME.XEBEC  .config.cfg.MAX_VILLAGES
-      max_ciel    = GAME.CIEL   .config.cfg.MAX_VILLAGES
-      max_cafe    = GAME.CABALA .config.cfg.MAX_VILLAGES
-      max_pan     = GAME.PAN    .config.cfg.MAX_VILLAGES
-      max_morphe  = GAME.MORPHE .config.cfg.MAX_VILLAGES
-      max_all     = ( max_vage + max_crazy + max_xebec + max_ciel )
-      max_all    += ( max_cafe + max_morphe )
-
-      m ".choice",
-        m "table.board",
-          if "progress" == touch.state()
-            m "tr",
-              m "th.choice[colspan=2]",
-                m "strong", "進行中の村"
-              m "th.no_choice[colspan=2]",
-                m "a", touch.start("finish"), "終了した村を見る"
-          if "finish" == touch.state()
-            m "tr",
-              m "th.no_choice[colspan=2]",
-                m "a", touch.start("progress"), "進行中の村を見る"
-              m "th.choice[colspan=2]",
-                m "strong", "終了した村"
-          m "tr.link",
-            m "th.choice", "ロビー"
-            m "th.choice", "夢の形"
-            m "th.choice", "陰謀"
-            m "th.choice", "ＲＰ"
-          if "progress" == touch.state()
-            m "tr",
-              m "td.no_choice",
-                m "a",
-                  href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
-                , "lobby"
-                m "br"
-                "offparty"
-                m "br"
-                m "br"
-                m "br"
-              m "td.no_choice",
-                "#{max_morphe}村:"
-                m "a",
-                  href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
-                , "morphe"
-                m "br"
-                "#{max_cafe}村:"
-                m "a",
-                  href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
-                , "cafe"
-                m "br"
-                m "br"
-                m "br"
-              m "td.no_choice",
-                "wolf"
-                m "br"
-                "ultimate"
-                m "br"
-                "allstar"
-                m "br"
-                m "br"
-              m "td.no_choice",
-                "role-play"
-                m "br"
-                "RP-advance"
-                m "br"
-                "#{max_vage}村:"
-                m "a",
-                  href: GAME.PERJURY.config.cfg.URL_SW + "/sow.cgi"
-                , "perjury"
-                m "br"
-                "#{max_xebec}村:"
-                m "a",
-                  href: GAME.XEBEC.config.cfg.URL_SW + "/sow.cgi"
-                , "xebec"
-                m "br"
-                "#{max_crazy}村:"
-                m "a",
-                  href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
-                , "crazy"
-                m "br"
-                "#{max_ciel}村:"
-                m "a",
-                  href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
-                , "ciel"
-          if "finish" == touch.state()
-            m "tr",
-              m "td.no_choice",
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
-                , "lobby"
-                m "br"
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
-                ,"offparty"
-                m "br"
-                m "br"
-                m "br"
-              m "td.no_choice",
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
-                , "morphe"
-                m "br"
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
-                , "cafe"
-                m "br"
-                m "br"
-                m "br"
-              m "td.no_choice",
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
-                , "wolf"
-                m "br"
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
-                , "ultimate"
-                m "br"
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
-                , "allstar"
-                m "br"
-                m "br"
-              m "td.no_choice", 
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
-                , "role-play"
-                m "br"
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
-                , "advance"
-                m "br"
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
-                , "perjury"
-                m "br"
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
-                , "xebec"
-                m "br"
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
-                , "crazy"
-                m "br"
-                m "a",
-                  href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
-                , "ciel"
 
 
 ###

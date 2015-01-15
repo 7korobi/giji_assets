@@ -8,6 +8,8 @@ class GUI.Layout
   constructor: (@box, @dx, @dy, dz, @absolute = false, @duration = DELAY.animato)->
     return unless @box
 
+    @duration /= 4 if @absolute
+
     GUI.Layout.list[@box.id] = @
     @box.style.zIndex = dz
     @mode = "show"
@@ -91,19 +93,15 @@ class GUI.Layout
     @box.style.transition = transition
 
   translate: ->
-    return unless @box
-
     to = @[@mode]()
     return if _.isEqual(@from, to)
 
     @transform(to)
 
-    duration = @duration
-    duration /= 4 if @absolute
     setTimeout =>
       @from = to
       @translate()
-    , duration
+    , @duration
 
 
 

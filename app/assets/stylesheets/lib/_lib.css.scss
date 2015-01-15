@@ -1,19 +1,77 @@
+.pull-right {
+  float: right !important;
+}
+
+.pull-left {
+  float: left !important;
+}
+
+.mark,
+.badge {
+  line-height: 1rem;
+  border-radius: 2rem;
+  padding: 0.1rem 0.4rem;
+}
+
+.emboss {
+  font-family: serif;
+  font-size:   0.8rem;
+  line-height: 0.8rem;
+  border-radius: 1rem;
+  padding: 0.1rem 0.4rem;
+  margin: 0.2rem 0;
+}
+
+.mark,
+.badge,
+.emboss{
+  vertical-align: baseline;
+  white-space: nowrap;
+  display: inline-block;
+  font-weight: bold;
+  text-align: center;  
+}
+
+.mes_date,
+.small,
+.note,
+rt,
+sup,
+sub {
+  font-size: 0.7rem;
+  line-height: 1.0rem;
+}
+
+.name {
+  line-height: 1.6rem;
+}
+
+
 @mixin line-top($op1: .2, $op2: .3){
-	border-top: 1px solid rgba(0, 0, 0, $op1);
-	@include box-shadow(rgba(255, 255, 255, $op2) 0 1px 0 inset);
+  border-top: 1px solid rgba(0, 0, 0, $op1);
+  box-shadow: rgba(255, 255, 255, $op2) 0 1px 0 inset;
 }
 
 @mixin line-bottom($op1: .2, $op2: .3){
-	border-bottom: 1px solid rgba(0, 0, 0, $op1);
-	@include box-shadow(rgba(255, 255, 255, $op2)0 1px 0);
+  border-bottom: 1px solid rgba(0, 0, 0, $op1);
+  box-shadow: rgba(255, 255, 255, $op2) 0 1px 0;
 }
 
 @mixin line-left($op1: .2, $op2: .3){
-	border-left: 1px solid rgba(0, 0, 0, $op1);
-	@include box-shadow (rgba(255, 255, 255, $op2) -1px 0 0);
+  border-left: 1px solid rgba(0, 0, 0, $op1);
+  box-shadow: rgba(255, 255, 255, $op2) -1px 0 0;
 }
 
 @mixin line-right($op1: .2, $op: .3){
-	border-right: 1px solid rgba(0, 0, 0, $op1);
-	@include box-shadow(rgba(255, 255, 255, $op2) -1px 0 0 inset);
+  border-right: 1px solid rgba(0, 0, 0, $op1);
+  box-shadow: rgba(255, 255, 255, $op2) -1px 0 0 inset;
 }
+
+@mixin font($size-base, $family) {
+  body {
+    font-family: $family;
+    font-size: $size-base;
+    line-height: $size-base * 1.40;
+  }
+}
+

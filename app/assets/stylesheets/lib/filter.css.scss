@@ -5,3 +5,20 @@
   -o-filter: sepia(50%) hue-rotate(180deg);
   filter: sepia(50%) hue-rotate(180deg);
 }
+
+tr.filter-hide {
+  .black-color & {
+    background-color: #444;
+  }
+
+  .cinema-theme & {
+      background: #888;
+      color: #444;
+  }
+
+  .wa-theme & {
+      background: #cc7;
+      color: #444;
+  }  
+}
+

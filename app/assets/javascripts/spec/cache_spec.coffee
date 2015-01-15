@@ -303,7 +303,7 @@ describe "Cache", ->
 
           o.vdom = vdom
 
-          o.search_words = [o.log]
+          o.search_words = o.log
       done()
       if sample.messages?
         Cache.rule.message.merge sample.messages

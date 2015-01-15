@@ -6,18 +6,20 @@ class Gesture
 
     @start event if event
 
-  start: ({pageX, pageY, target})->
+  start: ({pageX, pageY, offsetX, layerX, target})->
     @pStart =
       x: pageX
       y: pageY
       at: _.now()
+      offset: offsetX || layerX
       target: target
 
-  move: ({pageX, pageY, target})->
+  move: ({pageX, pageY, offsetX, layerX, target})->
     @pEnd =
       x: pageX
       y: pageY
       at: _.now()
+      offset: offsetX || layerX
       target: target
 
     if @pStart? && @pEnd?
@@ -25,6 +27,8 @@ class Gesture
         x:  @pEnd.x  - @pStart.x
         y:  @pEnd.y  - @pStart.y
         at: @pEnd.at - @pStart.at
+        offset: offsetX || layerX
+        target: target
     else
       @diff = null
 

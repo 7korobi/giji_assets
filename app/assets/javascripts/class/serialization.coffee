@@ -48,6 +48,7 @@ class Serial
         []
 
     Date: (code)->
+      return code if 0 < code
       base = 1
       result = 0
       for c in code
@@ -91,7 +92,7 @@ class Serial
         "#{val}"
 
     Date: (val)->
-      time = Math.ceil val
+      time = Math.floor val
       result = ""
       while time >= 1
         result += Serial.map.to_s[time % Serial.map.size]

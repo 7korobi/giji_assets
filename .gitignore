@@ -10,6 +10,7 @@ Gemfile.lock
 config/database.yml
 config/mongoid.yml
 config/omni_auth.yml
+config/deploy
 config/yaml
 config/initializers/secret.rb
 config/initializers/resque.rb
