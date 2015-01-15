@@ -140,12 +140,11 @@ if gon?.face?
               m "span.code", Timer.date_time_stamp new Date face.says[0].date.min
               m "span", m.trust "&nbsp;〜&nbsp;"
               m "span.code", Timer.date_time_stamp new Date face.says[0].date.max
-          m "table.say.SAY", scroll_spy.mark("summary"),
-            m "tbody",
+          m "table.SAY.talk", scroll_spy.mark("summary"),
               m "tr",
-                m "td.img", 
+                m "th", 
                   GUI.portrate face.face_id
-                m "td.field",
+                m "td",
                   m ".msg", letters
         ]
 
@@ -169,14 +168,14 @@ if gon?.face?
         ]
         for say in face.says
           says_count_line =
-            m "tr.#{say.logid_head}AY",
+            m "tr.#{say.logid_head}AY.line",
               m "th.msg"
               m "th.msg", face.say_titles[say.logid_head]
               m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.max  } 字"
               m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.all  } 字"
               m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.count} 回"
           says_calc_line =
-            m "tr.#{say.logid_head}AY",
+            m "tr.#{say.logid_head}AY.line",
               m "th.msg"
               m "th.msg", face.say_titles[say.logid_head]
               m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.vil} 村"
@@ -185,8 +184,8 @@ if gon?.face?
           says_count_lines.push says_count_line
           says_calc_lines.push says_calc_line
           
-        [ m "table.say.info", scroll_spy.mark("says_count"), says_count_lines
-          m "table.say.info", scroll_spy.mark("says_calc"), says_calc_lines
+        [ m "table.talk.info", scroll_spy.mark("says_count"), says_count_lines
+          m "table.talk.info", scroll_spy.mark("says_calc"), says_calc_lines
         ]
 
   GUI.if_exist "#village", (dom)->
@@ -392,8 +391,8 @@ if gon?.potofs?
           m "div", wide_attr,
             m "h6", "参照ログ"
             for o in subview
-              m ".line_text.#{o.mestype}",
-                m ".badge", "#{o.turn}:#{o.anchor}"
+              m ".line_text",
+                m ".#{o.mestype}.badge", "#{o.turn}:#{o.anchor}"
                 m.trust o.log.line_text
 
         potofs = 

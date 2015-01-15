@@ -857,7 +857,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
             return _results;
           })()
         ];
-        return [m("h2", face.name + " の活躍"), face.says[0] != null ? m("h6", m("span.code", Timer.date_time_stamp(new Date(face.says[0].date.min))), m("span", m.trust("&nbsp;〜&nbsp;")), m("span.code", Timer.date_time_stamp(new Date(face.says[0].date.max)))) : void 0, m("table.say.SAY", scroll_spy.mark("summary"), m("tbody", m("tr", m("td.img", GUI.portrate(face.face_id)), m("td.field", m(".msg", letters)))))];
+        return [m("h2", face.name + " の活躍"), face.says[0] != null ? m("h6", m("span.code", Timer.date_time_stamp(new Date(face.says[0].date.min))), m("span", m.trust("&nbsp;〜&nbsp;")), m("span.code", Timer.date_time_stamp(new Date(face.says[0].date.max)))) : void 0, m("table.SAY.talk", scroll_spy.mark("summary"), m("tr", m("th", GUI.portrate(face.face_id)), m("td", m(".msg", letters))))];
       }
     });
   });
@@ -891,14 +891,14 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
         _ref1 = face.says;
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           say = _ref1[_i];
-          says_count_line = m("tr." + say.logid_head + "AY", m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
+          says_count_line = m("tr." + say.logid_head + "AY.line", m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
             style: "text-align:right"
           }, "" + (GUI.comma(say.max)) + " 字"), m("th.msg", {
             style: "text-align:right"
           }, "" + (GUI.comma(say.all)) + " 字"), m("th.msg", {
             style: "text-align:right"
           }, "" + (GUI.comma(say.count)) + " 回"));
-          says_calc_line = m("tr." + say.logid_head + "AY", m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
+          says_calc_line = m("tr." + say.logid_head + "AY.line", m("th.msg"), m("th.msg", face.say_titles[say.logid_head]), m("th.msg", {
             style: "text-align:right"
           }, "" + (GUI.comma(say.vil)) + " 村"), m("th.msg", {
             style: "text-align:right"
@@ -908,7 +908,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
           says_count_lines.push(says_count_line);
           says_calc_lines.push(says_calc_line);
         }
-        return [m("table.say.info", scroll_spy.mark("says_count"), says_count_lines), m("table.say.info", scroll_spy.mark("says_calc"), says_calc_lines)];
+        return [m("table.talk.info", scroll_spy.mark("says_count"), says_count_lines), m("table.talk.info", scroll_spy.mark("says_calc"), says_calc_lines)];
       }
     });
   });
@@ -1155,7 +1155,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           _results = [];
           for (_i = 0, _len = subview.length; _i < _len; _i++) {
             o = subview[_i];
-            _results.push(m(".line_text." + o.mestype, m(".badge", "" + o.turn + ":" + o.anchor), m.trust(o.log.line_text)));
+            _results.push(m(".line_text", m("." + o.mestype + ".badge", "" + o.turn + ":" + o.anchor), m.trust(o.log.line_text)));
           }
           return _results;
         })());

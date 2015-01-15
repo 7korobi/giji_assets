@@ -4,9 +4,10 @@
   &.memo td,
   &.memo th,
   &.info,
+  &.line,
   &.guide,
   &.action,
-  .badge {
+  &.badge {
     color: $color;
     background-color: $background;
   }

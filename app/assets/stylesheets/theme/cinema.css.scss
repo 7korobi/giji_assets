@@ -35,6 +35,7 @@
   @include vivid(#100, #664, #ccf);
   @include main-theme(#000, #cb8, #664);
   .MSAY,
+  .SSAY,
   .SAY,
   .QUEUE,
   .mes_nom { @include msg-color-white(#000, #cb8);}

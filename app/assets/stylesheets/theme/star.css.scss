@@ -36,6 +36,7 @@
   @include vivid(#100, #55a, #ccf);
   @include main-theme(#ddf, rgba(0,0,0, 0.33), #1b7);
   .MSAY,
+  .SSAY,
   .SAY,
   .QUEUE,
   .mes_nom { @include msg-color-black(#ddf, rgba(0,0,0, 0.33));}
