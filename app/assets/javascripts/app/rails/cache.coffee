@@ -12,18 +12,15 @@ new Cache.Rule("map_face").schema ->
 
     list = Cache.chr_jobs.face(o.face_id).list()
     if list
-      o.search_words =
-        for chr_job in list
-          chr_job.job 
-      o.chr_set_ids =
-        for chr_job in list
-          chr_job.chr_set_id 
+      search_words = list.map (o)-> o.job
+      o.chr_set_ids = list.map (o)-> o.chr_set_id
     else
-      o.search_words = o.chr_set_ids = []
+      search_words = o.chr_set_ids = []
 
-    o.search_words.push o.face.name
+    search_words.push o.face.name
     for sow_auth_id of o.sow_auth_id.value
-      o.search_words.push sow_auth_id
+      search_words.push sow_auth_id
+    o.search_words = search_words.join("\t")
 
   item = 
     count: 1
@@ -46,7 +43,12 @@ new Cache.Rule("item").schema ->
       prop: ->
 
 new Cache.Rule("event").schema ->
+  @order "_id"
 
+  {visible, bit, mask} = RAILS.message
+
+  @deploy (o)->
+    o.event_id = o._id
 
 new Cache.Rule("story").schema ->
   @scope (all)->
@@ -76,6 +78,7 @@ new Cache.Rule("story").schema ->
   @deploy (o)->
     o.order = o.folder + GUI.field(o.vid, 4)
     o.rating = "default" unless o.rating
+    o.user_id = o.sow_auth_id
     o.card.role = _.difference o.card.config, all_events
 
     o.type.game ?= "TABULA"
@@ -103,7 +106,7 @@ new Cache.Rule("story").schema ->
       say_limit: RAILS.saycnt[   o.type.say ]?.CAPTION || "――"
       game_rule: RAILS.game_rule[o.type.game]?.CAPTION || "タブラの人狼"
 
-    o.search_words = [o.name]
+    o.search_words = o.name
 
   @map_reduce (o, emit)->
     item = 

@@ -27,6 +27,8 @@ Url.routes =
 
         [folder, vid, turn, logid] = params.scroll.split("-")
         if logid?
+          updated_at = Cache.messages.find(params.scroll)?.updated_at || 0
+          Url.prop.updated_at updated_at, true
           Url.prop.event_id  "#{folder}-#{vid}-#{turn}", true
           Url.prop.message_id "#{folder}-#{vid}-#{turn}-#{logid}", true
         return

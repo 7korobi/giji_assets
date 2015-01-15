@@ -14,6 +14,7 @@ new Cache.Rule("potof").schema ->
 
   @deploy (o)->
     o._id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
+    o.user_id = o.sow_auth_id
 
     name = 
       if o.zapcount
@@ -69,7 +70,8 @@ new Cache.Rule("potof").schema ->
 
     win_love = RAILS.loves[o.love]?.win
 
-    win = win_juror || win_love || win_zombie || win_by_role(o, RAILS.gifts) || win_by_role(o, RAILS.roles) || "NONE"
+    win_role = win_by_role(o, RAILS.gifts) || win_by_role(o, RAILS.roles) || "NONE"
+    win = win_juror || win_love || win_zombie || win_role
     win = RAILS.folders[o.story_folder].evil if win == 'EVIL'
     switch win
       when "LONEWOLF"
@@ -79,7 +81,7 @@ new Cache.Rule("potof").schema ->
       when "LOVER"
         is_lone_lose = 1 if ! _.include o.role, "LOVEANGEL"
 
-    if o.story_epilogue # && ! RAILS.folders[o.story_folder].role_play
+    if o.story_epilogue && "suddendead" != o.live
       winner = o.event_winner
       win_result = "敗北"
       win_result = "勝利" if winner == "WIN_" + win
@@ -88,6 +90,7 @@ new Cache.Rule("potof").schema ->
       win_result = "敗北" if is_lone_lose && _.any @potofs, (o)-> o.live != 'live' && _.any o.bonds, o.pno
       win_result = "敗北" if is_dead_lose && 'live' != @live
       win_result = "参加" if "NONE" == win
+    role_side_order = RAILS.wins[win_role].order
     win_side_order = RAILS.wins[win].order
 
     roles = 
@@ -118,16 +121,16 @@ new Cache.Rule("potof").schema ->
       urge:     [urge, pt_no, said_num]
       win_result: [win_result, win_side_order, text_str, role_text]
       win_side:   [win_side_order, win_result, text_str, role_text]
-      role:   [role_text, win_side_order, select, text_str]
-      select: [select, win_side_order, role_text, text_str]
-      text:   [text_str, win_side_order, role_text, select]
+      role:   [role_side_order, role_text, win_side_order, select, text_str]
+      select: [select, role_side_order, role_text, win_side_order, text_str]
+      text:   [text_str, win_side_order, role_side_order, role_text, select]
 
     chr_job = Cache.chr_jobs.find("#{o.csid.toLowerCase()}_#{o.face_id}")
     job = if chr_job then chr_job.job else "***"
     o.view = 
       portrate: GUI.portrate o.face_id
       job: job
-      sow_auth_id: m "kbd", o.sow_auth_id
+      user_id: m "kbd", o.user_id
       stat_at: stat_at
       stat_type: stat_type
       said_num: "#{said_num}回"

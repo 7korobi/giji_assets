@@ -82,7 +82,7 @@ class Cache.Query
         "(#{item})"
     return @ unless list.length
     regexp = (new RegExp list.join("|"), "ig")
-    @in search_words: regexp
+    @where (o)-> regexp.test o.search_words
 
   sort: (desc, order = @sort_by)->
     sort_by = 
@@ -149,11 +149,11 @@ class Cache.Finder
     # map_reduce
     base = {}
     for id, {item, emits} of query._hash
-      for emit in emits 
-        [group, key, map] = emit
+      for [keys, last, map] in emits
         o = base
-        o = o[group] ||= {}
-        o = o[key] ||= init map
+        for key in keys
+          o = o[key] ||= {}
+        o = o[last] ||= init map
         reduce item, o, map
 
     for group, emits of base
@@ -312,9 +312,9 @@ class Cache.Rule
             diff.add = true
           all[item._id] = o
 
-          emit = (group, key, map)=>
+          emit = (keys..., last, map)=>
             finder.map_reduce = true
-            o.emits.push [group, key, map]
+            o.emits.push [keys, last, map]
           @map_reduce o.item, emit
 
       else

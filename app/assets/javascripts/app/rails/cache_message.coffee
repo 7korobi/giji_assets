@@ -5,25 +5,53 @@ new Cache.Rule("message").schema ->
   @belongs_to "event"
   @belongs_to "sow_auth"
 
-  is_show = RAILS.message.visible
-  bit = RAILS.message.bit
-  mask = RAILS.message.mask
+  timespan = 1000 * 3600
+  Cache.messages.has_face = has_face = {}
+  {visible, bit, mask} = RAILS.message
 
   @scope (all)->
+    timeline: (mode)->
+      enables = visible.talk[mode]
+      all.where (o)-> (o.show & enables)
+
+    anchor: (mode, scroll)->
+      enables = RAILS.message.visible.talk[mode]
+      message = Cache.messages.find scroll
+      if message
+        [folder, vid, turn, logid] = Url.prop.scroll().split("-")
+        regexp = ///<mw\ #{logid},#{turn},///
+        all
+        .where (o)-> (o.show & enables) && regexp.test o.search_words
+      else
+        all
+        .where (o)-> false
+
+
+    in_event: (event_id)->
+      enables = visible.talk.all
+      all
+      .where (o)-> (o.show & enables) && (event_id == o.event_id)
+
     home: (mode)->
-      enables = is_show.home[mode]
+      enables = visible.home[mode]
       all
       .where (o)-> (o.show & enables)
 
+    after: (updated_at, mode, open, hides)->
+      enables = visible.talk[mode]
+      enables &= mask.NOT_OPEN unless open
+      all
+      .where (o)-> (o.show & enables) && updated_at <= o.updated_at && ! hides[o.face_id]
+
     talk: (event_id, mode, open, hides, search)->
-      enables = is_show.talk[mode]
+      enables = visible.talk[mode]
       enables &= mask.NOT_OPEN unless open
       all
       .where (o)-> (o.show & enables) && !(event_id > o.event_id) && ! hides[o.face_id]
       .search search
 
     memo: (mode, uniq, hides, search)->
-      enables = is_show.memo[mode]
+      enables = visible.memo[mode]
       query = all
       .sort("desc", "updated_at")
       .where (o)-> (o.show & enables) && ! hides[o.face_id]
@@ -33,13 +61,9 @@ new Cache.Rule("message").schema ->
       query
 
     warning: (event_id, hides)->
-      enables = is_show.warning.all
+      enables = visible.warning.all
       all
       .where (o)-> (o.show & enables) && !(event_id > o.event_id) && ! hides[o.face_id]
-
-    after: (updated_at, hides)->
-      all
-      .where (o)-> updated_at <= o.updated_at && ! hides[o.face_id]
 
   @deploy (o)->
     logtype = o.logid[0..1]
@@ -63,6 +87,10 @@ new Cache.Rule("message").schema ->
     # legacy support
 
     o._id = o.event_id + "-" + o.logid
+    o.csid ?= null
+    o.face_id ?= null
+    o.user_id = o.sow_auth_id
+
     anchor_num = o.logid[2..-1] - 0 || 0
     o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
     o.pen = "#{o.logid[0..1]}-#{o.face_id}"
@@ -74,58 +102,64 @@ new Cache.Rule("message").schema ->
     delete o.date
 
     vdom = GUI.message.xxx
+    o.mask =
+      switch
+        when o.logid.match /^[\-WPX]./
+          "CLAN"
+        when o.logid.match /^[Ti]./
+          "THINK"
+        when o.logid.match /^[D]./
+          o.anchor = "del"
+          "DELETE"
+        else
+          "OPEN"
+
     o.show =
       switch
-        when o.logid.match /^.I/
-          vdom = GUI.message.info
-          bit.TALK | bit.INFO
         when o.logid.match /^.[SX]/
           vdom = GUI.message.talk
           bit.TALK
+        when o.logid.match /^.[AB]/
+          vdom = GUI.message.action
+          o.anchor = "act"
+          bit.ACTION
         when o.logid.match /^.[M]/
           vdom = GUI.message.memo
+          o.anchor = "memo"
           bit.MEMO
-        else
-          0
-
-    o.show |=
-      switch
-        when o.mestype == "MAKER"
-          vdom = GUI.message.admin
-          bit.INFO
-        when o.mestype == "ADMIN"
-          vdom = GUI.message.admin
+        when o.logid.match /^.I/
+          vdom = GUI.message.info
+          o.anchor = "info"
           bit.INFO
         else
-          0
+          bit.EVENT
 
-    if o.logid.match /^.[AB]/
-      vdom = GUI.message.action
-      o.anchor = "act"
-      o.show |= bit.ACTION
+    switch o.mestype
+      when "MAKER", "ADMIN"
+        vdom = GUI.message.guide unless o.show == bit.ACTION
+        o.mask = "ANNOUNCE"
+      when "EVENT"
+        vdom = GUI.message.event
+        o.pen = o.event_id
+        o.mask = "ANNOUNCE"
+        o.anchor = "info"
 
-    o.show &=
-      switch
-        when o.logid.match /^[D]./
-          o.anchor = "del"
-          mask.DELETE
-        when o.logid.match /^[Ti]./
-          mask.THINK
-        when o.logid.match /^[\-WPX]./
-          mask.CLAN
-        else
-          mask.OPEN
-
+    o.show &= mask[o.mask]
     o.vdom = vdom
 
-    o.search_words = [o.log]
-
-  has_face = {}
-  Cache.messages.has_face = has_face
+    o.search_words = o.log
 
   @map_reduce (o, emit)->
     has_face[o.face_id] = true
 
+    if o.vdom == GUI.message.talk || o.vdom == GUI.message.guide
+      time_id = Serial.serializer.Date(o.updated_at / timespan)
+      item = 
+        count: o.log.length
+        min: o.updated_at
+        max: o.updated_at
+      emit "mask", time_id, o.mestype, item
+      emit "mask", time_id, "all", item
     emit "event", o.event_id,
       max: o.updated_at
     emit "pen", o.pen,
