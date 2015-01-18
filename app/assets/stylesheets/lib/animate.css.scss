@@ -1,0 +1,12 @@
+
+.desktop {
+  a,
+  .btn,
+  .board,
+  .menuicon {
+    transition-delay:      0ms;
+    transition-duration: 800ms;
+    transition-timing-function: ease-in-out;
+    transition-property: color, background, border;
+  }
+}

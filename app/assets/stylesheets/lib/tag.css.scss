@@ -1,0 +1,42 @@
+body {
+  color: #ccf;
+  padding: 0;
+}
+
+h2 {
+  color: #ddf;
+  border-bottom: 1px solid #ddf;
+}
+h3 {
+  color: #ffa;
+}
+
+h6 {
+  font-weight: bold;
+  display: block;
+  margin: 0;
+  padding: 0.10em 0.25em;
+  line-height: 1em;
+
+  border-bottom: 1px solid #e5e5e5;
+  background-color: rgba(255,255,255,0.25);
+}
+
+kbd {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+code {
+  color: #c23;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+a {
+  text-decoration: none;
+}
+
+ul.unstyled, ol.unstyled {
+    margin-left: 0;
+    list-style: none
+}
+

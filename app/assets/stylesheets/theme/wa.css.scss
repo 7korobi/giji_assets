@@ -35,20 +35,15 @@
 
   @include border-theme-white(#444, #765);
   @include vivid(#002, #720, #ccf);
-  @include main-theme(#000, #cb8, #720);
+//  @include main-theme(#000, #cb8, #720);
   .MSAY,
   .SSAY,
   .SAY,
-  .QUEUE,
-  .mes_nom { @include msg-color-white(#000, #cb8);}
+  .QUEUE { @include color-tone(white, #000, #cb8);}
 
-  &.large-layout,
-  &.center-layout {
-  }
-
-  &.mini-layout,
-  &.game-layout,
-  &.right-layout {
+  .msg{
+    border-top: 2px solid #444;
+    border-bottom: 2px solid #444;
   }
 
   #sayfilter .paragraph {
@@ -57,7 +52,7 @@
 
   .insayfilter {
     .paragraph {
-      border-width: 0 ;
+      border-width: 0;
       background: #eed;
     }
     div, th, td {
@@ -88,10 +83,7 @@
   .sayfilter_content .head,
   .sayfilter_caption_enable,
   .insayfilter .paragraph {
-            border-radius : 0;
-         -o-border-radius : 0;
-       -moz-border-radius : 0;
-    -webkit-border-radius : 0;
+    border-radius : 0;
   }
 
   .sayfilter_content_enable    ,
@@ -162,14 +154,6 @@
   .memoright {
     border-color: #000;
   }
-  .name {
-    @include line-bottom();
-  }
-
-  .msg{
-    border-right: solid 4px #333;
-    border-bottom: solid 2px #222;
-  }
 
   .formpl_gm ,
   .formpl_gm  textarea{
@@ -178,16 +162,8 @@
     background-color: #100;
   }
 
-  .say img {
-    border-top:    2px solid rgba( 112, 32, 0, 0.5);
-    border-bottom: 3px solid rgba( 112, 32, 0, 0.5);
-  }
-
   .toolbox {
-            border-radius : 0.5em;
-         -o-border-radius : 0.5em;
-       -moz-border-radius : 0.5em;
-    -webkit-border-radius : 0.5em;
+    border-radius : 0.5em;
     background-color: #ddb;
   }
   body {

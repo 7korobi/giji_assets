@@ -33,12 +33,15 @@
 
   @include border-theme-white(#444, #765);
   @include vivid(#100, #664, #ccf);
-  @include main-theme(#000, #cb8, #664);
+//  @include main-theme(#000, #cb8, #664);
   .MSAY,
   .SSAY,
   .SAY,
-  .QUEUE,
-  .mes_nom { @include msg-color-white(#000, #cb8);}
+  .QUEUE { @include color-tone(white, #000, #cb8);}
+
+  .msg{
+    border-radius: 0.5rem;
+  }
 
   &.large-layout,
   &.center-layout {
@@ -85,33 +88,7 @@
   .sayfilter_content .head,
   .sayfilter_caption_enable,
   .insayfilter .paragraph {
-            border-radius : 0.5em;
-         -o-border-radius : 0.5em;
-       -moz-border-radius : 0.5em;
-    -webkit-border-radius : 0.5em;
-  }
-
-  .sayfilter_content .head,
-  .sayfilter_caption_enable {
-            border-bottom-left-radius : 0;
-         -o-border-bottom-left-radius : 0;
-       -moz-border-radius-bottomleft  : 0;
-    -webkit-border-bottom-left-radius : 0;
-            border-bottom-right-radius : 0;
-         -o-border-bottom-right-radius : 0;
-       -moz-border-radius-bottomright  : 0;
-    -webkit-border-bottom-right-radius : 0;
-  }
-
-  .sayfilter_heading {
-            border-bottom-left-radius : 0;
-         -o-border-bottom-left-radius : 0;
-       -moz-border-radius-bottomleft  : 0;
-    -webkit-border-bottom-left-radius : 0;
-            border-top-left-radius : 0;
-         -o-border-top-left-radius : 0;
-       -moz-border-radius-topleft  : 0;
-    -webkit-border-top-left-radius : 0;
+    border-radius : 0.5em;
   }
 
   .sayfilter_content_enable    ,
@@ -154,7 +131,7 @@
     border-color: #ccc;
   }
   .action {
-    border-style: dashed none solid solid ;
+    border-style: dashed none dashed solid ;
     border-color: #663;
   }
 
@@ -167,14 +144,6 @@
     td {
       border-color: #000;
     }
-  }
-  .name {
-    @include line-bottom();
-  }
-
-  .msg{
-    border-right: solid 4px #333;
-    border-bottom: solid 2px #222;
   }
 
   .formpl_gm ,

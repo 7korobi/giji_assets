@@ -147,32 +147,26 @@ bind:
   theme:
     - theme: juna
       item:  box-msg
-      color: white
       title: 審問
 
     - theme: sow
       item:  box-msg
-      color: white
       title: 物語
 
     - theme: cinema
       item:  speech
-      color: white
       title: 煉瓦
 
     - theme: wa
       item:  speech
-      color: white
       title: 和の国
 
     - theme: star
       item:  speech
-      color: black
       title: 蒼穹
 
     - theme: night
       item:  speech
-      color: black
       title: 月夜
 
 

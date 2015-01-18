@@ -108,8 +108,8 @@ GUI.message = (->
     m "table.#{v.mestype}.memo", {key: v._id},
       m "tr",
           m "th",
-            m "div", GUI.portrate v.face_id
-            m "div", m "h5", v.name
+            GUI.portrate v.face_id
+            m "div", m "b", v.name
 
           m "td",
             m "p.text.#{v.style}", deco_action, m.trust v.log.deco_text

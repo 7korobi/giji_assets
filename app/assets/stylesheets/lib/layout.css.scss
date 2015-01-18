@@ -1,12 +1,16 @@
+.pull-right {
+  float: right !important;
+}
+
+.pull-left {
+  float: left !important;
+}
+
 .drag_head {
   margin-top: - 50%;
 }
 .drag_foot {
   margin-bottom: - 50%;
-}
-
-table.talk td .msg {
-  vertical-align: middle;
 }
 
 #sayfilter {
@@ -23,29 +27,6 @@ table.talk td .msg {
 .formpl_gm,
 table.talk th img {
   margin-bottom: 4px;
-}
-
-.desktop {
-  a,
-  .btn,
-  .board,
-  .menuicon {
-    transition-delay:      0ms;
-    transition-duration: 800ms;
-    transition-timing-function: ease-in-out;
-    transition-property: color, background, border;
-  }
-}
-
-.right-layout {
-  .insayfilter .paragraph {
-    margin-left: 95px !important;
-  }  
-}
-.left-layout {
-  .insayfilter .paragraph {
-    margin-right: 75px !important;
-  }
 }
 
 .right-layout, .center-layout {
@@ -134,7 +115,7 @@ th.mark {
 .chrM,
 .chrF,
 .chrblank {
-  white-space:nowrap;
+  white-space: nowrap;
 }
 
 .commitbutton {
@@ -190,7 +171,6 @@ hr,
   .mes_maker,
   .mes_admin,
   .caution,
-  .action_bm,
   .turnnavi,
   .row_all,
   .secret {
@@ -227,6 +207,7 @@ hr,
     padding: 0px;
   }
 }
+
 
 p {
   margin: 0;

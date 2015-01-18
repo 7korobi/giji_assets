@@ -15,21 +15,6 @@
   }
 }
 
-table.talk,
-table.memo {
-  width: 100%;
-  th {
-    vertical-align: top;
-  }
-  td {
-    vertical-align: middle;
-  }
-}
-
-table.talk th {
-  text-align: left;
-}
-
 table.memo {
   border-width: 0;
   border-collapse: separate;
@@ -61,56 +46,8 @@ table.memo {
 .info      ,
 .infosp    ,
 .infowolf  ,
-.caution   ,
-.action_bm { padding: 4px 11px;}
+.caution   { padding: 4px 11px;}
 
-
-@mixin width($full-width, $left-width, $outer-width) {
-  .drag,
-  .ajax,
-  .memo,
-  .pagenavi,
-  .toppage,
-  .outframe,
-  .contentframe {
-    width: $full-width;
-  }
-
-  table.memo {
-    th { width:               $outer-width; }
-    td { width: $full-width - $outer-width; }
-  }
-
-  table.talk {
-    th {  }
-    td { width: $full-width - $left-width; }
-  }
-
-  table.talk td .msg p,
-  .action {
-    p { width: $full-width - $outer-width; }
-  }
-
-  .CAST code {
-    width: 90px;
-  }
-}
-
-@mixin film($film-top) {
-  .accordion dd,
-  .CAST code,
-  .paragraph,
-  table.talk th .chrblank,
-  table.talk th img {
-    margin-left: $film-top;
-  }
-
-  .drag_head .badge,
-  .drag_foot .badge {
-    width:  84px;
-    margin-left: ( $film-top - 3px ) * 2;
-  }
-}
 
 .mini-width {
   @include width(460px, 110px, 128px);
@@ -123,7 +60,6 @@ table.memo {
     margin-bottom: 4px
   }
   table.talk td .msg {
-    margin: 0 3px 4px 3px;
     padding: 0px 4px;
   }
 
@@ -147,7 +83,6 @@ table.memo {
     }
     .action {
       margin: 0 0 4px 99px;
-      padding: 4px 12px 0px 4px;
     }
   }
 }
@@ -163,7 +98,6 @@ table.memo {
     margin-bottom: 9px
   }
   table.talk td .msg {
-    margin: 0 4px 6px 6px;
     padding: 0 4px;
   }
 
@@ -189,7 +123,6 @@ table.memo {
     }
     .action {
       margin: 0 0 6px 107px;
-      padding: 4px 12px 4px 4px;
     }
   }
 }
@@ -204,7 +137,6 @@ table.memo {
     margin-bottom: 9px
   }
   table.talk td .msg {
-    margin: 0 4px 6px 6px;
     padding: 0 4px;
   }
 
@@ -230,7 +162,6 @@ table.memo {
     }
     .action {
       margin: 0 0 6px 107px;
-      padding: 4px 12px 4px 4px;
     }
   }
 }

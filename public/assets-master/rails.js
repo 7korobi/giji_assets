@@ -1106,7 +1106,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
   });
   GUI.if_exist("#sayfilter", function(dom) {
     var layout, toggle_desc, touch, wide_attr;
-    layout = new GUI.Layout(dom, 1, 1, 100);
+    layout = new GUI.Layout(dom, -1, 1, 100);
     touch = new GUI.TouchMenu();
     toggle_desc = function(prop, value) {
       var attr;
@@ -1137,14 +1137,14 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
         layout.width = win.width - Url.prop.w() - 4;
         switch (Url.prop.layout()) {
           case "right":
-            layout.dx = 1;
+            layout.mode = "hide";
             break;
           case "center":
-            layout.dx = -1;
+            layout.mode = "show";
             layout.width /= 2;
             break;
           case "left":
-            layout.dx = -1;
+            layout.mode = "show";
         }
         if (layout.large_mode) {
           layout.width += Url.prop.w();

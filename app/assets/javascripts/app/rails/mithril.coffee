@@ -354,7 +354,7 @@ if gon?.potofs?
     event_winner: (gon.event?.winner || gon.events?.last?.winner)
 
   GUI.if_exist "#sayfilter", (dom)->
-    layout = new GUI.Layout dom, 1, 1, 100
+    layout = new GUI.Layout dom, -1, 1, 100
     touch = new GUI.TouchMenu()
 
     toggle_desc = (prop, value)->
@@ -378,12 +378,12 @@ if gon?.potofs?
         layout.width = win.width - Url.prop.w() - 4
         switch Url.prop.layout()
           when "right"
-            layout.dx =  1
+            layout.mode = "hide"
           when "center"
-            layout.dx = -1
+            layout.mode = "show"
             layout.width /= 2
           when "left"
-            layout.dx = -1
+            layout.mode = "show"
 
         layout.width += Url.prop.w() if layout.large_mode
         subview = messages.anchor(Url.prop).list()

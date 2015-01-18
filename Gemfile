@@ -18,6 +18,7 @@ gem 'sass-rails', '~> 4.0.0'
 gem 'coffee-rails', '~> 4.0.0'
 
 gem "bourbon"
+gem "neat"
 
 gem "thor"
 gem "hashie"

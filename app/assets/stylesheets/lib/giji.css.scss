@@ -104,11 +104,8 @@ h1, h2, h3, h4, h5, h6 {
 .chrF {
   max-width: 88px;
   width:     88px;
-  margin:  0 1px;
+  margin: -5px 1px 2px 1px;
   padding: 2px 0;
-
-  -webkit-border-radius: 9px;
-  -moz-border-radius: 9px;
   border-radius: 9px;
   min-height: 50px;
   text-align: center;

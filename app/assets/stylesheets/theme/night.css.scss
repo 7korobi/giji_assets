@@ -34,13 +34,12 @@
   }
 
   @include border-theme-black(#000, #55a, #224);
-  @include vivid(#100, #55a, #eed);
-  @include main-theme(#eeb, rgba(0,0,0, 0.33), #224);
+  @include vivid(#100, #720, #eed);
   .MSAY,
   .SSAY,
   .SAY,
   .QUEUE,
-  .mes_nom { @include msg-color-black(#eeb, rgba(0,0,0, 0.33));}
+  .mes_nom { @include color-tone(glass, #eeb, rgba(0,0,0, 0.4));}
 
   &.large-layout,
   &.center-layout {
@@ -57,14 +56,6 @@
     .outframe {
       background-position: right top;
       border-left: 1px solid #403;
-    }
-  }
-
-  .potofs {
-    thead,
-    tbody,
-    tr {
-      border-top: 1px solid #000;
     }
   }
 

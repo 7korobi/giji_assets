@@ -1,9 +1,5 @@
 .filter-hide {
-  -webkit-filter: sepia(50%) hue-rotate(180deg);
-  -moz-filter: sepia(50%) hue-rotate(180deg);
-  -ms-filter: sepia(50%) hue-rotate(180deg);
-  -o-filter: sepia(50%) hue-rotate(180deg);
-  filter: sepia(50%) hue-rotate(180deg);
+  @include filter(sepia(50%) hue-rotate(180deg));
 }
 
 tr.filter-hide {

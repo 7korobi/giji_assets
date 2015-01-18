@@ -1,26 +1,35 @@
 @import "bourbon";
+@import "neat";
+
+$japan-theme: '.wa-theme, .night-theme';
+$white-msg-theme: '.cinema-theme, .wa-theme';
+$glass-msg-theme: '.night-theme, .star-theme';
 
 @import "lib/_lib";
-@import "lib/board";
-@import "lib/box";
+@import "lib/animate";
 @import "lib/filter";
+@import "lib/form";
+@import "lib/icon";
+@import "lib/tag";
+@import "lib/message";
+@import "lib/player";
+
+@import "lib/box";
 @import "lib/font";
 @import "lib/giji";
-@import "lib/icon";
 @import "lib/layout";
-@import "lib/message";
 @import "lib/mithril";
-@import "lib/player";
 @import "lib/table";
-@import "lib/theme";
 @import "lib/width";
 @import "lib/win";
 
-@import "theme/cinema";
+@import "lib/theme";
 @import "theme/wa";
-
 @import "theme/star";
 @import "theme/night";
+@import "theme/cinema";
+@import "theme/sow";
+@import "theme/juna";
 
 .line_text {
   white-space: nowrap;
@@ -30,14 +39,6 @@
 #buttons .badge {
   color: #ddd;
   background-color: #999;
-}
-
-code {
-  padding: 2px 4px;
-  font-size: 0.9rem;
-  color: #c7254e;
-  background-color: #f9f2f4;
-  border-radius: 9px;
 }
 
 .potofs td {
@@ -71,32 +72,4 @@ code {
 .accordion dd {
   background-color: rgba(0,0,0,0.5);
 }
-
-body {
-  color: #fff;
-  padding: 0;
-}
-
-h2,
-h2 a {
-  color: #fff;
-}
-h2 {
-  border-bottom: 1px solid #fff;
-}
-
-a {
-  text-decoration: none;
-}
-
-code a,
-.btn a {
-  background-color: rgba(255,255,255,0.5);
-}
-
-ul.unstyled, ol.unstyled {
-    margin-left: 0;
-    list-style: none
-}
-
 

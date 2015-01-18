@@ -1,37 +1,3 @@
-.pull-right {
-  float: right !important;
-}
-
-.pull-left {
-  float: left !important;
-}
-
-.mark,
-.badge {
-  line-height: 1rem;
-  border-radius: 2rem;
-  padding: 0.1rem 0.4rem;
-}
-
-.emboss {
-  font-family: serif;
-  font-size:   0.8rem;
-  line-height: 0.8rem;
-  border-radius: 1rem;
-  padding: 0.1rem 0.4rem;
-  margin: 0.2rem 0;
-}
-
-.mark,
-.badge,
-.emboss{
-  vertical-align: baseline;
-  white-space: nowrap;
-  display: inline-block;
-  font-weight: bold;
-  text-align: center;  
-}
-
 .mes_date,
 .small,
 .note,
@@ -42,9 +8,6 @@ sub {
   line-height: 1.0rem;
 }
 
-.name {
-  line-height: 1.6rem;
-}
 
 
 @mixin line-top($op1: .2, $op2: .3){
@@ -68,6 +31,7 @@ sub {
 }
 
 @mixin font($size-base, $family) {
+  html,
   body {
     font-family: $family;
     font-size: $size-base;
@@ -75,3 +39,123 @@ sub {
   }
 }
 
+@mixin width($full-width, $left-width, $outer-width) {
+  .drag,
+  .ajax,
+  .memo,
+  .pagenavi,
+  .toppage,
+  .outframe,
+  .contentframe {
+    width: $full-width;
+  }
+
+  table.memo {
+    th { width:               $outer-width; }
+    td { width: $full-width - $outer-width; }
+  }
+
+  table.talk {
+    th {  }
+    td { width: $full-width - $left-width; }
+  }
+
+  table.talk td .msg p,
+  .action {
+    p { width: $full-width - $outer-width; }
+  }
+
+  .CAST code {
+    width: 90px;
+  }
+}
+
+@mixin film($film-top) {
+  .accordion dd,
+  .CAST code,
+  .paragraph,
+  table.talk th .chrblank,
+  table.talk th img {
+    margin-left: $film-top;
+  }
+
+  .drag_head .badge,
+  .drag_foot .badge {
+    width:  84px;
+    margin-left: ( $film-top - 3px ) * 2;
+  }
+}
+
+@mixin color-tone($tone, $color, $background){
+  .msg,
+  &.memo td,
+  &.memo th,
+  &.info,
+  &.line,
+  &.guide,
+  &.action,
+  &.btn,
+  &.mark,
+  &.badge {
+    color: $color;
+    background-color: $background;
+  }
+
+  @if glass == $tone {
+    &.action { border-color: mix($color, $background) }
+    .msg { border-color: mix($color, $background) }
+  }
+
+  .mes_date,
+  .name b { color: mix($color, $background); }
+
+  @if white == $tone {
+    .text b { color: mix($color, blue); }
+  }
+  @if glass == $tone {
+    .text b { color: mix($color, mix($color, yellow)); }
+  }
+  @if black == $tone {
+    .text b { color: mix($color, $background); }
+  }
+
+  button,
+  .btn,
+  .mark,
+  .badge {
+    @if white == $tone {
+      color: $color;
+      background-color: lighten($background, 10%);
+    }
+    @if glass == $tone {
+      color: $color;
+      background-color: lighten($background, 60%);
+    }
+    @if black == $tone {
+      color: $color;
+      background-color: lighten($background, 20%);
+    }
+  }
+
+  .emboss {
+    @if white == $tone {
+      color: lighten($background, 10%);
+      background-color: darken($background, 20%);
+    }
+    @if glass == $tone {
+      color: darken(mix($color, $background), 10%);
+      background-color: darken(mix($color, $background), 50%);
+    }
+    @if black == $tone {
+      color: lighten(mix($color, $background), 20%);
+      background-color: darken(mix($color, $background), 20%);
+    }
+  }
+}
+
+/*
+  .potofs {
+    tr {
+      border-top: 1px solid rgba(128, 96, 48, 0.3);
+    }
+*/

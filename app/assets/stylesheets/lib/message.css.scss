@@ -1,111 +1,35 @@
+.name {
+  padding:    0.2rem 0;
+  margin: 0 0 0.2rem 0;
+}
 
-@mixin msg-color($color, $background){
-  &.talk td .msg,
-  &.memo td,
-  &.memo th,
-  &.info,
-  &.line,
-  &.guide,
-  &.action,
-  &.badge {
-    color: $color;
-    background-color: $background;
+table.memo {
+  width: 100%;
+  th {
+    vertical-align: top;
+  }
+  td {
+    vertical-align: bottom;
   }
 }
 
-@mixin msg-color-white($color, $background){
-  @include msg-color($color, $background);
-
-  .name b { color: mix($color, $background); }
-  .text b { color: #004; }
-
-  .mark {
-    color: $color;
-    background: lighten($background, 10%);
+table.talk {
+  width: 100%;
+  th {
+    vertical-align: top;
+    text-align: left;
   }
-
-  .emboss {
-    color: lighten($background, 10%);
-    background: darken($background, 20%);
+  td {
+    vertical-align: middle;
   }
 }
 
-
-@mixin msg-color-black($color, $background){
-  @include msg-color($color, $background);
-
-  .name b { color: mix($color, $background); }
-  .text b { color: mix($color, mix($color, yellow)); }
-
-  .mark {
-    color: $color;
-    background: lighten($background, 60%);
-  }
-
-  .emboss {
-    color: lighten(mix($color, $background), 20%);
-    background: darken(mix($color, $background), 20%);
-  }
-}
-
-@mixin msg-color-guide($color, $background){
-  @include msg-color($color, $background);
-
-  .name b { color: mix($color, $background); }
-  .text b { color: mix($color, $background); }
-
-  .mark {
-    color: $color;
-    background: lighten($background, 20%);
-  }
-
-  .emboss {
-    color: lighten(mix($color, $background), 20%);
-    background: darken(mix($color, $background), 20%);
-  }
-}
-
-@mixin main-theme($color, $background, $border-color){
-  .form_vmake {
-    padding: 4px 0px;
-
-    color: $color;
-    background: $background;
-    border-top: 3px double $border-color;
-    border-bottom: 3px double $border-color;
-  }
-}
-
-.message_filter.memo {
-  padding-bottom: 0;
-}
-
+.text,
 table.talk td .msg p,
 table.memo td p {
   overflow: hidden;
   word-wrap: break-word;
   word-break: keep-all;
-}
-
-h6 {
-  font-weight: bold;
-  display: block;
-  margin: 0;
-  padding: 0.10em 0.25em;
-  line-height: 1em;
-
-  border-bottom: 1px solid #e5e5e5;
-  background-color: rgba(255,255,255,0.25);
-}
-
-/* メモ ----------*/
-.text,
-table.memo th p,
-table.memo td p {
-  word-wrap:  break-word !important;
-  word-break: break-all  !important;
-  overflow-y: hidden;
-  overflow-x: auto;
 }
 
 .text,
@@ -122,15 +46,24 @@ table.memo td p {
   font-weight: bold !important;
 }
 
+.action {
+  padding: 4px 12px 4px 4px;
+}
+
 .mono {
   layout-grid: both loose 0 0;
   font-family: monospace !important;
 }
 
-.MAKER { @include msg-color-guide(#ccf, #000); }
-.ADMIN { @include msg-color-guide(#c99, #000); }
+.MAKER { @include color-tone(black, #ccf, #000); }
+.ADMIN { @include color-tone(black, #c99, #000); }
+.DELETED img,
+.DELETEDADMIN img {
+  opacity: 0.25;
+}
 
-.black-color {
+
+#{$glass-msg-theme} {
   .mono,
   .mes_text_monospace {
     background-image: url("../images/bg/grid_blue.gif");
@@ -151,36 +84,57 @@ table.memo td p {
     color: #f44;
   }
 
-  .DELETED .img,
-  .DELETEDADMIN .img {
-    opacity: 0.25;
+  .name {
+    border-bottom: 1px dashed;
+  }
+  .msg{
+    border-style: none solid solid solid;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    border-width: 2px; 
+  }
+  .action {
+    border-style: solid none solid solid ;
+  }
+
+  &.mini-width {
+    table.talk td .msg {
+      margin: 0 3px 4px 1px;
+    }
+    .action {
+      border-width: 1px 0 1px 15px;
+    }
+  }
+  &.std-width, &.wide-width {
+    table.talk td .msg {
+      margin: 0 5px 6px 3px;
+    }
+    .action {
+      border-width: 1px 0 1px 18px;
+    }
   }
 
   .TSAY .action,
-  .action_bm      {  color: #cb8;  background-color: rgba(  0,  0,  0, 0.33); border-color: #333 #999; font-weight: bold;  }
   .INFONOM,       {  color: #997;  background: #000;  }
   .INFOSP,        {  color: #997;  background: #111;  }
   .INFOWOLF,      {  color: #f69;  background: #100;  }
   .caution        {  color: #666;  background: #111;  }
-  .SAY .action,   {  color: #ddf;  background-color: rgba(  0,  0,  0, 0.33); border-color: #999 #ddf; }
 
-  .MSAY,
-  .SAY,
-  .QUEUE,     { @include msg-color-black(#ddf, rgba(  0,  0,  0, 0.33)); }
   .DELETEDADMIN,
-  .DELETED,   { @include msg-color-black(#444, rgba( 40, 40, 40, 0.33)); border-color: #222 #444; }
-  .QUE,       { @include msg-color-black(#aaa, rgba(  0,  0,  0, 0.33)); border-color: #555 #aaa; * { border: none; } }
-  .TSAY,      { @include msg-color-black(#996, rgba(  0,  0, 60, 0.33)); border-color: #554 #996; }
-  .GSAY,      { @include msg-color-black(#99f, rgba( 30, 30,  0, 0.33)); border-color: #335 #99f; }
-  .VSAY,      { @include msg-color-black(#ffb, rgba(  0,  0,  0, 0.33)); border-color: #999 #ddf; }
-  .WSAY,      { @include msg-color-black(#f78, rgba(  0, 30, 30, 0.33)); border-color: #944 #f78; }
+  .DELETED,   { @include color-tone(glass, #444, rgba( 40, 40, 40, 0.4)); }
+  .QUE,       { @include color-tone(glass, #aaa, rgba(  0,  0,  0, 0.4)); .msg { border: none; } }
+  .TSAY,      { @include color-tone(glass, #a96, rgba(  0,  0, 60, 0.4)); }
+  .GSAY,      { @include color-tone(glass, #99f, rgba( 30, 30,  0, 0.4)); }
+  .VSAY,      { @include color-tone(glass, #ffb, rgba(  0,  0,  0, 0.4)); }
+  .WSAY,      { @include color-tone(glass, #f78, rgba(  0, 30, 30, 0.4)); }
   .AIM,
-  .SPSAY,     { @include msg-color-black(#fca, rgba( 20, 40, 50, 0.33)); border-color: #865 #fca; }
+  .SPSAY,     { @include color-tone(glass, #fca, rgba( 20, 40, 50, 0.4)); }
   .BSAY,
-  .XSAY,      { @include msg-color-black(#9f9, rgba( 30,  0, 30, 0.33)); border-color: #583 #9f9; }
+  .XSAY,      { @include color-tone(glass, #9f9, rgba( 30,  0, 30, 0.4)); }
 }
 
-.white-color {
+
+#{$white-msg-theme} {
   .mono,
   .mes_text_monospace {
     background-image: url("../images/bg/grid.gif");
@@ -205,28 +159,42 @@ table.memo td p {
     color: #f44;
   }
 
-  .DELETED .img,
-  .DELETEDADMIN .img {
-    opacity: 0.25;
+  .name {
+    @include line-bottom();
+  }
+
+  &.mini-width {
+    table.talk td .msg {
+      margin: 0 5px 4px 3px;
+    }
+    .action {
+      border-width: 2px 0 2px 14px;
+    }
+  }
+  &.std-width, &.wide-width {
+    table.talk td .msg {
+      margin: 0 6px 6px 6px;
+    }
+    .action {
+      border-width: 2px 0 2px 18px;
+    }
   }
 
   .TSAY .action,
-  .action_bm    {  color: #000;  background: #cb8;  font-weight: bold; }
   .INFONOM,     {  color: #000;  background: #a97;  }
   .INFOSP,      {  color: #440;  background: #a97;  }
   .INFOWOLF,    {  color: #440;  background: #a55;  }
   .caution      {  color: #000;  background: #666;  }
-  .SAY .action, {  color: #000;  background: #cb8;  }
 
   .DELETEDADMIN,
-  .DELETED,    { @include msg-color-white(#aaa, #666); }
-  .QUE,        { @include msg-color-white(#664, #cb8); * { border: none; } }
-  .TSAY,       { @include msg-color-white(#000, #a98); }
-  .GSAY,       { @include msg-color-white(#000, #bbd); }
-  .VSAY,       { @include msg-color-white(#000, #ca6); }
-  .WSAY,       { @include msg-color-white(#000, #a55); }
+  .DELETED,    { @include color-tone(white, #aaa, #666); }
+  .QUE,        { @include color-tone(white, #664, #cb8); * { border: none; } }
+  .TSAY,       { @include color-tone(white, #000, #a98); }
+  .GSAY,       { @include color-tone(white, #000, #bbd); }
+  .VSAY,       { @include color-tone(white, #000, #ca6); }
+  .WSAY,       { @include color-tone(white, #000, #a55); }
   .AIM,
-  .SPSAY,      { @include msg-color-white(#000, #dcb); }
+  .SPSAY,      { @include color-tone(white, #000, #dcb); }
   .BSAY,
-  .XSAY,       { @include msg-color-white(#000, #9a7); }
+  .XSAY,       { @include color-tone(white, #000, #9a7); }
 }

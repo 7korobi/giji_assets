@@ -1781,7 +1781,7 @@ GUI.message = (function() {
     memo: function(v) {
       return m("table." + v.mestype + ".memo", {
         key: v._id
-      }, m("tr", m("th", m("div", GUI.portrate(v.face_id)), m("div", m("h5", v.name))), m("td", m("p.text." + v.style, deco_action, m.trust(v.log.deco_text)), m("p.mes_date", GUI.timer("span", v.updated_timer)))));
+      }, m("tr", m("th", GUI.portrate(v.face_id), m("div", m("b", v.name))), m("td", m("p.text." + v.style, deco_action, m.trust(v.log.deco_text)), m("p.mes_date", GUI.timer("span", v.updated_timer)))));
     },
     talk: function(v) {
       return GUI.message.say_base(v, m("span.mark", v.anchor), GUI.timer("span", v.updated_timer));
