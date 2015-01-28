@@ -62,11 +62,10 @@ table.memo td p {
   opacity: 0.25;
 }
 
-
 #{$glass-msg-theme} {
   .mono,
   .mes_text_monospace {
-    background-image: url("../images/bg/grid_blue.gif");
+    background-image: url("../images/bg/grid_blue.svg");
   }
 
   .drag,
@@ -91,7 +90,7 @@ table.memo td p {
     border-style: none solid solid solid;
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
-    border-width: 2px; 
+    border-width: 2px;
   }
   .action {
     border-style: solid none solid solid ;
@@ -114,11 +113,12 @@ table.memo td p {
     }
   }
 
+  .caution,       {  @include color-tone(glass, #666, rgba( 30, 30, 30, 0.6)); }
+
   .TSAY .action,
-  .INFONOM,       {  color: #997;  background: #000;  }
-  .INFOSP,        {  color: #997;  background: #111;  }
-  .INFOWOLF,      {  color: #f69;  background: #100;  }
-  .caution        {  color: #666;  background: #111;  }
+  .INFONOM,       {  @include color-tone(glass, #997, rgba(  0,  0,  0, 0.6)); }
+  .INFOSP,        {  @include color-tone(glass, #997, rgba(  0,  0, 30, 0.6)); }
+  .INFOWOLF,      {  @include color-tone(glass, #f78, rgba(  0, 30, 30, 0.6)); }
 
   .DELETEDADMIN,
   .DELETED,   { @include color-tone(glass, #444, rgba( 40, 40, 40, 0.4)); }
@@ -165,7 +165,7 @@ table.memo td p {
 
   &.mini-width {
     table.talk td .msg {
-      margin: 0 5px 4px 3px;
+      margin: 0 6px 4px 3px;
     }
     .action {
       border-width: 2px 0 2px 14px;
@@ -173,12 +173,19 @@ table.memo td p {
   }
   &.std-width, &.wide-width {
     table.talk td .msg {
-      margin: 0 6px 6px 6px;
+      margin: 0 7px 6px 6px;
     }
     .action {
       border-width: 2px 0 2px 18px;
     }
   }
+
+  .caution,       {  @include color-tone(white, #000, #666); }
+
+  .TSAY .action,
+  .INFONOM,       {  @include color-tone(white, #000, #a97); }
+  .INFOSP,        {  @include color-tone(white, #440, #a97); }
+  .INFOWOLF,      {  @include color-tone(white, #440, #a55); }
 
   .TSAY .action,
   .INFONOM,     {  color: #000;  background: #a97;  }

@@ -1,3 +1,4 @@
+/*
 .star-theme {
   .drag {
     background-color: rgba(32,32,96, 0.9);
@@ -32,7 +33,7 @@
     }
   }
 
-  @include border-theme-black(#336, #55a, #1b7);
+  @include border-tone(black, #55a); // #336, #55a, #1b7);
   @include vivid(#100, #55a, #ccf);
 //  @include main-theme(#ddf, rgba(0,0,0, 0.33), #1b7);
   .MSAY,
@@ -40,7 +41,7 @@
   .SAY,
   .QUEUE { @include color-tone(glass, #ddf, rgba(0,0,0, 0.4));}
 
-  &.large-layout,
+  &.left-layout,
   &.center-layout {
     .outframe {
       background-position: center top;
@@ -49,8 +50,6 @@
     }
   }
 
-  &.mini-layout,
-  &.game-layout,
   &.right-layout {
     .outframe {
       background-position: right top;
@@ -158,9 +157,7 @@
   }
 
   h3 {
-    background: #024;
-    &:before, &:after {
-      border-color: transparent #048;
-    }
+    @include jigzag(10px, #024);
   }
 }
+*/

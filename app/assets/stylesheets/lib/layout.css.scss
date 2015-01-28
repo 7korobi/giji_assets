@@ -6,27 +6,24 @@
   float: left !important;
 }
 
+.calc {
+  text-align: right !important;
+}
+
+.center {
+  text-align: center !important;
+}
+
+.mes_date {
+  text-align: right;
+}
+
+
 .drag_head {
   margin-top: - 50%;
 }
 .drag_foot {
   margin-bottom: - 50%;
-}
-
-#sayfilter {
-  padding-right: 6px;
-}
-.win #sayfilter {
-  padding-right: 20px;
-}
-
-.row {
-  margin-bottom: 10px;
-}
-
-.formpl_gm,
-table.talk th img {
-  margin-bottom: 4px;
 }
 
 .right-layout, .center-layout {
@@ -48,66 +45,12 @@ table.talk th img {
   }
 }
 
-input[type="number"],
-#checklist,
-#buttons,
-#css_changer,
-.css_changer,
-.config_item,
-.mes_date,
-.rolebox,
-.guide,
-.theme,
-.calc,
-h6,
-h6,
-address,
-address * {
-  text-align: right;
-}
-
-.accordion dt,
-.accordion dd,
-.table th,
-.table td,
-div.mark,
-.form_vmake,
-.toolbox,
-.drag_head,
-.drag_foot,
-.paragraph,
-.footnote,
-.config_item,
-.MAKER,
-.ADMIN,
-.name,
-.action,
-.events,
-.left,
-li,
-p {
+.plane,
+.paragraph {
   text-align: left;
 }
 
-.drag_head .badge,
-.drag_foot .badge,
-.commitbutton,
-.token-input,
-.pagenavi,
-.exevmake,
-.chrblank,
-.choice,
-.center,
-body {
-  text-align: center;
-}
-
-th.mark {
-  display: table-cell;
-}
-
 .table,
-
 .btn,
 .calc,
 .rolebox,
@@ -182,6 +125,8 @@ hr,
   }
 }
 
+table .memo td,
+table .talk td .msg,
 .outframe,
 .contentframe {
   box-sizing: content-box;
@@ -191,29 +136,23 @@ hr,
   -webkit-box-sizing: content-box;
 }
 
-.center-layout,
-.large-layout {
+.left-layout {
+  .outframe {
+    margin: 0 auto 0 90px;
+    padding: 0px;
+  }
+}
+
+.center-layout {
   .outframe {
     margin: 0 auto;
     padding: 0px;
   }
 }
 
-.mini-layout,
-.right-layout,
-.game-layout {
+.right-layout {
   .outframe {
     margin: 0 0 0 auto;
     padding: 0px;
   }
-}
-
-
-p {
-  margin: 0;
-}
-
-body {
-  background-position: center;
-  overflow-x: hidden;
 }

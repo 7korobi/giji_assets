@@ -1,15 +1,3 @@
-.mes_date,
-.small,
-.note,
-rt,
-sup,
-sub {
-  font-size: 0.7rem;
-  line-height: 1.0rem;
-}
-
-
-
 @mixin line-top($op1: .2, $op2: .3){
   border-top: 1px solid rgba(0, 0, 0, $op1);
   box-shadow: rgba(255, 255, 255, $op2) 0 1px 0 inset;
@@ -30,12 +18,207 @@ sub {
   box-shadow: rgba(255, 255, 255, $op2) -1px 0 0 inset;
 }
 
+@mixin jigzag($size, $ec){
+  $height: 1.4rem;
+
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: $height;
+
+    background:
+      -webkit-linear-gradient( 45deg, transparent 0%, transparent 66.667%, $ec 66.667%),
+      -webkit-linear-gradient(-45deg, $ec 33.333%, transparent 33.333%, transparent 100%);
+    background:
+      linear-gradient( 45deg, transparent 0%, transparent 66.667%, $ec 66.667%),
+      linear-gradient(-45deg, $ec 33.333%, transparent 33.333%, transparent 100%);
+
+    height: $size * 2;
+    background-size: $size * 2 $size * 2;
+  }
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 100%;
+    top: - $size;
+
+    background:
+      -webkit-linear-gradient( 45deg, $ec 0%, $ec 66.667%, transparent 66.667%),
+      -webkit-linear-gradient(-45deg, transparent 33.333%, $ec 33.333%, $ec 100%);
+    background:
+      linear-gradient( 45deg, $ec 0%, $ec 66.667%, transparent 66.667%),
+      linear-gradient(-45deg, transparent 33.333%, $ec 33.333%, $ec 100%);
+
+    height: $size;
+    background-size: $size * 2 $size * 4;
+  }
+  position: relative;
+  width: 100%;
+  margin: $size * 3 0;
+  height: $height;
+  padding-top: ($height - 0.6rem) / 2 ;
+  filter: drop-shadow(rgba(0, 0, 0, 0.3) 0px 1px 2px);
+  background-color: $ec;
+}
+
 @mixin font($size-base, $family) {
-  html,
-  body {
+  $small: $size-base * 0.7;
+  $line-base: $size-base * 1.40;
+
+  html &,
+  body,
+  input,
+  button,
+  textarea,
+  .btn {
     font-family: $family;
-    font-size: $size-base;
-    line-height: $size-base * 1.40;
+    font-size:   $size-base;
+    line-height: $line-base;
+  }
+
+  rt,
+  sup,
+  sub,
+  kbd,
+  code,
+  .mes_date,
+  .small,
+  .badge,
+  .note,
+  .mark {
+    font-size:   $small;
+    line-height: $size-base;
+  }
+
+  .emboss {
+    padding: 2px $size-base * 0.4 0 $size-base * 0.4;
+    font-size: $small;
+    line-height: $size-base * 0.8;
+  }
+
+  .menuicon {
+    font-size:   $size-base * 2.0;
+  }
+
+  kbd,
+  code,
+  input,
+  button,
+  textarea,
+  .btn,
+  .mark,
+  .badge,
+  .menuicon {
+    padding: $size-base * 0.15 $size-base * 0.4;
+  }
+
+  .mark,
+  .badge,
+  .emboss {
+    border-radius: $size-base;
+  }
+
+  kbd,
+  code,
+  input,
+  button,
+  textarea,
+  .btn,
+  .menuicon {
+    border-radius: $size-base * 0.2;
+  }
+
+  input[type='submit'],
+  input[type='button'],
+  input[type='image'],
+  input[type='reset']
+  button,
+  .menuicon,
+  .btn {
+    $picnic-dark-overlay:      rgba(0, 0, 0, .3) !default;
+    $picnic-soft-dark-overlay: rgba(0, 0, 0, .1) !default;
+    box-shadow:   inset 0 0 0  $size-base *  100 transparent,               inset 0 $size-base * -.15 $picnic-dark-overlay;
+    &:hover,
+    &:focus {
+      box-shadow: inset 0 0 0  $size-base *  100 $picnic-soft-dark-overlay;
+      box-shadow: inset 0 0 0  $size-base * 1000 $picnic-soft-dark-overlay, inset 0 $size-base * -.05 $picnic-dark-overlay;
+    }
+
+    &.active,
+    &:active,
+    &:checked {
+      box-shadow: inset 0 0 0  $size-base *  100 $picnic-dark-overlay;
+      box-shadow: inset 0 0 0  $size-base * 1000 $picnic-dark-overlay,      inset 0 $size-base * .10 $size-base * .10 $picnic-dark-overlay;
+    }
+  }
+
+  input,
+  button,
+  textarea,
+  .btn {
+    margin: 1px;
+    box-sizing: border-box;
+
+    & .tiny {
+      @include span-columns(1);
+    }
+    & .mini {
+      @include span-columns(2);
+    }
+    & .small {
+      @include span-columns(3);
+    }
+    & .medium {
+      @include span-columns(4);
+    }
+    & .large {
+      @include span-columns(6);
+    }
+    & .full,
+    & .huge {
+      @include span-columns(12);
+    }
+  }
+
+  #{$all-button-inputs} {
+    @include button(flat, lighten(#a9a9a9, 5));
+    bottom: $size-base * 0.3;
+    left: auto;
+    outline: none;
+    padding: 0 9px;
+    position: absolute;
+    right: $size-base * 0.3;
+    top:   $size-base * 0.3;
+
+    img {
+      height: 12px;
+      opacity: 0.7;
+      padding: 1px;
+    }
+  }
+
+  input[type='submit'],
+  input[type='button'],
+  input[type='image'],
+  input[type='reset']
+  button,
+  code,
+  kbd,
+  .btn,
+  .mark,
+  .badge,
+  .emboss {
+    user-select: none;
+    box-sizing: content-box;
+    vertical-align: baseline;
+    white-space: nowrap;
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
   }
 }
 
@@ -60,7 +243,7 @@ sub {
     td { width: $full-width - $left-width; }
   }
 
-  table.talk td .msg p,
+  table.talk td .msg,
   .action {
     p { width: $full-width - $outer-width; }
   }
@@ -86,17 +269,154 @@ sub {
   }
 }
 
-@mixin color-tone($tone, $color, $background){
-  .msg,
-  &.memo td,
-  &.memo th,
-  &.info,
-  &.line,
-  &.guide,
-  &.action,
+@mixin memo-tone($tone, $color, $background){
+  td,
+  th {
+    color: $color;
+    background-color: $background;
+  }
+}
+
+@mixin stripe-tone($tone, $color, $header, $background) {
+  color: $color;
+  background-color: $background;
+
+  thead,
+  tfoot {
+    @include form-tone($tone, $color, $header);
+    background-color: $header;
+  }
+  tbody {
+    tr:nth-child(odd) {
+      @include form-tone($tone, $color, lighten($background, 5%));
+      background-color: lighten($background, 5%);
+    }
+    tr:nth-child(even) {
+      @include form-tone($tone, $color, $background);
+      background-color: $background;
+    }
+  }
+}
+
+@mixin border-tone($tone, $color, $background) {
+  $lighter: mix($background, $color);
+  $middle:  mix($background, $lighter);
+  $darker:  mix($background, $middle);
+
+  @include form-tone($tone, $color, $middle);
+  color: $color;
+  background-color: $background;
+
+  a {
+    color: $color;
+  }
+  th {
+    background-color: $darker;
+  }
+  thead,
+  tfoot,
+  tbody {
+    border: 3px double $middle;
+  }
+  td {
+    border-top:    1px  solid;
+    border-bottom: 1px  solid;
+    border-left:   1px dashed;
+    border-right:  1px dashed;
+    border-color: $lighter;
+  }
+}
+
+@mixin form-tone($tone, $color, $background){
+  $middle:  mix($background, $color);
+
+  a {
+    color: $color;
+  }
+  input[type='submit'],
+  input[type='button'],
+  input[type='image'],
+  input[type='reset'],
+  button,
+  .btn,
+  .mark,
+  .badge,
+  .menuicon {
+    @if white == $tone {
+      color: $color;
+      background-color: lighten($background, 10%);
+    }
+    @if glass == $tone {
+      color: $color;
+      background-color: lighten($background, 60%);
+    }
+    @if black == $tone {
+      color: $color;
+      background-color: lighten($background, 20%);
+    }
+  }
+
+  .emboss {
+    @if white == $tone {
+      color: $background;
+      background-color: darken($background, 20%);
+    }
+    @if glass == $tone {
+      color: darken($middle, 10%);
+      background-color: darken($middle, 50%);
+    }
+    @if black == $tone {
+      color: lighten($middle, 20%);
+      background-color: darken($middle, 20%);
+    }
+  }
+}
+
+@mixin win-tone($tone, $color, $background){
+  $middle:  mix($background, $color);
+
+  @include form-tone($tone, $color, $background);
+
+  color: $color;
+  background-color: $background;
+
+  @if glass == $tone {
+    border-color: mix($color, $background)
+  }
+
+  .mes_date,
+  .name b { color: mix($color, $background); }
+
+  @if white == $tone {
+    .text b { color: mix($color, blue); }
+  }
+  @if glass == $tone {
+    .text b { color: mix($color, mix($color, yellow)); }
+  }
+  @if black == $tone {
+    .text b { color: mix($color, $background); }
+  }
+}
+
+@mixin msg-tone($tone, $color, $background){
+  $middle:  mix($background, $color);
+
+  @include form-tone($tone, $color, $background);
+
   &.btn,
   &.mark,
-  &.badge {
+  &.badge,
+  &.info,
+  &.guide,
+  &.action,
+  .msg {
+    li,
+    p {
+      text-align: left;
+    }
+    .mes_date {
+      text-align: right
+    }
     color: $color;
     background-color: $background;
   }
@@ -118,38 +438,16 @@ sub {
   @if black == $tone {
     .text b { color: mix($color, $background); }
   }
+}
 
-  button,
-  .btn,
-  .mark,
-  .badge {
-    @if white == $tone {
-      color: $color;
-      background-color: lighten($background, 10%);
-    }
-    @if glass == $tone {
-      color: $color;
-      background-color: lighten($background, 60%);
-    }
-    @if black == $tone {
-      color: $color;
-      background-color: lighten($background, 20%);
-    }
+@mixin color-tone($tone, $color, $background){
+  @include msg-tone($tone, $color, $background);
+  &.memo {
+    @include memo-tone($tone, $color, $background);
   }
-
-  .emboss {
-    @if white == $tone {
-      color: lighten($background, 10%);
-      background-color: darken($background, 20%);
-    }
-    @if glass == $tone {
-      color: darken(mix($color, $background), 10%);
-      background-color: darken(mix($color, $background), 50%);
-    }
-    @if black == $tone {
-      color: lighten(mix($color, $background), 20%);
-      background-color: darken(mix($color, $background), 20%);
-    }
+  &.line {
+    color: $color;
+    background-color: $background;
   }
 }
 

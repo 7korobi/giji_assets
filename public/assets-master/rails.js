@@ -685,6 +685,17 @@ new Cache.Rule("potof").schema(function() {
 var face, messages, potofs_portrates, scroll_spy, security_modes, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6,
   __slice = [].slice;
 
+win.on.resize.push(function() {
+  if (win.width < Url.prop.w()) {
+    switch (Url.prop.width()) {
+      case "wide":
+        return Url.prop.width("std");
+      case "std":
+        return Url.prop.width("mini");
+    }
+  }
+});
+
 Cache.potofs.has_faces = {
   all: function() {
     delete Cache.messages.has_face.undefined;
@@ -734,7 +745,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
           headline = [m(".GSAY.badge", Cache.chr_sets.find(Url.prop.chr_set()).caption), "の" + chrs.length + "人を、", m(".GSAY.badge", map_order_set.headline), "回数で並べています"];
         }
         return [
-          m("hr.black"), m(".mark", headline), (function() {
+          m("div", headline), m("hr.black"), (function() {
             var _i, _len, _results;
             _results = [];
             for (_i = 0, _len = chrs.length; _i < _len; _i++) {
@@ -756,7 +767,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
               });
               _results.push(m(".chrbox", {
                 key: o._id
-              }, GUI.portrate(o.face._id, attr), m(".chrblank", m("div", job_name), m("div", o.face.name), m("div", m("a.mark", {
+              }, GUI.portrate(o.face._id, attr), m(".chrblank.line4", m("div", job_name), m("div", o.face.name), m("div", m("a.mark", {
                 href: "/map_reduce/faces/" + o.face._id
               }, "" + map_order_set.caption + " " + o.win.value[map_order_set.order] + "回")), m("div", "♥" + o.sow_auth_id.max_is))));
             }
@@ -770,11 +781,11 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     var touch;
     touch = new GUI.TouchMenu();
     touch.icon("th-large", function() {
-      return m(".guide.form-inline", m("h6", "詳しく検索してみよう"), m("input.form-control", {
+      return m(".guide", m("h6", "詳しく検索してみよう"), m("input", {
         onblur: m.withAttr("value", Url.prop.search),
         onchange: m.withAttr("value", Url.prop.search),
         value: Url.prop.search()
-      }), m("h6", "キャラセットを選んでみよう"), m("span.btn.btn-default", touch.start("order"), "並び順", m("span.note", "▼")), m("span.btn.btn-default", touch.start("chr_set"), "キャラセット", m("span.note", "▼")));
+      }), m("h6", "キャラセットを選んでみよう"), m("span.btn", touch.start("order"), "並び順", m("span.note", "▼")), m("span.btn", touch.start("chr_set"), "キャラセット", m("span.note", "▼")));
     });
     touch.menu_set(Url.prop, "count", {
       order: function() {
@@ -797,7 +808,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
       controller: function() {},
       view: function() {
         touch.query = Cache.map_faces;
-        return touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.menuicon.icon-th", GUI.TouchMenu.icons.start("th-large"), " "), m("span", "キャラセットを選んでみよう")));
+        return touch.menu(m(".guide", m("a.menuicon.icon-th", GUI.TouchMenu.icons.start("th-large"), " "), m("span", "キャラセットを選んでみよう")));
       }
     });
   });
@@ -908,7 +919,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
           says_count_lines.push(says_count_line);
           says_calc_lines.push(says_calc_line);
         }
-        return [m("table.talk.info", scroll_spy.mark("says_count"), says_count_lines), m("table.talk.info", scroll_spy.mark("says_calc"), says_calc_lines)];
+        return [m("table.info", scroll_spy.mark("says_count"), says_count_lines), m("table.info", scroll_spy.mark("says_calc"), says_calc_lines)];
       }
     });
   });
@@ -933,10 +944,9 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
                 for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
                   story_id = _ref2[_j];
                   _results1.push(GUI.inline_item(function() {
-                    return m("a", {
-                      style: "display:block; width:" + (2.8 + folder.length * 0.65) + "rem; text-align:left;",
+                    return this.left(2.8 + folder.length * 0.65, m("a", {
                       href: "http://7korobi.gehirn.ne.jp/stories/" + story_id[0] + ".html"
-                    }, story_id[0]);
+                    }, story_id[0]));
                   }));
                 }
                 return _results1;
@@ -1017,35 +1027,24 @@ GUI.if_exist("#buttons", function(dom) {
       return _results;
     });
   }
-  layout = new GUI.Layout(dom, -1, -1, 120);
+  layout = new GUI.Layout(dom, 1, -1, 120);
   layout.width = 90;
   layout.transition();
   touch = GUI.TouchMenu.icons;
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      var icon;
-      switch (Url.prop.layout()) {
-        case "right":
-        case "center":
-          layout.dx = 1;
-          break;
-        case "left":
-          layout.dx = -1;
-      }
-      return m("nav", (function() {
-        var _i, _len, _ref1, _results;
-        _ref1 = ["pin", "warning", "sitemap", "stopwatch", "home", "chat-alt", "mail", "search", "pencil", "th-large", "cog"];
-        _results = [];
-        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          icon = _ref1[_i];
-          if (!touch.menus[icon]) {
-            continue;
-          }
-          _results.push(m("div", touch.start(icon), m(".bigicon", m(".icon-" + icon, " ")), touch.badge[icon] != null ? m(".badge.pull-right", touch.badge[icon]()) : void 0));
+      var icon, _i, _len, _ref1, _results;
+      _ref1 = ["pin", "warning", "sitemap", "stopwatch", "home", "chat-alt", "mail", "search", "pencil", "th-large", "cog"];
+      _results = [];
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        icon = _ref1[_i];
+        if (!touch.menus[icon]) {
+          continue;
         }
-        return _results;
-      })());
+        _results.push(m("section", touch.start(icon), m(".bigicon", m(".icon-" + icon, " ")), touch.badge[icon] != null ? m(".badge.pull-right", touch.badge[icon]()) : void 0));
+      }
+      return _results;
     }
   });
 });
@@ -1066,17 +1065,17 @@ GUI.if_exist("#css_changer", function(dom) {
   /*
   GUI.attrs_to document, "body", ->
     @swipe "thru"
-    @left  (diff, flick)-> 
-      layout = 
+    @left  (diff, flick)->
+      layout =
         switch Url.prop.layout()
           when "right"
             "center"
           else
             "left"
-      Url.prop.layout layout            
+      Url.prop.layout layout
   
     @right (diff, flick)->
-      layout = 
+      layout =
         switch Url.prop.layout()
           when "left"
             "center"
@@ -1087,12 +1086,12 @@ GUI.if_exist("#css_changer", function(dom) {
   var touch;
   touch = new GUI.TouchMenu();
   touch.icon("cog", function() {
-    return m(".guide.form-inline", m("h6", "スタイル"), m(".form-group", m("a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a", touch.btn(Url.prop.theme, "night"), "月夜"), m("a", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a", touch.btn(Url.prop.theme, "wa"), "和の国")), m("h6", "幅の広さ"), m(".form-group", m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "wide"), "広域")), m("h6", "位置"), m(".form-group", m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰")), m("h6", "位置"), m(".form-group", m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細")));
+    return m(".guide", m("h6", "スタイル"), m("a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a", touch.btn(Url.prop.theme, "night"), "月夜"), m("a", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a", touch.btn(Url.prop.theme, "wa"), "和の国"), m("h6", "幅の広さ"), m("a", touch.btn(Url.prop.width, "wide"), "広域"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("h6", "位置"), m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰"), m("h6", "位置"), m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細"));
   });
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      return touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.menuicon.icon-cog", GUI.TouchMenu.icons.start("cog"), " "), m(".form-group", m("a.mark", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a.mark", touch.btn(Url.prop.theme, "night"), "月夜"), m("a.mark", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a.mark", touch.btn(Url.prop.theme, "wa"), "和の国"))));
+      return touch.menu(m(".guide", m("a.menuicon.icon-cog", GUI.TouchMenu.icons.start("cog"), " "), m(".form-group", m("a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a", touch.btn(Url.prop.theme, "night"), "月夜"), m("a", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a", touch.btn(Url.prop.theme, "wa"), "和の国"))));
     }
   });
 });
@@ -1115,7 +1114,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           asc: "desc",
           desc: "asc"
         }[Url.prop.potofs_desc()]);
-        attr.className = "btn btn-success";
+        attr.className = "btn active";
         return attr;
       } else {
         return touch.btn(prop, value);
@@ -1134,23 +1133,26 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
       view: function() {
         var event, filter, filter_class, hides, o, potofs, subview;
         hides = Url.prop.potofs_hide();
-        layout.width = win.width - Url.prop.w() - 4;
         switch (Url.prop.layout()) {
           case "right":
-            layout.mode = "hide";
+            layout.width = 0;
             break;
           case "center":
-            layout.mode = "show";
-            layout.width /= 2;
+            layout.width = (win.width - Url.prop.w() - 4) / 2;
             break;
           case "left":
-            layout.mode = "show";
+            layout.width = win.width - Url.prop.w() - 94;
         }
         if (layout.large_mode) {
           layout.width += Url.prop.w();
         }
+        if (layout.width < 100) {
+          layout.mode = "hide";
+        } else {
+          layout.mode = "show";
+        }
         subview = messages.anchor(Url.prop).list();
-        filter = m("div", wide_attr, m("h6", "参照ログ"), (function() {
+        filter = m("section.plane", wide_attr, m("h6", "参照ログ"), (function() {
           var _i, _len, _results;
           _results = [];
           for (_i = 0, _len = subview.length; _i < _len; _i++) {
@@ -1159,7 +1161,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           }
           return _results;
         })());
-        potofs = m("table.potofs", m("tfoot.head", m("tr.center", m("th[colspan=2]", m("sup", "(スクロールします。)")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_at"), "日程")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_type"), "状態")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "said_num"), "発言")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "pt"), "残り")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "urge"), "促")), m("th", m("span.icon-user", " ")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "select"), "希望")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_result"), "勝敗")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_side"), "陣営")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "role"), "役割")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "text"), "補足")))), m("tbody", wide_attr, (function() {
+        potofs = m("table.table", m("tfoot", m("tr.center", m("th[colspan=2]", m("sup", "(スクロールします。)")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_at"), "日程")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_type"), "状態")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "said_num"), "発言")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "pt"), "残り")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "urge"), "促")), m("th", m("span.icon-user", " ")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "select"), "希望")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_result"), "勝敗")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_side"), "陣営")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "role"), "役割")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "text"), "補足")))), m("tbody.plane", wide_attr, (function() {
           var _i, _len, _ref7, _results;
           _ref7 = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
           _results = [];
@@ -1173,7 +1175,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           return _results;
         })()));
         event = Cache.events.find(Url.prop.event_id());
-        return m("div", event != null ? m(".sayfilter_heading", event.name) : m(".sayfilter_heading.bottom"), m(".insayfilter", m(".paragraph", m(".table-swipe.sayfilter_content", potofs)), m(".paragraph", m(".sayfilter_content.form-inline", filter))), m(".sayfilter_heading.bottom"));
+        return m("div", event != null ? m(".head", event.name) : m(".foot"), m("aside", m("section.table-swipe", potofs), filter), m(".foot"));
       }
     });
   });
@@ -1225,9 +1227,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     hides = Url.prop.potofs_hide();
     return m(".chrlist", m("h6", "キャラクターフィルタ"), m("hr.black"), m(".chrbox", {
       key: "other-buttons"
-    }, m(".chrblank", {
-      style: "min-height: 179px; margin-top: 1px"
-    }, m(".mark[style='display:block']", touch.btn(Url.prop.potofs_hide, [], Serial.serializer.Keys), "全員表示"), m(".mark[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.others(), Serial.serializer.Keys), "参加者表示"), m(".mark[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.potofs(), Serial.serializer.Keys), "その他を表示"), m(".mark[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.all(), Serial.serializer.Keys), "全員隠す"))), (function() {
+    }, m(".chrblank.line9", m(".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, [], Serial.serializer.Keys), "全員表示"), m(".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.others(), Serial.serializer.Keys), "参加者表示"), m(".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.potofs(), Serial.serializer.Keys), "その他を表示"), m(".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.all(), Serial.serializer.Keys), "全員隠す"))), (function() {
       var _i, _len, _results;
       _results = [];
       for (_i = 0, _len = potofs.length; _i < _len; _i++) {
@@ -1248,7 +1248,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         };
         _results.push(m(".chrbox", {
           key: o._id
-        }, GUI.portrate(o.face_id, attr(o)), m(".chrblank", m("div", o.name))));
+        }, GUI.portrate(o.face_id, attr(o)), m(".chrblank.line1", m("div", o.name))));
       }
       return _results;
     })(), m("hr.black"));
@@ -1262,7 +1262,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     touch.icon("home", function() {
       Url.prop.scope("home");
-      return [m(".pagenavi.choice.guide.form-inline", m("h6", "村の情報"), m("p", "村に関する情報、アナウンスを表示します。")), potofs_portrates(touch)];
+      return [m(".guide", m("h6", "村の情報"), m("p", "村に関する情報、アナウンスを表示します。")), potofs_portrates(touch)];
     });
     return m.module(dom, {
       controller: function() {},
@@ -1290,7 +1290,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     touch.icon("stopwatch", function() {
       Url.prop.scope("after");
-      return [m(".pagenavi.choice.guide.form-inline", m("h6", "新着状況"), m("p", "今見ている発言より新しい、新着情報を表示します。")), potofs_portrates(touch)];
+      return [m(".guide", m("h6", "新着状況"), m("p", "今見ている発言より新しい、新着情報を表示します。")), potofs_portrates(touch)];
     });
     touch.badge("chat-alt", function() {
       var prop;
@@ -1309,7 +1309,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     touch.icon("chat-alt", function() {
       Url.prop.scope("talk");
-      return [m(".pagenavi.choice.guide.form-inline", m("h6", "発言"), security_modes(touch, Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates(touch)];
+      return [m(".guide", m("h6", "発言"), security_modes(touch, Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates(touch)];
     });
     touch.badge("mail", function() {
       var prop;
@@ -1328,7 +1328,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     touch.icon("mail", function() {
       Url.prop.scope("memo");
-      return [m(".pagenavi.choice.guide.form-inline", m("h6", "メモ"), security_modes(touch, Url.prop.memo), m("p", "メモを表示します。")), potofs_portrates(touch)];
+      return [m(".guide", m("h6", "メモ"), security_modes(touch, Url.prop.memo), m("p", "メモを表示します。")), potofs_portrates(touch)];
     });
     touch.badge("warning", function() {
       return messages.warning(Url.prop).list().length;
@@ -1360,7 +1360,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
           texts.push(RAILS.event_state.eclipse);
         }
         return [
-          m(".choice.guide.form-inline", m("h6", "ゲーム情報"), m("div." + event.winner, m("p.name", m("b", event.name)), (function() {
+          m("." + event.winner + ".guide", m("h6", "ゲーム情報"), m("p.name", m("b", event.name)), (function() {
             var _i, _len, _results;
             _results = [];
             for (_i = 0, _len = texts.length; _i < _len; _i++) {
@@ -1368,16 +1368,16 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
               _results.push(m("p.text", text));
             }
             return _results;
-          })(), GUI.message.game(story, event))), potofs_portrates(touch)
+          })(), GUI.message.game(story, event)), potofs_portrates(touch)
         ];
       } else {
-        return [m(".choice.guide.form-inline", m("h6", "ゲーム情報"), m("div.WIN_NONE", GUI.message.game(story))), potofs_portrates(touch)];
+        return [m(".WIN_NONE.guide", m("h6", "ゲーム情報"), GUI.message.game(story)), potofs_portrates(touch)];
       }
     });
     touch.icon("pencil", function() {});
     touch.icon("search", function() {
       return [
-        m(".pagenavi.choice.guide.form-inline", m("h6", "検索する。"), m("input.form-control", {
+        m(".guide", m("h6", "検索する。"), m("input", {
           onblur: m.withAttr("value", Url.prop.search),
           onchange: m.withAttr("value", Url.prop.search),
           value: Url.prop.search()
@@ -1542,11 +1542,11 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
     touch.icon("home", function() {
       var icon;
       icon = touch_sw.state() ? "icon-resize-normal" : "icon-resize-full";
-      return m(".pagenavi.choice.guide.form-inline", m("h6", "検索する。　　　　"), m("input.form-control", {
+      return m(".guide", m("h6", "検索する。　　　　"), m("input", {
         onblur: m.withAttr("value", Url.prop.search),
         onchange: m.withAttr("value", Url.prop.search),
         value: Url.prop.search()
-      }), m("span.btn.btn-default", touch_sw.start(true), m("i." + icon)), m("span.btn.btn-default", touch.start("folder"), m("i.icon-book"), m("span.note", "▼")), m("span.btn.btn-default", touch.start("game"), "ルール", m("span.note", "▼")), m("span.btn.btn-default", touch.start("event_type"), "事件", m("span.note", "▼")), m("span.btn.btn-default", touch.start("role_type"), "役職", m("span.note", "▼")), m("span.btn.btn-default", touch.start("rating"), "こだわり", m("span.note", "▼")), m("span.btn.btn-default", touch.start("say_limit"), "発言制限", m("span.note", "▼")), m("span.btn.btn-default", touch.start("player_length"), "人数", m("span.note", "▼")), m("span.btn.btn-default", touch.start("update_at"), "更新時刻", m("span.note", "▼")), m("span.btn.btn-default", touch.start("update_interval"), "更新間隔", m("span.note", "▼")));
+      }), m("span.btn", touch_sw.start(true), m("i." + icon)), m("span.btn", touch.start("folder"), m("i.icon-book"), m("span.note", "▼")), m("span.btn", touch.start("game"), "ルール", m("span.note", "▼")), m("span.btn", touch.start("event_type"), "事件", m("span.note", "▼")), m("span.btn", touch.start("role_type"), "役職", m("span.note", "▼")), m("span.btn", touch.start("rating"), "こだわり", m("span.note", "▼")), m("span.btn", touch.start("say_limit"), "発言制限", m("span.note", "▼")), m("span.btn", touch.start("player_length"), "人数", m("span.note", "▼")), m("span.btn", touch.start("update_at"), "更新時刻", m("span.note", "▼")), m("span.btn", touch.start("update_interval"), "更新間隔", m("span.note", "▼")));
     });
     return m.module(dom, {
       controller: function() {},
@@ -1558,7 +1558,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
           scroll_spy.avg_height = 22;
         }
         touch.query = (_ref7 = Cache.storys).menu.apply(_ref7, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values())));
-        vdom = touch.menu(m(".pagenavi.choice.guide.form-inline", m("a.menuicon.icon-home", GUI.TouchMenu.icons.start("home"), " "), m("span", "村を検索してみよう。")));
+        vdom = touch.menu(m(".guide", m("a.menuicon.icon-home", GUI.TouchMenu.icons.start("home"), " "), m("span", "村を検索してみよう。")));
         vdom.push(m("table.table.table-border.table-hover", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", touch.query.list(), function(o) {
           return m("tr", {
             key: o._id
@@ -1581,7 +1581,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
 
 /*
     h6(ng-if="event") ページ移動
-    .form-inline(ng-if="event" style="text-align:right;")
+    (ng-if="event" style="text-align:right;")
       .form-group(ng-if="page && ! event.is_news" template="navi/paginate")
       | &thinsp;
       .form-group(ng-if="mode")
@@ -1591,7 +1591,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
         a.mark.click(ng-click="mode.value = mode_common[2].value") 議事
       | &thinsp;
       .form-group
-        input.form-control.input-medium(type="text" ng-model="search_input" ng-blur="search.value = search_input" placeholder="ログを探す")
+        input.input-medium(type="text" ng-model="search_input" ng-blur="search.value = search_input" placeholder="ログを探す")
       | &thinsp;
       .form-group(ng-if="event.is_progress")
         a.mark.click.icon-pencil(ng-click="go.form()")
@@ -1639,27 +1639,27 @@ GUI.if_exist("#headline", function(dom) {
       max_morphe = GAME.MORPHE.config.cfg.MAX_VILLAGES;
       max_all = max_vage + max_crazy + max_xebec + max_ciel;
       max_all += max_cafe + max_morphe;
-      return m(".choice", m("table.board", "progress" === touch.state() ? m("tr", m("th.choice[colspan=2]", {
+      return m(".choice", m("table.board", m("thead", "progress" === touch.state() ? m("tr", m("th.choice[colspan=2]", {
         key: "p"
-      }, m("strong", "進行中の村")), m("th.no_choice[colspan=2]", {
+      }, m("strong", "進行中の村")), m("th[colspan=2]", {
         key: "f"
-      }, m("a", touch.start("finish"), "終了した村を見る"))) : void 0, "finish" === touch.state() ? m("tr", m("th.no_choice[colspan=2]", {
+      }, m("a", touch.start("finish"), "終了した村を見る"))) : void 0, "finish" === touch.state() ? m("tr", m("th[colspan=2]", {
         key: "p"
       }, m("a", touch.start("progress"), "進行中の村を見る")), m("th.choice[colspan=2]", {
         key: "f"
-      }, m("strong", "終了した村"))) : void 0, m("tr", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ")), "progress" === touch.state() ? m("tr", m("td.no_choice", {
+      }, m("strong", "終了した村"))) : void 0, m("tr", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ"))), "progress" === touch.state() ? m("tbody", m("tr", m("td", {
         key: "L"
       }, m("a", {
         href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
-      }, "lobby"), m("br"), "offparty", m("br"), m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+      }, "lobby"), m("br"), "offparty", m("br"), m("br"), m("br"), m("br"), m("br")), m("td", {
         key: "D"
       }, "" + max_morphe + "村:", m("a", {
         href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
       }, "morphe"), m("br"), "" + max_cafe + "村:", m("a", {
         href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
-      }, "cafe"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+      }, "cafe"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td", {
         key: "C"
-      }, "wolf", m("br"), "ultimate", m("br"), "allstar", m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+      }, "wolf", m("br"), "ultimate", m("br"), "allstar", m("br"), m("br"), m("br"), m("br")), m("td", {
         key: "R"
       }, "role-play", m("br"), "RP-advance", m("br"), "" + max_vage + "村:", m("a", {
         href: GAME.PERJURY.config.cfg.URL_SW + "/sow.cgi"
@@ -1669,19 +1669,19 @@ GUI.if_exist("#headline", function(dom) {
         href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
       }, "crazy"), m("br"), "" + max_ciel + "村:", m("a", {
         href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
-      }, "ciel"))) : void 0, "finish" === touch.state() ? m("tr", m("td.no_choice", {
+      }, "ciel")))) : void 0, "finish" === touch.state() ? m("tbody", m("tr", m("td", {
         key: "P"
       }, m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
       }, "lobby"), m("br"), m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
-      }, "offparty"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+      }, "offparty"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td", {
         key: "D"
       }, m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
       }, "morphe"), m("br"), m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
-      }, "cafe"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+      }, "cafe"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td", {
         key: "C"
       }, m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
@@ -1689,7 +1689,7 @@ GUI.if_exist("#headline", function(dom) {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
       }, "ultimate"), m("br"), m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
-      }, "allstar"), m("br"), m("br"), m("br"), m("br")), m("td.no_choice", {
+      }, "allstar"), m("br"), m("br"), m("br"), m("br")), m("td", {
         key: "R"
       }, m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
@@ -1703,7 +1703,7 @@ GUI.if_exist("#headline", function(dom) {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
       }, "crazy"), m("br"), m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
-      }, "ciel"))) : void 0));
+      }, "ciel")))) : void 0));
     }
   });
 });

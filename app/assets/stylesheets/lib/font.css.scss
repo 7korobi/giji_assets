@@ -14,7 +14,41 @@
   @include font(12px, sans-serif);
 }
 
-.chrblank {
+.bigicon {
+  padding: 6px;
+  font-size: 48px;
+}
+
+.chrblank,
+.chrM,
+.chrF {
   font-size:   11px;
-  line-height: 15px;  
+  line-height: 15px;
+  min-height: 3 * 16.25px + 2px;
+  height:     3 * 16.25px + 2px;
+
+  button,
+  .emboss,
+  .badge,
+  .mark,
+  .btn {
+    line-height: 15px;
+  }
+
+  &.line1 {
+    min-height: 1 * 16.25px + 2px;
+    height:     1 * 16.25px + 2px;
+  }
+  &.line3 {
+    min-height: 3 * 16.25px + 2px;
+    height:     3 * 16.25px + 2px;
+  }
+  &.line4 {
+    min-height: 4 * 16.25px + 2px;
+    height:     4 * 16.25px + 2px;
+  }
+  &.line9 {
+    min-height: 9 * 16.25px + 2px;
+    height:     9 * 16.25px + 2px;
+  }
 }

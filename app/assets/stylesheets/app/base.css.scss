@@ -1,14 +1,13 @@
 @import "bourbon";
 @import "neat";
 
-$japan-theme: '.wa-theme, .night-theme';
+$japan-theme:     '.wa-theme, .night-theme';
 $white-msg-theme: '.cinema-theme, .wa-theme';
 $glass-msg-theme: '.night-theme, .star-theme';
 
 @import "lib/_lib";
 @import "lib/animate";
 @import "lib/filter";
-@import "lib/form";
 @import "lib/icon";
 @import "lib/tag";
 @import "lib/message";
@@ -16,9 +15,7 @@ $glass-msg-theme: '.night-theme, .star-theme';
 
 @import "lib/box";
 @import "lib/font";
-@import "lib/giji";
 @import "lib/layout";
-@import "lib/mithril";
 @import "lib/table";
 @import "lib/width";
 @import "lib/win";
@@ -65,11 +62,3 @@ $glass-msg-theme: '.night-theme, .star-theme';
   color: #000;
   background-color: rgba(255,255,255,0.75);
 }
-
-.footnote,
-.toppage .paragraph,
-.accordion dt,
-.accordion dd {
-  background-color: rgba(0,0,0,0.5);
-}
-

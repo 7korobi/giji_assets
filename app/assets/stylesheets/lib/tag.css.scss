@@ -1,17 +1,57 @@
+html,
 body {
+  -webkit-text-size-adjust: 100%;
+  background-position: center;
+  overflow-x: hidden;
   color: #ccf;
+  margin: 0;
   padding: 0;
+  text-align: center;
+}
+
+/*
+h2, h3 {
+  position: relative;
+  margin-right: -10px;
+  margin-left: -10px;
+  &:before,
+  &:after {
+    top: 100%;
+    z-index: -1;
+    content: “”;
+    border-style: solid;
+    position: absolute;
+  }
+  &:before {
+    border-width: 0 10px 20px 0;
+    left: 0px;
+  }
+  &:after {
+    border-width: 0 0 20px 10px;
+    right: 0px;
+  }
+}
+*/
+
+h1, h2, h3, h4, h5, h6 {
+  clear: both;
+}
+
+h1 {
+  margin-top: 0;
 }
 
 h2 {
   color: #ddf;
   border-bottom: 1px solid #ddf;
 }
+
 h3 {
   color: #ffa;
 }
 
 h6 {
+  text-align: right;
   font-weight: bold;
   display: block;
   margin: 0;
@@ -22,21 +62,106 @@ h6 {
   background-color: rgba(255,255,255,0.25);
 }
 
+
+ul.inline {
+  display: inline-block;
+  margin: 0;
+}
+
+ul.inline li {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+hr.black {
+  border-color: black;
+  margin: 2px;
+}
+
+
 kbd {
   color: white;
   background-color: rgba(0, 0, 0, 0.8);
+  margin: 1px;
 }
 code {
   color: #c23;
   background-color: rgba(255, 255, 255, 0.8);
+  margin: 1px;
 }
 
 a {
   text-decoration: none;
 }
 
+a[href],
+img[onclick] {
+  cursor: pointer;
+}
+
+
 ul.unstyled, ol.unstyled {
     margin-left: 0;
     list-style: none
 }
 
+li,
+p {
+  text-align: left;
+}
+
+p {
+  margin: 0;
+}
+
+th strong{
+  font-size: large;
+}
+
+img {
+  position: relative;
+  border-style: none;
+}
+
+input,
+textarea {
+  border: #aaa;
+}
+
+input:focus, textarea:focus,
+input[type=file]:hover,
+input[type=color]:hover,
+input:invalid:focus,
+.select select:focus,
+.select select:hover {
+  border-color: #7FDBFF;
+  box-shadow: 3px 3px 0 rgba(0,0,0, 0.3);
+}
+
+input:invalid, textarea:invalid {
+  border-color: #FF851B;
+  box-shadow: none;
+}
+
+input:focus:invalid, textarea:focus:invalid {
+  border-color:  #FF4136;
+}
+
+input[type="number"],
+address,
+address * {
+  text-align: right;
+}
+
+input[type=file],
+input[type=color] {
+  cursor: pointer;
+}
+
+/* Reset the style for those that we actually know */
+input[type=radio]:focus,
+input[type=checkbox]:focus,
+input[type=range]:focus {
+  box-shadow: none;
+  border-color: initial;
+}

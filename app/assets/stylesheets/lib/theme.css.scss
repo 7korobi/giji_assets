@@ -1,3 +1,71 @@
+#buttons {
+  .bigicon {
+    opacity: 0.8;
+  }
+  .badge {
+    position: relative;
+    margin-top: -1.5rem;
+  }
+}
+
+.rolebox input {
+  width: 2.5ex;
+}
+
+.btn.click {
+  padding: 4px;
+}
+
+.chrlist {
+  padding: 0px;
+  background-color: #000;
+}
+
+.chrbox, .say img {
+  max-width:   90px;
+  width:       90px;
+  float: left;
+  margin: 0 auto;
+}
+
+.chrbox, .say {
+  img {
+    max-width:   90px;
+    width:       90px;
+    max-height: 130px;
+    height:     130px;
+  }
+  img + {
+    .chrblank,
+    .chrM,
+    .chrF {
+      margin-top: -5px;
+    }
+  }
+}
+
+.chrblank,
+.chrM,
+.chrF {
+  max-width: 88px;
+  width:     88px;
+  margin: 1px 1px 2px 1px;
+  padding: 2px 0;
+  border-radius: 9px;
+  text-align: center;
+}
+
+.chrblank {
+  @include win-tone(black, #ccf, #444844);
+}
+.chrM {
+  @include win-tone(black, #eec, #444888);
+  background-color: #444888
+}
+.chrF {
+  @include win-tone(black, #cee, #884844);
+}
+
 
 #{$japan-theme} {
   .talk img {
@@ -5,5 +73,3 @@
     border-bottom: 3px solid rgba( 112, 32, 0, 0.5);
   }
 }
-
-

@@ -11,7 +11,7 @@ class GUI.TouchMenu
       reduce = @query.reduce()[menu]
       return [] unless reduce?
 
-      keys = Object.keys(reduce).sort (a,b)-> 
+      keys = Object.keys(reduce).sort (a,b)->
         reduce[b][sort_by] - reduce[a][sort_by]
 
       [ unless reduce.all? && caption_func "all", reduce.all
@@ -30,7 +30,7 @@ class GUI.TouchMenu
           item_func o[sort_by], btn, caption
       ]
 
-    @helper = 
+    @helper =
       btn_group: (rem, caption_func)->
         menu_item caption_func, (size, btn, caption)->
           btn.style = "width: #{rem}rem;"
@@ -73,11 +73,11 @@ class GUI.TouchMenu
           prop key
         val = prop()
         if cb(key, val)
-          @className "btn btn-success"
+          @className "btn active"
         else
-          @className "btn btn-default"
+          @className "btn"
 
-  btn: (prop, key, serializer)-> 
+  btn: (prop, key, serializer)->
     basic_btn @state, prop, key, (key, val)->
       if serializer
         key = serializer key

@@ -31,96 +31,71 @@
     }
   }
 
-  @include border-theme-white(#444, #765);
-  @include vivid(#100, #664, #ccf);
-//  @include main-theme(#000, #cb8, #664);
+  #stories {
+    @include win-tone(white, #dff, #200);
+    table.table {
+      border: 1px solid #776655;
+      border-left: 1px dashed #776655;
+      border-right: 1px dashed #776655;
+      table {
+
+      }
+    }
+  }
+  #topviewer,
+  .paragraph {
+    @include border-tone(glass, #dff, rgba(0,0,0,0.3));
+  }
+  #headline,
+  #css_changer {
+    @include border-tone(black, #dff, #200);
+  }
+  #calc {
+    th, td {
+      border-width: 2px 4px;
+      border-color: #333;
+      border-style: solid;
+    }
+  }
+
+  nav,
+  header {
+    @include color-tone(glass, #765, #444);
+  }
+
+  #sayfilter {
+    aside {
+      @include stripe-tone(white, #444, #aa7, #eed);
+    }
+    .head,
+    .foot {
+      background-color: #863;
+    }
+    padding-left: 6px;
+    aside {
+      margin-left: 6px;
+      border-width: 0;
+      border-bottom-left-radius: 0.5em;
+      border-bottom-right-radius: 0.5em;
+      border-left:   2px solid #aa7;
+      border-right:  3px solid #863;
+    }
+    .head,
+    .foot {
+      border-radius : 0.5em;
+    }
+  }
+
   .MSAY,
   .SSAY,
   .SAY,
   .QUEUE { @include color-tone(white, #000, #cb8);}
 
-  .msg{
-    border-radius: 0.5rem;
-  }
-
-  &.large-layout,
-  &.center-layout {
-    .outframe {
-      border-right: 3px double #863;
-      border-left : 3px double #863;
-    }
-  }
-
-  &.mini-layout,
-  &.game-layout,
-  &.right-layout {
-    .outframe {
-      border-left : 3px double #863;
-    }
-  }
-
-  .insayfilter {
-    .paragraph {
-        border-width: 0 ;
-        background: #eed;
-        border-left:   2px solid #aa7;
-        border-right:  3px solid #863;
-    }
-    div, th, td {
-      color: #333;
-    }
-  }
-
-  .sayfilter_heading {
-    font-weight: bold;
-    background: #863;
-  }
-
-  .sayfilter_content .head,
-  .sayfilter_caption_enable {
-    background: #aa7;
-  }
-  .sayfilter_caption_disenable {
-    background: #888;
-    color: #444;
-  }
-  .sayfilter_heading,
-  .sayfilter_content .head,
-  .sayfilter_caption_enable,
-  .insayfilter .paragraph {
-    border-radius : 0.5em;
-  }
-
-  .sayfilter_content_enable    ,
-  .sayfilter_content_disenable ,
-  .sayfilter_content           ,
-  #lumpfilter ,
-  #lumpfilter input {
-    font-weight: normal;
-    width: 100%;
-  }
-
-  .sayfilter_content_enable    ,
-  .sayfilter_content_disenable ,
-  .sayfilter_button_lump {
-    border-bottom: 1px dotted #863;
-  }
-  .sayfilter_content_disenable {
-    background: #888;
-    color: #444;
-  }
-
-
   .MAKER.guide,
-  .mes_maker,
   .ADMIN.guide,
-  .mes_admin,
   .INFONOM,
   .INFOSP,
-  .INFOWOLF,
-  .info ,
-  .infosp ,
-  .infowolf {
+  .INFOWOLF {
     border-width: 2px 0;
     border-style: dashed none;
     border-color: #863;
@@ -130,6 +105,25 @@
     border-style: dashed none;
     border-color: #ccc;
   }
+
+  .msg{
+    border-radius: 0.5rem;
+  }
+
+  &.left-layout,
+  &.center-layout {
+    .outframe {
+      border-right: 3px double #863;
+      border-left : 3px double #863;
+    }
+  }
+
+  &.right-layout {
+    .outframe {
+      border-left : 3px double #863;
+    }
+  }
+
   .action {
     border-style: dashed none dashed solid ;
     border-color: #663;
@@ -146,20 +140,8 @@
     }
   }
 
-  .formpl_gm ,
-  .formpl_gm  textarea{
-    border-color: #660;
-    color: #ffa;
-    background-color: #100;
-  }
-
-  .toolbox,
   body {
     background: #764;
-  }
-
-  a {
-    text-decoration: none;
   }
 
   h1 a img {
@@ -173,9 +155,6 @@
     }
   }
   h3 {
-    background: #224;
-    &:before, &:after {
-      border-color: transparent 448;
-    }
+    @include jigzag(10px, #224);
   }
 }

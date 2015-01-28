@@ -1329,9 +1329,14 @@ GUI = {
         var rem, vdom;
         rem = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
         return inline_item_span("right", rem, vdom);
+      },
+      left: function() {
+        var rem, vdom;
+        rem = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+        return inline_item_span("left", rem, vdom);
       }
     };
-    return m("ul.mark.inline", cb.call(list_cmds));
+    return m("ul.inline.mark", cb.call(list_cmds));
   },
   do_tick: function(cb) {
     var action;
@@ -2227,9 +2232,9 @@ GUI.TouchMenu = (function() {
         });
         val = prop();
         if (cb(key, val)) {
-          return this.className("btn btn-success");
+          return this.className("btn active");
         } else {
-          return this.className("btn btn-default");
+          return this.className("btn");
         }
       }
     });

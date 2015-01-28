@@ -1,4 +1,4 @@
-GUI = 
+GUI =
   img_head: "http://7korobi.gehirn.ne.jp/images"
   portrate: (face_id, attr = {})->
     attr.src = GUI.img_head + "/portrate/#{face_id}.jpg"
@@ -138,7 +138,7 @@ GUI =
     o
 
   timer: (query, at)->
-    attr = 
+    attr =
       config: (elem, is_continue, context)->
         at.prop = (text)->
           elem.innerText &&= text
@@ -153,8 +153,9 @@ GUI =
     list_cmds =
       center: (rem, vdom...)-> inline_item_span "center", rem, vdom
       right:  (rem, vdom...)-> inline_item_span "right", rem, vdom
+      left:   (rem, vdom...)-> inline_item_span "left", rem, vdom
 
-    m "ul.mark.inline", cb.call(list_cmds)
+    m "ul.inline.mark", cb.call(list_cmds)
 
   do_tick: (cb)->
     action = ->
@@ -175,7 +176,7 @@ GUI =
   comma: (num)->
     (String Math.round num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
 
-  field: (num, length)->  
+  field: (num, length)->
     "0000000000".substring(10 - length).substring("#{num}".length) + num
 
   name:
