@@ -1,4 +1,3 @@
-/*
 .star-theme {
   .drag {
     background-color: rgba(32,32,96, 0.9);
@@ -33,13 +32,75 @@
     }
   }
 
-  @include border-tone(black, #55a); // #336, #55a, #1b7);
-  @include vivid(#100, #55a, #ccf);
-//  @include main-theme(#ddf, rgba(0,0,0, 0.33), #1b7);
+  #stories {
+    @include win-tone(white, #dff, #200);
+    table.table {
+      border: 1px solid #776655;
+      border-left: 1px dashed #776655;
+      border-right: 1px dashed #776655;
+      table {
+
+      }
+    }
+  }
+  #topviewer,
+  .paragraph {
+    @include border-tone(glass, #dff, rgba(0,0,0,0.3));
+  }
+  #headline,
+  #css_changer {
+    @include border-tone(black, #dff, #012);
+  }
+  #calc {
+    th, td {
+      border-width: 2px 4px;
+      border-color: #333;
+      border-style: solid;
+    }
+  }
+
+  nav,
+  header {
+    @include color-tone(glass, #765, #444);
+  }
+
+  #sayfilter {
+    aside {
+      @include stripe-tone(black, #dff, #448, #226);
+    }
+    .head,
+    .foot {
+      background-color: #044;
+    }
+    padding-left: 6px;
+    aside {
+      margin-left: 6px;
+    }
+  }
+
   .MSAY,
   .SSAY,
   .SAY,
   .QUEUE { @include color-tone(glass, #ddf, rgba(0,0,0, 0.4));}
+
+  .MAKER.guide,
+  .ADMIN.guide,
+  .INFONOM,
+  .INFOSP,
+  .INFOWOLF {
+    border-width: 2px 0;
+    border-style: dashed none;
+    border-color: #468;
+  }
+  .caution {
+    border-width: 2px 0;
+    border-style: dashed none;
+    border-color: #ccc;
+  }
+
+  .msg{
+    border-radius: 0.5rem;
+  }
 
   &.left-layout,
   &.center-layout {
@@ -57,92 +118,20 @@
     }
   }
 
-  .insayfilter {
-    .paragraph {
-      border-width: 0 ;
-      background: #226;
-    }
-    th, td, li {
-      background-color: rgba(255,255,255,0.1);
-    }
+  .action {
+    border-style: none none solid solid ;
+    border-color: #663;
   }
 
-  .sayfilter_heading {
-    font-weight: bold;
-    background: #044;
-  }
-
-  .sayfilter_content .head,
-  .sayfilter_caption_enable {
-    font-weight: normal;
-    margin: 3px 0 0 0 ;
-    padding: 1px;
-    background: #044;
-  }
-
-  .sayfilter_content_enable    ,
-  .sayfilter_content_disenable ,
-  .sayfilter_button_lump {
-    border-bottom: 1px dotted #863;
-    background: #225;
-  }
-
-  .MAKER.guide,
-  .ADMIN.guide,
-  .INFONOM,
-  .INFOSP,
-  .INFOWOLF {
-    border-width: 2px 0;
-    border-style: dashed none;
-  }
-
-  .MAKER.guide,
-  .ADMIN.guide {
-    border-color: #468;
-  }
-
-
-  .INFONOM {
-    border-color: #366;
-    background-color: #001;
-  }
-  .INFOSP {
-    border-color: #366;
-    background-color: #010;
-  }
-  .INFOWOLF {
-    border-color: #366;
-    background-color: #100;
-  }
-
-  .caution {
-    border-color: #ccc;
-    background-color: #111;
-  }
   .memo {
+    border-color: #1b7;
     th {
-      border-color: #1b7;
       background-color: #114;
     }
-    td {
-      border-color: #1b7;
-    }
   }
 
-  .formpl_gm ,
-  .formpl_gm  textarea{
-    border-color: #660;
-    color: #ffa;
-    background-color: #100;
-  }
-
-  .toolbox,
   body {
-    background-color: #226 !important;
-  }
-
-  a {
-    text-decoration: none;
+    background: #226;
   }
 
   h1 a img {
@@ -155,9 +144,7 @@
       border-color: transparent #260;
     }
   }
-
   h3 {
     @include jigzag(10px, #024);
   }
 }
-*/
