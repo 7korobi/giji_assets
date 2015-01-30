@@ -70,8 +70,8 @@ Hilitor = (id, tag) ->
     return
 
   
-  # remove highlighting
-  @remove = ->
+  # emove highlighting
+  @emove = ->
     arr = document.getElementsByTagName(hiliteTag)
     while arr.length and (el = arr[0])
       parent = el.parentNode
@@ -82,7 +82,7 @@ Hilitor = (id, tag) ->
   
   # start highlighting at target node
   @apply = (input) ->
-    @remove()
+    @emove()
     return  if input is `undefined` or not input
     @setRegex input
     @hiliteWords targetNode

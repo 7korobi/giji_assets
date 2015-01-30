@@ -1314,26 +1314,26 @@ GUI = {
   },
   inline_item: function(cb) {
     var inline_item_span, list_cmds;
-    inline_item_span = function(align, rem, vdom) {
+    inline_item_span = function(align, em, vdom) {
       return m("li", {
-        style: "width:" + rem + "rem; text-align:" + align + ";"
+        style: "width:" + em + "em; text-align:" + align + ";"
       }, vdom);
     };
     list_cmds = {
       center: function() {
-        var rem, vdom;
-        rem = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-        return inline_item_span("center", rem, vdom);
+        var em, vdom;
+        em = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+        return inline_item_span("center", em, vdom);
       },
       right: function() {
-        var rem, vdom;
-        rem = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-        return inline_item_span("right", rem, vdom);
+        var em, vdom;
+        em = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+        return inline_item_span("right", em, vdom);
       },
       left: function() {
-        var rem, vdom;
-        rem = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-        return inline_item_span("left", rem, vdom);
+        var em, vdom;
+        em = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+        return inline_item_span("left", em, vdom);
       }
     };
     return m("ul.inline.mark", cb.call(list_cmds));
@@ -2174,15 +2174,15 @@ GUI.TouchMenu = (function() {
       };
     })(this);
     return this.helper = {
-      btn_group: function(rem, caption_func) {
+      btn_group: function(em, caption_func) {
         return menu_item(caption_func, function(size, btn, caption) {
-          btn.style = "width: " + rem + "rem;";
+          btn.style = "width: " + em + "em;";
           return m("a", btn, m("span", caption), m("span.badge.pull-right", size));
         });
       },
       btn_list: function(caption_func) {
         return m("ul", menu_item(caption_func, function(size, btn, caption) {
-          return m("li.btn-block", btn, m("span", caption), m("span.badge.pull-right", size));
+          return m("li.btn-block", btn, m("span", caption), m("span.emboss.pull-right", size));
         }));
       }
     };
@@ -2407,7 +2407,7 @@ Hilitor = function(id, tag) {
       }
     }
   };
-  this.remove = function() {
+  this.emove = function() {
     var arr, el, parent;
     arr = document.getElementsByTagName(hiliteTag);
     while (arr.length && (el = arr[0])) {
@@ -2417,7 +2417,7 @@ Hilitor = function(id, tag) {
     }
   };
   this.apply = function(input) {
-    this.remove();
+    this.emove();
     if (input === undefined || !input) {
       return;
     }

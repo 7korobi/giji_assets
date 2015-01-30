@@ -31,25 +31,8 @@
     }
   }
 
-  #stories {
-    @include win-tone(white, #dff, #200);
-    table.table {
-      border: 1px solid #776655;
-      border-left: 1px dashed #776655;
-      border-right: 1px dashed #776655;
-      table {
+  @include border-tone(black, #dff, 3px double, #863, #383430);
 
-      }
-    }
-  }
-  #topviewer,
-  .paragraph {
-    @include border-tone(glass, #dff, rgba(0,0,0,0.3));
-  }
-  #headline,
-  #css_changer {
-    @include border-tone(black, #dff, #200);
-  }
   #calc {
     th, td {
       border-width: 2px 4px;
@@ -110,20 +93,6 @@
     border-radius: 0.5rem;
   }
 
-  &.left-layout,
-  &.center-layout {
-    .outframe {
-      border-right: 3px double #863;
-      border-left : 3px double #863;
-    }
-  }
-
-  &.right-layout {
-    .outframe {
-      border-left : 3px double #863;
-    }
-  }
-
   .action {
     border-style: dashed none dashed solid ;
     border-color: #663;
@@ -155,6 +124,6 @@
     }
   }
   h3 {
-    @include jigzag(10px, #224);
+    background: #224;
   }
 }

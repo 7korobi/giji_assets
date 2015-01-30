@@ -17,6 +17,56 @@
 .bigicon {
   padding: 6px;
   font-size: 48px;
+  line-height: 50px;
+}
+
+input,
+button,
+textarea,
+.btn {
+  margin: 1px;
+  box-sizing: border-box;
+
+  & .tiny {
+    @include span-columns(1);
+  }
+  & .mini {
+    @include span-columns(2);
+  }
+  & .small {
+    @include span-columns(3);
+  }
+  & .medium {
+    @include span-columns(4);
+  }
+  & .large {
+    @include span-columns(6);
+  }
+  & .full,
+  & .huge {
+    @include span-columns(12);
+  }
+}
+
+
+input[type='submit'],
+input[type='button'],
+input[type='image'],
+input[type='reset']
+button,
+code,
+kbd,
+.btn,
+.mark,
+.badge,
+.emboss {
+  user-select: none;
+  box-sizing: content-box;
+  vertical-align: baseline;
+  display: inline-block;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
 }
 
 .chrblank,

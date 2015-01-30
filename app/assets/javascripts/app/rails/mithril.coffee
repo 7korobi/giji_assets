@@ -76,7 +76,7 @@ if gon?.map_reduce?.faces?
   GUI.if_exist "#chr_sets", (dom)->
     touch = new GUI.TouchMenu()
     touch.icon "th-large", ->
-      m ".guide",
+      m ".paragraph.guide",
         m "h6", "詳しく検索してみよう"
         m "input",
           onblur:   m.withAttr("value", Url.prop.search)
@@ -314,11 +314,12 @@ GUI.if_exist "#css_changer", (dom)->
   ###
   touch = new GUI.TouchMenu()
   touch.icon "cog", ->
-    m ".guide",
+    m ".paragraph.guide",
       m "h6", "スタイル"
       m "a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
-      m "a", touch.btn(Url.prop.theme, "night"), "月夜"
       m "a", touch.btn(Url.prop.theme, "star"), "蒼穹"
+      m "a", touch.btn(Url.prop.theme, "night"), "闇夜"
+      m "a", touch.btn(Url.prop.theme, "moon"), "月夜"
       m "a", touch.btn(Url.prop.theme, "wa"), "和の国"
       m "h6", "幅の広さ"
       m "a", touch.btn(Url.prop.width, "wide"), "広域"
@@ -340,8 +341,9 @@ GUI.if_exist "#css_changer", (dom)->
         m "a.menuicon.icon-cog", GUI.TouchMenu.icons.start("cog"), " "
         m ".form-group",
           m "a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
-          m "a", touch.btn(Url.prop.theme, "night"), "月夜"
           m "a", touch.btn(Url.prop.theme, "star"), "蒼穹"
+          m "a", touch.btn(Url.prop.theme, "night"), "闇夜"
+          m "a", touch.btn(Url.prop.theme, "moon"), "月夜"
           m "a", touch.btn(Url.prop.theme, "wa"), "和の国"
 
 
@@ -517,7 +519,7 @@ if gon?.events? && gon.event?
       Cache.messages.home("announce").list().length
     touch.icon "home", -> # 情報
       Url.prop.scope "home"
-      [ m ".guide",
+      [ m ".paragraph.guide",
           m "h6", "村の情報"
           m "p", "村に関する情報、アナウンスを表示します。"
         potofs_portrates(touch)
@@ -546,7 +548,7 @@ if gon?.events? && gon.event?
       messages.after(Url.prop).list().length
     touch.icon "stopwatch", -> # 新着
       Url.prop.scope "after"
-      [ m ".guide",
+      [ m ".paragraph.guide",
           m "h6", "新着状況"
           m "p", "今見ている発言より新しい、新着情報を表示します。"
         potofs_portrates(touch)
@@ -561,7 +563,7 @@ if gon?.events? && gon.event?
       messages.talk(prop).list().length
     touch.icon "chat-alt", -> # 発言
       Url.prop.scope "talk"
-      [ m ".guide",
+      [ m ".paragraph.guide",
           m "h6", "発言"
           security_modes touch, Url.prop.talk
           m "p", "村内の発言を表示します。"
@@ -577,7 +579,7 @@ if gon?.events? && gon.event?
       messages.memo(prop).list().length
     touch.icon "mail", -> # メモ
       Url.prop.scope "memo"
-      [ m ".guide",
+      [ m ".paragraph.guide",
           m "h6", "メモ"
           security_modes touch, Url.prop.memo
           m "p", "メモを表示します。"
@@ -625,7 +627,7 @@ if gon?.events? && gon.event?
 
 
     touch.icon "search", -> # 検索
-      [ m ".guide",
+      [ m ".paragraph.guide",
           m "h6", "検索する。"
           m "input",
             onblur:   m.withAttr("value", Url.prop.search)
@@ -730,14 +732,14 @@ if gon?.stories?
       player_length: ->
         @btn_group  9, (key, o)-> o.min_is.view.player_length + "人"
 
-    touch.icon "home", ->
+    touch.icon "search", ->
       icon =
         if touch_sw.state()
           "icon-resize-normal"
         else
           "icon-resize-full"
 
-      m ".guide",
+      m ".paragraph.guide",
         m "h6", "検索する。　　　　"
         m "input",
           onblur:   m.withAttr("value", Url.prop.search)
@@ -781,8 +783,8 @@ if gon?.stories?
         else
           scroll_spy.avg_height = 22
         touch.query = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
-        vdom = touch.menu m ".guide",
-          m "a.menuicon.icon-home", GUI.TouchMenu.icons.start("home"), " "
+        vdom = touch.menu m ".paragraph.guide",
+          m "a.menuicon.icon-search", GUI.TouchMenu.icons.start("search"), " "
           m "span", "村を検索してみよう。"
 
         # m ".table-swipe",

@@ -6,7 +6,7 @@ new Cache.Rule("map_face").schema ->
       all.in(chr_set_ids: chr_set).search(search).sort "desc", (o)->
         o.win.value[order] ?= 0
 
-  @deploy (o)-> 
+  @deploy (o)->
     o._id = o.face_id
     o.win.value.合計 = o.win.all
 
@@ -22,7 +22,7 @@ new Cache.Rule("map_face").schema ->
       search_words.push sow_auth_id
     o.search_words = search_words.join("\t")
 
-  item = 
+  item =
     count: 1
   @map_reduce (o, emit)->
     for id in o.chr_set_ids
@@ -83,7 +83,7 @@ new Cache.Rule("story").schema ->
 
     o.type.game ?= "TABULA"
     o.type.mob  ?= "visiter"
-    o.view = 
+    o.view =
       rating:
         m "img",
           src: GUI.img_head + "/icon/cd_#{o.rating}.png"
@@ -99,17 +99,17 @@ new Cache.Rule("story").schema ->
         GUI.names.config o.card.event, (name, size)-> name
       role_cards:
         GUI.names.config o.card.role, (name, size)->
-          m "kbd", "#{name}x#{size}"
+          m ".emboss", "#{name}x#{size}"
       event_cards:
         GUI.names.config o.card.event, (name, size)->
-          m "kbd", "#{name}x#{size}"
+          m ".emboss", "#{name}x#{size}"
       say_limit: RAILS.saycnt[   o.type.say ]?.CAPTION || "――"
       game_rule: RAILS.game_rule[o.type.game]?.CAPTION || "タブラの人狼"
 
     o.search_words = o.name
 
   @map_reduce (o, emit)->
-    item = 
+    item =
       count: 1
     emit "all", "all", item
     emit "folder", o.folder, item

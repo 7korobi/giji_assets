@@ -18,51 +18,6 @@
   box-shadow: rgba(255, 255, 255, $op2) -1px 0 0 inset;
 }
 
-@mixin jigzag($size, $ec){
-  $height: 1.4rem;
-
-  &:after {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 100%;
-    top: $height;
-
-    background:
-      -webkit-linear-gradient( 45deg, transparent 0%, transparent 66.667%, $ec 66.667%),
-      -webkit-linear-gradient(-45deg, $ec 33.333%, transparent 33.333%, transparent 100%);
-    background:
-      linear-gradient( 45deg, transparent 0%, transparent 66.667%, $ec 66.667%),
-      linear-gradient(-45deg, $ec 33.333%, transparent 33.333%, transparent 100%);
-
-    height: $size * 2;
-    background-size: $size * 2 $size * 2;
-  }
-  &:before {
-    content: "";
-    display: block;
-    position: absolute;
-    width: 100%;
-    top: - $size;
-
-    background:
-      -webkit-linear-gradient( 45deg, $ec 0%, $ec 66.667%, transparent 66.667%),
-      -webkit-linear-gradient(-45deg, transparent 33.333%, $ec 33.333%, $ec 100%);
-    background:
-      linear-gradient( 45deg, $ec 0%, $ec 66.667%, transparent 66.667%),
-      linear-gradient(-45deg, transparent 33.333%, $ec 33.333%, $ec 100%);
-
-    height: $size;
-    background-size: $size * 2 $size * 4;
-  }
-  position: relative;
-  width: 100%;
-  margin: $size * 3 0;
-  height: $height;
-  padding-top: ($height - 0.6rem) / 2 ;
-  filter: drop-shadow(rgba(0, 0, 0, 0.3) 0px 1px 2px);
-  background-color: $ec;
-}
 
 @mixin font($size-base, $family) {
   $small: $size-base * 0.7;
@@ -101,6 +56,7 @@
 
   .menuicon {
     font-size:   $size-base * 2.0;
+    line-height: $size-base * 2.0;
   }
 
   kbd,
@@ -155,34 +111,6 @@
     }
   }
 
-  input,
-  button,
-  textarea,
-  .btn {
-    margin: 1px;
-    box-sizing: border-box;
-
-    & .tiny {
-      @include span-columns(1);
-    }
-    & .mini {
-      @include span-columns(2);
-    }
-    & .small {
-      @include span-columns(3);
-    }
-    & .medium {
-      @include span-columns(4);
-    }
-    & .large {
-      @include span-columns(6);
-    }
-    & .full,
-    & .huge {
-      @include span-columns(12);
-    }
-  }
-
   #{$all-button-inputs} {
     @include button(flat, lighten(#a9a9a9, 5));
     bottom: $size-base * 0.3;
@@ -198,27 +126,6 @@
       opacity: 0.7;
       padding: 1px;
     }
-  }
-
-  input[type='submit'],
-  input[type='button'],
-  input[type='image'],
-  input[type='reset']
-  button,
-  code,
-  kbd,
-  .btn,
-  .mark,
-  .badge,
-  .emboss {
-    user-select: none;
-    box-sizing: content-box;
-    vertical-align: baseline;
-    white-space: nowrap;
-    display: inline-block;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
   }
 }
 
@@ -256,7 +163,6 @@
 @mixin film($film-top) {
   .accordion dd,
   .CAST code,
-  .paragraph,
   table.talk th .chrblank,
   table.talk th img {
     margin-left: $film-top;
@@ -298,40 +204,64 @@
   }
 }
 
-@mixin border-tone($tone, $color, $background) {
-  $lighter: mix($background, $color);
-  $middle:  mix($background, $lighter);
+@mixin border-tone($tone, $color, $line-style, $border, $background) {
+  $middle:  mix($background, $border);
   $darker:  mix($background, $middle);
 
-  @include form-tone($tone, $color, $middle);
-  color: $color;
-  background-color: $background;
+  .paragraph,
+  #stories,
+  #chr_sets,
+  #headline,
+  #topviewer,
+  #css_changer {
+    @include form-tone($tone, $color, $background);
+    background-color: $background;
+  }
 
-  a {
-    color: $color;
+  #stories {
+    @include win-tone($tone, $color, $background);
+    table.table {
+      border: 1px solid $border;
+    }
   }
-  th {
-    background-color: $darker;
+
+  .paragraph,
+  #topviewer,
+  #headline,
+  #css_changer {
+    th {
+      background-color: $darker;
+    }
+    thead,
+    tfoot,
+    tbody {
+      border: $line-style $border;
+    }
+    td {
+      border: 1px solid $border;
+    }
   }
-  thead,
-  tfoot,
-  tbody {
-    border: 3px double $middle;
+  &.left-layout,
+  &.center-layout {
+    .outframe {
+      border-right: $line-style $border;
+      border-left : $line-style $border;
+    }
   }
-  td {
-    border-top:    1px  solid;
-    border-bottom: 1px  solid;
-    border-left:   1px dashed;
-    border-right:  1px dashed;
-    border-color: $lighter;
+
+  &.right-layout {
+    .outframe {
+      border-left : $line-style $border;
+    }
   }
 }
 
 @mixin form-tone($tone, $color, $background){
   $middle:  mix($background, $color);
 
+  color: $color;
   a {
-    color: $color;
+    color: lighten($color, 10%);
   }
   input[type='submit'],
   input[type='button'],

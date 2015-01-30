@@ -24,6 +24,11 @@ table.talk {
   }
 }
 
+.line_text {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .text,
 table.talk td .msg p,
 table.memo td p {
@@ -48,6 +53,9 @@ table.memo td p {
 
 .action {
   padding: 4px 12px 4px 4px;
+  .text {
+    overflow-x: auto;
+  }
 }
 
 .mono {

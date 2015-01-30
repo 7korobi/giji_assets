@@ -229,10 +229,10 @@ new Cache.Rule("story").schema(function() {
         return name;
       }),
       role_cards: GUI.names.config(o.card.role, function(name, size) {
-        return m("kbd", "" + name + "x" + size);
+        return m(".emboss", "" + name + "x" + size);
       }),
       event_cards: GUI.names.config(o.card.event, function(name, size) {
-        return m("kbd", "" + name + "x" + size);
+        return m(".emboss", "" + name + "x" + size);
       }),
       say_limit: ((_ref = RAILS.saycnt[o.type.say]) != null ? _ref.CAPTION : void 0) || "――",
       game_rule: ((_ref1 = RAILS.game_rule[o.type.game]) != null ? _ref1.CAPTION : void 0) || "タブラの人狼"
@@ -781,7 +781,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     var touch;
     touch = new GUI.TouchMenu();
     touch.icon("th-large", function() {
-      return m(".guide", m("h6", "詳しく検索してみよう"), m("input", {
+      return m(".paragraph.guide", m("h6", "詳しく検索してみよう"), m("input", {
         onblur: m.withAttr("value", Url.prop.search),
         onchange: m.withAttr("value", Url.prop.search),
         value: Url.prop.search()
@@ -1086,12 +1086,12 @@ GUI.if_exist("#css_changer", function(dom) {
   var touch;
   touch = new GUI.TouchMenu();
   touch.icon("cog", function() {
-    return m(".guide", m("h6", "スタイル"), m("a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a", touch.btn(Url.prop.theme, "night"), "月夜"), m("a", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a", touch.btn(Url.prop.theme, "wa"), "和の国"), m("h6", "幅の広さ"), m("a", touch.btn(Url.prop.width, "wide"), "広域"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("h6", "位置"), m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰"), m("h6", "位置"), m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細"));
+    return m(".paragraph.guide", m("h6", "スタイル"), m("a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a", touch.btn(Url.prop.theme, "night"), "闇夜"), m("a", touch.btn(Url.prop.theme, "moon"), "月夜"), m("a", touch.btn(Url.prop.theme, "wa"), "和の国"), m("h6", "幅の広さ"), m("a", touch.btn(Url.prop.width, "wide"), "広域"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("h6", "位置"), m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰"), m("h6", "位置"), m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細"));
   });
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      return touch.menu(m(".guide", m("a.menuicon.icon-cog", GUI.TouchMenu.icons.start("cog"), " "), m(".form-group", m("a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a", touch.btn(Url.prop.theme, "night"), "月夜"), m("a", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a", touch.btn(Url.prop.theme, "wa"), "和の国"))));
+      return touch.menu(m(".guide", m("a.menuicon.icon-cog", GUI.TouchMenu.icons.start("cog"), " "), m(".form-group", m("a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a", touch.btn(Url.prop.theme, "night"), "闇夜"), m("a", touch.btn(Url.prop.theme, "moon"), "月夜"), m("a", touch.btn(Url.prop.theme, "wa"), "和の国"))));
     }
   });
 });
@@ -1262,7 +1262,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     touch.icon("home", function() {
       Url.prop.scope("home");
-      return [m(".guide", m("h6", "村の情報"), m("p", "村に関する情報、アナウンスを表示します。")), potofs_portrates(touch)];
+      return [m(".paragraph.guide", m("h6", "村の情報"), m("p", "村に関する情報、アナウンスを表示します。")), potofs_portrates(touch)];
     });
     return m.module(dom, {
       controller: function() {},
@@ -1290,7 +1290,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     touch.icon("stopwatch", function() {
       Url.prop.scope("after");
-      return [m(".guide", m("h6", "新着状況"), m("p", "今見ている発言より新しい、新着情報を表示します。")), potofs_portrates(touch)];
+      return [m(".paragraph.guide", m("h6", "新着状況"), m("p", "今見ている発言より新しい、新着情報を表示します。")), potofs_portrates(touch)];
     });
     touch.badge("chat-alt", function() {
       var prop;
@@ -1309,7 +1309,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     touch.icon("chat-alt", function() {
       Url.prop.scope("talk");
-      return [m(".guide", m("h6", "発言"), security_modes(touch, Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates(touch)];
+      return [m(".paragraph.guide", m("h6", "発言"), security_modes(touch, Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates(touch)];
     });
     touch.badge("mail", function() {
       var prop;
@@ -1328,7 +1328,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     touch.icon("mail", function() {
       Url.prop.scope("memo");
-      return [m(".guide", m("h6", "メモ"), security_modes(touch, Url.prop.memo), m("p", "メモを表示します。")), potofs_portrates(touch)];
+      return [m(".paragraph.guide", m("h6", "メモ"), security_modes(touch, Url.prop.memo), m("p", "メモを表示します。")), potofs_portrates(touch)];
     });
     touch.badge("warning", function() {
       return messages.warning(Url.prop).list().length;
@@ -1377,7 +1377,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     touch.icon("pencil", function() {});
     touch.icon("search", function() {
       return [
-        m(".guide", m("h6", "検索する。"), m("input", {
+        m(".paragraph.guide", m("h6", "検索する。"), m("input", {
           onblur: m.withAttr("value", Url.prop.search),
           onchange: m.withAttr("value", Url.prop.search),
           value: Url.prop.search()
@@ -1539,10 +1539,10 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
         });
       }
     });
-    touch.icon("home", function() {
+    touch.icon("search", function() {
       var icon;
       icon = touch_sw.state() ? "icon-resize-normal" : "icon-resize-full";
-      return m(".guide", m("h6", "検索する。　　　　"), m("input", {
+      return m(".paragraph.guide", m("h6", "検索する。　　　　"), m("input", {
         onblur: m.withAttr("value", Url.prop.search),
         onchange: m.withAttr("value", Url.prop.search),
         value: Url.prop.search()
@@ -1558,7 +1558,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
           scroll_spy.avg_height = 22;
         }
         touch.query = (_ref7 = Cache.storys).menu.apply(_ref7, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values())));
-        vdom = touch.menu(m(".guide", m("a.menuicon.icon-home", GUI.TouchMenu.icons.start("home"), " "), m("span", "村を検索してみよう。")));
+        vdom = touch.menu(m(".paragraph.guide", m("a.menuicon.icon-search", GUI.TouchMenu.icons.start("search"), " "), m("span", "村を検索してみよう。")));
         vdom.push(m("table.table.table-border.table-hover", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", touch.query.list(), function(o) {
           return m("tr", {
             key: o._id

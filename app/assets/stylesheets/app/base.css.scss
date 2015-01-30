@@ -1,9 +1,9 @@
 @import "bourbon";
 @import "neat";
 
-$japan-theme:     '.wa-theme, .night-theme';
+$japan-theme:     '.wa-theme, .moon-theme';
 $white-msg-theme: '.cinema-theme, .wa-theme';
-$glass-msg-theme: '.night-theme, .star-theme';
+$glass-msg-theme: '.moon-theme, .night-theme, .star-theme';
 
 @import "lib/_lib";
 @import "lib/animate";
@@ -21,44 +21,12 @@ $glass-msg-theme: '.night-theme, .star-theme';
 @import "lib/win";
 
 @import "lib/theme";
-@import "theme/wa";
-@import "theme/star";
-@import "theme/night";
+
 @import "theme/cinema";
+@import "theme/moon";
+@import "theme/night";
+@import "theme/star";
+@import "theme/wa";
+
 @import "theme/sow";
 @import "theme/juna";
-
-.line_text {
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-#buttons .badge {
-  color: #ddd;
-  background-color: #999;
-}
-
-.potofs td {
-  padding: 1px 3px;
-}
-
-.inverse {
-  background-color: #222;
-  color: #fff;
-}
-
-.action .text {
-  overflow: hidden;
-  overflow-x: auto;
-  word-wrap: break-word;
-}
-
-.pagenavi ul {
-  border-radius: 9px;
-  padding: 0.10em 0.25em;
-  font-weight: bold;
-  width: 100%;
-
-  color: #000;
-  background-color: rgba(255,255,255,0.75);
-}

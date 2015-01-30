@@ -31,9 +31,9 @@ class GUI.TouchMenu
       ]
 
     @helper =
-      btn_group: (rem, caption_func)->
+      btn_group: (em, caption_func)->
         menu_item caption_func, (size, btn, caption)->
-          btn.style = "width: #{rem}rem;"
+          btn.style = "width: #{em}em;"
           m "a", btn,
             m "span", caption
             m "span.badge.pull-right", size
@@ -43,7 +43,7 @@ class GUI.TouchMenu
           menu_item caption_func, (size, btn, caption)->
             m "li.btn-block", btn,
               m "span", caption
-              m "span.badge.pull-right", size
+              m "span.emboss.pull-right", size
 
   menu_of = (o)->
     o.menus[o.state()]

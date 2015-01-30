@@ -146,14 +146,14 @@ GUI =
     m query, attr, at.text
 
   inline_item: (cb)->
-    inline_item_span = (align, rem, vdom)->
+    inline_item_span = (align, em, vdom)->
       m "li",
-        style: "width:#{rem}rem; text-align:#{align};"
+        style: "width:#{em}em; text-align:#{align};"
       , vdom
     list_cmds =
-      center: (rem, vdom...)-> inline_item_span "center", rem, vdom
-      right:  (rem, vdom...)-> inline_item_span "right", rem, vdom
-      left:   (rem, vdom...)-> inline_item_span "left", rem, vdom
+      center: (em, vdom...)-> inline_item_span "center", em, vdom
+      right:  (em, vdom...)-> inline_item_span "right", em, vdom
+      left:   (em, vdom...)-> inline_item_span "left", em, vdom
 
     m "ul.inline.mark", cb.call(list_cmds)
 

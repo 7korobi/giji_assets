@@ -99,10 +99,21 @@ img[onclick] {
   cursor: pointer;
 }
 
-
 ul.unstyled, ol.unstyled {
-    margin-left: 0;
-    list-style: none
+  margin-left: 0;
+  list-style: none
+}
+
+ul, ol {
+  padding: 0px;
+  margin: 0px 0px 10.5px 25px;
+}
+
+dt, dd {
+  padding: 4px 0px;
+}
+dt {
+  font-weight: bold;
 }
 
 li,

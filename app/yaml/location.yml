@@ -153,6 +153,14 @@ bind:
       item:  box-msg
       title: 物語
 
+    - theme: night
+      item:  speech
+      title: 闇夜
+
+    - theme: moon
+      item:  speech
+      title: 月夜
+
     - theme: cinema
       item:  speech
       title: 煉瓦
@@ -164,14 +172,3 @@ bind:
     - theme: star
       item:  speech
       title: 蒼穹
-
-    - theme: night
-      item:  speech
-      title: 月夜
-
-
-
-
-
-
-

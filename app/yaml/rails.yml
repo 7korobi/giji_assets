@@ -1,5 +1,5 @@
 maskstates:
-  0b1111111111111111_1111_000_00000: 
+  0b1111111111111111_1111_000_00000:
   0b0000000000000000_0100_000_00000: 投票対象外
   0b0000000000000000_0010_000_00000: 恩恵対象外
   0b0000000000000000_0001_000_00000: 能力対象外
@@ -53,12 +53,15 @@ head_img:
     cinema:
       - morning.png
       - moon.png
-    wa:
-      - morning.png
-      - lupino.png
     night:
       - morning.png
       - moon.png
+    moon:
+      - morning.png
+      - moon.png
+    wa:
+      - morning.png
+      - lupino.png
     star:
       - morning.png
       - lupino.png
@@ -72,10 +75,13 @@ head_img:
     cinema:
       - b.jpg
       - w.jpg
-    wa:
+    night:
       - b.jpg
       - w.jpg
-    night:
+    moon:
+      - b.jpg
+      - w.jpg
+    wa:
       - b.jpg
       - w.jpg
     star:
@@ -91,10 +97,13 @@ head_img:
     cinema:
       - b.jpg
       - w.jpg
-    wa:
+    night:
       - b.jpg
       - w.jpg
-    night:
+    moon:
+      - b.jpg
+      - w.jpg
+    wa:
       - b.jpg
       - w.jpg
     star:
@@ -674,7 +683,7 @@ gifts:
   none:
     name: ""
     win:
-    group: 
+    group:
   lost:
     name: 喪失
     win:
@@ -682,7 +691,7 @@ gifts:
   bind:
     name: ---
     win:
-    group: 
+    group:
   shield:
     name: 光の輪
     win:
@@ -845,7 +854,7 @@ game_rule:
 
   TROUBLE:
     CAPTION: Trouble☆Aliens
-    HELP: | 
+    HELP: |
       <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
       <li>人狼は会話できない。襲撃候補リストで判断できない。
       <li>襲撃先は翌日、犠牲候補と人狼に開示される。

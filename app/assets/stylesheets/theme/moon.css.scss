@@ -1,9 +1,10 @@
-.star-theme {
+.moon-theme {
   .drag {
-    background-color: rgba(32,32,96, 0.9);
+    background-color: rgba(0, 0, 0, 0.8);
   }
   .outframe {
-    background-image: url("../images/bg/jupiter.png");
+    background-color: #000;
+    background-image: url("../images/bg/moon-red.png");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: right;
@@ -17,23 +18,23 @@
 
   &.wide-width {
     .contentframe {
-      background-image: url("../images/bg/film770.png");
+      background-image: url("../images/bg/film-wa770.png");
     }
   }
 
   &.std-width {
     .contentframe {
-      background-image: url("../images/bg/film580.png");
+      background-image: url("../images/bg/film-wa580.png");
     }
   }
 
   &.mini-width {
     .contentframe {
-      background-image: url("../images/bg/film460.png");
+      background-image: url("../images/bg/film-wa460.png");
     }
   }
 
-  @include border-tone(black, #dff, 3px double, #1b7, #001844);
+  @include border-tone(black, #dff, 2px solid, #720, #200);
 
   #calc {
     th, td {
@@ -50,11 +51,11 @@
 
   #sayfilter {
     aside {
-      @include stripe-tone(black, #dff, #448, #226);
+      @include stripe-tone(black, #dff, #622, #422);
     }
     .head,
     .foot {
-      background-color: #044;
+      background-color: #444;
     }
     padding-left: 6px;
     aside {
@@ -65,20 +66,20 @@
   .MSAY,
   .SSAY,
   .SAY,
-  .QUEUE { @include color-tone(glass, #ddf, rgba(0,0,0, 0.4));}
+  .QUEUE { @include color-tone(glass, #eeb, rgba(0,0,0, 0.4));}
 
   .MAKER.guide,
   .ADMIN.guide,
   .INFONOM,
   .INFOSP,
   .INFOWOLF {
-    border-width: 2px 0;
-    border-style: dashed none;
-    border-color: #468;
+    border-width: 3px 0;
+    border-style: double none;
+    border-color: #720;
   }
   .caution {
-    border-width: 2px 0;
-    border-style: dashed none;
+    border-width: 3px 0;
+    border-style: double none;
     border-color: #ccc;
   }
 
@@ -92,27 +93,30 @@
   }
 
   .memo {
-    border-color: #1b7;
+    border-color: #113;
     th {
-      background-color: #114;
+      background-color: #000;
+    }
+    td {
+      border-color: #113;
     }
   }
 
   body {
-    background: #226;
+    background: #220005;
   }
 
   h1 a img {
-    box-shadow: rgba(128, 255, 208, 0.3) 0 2px 2px;
+    box-shadow: #806 0 2px 2px;
   }
 
   h2 {
-    background: #130;
+    background: #410;
     &:before, &:after {
-      border-color: transparent #260;
+      border-color: transparent #d40;
     }
   }
   h3 {
-    background: #024;
+    backgorund: #224;
   }
 }
