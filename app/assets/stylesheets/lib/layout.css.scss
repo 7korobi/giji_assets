@@ -26,8 +26,11 @@
   margin-bottom: - 50%;
 }
 
+#buttons {
+  text-align: center;
+}
+
 .right-layout, .center-layout {
-  #buttons,
   .guide {
     text-align: left;
   }
@@ -36,7 +39,6 @@
   }
 }
 .left-layout {
-  #buttons,
   .guide {
     text-align: right;
   }
