@@ -31,6 +31,14 @@
     }
   }
 
+  body {
+    background: #764;
+  }
+
+  h1 a img {
+    box-shadow: rgba(208, 208, 255, 0.3) 0 2px 2px;
+  }
+  @include header-tone(#bb4, #662, #224);
   @include border-tone(black, #dff, 3px double, #863, #383430);
 
   #calc {
@@ -107,23 +115,5 @@
     td {
       border-color: #000;
     }
-  }
-
-  body {
-    background: #764;
-  }
-
-  h1 a img {
-    box-shadow: rgba(208, 208, 255, 0.3) 0 2px 2px;
-  }
-
-  h2 {
-    background: #662;
-    &:before, &:after {
-      border-color: transparent #bb4;
-    }
-  }
-  h3 {
-    background: #224;
   }
 }

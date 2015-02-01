@@ -34,6 +34,14 @@
     }
   }
 
+  body {
+    background: #220005;
+  }
+
+  h1 a img {
+    box-shadow: #806 0 2px 2px;
+  }
+  @include header-tone(#d40, #410, #224);
   @include border-tone(black, #dff, 2px solid, #720, #200);
 
   #calc {
@@ -100,23 +108,5 @@
     td {
       border-color: #113;
     }
-  }
-
-  body {
-    background: #220005;
-  }
-
-  h1 a img {
-    box-shadow: #806 0 2px 2px;
-  }
-
-  h2 {
-    background: #410;
-    &:before, &:after {
-      border-color: transparent #d40;
-    }
-  }
-  h3 {
-    backgorund: #224;
   }
 }

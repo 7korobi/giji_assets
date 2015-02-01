@@ -32,23 +32,23 @@ textarea,
   margin: 1px;
   box-sizing: border-box;
 
-  & .tiny {
+  &.tiny {
     @include span-columns(1);
   }
-  & .mini {
+  &.mini {
     @include span-columns(2);
   }
-  & .small {
+  &.small {
     @include span-columns(3);
   }
-  & .medium {
+  &.medium {
     @include span-columns(4);
   }
-  & .large {
+  &.large {
     @include span-columns(6);
   }
-  & .full,
-  & .huge {
+  &.full,
+  &.huge {
     @include span-columns(12);
   }
 }

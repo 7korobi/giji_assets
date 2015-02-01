@@ -1,7 +1,7 @@
-GUI.timeline = (width, query)->
-  colors = 
+GUI.timeline = (width)->
+  colors =
     SAY:   "#cb8"
-    MSAY:  "#cb8"      
+    MSAY:  "#cb8"
     VSAY:  "#ca6"
     SPSAY: "#dcb"
     GSAY:  "#bbd"
@@ -42,25 +42,39 @@ GUI.timeline = (width, query)->
       return unless win.is_touch
       canvas = document.querySelector("canvas")
       if e.touches?[0]?.pageX
-        offset = (e.touches[0].pageX - canvas.offsetLeft) * 2
+        offsetX = (e.touches[0].pageX - canvas.offsetLeft) * 2
+        offsetY = (e.touches[0].pageY - canvas.offsetTop)  * 2
       else
-        offset = (e.offsetX || e.layerX || e.x) * 2
+        offsetX = (e.offsetX || e.layerX || e.x) * 2
+        offsetY = (e.offsetY || e.layerY || e.y) * 2
+
       m.startComputation()
-      Url.prop.updated_at 1000 * 3600 * (first_at + offset / x)
+      Url.prop.scope "talk"
+      time = Math.ceil(1000 * 3600 * (first_at + offsetX / x))
+      id =
+      if 100 < offsetY
+        Cache.messages.before(time, "open", false, {}, "").list().last._id
+      else
+        {talk, open, potofs_hide, search} = Url.prop
+        Cache.messages.before(time, talk(), open(), potofs_hide(), search()).list().last._id
+      Url.prop.scope "talk"
+      Url.prop.scroll  id
+      GUI.ScrollSpy.go id
       m.endComputation()
 
-    @start (e)-> 
-      Url.prop.scope "after"
-      Url.prop.scroll ""
+    @start (e)->
       win.is_touch = true
       point(e)
     @end (e)->
-      Url.prop.scope "talk"
       win.is_touch = false
-      Url.prop.scroll query.list().first._id
+      point(e)
+    @cancel (e)->
+      win.is_touch = false
+      point(e)
+
     @move point
 
-    @canvas width, 65,
+    @canvas width, 75,
       cache: -> base.reduce()
       draw: (ctx)->
         return unless base.reduce()
@@ -93,16 +107,16 @@ GUI.timeline = (width, query)->
           right = reduce.max / (1000 * 3600) - first_at
           ctx.strokeStyle = colors.line
           ctx.globalAlpha = 1
-          ctx.moveTo x * right, 130
+          ctx.moveTo x * right, 150
           ctx.lineTo x * right,   0
 
           ctx.fillStyle = colors.event
-          ctx.fillRect x * left, 100, x * right, 130
+          ctx.fillRect x * left, 100, x * right, 150
 
           ctx.textAlign = "left"
           ctx.fillStyle = colors.text
-          ctx.font = "26px serif"
-          ctx.fillText Cache.events.find(event_id).name, x * left, 126, x * (right - left) - 4
+          ctx.font = "30px serif"
+          ctx.fillText Cache.events.find(event_id).name, x * left, 150 - 12, x * (right - left) - 4
 
           left = right
         ctx.stroke()
@@ -110,4 +124,3 @@ GUI.timeline = (width, query)->
   x = attr.width / time_width
 
   m "canvas", attr
-

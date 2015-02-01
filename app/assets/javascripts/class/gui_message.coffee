@@ -1,10 +1,23 @@
 GUI.message = (->
-  deco_action =
+  deco_action = (o)->
     config: (parent, is_continue, context)->
-      GUI.attrs_to parent, "a[anchor]", (a, turn, id)->
+      GUI.attrs_to parent, "span[anchor]", (a, turn, id)->
         @start (e)->
-          console.log [a, turn, id]
-      GUI.attrs_to parent, "a[random]", (cmd, val)->
+          m.startComputation()
+          switch Url.prop.scope()
+            when "pins"
+            else
+              Url.prop.back o._id
+              GUI.TouchMenu.icons.state "pin"
+              window.requestAnimationFrame ->
+                GUI.ScrollSpy.go o._id
+          pins = Url.prop.pins()
+          pins["#{o.turn}-#{o.logid}"] = true
+          pins["#{turn}-#{a}"] = true
+          Url.prop.pins pins
+          m.endComputation()
+
+      GUI.attrs_to parent, "span[random]", (cmd, val)->
         @start (e)->
           console.log [cmd, val]
       GUI.attrs_to parent, "span[external]", (id, uri, protocol, host, path)->
@@ -16,14 +29,14 @@ GUI.message = (->
     mob = RAILS.mob[story.type.mob]
 
     [ GUI.letter "", story.view.game_rule,
-        m "ul.note", 
+        m "ul.note",
           m.trust RAILS.game_rule[story.type.game].HELP
         m "ul.note",
           for option_id in story.options
             option = RAILS.options[option_id]
             continue unless option
             m "li", option.help
-      
+
       GUI.letter "", "#{roletable} / #{story.view.player_length}人",
         m "div",
           m "code", "事件"
@@ -59,7 +72,7 @@ GUI.message = (->
 
       GUI.letter "", "設定",
         m.trust story.comment
-      m "span.mes_date.pull-right", 
+      m "span.mes_date.pull-right",
         "managed by "
         m ".emboss", story.user_id
       m "hr.black"
@@ -84,20 +97,20 @@ GUI.message = (->
 
   info: (v)->
     m ".#{v.mestype}.info", {key: v._id},
-      m "p.text", deco_action, m.trust v.log.deco_text
+      m "p.text", deco_action(v), m.trust v.log.deco_text
 
   guide: (v)->
     m ".#{v.mestype}.guide", {key: v._id},
       m "p.name",
         m "b", m.trust v.name
-      m "p.text.#{v.style}", deco_action, m.trust v.log.deco_text
+      m "p.text.#{v.style}", deco_action(v), m.trust v.log.deco_text
       m "p.mes_date",
         m "span.mark", v.anchor
         GUI.timer "span", v.updated_timer
 
   action: (v)->
     m ".#{v.mestype}.action", {key: v._id},
-      m "p.text.#{v.style}", deco_action,
+      m "p.text.#{v.style}", deco_action(v),
         m "b", m.trust v.name
         "は、"
         m "span",
@@ -112,7 +125,7 @@ GUI.message = (->
             m "div", m "b", v.name
 
           m "td",
-            m "p.text.#{v.style}", deco_action, m.trust v.log.deco_text
+            m "p.text.#{v.style}", deco_action(v), m.trust v.log.deco_text
             m "p.mes_date",
               GUI.timer "span", v.updated_timer
 
@@ -122,7 +135,7 @@ GUI.message = (->
       GUI.timer "span", v.updated_timer
 
   history: (v)->
-    GUI.message.say_base v, 
+    GUI.message.say_base v,
       m "span.mark", v.anchor
 
   say_base: (v, timer...)->
@@ -136,7 +149,6 @@ GUI.message = (->
             m "p.name",
               m "b", m.trust v.name
               m ".emboss.pull-right", v.user_id
-            m "p.text.#{v.style}", deco_action, m.trust v.log.deco_text
+            m "p.text.#{v.style}", deco_action(v), m.trust v.log.deco_text
             m "p.mes_date", timer
 )()
-

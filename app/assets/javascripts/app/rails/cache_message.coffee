@@ -26,6 +26,10 @@ new Cache.Rule("message").schema ->
         all
         .where (o)-> false
 
+    pins: (story_id, pins)->
+      all
+      .where (o)-> o.logid == "EVENT-DESC" || pins["#{o.turn}-#{o.logid}"] && (o.story_id == story_id)
+      .sort "desc", "updated_at"
 
     in_event: (event_id)->
       enables = visible.talk.all
@@ -35,35 +39,36 @@ new Cache.Rule("message").schema ->
     home: (mode)->
       enables = visible.home[mode]
       all
-      .where (o)-> (o.show & enables)
+      .where (o)-> o.logid == "EVENT-ASC" || (o.show & enables)
 
-    after: (updated_at, mode, open, hides)->
+    before: (updated_at, mode, open, hides, search)->
       enables = visible.talk[mode]
       enables &= mask.NOT_OPEN unless open
       all
-      .where (o)-> (o.show & enables) && updated_at <= o.updated_at && ! hides[o.face_id]
+      .where (o)-> o.logid == "EVENT-ASC" || (o.show & enables) && updated_at > o.updated_at && ! hides[o.face_id]
+      .search search
 
-    talk: (event_id, mode, open, hides, search)->
+    talk: (mode, open, hides, search)->
       enables = visible.talk[mode]
       enables &= mask.NOT_OPEN unless open
       all
-      .where (o)-> (o.show & enables) && !(event_id > o.event_id) && ! hides[o.face_id]
+      .where (o)-> o.logid == "EVENT-ASC" || (o.show & enables) && ! hides[o.face_id]
       .search search
 
     memo: (mode, uniq, hides, search)->
       enables = visible.memo[mode]
       query = all
       .sort("desc", "updated_at")
-      .where (o)-> (o.show & enables) && ! hides[o.face_id]
+      .where (o)-> o.logid == "EVENT-DESC" || (o.show & enables) && ! hides[o.face_id]
       .search search
 
       query = query.distinct("pen", "max_is") if uniq
       query
 
-    warning: (event_id, hides)->
+    warning: (hides)->
       enables = visible.warning.all
       all
-      .where (o)-> (o.show & enables) && !(event_id > o.event_id) && ! hides[o.face_id]
+      .where (o)-> (o.show & enables) && ! hides[o.face_id]
 
   @deploy (o)->
     logtype = o.logid[0..1]
@@ -141,7 +146,7 @@ new Cache.Rule("message").schema ->
       when "EVENT"
         vdom = GUI.message.event
         o.pen = o.event_id
-        o.mask = "ANNOUNCE"
+        o.mask = "ZERO"
         o.anchor = "info"
 
     o.show &= mask[o.mask]
@@ -154,7 +159,7 @@ new Cache.Rule("message").schema ->
 
     if o.vdom == GUI.message.talk || o.vdom == GUI.message.guide
       time_id = Serial.serializer.Date(o.updated_at / timespan)
-      item = 
+      item =
         count: o.log.length
         min: o.updated_at
         max: o.updated_at
@@ -164,4 +169,3 @@ new Cache.Rule("message").schema ->
       max: o.updated_at
     emit "pen", o.pen,
       max: o.updated_at
-

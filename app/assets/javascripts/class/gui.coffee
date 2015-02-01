@@ -97,6 +97,11 @@ GUI =
         cb = act(cb)
         o.onmouseup = cb
         o.ontouchend = cb
+      cancel: (cb)->
+        cb = act(cb)
+        o.onmouseout = cb
+        o.onmouseover = cb
+        o.ontouchcancel = cb
       move: (cb)->
         cb = act(cb)
         o.onmousemove = cb

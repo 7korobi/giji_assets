@@ -8,9 +8,9 @@ class GUI.ScrollSpy
       rect = elem.getBoundingClientRect()
       offset ?= -2 + Math.min win.horizon, rect.height
 
-      top_by = rect.top - win.horizon + offset 
+      top_by = rect.top - win.horizon + offset
       left_by = 0
-      
+
       window.scrollBy(left_by, top_by)
 
   win.on.scroll_end.push =>
@@ -86,10 +86,15 @@ class GUI.ScrollSpy
     else
       # TODO wait for network read.
 
-    size = 5 + Math.ceil(win.height * 4 / @avg_height)
+    size = (page_size)=>
+      5 + Math.ceil(win.height * page_size / @avg_height)
 
-    @tail = Math.min btm, idx + size
-    head  = Math.max top, idx - size
+    if window.head.desktop
+      @tail = Math.min btm, idx + size(12)
+    else
+      @tail = Math.min btm, idx + size(3)
+    head    = Math.max top, idx - size(3)
+
     if 5 < Math.abs @head - head
       @head = head
 
@@ -97,7 +102,7 @@ class GUI.ScrollSpy
       rect = @pager_elem.getBoundingClientRect()
 
       @show_under  = rect.bottom < win.horizon
-      @show_upper  = win.horizon < rect.top 
+      @show_upper  = win.horizon < rect.top
       @avg_height = rect.height / (1 + @tail - @head)
 
       elem_bottom = rect.bottom + win.top

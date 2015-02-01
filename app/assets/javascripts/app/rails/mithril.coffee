@@ -78,10 +78,11 @@ if gon?.map_reduce?.faces?
     touch.icon "th-large", ->
       m ".paragraph.guide",
         m "h6", "詳しく検索してみよう"
-        m "input",
+        m "input.small",
           onblur:   m.withAttr("value", Url.prop.search)
           onchange: m.withAttr("value", Url.prop.search)
           value: Url.prop.search()
+        m "span", "検索条件：キャラクター名 / 肩書き / プレイヤー "
         m "h6", "キャラセットを選んでみよう"
         m "span.btn", touch.start("order"),
           "並び順"
@@ -95,15 +96,13 @@ if gon?.map_reduce?.faces?
           m "a", touch.btn(Url.prop.order, key), o.caption
 
       chr_set: ->
-        @btn_list (key, o)-> Cache.chr_sets.find(key).caption
+        @btn_group 22, (key, o)-> Cache.chr_sets.find(key).caption
 
     m.module dom,
       controller: ->
       view: ->
         touch.query = Cache.map_faces
-        touch.menu m ".guide",
-          m "a.menuicon.icon-th", GUI.TouchMenu.icons.start("th-large"), " "
-          m "span", "キャラセットを選んでみよう"
+        touch.menu touch.icon_menu "th-large"
 
 if gon?.face?
   face = Cache.map_face_detail = gon.face
@@ -165,32 +164,32 @@ if gon?.face?
         says_count_lines = [
           m "tr.caution",
             m "th.msg", {colspan: 2}, "総合値"
-            m "th.msg", {style: "text-align:right"}, "一番長い発言"
-            m "th.msg", {style: "text-align:right"}, "総文字数"
-            m "th.msg", {style: "text-align:right"}, "総発言回数"
+            m "th.msg.calc", "一番長い発言"
+            m "th.msg.calc", "総文字数"
+            m "th.msg.calc", "総発言回数"
         ]
         says_calc_lines = [
           m "tr.caution",
             m "th.msg", {colspan: 2}, "平均値"
-            m "th.msg", {style: "text-align:right"}, "／村数"
-            m "th.msg", {style: "text-align:right"}, "文字数"
-            m "th.msg", {style: "text-align:right"}, "発言回数"
+            m "th.msg.calc", "／村数"
+            m "th.msg.calc", "文字数"
+            m "th.msg.calc", "発言回数"
         ]
         for say in face.says
           says_count_line =
             m "tr.#{say.logid_head}AY.line",
               m "th.msg"
               m "th.msg", face.say_titles[say.logid_head]
-              m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.max  } 字"
-              m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.all  } 字"
-              m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.count} 回"
+              m "th.msg.calc", "#{GUI.comma say.max  } 字"
+              m "th.msg.calc", "#{GUI.comma say.all  } 字"
+              m "th.msg.calc", "#{GUI.comma say.count} 回"
           says_calc_line =
             m "tr.#{say.logid_head}AY.line",
               m "th.msg"
               m "th.msg", face.say_titles[say.logid_head]
-              m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.vil} 村"
-              m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.all / say.vil} 字"
-              m "th.msg", {style: "text-align:right"}, "#{GUI.comma say.count / say.vil} 回"
+              m "th.msg.calc", "#{GUI.comma say.vil} 村"
+              m "th.msg.calc", "#{GUI.comma say.all / say.vil} 字"
+              m "th.msg.calc", "#{GUI.comma say.count / say.vil} 回"
           says_count_lines.push says_count_line
           says_calc_lines.push says_calc_line
 
@@ -291,27 +290,6 @@ GUI.if_exist "#topviewer", (dom)->
       GUI.TouchMenu.icons.menu()
 
 GUI.if_exist "#css_changer", (dom)->
-  ###
-  GUI.attrs_to document, "body", ->
-    @swipe "thru"
-    @left  (diff, flick)->
-      layout =
-        switch Url.prop.layout()
-          when "right"
-            "center"
-          else
-            "left"
-      Url.prop.layout layout
-
-    @right (diff, flick)->
-      layout =
-        switch Url.prop.layout()
-          when "left"
-            "center"
-          else
-            "right"
-      Url.prop.layout layout
-  ###
   touch = new GUI.TouchMenu()
   touch.icon "cog", ->
     m ".paragraph.guide",
@@ -345,6 +323,7 @@ GUI.if_exist "#css_changer", (dom)->
           m "a", touch.btn(Url.prop.theme, "night"), "闇夜"
           m "a", touch.btn(Url.prop.theme, "moon"), "月夜"
           m "a", touch.btn(Url.prop.theme, "wa"), "和の国"
+        m "hr.black"
 
 
 if gon?.potofs?
@@ -356,6 +335,9 @@ if gon?.potofs?
 
   GUI.if_exist "#sayfilter", (dom)->
     layout = new GUI.Layout dom, -1, 1, 100
+    layout.small_mode = true
+    layout.large_mode = ->
+      ! (GUI.TouchMenu.icons.state() || layout.small_mode)
     touch = new GUI.TouchMenu()
 
     toggle_desc = (prop, value)->
@@ -368,7 +350,9 @@ if gon?.potofs?
 
     wide_attr = GUI.attrs ->
       @click ->
-        layout.large_mode = ! layout.large_mode
+        layout.small_mode = ! layout.small_mode
+        unless layout.small_mode
+          GUI.TouchMenu.icons.state ""
       @actioned ->
         layout.translate()
 
@@ -384,7 +368,7 @@ if gon?.potofs?
           when "left"
             layout.width = (win.width - Url.prop.w() - 94)
 
-        layout.width += Url.prop.w() if layout.large_mode
+        layout.width += Url.prop.w() if layout.large_mode()
 
         if layout.width < 100
           layout.mode = "hide"
@@ -457,16 +441,14 @@ if gon?.events? && gon.event?
   Cache.rule.event.merge gon.events
 
   messages =
+    pins: ({story_id,pins})->
+      Cache.messages.pins(story_id(), pins())
     anchor: ({talk, scroll})->
       Cache.messages.anchor(talk(), scroll())
     home: ({home})->
       Cache.messages.home(home())
-    warning: ({event_id, potofs_hide})->
-      Cache.messages.warning(event_id(), potofs_hide())
-    after: ({updated_at, talk, open, potofs_hide})->
-      Cache.messages.after(updated_at(), talk(), open(), potofs_hide())
-    talk: ({event_id, talk, open, potofs_hide, search})->
-      Cache.messages.talk(event_id(), talk(), open(), potofs_hide(), search())
+    talk: ({talk, open, potofs_hide, search})->
+      Cache.messages.talk(talk(), open(), potofs_hide(), search())
     memo: ({memo, uniq, potofs_hide, search})->
       Cache.messages.memo(memo(), uniq(), potofs_hide(), search())
 
@@ -518,17 +500,38 @@ if gon?.events? && gon.event?
     touch.badge "home", ->
       Cache.messages.home("announce").list().length
     touch.icon "home", -> # 情報
+      story = gon.story
+      event = Cache.events.find Url.prop.event_id()
       Url.prop.scope "home"
-      [ m ".paragraph.guide",
-          m "h6", "村の情報"
-          m "p", "村に関する情報、アナウンスを表示します。"
-        potofs_portrates(touch)
-      ]
+
+      if event
+        event_card = RAILS.events[event.event]
+
+        texts = []
+        texts.push RAILS.winner[event.winner] + "の勝利です。" if "WIN_NONE" != event.winner
+        texts.push m "kbd", event_card if event_card
+        texts.push RAILS.event_state.grudge    if event.turn == event.grudge
+        texts.push RAILS.event_state.riot      if event.turn == event.riot
+        texts.push RAILS.event_state.scapegoat if event.turn == event.scapegoat
+        texts.push RAILS.event_state.eclipse   if _.find event.eclipse, event.turn
+
+        [ m ".#{event.winner}.guide",
+            m "h6", "#{event.name} 村の情報"
+            for text in texts
+              m "p.text", text
+            GUI.message.game story, event
+        ]
+
+      else
+        [ m ".WIN_NONE.guide",
+            m "h6", "村の情報"
+            GUI.message.game story
+        ]
 
     m.module dom,
       controller: ->
       view: ->
-        [ GUI.timeline Url.prop.w(), messages.after(Url.prop)
+        [ touch.icon_menu "search"
           if story?
             switch Url.prop.scope()
               when "home"
@@ -539,28 +542,33 @@ if gon?.events? && gon.event?
     scroll_spy.avg_height = 150
     touch = new GUI.TouchMenu()
 
-    touch.icon "pin", -> # アンカー
-      # {home} = Url.prop
-      # Url.prop.scope "pin"
-
-
-    touch.badge "stopwatch", ->
-      messages.after(Url.prop).list().length
-    touch.icon "stopwatch", -> # 新着
-      Url.prop.scope "after"
+    touch.badge "pin", ->
+      messages.pins(Url.prop).list().length - Cache.events.list().length
+    touch.icon "pin", ->
+      Url.prop.scope "pins"
       [ m ".paragraph.guide",
-          m "h6", "新着状況"
-          m "p", "今見ている発言より新しい、新着情報を表示します。"
-        potofs_portrates(touch)
+          m "h6", "アンカー",
+          m "a.menuicon.icon-cancel-alt", GUI.attrs ->
+            @end ->
+              Url.prop.icons ""
+              Url.prop.pins {}
+              back = Url.prop.back()
+              if back.match /MM.....$/
+                Url.prop.scope "memo"
+              else
+                Url.prop.scope "talk"
+              Url.prop.scroll back
+              window.requestAnimationFrame ->
+                GUI.ScrollSpy.go back
+          m "p", "クリックしたアンカーを辿ります。"
       ]
-
 
     touch.badge "chat-alt", ->
       prop = _.merge {}, Url.prop,
         talk: -> "all"
         open: -> true
         search: -> ""
-      messages.talk(prop).list().length
+      messages.talk(prop).list().length - Cache.events.list().length
     touch.icon "chat-alt", -> # 発言
       Url.prop.scope "talk"
       [ m ".paragraph.guide",
@@ -576,7 +584,7 @@ if gon?.events? && gon.event?
         memo: -> "all"
         uniq: -> true
         search: -> ""
-      messages.memo(prop).list().length
+      messages.memo(prop).list().length - Cache.events.list().length
     touch.icon "mail", -> # メモ
       Url.prop.scope "memo"
       [ m ".paragraph.guide",
@@ -586,54 +594,15 @@ if gon?.events? && gon.event?
         potofs_portrates(touch)
       ]
 
-
-    touch.badge "warning", ->
-      messages.warning(Url.prop).list().length
-    touch.icon "warning", ->
-      story = gon.story
-      event = Cache.events.find Url.prop.event_id()
-      Url.prop.scope "warning"
-
-      if event
-        event_card = RAILS.events[event.event]
-
-        texts = []
-        texts.push RAILS.winner[event.winner] + "の勝利です。" if "WIN_NONE" != event.winner
-        texts.push m "kbd", event_card if event_card
-        texts.push RAILS.event_state.grudge    if event.turn == event.grudge
-        texts.push RAILS.event_state.riot      if event.turn == event.riot
-        texts.push RAILS.event_state.scapegoat if event.turn == event.scapegoat
-        texts.push RAILS.event_state.eclipse   if _.find event.eclipse, event.turn
-
-        [ m ".#{event.winner}.guide",
-            m "h6", "ゲーム情報"
-            m "p.name",
-              m "b", event.name
-            for text in texts
-              m "p.text", text
-            GUI.message.game story, event
-          potofs_portrates(touch)
-        ]
-
-      else
-        [ m ".WIN_NONE.guide",
-            m "h6", "ゲーム情報"
-            GUI.message.game story
-          potofs_portrates(touch)
-        ]
-
-
-    touch.icon "pencil", -> # 書き込み
-
-
     touch.icon "search", -> # 検索
       [ m ".paragraph.guide",
-          m "h6", "検索する。"
-          m "input",
+          GUI.timeline Url.prop.w()
+          m "input.mini",
             onblur:   m.withAttr("value", Url.prop.search)
             onchange: m.withAttr("value", Url.prop.search)
             value: Url.prop.search()
-        potofs_portrates(touch)
+          m "span", "発言中の言葉を検索します。"
+          m "hr.black"
       ]
 
 
@@ -655,13 +624,21 @@ if gon?.events? && gon.event?
     m.startComputation()
     window.requestAnimationFrame ->
       set_event_messages = (event)->
-        first = event.messages[0]
+        first = event.messages.first
+        last  = event.messages.last
         event.messages.unshift
           name: event.name
           log: event.name
-          logid: "EVENT"
+          logid: "EVENT-ASC"
           mestype: "EVENT"
           updated_at: new Date(first.date) - 1
+
+        event.messages.push
+          name: event.name
+          log: event.name
+          logid: "EVENT-DESC"
+          mestype: "EVENT"
+          updated_at: new Date(last.date) - -1
 
         Cache.rule.message.merge event.messages,
           event_id: event._id
@@ -710,27 +687,27 @@ if gon?.stories?
     touch = new GUI.TouchMenu()
     touch.menu_set Url.prop, "count",
       rating: ->
-        @btn_group 27, (key, o)->
+        @btn_group 22, (key, o)->
           m "span",
             m "img.pull-left",
               src: GUI.img_head + "/icon/cd_#{o.min_is.rating}.png"
             RAILS.rating[key].caption
       game: ->
-        @btn_group 21, (key, o)-> o.min_is.view.game_rule
+        @btn_group 16, (key, o)-> o.min_is.view.game_rule
       folder: ->
-        @btn_group 15, (key)-> GAME[key]?.nation
+        @btn_group 16, (key)-> GAME[key]?.nation
       say_limit: ->
-        @btn_group 15, (key, o)-> o.min_is.view.say_limit
+        @btn_group 10, (key, o)-> o.min_is.view.say_limit
       update_at: ->
-        @btn_group 15, (key, o)-> o.min_is.view.update_at
+        @btn_group 10, (key, o)-> o.min_is.view.update_at
       update_interval: ->
-        @btn_group 15, (key, o)-> o.min_is.view.update_interval
+        @btn_group  8, (key, o)-> o.min_is.view.update_interval
       event_type: ->
-        @btn_group 12, (key)-> key
+        @btn_group  8, (key)-> key
       role_type: ->
-        @btn_group 10, (key)-> key
+        @btn_group  8, (key)-> key
       player_length: ->
-        @btn_group  9, (key, o)-> o.min_is.view.player_length + "人"
+        @btn_group  8, (key, o)-> o.min_is.view.player_length + "人"
 
     touch.icon "search", ->
       icon =
@@ -740,13 +717,13 @@ if gon?.stories?
           "icon-resize-full"
 
       m ".paragraph.guide",
-        m "h6", "検索する。　　　　"
-        m "input",
+        m "h6", "検索する。"
+        m "span.btn", touch_sw.start(true),
+          m "i.#{icon}"
+        m "input.mini",
           onblur:   m.withAttr("value", Url.prop.search)
           onchange: m.withAttr("value", Url.prop.search)
           value: Url.prop.search()
-        m "span.btn", touch_sw.start(true),
-          m "i.#{icon}"
         m "span.btn", touch.start("folder"),
           m "i.icon-book"
           m "span.note", "▼"
@@ -775,6 +752,7 @@ if gon?.stories?
           "更新間隔"
           m "span.note", "▼"
 
+
     m.module dom,
       controller: ->
       view: ->
@@ -783,11 +761,8 @@ if gon?.stories?
         else
           scroll_spy.avg_height = 22
         touch.query = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
-        vdom = touch.menu m ".paragraph.guide",
-          m "a.menuicon.icon-search", GUI.TouchMenu.icons.start("search"), " "
-          m "span", "村を検索してみよう。"
+        vdom = touch.menu touch.icon_menu "search"
 
-        # m ".table-swipe",
         vdom.push m "table.table.table-border.table-hover",
             m "thead",
               m "tr",
@@ -829,26 +804,6 @@ if gon?.stories?
                     , o.name
                     o.view.rating
         vdom
-
-
-
-###
-    h6(ng-if="event") ページ移動
-    (ng-if="event" style="text-align:right;")
-      .form-group(ng-if="page && ! event.is_news" template="navi/paginate")
-      | &thinsp;
-      .form-group(ng-if="mode")
-        a.mark.click(ng-click="mode.value = mode_common[1].value") メモ
-      | &thinsp;
-      .form-group(ng-if="mode")
-        a.mark.click(ng-click="mode.value = mode_common[2].value") 議事
-      | &thinsp;
-      .form-group
-        input.input-medium(type="text" ng-model="search_input" ng-blur="search.value = search_input" placeholder="ログを探す")
-      | &thinsp;
-      .form-group(ng-if="event.is_progress")
-        a.mark.click.icon-pencil(ng-click="go.form()")
-###
 
 GUI.if_exist "#to_root", (dom)->
   day_or_night = m.prop()

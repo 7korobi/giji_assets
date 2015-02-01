@@ -13,7 +13,7 @@ define String, ->
   anchor = (log)->
     return log unless log
     log.replace /<mw (\w+),(\d+),([^>]+)>/g, (key, a, turn, id)->
-      """<a anchor="#{a},#{turn},#{id}" class="mark">&gt;&gt;#{id}</a>"""
+      """<span anchor="#{a},#{turn},#{id}" class="mark">&gt;&gt;#{id}</span>"""
 
   anchor_preview = (log)->
     log
@@ -26,11 +26,11 @@ define String, ->
   random = (log)->
     return log unless log
     log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
-      """<a random="#{cmd},#{val}" class="mark">#{val}</a>"""
+      """<span random="#{cmd},#{val}" class="mark">#{val}</span>"""
 
   random_preview = (log)->
     log.replace /\[\[([^\[]+)\]\]/g, (key, val)->
-      """<a random="#{val},？" class="mark">#{val}</a>"""
+      """<span random="#{val},？" class="mark">#{val}</span>"""
 
   link_regexp = ///
       (\w+)://([^/<>）］】」\s]+)([^<>）］】」\s]*)
@@ -43,7 +43,7 @@ define String, ->
   uri_to_link = _.memoize (uri)->
     id_num++
     [uri, protocol, host, path] = uri.match link_regexp
-    """<span external="link_#{id_num},#{uri},#{protocol},#{host},#{path}" class="badge">LINK - #{protocol}</span>"""
+    """<span external="link_#{id_num},#{uri},#{protocol},#{host},#{path}" class="emboss">LINK - #{protocol}</span>"""
 
   link = (log)->
     return log unless log
@@ -78,7 +78,7 @@ define String, ->
        .replace /'/g, "&apos;"
        .replace /\//g, "&#x2f;"
 
-  deco_preview: 
+  deco_preview:
     get: ->
       br space player anchor_preview link random_preview unhtml @
 
@@ -94,9 +94,8 @@ define String, ->
     get: ->
       unanchor unrandom unbr @
 
-  sjis_length: 
+  sjis_length:
     get: ->
       # countup sjis byte size
       other = @match(/[^\x01-\xff]/g) or []
       @length + other.length
-

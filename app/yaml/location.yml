@@ -3,6 +3,9 @@ props:
   scroll:
     type: Text
     current: ""
+  back:
+    type: Text
+    current: ""
 
   search:
     type: Text
@@ -23,6 +26,10 @@ props:
   title:
   nation:
 
+  icons:
+    type: Text
+    current: ""
+
   updated_at:
     type: Date
 
@@ -40,9 +47,9 @@ props:
     type: Keys
     current: {}
 
-  msg_ids:
-    type: Array
-    current: []
+  pins:
+    type: Keys
+    current: {}
 
   scope:
     current: talk

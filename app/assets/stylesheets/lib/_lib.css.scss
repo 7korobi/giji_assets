@@ -205,6 +205,18 @@
   }
 }
 
+@mixin header-tone($border, $h2, $h3) {
+  h2 {
+    background: $h2;
+    &:before, &:after {
+      border-color: transparent $border;
+    }
+  }
+  h3 {
+    background: $h3;
+  }
+}
+
 @mixin border-tone($tone, $color, $line-style, $border, $background) {
   $middle:  mix($background, $border);
   $darker:  mix($background, $middle);

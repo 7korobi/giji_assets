@@ -2,7 +2,7 @@ class GUI.TouchMenu
   @icons = new @
 
   constructor: (@menus = {})->
-    @state = m.prop(false)
+    @state = m.prop("")
 
   menu_set: (@prop, sort_by, @menus)->
     menu_item = (caption_func, item_func)=>
@@ -57,19 +57,19 @@ class GUI.TouchMenu
     state = @state
     GUI.attrs ->
       @start ->
-        state( mark != state() && mark )
+        state( if mark != state() then mark else "" )
 
   cancel: ->
     state = @state
     GUI.attrs ->
       @end ->
-        state false
+        state ""
 
   basic_btn = (state, prop, key, cb)->
     GUI.attrs ->
       if prop
         @end ->
-          state false
+          state ""
           prop key
         val = prop()
         if cb(key, val)
@@ -100,15 +100,25 @@ class GUI.TouchMenu
     else
       delete GUI.TouchMenu.icons.menus[@icon_key]
 
+  icon_menu: (icon_key)->
+    if GUI.TouchMenu.icons.state() == icon_key
+      []
+    else
+      vdom = [GUI.TouchMenu.icons.menus[icon_key]()]
+      menu = menu_of @
+      if menu
+        vdom.push m ".drag", {key: @state()}, m ".contentframe", menu.call(@helper, @)
+      vdom
+
   @icons.badge = {}
   @icons.menu = (vdom...)->
     set_menu = (o, cb)->
       return unless cb
-      vdom.push cb.call(o.helper, o)
-    menu_cb = menu_of(@)
+      vdom.push cb.call o.helper, o
+    menu_cb = menu_of @
     if menu_cb
       o = menu_cb.menu
-      set_menu(o, menu_cb)
-      set_menu(o, menu_of(o))
+      set_menu o, menu_cb
+      set_menu o, menu_of o
     if vdom.length
-      m ".drag", m ".contentframe", vdom
+      m ".drag", {key: @state()}, m ".contentframe", vdom

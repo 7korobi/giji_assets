@@ -1,5 +1,6 @@
 win = (->
   set_scroll = (win)->
+    win.scrolling = true
     win.left = window.pageXOffset || window.scrollX
     win.top  = window.pageYOffset || window.scrollY
 
@@ -11,6 +12,7 @@ win = (->
       list.push val = {}
       set_scroll(val)
       if chk()
+        win.scrolling = false
         win.do_event_list win.on.scroll_end
         win.do.resize()
       window.requestAnimationFrame scan
@@ -101,4 +103,3 @@ win = (->
     top:  0
     left: 0
 )()
-
