@@ -157,7 +157,7 @@ GUI = (->
     attr =
       config: (elem, is_continue, context)->
         at.prop = (text)->
-          elem.innerTxt &&= text
+          elem.innerText &&= text
           elem.textContent &&= text
     m query, attr, at.text
 

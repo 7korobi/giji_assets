@@ -125,7 +125,7 @@ GUI.timeline = (width)->
           ctx.textAlign = "left"
           ctx.fillStyle = colors.text
           ctx.font = "30px serif"
-          ctx.fillTxt Cache.events.find(event_id).name, x * left, 150 - 12, x * (right - left) - 4
+          ctx.fillText Cache.events.find(event_id).name, x * left, 150 - 12, x * (right - left) - 4
 
           left = right
         ctx.stroke()

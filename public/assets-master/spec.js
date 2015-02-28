@@ -7536,7 +7536,7 @@ describe("(browser css)", function() {
     var red;
     red = ".bar { border: 3px solid red; }";
     document.styleSheets[0].insertRule(red, 0);
-    expect(document.styleSheets[0].rules[0].cssTxt).toEqual(red);
+    expect(document.styleSheets[0].rules[0].cssText).toEqual(red);
     done();
     document.styleSheets[0].deleteRule(0);
     return document.styleSheets[0].insertRule(red, 0);

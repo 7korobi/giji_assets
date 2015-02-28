@@ -1488,7 +1488,7 @@ GUI = (function() {
       attr = {
         config: function(elem, is_continue, context) {
           return at.prop = function(text) {
-            elem.innerTxt && (elem.innerTxt = text);
+            elem.innerText && (elem.innerText = text);
             return elem.textContent && (elem.textContent = text);
           };
         }
@@ -2517,7 +2517,7 @@ GUI.timeline = function(width) {
           ctx.textAlign = "left";
           ctx.fillStyle = colors.text;
           ctx.font = "30px serif";
-          ctx.fillTxt(Cache.events.find(event_id).name, x * left, 150 - 12, x * (right - left) - 4);
+          ctx.fillText(Cache.events.find(event_id).name, x * left, 150 - 12, x * (right - left) - 4);
           left = right;
         }
         return ctx.stroke();
@@ -2624,11 +2624,11 @@ Hilitor = function(id, tag) {
           wordColor[regs[0].toLowerCase()] = colors[colorIdx++ % colors.length];
         }
         match = document.createElement(hiliteTag);
-        match.appendChild(document.createTxtNode(regs[0]));
+        match.appendChild(document.createTextNode(regs[0]));
         match.style.backgroundColor = wordColor[regs[0].toLowerCase()];
         match.style.fontStyle = "inherit";
         match.style.color = "#000";
-        after = node.splitTxt(regs.index);
+        after = node.splitText(regs.index);
         after.nodeValue = after.nodeValue.substring(regs[0].length);
         node.parentNode.insertBefore(match, after);
       }
