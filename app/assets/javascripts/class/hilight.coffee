@@ -44,7 +44,7 @@ Hilitor = (id, tag) ->
     retval = retval.replace(/\|/g, " ")
     retval
 
-  
+
   # recursively apply word highlighting
   @hiliteWords = (node) ->
     return  if node is `undefined` or not node
@@ -60,16 +60,16 @@ Hilitor = (id, tag) ->
       if (nv = node.nodeValue) and (regs = matchRegex.exec(nv))
         wordColor[regs[0].toLowerCase()] = colors[colorIdx++ % colors.length]  unless wordColor[regs[0].toLowerCase()]
         match = document.createElement(hiliteTag)
-        match.appendChild document.createTextNode(regs[0])
+        match.appendChild document.createTxtNode(regs[0])
         match.style.backgroundColor = wordColor[regs[0].toLowerCase()]
         match.style.fontStyle = "inherit"
         match.style.color = "#000"
-        after = node.splitText(regs.index)
+        after = node.splitTxt(regs.index)
         after.nodeValue = after.nodeValue.substring(regs[0].length)
         node.parentNode.insertBefore match, after
     return
 
-  
+
   # emove highlighting
   @emove = ->
     arr = document.getElementsByTagName(hiliteTag)
@@ -79,7 +79,7 @@ Hilitor = (id, tag) ->
       parent.normalize()
     return
 
-  
+
   # start highlighting at target node
   @apply = (input) ->
     @emove()

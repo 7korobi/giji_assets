@@ -12,7 +12,7 @@ new Cache.Rule("message").schema ->
   @scope (all)->
     timeline: (mode)->
       enables = visible.talk[mode]
-      all.where (o)-> (o.show & enables)
+      all.where (o)-> o.mestype == "EVENT" || (o.show & enables)
 
     anchor: (mode, scroll)->
       enables = RAILS.message.visible.talk[mode]
@@ -40,13 +40,6 @@ new Cache.Rule("message").schema ->
       enables = visible.home[mode]
       all
       .where (o)-> o.logid == "EVENT-ASC" || (o.show & enables)
-
-    before: (updated_at, mode, open, hides, search)->
-      enables = visible.talk[mode]
-      enables &= mask.NOT_OPEN unless open
-      all
-      .where (o)-> o.logid == "EVENT-ASC" || (o.show & enables) && updated_at > o.updated_at && ! hides[o.face_id]
-      .search search
 
     talk: (mode, open, hides, search)->
       enables = visible.talk[mode]

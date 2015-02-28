@@ -18,7 +18,7 @@ class Url
       bind_base = Url.bind[key]
       parser = Serial.parser[type]
       prop = m.prop()
-      bind = 
+      bind =
         if bind_base
           switch typeof bind_base
             when "object"
@@ -109,8 +109,9 @@ class Url
       Serial.url[type]
     , "i"
 
-  values: ->
-    Url.prop[key]() for key in @keys_in_url
+  values: (diff = {})->
+    for key in @keys_in_url
+      diff[key] || Url.prop[key]() 
 
   popstate: (path, target)->
     data = {}
@@ -133,9 +134,9 @@ class Url
       return path.replace @scanner, @serialize()
 
     if @options.unmatch
-      path += 
+      path +=
       if path.length
-        "&" 
+        "&"
       else
         @options.unmatch
       path += @serialize()
@@ -147,7 +148,7 @@ class Url
       type = Url.options[key]?.type
       val = Url.prop[key]()
       path = path.replace ///:#{key}///ig, Serial.serializer[type](val)
-    path 
+    path
 
   set_cookie: (value)->
     ary = [value]

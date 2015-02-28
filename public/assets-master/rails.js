@@ -5,6 +5,7 @@ Url.define(LOCATION.props, LOCATION.bind);
 Url.routes = {
   pathname: {
     events: new Url("/:story_id/file"),
+    event: new Url("/:story_id/:turn/messages"),
     story: new Url("/:story_id.html")
   },
   hash: {
@@ -74,8 +75,6 @@ Url.routes = {
     })
   }
 };
-
-GUI.TouchMenu.icons.state = Url.prop.icons;
 new Cache.Rule("map_face").schema(function() {
   var item;
   this.belongs_to("face", {
@@ -153,6 +152,7 @@ new Cache.Rule("event").schema(function() {
   this.order("_id");
   _ref = RAILS.message, visible = _ref.visible, bit = _ref.bit, mask = _ref.mask;
   return this.deploy(function(o) {
+    o._id || (o._id = "" + o.story_id + "-" + o.turn);
     return o.event_id = o._id;
   });
 });
@@ -291,7 +291,7 @@ new Cache.Rule("message").schema(function() {
         var enables;
         enables = visible.talk[mode];
         return all.where(function(o) {
-          return o.show & enables;
+          return o.mestype === "EVENT" || (o.show & enables);
         });
       },
       anchor: function(mode, scroll) {
@@ -328,16 +328,6 @@ new Cache.Rule("message").schema(function() {
         return all.where(function(o) {
           return o.logid === "EVENT-ASC" || (o.show & enables);
         });
-      },
-      before: function(updated_at, mode, open, hides, search) {
-        var enables;
-        enables = visible.talk[mode];
-        if (!open) {
-          enables &= mask.NOT_OPEN;
-        }
-        return all.where(function(o) {
-          return o.logid === "EVENT-ASC" || (o.show & enables) && updated_at > o.updated_at && !hides[o.face_id];
-        }).search(search);
       },
       talk: function(mode, open, hides, search) {
         var enables;
@@ -512,9 +502,7 @@ new Cache.Rule("potof").schema(function() {
   })(this);
   this.scope(function(all) {
     return {
-      view: function(desc, order) {
-        var is_desc;
-        is_desc = "desc" === desc;
+      view: function(is_desc, order) {
         return all.sort(is_desc, function(o) {
           return o.order[order];
         });
@@ -525,7 +513,8 @@ new Cache.Rule("potof").schema(function() {
     var chr_job, is_dead_lose, is_lone_lose, job, mask, name, pt, pt_no, role, role_side_order, role_text, roles, rolestate, said_num, say_type, select, stat_at, stat_order, stat_type, state, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie, _i, _len, _ref;
     o._id = "" + o.event_id + "-" + o.csid + "-" + o.face_id;
     o.user_id = o.sow_auth_id;
-    name = o.zapcount ? "" + RAILS.clearance[o.clearance] + o.name + "-" + o.zapcount : o.name;
+    name = Cache.faces.find(o.face_id).name;
+    o.name = o.zapcount ? "" + RAILS.clearance[o.clearance] + name + "-" + o.zapcount : name;
     stat_at = 0 < o.deathday ? "" + o.deathday + "日" : "";
     said_num = o.point.saidcount;
     urge = o.point.actaddpt;
@@ -697,7 +686,7 @@ new Cache.Rule("potof").schema(function() {
     return has_face[o.face_id] = o;
   });
 });
-var face, messages, potofs_portrates, scroll_spy, security_modes, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6,
+var face, icon_menu, icon_mode_menu, messages, potofs_portrates, scroll_spy, security_modes, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7,
   __slice = [].slice;
 
 win.on.resize.push(function() {
@@ -741,6 +730,12 @@ GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
 
 scroll_spy = GUI.ScrollSpy.global;
 
+icon_mode_menu = new GUI.MenuTree;
+
+icon_menu = new GUI.MenuTree.Icon;
+
+icon_menu.state = Url.prop.icons;
+
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.chr_set.schema(function() {
     return this.order(function(o) {
@@ -767,7 +762,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
               o = chrs[_i];
               chr_job = Cache.chr_jobs.find("" + (Url.prop.chr_set()) + "_" + o.face._id);
               job_name = chr_job.job;
-              attr = GUI.attrs(function() {
+              attr = GUI.attrs({}, function() {
                 var elem;
                 elem = null;
                 this.over(function() {
@@ -793,37 +788,39 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     });
   });
   GUI.if_exist("#chr_sets", function(dom) {
-    var touch;
-    touch = new GUI.TouchMenu();
-    touch.icon("th-large", function() {
-      return m(".paragraph.guide", m("h6", "詳しく検索してみよう"), m("input.small", {
-        onblur: m.withAttr("value", Url.prop.search),
-        onchange: m.withAttr("value", Url.prop.search),
-        value: Url.prop.search()
-      }), m("span", "検索条件：キャラクター名 / 肩書き / プレイヤー "), m("h6", "キャラセットを選んでみよう"), m("span.btn", touch.start("order"), "並び順", m("span.note", "▼")), m("span.btn", touch.start("chr_set"), "キャラセット", m("span.note", "▼")));
-    });
-    touch.menu_set(Url.prop, "count", {
-      order: function() {
-        var key, o, _ref1, _results;
-        _ref1 = RAILS.map_faces_orders;
-        _results = [];
-        for (key in _ref1) {
-          o = _ref1[key];
-          _results.push(m("a", touch.btn(Url.prop.order, key), o.caption));
-        }
-        return _results;
-      },
-      chr_set: function() {
-        return this.btn_group(22, function(key, o) {
-          return Cache.chr_sets.find(key).caption;
-        });
-      }
-    });
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        touch.query = Cache.map_faces;
-        return touch.menu(touch.icon_menu("th-large"));
+        return icon_menu.icon("th-large", {
+          deploy: function(main_menu) {
+            main_menu.drill("order", {
+              caption: "並び順",
+              view: function() {
+                var key, o, _ref1, _results;
+                _ref1 = RAILS.map_faces_orders;
+                _results = [];
+                for (key in _ref1) {
+                  o = _ref1[key];
+                  _results.push(m("span", Btn.set({}, Url.prop.order, key), o.caption));
+                }
+                return _results;
+              }
+            });
+            return main_menu.drill("chr_set", {
+              caption: "キャラセット",
+              view: function(sub_menu) {
+                return sub_menu.radio({
+                  "class": "chr_set"
+                }, Url.prop.chr_set, Cache.map_faces.reduce(), "chr_set", function(key) {
+                  return Cache.chr_sets.find(key).caption;
+                });
+              }
+            });
+          },
+          view: function(main_menu) {
+            return m(".paragraph.guide", m("h6", "詳しく検索してみよう"), m("input.small", Txt.input(Url.prop.search)), m("span", "検索条件：キャラクター名 / 肩書き / プレイヤー "), m("h6", "キャラセットを選んでみよう"), main_menu.drills({}, ["order", "chr_set"]));
+          }
+        });
       }
     });
   });
@@ -915,8 +912,6 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
     });
   });
   GUI.if_exist("#village", function(dom) {
-    var touch;
-    touch = new GUI.TouchMenu();
     return m.module(dom, {
       controller: function() {},
       view: function() {
@@ -989,7 +984,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
 GUI.if_exist("#contentframe", function(dom) {});
 
 GUI.if_exist("#buttons", function(dom) {
-  var layout, touch;
+  var layout;
   if (!head.browser.ios) {
     win.on.orientation.push(function() {
       var alpha, anime, beta, box, gamma, rotate, z, _i, _len, _ref1, _ref2, _results;
@@ -1021,21 +1016,108 @@ GUI.if_exist("#buttons", function(dom) {
   layout = new GUI.Layout(dom, 1, -1, 120);
   layout.width = 90;
   layout.transition();
-  touch = GUI.TouchMenu.icons;
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      var icon, _i, _len, _ref1, _results;
-      _ref1 = ["pin", "warning", "sitemap", "stopwatch", "home", "chat-alt", "mail", "search", "pencil", "th-large", "cog"];
-      _results = [];
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        icon = _ref1[_i];
-        if (!touch.menus[icon]) {
-          continue;
+      var back, badges, section, vdoms;
+      vdoms = [];
+      section = function(icon) {
+        var vdom;
+        if (!icon_menu.nodes[icon]) {
+          return;
         }
-        _results.push(m("section", touch.start(icon), m(".bigicon", m(".icon-" + icon, " ")), touch.badge[icon] != null ? m(".badge.pull-right", touch.badge[icon]()) : void 0));
+        vdom = m("section", icon_menu.start({}, icon), m(".bigicon", m(".icon-" + icon, " ")), badges[icon] ? m(".badge.pull-right", badges[icon]()) : void 0);
+        return vdoms.push(vdom);
+      };
+      badges = {
+        "pin": function() {
+          return messages.pins(Url.prop).list().length - Cache.events.list().length;
+        },
+        "home": function() {
+          return Cache.messages.home("announce");
+        },
+        "mail": function() {
+          var prop;
+          prop = _.merge({}, Url.prop, {
+            memo: function() {
+              return "all";
+            },
+            uniq: function() {
+              return true;
+            },
+            search: function() {
+              return "";
+            }
+          });
+          return messages.memo(prop).list().length - Cache.events.list().length;
+        },
+        "clock": function() {
+          var prop;
+          prop = _.merge({}, Url.prop, {
+            talk: function() {
+              return "all";
+            },
+            open: function() {
+              return true;
+            },
+            search: function() {
+              return "";
+            }
+          });
+          return messages.history(prop).list().length - Cache.events.list().length;
+        },
+        "chat-alt": function() {
+          var prop;
+          prop = _.merge({}, Url.prop, {
+            talk: function() {
+              return "all";
+            },
+            open: function() {
+              return true;
+            },
+            search: function() {
+              return "";
+            }
+          });
+          return messages.talk(prop).list().length - Cache.events.list().length;
+        },
+        "th-large": function() {
+          return Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list().length;
+        }
+      };
+      switch (icon_mode_menu.state()) {
+        case "pin":
+          section("pin");
+          back = Url.prop.back_icon();
+          switch (back) {
+            case "mail":
+            case "clock":
+            case "chat-alt":
+              section(back);
+          }
+          break;
+        case "memo":
+          section("home");
+          section("clock");
+          section("mail");
+          section("chat-alt");
+          break;
+        case "base":
+          section("home");
+          section("mail");
+          section("chat-alt");
+          break;
+        case "full":
+          section("resize-normal");
+          break;
+        case "normal":
+          section("resize-full");
       }
-      return _results;
+      section("pencil");
+      section("th-large");
+      section("search");
+      section("cog");
+      return vdoms;
     }
   });
 });
@@ -1046,21 +1128,46 @@ GUI.if_exist("#topviewer", function(dom) {
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      return GUI.TouchMenu.icons.menu();
+      return icon_menu.view();
     }
   });
 });
 
 GUI.if_exist("#css_changer", function(dom) {
-  var touch;
-  touch = new GUI.TouchMenu();
-  touch.icon("cog", function() {
-    return m(".paragraph.guide", m("h6", "スタイル"), m("a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a", touch.btn(Url.prop.theme, "night"), "闇夜"), m("a", touch.btn(Url.prop.theme, "moon"), "月夜"), m("a", touch.btn(Url.prop.theme, "wa"), "和の国"), m("h6", "幅の広さ"), m("a", touch.btn(Url.prop.width, "wide"), "広域"), m("a", touch.btn(Url.prop.width, "std"), "普通"), m("a", touch.btn(Url.prop.width, "mini"), "携帯"), m("h6", "位置"), m("a", touch.btn(Url.prop.layout, "left"), "左詰"), m("a", touch.btn(Url.prop.layout, "center"), "中央"), m("a", touch.btn(Url.prop.layout, "right"), "右詰"), m("h6", "位置"), m("a", touch.btn(Url.prop.font, "large"), "大判"), m("a", touch.btn(Url.prop.font, "novel"), "明朝"), m("a", touch.btn(Url.prop.font, "std"), "ゴシック"), m("a", touch.btn(Url.prop.font, "small"), "繊細"));
+  icon_menu.icon("cog", {
+    view: function() {
+      return m(".paragraph.guide", m("h6", "スタイル"), Btns.radio({}, Url.prop.theme, {
+        cinema: "煉瓦",
+        star: "蒼穹",
+        night: "闇夜",
+        moon: "月夜",
+        wa: "和の国"
+      }), m("h6", "幅の広さ"), Btns.radio({}, Url.prop.width, {
+        wide: "広域",
+        std: "普通",
+        mini: "携帯"
+      }), m("h6", "位置"), Btns.radio({}, Url.prop.layout, {
+        left: "左詰",
+        center: "中央",
+        right: "右詰"
+      }), m("h6", "位置"), Btns.radio({}, Url.prop.font, {
+        large: "大判",
+        novel: "明朝",
+        std: "ゴシック",
+        small: "繊細"
+      }));
+    }
   });
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      return touch.menu(m(".guide", m("a.menuicon.icon-cog", GUI.TouchMenu.icons.start("cog"), " "), m(".form-group", m("a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"), m("a", touch.btn(Url.prop.theme, "star"), "蒼穹"), m("a", touch.btn(Url.prop.theme, "night"), "闇夜"), m("a", touch.btn(Url.prop.theme, "moon"), "月夜"), m("a", touch.btn(Url.prop.theme, "wa"), "和の国")), m("hr.black")));
+      return m(".guide", m("a.menuicon.icon-cog", icon_menu.start({}, "cog"), " "), Btns.radio({}, Url.prop.theme, {
+        cinema: "煉瓦",
+        star: "蒼穹",
+        night: "闇夜",
+        moon: "月夜",
+        wa: "和の国"
+      }), m("hr.black"));
     }
   });
 });
@@ -1073,31 +1180,27 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
     event_winner: ((_ref4 = gon.event) != null ? _ref4.winner : void 0) || ((_ref5 = gon.events) != null ? (_ref6 = _ref5.last) != null ? _ref6.winner : void 0 : void 0)
   });
   GUI.if_exist("#sayfilter", function(dom) {
-    var layout, toggle_desc, touch, wide_attr;
+    var layout, toggle_desc, wide_attr;
     layout = new GUI.Layout(dom, -1, 1, 100);
     layout.small_mode = true;
     layout.large_mode = function() {
-      return !(GUI.TouchMenu.icons.state() || layout.small_mode);
+      return !(icon_menu.state() || layout.small_mode);
     };
-    touch = new GUI.TouchMenu();
     toggle_desc = function(prop, value) {
       var attr;
       if (prop() === value) {
-        attr = touch.btn(Url.prop.potofs_desc, {
-          asc: "desc",
-          desc: "asc"
-        }[Url.prop.potofs_desc()]);
+        attr = Btn.bool({}, Url.prop.potofs_desc);
         attr.className = "btn active";
         return attr;
       } else {
-        return touch.btn(prop, value);
+        return Btn.set({}, prop, value);
       }
     };
-    wide_attr = GUI.attrs(function() {
+    wide_attr = GUI.attrs({}, function() {
       this.click(function() {
         layout.small_mode = !layout.small_mode;
         if (!layout.small_mode) {
-          return GUI.TouchMenu.icons.state("");
+          return icon_menu.state("");
         }
       });
       return this.actioned(function() {
@@ -1161,7 +1264,9 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
   if ((typeof gon !== "undefined" && gon !== null ? gon.story : void 0) != null) {
     Cache.rule.story.set([gon.story]);
   }
-  Cache.rule.event.merge(gon.events);
+  Cache.rule.event.merge(gon.events, {
+    story_id: (_ref7 = gon.story) != null ? _ref7._id : void 0
+  });
   messages = {
     pins: function(_arg) {
       var pins, story_id;
@@ -1184,27 +1289,32 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       return Cache.messages.talk(talk(), open(), potofs_hide(), search());
     },
     memo: function(_arg) {
-      var memo, potofs_hide, search, uniq;
-      memo = _arg.memo, uniq = _arg.uniq, potofs_hide = _arg.potofs_hide, search = _arg.search;
-      return Cache.messages.memo(memo(), uniq(), potofs_hide(), search());
+      var memo, potofs_hide, search;
+      memo = _arg.memo, potofs_hide = _arg.potofs_hide, search = _arg.search;
+      return Cache.messages.memo(memo(), true, potofs_hide(), search());
+    },
+    history: function(_arg) {
+      var memo, potofs_hide, search;
+      memo = _arg.memo, potofs_hide = _arg.potofs_hide, search = _arg.search;
+      return Cache.messages.memo(memo(), false, potofs_hide(), search());
     }
   };
-  security_modes = function(touch, prop) {
-    return [m("a", touch.btn(prop, "all"), "すべて"), m("a", touch.btn(prop, "think"), "独り言/内緒話"), m("a", touch.btn(prop, "clan"), "仲間の会話"), m("a", touch.btn(prop, "open"), "公開情報のみ"), m.trust("&nbsp;"), m("a", touch.toggle(Url.prop.open), "公開情報"), m("a", touch.toggle(Url.prop.human), "/*中の人*/")];
+  security_modes = function(prop) {
+    return [m("a", Btn.set({}, prop, "all"), "すべて"), m("a", Btn.set({}, prop, "think"), "独り言/内緒話"), m("a", Btn.set({}, prop, "clan"), "仲間の会話"), m("a", Btn.set({}, prop, "open"), "公開情報のみ"), m.trust("&nbsp;"), m("a", Btn.bool({}, Url.prop.open), "公開情報"), m("a", Btn.bool({}, Url.prop.human), "/*中の人*/")];
   };
-  potofs_portrates = function(touch) {
+  potofs_portrates = function() {
     var attr, hides, o, potofs;
     potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
     hides = Url.prop.potofs_hide();
     return m(".chrlist", m("h6", "キャラクターフィルタ"), m("hr.black"), m(".chrbox", {
-      key: "other-buttons"
-    }, m(".chrblank.line9", m(".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, [], Serial.serializer.Keys), "全員表示"), m(".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.others(), Serial.serializer.Keys), "参加者表示"), m(".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.potofs(), Serial.serializer.Keys), "その他を表示"), m(".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.all(), Serial.serializer.Keys), "全員隠す"))), (function() {
+      key: "other-Btns"
+    }, m(".chrblank.line9", m(".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, []), "全員表示"), m(".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.others()), "参加者表示"), m(".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.potofs()), "その他を表示"), m(".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.all()), "全員隠す"))), (function() {
       var _i, _len, _results;
       _results = [];
       for (_i = 0, _len = potofs.length; _i < _len; _i++) {
         o = potofs[_i];
         attr = function(o) {
-          return GUI.attrs(function() {
+          return GUI.attrs({}, function() {
             var elem;
             this.className(hides[o.face_id] ? "filter-hide" : "");
             elem = null;
@@ -1225,59 +1335,63 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     })(), m("hr.black"));
   };
   GUI.if_exist("#story", function(dom) {
-    var story, touch;
-    story = gon.story;
-    touch = new GUI.TouchMenu();
-    touch.badge("home", function() {
-      return Cache.messages.home("announce").list().length;
+    icon_menu.icon("home", {
+      open: function() {
+        icon_mode_menu.state("base");
+        return Url.prop.scope("home");
+      },
+      view: function() {
+        var event, event_card, story, text, texts;
+        story = gon.story;
+        event = Cache.events.find(Url.prop.event_id());
+        if (event) {
+          event_card = RAILS.events[event.event];
+          texts = [];
+          if ("WIN_NONE" !== event.winner) {
+            texts.push(RAILS.winner[event.winner] + "の勝利です。");
+          }
+          if (event_card) {
+            texts.push(m("kbd", event_card));
+          }
+          if (event.turn === event.grudge) {
+            texts.push(RAILS.event_state.grudge);
+          }
+          if (event.turn === event.riot) {
+            texts.push(RAILS.event_state.riot);
+          }
+          if (event.turn === event.scapegoat) {
+            texts.push(RAILS.event_state.scapegoat);
+          }
+          if (_.find(event.eclipse, event.turn)) {
+            texts.push(RAILS.event_state.eclipse);
+          }
+          return [
+            m("." + event.winner + ".guide", m("h6", "" + event.name + " 村の情報"), (function() {
+              var _i, _len, _results;
+              _results = [];
+              for (_i = 0, _len = texts.length; _i < _len; _i++) {
+                text = texts[_i];
+                _results.push(m("p.text", text));
+              }
+              return _results;
+            })(), GUI.message.game(story, event))
+          ];
+        } else {
+          return [m(".WIN_NONE.guide", m("h6", "村の情報"), GUI.message.game(story))];
+        }
+      }
     });
-    touch.icon("home", function() {
-      var event, event_card, text, texts;
-      story = gon.story;
-      event = Cache.events.find(Url.prop.event_id());
-      Url.prop.scope("home");
-      if (event) {
-        event_card = RAILS.events[event.event];
-        texts = [];
-        if ("WIN_NONE" !== event.winner) {
-          texts.push(RAILS.winner[event.winner] + "の勝利です。");
-        }
-        if (event_card) {
-          texts.push(m("kbd", event_card));
-        }
-        if (event.turn === event.grudge) {
-          texts.push(RAILS.event_state.grudge);
-        }
-        if (event.turn === event.riot) {
-          texts.push(RAILS.event_state.riot);
-        }
-        if (event.turn === event.scapegoat) {
-          texts.push(RAILS.event_state.scapegoat);
-        }
-        if (_.find(event.eclipse, event.turn)) {
-          texts.push(RAILS.event_state.eclipse);
-        }
-        return [
-          m("." + event.winner + ".guide", m("h6", "" + event.name + " 村の情報"), (function() {
-            var _i, _len, _results;
-            _results = [];
-            for (_i = 0, _len = texts.length; _i < _len; _i++) {
-              text = texts[_i];
-              _results.push(m("p.text", text));
-            }
-            return _results;
-          })(), GUI.message.game(story, event))
-        ];
-      } else {
-        return [m(".WIN_NONE.guide", m("h6", "村の情報"), GUI.message.game(story))];
+    icon_menu.icon("search", {
+      view: function() {
+        return [m(".paragraph.guide", GUI.timeline(Url.prop.w()), m("input.mini", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"))];
       }
     });
     return m.module(dom, {
       controller: function() {},
       view: function() {
         return [
-          touch.icon_menu("search"), (function() {
-            if (story != null) {
+          icon_menu.node("search"), (function() {
+            if (typeof story !== "undefined" && story !== null) {
               switch (Url.prop.scope()) {
                 case "home":
                   return GUI.message.story(story);
@@ -1289,87 +1403,58 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
   });
   GUI.if_exist("#messages", function(dom) {
-    var touch;
     scroll_spy.avg_height = 150;
-    touch = new GUI.TouchMenu();
-    touch.badge("pin", function() {
-      return messages.pins(Url.prop).list().length - Cache.events.list().length;
+    icon_menu.icon("pin", {
+      open: function() {
+        icon_mode_menu.state("pins");
+        return Url.prop.scope("pins");
+      },
+      close: function() {
+        Url.prop.icons("");
+        Url.prop.pins({});
+        return Url.prop.scope(back);
+      }
     });
-    touch.icon("pin", function() {
-      Url.prop.scope("pins");
-      return [
-        m(".paragraph.guide", m("h6", "アンカー", m("a.menuicon.icon-cancel-alt", GUI.attrs(function() {
-          return this.end(function() {
-            var back;
-            Url.prop.icons("");
-            Url.prop.pins({});
-            back = Url.prop.back();
-            if (back.match(/MM.....$/)) {
-              Url.prop.scope("memo");
-            } else {
-              Url.prop.scope("talk");
-            }
-            Url.prop.scroll(back);
-            return window.requestAnimationFrame(function() {
-              return GUI.ScrollSpy.go(back);
-            });
-          });
-        }))), m("p", "クリックしたアンカーを辿ります。"))
-      ];
+    icon_menu.icon("mail", {
+      open: function() {
+        icon_mode_menu.state("memo");
+        Url.prop.scope("memo");
+        return GUI.ScrollSpy.global.rescroll(Url.prop.scroll_talk);
+      },
+      view: function() {
+        return [m(".paragraph.guide", m("h6", "メモ"), security_modes(Url.prop.memo), m("p", "メモを表示します。")), potofs_portrates()];
+      }
     });
-    touch.badge("chat-alt", function() {
-      var prop;
-      prop = _.merge({}, Url.prop, {
-        talk: function() {
-          return "all";
-        },
-        open: function() {
-          return true;
-        },
-        search: function() {
-          return "";
-        }
-      });
-      return messages.talk(prop).list().length - Cache.events.list().length;
+    icon_menu.icon("chat-alt", {
+      open: function() {
+        icon_mode_menu.state("base");
+        Url.prop.scope("talk");
+        return GUI.ScrollSpy.global.rescroll(Url.prop.scroll_talk);
+      },
+      view: function() {
+        return [m(".paragraph.guide", m("h6", "発言"), security_modes(Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates()];
+      }
     });
-    touch.icon("chat-alt", function() {
-      Url.prop.scope("talk");
-      return [m(".paragraph.guide", m("h6", "発言"), security_modes(touch, Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates(touch)];
+    icon_menu.icon("clock", {
+      open: function() {
+        icon_mode_menu.state("memo");
+        return Url.prop.scope("history");
+      },
+      view: function() {
+        return [m(".paragraph.guide", m("h6", "発言"), security_modes(Url.prop.memo), m("p", "メモ履歴を表示します。")), potofs_portrates()];
+      }
     });
-    touch.badge("mail", function() {
-      var prop;
-      prop = _.merge({}, Url.prop, {
-        memo: function() {
-          return "all";
-        },
-        uniq: function() {
-          return true;
-        },
-        search: function() {
-          return "";
-        }
-      });
-      return messages.memo(prop).list().length - Cache.events.list().length;
-    });
-    touch.icon("mail", function() {
-      Url.prop.scope("memo");
-      return [m(".paragraph.guide", m("h6", "メモ"), security_modes(touch, Url.prop.memo), m("p", "メモを表示します。")), potofs_portrates(touch)];
-    });
-    touch.icon("search", function() {
-      return [
-        m(".paragraph.guide", GUI.timeline(Url.prop.w()), m("input.mini", {
-          onblur: m.withAttr("value", Url.prop.search),
-          onchange: m.withAttr("value", Url.prop.search),
-          value: Url.prop.search()
-        }), m("span", "発言中の言葉を検索します。"), m("hr.black"))
-      ];
+    icon_menu.icon("search", {
+      view: function() {
+        return [m(".paragraph.guide", GUI.timeline(Url.prop.w()), m("input.mini", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"))];
+      }
     });
     m.module(dom, {
       controller: function() {},
       view: function() {
         return scroll_spy.pager("div", messages[Url.prop.scope()](Url.prop).list(), function(o) {
           var anchor_num;
-          anchor_num = o.logid.substring(2) - 0 || 0;
+          anchor_num = o.logid.slice(2) - 0 || 0;
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
           if (o.updated_at == null) {
             o.updated_at = new Date(o.date) - 0;
@@ -1390,40 +1475,66 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     m.startComputation();
     return window.requestAnimationFrame(function() {
-      var event, set_event_messages, _i, _len, _ref7;
+      var event, interval, set_event_messages, set_event_without_messages, turn, updated_at, _i, _j, _k, _len, _len1, _ref10, _ref8, _ref9;
       set_event_messages = function(event) {
         var first, last;
-        first = event.messages.first;
-        last = event.messages.last;
-        event.messages.unshift({
-          name: event.name,
-          log: event.name,
+        first = event.messages.first.date;
+        last = event.messages.last.date;
+        return set_event_without_messages(new Date(first) - 1, new Date(last) - -1, event.messages, event);
+      };
+      set_event_without_messages = function(first_date, last_date, messages, _arg) {
+        var name, turn, _id;
+        _id = _arg._id, turn = _arg.turn, name = _arg.name;
+        messages.unshift({
+          name: name,
+          log: name,
           logid: "EVENT-ASC",
           mestype: "EVENT",
-          updated_at: new Date(first.date) - 1
+          updated_at: first_date
         });
-        event.messages.push({
-          name: event.name,
-          log: event.name,
+        messages.push({
+          name: name,
+          log: name,
           logid: "EVENT-DESC",
           mestype: "EVENT",
-          updated_at: new Date(last.date) - -1
+          updated_at: last_date
         });
-        return Cache.rule.message.merge(event.messages, {
-          event_id: event._id,
-          turn: event.turn
+        return Cache.rule.message.merge(messages, {
+          event_id: _id,
+          turn: turn
         });
       };
+      interval = gon.story.upd.interval * 1000 * 3600 * 24;
       if (gon.event.messages) {
         set_event_messages(gon.event);
+        turn = gon.event.turn;
+        updated_at = gon.event.messages.last.updated_at;
+        _ref8 = gon.events;
+        for (_i = 0, _len = _ref8.length; _i < _len; _i += 1) {
+          event = _ref8[_i];
+          if (event.turn > turn) {
+            set_event_without_messages(updated_at + 1, updated_at + interval, [], event);
+            updated_at += interval;
+          }
+        }
+        updated_at = gon.event.messages.first.updated_at;
+        _ref9 = gon.events;
+        for (_j = _ref9.length - 1; _j >= 0; _j += -1) {
+          event = _ref9[_j];
+          if (event.turn < turn) {
+            set_event_without_messages(updated_at - interval, updated_at - 1, [], event);
+            updated_at -= interval;
+          }
+        }
       }
-      _ref7 = gon.events;
-      for (_i = 0, _len = _ref7.length; _i < _len; _i++) {
-        event = _ref7[_i];
+      _ref10 = gon.events;
+      for (_k = 0, _len1 = _ref10.length; _k < _len1; _k++) {
+        event = _ref10[_k];
         if (event.messages) {
           set_event_messages(event);
         }
       }
+      icon_mode_menu.state("base");
       return m.endComputation();
     });
   });
@@ -1474,93 +1585,174 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
 if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) {
   Cache.rule.story.set(gon.stories);
   GUI.if_exist("#stories", function(dom) {
-    var touch, touch_sw;
-    touch_sw = new GUI.TouchMenu();
-    touch = new GUI.TouchMenu();
-    touch.menu_set(Url.prop, "count", {
-      rating: function() {
-        return this.btn_group(22, function(key, o) {
-          return m("span", m("img.pull-left", {
-            src: GUI.img_head + ("/icon/cd_" + o.min_is.rating + ".png")
-          }), RAILS.rating[key].caption);
-        });
-      },
-      game: function() {
-        return this.btn_group(16, function(key, o) {
-          return o.min_is.view.game_rule;
-        });
-      },
-      folder: function() {
-        return this.btn_group(16, function(key) {
-          var _ref7;
-          return (_ref7 = GAME[key]) != null ? _ref7.nation : void 0;
-        });
-      },
-      say_limit: function() {
-        return this.btn_group(10, function(key, o) {
-          return o.min_is.view.say_limit;
-        });
-      },
-      update_at: function() {
-        return this.btn_group(10, function(key, o) {
-          return o.min_is.view.update_at;
-        });
-      },
-      update_interval: function() {
-        return this.btn_group(8, function(key, o) {
-          return o.min_is.view.update_interval;
-        });
-      },
-      event_type: function() {
-        return this.btn_group(8, function(key) {
-          return key;
-        });
-      },
-      role_type: function() {
-        return this.btn_group(8, function(key) {
-          return key;
-        });
-      },
-      player_length: function() {
-        return this.btn_group(8, function(key, o) {
-          return o.min_is.view.player_length + "人";
-        });
-      }
-    });
-    touch.icon("search", function() {
-      var icon;
-      icon = touch_sw.state() ? "icon-resize-normal" : "icon-resize-full";
-      return m(".paragraph.guide", m("h6", "検索する。"), m("span.btn", touch_sw.start(true), m("i." + icon)), m("input.mini", {
-        onblur: m.withAttr("value", Url.prop.search),
-        onchange: m.withAttr("value", Url.prop.search),
-        value: Url.prop.search()
-      }), m("span.btn", touch.start("folder"), m("i.icon-book"), m("span.note", "▼")), m("span.btn", touch.start("game"), "ルール", m("span.note", "▼")), m("span.btn", touch.start("event_type"), "事件", m("span.note", "▼")), m("span.btn", touch.start("role_type"), "役職", m("span.note", "▼")), m("span.btn", touch.start("rating"), "こだわり", m("span.note", "▼")), m("span.btn", touch.start("say_limit"), "発言制限", m("span.note", "▼")), m("span.btn", touch.start("player_length"), "人数", m("span.note", "▼")), m("span.btn", touch.start("update_at"), "更新時刻", m("span.note", "▼")), m("span.btn", touch.start("update_interval"), "更新間隔", m("span.note", "▼")));
-    });
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var vdom, _ref7;
-        if (touch_sw.state()) {
-          scroll_spy.avg_height = 120;
-        } else {
-          scroll_spy.avg_height = 22;
-        }
-        touch.query = (_ref7 = Cache.storys).menu.apply(_ref7, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values())));
-        vdom = touch.menu(touch.icon_menu("search"));
-        vdom.push(m("table.table.table-border.table-hover", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", touch.query.list(), function(o) {
-          return m("tr", {
-            key: o._id
-          }, touch_sw.state() ? m("td", m("a", {
-            href: o.link
-          }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
-            href: o.file
-          }, m.trust(o.name)), o.view.rating, m("table", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m("div", o.view.role_cards), m("div", o.view.event_cards)) : m("td", m("a", {
-            href: o.link
-          }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
-            href: o.file
-          }, o.name), o.view.rating));
-        })));
-        return vdom;
+        var query, _ref8;
+        icon_menu.icon("resize-full", {
+          open: function() {
+            scroll_spy.avg_height = 120;
+            return icon_mode_menu.state("full");
+          }
+        });
+        icon_menu.icon("resize-normal", {
+          deploy: function() {
+            return icon_mode_menu.state("normal");
+          },
+          open: function() {
+            scroll_spy.avg_height = 22;
+            return icon_mode_menu.state("normal");
+          }
+        });
+        query = (_ref8 = Cache.storys).menu.apply(_ref8, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values())));
+        return [
+          icon_menu.icon("search", {
+            deploy: function(main_menu) {
+              main_menu.drill("rating", {
+                caption: "こだわり",
+                view: function(sub_menu) {
+                  var reduce, _ref9;
+                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                    rating: "all"
+                  })))).reduce();
+                  return sub_menu.radio({
+                    "class": "rating"
+                  }, Url.prop.rating, reduce, "rating", function(key, o) {
+                    return m("span", m("img.pull-left", {
+                      src: GUI.img_head + ("/icon/cd_" + o.min_is.rating + ".png")
+                    }), RAILS.rating[key].caption);
+                  });
+                }
+              });
+              main_menu.drill("game", {
+                caption: "ルール",
+                view: function(sub_menu) {
+                  var reduce, _ref9;
+                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                    game: "all"
+                  })))).reduce();
+                  return sub_menu.radio({
+                    "class": "game"
+                  }, Url.prop.game, reduce, "game", function(key, o) {
+                    return o.min_is.view.game_rule;
+                  });
+                }
+              });
+              main_menu.drill("folder", {
+                caption: "州",
+                view: function(sub_menu) {
+                  var reduce, _ref9;
+                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, ["all"].concat(__slice.call(Url.routes.search.stories.values()))).reduce();
+                  return sub_menu.radio({
+                    "class": "folder"
+                  }, Url.prop.folder, reduce, "folder", function(key, o) {
+                    var _ref10;
+                    return (_ref10 = GAME[key]) != null ? _ref10.nation : void 0;
+                  });
+                }
+              });
+              main_menu.drill("say_limit", {
+                caption: "発言制限",
+                view: function(sub_menu) {
+                  var reduce, _ref9;
+                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                    say_limit: "all"
+                  })))).reduce();
+                  return sub_menu.radio({
+                    "class": "say_limit"
+                  }, Url.prop.say_limit, reduce, "say_limit", function(key, o) {
+                    return o.min_is.view.say_limit;
+                  });
+                }
+              });
+              main_menu.drill("update_at", {
+                caption: "更新時刻",
+                view: function(sub_menu) {
+                  var reduce, _ref9;
+                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                    update_at: "all"
+                  })))).reduce();
+                  return sub_menu.radio({
+                    "class": "update_at"
+                  }, Url.prop.update_at, reduce, "update_at", function(key, o) {
+                    return o.min_is.view.update_at;
+                  });
+                }
+              });
+              main_menu.drill("update_interval", {
+                caption: "更新間隔",
+                view: function(sub_menu) {
+                  var reduce, _ref9;
+                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                    update_interval: "all"
+                  })))).reduce();
+                  return sub_menu.radio({
+                    "class": "update_interval"
+                  }, Url.prop.update_interval, reduce, "update_interval", function(key, o) {
+                    return o.min_is.view.update_interval;
+                  });
+                }
+              });
+              main_menu.drill("event_type", {
+                caption: "事件",
+                view: function(sub_menu) {
+                  var reduce, _ref9;
+                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                    event_type: "all"
+                  })))).reduce();
+                  return sub_menu.radio({
+                    "class": "event_type"
+                  }, Url.prop.event_type, reduce, "event_type", function(key, o) {
+                    return key;
+                  });
+                }
+              });
+              main_menu.drill("role_type", {
+                caption: "役職",
+                view: function(sub_menu) {
+                  var reduce, _ref9;
+                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                    role_type: "all"
+                  })))).reduce();
+                  return sub_menu.radio({
+                    "class": "role_type"
+                  }, Url.prop.role_type, reduce, "role_type", function(key, o) {
+                    return key;
+                  });
+                }
+              });
+              return main_menu.drill("player_length", {
+                caption: "人数",
+                view: function(sub_menu) {
+                  var reduce, _ref9;
+                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                    player_length: "all"
+                  })))).reduce();
+                  return sub_menu.radio({
+                    "class": "player_length"
+                  }, Url.prop.role_type, reduce, "player_length", function(key, o) {
+                    return o.min_is.view.player_length + "人";
+                  });
+                }
+              });
+            },
+            view: function(main_menu) {
+              return m(".paragraph.guide", m("h6", "検索する。"), m("input.mini", Txt.input(Url.prop.search)), main_menu.drills({}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"]));
+            }
+          }), m("table.table.table-border.table-hover", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", query.list(), function(o) {
+            return m("tr", {
+              key: o._id
+            }, icon_menu.state() === "resize-full" ? m("td", m("a", {
+              href: o.link
+            }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
+              href: o.file
+            }, m.trust(o.name)), o.view.rating, m("table", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m("div", o.view.role_cards), m("div", o.view.event_cards)) : m("td", m("a", {
+              href: o.link
+            }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
+              href: o.file
+            }, o.name), o.view.rating));
+          }))
+        ];
       }
     });
   });
@@ -1592,9 +1784,9 @@ GUI.if_exist("#to_root", function(dom) {
 
 m.endComputation();
 GUI.if_exist("#headline", function(dom) {
-  var touch;
-  touch = new GUI.TouchMenu();
-  touch.state("finish");
+  var state;
+  state = m.prop();
+  state("finish");
   return m.module(dom, {
     controller: function() {},
     view: function() {
@@ -1608,15 +1800,15 @@ GUI.if_exist("#headline", function(dom) {
       max_morphe = GAME.MORPHE.config.cfg.MAX_VILLAGES;
       max_all = max_vage + max_crazy + max_xebec + max_ciel;
       max_all += max_cafe + max_morphe;
-      return m(".choice", m("table.board", m("thead", "progress" === touch.state() ? m("tr", m("th.choice[colspan=2]", {
+      return m(".choice", m("table.board", m("thead", "progress" === state() ? m("tr", m("th.choice[colspan=2]", {
         key: "p"
       }, m("strong", "進行中の村")), m("th[colspan=2]", {
         key: "f"
-      }, m("a", touch.start("finish"), "終了した村を見る"))) : void 0, "finish" === touch.state() ? m("tr", m("th[colspan=2]", {
+      }, m("a", Btn.set({}, state, "finish"), "終了した村を見る"))) : void 0, "finish" === state() ? m("tr", m("th[colspan=2]", {
         key: "p"
-      }, m("a", touch.start("progress"), "進行中の村を見る")), m("th.choice[colspan=2]", {
+      }, m("a", Btn.set({}, state, "progress"), "進行中の村を見る")), m("th.choice[colspan=2]", {
         key: "f"
-      }, m("strong", "終了した村"))) : void 0, m("tr", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ"))), "progress" === touch.state() ? m("tbody", m("tr", m("td", {
+      }, m("strong", "終了した村"))) : void 0, m("tr", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ"))), "progress" === state() ? m("tbody", m("tr", m("td", {
         key: "L"
       }, m("a", {
         href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
@@ -1638,7 +1830,7 @@ GUI.if_exist("#headline", function(dom) {
         href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
       }, "crazy"), m("br"), "" + max_ciel + "村:", m("a", {
         href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
-      }, "ciel")))) : void 0, "finish" === touch.state() ? m("tbody", m("tr", m("td", {
+      }, "ciel")))) : void 0, "finish" === state() ? m("tbody", m("tr", m("td", {
         key: "P"
       }, m("a", {
         href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
@@ -1745,7 +1937,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.new_chr_faces : void 0) !
             _results = [];
             for (_i = 0, _len = chrs.length; _i < _len; _i++) {
               o = chrs[_i];
-              attr = GUI.attrs(function() {
+              attr = GUI.attrs({}, function() {
                 var elem;
                 elem = null;
                 this.over(function() {

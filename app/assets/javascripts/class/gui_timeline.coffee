@@ -37,9 +37,16 @@ GUI.timeline = (width)->
   time_width = last_at - first_at
   max_height = y = 0
 
-  attr = GUI.attrs ->
+  attr = GUI.attrs {}, ->
+    find_last = (list, time)->
+      for o in list by -1
+        return o._id if time > o.updated_at
+      return null
+
     point = (e)->
       return unless win.is_touch
+      Url.prop.search ""
+
       canvas = document.querySelector("canvas")
       if e.touches?[0]?.pageX
         offsetX = (e.touches[0].pageX - canvas.offsetLeft) * 2
@@ -48,15 +55,17 @@ GUI.timeline = (width)->
         offsetX = (e.offsetX || e.layerX || e.x) * 2
         offsetY = (e.offsetY || e.layerY || e.y) * 2
 
+      list =
+        if 100 < offsetY
+          Cache.messages.talk("open", false, {}).list()
+        else
+          {talk, open, potofs_hide} = Url.prop
+          Cache.messages.talk(talk(), open(), potofs_hide()).list()
+
+      id = find_last list, Math.ceil(1000 * 3600 * (first_at + offsetX / x))
+      return unless id
+
       m.startComputation()
-      Url.prop.scope "talk"
-      time = Math.ceil(1000 * 3600 * (first_at + offsetX / x))
-      id =
-      if 100 < offsetY
-        Cache.messages.before(time, "open", false, {}, "").list().last._id
-      else
-        {talk, open, potofs_hide, search} = Url.prop
-        Cache.messages.before(time, talk(), open(), potofs_hide(), search()).list().last._id
       Url.prop.scope "talk"
       Url.prop.scroll  id
       GUI.ScrollSpy.go id
@@ -116,7 +125,7 @@ GUI.timeline = (width)->
           ctx.textAlign = "left"
           ctx.fillStyle = colors.text
           ctx.font = "30px serif"
-          ctx.fillText Cache.events.find(event_id).name, x * left, 150 - 12, x * (right - left) - 4
+          ctx.fillTxt Cache.events.find(event_id).name, x * left, 150 - 12, x * (right - left) - 4
 
           left = right
         ctx.stroke()

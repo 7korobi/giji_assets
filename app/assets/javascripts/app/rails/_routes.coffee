@@ -2,6 +2,7 @@ Url.define LOCATION.props, LOCATION.bind
 Url.routes =
   pathname:
     events: new Url "/:story_id/file"
+    event:  new Url "/:story_id/:turn/messages"
     story:  new Url "/:story_id.html"
 
   hash:
@@ -53,5 +54,3 @@ Url.routes =
           Url.prop.event_id  "#{folder}-#{vid}-#{turn}", true
           Url.prop.message_id "#{folder}-#{vid}-#{turn}-#{logid}", true
         return
-
-GUI.TouchMenu.icons.state = Url.prop.icons

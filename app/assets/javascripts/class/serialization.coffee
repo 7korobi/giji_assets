@@ -1,6 +1,6 @@
 class Serial
   # OIl
-  @map = 
+  @map =
     to_s: "0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
     to_i: {}
 
@@ -21,15 +21,15 @@ class Serial
           ""
         else
           String(val).replace ///[~/=.&\?\#\[\]()\"'`;]///g, (s)->
-            "%" + s.charCodeAt(0).toString(16)    
+            "%" + s.charCodeAt(0).toString(16)
 
   array_base_parser = (val)->
     if Array.isArray(val)
       val
     else
-      "#{val}".split "," 
+      "#{val}".split ","
 
-  @parser = 
+  @parser =
     Keys: (val)->
       hash = {}
       if val.length
@@ -70,11 +70,11 @@ class Serial
 
     Number: Number
     Text: string_parser
-    String: string_parser 
+    String: string_parser
     null:    string_parser
     undefined: string_parser
 
-  @serializer = 
+  @serializer =
     Keys: (val)->
       list =
         if Array.isArray(val)
@@ -108,12 +108,12 @@ class Serial
     null:    string_serializer
     undefined: string_serializer
 
-    
+
 
   @url = {}
 
 for key, func of Serial.parser
-  Serial.url[key] = 
+  Serial.url[key] =
     switch key
       when "Number"
         "([-]?[\\.0-9]+)"
@@ -135,4 +135,3 @@ class ID
   @at = (date, count)->
     count ?= Math.random() * @patch_size
     Serial.serializer.Date(date * @patch_size + count)
-

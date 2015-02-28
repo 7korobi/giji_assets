@@ -1,4 +1,16 @@
-GUI =
+GUI = (->
+  names_base = (name)->
+    (list, cb)->
+      hash = {}
+      for key in list
+        hash[key] ||= 0
+        hash[key] += 1
+      for key, size of hash
+        cb name(key), size
+
+  name_config = (o)->
+      RAILS.roles[o]?.name || RAILS.gifts[o]?.name || RAILS.events[o]?.name || o || ""
+
   img_head: "http://7korobi.gehirn.ne.jp/images"
   portrate: (face_id, attr = {})->
     attr.src = GUI.img_head + "/portrate/#{face_id}.jpg"
@@ -15,7 +27,7 @@ GUI =
     html.className = html.className.replace GUI.header_style_p, style
     GUI.header_style_p = style
 
-  attrs_to: (parent, query, cb)->
+  attrs_to: (parent, query, base_attrs, cb)->
     vdom = m query
     tag = vdom.tag
     attr = Object.keys(vdom.attrs)[0]
@@ -24,12 +36,11 @@ GUI =
         cb.apply @, data
     for elem in parent.querySelectorAll query
       data = attr && elem.attributes[attr]?.value.split(",")
-      for key, func of GUI.attrs attr_cb(elem, data, cb)
+      for key, func of GUI.attrs base_attrs, attr_cb(elem, data, cb)
         elem[key] = func
 
 
-  attrs: (dsl, thru)->
-    o = {}
+  attrs: (o, dsl)->
     actioned_cb = null
     act = (cb)->
       (e)->
@@ -146,7 +157,7 @@ GUI =
     attr =
       config: (elem, is_continue, context)->
         at.prop = (text)->
-          elem.innerText &&= text
+          elem.innerTxt &&= text
           elem.textContent &&= text
     m query, attr, at.text
 
@@ -182,23 +193,17 @@ GUI =
     (String Math.round num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
 
   field: (num, length)->
-    "0000000000".substring(10 - length).substring("#{num}".length) + num
+    "0000000000#{num}"[-length ..]
 
   name:
-    config: (o)->
-      RAILS.roles[o]?.name || RAILS.gifts[o]?.name || RAILS.events[o]?.name || o || ""
+    config: name_config
 
   names:
-    config: (list, cb)->
-      hash = {}
-      for key in list
-        hash[key] ||= 0
-        hash[key] += 1
-      for key, size of hash
-        cb GUI.name.config(key), size
+    config: names_base(name_config)
 
   letter: (style, head, vdom...)->
     [ m "p.name",
         m "b", head
       m "p.text.#{style}", vdom
     ]
+)()

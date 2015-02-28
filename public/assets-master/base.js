@@ -1049,6 +1049,130 @@ Cache.Rule = (function() {
   return Rule;
 
 })();
+var Btn, Btns, Txt,
+  __slice = [].slice;
+
+Txt = (function() {
+  return {
+    input: function(prop) {
+      return {
+        onblur: m.withAttr("value", prop),
+        onchange: m.withAttr("value", prop),
+        value: prop()
+      };
+    }
+  };
+})();
+
+Btns = (function() {
+  var base;
+  base = function(btn, style, prop, options, order) {
+    var attr, caption, key, _i, _len, _results;
+    if (order == null) {
+      order = Object.keys(options);
+    }
+    _results = [];
+    for (_i = 0, _len = order.length; _i < _len; _i++) {
+      key = order[_i];
+      caption = options[key];
+      attr = btn(style, prop, key);
+      _results.push(m("span", attr, caption));
+    }
+    return _results;
+  };
+  return {
+    check: function() {
+      return base.apply(null, [Btn.keys].concat(__slice.call(arguments)));
+    },
+    radio: function() {
+      return base.apply(null, [Btn.set].concat(__slice.call(arguments)));
+    },
+    menu: function() {
+      return base.apply(null, [Btn.menu].concat(__slice.call(arguments)));
+    }
+  };
+})();
+
+Btn = (function() {
+  var base, cover, eq, include, is_true;
+  base = function(style, check, store, load, key) {
+    return GUI.attrs({}, function() {
+      this.end(function() {
+        return store(key);
+      });
+      if (check(load, key)) {
+        return this.className("btn " + style["class"] + " active");
+      } else {
+        return this.className("btn " + style["class"]);
+      }
+    });
+  };
+  is_true = function(load) {
+    return load();
+  };
+  eq = function(load, key) {
+    return key === load();
+  };
+  include = function(load, key) {
+    return load()[key];
+  };
+  cover = function(load, keys) {
+    var key, o, _i, _len;
+    o = load();
+    for (_i = 0, _len = keys.length; _i < _len; _i++) {
+      key = keys[_i];
+      if (!o[key]) {
+        return false;
+      }
+    }
+    return true;
+  };
+  return {
+    base: base,
+    bool: function(style, prop) {
+      return base(style, is_true, prop, prop, !prop());
+    },
+    set: function(style, prop, val) {
+      return base(style, eq, prop, prop, val);
+    },
+    keys_reset: function(style, prop, val) {
+      var setter;
+      setter = function(key) {
+        var keys, _i, _len;
+        if (!cover(prop, val)) {
+          keys = {};
+          for (_i = 0, _len = val.length; _i < _len; _i++) {
+            key = val[_i];
+            keys[key] = true;
+          }
+          return prop(keys);
+        }
+      };
+      return base(style, cover, setter, prop, val);
+    },
+    keys: function(style, prop, val) {
+      var setter;
+      setter = function(key) {
+        var keys;
+        keys = prop();
+        keys[key] = !keys[key];
+        return prop(keys);
+      };
+      return base(style, include, setter, prop, val);
+    },
+    menu: function(style, prop, val) {
+      var setter;
+      setter = (function(_this) {
+        return function(key) {
+          var target;
+          target = eq(prop, key) ? "" : key;
+          return prop(target);
+        };
+      })(this);
+      return base(style, eq, setter, prop, val);
+    }
+  };
+})();
 var Gesture;
 
 Gesture = (function() {
@@ -1145,274 +1269,10 @@ Gesture = (function() {
 var GUI,
   __slice = [].slice;
 
-GUI = {
-  img_head: "http://7korobi.gehirn.ne.jp/images",
-  portrate: function(face_id, attr) {
-    if (attr == null) {
-      attr = {};
-    }
-    attr.src = GUI.img_head + ("/portrate/" + face_id + ".jpg");
-    return m("img", attr);
-  },
-  title: function(width, theme, day_or_night) {
-    var _ref, _ref1;
-    return m("img", {
-      src: GUI.img_head + ("/banner/title" + width) + ((_ref = RAILS.head_img[width]) != null ? (_ref1 = _ref[theme]) != null ? _ref1[day_or_night] : void 0 : void 0)
-    });
-  },
-  header_style_p: "",
-  header: function(keys) {
-    var html, style;
-    style = keys.join(" ");
-    html = document.documentElement;
-    html.className = html.className.replace(GUI.header_style_p, style);
-    return GUI.header_style_p = style;
-  },
-  attrs_to: function(parent, query, cb) {
-    var attr, attr_cb, data, elem, func, key, tag, vdom, _i, _len, _ref, _ref1, _results;
-    vdom = m(query);
-    tag = vdom.tag;
-    attr = Object.keys(vdom.attrs)[0];
-    attr_cb = function(elem, data, cb) {
-      return function() {
-        return cb.apply(this, data);
-      };
-    };
-    _ref = parent.querySelectorAll(query);
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      elem = _ref[_i];
-      data = attr && ((_ref1 = elem.attributes[attr]) != null ? _ref1.value.split(",") : void 0);
-      _results.push((function() {
-        var _ref2, _results1;
-        _ref2 = GUI.attrs(attr_cb(elem, data, cb));
-        _results1 = [];
-        for (key in _ref2) {
-          func = _ref2[key];
-          _results1.push(elem[key] = func);
-        }
-        return _results1;
-      })());
-    }
-    return _results;
-  },
-  attrs: function(dsl, thru) {
-    var act, actioned_cb, func, o;
-    o = {};
-    actioned_cb = null;
-    act = function(cb) {
-      return function(e) {
-        cb(e, e.srcElement, e.toElement);
-        if (actioned_cb) {
-          window.requestAnimationFrame(actioned_cb);
-        }
-        return e.preventDefault();
-      };
-    };
-    func = {
-      className: function(str) {
-        return o.className = str;
-      },
-      swipe: function(thru) {
-        var cancel, draw, end, gesture, move, start;
-        if (thru) {
-          act = function(cb) {
-            return cb;
-          };
-        }
-        start = act(function(e) {
-          var e1, _ref;
-          console.log(e.changedTouches);
-          e1 = (_ref = e.changedTouches) != null ? _ref[0] : void 0;
-          return gesture.start(e1 || e);
-        });
-        move = act(function(e) {
-          var e1, _ref;
-          console.log(e.changedTouches);
-          e1 = (_ref = e.changedTouches) != null ? _ref[0] : void 0;
-          return gesture.move(e1 || e);
-        });
-        end = act(function(e) {
-          return gesture.end(e);
-        });
-        cancel = act(function(e) {
-          return gesture.cancel(e);
-        });
-        o.ontouchstart = start;
-        o.ontouchmove = move;
-        o.ontouchend = end;
-        o.ontouchcancel = cancel;
-        draw = function(cb) {
-          return function(diff, is_fast) {
-            m.startComputation();
-            cb(diff, is_fast);
-            return m.endComputation();
-          };
-        };
-        gesture = new Gesture();
-        func.up = function(cb) {
-          return gesture.onup = draw(cb);
-        };
-        func.down = function(cb) {
-          return gesture.ondown = draw(cb);
-        };
-        func.left = function(cb) {
-          return gesture.onleft = draw(cb);
-        };
-        func.right = function(cb) {
-          return gesture.onright = draw(cb);
-        };
-        return func.move = function(cb) {
-          return gesture.onmove = draw(cb);
-        };
-      },
-      click: function(cb) {
-        cb = act(cb);
-        return o.onclick = cb;
-      },
-      start: function(cb) {
-        cb = act(cb);
-        o.onmousedown = cb;
-        return o.ontouchstart = cb;
-      },
-      end: function(cb) {
-        cb = act(cb);
-        o.onmouseup = cb;
-        return o.ontouchend = cb;
-      },
-      cancel: function(cb) {
-        cb = act(cb);
-        o.onmouseout = cb;
-        o.onmouseover = cb;
-        return o.ontouchcancel = cb;
-      },
-      move: function(cb) {
-        cb = act(cb);
-        o.onmousemove = cb;
-        return o.ontouchmove = cb;
-      },
-      over: function(cb) {
-        cb = act(cb);
-        o.onmouseover = cb;
-        return o.ontouchmove = cb;
-      },
-      out: function(cb) {
-        cb = act(cb);
-        o.onmouseup = cb;
-        o.onmouseout = cb;
-        return o.ontouchend = cb;
-      },
-      canvas: function(width, height, options) {
-        var size;
-        size = "" + width + "x" + height;
-        o.width = width * 2;
-        o.height = height * 2;
-        o.style = "width: " + width + "px; height: " + height + "px;";
-        return o.config = function(canvas, is_continue, context) {
-          var cache, ctx, image;
-          ctx = canvas.getContext("2d");
-          cache = typeof options.cache === "function" ? options.cache() : void 0;
-          if (cache) {
-            if (cache.canvas == null) {
-              cache.canvas = {};
-            }
-            if (image = cache.canvas[size]) {
-              ctx.putImageData(image, 0, 0);
-              return;
-            }
-          }
-          options.draw(ctx);
-          if (cache) {
-            return cache.canvas[size] = ctx.getImageData(0, 0, o.width, o.height);
-          }
-        };
-      },
-      config: function(cb) {
-        return o.config = cb;
-      },
-      actioned: function(cb) {
-        return actioned_cb = cb;
-      }
-    };
-    dsl.call(func);
-    return o;
-  },
-  timer: function(query, at) {
-    var attr;
-    attr = {
-      config: function(elem, is_continue, context) {
-        return at.prop = function(text) {
-          elem.innerText && (elem.innerText = text);
-          return elem.textContent && (elem.textContent = text);
-        };
-      }
-    };
-    return m(query, attr, at.text);
-  },
-  inline_item: function(cb) {
-    var inline_item_span, list_cmds;
-    inline_item_span = function(align, em, vdom) {
-      return m("li", {
-        style: "width:" + em + "em; text-align:" + align + ";"
-      }, vdom);
-    };
-    list_cmds = {
-      center: function() {
-        var em, vdom;
-        em = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-        return inline_item_span("center", em, vdom);
-      },
-      right: function() {
-        var em, vdom;
-        em = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-        return inline_item_span("right", em, vdom);
-      },
-      left: function() {
-        var em, vdom;
-        em = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-        return inline_item_span("left", em, vdom);
-      }
-    };
-    return m("ul.inline.mark", cb.call(list_cmds));
-  },
-  do_tick: function(cb) {
-    var action;
-    action = function() {
-      var tick;
-      m.startComputation();
-      tick = cb(_.now());
-      if (tick) {
-        setTimeout(function() {
-          return action();
-        }, tick);
-      }
-      return m.endComputation();
-    };
-    return action();
-  },
-  if_exist: function(query, cb) {
-    return win.on.load.push(function() {
-      var dom;
-      dom = document.querySelector(query);
-      if (!!dom && cb) {
-        return cb(dom);
-      }
-    });
-  },
-  comma: function(num) {
-    return (String(Math.round(num))).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
-  },
-  field: function(num, length) {
-    return "0000000000".substring(10 - length).substring(("" + num).length) + num;
-  },
-  name: {
-    config: function(o) {
-      var _ref, _ref1, _ref2;
-      return ((_ref = RAILS.roles[o]) != null ? _ref.name : void 0) || ((_ref1 = RAILS.gifts[o]) != null ? _ref1.name : void 0) || ((_ref2 = RAILS.events[o]) != null ? _ref2.name : void 0) || o || "";
-    }
-  },
-  names: {
-    config: function(list, cb) {
+GUI = (function() {
+  var name_config, names_base;
+  names_base = function(name) {
+    return function(list, cb) {
       var hash, key, size, _i, _len, _results;
       hash = {};
       for (_i = 0, _len = list.length; _i < _len; _i++) {
@@ -1423,17 +1283,287 @@ GUI = {
       _results = [];
       for (key in hash) {
         size = hash[key];
-        _results.push(cb(GUI.name.config(key), size));
+        _results.push(cb(name(key), size));
       }
       return _results;
+    };
+  };
+  name_config = function(o) {
+    var _ref, _ref1, _ref2;
+    return ((_ref = RAILS.roles[o]) != null ? _ref.name : void 0) || ((_ref1 = RAILS.gifts[o]) != null ? _ref1.name : void 0) || ((_ref2 = RAILS.events[o]) != null ? _ref2.name : void 0) || o || "";
+  };
+  return {
+    img_head: "http://7korobi.gehirn.ne.jp/images",
+    portrate: function(face_id, attr) {
+      if (attr == null) {
+        attr = {};
+      }
+      attr.src = GUI.img_head + ("/portrate/" + face_id + ".jpg");
+      return m("img", attr);
+    },
+    title: function(width, theme, day_or_night) {
+      var _ref, _ref1;
+      return m("img", {
+        src: GUI.img_head + ("/banner/title" + width) + ((_ref = RAILS.head_img[width]) != null ? (_ref1 = _ref[theme]) != null ? _ref1[day_or_night] : void 0 : void 0)
+      });
+    },
+    header_style_p: "",
+    header: function(keys) {
+      var html, style;
+      style = keys.join(" ");
+      html = document.documentElement;
+      html.className = html.className.replace(GUI.header_style_p, style);
+      return GUI.header_style_p = style;
+    },
+    attrs_to: function(parent, query, base_attrs, cb) {
+      var attr, attr_cb, data, elem, func, key, tag, vdom, _i, _len, _ref, _ref1, _results;
+      vdom = m(query);
+      tag = vdom.tag;
+      attr = Object.keys(vdom.attrs)[0];
+      attr_cb = function(elem, data, cb) {
+        return function() {
+          return cb.apply(this, data);
+        };
+      };
+      _ref = parent.querySelectorAll(query);
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        elem = _ref[_i];
+        data = attr && ((_ref1 = elem.attributes[attr]) != null ? _ref1.value.split(",") : void 0);
+        _results.push((function() {
+          var _ref2, _results1;
+          _ref2 = GUI.attrs(base_attrs, attr_cb(elem, data, cb));
+          _results1 = [];
+          for (key in _ref2) {
+            func = _ref2[key];
+            _results1.push(elem[key] = func);
+          }
+          return _results1;
+        })());
+      }
+      return _results;
+    },
+    attrs: function(o, dsl) {
+      var act, actioned_cb, func;
+      actioned_cb = null;
+      act = function(cb) {
+        return function(e) {
+          cb(e, e.srcElement, e.toElement);
+          if (actioned_cb) {
+            window.requestAnimationFrame(actioned_cb);
+          }
+          return e.preventDefault();
+        };
+      };
+      func = {
+        className: function(str) {
+          return o.className = str;
+        },
+        swipe: function(thru) {
+          var cancel, draw, end, gesture, move, start;
+          if (thru) {
+            act = function(cb) {
+              return cb;
+            };
+          }
+          start = act(function(e) {
+            var e1, _ref;
+            console.log(e.changedTouches);
+            e1 = (_ref = e.changedTouches) != null ? _ref[0] : void 0;
+            return gesture.start(e1 || e);
+          });
+          move = act(function(e) {
+            var e1, _ref;
+            console.log(e.changedTouches);
+            e1 = (_ref = e.changedTouches) != null ? _ref[0] : void 0;
+            return gesture.move(e1 || e);
+          });
+          end = act(function(e) {
+            return gesture.end(e);
+          });
+          cancel = act(function(e) {
+            return gesture.cancel(e);
+          });
+          o.ontouchstart = start;
+          o.ontouchmove = move;
+          o.ontouchend = end;
+          o.ontouchcancel = cancel;
+          draw = function(cb) {
+            return function(diff, is_fast) {
+              m.startComputation();
+              cb(diff, is_fast);
+              return m.endComputation();
+            };
+          };
+          gesture = new Gesture();
+          func.up = function(cb) {
+            return gesture.onup = draw(cb);
+          };
+          func.down = function(cb) {
+            return gesture.ondown = draw(cb);
+          };
+          func.left = function(cb) {
+            return gesture.onleft = draw(cb);
+          };
+          func.right = function(cb) {
+            return gesture.onright = draw(cb);
+          };
+          return func.move = function(cb) {
+            return gesture.onmove = draw(cb);
+          };
+        },
+        click: function(cb) {
+          cb = act(cb);
+          return o.onclick = cb;
+        },
+        start: function(cb) {
+          cb = act(cb);
+          o.onmousedown = cb;
+          return o.ontouchstart = cb;
+        },
+        end: function(cb) {
+          cb = act(cb);
+          o.onmouseup = cb;
+          return o.ontouchend = cb;
+        },
+        cancel: function(cb) {
+          cb = act(cb);
+          o.onmouseout = cb;
+          o.onmouseover = cb;
+          return o.ontouchcancel = cb;
+        },
+        move: function(cb) {
+          cb = act(cb);
+          o.onmousemove = cb;
+          return o.ontouchmove = cb;
+        },
+        over: function(cb) {
+          cb = act(cb);
+          o.onmouseover = cb;
+          return o.ontouchmove = cb;
+        },
+        out: function(cb) {
+          cb = act(cb);
+          o.onmouseup = cb;
+          o.onmouseout = cb;
+          return o.ontouchend = cb;
+        },
+        canvas: function(width, height, options) {
+          var size;
+          size = "" + width + "x" + height;
+          o.width = width * 2;
+          o.height = height * 2;
+          o.style = "width: " + width + "px; height: " + height + "px;";
+          return o.config = function(canvas, is_continue, context) {
+            var cache, ctx, image;
+            ctx = canvas.getContext("2d");
+            cache = typeof options.cache === "function" ? options.cache() : void 0;
+            if (cache) {
+              if (cache.canvas == null) {
+                cache.canvas = {};
+              }
+              if (image = cache.canvas[size]) {
+                ctx.putImageData(image, 0, 0);
+                return;
+              }
+            }
+            options.draw(ctx);
+            if (cache) {
+              return cache.canvas[size] = ctx.getImageData(0, 0, o.width, o.height);
+            }
+          };
+        },
+        config: function(cb) {
+          return o.config = cb;
+        },
+        actioned: function(cb) {
+          return actioned_cb = cb;
+        }
+      };
+      dsl.call(func);
+      return o;
+    },
+    timer: function(query, at) {
+      var attr;
+      attr = {
+        config: function(elem, is_continue, context) {
+          return at.prop = function(text) {
+            elem.innerTxt && (elem.innerTxt = text);
+            return elem.textContent && (elem.textContent = text);
+          };
+        }
+      };
+      return m(query, attr, at.text);
+    },
+    inline_item: function(cb) {
+      var inline_item_span, list_cmds;
+      inline_item_span = function(align, em, vdom) {
+        return m("li", {
+          style: "width:" + em + "em; text-align:" + align + ";"
+        }, vdom);
+      };
+      list_cmds = {
+        center: function() {
+          var em, vdom;
+          em = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+          return inline_item_span("center", em, vdom);
+        },
+        right: function() {
+          var em, vdom;
+          em = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+          return inline_item_span("right", em, vdom);
+        },
+        left: function() {
+          var em, vdom;
+          em = arguments[0], vdom = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+          return inline_item_span("left", em, vdom);
+        }
+      };
+      return m("ul.inline.mark", cb.call(list_cmds));
+    },
+    do_tick: function(cb) {
+      var action;
+      action = function() {
+        var tick;
+        m.startComputation();
+        tick = cb(_.now());
+        if (tick) {
+          setTimeout(function() {
+            return action();
+          }, tick);
+        }
+        return m.endComputation();
+      };
+      return action();
+    },
+    if_exist: function(query, cb) {
+      return win.on.load.push(function() {
+        var dom;
+        dom = document.querySelector(query);
+        if (!!dom && cb) {
+          return cb(dom);
+        }
+      });
+    },
+    comma: function(num) {
+      return (String(Math.round(num))).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
+    },
+    field: function(num, length) {
+      return ("0000000000" + num).slice(-length);
+    },
+    name: {
+      config: name_config
+    },
+    names: {
+      config: names_base(name_config)
+    },
+    letter: function() {
+      var head, style, vdom;
+      style = arguments[0], head = arguments[1], vdom = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
+      return [m("p.name", m("b", head)), m("p.text." + style, vdom)];
     }
-  },
-  letter: function() {
-    var head, style, vdom;
-    style = arguments[0], head = arguments[1], vdom = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
-    return [m("p.name", m("b", head)), m("p.text." + style, vdom)];
-  }
-};
+  };
+})();
 GUI.Animate = (function() {
   var apply, jelly_down, jelly_up, spin, zIndex;
 
@@ -1725,6 +1855,184 @@ GUI.Layout = (function() {
   return Layout;
 
 })();
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+GUI.MenuTree = (function() {
+  function MenuTree() {
+    this.state = m.prop();
+    this.nodes = {};
+    this.setter = (function(_this) {
+      return function(val) {
+        var old;
+        old = _this.state();
+        if (!arguments.length) {
+          return old;
+        }
+        if (old !== val) {
+          if (_this.nodes[old]) {
+            _this.nodes[old].close(_this.nodes[old].menu);
+          }
+          if (_this.nodes[val]) {
+            _this.nodes[val].open(_this.nodes[val].menu);
+          }
+        }
+        return _this.state(val);
+      };
+    })(this);
+  }
+
+  MenuTree.prototype.start = function(style, mark) {
+    return Btn.menu(style, this.setter, mark);
+  };
+
+  MenuTree.prototype.cancel = function(style) {
+    return Btn.set(style, this.setter, "");
+  };
+
+  MenuTree.prototype.node = function(state) {
+    var node;
+    node = this.nodes[state];
+    if (state !== this.state()) {
+      return node.view(node.menu);
+    }
+  };
+
+  MenuTree.prototype.view = function(node) {
+    if (node == null) {
+      node = this.nodes[this.state()];
+    }
+    if (node) {
+      return [node.view(node.menu), node.menu.view()];
+    } else {
+      return [];
+    }
+  };
+
+  MenuTree.prototype.each = function(order, cb) {
+    var item, node, _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = order.length; _i < _len; _i++) {
+      item = order[_i];
+      node = this.nodes[item];
+      if (!node) {
+        continue;
+      }
+      _results.push(cb(node));
+    }
+    return _results;
+  };
+
+  MenuTree.prototype.radio = function(style, prop, reduce_base, field_name, name_cb) {
+    var caption_vdom, data, key, list, name, order, order_by, reduce, size, _i, _len;
+    caption_vdom = function(name, val) {
+      return [m("span", name), m("span.emboss.pull-right", val)];
+    };
+    reduce = reduce_base[field_name];
+    data = {};
+    order_by = {};
+    list = Object.keys(reduce);
+    for (_i = 0, _len = list.length; _i < _len; _i++) {
+      key = list[_i];
+      size = reduce[key].count;
+      name = name_cb(key, reduce[key]);
+      order_by[key] = size;
+      data[key] = caption_vdom(name, size);
+    }
+    if (!data.all) {
+      list.push("all");
+      size = reduce_base.all.all.count;
+      order_by.all = size;
+      data.all = caption_vdom("- 全体 -", size);
+    }
+    order = list.sort(function(a, b) {
+      return order_by[b] - order_by[a];
+    });
+    return Btns.radio(style, prop, data, order);
+  };
+
+  return MenuTree;
+
+})();
+
+GUI.MenuTree.Drill = (function(_super) {
+  __extends(Drill, _super);
+
+  function Drill() {
+    return Drill.__super__.constructor.apply(this, arguments);
+  }
+
+  Drill.prototype.drill = function(id, options) {
+    var node, _base;
+    if ((_base = this.nodes)[id] == null) {
+      _base[id] = new GUI.MenuNode(id, options);
+    }
+    return node = this.nodes[id];
+  };
+
+  Drill.prototype.drills = function(style, order) {
+    return this.each(order, (function(_this) {
+      return function(drill) {
+        return m("span.btn", _this.start(style, drill.id), drill.caption, m("span.note", "▼"));
+      };
+    })(this));
+  };
+
+  return Drill;
+
+})(GUI.MenuTree);
+
+GUI.MenuTree.Icon = (function(_super) {
+  __extends(Icon, _super);
+
+  function Icon() {
+    return Icon.__super__.constructor.apply(this, arguments);
+  }
+
+  Icon.prototype.icon = function(id, options) {
+    var node, _base;
+    if ((_base = this.nodes)[id] == null) {
+      _base[id] = new GUI.MenuNode(id, options);
+    }
+    node = this.nodes[id];
+    if (this.state() === id) {
+      return [];
+    } else {
+      return this.view(node);
+    }
+  };
+
+  return Icon;
+
+})(GUI.MenuTree);
+
+GUI.MenuNode = (function() {
+  function MenuNode(id, options) {
+    var key, val;
+    this.id = id;
+    this.menu = new GUI.MenuTree.Drill();
+    for (key in options) {
+      val = options[key];
+      this[key] = val;
+    }
+    this.deploy(this.menu);
+  }
+
+  MenuNode.prototype.caption = "";
+
+  MenuNode.prototype.deploy = function() {};
+
+  MenuNode.prototype.open = function() {};
+
+  MenuNode.prototype.close = function() {};
+
+  MenuNode.prototype.view = function() {
+    return [];
+  };
+
+  return MenuNode;
+
+})();
 var __slice = [].slice;
 
 GUI.message = (function() {
@@ -1732,7 +2040,7 @@ GUI.message = (function() {
   deco_action = function(o) {
     return {
       config: function(parent, is_continue, context) {
-        GUI.attrs_to(parent, "span[anchor]", function(a, turn, id) {
+        GUI.attrs_to(parent, "span[anchor]", {}, function(a, turn, id) {
           return this.start(function(e) {
             var pins;
             m.startComputation();
@@ -1753,12 +2061,12 @@ GUI.message = (function() {
             return m.endComputation();
           });
         });
-        GUI.attrs_to(parent, "span[random]", function(cmd, val) {
+        GUI.attrs_to(parent, "span[random]", {}, function(cmd, val) {
           return this.start(function(e) {
             return console.log([cmd, val]);
           });
         });
-        return GUI.attrs_to(parent, "span[external]", function(id, uri, protocol, host, path) {
+        return GUI.attrs_to(parent, "span[external]", {}, function(id, uri, protocol, host, path) {
           return this.start(function(e) {
             return console.log([id, uri, protocol, host, path]);
           });
@@ -1859,6 +2167,8 @@ GUI.message = (function() {
   };
 })();
 GUI.ScrollSpy = (function() {
+  var size;
+
   ScrollSpy.elems = {};
 
   ScrollSpy.list = [];
@@ -1929,6 +2239,13 @@ GUI.ScrollSpy = (function() {
     this.start();
   }
 
+  ScrollSpy.prototype.rescroll = function(prop) {
+    this.prop = prop;
+    return window.requestAnimationFrame(function() {
+      return GUI.ScrollSpy.go(prop());
+    });
+  };
+
   ScrollSpy.prototype.start = function() {
     this.head = this.tail = 0;
     this.avg_height = 150;
@@ -1958,8 +2275,12 @@ GUI.ScrollSpy = (function() {
     return (_ref2 = this.adjust) != null ? _ref2.id : void 0;
   };
 
+  size = function(page_size, avg) {
+    return 5 + Math.ceil(win.height * page_size / avg);
+  };
+
   ScrollSpy.prototype.pager = function(tag, list, cb) {
-    var attr, btm, head, idx, key, o, pager_cb, rect, show_bottom, show_under, size, top, vdom, vdom_items, _ref;
+    var attr, btm, head, idx, key, o, pager_cb, rect, show_bottom, show_under, top, vdom, vdom_items, _ref;
     this.list = list;
     if (!((_ref = this.list) != null ? _ref.length : void 0)) {
       return m(tag, {
@@ -1981,24 +2302,21 @@ GUI.ScrollSpy = (function() {
       _id: typeof this.prop === "function" ? this.prop() : void 0
     });
     if (idx < 0) {
-      idx = top;
-      if (show_under) {
-        idx = btm;
+      if (this.past_list === this.list) {
+        idx = this.head;
+        if (show_under) {
+          idx = this.tail;
+        }
+      } else {
+        idx = top;
+        if (show_under) {
+          idx = btm;
+        }
       }
-    } else {
-
     }
-    size = (function(_this) {
-      return function(page_size) {
-        return 5 + Math.ceil(win.height * page_size / _this.avg_height);
-      };
-    })(this);
-    if (window.head.desktop) {
-      this.tail = Math.min(btm, idx + size(12));
-    } else {
-      this.tail = Math.min(btm, idx + size(3));
-    }
-    head = Math.max(top, idx - size(3));
+    this.past_list = this.list;
+    this.tail = Math.min(btm, idx + size(3, this.avg_height));
+    head = Math.max(top, idx - size(3, this.avg_height));
     if (5 < Math.abs(this.head - head)) {
       this.head = head;
     }
@@ -2095,13 +2413,24 @@ GUI.timeline = function(width) {
   first_at = ((_ref1 = base.list().first) != null ? _ref1.updated_at : void 0) / (1000 * 3600);
   time_width = last_at - first_at;
   max_height = y = 0;
-  attr = GUI.attrs(function() {
-    var point;
+  attr = GUI.attrs({}, function() {
+    var find_last, point;
+    find_last = function(list, time) {
+      var o, _i;
+      for (_i = list.length - 1; _i >= 0; _i += -1) {
+        o = list[_i];
+        if (time > o.updated_at) {
+          return o._id;
+        }
+      }
+      return null;
+    };
     point = function(e) {
-      var canvas, id, offsetX, offsetY, open, potofs_hide, search, talk, time, _ref2, _ref3, _ref4;
+      var canvas, id, list, offsetX, offsetY, open, potofs_hide, talk, _ref2, _ref3, _ref4;
       if (!win.is_touch) {
         return;
       }
+      Url.prop.search("");
       canvas = document.querySelector("canvas");
       if ((_ref2 = e.touches) != null ? (_ref3 = _ref2[0]) != null ? _ref3.pageX : void 0 : void 0) {
         offsetX = (e.touches[0].pageX - canvas.offsetLeft) * 2;
@@ -2110,10 +2439,12 @@ GUI.timeline = function(width) {
         offsetX = (e.offsetX || e.layerX || e.x) * 2;
         offsetY = (e.offsetY || e.layerY || e.y) * 2;
       }
+      list = 100 < offsetY ? Cache.messages.talk("open", false, {}).list() : ((_ref4 = Url.prop, talk = _ref4.talk, open = _ref4.open, potofs_hide = _ref4.potofs_hide, _ref4), Cache.messages.talk(talk(), open(), potofs_hide()).list());
+      id = find_last(list, Math.ceil(1000 * 3600 * (first_at + offsetX / x)));
+      if (!id) {
+        return;
+      }
       m.startComputation();
-      Url.prop.scope("talk");
-      time = Math.ceil(1000 * 3600 * (first_at + offsetX / x));
-      id = 100 < offsetY ? Cache.messages.before(time, "open", false, {}, "").list().last._id : ((_ref4 = Url.prop, talk = _ref4.talk, open = _ref4.open, potofs_hide = _ref4.potofs_hide, search = _ref4.search, _ref4), Cache.messages.before(time, talk(), open(), potofs_hide(), search()).list().last._id);
       Url.prop.scope("talk");
       Url.prop.scroll(id);
       GUI.ScrollSpy.go(id);
@@ -2186,7 +2517,7 @@ GUI.timeline = function(width) {
           ctx.textAlign = "left";
           ctx.fillStyle = colors.text;
           ctx.font = "30px serif";
-          ctx.fillText(Cache.events.find(event_id).name, x * left, 150 - 12, x * (right - left) - 4);
+          ctx.fillTxt(Cache.events.find(event_id).name, x * left, 150 - 12, x * (right - left) - 4);
           left = right;
         }
         return ctx.stroke();
@@ -2196,199 +2527,6 @@ GUI.timeline = function(width) {
   x = attr.width / time_width;
   return m("canvas", attr);
 };
-var __slice = [].slice;
-
-GUI.TouchMenu = (function() {
-  var basic_btn, menu_of;
-
-  TouchMenu.icons = new TouchMenu;
-
-  function TouchMenu(menus) {
-    this.menus = menus != null ? menus : {};
-    this.state = m.prop("");
-  }
-
-  TouchMenu.prototype.menu_set = function(prop, sort_by, menus) {
-    var menu_item;
-    this.prop = prop;
-    this.menus = menus;
-    menu_item = (function(_this) {
-      return function(caption_func, item_func) {
-        var btn, caption, key, keys, menu, o, reduce;
-        menu = _this.state();
-        prop = _this.prop[menu];
-        reduce = _this.query.reduce()[menu];
-        if (reduce == null) {
-          return [];
-        }
-        keys = Object.keys(reduce).sort(function(a, b) {
-          return reduce[b][sort_by] - reduce[a][sort_by];
-        });
-        return [
-          !((reduce.all != null) && caption_func("all", reduce.all)) ? (o = _this.query.reduce().all.all, btn = _this.btn(prop, "all"), btn.key = "all", item_func(o[sort_by], btn, "-全体-")) : void 0, (function() {
-            var _i, _len, _results;
-            _results = [];
-            for (_i = 0, _len = keys.length; _i < _len; _i++) {
-              key = keys[_i];
-              o = reduce[key];
-              caption = caption_func(key, o);
-              if (!caption) {
-                continue;
-              }
-              btn = this.btn(prop, key);
-              btn.key = key;
-              _results.push(item_func(o[sort_by], btn, caption));
-            }
-            return _results;
-          }).call(_this)
-        ];
-      };
-    })(this);
-    return this.helper = {
-      btn_group: function(em, caption_func) {
-        return menu_item(caption_func, function(size, btn, caption) {
-          btn.style = "width: " + em + "em;";
-          return m("a", btn, m("span", caption), m("span.badge.pull-right", size));
-        });
-      },
-      btn_list: function(caption_func) {
-        return m("ul", menu_item(caption_func, function(size, btn, caption) {
-          return m("li.btn-block", btn, m("span", caption), m("span.emboss.pull-right", size));
-        }));
-      }
-    };
-  };
-
-  menu_of = function(o) {
-    return o.menus[o.state()];
-  };
-
-  TouchMenu.prototype.menu = function() {
-    var menu_cb, vdom;
-    vdom = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    menu_cb = menu_of(this);
-    if (menu_cb && !this.icon_key) {
-      vdom.push(m(".drag", m(".contentframe", menu_cb.call(this.helper, this))));
-    }
-    return vdom;
-  };
-
-  TouchMenu.prototype.start = function(mark) {
-    var state;
-    state = this.state;
-    return GUI.attrs(function() {
-      return this.start(function() {
-        return state(mark !== state() ? mark : "");
-      });
-    });
-  };
-
-  TouchMenu.prototype.cancel = function() {
-    var state;
-    state = this.state;
-    return GUI.attrs(function() {
-      return this.end(function() {
-        return state("");
-      });
-    });
-  };
-
-  basic_btn = function(state, prop, key, cb) {
-    return GUI.attrs(function() {
-      var val;
-      if (prop) {
-        this.end(function() {
-          state("");
-          return prop(key);
-        });
-        val = prop();
-        if (cb(key, val)) {
-          return this.className("btn active");
-        } else {
-          return this.className("btn");
-        }
-      }
-    });
-  };
-
-  TouchMenu.prototype.btn = function(prop, key, serializer) {
-    return basic_btn(this.state, prop, key, function(key, val) {
-      if (serializer) {
-        key = serializer(key);
-        val = serializer(val);
-      }
-      return key === val;
-    });
-  };
-
-  TouchMenu.prototype.toggle = function(prop) {
-    return basic_btn(this.state, prop, !prop(), function(key, val) {
-      return val;
-    });
-  };
-
-  TouchMenu.prototype.badge = function(icon_key, badge_cb) {
-    this.icon_key = icon_key;
-    if (badge_cb != null) {
-      return GUI.TouchMenu.icons.badge[this.icon_key] = badge_cb;
-    } else {
-      return delete GUI.TouchMenu.icons.badge[this.icon_key];
-    }
-  };
-
-  TouchMenu.prototype.icon = function(icon_key, menu_cb) {
-    this.icon_key = icon_key;
-    if (menu_cb != null) {
-      menu_cb.menu = this;
-      return GUI.TouchMenu.icons.menus[this.icon_key] = menu_cb;
-    } else {
-      return delete GUI.TouchMenu.icons.menus[this.icon_key];
-    }
-  };
-
-  TouchMenu.prototype.icon_menu = function(icon_key) {
-    var menu, vdom;
-    if (GUI.TouchMenu.icons.state() === icon_key) {
-      return [];
-    } else {
-      vdom = [GUI.TouchMenu.icons.menus[icon_key]()];
-      menu = menu_of(this);
-      if (menu) {
-        vdom.push(m(".drag", {
-          key: this.state()
-        }, m(".contentframe", menu.call(this.helper, this))));
-      }
-      return vdom;
-    }
-  };
-
-  TouchMenu.icons.badge = {};
-
-  TouchMenu.icons.menu = function() {
-    var menu_cb, o, set_menu, vdom;
-    vdom = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    set_menu = function(o, cb) {
-      if (!cb) {
-        return;
-      }
-      return vdom.push(cb.call(o.helper, o));
-    };
-    menu_cb = menu_of(this);
-    if (menu_cb) {
-      o = menu_cb.menu;
-      set_menu(o, menu_cb);
-      set_menu(o, menu_of(o));
-    }
-    if (vdom.length) {
-      return m(".drag", {
-        key: this.state()
-      }, m(".contentframe", vdom));
-    }
-  };
-
-  return TouchMenu;
-
-})();
 var b, _ref;
 
 if (head.browser != null) {
@@ -2486,11 +2624,11 @@ Hilitor = function(id, tag) {
           wordColor[regs[0].toLowerCase()] = colors[colorIdx++ % colors.length];
         }
         match = document.createElement(hiliteTag);
-        match.appendChild(document.createTextNode(regs[0]));
+        match.appendChild(document.createTxtNode(regs[0]));
         match.style.backgroundColor = wordColor[regs[0].toLowerCase()];
         match.style.fontStyle = "inherit";
         match.style.color = "#000";
-        after = node.splitText(regs.index);
+        after = node.splitTxt(regs.index);
         after.nodeValue = after.nodeValue.substring(regs[0].length);
         node.parentNode.insertBefore(match, after);
       }
@@ -3062,13 +3200,16 @@ Url = (function() {
     })(this), "i"));
   }
 
-  Url.prototype.values = function() {
+  Url.prototype.values = function(diff) {
     var key, _i, _len, _ref, _results;
+    if (diff == null) {
+      diff = {};
+    }
     _ref = this.keys_in_url;
     _results = [];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       key = _ref[_i];
-      _results.push(Url.prop[key]());
+      _results.push(diff[key] || Url.prop[key]());
     }
     return _results;
   };

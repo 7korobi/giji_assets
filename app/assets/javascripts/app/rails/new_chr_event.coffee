@@ -40,25 +40,25 @@ if gon?.new_chr_faces? && gon?.new_chr_jobs?
   GUI.if_exist "#map_faces", (dom)->
     m.module dom,
       controller: ->
-      view: ->  
-        [ 
+      view: ->
+        [
           m "h6", "参考文献"
           m ".paragraph",
             for title, link of links
-              m "a.btn.btn-default.mark", {href: link, target: "_blank"}, title 
-          m "hr.black" 
+              m "a.btn.btn-default.mark", {href: link, target: "_blank"}, title
+          m "hr.black"
           m ".mark", "明後日の道標 〜 新人さん歓迎パーティー"
           m "h6", "１０秒経つと、親近感のある人たちが新人さんのまわりに集まります。"
           m "h6", "いま記述のある新人さんの肩書、名前は仮のものです。"
           m "h6", ""
           for o in chrs
-            attr = GUI.attrs ->
+            attr = GUI.attrs {}, ->
               elem = null
               @over -> GUI.Animate.jelly.up elem
               @out ->  GUI.Animate.jelly.down elem
               @config (_elem)-> elem = _elem
 
-            blank_attr = 
+            blank_attr =
               if /sf\d\d\d/.test(o.face_id)
                 {style: 'background-color: #126; min-height: 100px;'}
               else

@@ -33,6 +33,9 @@ props:
   updated_at:
     type: Date
 
+  turn:
+    type: Number
+
   message_id:
   event_id:
   story_id:
@@ -42,7 +45,8 @@ props:
   potofs_order:
     current: said_num
   potofs_desc:
-    current: desc
+    type: Bool
+    current: true
   potofs_hide:
     type: Keys
     current: {}

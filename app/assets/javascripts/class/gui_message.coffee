@@ -1,8 +1,10 @@
 GUI.message = (->
   deco_action = (o)->
     config: (parent, is_continue, context)->
-      GUI.attrs_to parent, "span[anchor]", (a, turn, id)->
+      GUI.attrs_to parent, "span[anchor]", {}, (a, turn, id)->
         @start (e)->
+
+          # TODO: bad for library.
           m.startComputation()
           switch Url.prop.scope()
             when "pins"
@@ -17,10 +19,10 @@ GUI.message = (->
           Url.prop.pins pins
           m.endComputation()
 
-      GUI.attrs_to parent, "span[random]", (cmd, val)->
+      GUI.attrs_to parent, "span[random]", {}, (cmd, val)->
         @start (e)->
           console.log [cmd, val]
-      GUI.attrs_to parent, "span[external]", (id, uri, protocol, host, path)->
+      GUI.attrs_to parent, "span[external]", {}, (id, uri, protocol, host, path)->
         @start (e)->
           console.log [id, uri, protocol, host, path]
 

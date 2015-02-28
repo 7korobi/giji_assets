@@ -1,6 +1,6 @@
 GUI.if_exist "#headline", (dom)->
-  touch = new GUI.TouchMenu()
-  touch.state "finish"
+  state = m.prop()
+  state "finish"
 
   m.module dom,
     controller: ->
@@ -18,16 +18,16 @@ GUI.if_exist "#headline", (dom)->
       m ".choice",
         m "table.board",
           m "thead",
-            if "progress" == touch.state()
+            if "progress" == state()
               m "tr",
                 m "th.choice[colspan=2]", {key: "p"},
                   m "strong", "進行中の村"
                 m "th[colspan=2]", {key: "f"},
-                  m "a", touch.start("finish"), "終了した村を見る"
-            if "finish" == touch.state()
+                  m "a", Btn.set({}, state, "finish"), "終了した村を見る"
+            if "finish" == state()
               m "tr",
                 m "th[colspan=2]", {key: "p"},
-                  m "a", touch.start("progress"), "進行中の村を見る"
+                  m "a", Btn.set({}, state, "progress"), "進行中の村を見る"
                 m "th.choice[colspan=2]", {key: "f"},
                   m "strong", "終了した村"
             m "tr",
@@ -35,7 +35,7 @@ GUI.if_exist "#headline", (dom)->
               m "th.choice", "夢の形"
               m "th.choice", "陰謀"
               m "th.choice", "ＲＰ"
-          if "progress" == touch.state()
+          if "progress" == state()
             m "tbody",
               m "tr",
                 m "td", {key: "L"},
@@ -98,7 +98,7 @@ GUI.if_exist "#headline", (dom)->
                   m "a",
                     href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
                   , "ciel"
-          if "finish" == touch.state()
+          if "finish" == state()
             m "tbody",
               m "tr",
                 m "td", {key: "P"},

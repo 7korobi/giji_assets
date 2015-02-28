@@ -8,21 +8,21 @@ new Cache.Rule("potof").schema ->
 
 
   @scope (all)->
-    view: (desc, order)->
-      is_desc = "desc" == desc
+    view: (is_desc, order)->
       all.sort is_desc, (o)-> o.order[order]
 
   @deploy (o)->
     o._id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
     o.user_id = o.sow_auth_id
 
-    name = 
+    name = Cache.faces.find(o.face_id).name
+    o.name =
       if o.zapcount
-        "#{RAILS.clearance[o.clearance]}#{o.name}-#{o.zapcount}"
+        "#{RAILS.clearance[o.clearance]}#{name}-#{o.zapcount}"
       else
-        o.name
+        name
 
-    stat_at = 
+    stat_at =
       if 0 < o.deathday
         "#{o.deathday}日"
       else
@@ -30,8 +30,8 @@ new Cache.Rule("potof").schema ->
 
     said_num = o.point.saidcount
     urge     = o.point.actaddpt
-    
-    pt_no = 
+
+    pt_no =
       if "live" == o.live
         o.say.say
       else
@@ -39,8 +39,8 @@ new Cache.Rule("potof").schema ->
     if o.story_epilogue
       pt = "∞"
     else
-      say_type = RAILS.saycnt[o.story_type.say]      
-      pt = 
+      say_type = RAILS.saycnt[o.story_type.say]
+      pt =
         switch say_type.COST_SAY
           when "point"
             "#{pt_no}pt"
@@ -93,7 +93,7 @@ new Cache.Rule("potof").schema ->
     role_side_order = RAILS.wins[win_role].order
     win_side_order = RAILS.wins[win].order
 
-    roles = 
+    roles =
       for role in o.role
         GUI.name.config role
     role_text = roles.join("、")
@@ -127,7 +127,7 @@ new Cache.Rule("potof").schema ->
 
     chr_job = Cache.chr_jobs.find("#{o.csid.toLowerCase()}_#{o.face_id}")
     job = if chr_job then chr_job.job else "***"
-    o.view = 
+    o.view =
       portrate: GUI.portrate o.face_id
       job: job
       user_id: m "kbd", o.user_id
@@ -138,7 +138,7 @@ new Cache.Rule("potof").schema ->
       urge: String.fromCharCode(if urge then 9311 + urge else 3000)
       win: win
       win_result: win_result
-      win_side:   RAILS.wins[win].name 
+      win_side:   RAILS.wins[win].name
       role: role_text
       select: if select then m "kbd", select else ""
       text: text_str

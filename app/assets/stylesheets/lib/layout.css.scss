@@ -1,9 +1,29 @@
+.btn {
+  &.chr_set { width: 24em; }
+  &.rating { width: 24em; }
+  &.game { width: 16em; }
+  &.folder { width: 16em; }
+  &.say_limit { width: 10em; }
+  &.update_at { width: 10em; }
+  &.event_type { width: 10em; }
+  &.update_interval { width: 8em; }
+  &.role_type { width: 8em; }
+  &.player_length { width: 8em; }
+}
+
 .pull-right {
   float: right !important;
 }
 
 .pull-left {
   float: left !important;
+}
+
+.ff .btn {
+  .pull-right,
+  .pull-left {
+    margin-top: -1.8em;
+  }
 }
 
 .calc {

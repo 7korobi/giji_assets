@@ -44,6 +44,10 @@ class GUI.ScrollSpy
     GUI.ScrollSpy.list.push @
     @start()
 
+  rescroll: (@prop)->
+    window.requestAnimationFrame ->
+      GUI.ScrollSpy.go prop()
+
   start: ->
     @head = @tail = 0
     @avg_height = 150
@@ -68,6 +72,10 @@ class GUI.ScrollSpy
 
     @adjust?.id
 
+
+  size = (page_size, avg)->
+    5 + Math.ceil(win.height * page_size / avg)
+
   pager: (tag, @list, cb)->
     unless @list?.length
       return m tag, {config: (@pager_elem)=> }
@@ -79,22 +87,19 @@ class GUI.ScrollSpy
       show_bottom = win.height - rect.bottom
       show_under  = 0 < show_bottom
 
+    # TODO wait for network read.
     idx = _.findIndex @list, _id: @prop?()
     if idx < 0
-      idx = top
-      idx = btm if show_under
-    else
-      # TODO wait for network read.
+      if @past_list == @list
+        idx = @head
+        idx = @tail if show_under
+      else
+        idx = top
+        idx = btm if show_under
+    @past_list = @list
 
-    size = (page_size)=>
-      5 + Math.ceil(win.height * page_size / @avg_height)
-
-    if window.head.desktop
-      @tail = Math.min btm, idx + size(12)
-    else
-      @tail = Math.min btm, idx + size(3)
-    head    = Math.max top, idx - size(3)
-
+    @tail = Math.min btm, idx + size(3, @avg_height)
+    head  = Math.max top, idx - size(3, @avg_height)
     if 5 < Math.abs @head - head
       @head = head
 
@@ -117,6 +122,7 @@ class GUI.ScrollSpy
         for key, attr of @mark o._id
           vdom.attrs[key] = attr
         vdom
+
     m tag,
       config: pager_cb
     , vdom_items

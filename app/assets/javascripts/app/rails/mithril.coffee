@@ -23,8 +23,11 @@ Cache.potofs.has_faces =
       face_id
 
 GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll)
-scroll_spy = GUI.ScrollSpy.global
 
+scroll_spy = GUI.ScrollSpy.global
+icon_mode_menu = new GUI.MenuTree
+icon_menu = new GUI.MenuTree.Icon
+icon_menu.state = Url.prop.icons
 
 if gon?.map_reduce?.faces?
   Cache.rule.chr_set.schema ->
@@ -54,7 +57,7 @@ if gon?.map_reduce?.faces?
             chr_job = Cache.chr_jobs.find("#{Url.prop.chr_set()}_#{o.face._id}")
             job_name = chr_job.job
 
-            attr = GUI.attrs ->
+            attr = GUI.attrs {}, ->
               elem = null
               @over -> GUI.Animate.jelly.up elem
               @out ->  GUI.Animate.jelly.down elem
@@ -74,35 +77,31 @@ if gon?.map_reduce?.faces?
         ]
 
   GUI.if_exist "#chr_sets", (dom)->
-    touch = new GUI.TouchMenu()
-    touch.icon "th-large", ->
-      m ".paragraph.guide",
-        m "h6", "詳しく検索してみよう"
-        m "input.small",
-          onblur:   m.withAttr("value", Url.prop.search)
-          onchange: m.withAttr("value", Url.prop.search)
-          value: Url.prop.search()
-        m "span", "検索条件：キャラクター名 / 肩書き / プレイヤー "
-        m "h6", "キャラセットを選んでみよう"
-        m "span.btn", touch.start("order"),
-          "並び順"
-          m "span.note", "▼"
-        m "span.btn", touch.start("chr_set"),
-          "キャラセット"
-          m "span.note", "▼"
-    touch.menu_set Url.prop, "count",
-      order: ->
-        for key, o of RAILS.map_faces_orders
-          m "a", touch.btn(Url.prop.order, key), o.caption
-
-      chr_set: ->
-        @btn_group 22, (key, o)-> Cache.chr_sets.find(key).caption
-
     m.module dom,
       controller: ->
       view: ->
-        touch.query = Cache.map_faces
-        touch.menu touch.icon_menu "th-large"
+        icon_menu.icon "th-large",
+          deploy: (main_menu)->
+            main_menu.drill "order",
+              caption: "並び順"
+              view: ->
+                for key, o of RAILS.map_faces_orders
+                  m "span", Btn.set({}, Url.prop.order, key), o.caption
+
+            main_menu.drill "chr_set",
+              caption: "キャラセット"
+              view: (sub_menu)->
+                sub_menu.radio {class: "chr_set"}, Url.prop.chr_set, Cache.map_faces.reduce(), "chr_set", (key)->
+                  Cache.chr_sets.find(key).caption
+
+          view: (main_menu)->
+            m ".paragraph.guide",
+              m "h6", "詳しく検索してみよう"
+              m "input.small", Txt.input(Url.prop.search)
+              m "span", "検索条件：キャラクター名 / 肩書き / プレイヤー "
+              m "h6", "キャラセットを選んでみよう"
+              main_menu.drills {}, ["order", "chr_set"]
+
 
 if gon?.face?
   face = Cache.map_face_detail = gon.face
@@ -198,7 +197,6 @@ if gon?.face?
         ]
 
   GUI.if_exist "#village", (dom)->
-    touch = new GUI.TouchMenu()
     m.module dom,
       controller: ->
       view: ->
@@ -269,16 +267,76 @@ GUI.if_exist "#buttons", (dom)->
   layout = new GUI.Layout dom, 1, -1, 120
   layout.width = 90
   layout.transition()
-  touch = GUI.TouchMenu.icons
+
   m.module dom,
     controller: ->
     view: ->
-      for icon in ["pin", "warning", "sitemap", "stopwatch", "home", "chat-alt", "mail", "search", "pencil", "th-large", "cog"] # lock
-        continue unless touch.menus[icon]
-        m "section", touch.start(icon),
-          m ".bigicon",
-            m ".icon-#{icon}", " "
-          m ".badge.pull-right", touch.badge[icon]() if touch.badge[icon]?
+      vdoms = []
+      section = (icon)->
+        return unless icon_menu.nodes[icon]
+        vdom =
+          m "section", icon_menu.start({}, icon),
+            m ".bigicon",
+              m ".icon-#{icon}", " "
+            m ".badge.pull-right", badges[icon]() if badges[icon]
+        vdoms.push vdom
+
+      badges =
+        "pin": ->
+          messages.pins(Url.prop).list().length - Cache.events.list().length
+        "home": ->
+          Cache.messages.home("announce")
+        "mail": ->
+          prop = _.merge {}, Url.prop,
+            memo: -> "all"
+            uniq: -> true
+            search: -> ""
+          messages.memo(prop).list().length - Cache.events.list().length
+        "clock": ->
+          prop = _.merge {}, Url.prop,
+            talk: -> "all"
+            open: -> true
+            search: -> ""
+          messages.history(prop).list().length - Cache.events.list().length
+        "chat-alt": ->
+          prop = _.merge {}, Url.prop,
+            talk: -> "all"
+            open: -> true
+            search: -> ""
+          messages.talk(prop).list().length - Cache.events.list().length
+        "th-large": ->
+          Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list().length
+
+      switch icon_mode_menu.state()
+        when "pin"
+          section "pin"
+          back = Url.prop.back_icon()
+          switch back
+            when "mail", "clock", "chat-alt"
+              section back
+
+        when "memo"
+          section "home"
+          section "clock"
+          section "mail"
+          section "chat-alt"
+
+        when "base"
+          section "home"
+          section "mail"
+          section "chat-alt"
+
+        when "full"
+          section "resize-normal"
+        when "normal"
+          section "resize-full"
+
+      section "pencil"
+      section "th-large"
+      section "search"
+      section "cog"
+
+      vdoms
 
 
 GUI.if_exist "#topviewer", (dom)->
@@ -287,42 +345,46 @@ GUI.if_exist "#topviewer", (dom)->
   m.module dom,
     controller: ->
     view: ->
-      GUI.TouchMenu.icons.menu()
+      icon_menu.view()
 
 GUI.if_exist "#css_changer", (dom)->
-  touch = new GUI.TouchMenu()
-  touch.icon "cog", ->
-    m ".paragraph.guide",
-      m "h6", "スタイル"
-      m "a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
-      m "a", touch.btn(Url.prop.theme, "star"), "蒼穹"
-      m "a", touch.btn(Url.prop.theme, "night"), "闇夜"
-      m "a", touch.btn(Url.prop.theme, "moon"), "月夜"
-      m "a", touch.btn(Url.prop.theme, "wa"), "和の国"
-      m "h6", "幅の広さ"
-      m "a", touch.btn(Url.prop.width, "wide"), "広域"
-      m "a", touch.btn(Url.prop.width, "std"),  "普通"
-      m "a", touch.btn(Url.prop.width, "mini"), "携帯"
-      m "h6", "位置"
-      m "a", touch.btn(Url.prop.layout, "left"),   "左詰"
-      m "a", touch.btn(Url.prop.layout, "center"), "中央"
-      m "a", touch.btn(Url.prop.layout, "right"),  "右詰"
-      m "h6", "位置"
-      m "a", touch.btn(Url.prop.font, "large"),   "大判"
-      m "a", touch.btn(Url.prop.font, "novel"),   "明朝"
-      m "a", touch.btn(Url.prop.font, "std"), "ゴシック"
-      m "a", touch.btn(Url.prop.font, "small"),   "繊細"
+  icon_menu.icon "cog",
+    view: ->
+      m ".paragraph.guide",
+        m "h6", "スタイル"
+        Btns.radio {}, Url.prop.theme,
+          cinema: "煉瓦"
+          star:   "蒼穹"
+          night:  "闇夜"
+          moon:   "月夜"
+          wa:     "和の国"
+        m "h6", "幅の広さ"
+        Btns.radio {}, Url.prop.width,
+          wide: "広域"
+          std:  "普通"
+          mini: "携帯"
+        m "h6", "位置"
+        Btns.radio {}, Url.prop.layout,
+          left:   "左詰"
+          center: "中央"
+          right:  "右詰"
+        m "h6", "位置"
+        Btns.radio {}, Url.prop.font,
+          large: "大判"
+          novel: "明朝"
+          std:   "ゴシック"
+          small: "繊細"
   m.module dom,
     controller: ->
     view: ->
-      touch.menu m ".guide",
-        m "a.menuicon.icon-cog", GUI.TouchMenu.icons.start("cog"), " "
-        m ".form-group",
-          m "a", touch.btn(Url.prop.theme, "cinema"), "煉瓦"
-          m "a", touch.btn(Url.prop.theme, "star"), "蒼穹"
-          m "a", touch.btn(Url.prop.theme, "night"), "闇夜"
-          m "a", touch.btn(Url.prop.theme, "moon"), "月夜"
-          m "a", touch.btn(Url.prop.theme, "wa"), "和の国"
+      m ".guide",
+        m "a.menuicon.icon-cog", icon_menu.start({}, "cog"), " "
+        Btns.radio {}, Url.prop.theme,
+          cinema: "煉瓦"
+          star:   "蒼穹"
+          night:  "闇夜"
+          moon:   "月夜"
+          wa:     "和の国"
         m "hr.black"
 
 
@@ -337,22 +399,21 @@ if gon?.potofs?
     layout = new GUI.Layout dom, -1, 1, 100
     layout.small_mode = true
     layout.large_mode = ->
-      ! (GUI.TouchMenu.icons.state() || layout.small_mode)
-    touch = new GUI.TouchMenu()
+      ! (icon_menu.state() || layout.small_mode)
 
     toggle_desc = (prop, value)->
       if prop() == value
-        attr = touch.btn Url.prop.potofs_desc, {asc: "desc", desc: "asc"}[Url.prop.potofs_desc()]
+        attr = Btn.bool {}, Url.prop.potofs_desc
         attr.className = "btn active"
         attr
       else
-        touch.btn prop, value
+        Btn.set {}, prop, value
 
-    wide_attr = GUI.attrs ->
+    wide_attr = GUI.attrs {}, ->
       @click ->
         layout.small_mode = ! layout.small_mode
         unless layout.small_mode
-          GUI.TouchMenu.icons.state ""
+          icon_menu.state ""
       @actioned ->
         layout.translate()
 
@@ -438,7 +499,10 @@ if gon?.events? && gon.event?
   if gon?.story?
     Cache.rule.story.set [gon.story]
 
-  Cache.rule.event.merge gon.events
+  Cache.rule.event.merge gon.events,
+    story_id: gon.story?._id
+#  Cache.rule.event.merge [gon.event],
+#    story_id: gon.story?._id
 
   messages =
     pins: ({story_id,pins})->
@@ -449,36 +513,38 @@ if gon?.events? && gon.event?
       Cache.messages.home(home())
     talk: ({talk, open, potofs_hide, search})->
       Cache.messages.talk(talk(), open(), potofs_hide(), search())
-    memo: ({memo, uniq, potofs_hide, search})->
-      Cache.messages.memo(memo(), uniq(), potofs_hide(), search())
+    memo: ({memo, potofs_hide, search})->
+      Cache.messages.memo(memo(), true, potofs_hide(), search())
+    history: ({memo, potofs_hide, search})->
+      Cache.messages.memo(memo(), false, potofs_hide(), search())
 
-  security_modes = (touch, prop)->
+  security_modes = (prop)->
     [
-      m "a", touch.btn(prop, "all"),   "すべて"
-      m "a", touch.btn(prop, "think"), "独り言/内緒話"
-      m "a", touch.btn(prop, "clan"),  "仲間の会話"
-      m "a", touch.btn(prop, "open"),  "公開情報のみ"
+      m "a", Btn.set({}, prop, "all"),   "すべて"
+      m "a", Btn.set({}, prop, "think"), "独り言/内緒話"
+      m "a", Btn.set({}, prop, "clan"),  "仲間の会話"
+      m "a", Btn.set({}, prop, "open"),  "公開情報のみ"
       m.trust "&nbsp;"
-      m "a", touch.toggle(Url.prop.open),  "公開情報"
-      m "a", touch.toggle(Url.prop.human), "/*中の人*/"
+      m "a", Btn.bool({}, Url.prop.open),  "公開情報"
+      m "a", Btn.bool({}, Url.prop.human), "/*中の人*/"
     ]
 
-  potofs_portrates = (touch)->
+  potofs_portrates = ()->
     potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
     hides = Url.prop.potofs_hide()
 
     m ".chrlist",
       m "h6", "キャラクターフィルタ"
       m "hr.black"
-      m ".chrbox", {key: "other-buttons"},
+      m ".chrbox", {key: "other-Btns"},
         m ".chrblank.line9",
-          m ".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, [],                             Serial.serializer.Keys), "全員表示"
-          m ".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.others(),Serial.serializer.Keys), "参加者表示"
-          m ".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.potofs(),Serial.serializer.Keys), "その他を表示"
-          m ".btn[style='display:block']", touch.btn(Url.prop.potofs_hide, Cache.potofs.has_faces.all(),   Serial.serializer.Keys), "全員隠す"
+          m ".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, []                             ), "全員表示"
+          m ".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.others()), "参加者表示"
+          m ".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.potofs()), "その他を表示"
+          m ".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.all()   ), "全員隠す"
       for o in potofs
         attr = (o)->
-          GUI.attrs ->
+          GUI.attrs {}, ->
             @className(if hides[o.face_id] then "filter-hide" else "")
 
             elem = null
@@ -494,44 +560,51 @@ if gon?.events? && gon.event?
       m "hr.black"
 
   GUI.if_exist "#story", (dom)->
-    story = gon.story
+    icon_menu.icon "home",
+      open: ->
+        icon_mode_menu.state("base")
+        Url.prop.scope "home"
+      view: ->
+        story = gon.story
+        event = Cache.events.find Url.prop.event_id()
 
-    touch = new GUI.TouchMenu()
-    touch.badge "home", ->
-      Cache.messages.home("announce").list().length
-    touch.icon "home", -> # 情報
-      story = gon.story
-      event = Cache.events.find Url.prop.event_id()
-      Url.prop.scope "home"
+        if event
+          event_card = RAILS.events[event.event]
 
-      if event
-        event_card = RAILS.events[event.event]
+          texts = []
+          texts.push RAILS.winner[event.winner] + "の勝利です。" if "WIN_NONE" != event.winner
+          texts.push m "kbd", event_card if event_card
+          texts.push RAILS.event_state.grudge    if event.turn == event.grudge
+          texts.push RAILS.event_state.riot      if event.turn == event.riot
+          texts.push RAILS.event_state.scapegoat if event.turn == event.scapegoat
+          texts.push RAILS.event_state.eclipse   if _.find event.eclipse, event.turn
 
-        texts = []
-        texts.push RAILS.winner[event.winner] + "の勝利です。" if "WIN_NONE" != event.winner
-        texts.push m "kbd", event_card if event_card
-        texts.push RAILS.event_state.grudge    if event.turn == event.grudge
-        texts.push RAILS.event_state.riot      if event.turn == event.riot
-        texts.push RAILS.event_state.scapegoat if event.turn == event.scapegoat
-        texts.push RAILS.event_state.eclipse   if _.find event.eclipse, event.turn
+          [ m ".#{event.winner}.guide",
+              m "h6", "#{event.name} 村の情報"
+              for text in texts
+                m "p.text", text
+              GUI.message.game story, event
+          ]
 
-        [ m ".#{event.winner}.guide",
-            m "h6", "#{event.name} 村の情報"
-            for text in texts
-              m "p.text", text
-            GUI.message.game story, event
-        ]
+        else
+          [ m ".WIN_NONE.guide",
+              m "h6", "村の情報"
+              GUI.message.game story
+          ]
 
-      else
-        [ m ".WIN_NONE.guide",
-            m "h6", "村の情報"
-            GUI.message.game story
+    icon_menu.icon "search",
+      view: ->
+        [ m ".paragraph.guide",
+            GUI.timeline Url.prop.w()
+            m "input.mini", Txt.input Url.prop.search
+            m "span", "発言中の言葉を検索します。"
+            m "hr.black"
         ]
 
     m.module dom,
       controller: ->
       view: ->
-        [ touch.icon_menu "search"
+        [ icon_menu.node "search"
           if story?
             switch Url.prop.scope()
               when "home"
@@ -540,77 +613,70 @@ if gon?.events? && gon.event?
 
   GUI.if_exist "#messages", (dom)->
     scroll_spy.avg_height = 150
-    touch = new GUI.TouchMenu()
 
-    touch.badge "pin", ->
-      messages.pins(Url.prop).list().length - Cache.events.list().length
-    touch.icon "pin", ->
-      Url.prop.scope "pins"
-      [ m ".paragraph.guide",
-          m "h6", "アンカー",
-          m "a.menuicon.icon-cancel-alt", GUI.attrs ->
-            @end ->
-              Url.prop.icons ""
-              Url.prop.pins {}
-              back = Url.prop.back()
-              if back.match /MM.....$/
-                Url.prop.scope "memo"
-              else
-                Url.prop.scope "talk"
-              Url.prop.scroll back
-              window.requestAnimationFrame ->
-                GUI.ScrollSpy.go back
-          m "p", "クリックしたアンカーを辿ります。"
-      ]
+    icon_menu.icon "pin",
+      open: ->
+        icon_mode_menu.state("pins")
+        Url.prop.scope "pins"
+      close: ->
+        Url.prop.icons ""
+        Url.prop.pins {}
+        Url.prop.scope back
 
-    touch.badge "chat-alt", ->
-      prop = _.merge {}, Url.prop,
-        talk: -> "all"
-        open: -> true
-        search: -> ""
-      messages.talk(prop).list().length - Cache.events.list().length
-    touch.icon "chat-alt", -> # 発言
-      Url.prop.scope "talk"
-      [ m ".paragraph.guide",
-          m "h6", "発言"
-          security_modes touch, Url.prop.talk
-          m "p", "村内の発言を表示します。"
-        potofs_portrates(touch)
-      ]
+    icon_menu.icon "mail",
+      open: ->
+        icon_mode_menu.state("memo")
+        Url.prop.scope "memo"
+        GUI.ScrollSpy.global.rescroll Url.prop.scroll_talk
+      view: ->
+        [ m ".paragraph.guide",
+            m "h6", "メモ"
+            security_modes Url.prop.memo
+            m "p", "メモを表示します。"
+          potofs_portrates()
+        ]
 
 
-    touch.badge "mail", ->
-      prop = _.merge {}, Url.prop,
-        memo: -> "all"
-        uniq: -> true
-        search: -> ""
-      messages.memo(prop).list().length - Cache.events.list().length
-    touch.icon "mail", -> # メモ
-      Url.prop.scope "memo"
-      [ m ".paragraph.guide",
-          m "h6", "メモ"
-          security_modes touch, Url.prop.memo
-          m "p", "メモを表示します。"
-        potofs_portrates(touch)
-      ]
+    icon_menu.icon "chat-alt",
+      open: ->
+        icon_mode_menu.state("base")
+        Url.prop.scope "talk"
+        GUI.ScrollSpy.global.rescroll Url.prop.scroll_talk
+      view: ->
+        [ m ".paragraph.guide",
+            m "h6", "発言"
+            security_modes Url.prop.talk
+            m "p", "村内の発言を表示します。"
+          potofs_portrates()
+        ]
 
-    touch.icon "search", -> # 検索
-      [ m ".paragraph.guide",
-          GUI.timeline Url.prop.w()
-          m "input.mini",
-            onblur:   m.withAttr("value", Url.prop.search)
-            onchange: m.withAttr("value", Url.prop.search)
-            value: Url.prop.search()
-          m "span", "発言中の言葉を検索します。"
-          m "hr.black"
-      ]
+    icon_menu.icon "clock",
+      open: ->
+        icon_mode_menu.state("memo")
+        Url.prop.scope "history"
+      view: ->
+        [ m ".paragraph.guide",
+            m "h6", "発言"
+            security_modes Url.prop.memo
+            m "p", "メモ履歴を表示します。"
+          potofs_portrates()
+        ]
+
+    icon_menu.icon "search",
+      view: ->
+        [ m ".paragraph.guide",
+            GUI.timeline Url.prop.w()
+            m "input.mini", Txt.input(Url.prop.search)
+            m "span", "発言中の言葉を検索します。"
+            m "hr.black"
+        ]
 
 
     m.module dom,
       controller: ->
       view: ->
         scroll_spy.pager "div", messages[Url.prop.scope()](Url.prop).list(), (o)->
-          anchor_num  = o.logid.substring(2) - 0 || 0
+          anchor_num  = o.logid[2..] - 0 || 0
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
           o.updated_at ?= new Date(o.date) - 0
           o.updated_timer ?= new Timer o.updated_at,
@@ -624,33 +690,49 @@ if gon?.events? && gon.event?
     m.startComputation()
     window.requestAnimationFrame ->
       set_event_messages = (event)->
-        first = event.messages.first
-        last  = event.messages.last
-        event.messages.unshift
-          name: event.name
-          log: event.name
+        first = event.messages.first.date
+        last  = event.messages.last.date
+        set_event_without_messages new Date(first) - 1, new Date(last) - -1, event.messages, event
+
+      set_event_without_messages = (first_date, last_date, messages, {_id, turn, name})->
+        messages.unshift
+          name: name
+          log: name
           logid: "EVENT-ASC"
           mestype: "EVENT"
-          updated_at: new Date(first.date) - 1
+          updated_at: first_date
 
-        event.messages.push
-          name: event.name
-          log: event.name
+        messages.push
+          name: name
+          log: name
           logid: "EVENT-DESC"
           mestype: "EVENT"
-          updated_at: new Date(last.date) - -1
+          updated_at: last_date
 
-        Cache.rule.message.merge event.messages,
-          event_id: event._id
-          turn:     event.turn
+        Cache.rule.message.merge messages, {event_id: _id, turn}
 
+      interval = gon.story.upd.interval * 1000 * 3600 * 24
       if gon.event.messages
         set_event_messages gon.event
+        turn = gon.event.turn
+
+        updated_at = gon.event.messages.last.updated_at
+        for event in gon.events by  1
+          if event.turn > turn
+            set_event_without_messages updated_at + 1, updated_at + interval, [], event
+            updated_at += interval
+
+        updated_at = gon.event.messages.first.updated_at
+        for event in gon.events by -1
+          if event.turn < turn
+            set_event_without_messages updated_at - interval, updated_at - 1, [], event
+            updated_at -= interval
 
       for event in gon.events
         if event.messages
           set_event_messages event
 
+      icon_mode_menu.state("base")
       m.endComputation()
 
 if gon?.villages?
@@ -683,93 +765,94 @@ if gon?.history?
 if gon?.stories?
   Cache.rule.story.set gon.stories
   GUI.if_exist "#stories", (dom)->
-    touch_sw = new GUI.TouchMenu()
-    touch = new GUI.TouchMenu()
-    touch.menu_set Url.prop, "count",
-      rating: ->
-        @btn_group 22, (key, o)->
-          m "span",
-            m "img.pull-left",
-              src: GUI.img_head + "/icon/cd_#{o.min_is.rating}.png"
-            RAILS.rating[key].caption
-      game: ->
-        @btn_group 16, (key, o)-> o.min_is.view.game_rule
-      folder: ->
-        @btn_group 16, (key)-> GAME[key]?.nation
-      say_limit: ->
-        @btn_group 10, (key, o)-> o.min_is.view.say_limit
-      update_at: ->
-        @btn_group 10, (key, o)-> o.min_is.view.update_at
-      update_interval: ->
-        @btn_group  8, (key, o)-> o.min_is.view.update_interval
-      event_type: ->
-        @btn_group  8, (key)-> key
-      role_type: ->
-        @btn_group  8, (key)-> key
-      player_length: ->
-        @btn_group  8, (key, o)-> o.min_is.view.player_length + "人"
-
-    touch.icon "search", ->
-      icon =
-        if touch_sw.state()
-          "icon-resize-normal"
-        else
-          "icon-resize-full"
-
-      m ".paragraph.guide",
-        m "h6", "検索する。"
-        m "span.btn", touch_sw.start(true),
-          m "i.#{icon}"
-        m "input.mini",
-          onblur:   m.withAttr("value", Url.prop.search)
-          onchange: m.withAttr("value", Url.prop.search)
-          value: Url.prop.search()
-        m "span.btn", touch.start("folder"),
-          m "i.icon-book"
-          m "span.note", "▼"
-        m "span.btn", touch.start("game"),
-          "ルール"
-          m "span.note", "▼"
-        m "span.btn", touch.start("event_type"),
-          "事件"
-          m "span.note", "▼"
-        m "span.btn", touch.start("role_type"),
-          "役職"
-          m "span.note", "▼"
-        m "span.btn", touch.start("rating"),
-          "こだわり"
-          m "span.note", "▼"
-        m "span.btn", touch.start("say_limit"),
-          "発言制限"
-          m "span.note", "▼"
-        m "span.btn", touch.start("player_length"),
-          "人数"
-          m "span.note", "▼"
-        m "span.btn", touch.start("update_at"),
-          "更新時刻"
-          m "span.note", "▼"
-        m "span.btn", touch.start("update_interval"),
-          "更新間隔"
-          m "span.note", "▼"
-
-
     m.module dom,
       controller: ->
       view: ->
-        if touch_sw.state()
-          scroll_spy.avg_height = 120
-        else
-          scroll_spy.avg_height = 22
-        touch.query = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
-        vdom = touch.menu touch.icon_menu "search"
+        icon_menu.icon "resize-full",
+          open: ->
+            scroll_spy.avg_height = 120
+            icon_mode_menu.state "full"
+        icon_menu.icon "resize-normal",
+          deploy: ->
+            icon_mode_menu.state "normal"
+          open: ->
+            scroll_spy.avg_height = 22
+            icon_mode_menu.state "normal"
+        query = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
+        [
+          icon_menu.icon "search",
+            deploy: (main_menu)->
+              main_menu.drill "rating",
+                caption: "こだわり"
+                view: (sub_menu)->
+                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(rating: "all")...).reduce()
+                  sub_menu.radio {class:"rating"}, Url.prop.rating, reduce, "rating", (key, o)->
+                    m "span",
+                      m "img.pull-left",
+                        src: GUI.img_head + "/icon/cd_#{o.min_is.rating}.png"
+                      RAILS.rating[key].caption
+              main_menu.drill "game",
+                caption: "ルール"
+                view: (sub_menu)->
+                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(game: "all")...).reduce()
+                  sub_menu.radio {class:"game"}, Url.prop.game, reduce, "game", (key, o)->
+                    o.min_is.view.game_rule
+              main_menu.drill "folder",
+                caption: "州"
+                view: (sub_menu)->
+                  reduce = Cache.storys.menu("all", Url.routes.search.stories.values()...).reduce()
+                  sub_menu.radio {class:"folder"}, Url.prop.folder, reduce, "folder", (key, o)->
+                    GAME[key]?.nation
+              main_menu.drill "say_limit",
+                caption: "発言制限"
+                view: (sub_menu)->
+                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(say_limit: "all")...).reduce()
+                  sub_menu.radio {class:"say_limit"}, Url.prop.say_limit, reduce, "say_limit", (key, o)->
+                    o.min_is.view.say_limit
+              main_menu.drill "update_at",
+                caption: "更新時刻"
+                view: (sub_menu)->
+                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(update_at: "all")...).reduce()
+                  sub_menu.radio {class:"update_at"}, Url.prop.update_at, reduce, "update_at", (key, o)->
+                    o.min_is.view.update_at
+              main_menu.drill "update_interval",
+                caption: "更新間隔"
+                view: (sub_menu)->
+                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(update_interval: "all")...).reduce()
+                  sub_menu.radio {class:"update_interval"}, Url.prop.update_interval, reduce, "update_interval", (key, o)->
+                    o.min_is.view.update_interval
+              main_menu.drill "event_type",
+                caption: "事件"
+                view: (sub_menu)->
+                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(event_type: "all")...).reduce()
+                  sub_menu.radio {class:"event_type"}, Url.prop.event_type, reduce, "event_type", (key, o)->
+                    key
+              main_menu.drill "role_type",
+                caption: "役職"
+                view: (sub_menu)->
+                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(role_type: "all")...).reduce()
+                  sub_menu.radio {class:"role_type"}, Url.prop.role_type, reduce, "role_type", (key, o)->
+                    key
+              main_menu.drill "player_length",
+                caption: "人数"
+                view: (sub_menu)->
+                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(player_length: "all")...).reduce()
+                  sub_menu.radio {class:"player_length"}, Url.prop.role_type, reduce, "player_length", (key, o)->
+                    o.min_is.view.player_length + "人"
 
-        vdom.push m "table.table.table-border.table-hover",
+            view: (main_menu)->
+              m ".paragraph.guide",
+                m "h6", "検索する。"
+                m "input.mini", Txt.input(Url.prop.search)
+                main_menu.drills {}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"]
+
+          m "table.table.table-border.table-hover",
             m "thead",
               m "tr",
                 m "th"
-            scroll_spy.pager "tbody", touch.query.list(), (o)->
+            scroll_spy.pager "tbody", query.list(), (o)->
               m "tr", {key: o._id },
-                if touch_sw.state()
+                if icon_menu.state() == "resize-full"
                   m "td",
                     m "a",
                       href: o.link
@@ -803,7 +886,7 @@ if gon?.stories?
                       href: o.file
                     , o.name
                     o.view.rating
-        vdom
+        ]
 
 GUI.if_exist "#to_root", (dom)->
   day_or_night = m.prop()

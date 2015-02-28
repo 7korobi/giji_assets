@@ -48,6 +48,7 @@ new Cache.Rule("event").schema ->
   {visible, bit, mask} = RAILS.message
 
   @deploy (o)->
+    o._id ||= "#{o.story_id}-#{o.turn}"
     o.event_id = o._id
 
 new Cache.Rule("story").schema ->
