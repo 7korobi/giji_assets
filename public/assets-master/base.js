@@ -1094,7 +1094,7 @@ Btns = (function() {
 })();
 
 Btn = (function() {
-  var base, cover, eq, include, is_true;
+  var base, eq, include, is_true, keys_eq;
   base = function(style, check, store, load, key) {
     return GUI.attrs({}, function() {
       this.end(function() {
@@ -1116,16 +1116,10 @@ Btn = (function() {
   include = function(load, key) {
     return load()[key];
   };
-  cover = function(load, keys) {
-    var key, o, _i, _len;
-    o = load();
-    for (_i = 0, _len = keys.length; _i < _len; _i++) {
-      key = keys[_i];
-      if (!o[key]) {
-        return false;
-      }
-    }
-    return true;
+  keys_eq = function(load, keys) {
+    var to_s;
+    to_s = Serial.serializer.Keys;
+    return to_s(load()) === to_s(keys);
   };
   return {
     base: base,
@@ -1138,17 +1132,11 @@ Btn = (function() {
     keys_reset: function(style, prop, val) {
       var setter;
       setter = function(key) {
-        var keys, _i, _len;
-        if (!cover(prop, val)) {
-          keys = {};
-          for (_i = 0, _len = val.length; _i < _len; _i++) {
-            key = val[_i];
-            keys[key] = true;
-          }
-          return prop(keys);
+        if (!keys_eq(prop, val)) {
+          return prop(Serial.parser.Keys(val));
         }
       };
-      return base(style, cover, setter, prop, val);
+      return base(style, keys_eq, setter, prop, val);
     },
     keys: function(style, prop, val) {
       var setter;
@@ -2278,11 +2266,12 @@ GUI.ScrollSpy = (function() {
   };
 
   size = function(page_size, avg) {
+    avg -= avg % 10;
     return 5 + Math.ceil(win.height * page_size / avg);
   };
 
   ScrollSpy.prototype.pager = function(tag, list, cb) {
-    var attr, btm, head, idx, key, o, pager_cb, rect, show_bottom, show_under, top, vdom, vdom_items, _ref;
+    var attr, btm, idx, key, o, pager_cb, rect, show_bottom, show_under, show_upper, top, vdom, vdom_items, _ref;
     this.list = list;
     if (!((_ref = this.list) != null ? _ref.length : void 0)) {
       return m(tag, {
@@ -2298,30 +2287,38 @@ GUI.ScrollSpy = (function() {
     if (this.pager_elem != null) {
       rect = this.pager_elem.getBoundingClientRect();
       show_bottom = win.height - rect.bottom;
+      show_upper = 0 < rect.top;
       show_under = 0 < show_bottom;
     }
     idx = _.findIndex(this.list, {
       _id: typeof this.prop === "function" ? this.prop() : void 0
     });
     if (idx < 0) {
-      if (this.past_list === this.list) {
-        idx = this.head;
-        if (show_under) {
-          idx = this.tail;
+      idx = (function() {
+        if (this.past_list === this.list) {
+          switch (false) {
+            case !show_upper:
+              return this.head;
+            case !show_under:
+              return this.tail;
+            default:
+              return this.head;
+          }
+        } else {
+          switch (false) {
+            case !show_upper:
+              return top;
+            case !show_under:
+              return btm;
+            default:
+              return top;
+          }
         }
-      } else {
-        idx = top;
-        if (show_under) {
-          idx = btm;
-        }
-      }
+      }).call(this);
     }
     this.past_list = this.list;
     this.tail = Math.min(btm, idx + size(3, this.avg_height));
-    head = Math.max(top, idx - size(3, this.avg_height));
-    if (5 < Math.abs(this.head - head)) {
-      this.head = head;
-    }
+    this.head = Math.max(top, idx - size(3, this.avg_height));
     pager_cb = (function(_this) {
       return function(pager_elem, is_continue, context) {
         var diff_bottom, elem_bottom;
@@ -3098,11 +3095,7 @@ Url = (function() {
             val = parser(val);
             prop(val);
             bind(val);
-            if (is_replace) {
-              return Url.replacestate();
-            } else {
-              return Url.pushstate();
-            }
+            return Url.replacestate();
           } else {
             value = prop();
             if (value != null) {

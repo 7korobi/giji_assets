@@ -328,7 +328,7 @@ GUI.if_exist "#buttons", (dom)->
 
       section "pencil"
       section "th-large"
-      section "search"
+      section "search" unless "pins" == icon_mode_menu.state()
       section "cog"
 
       vdoms

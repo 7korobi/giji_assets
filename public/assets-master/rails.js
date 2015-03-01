@@ -1113,7 +1113,9 @@ GUI.if_exist("#buttons", function(dom) {
       }
       section("pencil");
       section("th-large");
-      section("search");
+      if ("pins" !== icon_mode_menu.state()) {
+        section("search");
+      }
       section("cog");
       return vdoms;
     }
@@ -1335,8 +1337,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
   GUI.if_exist("#story", function(dom) {
     icon_menu.icon("home", {
       open: function() {
-        icon_mode_menu.change("home");
-        return scroll_spy.rescroll(Url.prop.home_at);
+        return icon_mode_menu.change("home");
       },
       view: function() {
         var event, event_card, story, text, texts;
@@ -1444,10 +1445,14 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         return scroll_spy.rescroll(Url.prop.home_at);
       }
     });
+    icon_mode_menu.node("pins", {
+      open: function() {
+        return scroll_spy.rescroll(Url.prop.scroll);
+      }
+    });
     icon_menu.icon("pin", {
       open: function() {
-        icon_mode_menu.change("pins");
-        return scroll_spy.rescroll(Url.prop.scroll);
+        return icon_mode_menu.change("pins");
       },
       close: function() {
         Url.prop.pins({});
