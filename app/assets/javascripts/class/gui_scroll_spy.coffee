@@ -74,6 +74,7 @@ class GUI.ScrollSpy
 
 
   size = (page_size, avg)->
+    avg -= avg % 10
     5 + Math.ceil(win.height * page_size / avg)
 
   pager: (tag, @list, cb)->
@@ -85,23 +86,27 @@ class GUI.ScrollSpy
     if @pager_elem?
       rect = @pager_elem.getBoundingClientRect()
       show_bottom = win.height - rect.bottom
+      show_upper  = 0 < rect.top
       show_under  = 0 < show_bottom
 
     # TODO wait for network read.
     idx = _.findIndex @list, _id: @prop?()
     if idx < 0
-      if @past_list == @list
-        idx = @head
-        idx = @tail if show_under
-      else
-        idx = top
-        idx = btm if show_under
+      idx =
+        if @past_list == @list
+          switch
+            when show_upper then @head
+            when show_under then @tail
+            else                 @head
+        else
+          switch
+            when show_upper then top
+            when show_under then btm
+            else                 top
     @past_list = @list
 
     @tail = Math.min btm, idx + size(3, @avg_height)
-    head  = Math.max top, idx - size(3, @avg_height)
-    if 5 < Math.abs @head - head
-      @head = head
+    @head = Math.max top, idx - size(3, @avg_height)
 
     pager_cb = (@pager_elem, is_continue, context)=>
       rect = @pager_elem.getBoundingClientRect()
