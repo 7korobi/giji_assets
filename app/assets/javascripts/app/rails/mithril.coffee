@@ -284,7 +284,7 @@ GUI.if_exist "#buttons", (dom)->
         "pin": ->
           messages.pins(Url.prop).list().length - Cache.events.list().length
         "home": ->
-          Cache.messages.home("announce")
+          Cache.messages.home("announce").length
         "mail": ->
           prop = _.merge {}, Url.prop,
             memo: -> "all"
