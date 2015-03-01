@@ -555,11 +555,11 @@ if gon?.events? && gon.event?
       m "hr.black"
 
   GUI.if_exist "#story", (dom)->
+    story = gon.story
     icon_menu.icon "home",
       open: ->
         icon_mode_menu.change "home"
       view: ->
-        story = gon.story
         event = Cache.events.find Url.prop.event_id()
 
         if event
