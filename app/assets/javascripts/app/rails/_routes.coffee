@@ -20,31 +20,31 @@ Url.routes =
         window.requestAnimationFrame ->
           GUI.Layout.resize()
 
-  search:
     mode: new Url "mode=:scope~:icon",
-      unmatch: "?"
+      unmatch: "#"
       change: (params)->
         console.log params
 
-    pin: new Url "pin=:back~:pins",
-      unmatch: gon?.events? && "?"
+    potofs: new Url "ptf=:potofs_order~:potofs_desc~:potofs_hide",
+      unmatch: gon?.potofs? && "#"
 
-    faces: new Url "faces=:chr_set~:order~:search",
+    pin: new Url "pin=:back~:pins",
+      unmatch: gon?.events? && "#"
+
+  search:
+    faces: new Url "face=:chr_set~:order~:search",
       unmatch: gon?.map_reduce?.faces? && "?"
 
     folder: new Url "folder=:folder",
       unmatch: gon?.stories? && "?"
 
-    potofs: new Url "potofs=:potofs_order~:potofs_desc~:potofs_hide",
-      unmatch: gon?.potofs? && "?"
-
-    stories: new Url "stories=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search",
+    stories: new Url "story=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search",
       unmatch: gon?.stories? && "?"
 
-    messages: new Url "messages=:home~:talk~:memo~:open~:human~:search",
+    messages: new Url "log=:home~:talk~:memo~:open~:human~:search",
       unmatch: gon?.events? && "?"
 
-    scroll: new Url "scrolls=:scroll~:home_at~:talk_at~:memo_at",
+    scrolls: new Url "scr=:scroll~:home_at~:talk_at~:memo_at",
       unmatch: "?"
       change: (params)->
         scroll = GUI.ScrollSpy.global.prop()

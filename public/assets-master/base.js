@@ -2088,6 +2088,7 @@ GUI.message = (function() {
     },
     story: function(story) {
       var rating, saycnt;
+      console.log([story, story.type]);
       rating = RAILS.rating[story.rating];
       saycnt = RAILS.saycnt[story.type.say] || {};
       return m(".ADMIN.guide", {
@@ -2266,12 +2267,11 @@ GUI.ScrollSpy = (function() {
   };
 
   size = function(page_size, avg) {
-    avg -= avg % 10;
     return 5 + Math.ceil(win.height * page_size / avg);
   };
 
   ScrollSpy.prototype.pager = function(tag, list, cb) {
-    var attr, btm, idx, key, o, pager_cb, rect, show_bottom, show_under, show_upper, top, vdom, vdom_items, _ref;
+    var attr, btm, idx, key, new_size, o, pager_cb, rect, show_bottom, show_under, show_upper, top, vdom, vdom_items, _ref;
     this.list = list;
     if (!((_ref = this.list) != null ? _ref.length : void 0)) {
       return m(tag, {
@@ -2317,8 +2317,12 @@ GUI.ScrollSpy = (function() {
       }).call(this);
     }
     this.past_list = this.list;
-    this.tail = Math.min(btm, idx + size(3, this.avg_height));
-    this.head = Math.max(top, idx - size(3, this.avg_height));
+    new_size = size(3, this.avg_height);
+    if (!(3 > Math.abs(this.size - new_size))) {
+      this.size = new_size;
+    }
+    this.tail = Math.min(btm, idx + this.size);
+    this.head = Math.max(top, idx - this.size);
     pager_cb = (function(_this) {
       return function(pager_elem, is_continue, context) {
         var diff_bottom, elem_bottom;

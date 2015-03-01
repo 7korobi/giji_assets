@@ -35,34 +35,34 @@ Url.routes = {
           return GUI.Layout.resize();
         });
       }
-    })
-  },
-  search: {
+    }),
     mode: new Url("mode=:scope~:icon", {
-      unmatch: "?",
+      unmatch: "#",
       change: function(params) {
         return console.log(params);
       }
     }),
-    pin: new Url("pin=:back~:pins", {
-      unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "?"
+    potofs: new Url("ptf=:potofs_order~:potofs_desc~:potofs_hide", {
+      unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) && "#"
     }),
-    faces: new Url("faces=:chr_set~:order~:search", {
+    pin: new Url("pin=:back~:pins", {
+      unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "#"
+    })
+  },
+  search: {
+    faces: new Url("face=:chr_set~:order~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) && "?"
     }),
     folder: new Url("folder=:folder", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
-    potofs: new Url("potofs=:potofs_order~:potofs_desc~:potofs_hide", {
-      unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) && "?"
-    }),
-    stories: new Url("stories=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search", {
+    stories: new Url("story=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
-    messages: new Url("messages=:home~:talk~:memo~:open~:human~:search", {
+    messages: new Url("log=:home~:talk~:memo~:open~:human~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "?"
     }),
-    scroll: new Url("scrolls=:scroll~:home_at~:talk_at~:memo_at", {
+    scrolls: new Url("scr=:scroll~:home_at~:talk_at~:memo_at", {
       unmatch: "?",
       change: function(params) {
         var folder, logid, scroll, turn, updated_at, vid, _ref1, _ref2;
@@ -1335,13 +1335,14 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     })(), m("hr.black"));
   };
   GUI.if_exist("#story", function(dom) {
+    var story;
+    story = gon.story;
     icon_menu.icon("home", {
       open: function() {
         return icon_mode_menu.change("home");
       },
       view: function() {
-        var event, event_card, story, text, texts;
-        story = gon.story;
+        var event, event_card, text, texts;
         event = Cache.events.find(Url.prop.event_id());
         if (event) {
           event_card = RAILS.events[event.event];
@@ -1389,7 +1390,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
               return m(".paragraph.guide", GUI.timeline(Url.prop.w()), m("input.mini", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"));
             }
           }), (function() {
-            if (typeof story !== "undefined" && story !== null) {
+            if (story != null) {
               switch (icon_mode_menu.state()) {
                 case "home":
                   return GUI.message.story(story);
