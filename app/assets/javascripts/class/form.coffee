@@ -34,11 +34,9 @@ Btn = (->
     key == load()
   include = (load, key)->
     load()[key]
-  cover = (load, keys)->
-    o = load()
-    for key in keys
-      return false unless o[key]
-    return true
+  keys_eq = (load, keys)->
+    to_s = Serial.serializer.Keys
+    to_s(load()) == to_s(keys)
 
   base: base
   bool: (style, prop)->
@@ -49,11 +47,9 @@ Btn = (->
 
   keys_reset: (style, prop, val)->
     setter = (key)->
-      unless cover(prop, val)
-        keys = {}
-        keys[key] = true for key in val
-        prop keys
-    base style, cover, setter, prop, val
+      unless keys_eq(prop, val)
+        prop Serial.parser.Keys val
+    base style, keys_eq, setter, prop, val
 
   keys: (style, prop, val)->
     setter = (key)->
