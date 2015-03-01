@@ -41,10 +41,11 @@ class Url
           prop val
           bind(val)
 
-          if is_replace
-            Url.replacestate()
-          else
-            Url.pushstate()
+          Url.replacestate()
+          #if is_replace
+          #  Url.replacestate()
+          #else
+          #  Url.pushstate()
 
         else
           value = prop()
@@ -111,7 +112,7 @@ class Url
 
   values: (diff = {})->
     for key in @keys_in_url
-      diff[key] || Url.prop[key]() 
+      diff[key] || Url.prop[key]()
 
   popstate: (path, target)->
     data = {}
