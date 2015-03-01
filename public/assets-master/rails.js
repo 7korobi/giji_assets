@@ -1037,7 +1037,7 @@ GUI.if_exist("#buttons", function(dom) {
           return messages.pins(Url.prop).list().length - Cache.events.list().length;
         },
         "home": function() {
-          return Cache.messages.home("announce");
+          return Cache.messages.home("announce").list().length - Cache.events.list().length;
         },
         "mail": function() {
           var prop;
