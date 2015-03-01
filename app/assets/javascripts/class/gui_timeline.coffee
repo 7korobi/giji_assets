@@ -67,8 +67,8 @@ GUI.timeline = (width)->
 
       m.startComputation()
       Url.prop.scope "talk"
-      Url.prop.scroll  id
-      GUI.ScrollSpy.go id
+      Url.prop.talk_at id
+      GUI.ScrollSpy.global.rescroll Url.prop.talk_at
       m.endComputation()
 
     @start (e)->

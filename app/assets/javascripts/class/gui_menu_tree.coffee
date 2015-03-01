@@ -3,20 +3,23 @@ class GUI.MenuTree
   constructor: ->
     @state = m.prop()
     @nodes = {}
-    @setter = (val)=>
+    @change = (val)=>
       old = @state()
       return old unless arguments.length
-      if old != val
-        @nodes[old].close( @nodes[old].menu ) if @nodes[old]
-        @nodes[val].open( @nodes[val].menu )  if @nodes[val]
+
       @state val
+      if old != val
+        @nodes[val].open( @nodes[val].menu )  if @nodes[val]
+        @nodes[old].close( @nodes[old].menu ) if @nodes[old]
 
   # open / close event.
   start: (style, mark)->
-    Btn.menu style, @setter, mark
+    style.key = "start-#{mark}"
+    Btn.menu style, @change, mark
 
   cancel: (style)->
-    Btn.set style, @setter, ""
+    style.key = "cancel-#{mark}"
+    Btn.set style, @change, ""
 
   node: (state)->
     node = @nodes[state]
@@ -64,11 +67,12 @@ class GUI.MenuTree
 
     Btns.radio style, prop, data, order
 
+  node: (id, options)->
+    @nodes[id] ?= new GUI.MenuNode(id, options)
 
 class GUI.MenuTree.Drill extends GUI.MenuTree
   drill: (id, options)->
-    @nodes[id] ?= new GUI.MenuNode(id, options)
-    node = @nodes[id]
+    node = @node(id, options)
 
   drills: (style, order)->
     @each order, (drill)=>
@@ -78,8 +82,7 @@ class GUI.MenuTree.Drill extends GUI.MenuTree
 
 class GUI.MenuTree.Icon extends GUI.MenuTree
   icon: (id, options)->
-    @nodes[id] ?= new GUI.MenuNode(id, options)
-    node = @nodes[id]
+    node = @node(id, options)
 
     if @state() == id
       []

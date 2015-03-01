@@ -22,12 +22,11 @@ Cache.potofs.has_faces =
       continue if Cache.potofs.has_face[face_id]
       face_id
 
-GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll)
-
-scroll_spy = GUI.ScrollSpy.global
+scroll_spy = GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll)
 icon_mode_menu = new GUI.MenuTree
+icon_mode_menu.state = Url.prop.scope
 icon_menu = new GUI.MenuTree.Icon
-icon_menu.state = Url.prop.icons
+icon_menu.state = Url.prop.icon
 
 if gon?.map_reduce?.faces?
   Cache.rule.chr_set.schema ->
@@ -308,20 +307,16 @@ GUI.if_exist "#buttons", (dom)->
           Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list().length
 
       switch icon_mode_menu.state()
-        when "pin"
+        when "pins"
           section "pin"
-          back = Url.prop.back_icon()
-          switch back
-            when "mail", "clock", "chat-alt"
-              section back
 
-        when "memo"
+        when "memo", "history"
           section "home"
           section "clock"
           section "mail"
           section "chat-alt"
 
-        when "base"
+        when "home", "talk"
           section "home"
           section "mail"
           section "chat-alt"
@@ -507,8 +502,8 @@ if gon?.events? && gon.event?
   messages =
     pins: ({story_id,pins})->
       Cache.messages.pins(story_id(), pins())
-    anchor: ({talk, scroll})->
-      Cache.messages.anchor(talk(), scroll())
+    anchor: ({talk})->
+      Cache.messages.anchor(talk(), scroll_spy.prop())
     home: ({home})->
       Cache.messages.home(home())
     talk: ({talk, open, potofs_hide, search})->
@@ -562,8 +557,7 @@ if gon?.events? && gon.event?
   GUI.if_exist "#story", (dom)->
     icon_menu.icon "home",
       open: ->
-        icon_mode_menu.state("base")
-        Url.prop.scope "home"
+        icon_mode_menu.change "home"
       view: ->
         story = gon.story
         event = Cache.events.find Url.prop.event_id()
@@ -592,21 +586,19 @@ if gon?.events? && gon.event?
               GUI.message.game story
           ]
 
-    icon_menu.icon "search",
-      view: ->
-        [ m ".paragraph.guide",
-            GUI.timeline Url.prop.w()
-            m "input.mini", Txt.input Url.prop.search
-            m "span", "発言中の言葉を検索します。"
-            m "hr.black"
-        ]
-
     m.module dom,
       controller: ->
       view: ->
-        [ icon_menu.node "search"
+        [
+          icon_menu.icon "search",
+            view: ->
+              m ".paragraph.guide",
+                GUI.timeline Url.prop.w()
+                m "input.mini", Txt.input(Url.prop.search)
+                m "span", "発言中の言葉を検索します。"
+                m "hr.black"
           if story?
-            switch Url.prop.scope()
+            switch icon_mode_menu.state()
               when "home"
                 GUI.message.story story
         ]
@@ -614,20 +606,51 @@ if gon?.events? && gon.event?
   GUI.if_exist "#messages", (dom)->
     scroll_spy.avg_height = 150
 
+    GUI.message.delegate.tap_anchor = (o, turn, a, id)->
+      target = icon_mode_menu.state()
+      switch target
+        when "history"
+          target_at = Url.prop["memo_at"]
+        when "memo", "talk", "home"
+          target_at = Url.prop["#{target}_at"]
+
+      if target_at
+        target_at o._id
+        Url.prop.back target
+
+      pins = Url.prop.pins()
+      pins["#{o.turn}-#{o.logid}"] = true
+      pins["#{turn}-#{a}"] = true
+      Url.prop.pins pins
+      Url.prop.scroll o._id
+      icon_menu.change "pin"
+
+    icon_mode_menu.node "history",
+      open: ->
+        scroll_spy.rescroll Url.prop.memo_at
+    icon_mode_menu.node "memo",
+      open: ->
+        scroll_spy.rescroll Url.prop.memo_at
+    icon_mode_menu.node "talk",
+      open: ->
+        scroll_spy.rescroll Url.prop.talk_at
+    icon_mode_menu.node "home",
+      open: ->
+        scroll_spy.rescroll Url.prop.home_at
+    icon_mode_menu.node "pins",
+      open: ->
+        scroll_spy.rescroll Url.prop.scroll
+
     icon_menu.icon "pin",
       open: ->
-        icon_mode_menu.state("pins")
-        Url.prop.scope "pins"
+        icon_mode_menu.change "pins"
       close: ->
-        Url.prop.icons ""
         Url.prop.pins {}
-        Url.prop.scope back
+        icon_mode_menu.change Url.prop.back()
 
     icon_menu.icon "mail",
       open: ->
-        icon_mode_menu.state("memo")
-        Url.prop.scope "memo"
-        GUI.ScrollSpy.global.rescroll Url.prop.scroll_talk
+        icon_mode_menu.change "memo"
       view: ->
         [ m ".paragraph.guide",
             m "h6", "メモ"
@@ -636,12 +659,10 @@ if gon?.events? && gon.event?
           potofs_portrates()
         ]
 
-
     icon_menu.icon "chat-alt",
       open: ->
-        icon_mode_menu.state("base")
-        Url.prop.scope "talk"
-        GUI.ScrollSpy.global.rescroll Url.prop.scroll_talk
+        icon_mode_menu.change "talk"
+        scroll_spy.rescroll Url.prop.talk_at
       view: ->
         [ m ".paragraph.guide",
             m "h6", "発言"
@@ -652,8 +673,7 @@ if gon?.events? && gon.event?
 
     icon_menu.icon "clock",
       open: ->
-        icon_mode_menu.state("memo")
-        Url.prop.scope "history"
+        icon_mode_menu.change "history"
       view: ->
         [ m ".paragraph.guide",
             m "h6", "発言"
@@ -662,20 +682,10 @@ if gon?.events? && gon.event?
           potofs_portrates()
         ]
 
-    icon_menu.icon "search",
-      view: ->
-        [ m ".paragraph.guide",
-            GUI.timeline Url.prop.w()
-            m "input.mini", Txt.input(Url.prop.search)
-            m "span", "発言中の言葉を検索します。"
-            m "hr.black"
-        ]
-
-
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager "div", messages[Url.prop.scope()](Url.prop).list(), (o)->
+        scroll_spy.pager "div", messages[icon_mode_menu.state()](Url.prop).list(), (o)->
           anchor_num  = o.logid[2..] - 0 || 0
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
           o.updated_at ?= new Date(o.date) - 0
@@ -732,7 +742,7 @@ if gon?.events? && gon.event?
         if event.messages
           set_event_messages event
 
-      icon_mode_menu.state("base")
+      icon_mode_menu.change "talk" unless icon_mode_menu.state()
       m.endComputation()
 
 if gon?.villages?
@@ -765,19 +775,20 @@ if gon?.history?
 if gon?.stories?
   Cache.rule.story.set gon.stories
   GUI.if_exist "#stories", (dom)->
+    icon_menu.icon "resize-full",
+      open: ->
+        scroll_spy.avg_height = 120
+        icon_mode_menu.change "full"
+    icon_menu.icon "resize-normal",
+      deploy: ->
+        icon_mode_menu.change "normal"
+      open: ->
+        scroll_spy.avg_height = 22
+        icon_mode_menu.change "normal"
+
     m.module dom,
       controller: ->
       view: ->
-        icon_menu.icon "resize-full",
-          open: ->
-            scroll_spy.avg_height = 120
-            icon_mode_menu.state "full"
-        icon_menu.icon "resize-normal",
-          deploy: ->
-            icon_mode_menu.state "normal"
-          open: ->
-            scroll_spy.avg_height = 22
-            icon_mode_menu.state "normal"
         query = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
         [
           icon_menu.icon "search",

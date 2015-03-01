@@ -1862,32 +1862,34 @@ GUI.MenuTree = (function() {
   function MenuTree() {
     this.state = m.prop();
     this.nodes = {};
-    this.setter = (function(_this) {
+    this.change = (function(_this) {
       return function(val) {
         var old;
         old = _this.state();
         if (!arguments.length) {
           return old;
         }
+        _this.state(val);
         if (old !== val) {
-          if (_this.nodes[old]) {
-            _this.nodes[old].close(_this.nodes[old].menu);
-          }
           if (_this.nodes[val]) {
             _this.nodes[val].open(_this.nodes[val].menu);
           }
+          if (_this.nodes[old]) {
+            return _this.nodes[old].close(_this.nodes[old].menu);
+          }
         }
-        return _this.state(val);
       };
     })(this);
   }
 
   MenuTree.prototype.start = function(style, mark) {
-    return Btn.menu(style, this.setter, mark);
+    style.key = "start-" + mark;
+    return Btn.menu(style, this.change, mark);
   };
 
   MenuTree.prototype.cancel = function(style) {
-    return Btn.set(style, this.setter, "");
+    style.key = "cancel-" + mark;
+    return Btn.set(style, this.change, "");
   };
 
   MenuTree.prototype.node = function(state) {
@@ -1951,6 +1953,11 @@ GUI.MenuTree = (function() {
     return Btns.radio(style, prop, data, order);
   };
 
+  MenuTree.prototype.node = function(id, options) {
+    var _base;
+    return (_base = this.nodes)[id] != null ? _base[id] : _base[id] = new GUI.MenuNode(id, options);
+  };
+
   return MenuTree;
 
 })();
@@ -1963,11 +1970,8 @@ GUI.MenuTree.Drill = (function(_super) {
   }
 
   Drill.prototype.drill = function(id, options) {
-    var node, _base;
-    if ((_base = this.nodes)[id] == null) {
-      _base[id] = new GUI.MenuNode(id, options);
-    }
-    return node = this.nodes[id];
+    var node;
+    return node = this.node(id, options);
   };
 
   Drill.prototype.drills = function(style, order) {
@@ -1990,11 +1994,8 @@ GUI.MenuTree.Icon = (function(_super) {
   }
 
   Icon.prototype.icon = function(id, options) {
-    var node, _base;
-    if ((_base = this.nodes)[id] == null) {
-      _base[id] = new GUI.MenuNode(id, options);
-    }
-    node = this.nodes[id];
+    var node;
+    node = this.node(id, options);
     if (this.state() === id) {
       return [];
     } else {
@@ -2042,39 +2043,40 @@ GUI.message = (function() {
       config: function(parent, is_continue, context) {
         GUI.attrs_to(parent, "span[anchor]", {}, function(a, turn, id) {
           return this.start(function(e) {
-            var pins;
             m.startComputation();
-            switch (Url.prop.scope()) {
-              case "pins":
-                break;
-              default:
-                Url.prop.back(o._id);
-                GUI.TouchMenu.icons.state("pin");
-                window.requestAnimationFrame(function() {
-                  return GUI.ScrollSpy.go(o._id);
-                });
-            }
-            pins = Url.prop.pins();
-            pins["" + o.turn + "-" + o.logid] = true;
-            pins["" + turn + "-" + a] = true;
-            Url.prop.pins(pins);
+            GUI.message.delegate.tap_anchor(o, turn, a, id);
             return m.endComputation();
           });
         });
         GUI.attrs_to(parent, "span[random]", {}, function(cmd, val) {
           return this.start(function(e) {
-            return console.log([cmd, val]);
+            m.startComputation();
+            GUI.message.delegate.tap_random(o, cmd, val);
+            return m.endComputation();
           });
         });
         return GUI.attrs_to(parent, "span[external]", {}, function(id, uri, protocol, host, path) {
           return this.start(function(e) {
-            return console.log([id, uri, protocol, host, path]);
+            m.startComputation();
+            GUI.message.delegate.tap_external(o, id, uri, protocol, host, path);
+            return m.endComputation();
           });
         });
       }
     };
   };
   return {
+    delegate: {
+      tap_anchor: function() {
+        return console.log(arguments);
+      },
+      tap_random: function() {
+        return console.log(arguments);
+      },
+      tap_external: function() {
+        return console.log(arguments);
+      }
+    },
     game: function(story, event) {
       var mob, option, option_id, roletable;
       roletable = RAILS.roletable[story.type.roletable];
@@ -2446,8 +2448,8 @@ GUI.timeline = function(width) {
       }
       m.startComputation();
       Url.prop.scope("talk");
-      Url.prop.scroll(id);
-      GUI.ScrollSpy.go(id);
+      Url.prop.talk_at(id);
+      GUI.ScrollSpy.global.rescroll(Url.prop.talk_at);
       return m.endComputation();
     };
     this.start(function(e) {

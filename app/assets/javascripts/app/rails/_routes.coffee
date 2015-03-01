@@ -6,9 +6,6 @@ Url.routes =
     story:  new Url "/:story_id.html"
 
   hash:
-    mode: new Url "mode=:icons",
-      unmatch: "#"
-
     css: new Url "css=:theme~:width~:layout~:font",
       cookie:
         time: 12
@@ -24,6 +21,11 @@ Url.routes =
           GUI.Layout.resize()
 
   search:
+    mode: new Url "mode=:scope~:icon",
+      unmatch: "?"
+      change: (params)->
+        console.log params
+
     pin: new Url "pin=:back~:pins",
       unmatch: gon?.events? && "?"
 
@@ -39,17 +41,16 @@ Url.routes =
     stories: new Url "stories=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search",
       unmatch: gon?.stories? && "?"
 
-    messages: new Url "messages=:scope~:home~:talk~:memo~:open~:uniq~:human~:search",
+    messages: new Url "messages=:home~:talk~:memo~:open~:human~:search",
       unmatch: gon?.events? && "?"
 
-    scroll: new Url "scroll=:scroll",
+    scroll: new Url "scrolls=:scroll~:home_at~:talk_at~:memo_at",
       unmatch: "?"
       change: (params)->
-        GUI.ScrollSpy.global.prop = Url.prop.scroll
-
-        [folder, vid, turn, logid] = params.scroll.split("-")
+        scroll = GUI.ScrollSpy.global.prop()
+        [folder, vid, turn, logid] = scroll.split("-")
         if logid?
-          updated_at = Cache.messages.find(params.scroll)?.updated_at || 0
+          updated_at = Cache.messages.find(scroll)?.updated_at || 0
           Url.prop.updated_at updated_at, true
           Url.prop.event_id  "#{folder}-#{vid}-#{turn}", true
           Url.prop.message_id "#{folder}-#{vid}-#{turn}-#{logid}", true

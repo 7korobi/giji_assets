@@ -1188,7 +1188,7 @@ table.talk td .msg p,
 table.memo td p {
   overflow: hidden;
   word-wrap: break-word;
-  word-break: keep-all;
+  word-break: loose;
 }
 
 /* line 42, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */

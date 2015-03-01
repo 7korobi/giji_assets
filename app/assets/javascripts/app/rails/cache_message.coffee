@@ -18,7 +18,7 @@ new Cache.Rule("message").schema ->
       enables = RAILS.message.visible.talk[mode]
       message = Cache.messages.find scroll
       if message
-        [folder, vid, turn, logid] = Url.prop.scroll().split("-")
+        [folder, vid, turn, logid] = scroll.split("-")
         regexp = ///<mw\ #{logid},#{turn},///
         all
         .where (o)-> (o.show & enables) && regexp.test o.search_words

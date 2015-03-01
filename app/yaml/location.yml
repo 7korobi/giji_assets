@@ -6,6 +6,9 @@ props:
   back:
     type: Text
     current: ""
+  pins:
+    type: Keys
+    current: {}
 
   search:
     type: Text
@@ -26,7 +29,7 @@ props:
   title:
   nation:
 
-  icons:
+  icon:
     type: Text
     current: ""
 
@@ -51,18 +54,24 @@ props:
     type: Keys
     current: {}
 
-  pins:
-    type: Keys
-    current: {}
-
   scope:
     current: talk
   home:
     current: village
+  home_at:
+    type: Text
+    current: ""
   talk:
     current: open
+  talk_at:
+    type: Text
+    current: ""
   memo:
     current: all
+  memo_at:
+    type: Text
+    current: ""
+
   open:
     type: Bool
     current: true

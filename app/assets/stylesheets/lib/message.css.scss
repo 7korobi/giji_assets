@@ -34,7 +34,7 @@ table.talk td .msg p,
 table.memo td p {
   overflow: hidden;
   word-wrap: break-word;
-  word-break: keep-all;
+  word-break: loose;
 }
 
 .text,

@@ -3,28 +3,26 @@ GUI.message = (->
     config: (parent, is_continue, context)->
       GUI.attrs_to parent, "span[anchor]", {}, (a, turn, id)->
         @start (e)->
-
-          # TODO: bad for library.
           m.startComputation()
-          switch Url.prop.scope()
-            when "pins"
-            else
-              Url.prop.back o._id
-              GUI.TouchMenu.icons.state "pin"
-              window.requestAnimationFrame ->
-                GUI.ScrollSpy.go o._id
-          pins = Url.prop.pins()
-          pins["#{o.turn}-#{o.logid}"] = true
-          pins["#{turn}-#{a}"] = true
-          Url.prop.pins pins
+          GUI.message.delegate.tap_anchor(o, turn, a, id)
           m.endComputation()
 
       GUI.attrs_to parent, "span[random]", {}, (cmd, val)->
         @start (e)->
-          console.log [cmd, val]
+          m.startComputation()
+          GUI.message.delegate.tap_random(o, cmd, val)
+          m.endComputation()
+
       GUI.attrs_to parent, "span[external]", {}, (id, uri, protocol, host, path)->
         @start (e)->
-          console.log [id, uri, protocol, host, path]
+          m.startComputation()
+          GUI.message.delegate.tap_external(o, id, uri, protocol, host, path)
+          m.endComputation()
+
+  delegate:
+    tap_anchor:   -> console.log arguments
+    tap_random:   -> console.log arguments
+    tap_external: -> console.log arguments
 
   game: (story, event)->
     roletable = RAILS.roletable[story.type.roletable]

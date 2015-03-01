@@ -9,9 +9,6 @@ Url.routes = {
     story: new Url("/:story_id.html")
   },
   hash: {
-    mode: new Url("mode=:icons", {
-      unmatch: "#"
-    }),
     css: new Url("css=:theme~:width~:layout~:font", {
       cookie: {
         time: 12,
@@ -41,6 +38,12 @@ Url.routes = {
     })
   },
   search: {
+    mode: new Url("mode=:scope~:icon", {
+      unmatch: "?",
+      change: function(params) {
+        return console.log(params);
+      }
+    }),
     pin: new Url("pin=:back~:pins", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "?"
     }),
@@ -56,17 +59,17 @@ Url.routes = {
     stories: new Url("stories=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) && "?"
     }),
-    messages: new Url("messages=:scope~:home~:talk~:memo~:open~:uniq~:human~:search", {
+    messages: new Url("messages=:home~:talk~:memo~:open~:human~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "?"
     }),
-    scroll: new Url("scroll=:scroll", {
+    scroll: new Url("scrolls=:scroll~:home_at~:talk_at~:memo_at", {
       unmatch: "?",
       change: function(params) {
-        var folder, logid, turn, updated_at, vid, _ref1, _ref2;
-        GUI.ScrollSpy.global.prop = Url.prop.scroll;
-        _ref1 = params.scroll.split("-"), folder = _ref1[0], vid = _ref1[1], turn = _ref1[2], logid = _ref1[3];
+        var folder, logid, scroll, turn, updated_at, vid, _ref1, _ref2;
+        scroll = GUI.ScrollSpy.global.prop();
+        _ref1 = scroll.split("-"), folder = _ref1[0], vid = _ref1[1], turn = _ref1[2], logid = _ref1[3];
         if (logid != null) {
-          updated_at = ((_ref2 = Cache.messages.find(params.scroll)) != null ? _ref2.updated_at : void 0) || 0;
+          updated_at = ((_ref2 = Cache.messages.find(scroll)) != null ? _ref2.updated_at : void 0) || 0;
           Url.prop.updated_at(updated_at, true);
           Url.prop.event_id("" + folder + "-" + vid + "-" + turn, true);
           Url.prop.message_id("" + folder + "-" + vid + "-" + turn + "-" + logid, true);
@@ -299,7 +302,7 @@ new Cache.Rule("message").schema(function() {
         enables = RAILS.message.visible.talk[mode];
         message = Cache.messages.find(scroll);
         if (message) {
-          _ref1 = Url.prop.scroll().split("-"), folder = _ref1[0], vid = _ref1[1], turn = _ref1[2], logid = _ref1[3];
+          _ref1 = scroll.split("-"), folder = _ref1[0], vid = _ref1[1], turn = _ref1[2], logid = _ref1[3];
           regexp = RegExp("<mw " + logid + "," + turn + ",");
           return all.where(function(o) {
             return (o.show & enables) && regexp.test(o.search_words);
@@ -726,15 +729,15 @@ Cache.potofs.has_faces = {
   }
 };
 
-GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
-
-scroll_spy = GUI.ScrollSpy.global;
+scroll_spy = GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
 
 icon_mode_menu = new GUI.MenuTree;
 
+icon_mode_menu.state = Url.prop.scope;
+
 icon_menu = new GUI.MenuTree.Icon;
 
-icon_menu.state = Url.prop.icons;
+icon_menu.state = Url.prop.icon;
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
   Cache.rule.chr_set.schema(function() {
@@ -1019,7 +1022,7 @@ GUI.if_exist("#buttons", function(dom) {
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      var back, badges, section, vdoms;
+      var badges, section, vdoms;
       vdoms = [];
       section = function(icon) {
         var vdom;
@@ -1086,23 +1089,18 @@ GUI.if_exist("#buttons", function(dom) {
         }
       };
       switch (icon_mode_menu.state()) {
-        case "pin":
+        case "pins":
           section("pin");
-          back = Url.prop.back_icon();
-          switch (back) {
-            case "mail":
-            case "clock":
-            case "chat-alt":
-              section(back);
-          }
           break;
         case "memo":
+        case "history":
           section("home");
           section("clock");
           section("mail");
           section("chat-alt");
           break;
-        case "base":
+        case "home":
+        case "talk":
           section("home");
           section("mail");
           section("chat-alt");
@@ -1274,9 +1272,9 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       return Cache.messages.pins(story_id(), pins());
     },
     anchor: function(_arg) {
-      var scroll, talk;
-      talk = _arg.talk, scroll = _arg.scroll;
-      return Cache.messages.anchor(talk(), scroll());
+      var talk;
+      talk = _arg.talk;
+      return Cache.messages.anchor(talk(), scroll_spy.prop());
     },
     home: function(_arg) {
       var home;
@@ -1337,8 +1335,8 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
   GUI.if_exist("#story", function(dom) {
     icon_menu.icon("home", {
       open: function() {
-        icon_mode_menu.state("base");
-        return Url.prop.scope("home");
+        icon_mode_menu.change("home");
+        return scroll_spy.rescroll(Url.prop.home_at);
       },
       view: function() {
         var event, event_card, story, text, texts;
@@ -1381,18 +1379,17 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         }
       }
     });
-    icon_menu.icon("search", {
-      view: function() {
-        return [m(".paragraph.guide", GUI.timeline(Url.prop.w()), m("input.mini", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"))];
-      }
-    });
     return m.module(dom, {
       controller: function() {},
       view: function() {
         return [
-          icon_menu.node("search"), (function() {
+          icon_menu.icon("search", {
+            view: function() {
+              return m(".paragraph.guide", GUI.timeline(Url.prop.w()), m("input.mini", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"));
+            }
+          }), (function() {
             if (typeof story !== "undefined" && story !== null) {
-              switch (Url.prop.scope()) {
+              switch (icon_mode_menu.state()) {
                 case "home":
                   return GUI.message.story(story);
               }
@@ -1404,22 +1401,62 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
   });
   GUI.if_exist("#messages", function(dom) {
     scroll_spy.avg_height = 150;
+    GUI.message.delegate.tap_anchor = function(o, turn, a, id) {
+      var pins, target, target_at;
+      target = icon_mode_menu.state();
+      switch (target) {
+        case "history":
+          target_at = Url.prop["memo_at"];
+          break;
+        case "memo":
+        case "talk":
+        case "home":
+          target_at = Url.prop["" + target + "_at"];
+      }
+      if (target_at) {
+        target_at(o._id);
+        Url.prop.back(target);
+      }
+      pins = Url.prop.pins();
+      pins["" + o.turn + "-" + o.logid] = true;
+      pins["" + turn + "-" + a] = true;
+      Url.prop.pins(pins);
+      Url.prop.scroll(o._id);
+      return icon_menu.change("pin");
+    };
+    icon_mode_menu.node("history", {
+      open: function() {
+        return scroll_spy.rescroll(Url.prop.memo_at);
+      }
+    });
+    icon_mode_menu.node("memo", {
+      open: function() {
+        return scroll_spy.rescroll(Url.prop.memo_at);
+      }
+    });
+    icon_mode_menu.node("talk", {
+      open: function() {
+        return scroll_spy.rescroll(Url.prop.talk_at);
+      }
+    });
+    icon_mode_menu.node("home", {
+      open: function() {
+        return scroll_spy.rescroll(Url.prop.home_at);
+      }
+    });
     icon_menu.icon("pin", {
       open: function() {
-        icon_mode_menu.state("pins");
-        return Url.prop.scope("pins");
+        icon_mode_menu.change("pins");
+        return scroll_spy.rescroll(Url.prop.scroll);
       },
       close: function() {
-        Url.prop.icons("");
         Url.prop.pins({});
-        return Url.prop.scope(back);
+        return icon_mode_menu.change(Url.prop.back());
       }
     });
     icon_menu.icon("mail", {
       open: function() {
-        icon_mode_menu.state("memo");
-        Url.prop.scope("memo");
-        return GUI.ScrollSpy.global.rescroll(Url.prop.scroll_talk);
+        return icon_mode_menu.change("memo");
       },
       view: function() {
         return [m(".paragraph.guide", m("h6", "メモ"), security_modes(Url.prop.memo), m("p", "メモを表示します。")), potofs_portrates()];
@@ -1427,9 +1464,8 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     icon_menu.icon("chat-alt", {
       open: function() {
-        icon_mode_menu.state("base");
-        Url.prop.scope("talk");
-        return GUI.ScrollSpy.global.rescroll(Url.prop.scroll_talk);
+        icon_mode_menu.change("talk");
+        return scroll_spy.rescroll(Url.prop.talk_at);
       },
       view: function() {
         return [m(".paragraph.guide", m("h6", "発言"), security_modes(Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates()];
@@ -1437,22 +1473,16 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     icon_menu.icon("clock", {
       open: function() {
-        icon_mode_menu.state("memo");
-        return Url.prop.scope("history");
+        return icon_mode_menu.change("history");
       },
       view: function() {
         return [m(".paragraph.guide", m("h6", "発言"), security_modes(Url.prop.memo), m("p", "メモ履歴を表示します。")), potofs_portrates()];
       }
     });
-    icon_menu.icon("search", {
-      view: function() {
-        return [m(".paragraph.guide", GUI.timeline(Url.prop.w()), m("input.mini", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"))];
-      }
-    });
     m.module(dom, {
       controller: function() {},
       view: function() {
-        return scroll_spy.pager("div", messages[Url.prop.scope()](Url.prop).list(), function(o) {
+        return scroll_spy.pager("div", messages[icon_mode_menu.state()](Url.prop).list(), function(o) {
           var anchor_num;
           anchor_num = o.logid.slice(2) - 0 || 0;
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
@@ -1534,7 +1564,9 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
           set_event_messages(event);
         }
       }
-      icon_mode_menu.state("base");
+      if (!icon_mode_menu.state()) {
+        icon_mode_menu.change("talk");
+      }
       return m.endComputation();
     });
   });
@@ -1585,25 +1617,25 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
 if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) {
   Cache.rule.story.set(gon.stories);
   GUI.if_exist("#stories", function(dom) {
+    icon_menu.icon("resize-full", {
+      open: function() {
+        scroll_spy.avg_height = 120;
+        return icon_mode_menu.change("full");
+      }
+    });
+    icon_menu.icon("resize-normal", {
+      deploy: function() {
+        return icon_mode_menu.change("normal");
+      },
+      open: function() {
+        scroll_spy.avg_height = 22;
+        return icon_mode_menu.change("normal");
+      }
+    });
     return m.module(dom, {
       controller: function() {},
       view: function() {
         var query, _ref8;
-        icon_menu.icon("resize-full", {
-          open: function() {
-            scroll_spy.avg_height = 120;
-            return icon_mode_menu.state("full");
-          }
-        });
-        icon_menu.icon("resize-normal", {
-          deploy: function() {
-            return icon_mode_menu.state("normal");
-          },
-          open: function() {
-            scroll_spy.avg_height = 22;
-            return icon_mode_menu.state("normal");
-          }
-        });
         query = (_ref8 = Cache.storys).menu.apply(_ref8, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values())));
         return [
           icon_menu.icon("search", {
