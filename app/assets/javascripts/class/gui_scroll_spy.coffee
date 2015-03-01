@@ -72,9 +72,7 @@ class GUI.ScrollSpy
 
     @adjust?.id
 
-
   size = (page_size, avg)->
-    avg -= avg % 10
     5 + Math.ceil(win.height * page_size / avg)
 
   pager: (tag, @list, cb)->
@@ -105,8 +103,11 @@ class GUI.ScrollSpy
             else                 top
     @past_list = @list
 
-    @tail = Math.min btm, idx + size(3, @avg_height)
-    @head = Math.max top, idx - size(3, @avg_height)
+    new_size = size(3, @avg_height)
+    @size = new_size unless 3 > Math.abs @size - new_size
+
+    @tail = Math.min btm, idx + @size
+    @head = Math.max top, idx - @size
 
     pager_cb = (@pager_elem, is_continue, context)=>
       rect = @pager_elem.getBoundingClientRect()
