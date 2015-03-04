@@ -2443,6 +2443,14 @@ GUI.timeline = function(_arg) {
       Url.prop.search("");
       canvas = document.querySelector("canvas");
       switch (false) {
+        case !e.offsetX:
+          offsetX = e.offsetX * 2;
+          offsetY = e.offsetY * 2;
+          break;
+        case !e.layerX:
+          offsetX = e.layerX * 2;
+          offsetY = e.layerY * 2;
+          break;
         case !e.pageX:
           rect = canvas.getBoundingClientRect();
           offsetX = (e.pageX - rect.left) * 2;
@@ -2452,10 +2460,6 @@ GUI.timeline = function(_arg) {
           rect = canvas.getBoundingClientRect();
           offsetX = (e.touches[0].pageX - rect.left) * 2;
           offsetY = (e.touches[0].pageY - rect.top) * 2;
-          break;
-        default:
-          offsetX = (e.offsetX || e.layerX || e.x) * 2;
-          offsetY = (e.offsetY || e.layerY || e.y) * 2;
       }
       list = 100 < offsetY ? Cache.messages.talk("open", false, {}).list() : ((_ref4 = Url.prop, talk = _ref4.talk, open = _ref4.open, potofs_hide = _ref4.potofs_hide, _ref4), Cache.messages.talk(talk(), open(), potofs_hide()).list());
       id = find_last(list, Math.ceil(1000 * 3600 * (first_at + offsetX / x)));
