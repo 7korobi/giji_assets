@@ -45,6 +45,12 @@ table.memo {
 
 
 .mini-width {
+  @media screen and (max-width: 470px) {
+    body {
+      zoom: 0.6;
+      -moz-zoom: 0.6;
+    }
+  }
   @include width(460px, 110px, 128px);
   @include film(9px);
   .chrlist {

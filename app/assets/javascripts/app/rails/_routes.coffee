@@ -17,6 +17,7 @@ Url.routes =
             "#{Url.prop[key]()}-#{key}"
         list.push "no-player" unless Url.prop.human()
         GUI.header list
+
         window.requestAnimationFrame ->
           GUI.Layout.resize()
 
@@ -53,3 +54,10 @@ Url.routes =
           Url.prop.event_id  "#{folder}-#{vid}-#{turn}", true
           Url.prop.message_id "#{folder}-#{vid}-#{turn}-#{logid}", true
         return
+
+win.on.resize.push ->
+  if win.width < 800 && "wide" == Url.prop.width()
+    Url.prop.width "std"
+
+  if win.width < 600 && "std"  == Url.prop.width()
+    Url.prop.width "mini"

@@ -75,6 +75,15 @@ Url.routes = {
     })
   }
 };
+
+win.on.resize.push(function() {
+  if (win.width < 800 && "wide" === Url.prop.width()) {
+    Url.prop.width("std");
+  }
+  if (win.width < 600 && "std" === Url.prop.width()) {
+    return Url.prop.width("mini");
+  }
+});
 new Cache.Rule("map_face").schema(function() {
   var item;
   this.belongs_to("face", {
@@ -689,17 +698,6 @@ new Cache.Rule("potof").schema(function() {
 var face, icon_menu, icon_mode_menu, messages, potofs_portrates, scroll_spy, security_modes, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7,
   __slice = [].slice;
 
-win.on.resize.push(function() {
-  if (win.width < Url.prop.w()) {
-    switch (Url.prop.width()) {
-      case "wide":
-        return Url.prop.width("std");
-      case "std":
-        return Url.prop.width("mini");
-    }
-  }
-});
-
 Cache.potofs.has_faces = {
   all: function() {
     delete Cache.messages.has_face.undefined;
@@ -1158,7 +1156,7 @@ GUI.if_exist("#css_changer", function(dom) {
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      return m(".guide", m("a.menuicon.icon-cog", icon_menu.start({}, "cog"), " "), Btns.radio({}, Url.prop.theme, {
+      return m(".guide", m("a.menuicon.pull-right.icon-cog", icon_menu.start({}, "cog"), " "), Btns.radio({}, Url.prop.theme, {
         cinema: "煉瓦",
         star: "蒼穹",
         night: "闇夜",

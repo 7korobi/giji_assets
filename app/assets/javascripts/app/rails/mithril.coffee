@@ -1,12 +1,3 @@
-win.on.resize.push ->
-  if win.width < Url.prop.w()
-    switch Url.prop.width()
-      when "wide"
-        Url.prop.width "std"
-      when "std"
-        Url.prop.width "mini"
-
-
 
 Cache.potofs.has_faces =
   all:    ->
@@ -373,7 +364,7 @@ GUI.if_exist "#css_changer", (dom)->
     controller: ->
     view: ->
       m ".guide",
-        m "a.menuicon.icon-cog", icon_menu.start({}, "cog"), " "
+        m "a.menuicon.pull-right.icon-cog", icon_menu.start({}, "cog"), " "
         Btns.radio {}, Url.prop.theme,
           cinema: "煉瓦"
           star:   "蒼穹"

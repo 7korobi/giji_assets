@@ -50,23 +50,7 @@
   text-align: center;
 }
 
-.right-layout, .center-layout {
-  .guide {
-    text-align: left;
-  }
-  .menuicon {
-    float: right;
-  }
-}
-.left-layout {
-  .guide {
-    text-align: right;
-  }
-  .menuicon {
-    float: left;
-  }
-}
-
+.guide,
 .plane,
 .paragraph {
   text-align: left;
