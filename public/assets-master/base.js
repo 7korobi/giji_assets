@@ -2436,18 +2436,26 @@ GUI.timeline = function(_arg) {
       return null;
     };
     point = function(e) {
-      var canvas, id, list, offsetX, offsetY, open, potofs_hide, talk, _ref2, _ref3, _ref4;
+      var canvas, id, list, offsetX, offsetY, open, potofs_hide, rect, talk, _ref2, _ref3, _ref4;
       if (!win.is_touch) {
         return;
       }
       Url.prop.search("");
       canvas = document.querySelector("canvas");
-      if ((_ref2 = e.touches) != null ? (_ref3 = _ref2[0]) != null ? _ref3.pageX : void 0 : void 0) {
-        offsetX = (e.touches[0].pageX - canvas.offsetLeft) * 2;
-        offsetY = (e.touches[0].pageY - canvas.offsetTop) * 2;
-      } else {
-        offsetX = (e.offsetX || e.layerX || e.x) * 2;
-        offsetY = (e.offsetY || e.layerY || e.y) * 2;
+      switch (false) {
+        case !e.pageX:
+          rect = canvas.getBoundingClientRect();
+          offsetX = (e.pageX - rect.left) * 2;
+          offsetY = (e.pageY - rect.top) * 2;
+          break;
+        case !((_ref2 = e.touches) != null ? (_ref3 = _ref2[0]) != null ? _ref3.pageX : void 0 : void 0):
+          rect = canvas.getBoundingClientRect();
+          offsetX = (e.touches[0].pageX - rect.left) * 2;
+          offsetY = (e.touches[0].pageY - rect.top) * 2;
+          break;
+        default:
+          offsetX = (e.offsetX || e.layerX || e.x) * 2;
+          offsetY = (e.offsetY || e.layerY || e.y) * 2;
       }
       list = 100 < offsetY ? Cache.messages.talk("open", false, {}).list() : ((_ref4 = Url.prop, talk = _ref4.talk, open = _ref4.open, potofs_hide = _ref4.potofs_hide, _ref4), Cache.messages.talk(talk(), open(), potofs_hide()).list());
       id = find_last(list, Math.ceil(1000 * 3600 * (first_at + offsetX / x)));

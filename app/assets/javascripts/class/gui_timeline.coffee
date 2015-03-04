@@ -49,12 +49,18 @@ GUI.timeline = ({width, base, choice})->
       Url.prop.search ""
 
       canvas = document.querySelector("canvas")
-      if e.touches?[0]?.pageX
-        offsetX = (e.touches[0].pageX - canvas.offsetLeft) * 2
-        offsetY = (e.touches[0].pageY - canvas.offsetTop)  * 2
-      else
-        offsetX = (e.offsetX || e.layerX || e.x) * 2
-        offsetY = (e.offsetY || e.layerY || e.y) * 2
+      switch
+        when e.pageX
+          rect = canvas.getBoundingClientRect()
+          offsetX = (e.pageX - rect.left) * 2
+          offsetY = (e.pageY - rect.top)  * 2
+        when e.touches?[0]?.pageX
+          rect = canvas.getBoundingClientRect()
+          offsetX = (e.touches[0].pageX - rect.left) * 2
+          offsetY = (e.touches[0].pageY - rect.top)  * 2
+        else
+          offsetX = (e.offsetX || e.layerX || e.x) * 2
+          offsetY = (e.offsetY || e.layerY || e.y) * 2
 
       list =
         if 100 < offsetY
