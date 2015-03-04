@@ -593,7 +593,14 @@ if gon?.events? && gon.event?
           icon_menu.icon "search",
             view: ->
               m ".paragraph.guide",
-                GUI.timeline Url.prop.w()
+                GUI.timeline
+                  base: Cache.messages.timeline(Url.prop.talk())
+                  width: Url.prop.w()
+                  choice: (id)->
+                    Url.prop.talk_at id
+                    icon_menu.change "search"
+                    icon_mode_menu.change "talk"
+
                 m "input.mini", Txt.input(Url.prop.search)
                 m "span", "発言中の言葉を検索します。"
                 m "hr.black"
@@ -662,7 +669,6 @@ if gon?.events? && gon.event?
     icon_menu.icon "chat-alt",
       open: ->
         icon_mode_menu.change "talk"
-        scroll_spy.rescroll Url.prop.talk_at
       view: ->
         [ m ".paragraph.guide",
             m "h6", "発言"

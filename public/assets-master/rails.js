@@ -1387,7 +1387,15 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         return [
           icon_menu.icon("search", {
             view: function() {
-              return m(".paragraph.guide", GUI.timeline(Url.prop.w()), m("input.mini", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"));
+              return m(".paragraph.guide", GUI.timeline({
+                base: Cache.messages.timeline(Url.prop.talk()),
+                width: Url.prop.w(),
+                choice: function(id) {
+                  Url.prop.talk_at(id);
+                  icon_menu.change("search");
+                  return icon_mode_menu.change("talk");
+                }
+              }), m("input.mini", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"));
             }
           }), (function() {
             if (story != null) {
@@ -1470,8 +1478,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     icon_menu.icon("chat-alt", {
       open: function() {
-        icon_mode_menu.change("talk");
-        return scroll_spy.rescroll(Url.prop.talk_at);
+        return icon_mode_menu.change("talk");
       },
       view: function() {
         return [m(".paragraph.guide", m("h6", "発言"), security_modes(Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates()];

@@ -2088,7 +2088,6 @@ GUI.message = (function() {
     },
     story: function(story) {
       var rating, saycnt;
-      console.log([story, story.type]);
       rating = RAILS.rating[story.rating];
       saycnt = RAILS.saycnt[story.type.say] || {};
       return m(".ADMIN.guide", {
@@ -2390,8 +2389,9 @@ GUI.ScrollSpy = (function() {
   return ScrollSpy;
 
 })();
-GUI.timeline = function(width) {
-  var attr, base, colors, first_at, last_at, max_height, mestype_orders, time_width, x, y, _ref, _ref1;
+GUI.timeline = function(_arg) {
+  var attr, base, choice, colors, first_at, last_at, max_height, mestype_orders, time_width, width, x, y, _ref, _ref1;
+  width = _arg.width, base = _arg.base, choice = _arg.choice;
   colors = {
     SAY: "#cb8",
     MSAY: "#cb8",
@@ -2411,7 +2411,6 @@ GUI.timeline = function(width) {
     line: "#44a"
   };
   mestype_orders = ["SAY", "MSAY", "VSAY", "SPSAY", "GSAY", "WSAY", "XSAY", "BSAY", "AIM", "TSAY", "MAKER", "ADMIN"];
-  base = Cache.messages.timeline(Url.prop.talk());
   last_at = ((_ref = base.list().last) != null ? _ref.updated_at : void 0) / (1000 * 3600);
   first_at = ((_ref1 = base.list().first) != null ? _ref1.updated_at : void 0) / (1000 * 3600);
   time_width = last_at - first_at;
@@ -2448,9 +2447,7 @@ GUI.timeline = function(width) {
         return;
       }
       m.startComputation();
-      Url.prop.scope("talk");
-      Url.prop.talk_at(id);
-      GUI.ScrollSpy.global.rescroll(Url.prop.talk_at);
+      choice(id);
       return m.endComputation();
     };
     this.start(function(e) {

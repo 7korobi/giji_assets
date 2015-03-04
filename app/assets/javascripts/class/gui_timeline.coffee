@@ -1,4 +1,4 @@
-GUI.timeline = (width)->
+GUI.timeline = ({width, base, choice})->
   colors =
     SAY:   "#cb8"
     MSAY:  "#cb8"
@@ -16,6 +16,7 @@ GUI.timeline = (width)->
     back:  "#000"
     event: "#224"
     line:  "#44a"
+
   mestype_orders = [
     "SAY"
     "MSAY"
@@ -31,7 +32,6 @@ GUI.timeline = (width)->
     "ADMIN"
   ]
 
-  base = Cache.messages.timeline(Url.prop.talk())
   last_at = base.list().last?.updated_at / (1000 * 3600)
   first_at = base.list().first?.updated_at / (1000 * 3600)
   time_width = last_at - first_at
@@ -66,9 +66,7 @@ GUI.timeline = (width)->
       return unless id
 
       m.startComputation()
-      Url.prop.scope "talk"
-      Url.prop.talk_at id
-      GUI.ScrollSpy.global.rescroll Url.prop.talk_at
+      choice(id)
       m.endComputation()
 
     @start (e)->
