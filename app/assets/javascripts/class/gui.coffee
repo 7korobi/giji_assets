@@ -127,7 +127,7 @@ GUI = (->
         o.onmouseout = cb
         o.ontouchend = cb
 
-      canvas: (width, height, options)->
+      canvas: (width, height, {cache, background, draw})->
         size = "#{width}x#{height}"
         o.width = width * 2
         o.height = height * 2
@@ -135,15 +135,17 @@ GUI = (->
         o.config = (canvas, is_continue, context)->
           ctx = canvas.getContext "2d"
 
-          cache = options.cache?()
-          if cache
-            cache.canvas ?= {}
-            if image = cache.canvas[size]
+          caches = cache?()
+          if caches
+            caches.canvas ?= {}
+            if image = caches.canvas[size]
               ctx.putImageData image, 0, 0
+              draw?(ctx)
               return
-          options.draw ctx
-          if cache
-            cache.canvas[size] = ctx.getImageData 0, 0, o.width, o.height
+          background?(ctx)
+          if caches
+            caches.canvas[size] = ctx.getImageData 0, 0, o.width, o.height
+            draw?(ctx)
 
       config: (cb)->
         o.config = cb

@@ -37,10 +37,7 @@ Url.routes = {
       }
     }),
     mode: new Url("mode=:scope~:icon", {
-      unmatch: "#",
-      change: function(params) {
-        return console.log(params);
-      }
+      unmatch: "#"
     }),
     potofs: new Url("ptf=:potofs_order~:potofs_desc~:potofs_hide", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) && "#"
@@ -1518,7 +1515,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     m.startComputation();
     return window.requestAnimationFrame(function() {
-      var event, interval, set_event_messages, set_event_without_messages, turn, updated_at, _i, _j, _k, _len, _len1, _ref10, _ref8, _ref9;
+      var back_state, event, interval, set_event_messages, set_event_without_messages, turn, updated_at, _i, _j, _k, _len, _len1, _ref10, _ref8, _ref9;
       set_event_messages = function(event) {
         var first, last;
         first = event.messages.first.date;
@@ -1577,9 +1574,10 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
           set_event_messages(event);
         }
       }
-      if (!icon_mode_menu.state()) {
-        icon_mode_menu.change("talk");
-      }
+      back_state = icon_mode_menu.state();
+      icon_mode_menu.change("");
+      icon_mode_menu.change("talk");
+      icon_mode_menu.change(back_state);
       return m.endComputation();
     });
   });

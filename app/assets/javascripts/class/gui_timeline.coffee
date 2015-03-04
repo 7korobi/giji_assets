@@ -16,6 +16,7 @@ GUI.timeline = ({width, base, choice})->
     back:  "#000"
     event: "#224"
     line:  "#44a"
+    focus: "yellow"
 
   mestype_orders = [
     "SAY"
@@ -84,6 +85,18 @@ GUI.timeline = ({width, base, choice})->
     @canvas width, 75,
       cache: -> base.reduce()
       draw: (ctx)->
+        focus = Cache.messages.find(Url.prop.talk_at())
+        return unless focus
+
+        ctx.beginPath()
+        offset = focus.updated_at / (1000 * 3600) - first_at
+        ctx.strokeStyle = colors.focus
+        ctx.globalAlpha = 1
+        ctx.moveTo x * offset, 150
+        ctx.lineTo x * offset,   0
+        ctx.stroke()
+
+      background: (ctx)->
         return unless base.reduce()
 
         for time_id, mask of base.reduce().mask

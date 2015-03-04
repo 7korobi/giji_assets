@@ -1436,28 +1436,35 @@ GUI = (function() {
           o.onmouseout = cb;
           return o.ontouchend = cb;
         },
-        canvas: function(width, height, options) {
-          var size;
+        canvas: function(width, height, _arg) {
+          var background, cache, draw, size;
+          cache = _arg.cache, background = _arg.background, draw = _arg.draw;
           size = "" + width + "x" + height;
           o.width = width * 2;
           o.height = height * 2;
           o.style = "width: " + width + "px; height: " + height + "px;";
           return o.config = function(canvas, is_continue, context) {
-            var cache, ctx, image;
+            var caches, ctx, image;
             ctx = canvas.getContext("2d");
-            cache = typeof options.cache === "function" ? options.cache() : void 0;
-            if (cache) {
-              if (cache.canvas == null) {
-                cache.canvas = {};
+            caches = typeof cache === "function" ? cache() : void 0;
+            if (caches) {
+              if (caches.canvas == null) {
+                caches.canvas = {};
               }
-              if (image = cache.canvas[size]) {
+              if (image = caches.canvas[size]) {
                 ctx.putImageData(image, 0, 0);
+                if (typeof draw === "function") {
+                  draw(ctx);
+                }
                 return;
               }
             }
-            options.draw(ctx);
-            if (cache) {
-              return cache.canvas[size] = ctx.getImageData(0, 0, o.width, o.height);
+            if (typeof background === "function") {
+              background(ctx);
+            }
+            if (caches) {
+              caches.canvas[size] = ctx.getImageData(0, 0, o.width, o.height);
+              return typeof draw === "function" ? draw(ctx) : void 0;
             }
           };
         },
@@ -2408,7 +2415,8 @@ GUI.timeline = function(_arg) {
     text: "yellow",
     back: "#000",
     event: "#224",
-    line: "#44a"
+    line: "#44a",
+    focus: "yellow"
   };
   mestype_orders = ["SAY", "MSAY", "VSAY", "SPSAY", "GSAY", "WSAY", "XSAY", "BSAY", "AIM", "TSAY", "MAKER", "ADMIN"];
   last_at = ((_ref = base.list().last) != null ? _ref.updated_at : void 0) / (1000 * 3600);
@@ -2468,6 +2476,20 @@ GUI.timeline = function(_arg) {
         return base.reduce();
       },
       draw: function(ctx) {
+        var focus, offset;
+        focus = Cache.messages.find(Url.prop.talk_at());
+        if (!focus) {
+          return;
+        }
+        ctx.beginPath();
+        offset = focus.updated_at / (1000 * 3600) - first_at;
+        ctx.strokeStyle = colors.focus;
+        ctx.globalAlpha = 1;
+        ctx.moveTo(x * offset, 150);
+        ctx.lineTo(x * offset, 0);
+        return ctx.stroke();
+      },
+      background: function(ctx) {
         var color, event_id, height, left, mask, mestype, reduce, right, time_id, top, _i, _len, _ref2, _ref3, _ref4;
         if (!base.reduce()) {
           return;

@@ -22,8 +22,6 @@ Url.routes =
 
     mode: new Url "mode=:scope~:icon",
       unmatch: "#"
-      change: (params)->
-        console.log params
 
     potofs: new Url "ptf=:potofs_order~:potofs_desc~:potofs_hide",
       unmatch: gon?.potofs? && "#"

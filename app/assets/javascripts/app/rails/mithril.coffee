@@ -748,7 +748,10 @@ if gon?.events? && gon.event?
         if event.messages
           set_event_messages event
 
-      icon_mode_menu.change "talk" unless icon_mode_menu.state()
+      back_state = icon_mode_menu.state()
+      icon_mode_menu.change ""
+      icon_mode_menu.change "talk"
+      icon_mode_menu.change back_state
       m.endComputation()
 
 if gon?.villages?
