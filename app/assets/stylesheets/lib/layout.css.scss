@@ -47,7 +47,11 @@
 }
 
 #buttons {
-  text-align: center;
+  td {
+    height: 800px;
+    text-align: center;
+    vertical-align: bottom;
+  }
 }
 
 .guide,

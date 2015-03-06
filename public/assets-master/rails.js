@@ -1112,7 +1112,7 @@ GUI.if_exist("#buttons", function(dom) {
         section("search");
       }
       section("cog");
-      return vdoms;
+      return m("table", m("tr", m("td", vdoms)));
     }
   });
 });
