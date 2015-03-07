@@ -204,12 +204,13 @@ define(String, function() {
       return log;
     }
     return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd) {
-      return "<span random=\"" + cmd + "," + val + "\" class=\"mark\">" + val + "</span>";
+      cmd = cmd.replace(/]]]]/, "]]");
+      return "<span data-tooltip=\"" + cmd + " = " + val + "\" class=\"mark tooltip-top\">" + val + "</span>";
     });
   };
   random_preview = function(log) {
     return log.replace(/\[\[([^\[]+)\]\]/g, function(key, val) {
-      return "<span random=\"" + val + ",？\" class=\"mark\">" + val + "</span>";
+      return "<span data-tooltip=\"" + val + " = ？\" class=\"mark tooltip-top\">" + val + "</span>";
     });
   };
   link_regexp = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/;
@@ -1317,7 +1318,7 @@ GUI = (function() {
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         elem = _ref[_i];
-        data = attr && ((_ref1 = elem.attributes[attr]) != null ? _ref1.value.split(",") : void 0);
+        data = attr && Serial.parser.Array((_ref1 = elem.attributes[attr]) != null ? _ref1.value : void 0);
         _results.push((function() {
           var _ref2, _results1;
           _ref2 = GUI.attrs(base_attrs, attr_cb(elem, data, cb));
@@ -2032,7 +2033,7 @@ GUI.MenuNode = (function() {
 var __slice = [].slice;
 
 GUI.message = (function() {
-  var deco_action;
+  var deco_action, identity_action;
   deco_action = function(o) {
     return {
       config: function(parent, is_continue, context) {
@@ -2060,8 +2061,19 @@ GUI.message = (function() {
       }
     };
   };
+  identity_action = function(o) {
+    var attr;
+    return attr = GUI.attrs({}, function() {
+      return this.start(function(e) {
+        return GUI.message.delegate.tap_identity(o, o.turn, o.logid, o._id);
+      });
+    });
+  };
   return {
     delegate: {
+      tap_identity: function() {
+        return console.log(arguments);
+      },
       tap_anchor: function() {
         return console.log(arguments);
       },
@@ -2149,7 +2161,7 @@ GUI.message = (function() {
       }, m("tr", m("th", GUI.portrate(v.face_id), m("div", m("b", v.name))), m("td", m("p.text." + v.style, deco_action(v), m.trust(v.log.deco_text)), m("p.mes_date", GUI.timer("span", v.updated_timer)))));
     },
     talk: function(v) {
-      return GUI.message.say_base(v, m("span.mark", v.anchor), GUI.timer("span", v.updated_timer));
+      return GUI.message.say_base(v, m("span.mark", identity_action(v), v.anchor), GUI.timer("span", v.updated_timer));
     },
     history: function(v) {
       return GUI.message.say_base(v, m("span.mark", v.anchor));

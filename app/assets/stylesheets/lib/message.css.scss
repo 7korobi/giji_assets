@@ -33,7 +33,7 @@ table.talk {
 .text,
 table.talk td .msg p,
 table.memo td p {
-  overflow: hidden;
+  overflow: visible;
   word-wrap: break-word;
   word-break: loose;
 }
@@ -55,7 +55,7 @@ table.memo td p {
 .action {
   padding: 4px 12px 4px 4px;
   .text {
-    overflow-x: auto;
+    overflow-x: visible;
   }
 }
 

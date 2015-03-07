@@ -19,7 +19,13 @@ GUI.message = (->
           GUI.message.delegate.tap_external(o, id, uri, protocol, host, path)
           m.endComputation()
 
+  identity_action = (o)->
+    attr = GUI.attrs {}, ->
+      @start (e)->
+        GUI.message.delegate.tap_identity(o, o.turn, o.logid, o._id)
+
   delegate:
+    tap_identity: -> console.log arguments
     tap_anchor:   -> console.log arguments
     tap_random:   -> console.log arguments
     tap_external: -> console.log arguments
@@ -131,7 +137,7 @@ GUI.message = (->
 
   talk: (v)->
     GUI.message.say_base v,
-      m "span.mark", v.anchor
+      m "span.mark", identity_action(v), v.anchor
       GUI.timer "span", v.updated_timer
 
   history: (v)->

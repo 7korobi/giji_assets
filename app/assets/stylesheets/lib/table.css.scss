@@ -21,7 +21,7 @@ table {
 }
 
 .table-swipe {
-  overflow-y: hidden;
+  overflow-y: visible;
   overflow-x: scroll;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   -webkit-overflow-scrolling: touch;

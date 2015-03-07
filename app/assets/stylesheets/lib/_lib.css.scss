@@ -269,13 +269,7 @@
   }
 }
 
-@mixin form-tone($tone, $color, $background){
-  $middle:  mix($background, $color);
-
-  color: $color;
-  a {
-    color: lighten($color, 10%);
-  }
+@mixin markers($color, $background){
   input[type='submit'],
   input[type='button'],
   input[type='image'],
@@ -285,18 +279,41 @@
   .mark,
   .badge,
   .menuicon {
-    @if white == $tone {
-      color: $color;
-      background-color: lighten($background, 10%);
+    color: $color;
+    background-color: $background;
+  }
+
+  [data-tooltip] {
+    &:hover:after,
+    &:focus:after {
+      padding: 5px;
     }
-    @if glass == $tone {
+    &:after {
       color: $color;
-      background-color: lighten($background, 60%);
+      background: $background;
     }
-    @if black == $tone {
-      color: $color;
-      background-color: lighten($background, 20%);
-    }
+  }
+  .tooltip-top:before { border-top-color: $background; }
+  .tooltip-bottom:before { border-bottom-color: $background; }
+  .tooltip-left:before { border-left-color: $background; }
+  .tooltip-right:before { border-right-color: $background; }
+}
+
+@mixin form-tone($tone, $color, $background){
+  $middle:  mix($background, $color);
+
+  color: $color;
+  a {
+    color: lighten($color, 10%);
+  }
+  @if white == $tone {
+    @include markers($color, lighten($background, 10%));
+  }
+  @if glass == $tone {
+    @include markers($color, lighten($background, 60%));
+  }
+  @if black == $tone {
+    @include markers($color, lighten($background, 20%));
   }
 
   .emboss {

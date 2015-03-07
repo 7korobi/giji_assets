@@ -26,11 +26,12 @@ define String, ->
   random = (log)->
     return log unless log
     log.replace /<rand ([^>]+),([^>]+)>/g, (key, val, cmd)->
-      """<span random="#{cmd},#{val}" class="mark">#{val}</span>"""
+      cmd = cmd.replace /]]]]/, "]]"
+      """<span data-tooltip="#{cmd} = #{val}" class="mark tooltip-top">#{val}</span>"""
 
   random_preview = (log)->
     log.replace /\[\[([^\[]+)\]\]/g, (key, val)->
-      """<span random="#{val},？" class="mark">#{val}</span>"""
+      """<span data-tooltip="#{val} = ？" class="mark tooltip-top">#{val}</span>"""
 
   link_regexp = ///
       (\w+)://([^/<>）］】」\s]+)([^<>）］】」\s]*)

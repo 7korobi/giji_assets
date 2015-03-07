@@ -519,10 +519,11 @@ new Cache.Rule("potof").schema(function() {
     };
   });
   this.deploy(function(o) {
-    var chr_job, is_dead_lose, is_lone_lose, job, mask, name, pt, pt_no, role, role_side_order, role_text, roles, rolestate, said_num, say_type, select, stat_at, stat_order, stat_type, state, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie, _i, _len, _ref;
+    var chr_job, face, is_dead_lose, is_lone_lose, job, mask, name, pt, pt_no, role, role_side_order, role_text, roles, rolestate, said_num, say_type, select, stat_at, stat_order, stat_type, state, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie, _i, _len, _ref;
     o._id = "" + o.event_id + "-" + o.csid + "-" + o.face_id;
     o.user_id = o.sow_auth_id;
-    name = Cache.faces.find(o.face_id).name;
+    face = Cache.faces.find(o.face_id);
+    name = face ? face.name : o.name;
     o.name = o.zapcount ? "" + RAILS.clearance[o.clearance] + name + "-" + o.zapcount : name;
     stat_at = 0 < o.deathday ? "" + o.deathday + "日" : "";
     said_num = o.point.saidcount;
@@ -1113,7 +1114,7 @@ GUI.if_exist("#buttons", function(dom) {
       }
       section("cog");
       return m("table", m("tr", m("td", {
-        style: "height: " + win.height + "px;"
+        style: "height: " + (win.height - 2) + "px;"
       }, vdoms)));
     }
   });
@@ -1407,9 +1408,10 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
   });
   GUI.if_exist("#messages", function(dom) {
+    var change_pin;
     scroll_spy.avg_height = 150;
-    GUI.message.delegate.tap_anchor = function(o, turn, a, id) {
-      var pins, target, target_at;
+    change_pin = function(id) {
+      var target, target_at;
       target = icon_mode_menu.state();
       switch (target) {
         case "history":
@@ -1421,15 +1423,26 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
           target_at = Url.prop["" + target + "_at"];
       }
       if (target_at) {
-        target_at(o._id);
+        target_at(id);
         Url.prop.back(target);
       }
+      Url.prop.scroll(id);
+      return icon_menu.change("pin");
+    };
+    GUI.message.delegate.tap_anchor = function(o, turn, logid, id) {
+      var pins;
       pins = Url.prop.pins();
       pins["" + o.turn + "-" + o.logid] = true;
-      pins["" + turn + "-" + a] = true;
+      pins["" + turn + "-" + logid] = true;
       Url.prop.pins(pins);
-      Url.prop.scroll(o._id);
-      return icon_menu.change("pin");
+      return change_pin(o._id);
+    };
+    GUI.message.delegate.tap_identity = function(o, turn, logid, id) {
+      var pins;
+      pins = Url.prop.pins();
+      pins["" + turn + "-" + logid] = true;
+      Url.prop.pins(pins);
+      return change_pin(id);
     };
     icon_mode_menu.node("history", {
       open: function() {

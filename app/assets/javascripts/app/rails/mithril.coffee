@@ -322,7 +322,7 @@ GUI.if_exist "#buttons", (dom)->
       section "search" unless "pins" == icon_mode_menu.state()
       section "cog"
 
-      m "table", m "tr", m "td", {style: "height: #{win.height}px;"}, vdoms
+      m "table", m "tr", m "td", {style: "height: #{win.height - 2}px;"}, vdoms
 
 
 GUI.if_exist "#topviewer", (dom)->
@@ -604,7 +604,7 @@ if gon?.events? && gon.event?
   GUI.if_exist "#messages", (dom)->
     scroll_spy.avg_height = 150
 
-    GUI.message.delegate.tap_anchor = (o, turn, a, id)->
+    change_pin = (id)->
       target = icon_mode_menu.state()
       switch target
         when "history"
@@ -613,15 +613,24 @@ if gon?.events? && gon.event?
           target_at = Url.prop["#{target}_at"]
 
       if target_at
-        target_at o._id
+        target_at id
         Url.prop.back target
 
+      Url.prop.scroll id
+      icon_menu.change "pin"
+
+    GUI.message.delegate.tap_anchor = (o, turn, logid, id)->
       pins = Url.prop.pins()
       pins["#{o.turn}-#{o.logid}"] = true
-      pins["#{turn}-#{a}"] = true
+      pins["#{turn}-#{logid}"] = true
       Url.prop.pins pins
-      Url.prop.scroll o._id
-      icon_menu.change "pin"
+      change_pin(o._id)
+
+    GUI.message.delegate.tap_identity = (o, turn, logid, id)->
+      pins = Url.prop.pins()
+      pins["#{turn}-#{logid}"] = true
+      Url.prop.pins pins
+      change_pin(id)
 
     icon_mode_menu.node "history",
       open: ->

@@ -1,0 +1,107 @@
+[data-tooltip] {
+  position: relative;
+
+  &:after,
+  &:before {
+    // Position
+    position: absolute;
+
+    // Hide it by default
+    opacity: 0;
+    border-width: 0;
+    height: 0;
+    padding: 0;
+    overflow: visible;
+  }
+
+  &:after {
+    // Content
+    content: attr(data-tooltip);
+    white-space: nowrap;
+    border-radius: 8px;
+  }
+
+  &:before {
+    content: '';
+    width: 0;
+    height: 0;
+    border-width: 0;
+    border-style: solid;
+    border-color: transparent;
+  }
+
+  &:hover:after,
+  &:focus:after,
+  &:hover:before,
+  &:focus:before {
+    opacity: 1;
+    border-width: 6px;
+    height: auto;
+    }
+
+}
+
+.tooltip-bottom {
+  &:after,
+  &:before {
+    top: 85%;
+    left: 0;
+    margin-top: 12px;
+  }
+
+  &:before {
+    margin-top: 0;
+    left: 15px;
+  }
+}
+
+// Top
+.tooltip-top {
+  &:after,
+  &:before {
+    top: auto;
+    bottom: 85%;
+    left: 0;
+    margin-bottom: 12px;
+    }
+
+  &:before {
+    margin-bottom: 0;
+    left: 15px;
+  }
+}
+
+// Right
+.tooltip-right {
+  &:after,
+  &:before {
+    left: 100%;
+    margin-left: 6px;
+    margin-top: 0;
+    top: 0;
+    }
+
+  &:before {
+    margin-left: -6px;
+    left: 100%;
+    top: 7px;
+  }
+}
+
+// Left
+.tooltip-left {
+  &:after,
+  &:before {
+    right: 100%;
+    margin-right: 6px;
+    left: auto;
+    margin-top: 0;
+    top: 0;
+  }
+
+  &:before {
+    margin-right: -6px;
+    right: 100%;
+    top: 7px;
+  }
+}

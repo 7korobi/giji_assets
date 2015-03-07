@@ -15,7 +15,12 @@ new Cache.Rule("potof").schema ->
     o._id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
     o.user_id = o.sow_auth_id
 
-    name = Cache.faces.find(o.face_id).name
+    face = Cache.faces.find(o.face_id)
+    name =
+      if face
+        face.name
+      else
+        o.name
     o.name =
       if o.zapcount
         "#{RAILS.clearance[o.clearance]}#{name}-#{o.zapcount}"
