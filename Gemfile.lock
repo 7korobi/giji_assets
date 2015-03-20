@@ -127,7 +127,6 @@ GEM
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
-    sqlite3 (1.3.10)
     sshkit (1.6.1)
       colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
@@ -157,7 +156,6 @@ DEPENDENCIES
   neat
   rails (~> 4.2.0)
   sass-rails (~> 4.0.0)
-  sqlite3
   therubyracer
   thor
   uglifier (>= 1.3.0)
