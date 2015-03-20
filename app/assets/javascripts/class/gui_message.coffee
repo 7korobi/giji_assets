@@ -99,7 +99,7 @@ GUI.message = (->
     m "div", {key: v._id}, ".U.C #{v._id}"
 
   event: (v)->
-    m "h3", {key: v._id}, v.name
+    m "h3", {key: v._id}, m.trust v.name
 
   info: (v)->
     m ".#{v.mestype}.info", {key: v._id},
@@ -147,8 +147,10 @@ GUI.message = (->
   say_base: (v, timer...)->
     messages = []
     if v.to
-      messages.push m "p.name",
-        m "b", m.trust "#{v.name} ▷ #{v.to}"
+      messages.push m "p.name.center",
+        m "b.pull-left", m.trust "#{v.name}"
+        m "b", "▷"
+        m "b.pull-right", m.trust "#{v.to}"
     else
       messages.push m "p.name",
         m "b", m.trust v.name

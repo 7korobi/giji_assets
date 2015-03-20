@@ -77,13 +77,7 @@ Url.routes = {
 };
 
 win.on.resize.push(function() {
-  var width, _ref1;
-  if (win.width < 350 || win.height < 350) {
-    b.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5";
-    if ((_ref1 = document.querySelector("meta[name=viewport]")) != null) {
-      _ref1.content = head.browser.viewport;
-    }
-  }
+  var width;
   width = document.querySelector("#contentframe").offsetWidth;
   Url.prop.content_width = function() {
     return width;

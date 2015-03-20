@@ -343,11 +343,17 @@ win = (function() {
     },
     "do": {
       resize: function(e) {
-        var body_height, body_width, docBody, docElem;
+        var body_height, body_width, docBody, docElem, _ref;
         docElem = document.documentElement;
         docBody = document.body;
         win.height = Math.max(window.innerHeight, docElem.clientHeight);
         win.width = Math.max(window.innerWidth, docElem.clientWidth);
+        if (win.width < 380 || win.height < 380) {
+          head.browser.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5";
+          if ((_ref = document.querySelector("meta[name=viewport]")) != null) {
+            _ref.content = head.browser.viewport;
+          }
+        }
         win.horizon = win.height / 2;
         body_height = Math.max(docBody.clientHeight, docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight);
         body_width = Math.max(docBody.clientWidth, docBody.scrollWidth, docElem.scrollWidth, docElem.clientWidth);
@@ -2138,7 +2144,7 @@ GUI.message = (function() {
     event: function(v) {
       return m("h3", {
         key: v._id
-      }, v.name);
+      }, m.trust(v.name));
     },
     info: function(v) {
       return m("." + v.mestype + ".info", {
@@ -2171,7 +2177,7 @@ GUI.message = (function() {
       v = arguments[0], timer = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       messages = [];
       if (v.to) {
-        messages.push(m("p.name", m("b", m.trust("" + v.name + " ▷ " + v.to))));
+        messages.push(m("p.name.center", m("b.pull-left", m.trust("" + v.name)), m("b", "▷"), m("b.pull-right", m.trust("" + v.to))));
       } else {
         messages.push(m("p.name", m("b", m.trust(v.name)), m(".emboss.pull-right", v.user_id)));
       }

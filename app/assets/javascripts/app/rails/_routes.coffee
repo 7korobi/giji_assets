@@ -56,10 +56,6 @@ Url.routes =
         return
 
 win.on.resize.push ->
-  if win.width < 350 || win.height < 350
-    b.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5"
-    document.querySelector("meta[name=viewport]")?.content = head.browser.viewport
-
   width = document.querySelector("#contentframe").offsetWidth
 
   Url.prop.content_width = -> width

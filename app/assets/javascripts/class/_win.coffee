@@ -33,6 +33,11 @@ win = (->
 
       win.height = Math.max window.innerHeight, docElem.clientHeight
       win.width  = Math.max window.innerWidth,  docElem.clientWidth
+
+      if win.width < 380 || win.height < 380
+        head.browser.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5"
+        document.querySelector("meta[name=viewport]")?.content = head.browser.viewport
+
       win.horizon = win.height / 2
       body_height = Math.max docBody.clientHeight , docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight
       body_width  = Math.max docBody.clientWidth,   docBody.scrollWidth,  docElem.scrollWidth,  docElem.clientWidth
