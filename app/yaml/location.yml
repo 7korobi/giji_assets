@@ -153,17 +153,6 @@ bind:
     - folder: TEST
       nation: 人狼議事テスト
 
-  width:
-    - width: wide
-      w: 770
-    - width: std
-      w: 580
-    - width: mini
-      w: 458
-
-  page:
-    - page: 0
-
   theme:
     - theme: juna
       item:  box-msg

@@ -11,7 +11,7 @@ GUI = (->
   name_config = (o)->
       RAILS.roles[o]?.name || RAILS.gifts[o]?.name || RAILS.events[o]?.name || o || ""
 
-  img_head: "http://7korobi.gehirn.ne.jp/images"
+  img_head: "http://kanto.me/7korobi/images"
   portrate: (face_id, attr = {})->
     attr.src = GUI.img_head + "/portrate/#{face_id}.jpg"
     m "img", attr

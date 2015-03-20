@@ -56,8 +56,24 @@ Url.routes =
         return
 
 win.on.resize.push ->
-  if win.width < 800 && "wide" == Url.prop.width()
-    Url.prop.width "std"
+  if win.width < 350 || win.height < 350
+    b.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5"
+    document.querySelector("meta[name=viewport]")?.content = head.browser.viewport
 
-  if win.width < 600 && "std"  == Url.prop.width()
-    Url.prop.width "mini"
+  width = document.querySelector("#contentframe").offsetWidth
+
+  Url.prop.content_width = -> width
+  if width <= 770
+    Url.prop.h1_width = -> 770
+  if width <= 580
+    Url.prop.h1_width = -> 580
+  if width <= 458
+    Url.prop.h1_width = -> 458
+
+  switch Url.prop.layout()
+    when "right"
+      Url.prop.right_width = -> 0
+    when "center"
+      Url.prop.right_width = -> (win.width - width -  4) / 2
+    when "left"
+      Url.prop.right_width = -> (win.width - width - 94)

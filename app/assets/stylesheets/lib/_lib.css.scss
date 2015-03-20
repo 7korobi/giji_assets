@@ -130,49 +130,67 @@
   }
 }
 
-@mixin width($full-width, $left-width, $outer-width) {
-  .drag,
-  .ajax,
-  .memo,
-  .pagenavi,
-  .toppage,
-  .outframe,
-  .contentframe {
-    width: $full-width;
-  }
+@mixin width($base, $step, $h1_margin) {
+  $head-list:  458px, 458px, 458px, 458px, 580px, 580px, 770px, 770px, 770px, 99999px;
+  $width-list: 280px, 340px, 400px, 458px, 520px, 580px, 640px, 705px, 770px, 99999px;
+  @for $idx from 1 through 9 {
+    $content: nth($width-list, $idx);
+    $head: nth($head-list, $idx);
+    $min: nth($width-list, $idx    ) + $base + ($idx + 0) * $step;
+    $max: nth($width-list, $idx + 1) + $base + ($idx + 1) * $step - 1;
+    @if $idx == 1 { $min: 1px; }
 
-  table.memo {
-    th { width:               $outer-width; }
-    td { width: $full-width - $outer-width; }
-  }
-
-  table.talk {
-    th {  }
-    td { width: $full-width - $left-width; }
-  }
-
-  table.talk td .msg,
-  .action {
-    p { width: $full-width - $outer-width; }
-  }
-
-  .CAST code {
-    width: 90px;
+    @media screen and (min-width: $min) and (max-width: $max) {
+      h1 {
+        width: $head;
+        margin-left: ($content - $head) / $h1_margin;
+      }
+      .drag,
+      .ajax,
+      .memo,
+      .pagenavi,
+      .toppage,
+      .outframe,
+      .contentframe {
+        width: $content;
+      }
+    }
   }
 }
 
-@mixin film($film-top) {
+@mixin film($film-left, $action-left, $action-border) {
   .accordion dd,
   .CAST code,
-  table.talk th .chrblank,
-  table.talk th img {
-    margin-left: $film-top;
+
+  table.memo {
+    th {
+      width: $action-left + 11px;
+    }
+  }
+  table.talk {
+    th {
+      margin: 0 4px 6px 12px;
+      padding: 0 4px;
+      width: $action-left + 11px;
+      .chrblank,
+      img {
+        margin-left: $film-left;
+      }
+    }
+    td .msg {
+      margin: 0 6px 6px 3px;
+    }
+  }
+
+  .action {
+    margin: 0 0 6px $action-left;
+    border-width: 2px 0 2px $action-border;
   }
 
   .drag_head .badge,
   .drag_foot .badge {
     width:  84px;
-    margin-left: ( $film-top - 3px ) * 2;
+    margin-left: ( $film-left - 3px ) * 2;
   }
 }
 

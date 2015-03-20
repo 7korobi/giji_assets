@@ -98,13 +98,6 @@ hr,
   padding: 0;
 }
 
-.MAKER,
-.ADMIN {
-  .mes_date {
-    margin-right:  11px;
-  }
-}
-
 .inframe {
   .pagenavi dl,
   .pagenavi {
@@ -126,7 +119,7 @@ hr,
   .turnnavi,
   .row_all,
   .secret {
-    padding-left: 11px;
+    padding: 0 11px;
     margin-bottom: 6px;
   }
   .log {
@@ -145,7 +138,10 @@ table .talk td .msg,
   -webkit-box-sizing: content-box;
 }
 
-.left-layout {
+.left-layout {  
+  &.mini-width { @include width(80px, 12px, 2) };
+  &.std-width  { @include width( 0px, 90px, 2) };
+  &.wide-width { @include width(60px, 30px, 2) };
   .outframe {
     margin: 0 auto 0 90px;
     padding: 0px;
@@ -153,6 +149,9 @@ table .talk td .msg,
 }
 
 .center-layout {
+  &.mini-width { @include width(30px,  8px, 2) };
+  &.std-width  { @include width(30px, 60px, 2) };
+  &.wide-width { @include width(70px, 20px, 2) };
   .outframe {
     margin: 0 auto;
     padding: 0px;
@@ -160,6 +159,9 @@ table .talk td .msg,
 }
 
 .right-layout {
+  &.mini-width { @include width( 0px, 10px, 1) };
+  &.std-width  { @include width(90px,  0px, 1) };
+  &.wide-width { @include width(90px,  0px, 1) };
   .outframe {
     margin: 0 0 0 auto;
     padding: 0px;

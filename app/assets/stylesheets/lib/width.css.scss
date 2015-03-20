@@ -3,6 +3,10 @@
   width:     140px;
 }
 
+.CAST code {
+  width: 90px;
+}
+
 .infonologin {
   padding: 0px 0px 0px 16px;
 }
@@ -43,16 +47,10 @@ table.memo {
 .infowolf  ,
 .caution   { padding: 4px 11px;}
 
+// $width-list: 280px, 340px, 400px, 458px, 520px, 580px, 640px, 705px, 770px, 99999px;
 
 .mini-width {
-  @media screen and (max-width: 470px) {
-    body {
-      zoom: 0.6;
-      -moz-zoom: 0.6;
-    }
-  }
-  @include width(460px, 110px, 128px);
-  @include film(9px);
+  @include film(9px, 99px, 14px);
   .chrlist {
     margin: 0 0 0 7px;
   }
@@ -79,52 +77,13 @@ table.memo {
     table.talk th {
       padding: 0 0 4px 0;
     }
-    .action {
-      margin: 0 0 4px 99px;
-    }
   }
 }
 
 
-.std-width {
-  @include width(580px, 119px, 141px);
-  @include film(12px);
-  .chrlist {
-    margin: 0 0 0 16px;
-  }
-  .CAST {
-    margin-bottom: 9px
-  }
-  table.talk td .msg {
-    padding: 0 4px;
-  }
-
-  &.box {
-    .formpl_frame {
-      margin: 0px 0px 12px 0px;
-    }
-    .formpl_content {
-      padding: 4px;
-    }
-    .formpl_action {
-      padding: 4px;
-    }
-  }
-
-  &.speech-item {
-    table.talk th {
-      margin: 0 4px 6px 12px;
-      padding: 0 4px;
-    }
-    .action {
-      margin: 0 0 6px 107px;
-    }
-  }
-}
-
+.std-width,
 .wide-width {
-  @include width(770px, 119px, 141px);
-  @include film(12px);
+  @include film(12px, 107px, 18px);
   .chrlist {
     margin: 0 0 0 16px;
   }
@@ -144,16 +103,6 @@ table.memo {
     }
     .formpl_action {
       padding: 4px;
-    }
-  }
-
-  &.speech-item {
-    table.talk th {
-      margin: 0 4px 6px 12px;
-      padding: 0 4px;
-    }
-    .action {
-      margin: 0 0 6px 107px;
     }
   }
 }

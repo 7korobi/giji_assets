@@ -1282,7 +1282,7 @@ GUI = (function() {
     return ((_ref = RAILS.roles[o]) != null ? _ref.name : void 0) || ((_ref1 = RAILS.gifts[o]) != null ? _ref1.name : void 0) || ((_ref2 = RAILS.events[o]) != null ? _ref2.name : void 0) || o || "";
   };
   return {
-    img_head: "http://7korobi.gehirn.ne.jp/images",
+    img_head: "http://kanto.me/7korobi/images",
     portrate: function(face_id, attr) {
       if (attr == null) {
         attr = {};
@@ -2148,7 +2148,7 @@ GUI.message = (function() {
     guide: function(v) {
       return m("." + v.mestype + ".guide", {
         key: v._id
-      }, m("p.name", m("b", m.trust(v.name))), m("p.text." + v.style, deco_action(v), m.trust(v.log.deco_text)), m("p.mes_date", m("span.mark", v.anchor), GUI.timer("span", v.updated_timer)));
+      }, m("p.name", m("b", m.trust(v.name))), m("p.text." + v.style, deco_action(v), m.trust(v.log.deco_text)), m("p.mes_date", m("span.mark", identity_action(v), v.anchor), GUI.timer("span", v.updated_timer)));
     },
     action: function(v) {
       return m("." + v.mestype + ".action", {
@@ -2167,11 +2167,19 @@ GUI.message = (function() {
       return GUI.message.say_base(v, m("span.mark", v.anchor));
     },
     say_base: function() {
-      var timer, v;
+      var messages, timer, v;
       v = arguments[0], timer = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      messages = [];
+      if (v.to) {
+        messages.push(m("p.name", m("b", m.trust("" + v.name + " ▷ " + v.to))));
+      } else {
+        messages.push(m("p.name", m("b", m.trust(v.name)), m(".emboss.pull-right", v.user_id)));
+      }
+      messages.push(m("p.text." + v.style, deco_action(v), m.trust(v.log.deco_text)));
+      messages.push(m("p.mes_date", timer));
       return m("table." + v.mestype + ".talk", {
         key: v._id
-      }, m("tr", m("th", GUI.portrate(v.face_id)), m("td", m(".msg", m("p.name", m("b", m.trust(v.name)), m(".emboss.pull-right", v.user_id)), m("p.text." + v.style, deco_action(v), m.trust(v.log.deco_text)), m("p.mes_date", timer)))));
+      }, m("tr", m("th", GUI.portrate(v.face_id)), m("td", m(".msg", messages))));
     }
   };
 })();
@@ -2514,7 +2522,7 @@ GUI.timeline = function(_arg) {
         return ctx.stroke();
       },
       background: function(ctx) {
-        var color, event_id, height, left, mask, mestype, reduce, right, time_id, top, _i, _len, _ref2, _ref3, _ref4;
+        var color, event_id, height, left, mask, max_width, mestype, reduce, right, time_id, top, _i, _len, _ref2, _ref3, _ref4;
         if (!base.reduce()) {
           return;
         }
@@ -2563,7 +2571,10 @@ GUI.timeline = function(_arg) {
           ctx.textAlign = "left";
           ctx.fillStyle = colors.text;
           ctx.font = "30px serif";
-          ctx.fillText(Cache.events.find(event_id).name, x * left, 150 - 12, x * (right - left) - 4);
+          max_width = x * (right - left) - 4;
+          if (0 < max_width) {
+            ctx.fillText(Cache.events.find(event_id).name, x * left, 150 - 12, max_width);
+          }
           left = right;
         }
         return ctx.stroke();
@@ -2573,11 +2584,11 @@ GUI.timeline = function(_arg) {
   x = attr.width / time_width;
   return m("canvas", attr);
 };
-var b, _ref;
+var b;
 
 if (head.browser != null) {
   b = head.browser;
-  b.viewport = "width=device-width, initial-scale=1.0";
+  b.viewport = "width=device-width, maximum-scale=4.0, minimum-scale=1.0, initial-scale=1.0";
   if (navigator.userAgent.toLowerCase().indexOf('windows') !== -1) {
     b.win = true;
   }
@@ -2587,13 +2598,6 @@ if (head.browser != null) {
   if (navigator.userAgent.toLowerCase().indexOf('android') !== -1) {
     b.android = true;
   }
-  if (navigator.userAgent.toLowerCase().indexOf('iphone') !== -1) {
-    b.viewport = "width=device-width, initial-scale=0.5";
-  }
-}
-
-if ((_ref = document.querySelector("meta[name=viewport]")) != null) {
-  _ref.attributes.content = head.browser.viewport;
 }
 
 head.useragent = navigator.userAgent;

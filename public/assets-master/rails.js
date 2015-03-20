@@ -77,11 +77,45 @@ Url.routes = {
 };
 
 win.on.resize.push(function() {
-  if (win.width < 800 && "wide" === Url.prop.width()) {
-    Url.prop.width("std");
+  var width, _ref1;
+  if (win.width < 350 || win.height < 350) {
+    b.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5";
+    if ((_ref1 = document.querySelector("meta[name=viewport]")) != null) {
+      _ref1.content = head.browser.viewport;
+    }
   }
-  if (win.width < 600 && "std" === Url.prop.width()) {
-    return Url.prop.width("mini");
+  width = document.querySelector("#contentframe").offsetWidth;
+  Url.prop.content_width = function() {
+    return width;
+  };
+  if (width <= 770) {
+    Url.prop.h1_width = function() {
+      return 770;
+    };
+  }
+  if (width <= 580) {
+    Url.prop.h1_width = function() {
+      return 580;
+    };
+  }
+  if (width <= 458) {
+    Url.prop.h1_width = function() {
+      return 458;
+    };
+  }
+  switch (Url.prop.layout()) {
+    case "right":
+      return Url.prop.right_width = function() {
+        return 0;
+      };
+    case "center":
+      return Url.prop.right_width = function() {
+        return (win.width - width - 4) / 2;
+      };
+    case "left":
+      return Url.prop.right_width = function() {
+        return win.width - width - 94;
+      };
   }
 });
 new Cache.Rule("map_face").schema(function() {
@@ -1210,20 +1244,11 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
       view: function() {
         var event, filter, filter_class, hides, o, potofs, subview;
         hides = Url.prop.potofs_hide();
-        switch (Url.prop.layout()) {
-          case "right":
-            layout.width = 0;
-            break;
-          case "center":
-            layout.width = (win.width - Url.prop.w() - 4) / 2;
-            break;
-          case "left":
-            layout.width = win.width - Url.prop.w() - 94;
-        }
+        layout.width = Url.prop.right_width();
         if (layout.large_mode()) {
-          layout.width += Url.prop.w();
+          layout.width += Url.prop.content_width();
         }
-        if (layout.width < 100) {
+        if (layout.width < 90) {
           layout.mode = "hide";
         } else {
           layout.mode = "show";
@@ -1387,13 +1412,13 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
             view: function() {
               return m(".paragraph.guide", GUI.timeline({
                 base: Cache.messages.timeline(Url.prop.talk()),
-                width: Url.prop.w(),
+                width: Url.prop.content_width(),
                 choice: function(id) {
                   Url.prop.talk_at(id);
                   icon_menu.change("search");
                   return icon_mode_menu.change("talk");
                 }
-              }), m("input.mini", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"));
+              }), m("input.medium", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"));
             }
           }), (function() {
             if (story != null) {
@@ -1832,7 +1857,7 @@ GUI.if_exist("#to_root", function(dom) {
       return [
         m("a", {
           href: "//giji.check.jp/"
-        }, GUI.title(Url.prop.w(), Url.prop.theme(), day_or_night()))
+        }, GUI.title(Url.prop.h1_width(), Url.prop.theme(), day_or_night()))
       ];
     }
   });

@@ -407,17 +407,10 @@ if gon?.potofs?
       controller: ->
       view: ->
         hides = Url.prop.potofs_hide()
-        switch Url.prop.layout()
-          when "right"
-            layout.width = 0
-          when "center"
-            layout.width = (win.width - Url.prop.w() -  4) / 2
-          when "left"
-            layout.width = (win.width - Url.prop.w() - 94)
+        layout.width  = Url.prop.right_width()
+        layout.width += Url.prop.content_width() if layout.large_mode()
 
-        layout.width += Url.prop.w() if layout.large_mode()
-
-        if layout.width < 100
+        if layout.width < 90
           layout.mode = "hide"
         else
           layout.mode = "show"
@@ -586,13 +579,13 @@ if gon?.events? && gon.event?
               m ".paragraph.guide",
                 GUI.timeline
                   base: Cache.messages.timeline(Url.prop.talk())
-                  width: Url.prop.w()
+                  width: Url.prop.content_width()
                   choice: (id)->
                     Url.prop.talk_at id
                     icon_menu.change "search"
                     icon_mode_menu.change "talk"
 
-                m "input.mini", Txt.input(Url.prop.search)
+                m "input.medium", Txt.input Url.prop.search
                 m "span", "発言中の言葉を検索します。"
                 m "hr.black"
           if story?
@@ -922,7 +915,7 @@ GUI.if_exist "#to_root", (dom)->
     view: ->
       [ m "a",
           href: "//giji.check.jp/"
-        , GUI.title Url.prop.w(), Url.prop.theme(), day_or_night()
+        , GUI.title Url.prop.h1_width(), Url.prop.theme(), day_or_night()
       ]
 
 m.endComputation()

@@ -111,7 +111,7 @@ GUI.message = (->
         m "b", m.trust v.name
       m "p.text.#{v.style}", deco_action(v), m.trust v.log.deco_text
       m "p.mes_date",
-        m "span.mark", v.anchor
+        m "span.mark", identity_action(v), v.anchor
         GUI.timer "span", v.updated_timer
 
   action: (v)->
@@ -145,16 +145,23 @@ GUI.message = (->
       m "span.mark", v.anchor
 
   say_base: (v, timer...)->
+    messages = []
+    if v.to
+      messages.push m "p.name",
+        m "b", m.trust "#{v.name} ▷ #{v.to}"
+    else
+      messages.push m "p.name",
+        m "b", m.trust v.name
+        m ".emboss.pull-right", v.user_id
+
+    messages.push m "p.text.#{v.style}", deco_action(v), m.trust v.log.deco_text
+    messages.push m "p.mes_date", timer
+
     m "table.#{v.mestype}.talk", {key: v._id},
       m "tr",
         m "th",
           GUI.portrate v.face_id
 
         m "td",
-          m ".msg",
-            m "p.name",
-              m "b", m.trust v.name
-              m ".emboss.pull-right", v.user_id
-            m "p.text.#{v.style}", deco_action(v), m.trust v.log.deco_text
-            m "p.mes_date", timer
+          m ".msg", messages
 )()

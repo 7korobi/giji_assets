@@ -35,7 +35,10 @@ table.talk td .msg p,
 table.memo td p {
   overflow: visible;
   word-wrap: break-word;
-  word-break: loose;
+  word-break: break-strict;
+  .ff & {
+    word-break: break-all;
+  }
 }
 
 .text,
@@ -105,23 +108,6 @@ table.memo td p {
     border-style: solid none solid solid ;
   }
 
-  &.mini-width {
-    table.talk td .msg {
-      margin: 0 3px 4px 1px;
-    }
-    .action {
-      border-width: 1px 0 1px 15px;
-    }
-  }
-  &.std-width, &.wide-width {
-    table.talk td .msg {
-      margin: 0 5px 6px 3px;
-    }
-    .action {
-      border-width: 1px 0 1px 18px;
-    }
-  }
-
   .caution,       {  @include color-tone(glass, #666, rgba( 30, 30, 30, 0.6)); }
 
   .TSAY .action,
@@ -176,16 +162,10 @@ table.memo td p {
     table.talk td .msg {
       margin: 0 6px 4px 3px;
     }
-    .action {
-      border-width: 2px 0 2px 14px;
-    }
   }
   &.std-width, &.wide-width {
     table.talk td .msg {
       margin: 0 7px 6px 6px;
-    }
-    .action {
-      border-width: 2px 0 2px 18px;
     }
   }
 
