@@ -19,10 +19,6 @@ test:
   timeout: 5000
 
 production:
-  adapter: postgresql
+  url: postgres://achimfbpyaovvm:Ulp05nCRaPvuen1bZ58tqlZj3j@ec2-50-19-236-178.compute-1.amazonaws.com:5432/d1sklhpolfrmq1
   encoding: utf8
-  database: d1sklhpolfrmq1
-  port: 5432
-  username: achimfbpyaovvm
-  password: Ulp05nCRaPvuen1bZ58tqlZj3j
 
