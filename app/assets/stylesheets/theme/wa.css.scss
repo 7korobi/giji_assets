@@ -43,8 +43,12 @@
   h1 a img {
     box-shadow: rgba(208, 208, 255, 0.3) 0 2px 2px;
   }
-  @include header-tone(#d40, #720, #224);
-  @include border-tone(black, #dff, 0 none, #770, #200);
+  .board th,
+  h2 {
+    color: #ffc926;
+  }
+  @include header-tone(#d40, #000, #224);
+  @include border-tone(black, #ffc960, 0 none, #eb2, #000);
 
   #calc {
     th, td {

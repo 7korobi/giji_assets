@@ -41,7 +41,7 @@
   h1 a img {
     box-shadow: #777 0 2px 2px;
   }
-  @include header-tone(#d40, #444, #224);
+  @include header-tone(#d40, #777, #224);
   @include border-tone(black, #dff, 3px double, #777, #282828);
 
   #calc {

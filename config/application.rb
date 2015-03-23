@@ -18,8 +18,11 @@ module GijiAssets
 
 #    config.middleware.use Rack::Deflater
 
+    branch = `git rev-parse --abbrev-ref HEAD`.chomp
+#    config.action_controller.asset_host = "http://assets.example.com"
+    config.serve_static_files = false
+    config.assets.prefix = "assets-#{branch}"
     # Compress JavaScripts and CSS.
-    config.assets.paths.push "./app/views/hogan"
     config.assets.precompile += %w(
       base.js
       const.js
@@ -29,6 +32,8 @@ module GijiAssets
       spec.js
       spec.css
     )
+
+
 
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]

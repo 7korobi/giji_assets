@@ -321,6 +321,7 @@
   $middle:  mix($background, $color);
 
   color: $color;
+  label.label a,
   a {
     color: lighten($color, 10%);
   }

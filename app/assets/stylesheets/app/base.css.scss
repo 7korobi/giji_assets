@@ -5,6 +5,50 @@ $japan-theme:     '.wa-theme, .moon-theme';
 $white-msg-theme: '.cinema-theme, .wa-theme';
 $glass-msg-theme: '.moon-theme, .night-theme, .star-theme';
 
+h1.outer img {
+  border-radius: 9px;
+}
+
+h1.inner {
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    width: 97px;
+    height: 50px;
+    background: #cccc99;
+    transform: rotate(-30deg);
+  }
+  &:before {
+    top: -24px;
+    bottom: auto;
+    right: auto;
+    left: -24px;
+    box-shadow: 0 10px 8px -12px rgba(0,0,0, 0.8);
+  }
+
+  &:after {
+    top: auto;
+    bottom: -22px;
+    right: -25px;
+    left: auto;
+    box-shadow: 0 -10px 10px -10px rgba(0,0,0, 0.7);
+  }
+
+  border: 3px double silver;
+  img {
+    border: 20px solid #cccc99;
+  }
+}
+
+h1.photo {
+  border: 3px ridge silver;
+  img {
+    border: 20px solid #cccc99;
+  }
+}
+
 @import "lib/_lib";
 @import "lib/animate";
 @import "lib/filter";

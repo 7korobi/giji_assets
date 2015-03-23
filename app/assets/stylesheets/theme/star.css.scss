@@ -40,8 +40,8 @@
   h1 a img {
     box-shadow: rgba(128, 255, 208, 0.3) 0 2px 2px;
   }
-  @include header-tone(#260, #130, #024);
-  @include border-tone(black, #dff, 3px double, #1b7, #001844);
+  @include header-tone(#260, #1b7, #024);
+  @include border-tone(black, #dff, 3px double, #196, #001844);
 
   #calc {
     th, td {

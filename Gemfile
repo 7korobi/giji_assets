@@ -22,10 +22,14 @@ gem 'uglifier', '>= 1.3.0'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 gem 'coffee-rails', '~> 4.0.0'
+gem 'coffee-script-source', '1.8.0'
 
 gem "bourbon"
 gem "neat"
 
+gem "slim"
 gem "thor"
 gem "hashie"
 gem "capistrano"
+
+gem "guard"
