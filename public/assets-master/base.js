@@ -1288,7 +1288,7 @@ GUI = (function() {
     return ((_ref = RAILS.roles[o]) != null ? _ref.name : void 0) || ((_ref1 = RAILS.gifts[o]) != null ? _ref1.name : void 0) || ((_ref2 = RAILS.events[o]) != null ? _ref2.name : void 0) || o || "";
   };
   return {
-    img_head: "http://kanto.me/7korobi/images",
+    img_head: "http://giji-assets.herokuapp.com/images",
     portrate: function(face_id, attr) {
       if (attr == null) {
         attr = {};
