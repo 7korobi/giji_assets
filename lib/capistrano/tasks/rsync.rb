@@ -27,13 +27,23 @@ namespace :build do
   desc "asset compile"
   task :asset do
     run_locally do
-      execute "rake assets:clobber"
       execute "rake assets:precompile"
     end
   end
 end
 
 namespace :rsync do
+  desc "deploy heroku."
+  task :heroku do
+    run_locally do
+      branch = `git rev-parse --abbrev-ref HEAD`.chomp
+      execute "git checkout heroku"
+      execute "git rebase #{branch}"
+      execute "git push heroku heroku:master --force"
+      execute "git checkout #{branch}"
+    end
+  end
+
   desc "public rsync."
   task :public do
     open(fetch(:rsync_script),"w") do |f|
@@ -54,5 +64,5 @@ namespace :rsync do
     end
   end
   before "deploy:started",  "build:asset"
-  before "deploy:updating", "rsync:public"
+  before "deploy:updating", "rsync:heroku"
 end
