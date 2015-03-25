@@ -112,6 +112,8 @@ win.on.resize.push(function() {
       };
   }
 });
+
+win["do"].resize();
 new Cache.Rule("map_face").schema(function() {
   var item;
   this.belongs_to("face", {
