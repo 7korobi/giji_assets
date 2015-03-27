@@ -10,31 +10,13 @@ html(lang="ja")
     meta content="7korobi@gmail.com" name="Author"
     meta charset="utf-8"
 
-    link(media="screen" rel="stylesheet" type="text/css" href="/assets-master/application.css")
+    link(media="screen" rel="stylesheet" type="text/css" href="http://giji-assets.herokuapp.com/assets-master/application.css")
 
   body
-    - [280, 340, 400, 458, 520, 580, 640, 705, 770, 830, 890].each_with_index do |size, index|
-      - [:outer, :inner, :photo].each do |type_id|
-        - img_width = { outer: [458, 458, 458, 580, 580, 770, 770, 770, 0, 0, 0],  inner: [0, 0, 0, 0, 458, 458, 580, 580, 580, 770, 770],  photo: [0, 0, 0, 0, 458, 458, 580, 580, 580, 770, 770] }[type_id][index]
-        - next if 0 == img_width
-        - RAILS.head_img[img_width].cinema.each do |postfix|
-            - border = 0
-            - border = 40 if :inner == type_id
-            hr
-            .outframe(style="width: #{size}px")
-              h1(class="#{type_id}" style="width: #{img_width + border + 6}px; margin-left: #{(size - img_width - border)/2}px")
-                a(href="http://giji.check.jp/")
-                  img(src="http://giji-assets.herokuapp.com/images/banner/title#{img_width}#{postfix}")
-            .outframe(style="width: #{size}px")
-              .contentframe(style="width: #{size}px")
-                h2 テスト
-                h3 テスト
-                h6 テスト
-                br
+    #head_navi
     #outframe.outframe
       #contentframe.contentframe
         .inframe
-          .login#headline
           #css_changer
 
         .inframe
@@ -89,8 +71,8 @@ html(lang="ja")
         #topviewer
         #sayfilter
         #buttons
-  script(type="text/javascript" src="/assets-master/base.js")
-  script(type="text/javascript" src="/assets-master/const.js")
-  script(type="text/javascript" src="/assets-master/rails.js")
+  script(type="text/javascript" src="http://giji-assets.herokuapp.com/assets-master/base.js")
+  script(type="text/javascript" src="http://giji-assets.herokuapp.com/assets-master/const.js")
+  script(type="text/javascript" src="http://giji-assets.herokuapp.com/assets-master/rails.js")
 
 

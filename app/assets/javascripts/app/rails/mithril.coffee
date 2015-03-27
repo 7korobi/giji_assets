@@ -901,21 +901,4 @@ if gon?.stories?
                     o.view.rating
         ]
 
-GUI.if_exist "#to_root", (dom)->
-  day_or_night = m.prop()
-  m.module dom,
-    controller: ->
-      hour = 1000 * 60 * 60
-
-      GUI.do_tick (now)->
-        zone = now + 3*hour # means - 6hours base. (GMT is - 9 hours)
-        day_or_night Math.floor(zone / (12*hour)) % 2
-        12*hour - zone % (12*hour)
-
-    view: ->
-      [ m "a",
-          href: "//giji.check.jp/"
-        , GUI.title Url.prop.h1_width(), Url.prop.theme(), day_or_night()
-      ]
-
 m.endComputation()

@@ -145,6 +145,21 @@
         width: $head;
         margin-left: ($content - $head) / $h1_margin;
       }
+      #head_navi {
+        #headline {
+          width: $content * 0.8;
+        }
+        .left_image {
+          height:  300px;
+        }
+        .right_image {
+          height: 100px;
+        }
+      }
+      #css_changer {
+
+      }
+
       .drag,
       .ajax,
       .memo,
