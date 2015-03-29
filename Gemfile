@@ -30,6 +30,7 @@ gem "neat"
 gem "slim"
 gem "thor"
 gem "hashie"
-gem "capistrano"
 
-gem "guard"
+group :development do
+  gem "capistrano"
+end

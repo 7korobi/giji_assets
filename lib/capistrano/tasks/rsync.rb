@@ -37,10 +37,11 @@ namespace :rsync do
   task :heroku do
     run_locally do
       branch = `git rev-parse --abbrev-ref HEAD`.chomp
-      execute "git checkout heroku"
-      execute "git rebase #{branch}"
+      execute "git checkout -b heroku"
+      execute "git cherry-pick 27831e1bb35c39525630dea9f0595fa5dcaffc93" 
       execute "git push heroku heroku:master --force"
       execute "git checkout #{branch}"
+      execute "git branch -D heroku"
     end
   end
 

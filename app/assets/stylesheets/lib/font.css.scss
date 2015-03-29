@@ -1,17 +1,29 @@
 .large-font {
   @include font(21px, serif);
+  #headline {
+    width: 420px;
+  }
 }
 
 .novel-font {
   @include font(15px, serif);
+  #head_navi #headline {
+      width: 320px;
+  }
 }
 
 .std-font {
   @include font(15px, sans-serif);
+  #head_navi #headline {
+    width: 320px;
+  }
 }
 
 .small-font {
   @include font(12px, sans-serif);
+  #head_navi #headline {
+    width: 260px;
+  }
 }
 
 .menuicon {

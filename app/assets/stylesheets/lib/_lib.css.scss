@@ -138,28 +138,19 @@
     $head: nth($head-list, $idx);
     $min: nth($width-list, $idx    ) + $base + ($idx + 0) * $step;
     $max: nth($width-list, $idx + 1) + $base + ($idx + 1) * $step - 1;
+
     @if $idx == 1 { $min: 1px; }
 
     @media screen and (min-width: $min) and (max-width: $max) {
+      #head_navi {
+        .images_field {
+        }
+      }
+
       h1 {
         width: $head;
         margin-left: ($content - $head) / $h1_margin;
       }
-      #head_navi {
-        #headline {
-          width: $content * 0.8;
-        }
-        .left_image {
-          height:  300px;
-        }
-        .right_image {
-          height: 100px;
-        }
-      }
-      #css_changer {
-
-      }
-
       .drag,
       .ajax,
       .memo,

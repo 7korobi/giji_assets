@@ -1,3 +1,26 @@
+#headline {
+  margin: 0 auto;
+}
+
+#head_navi {
+  width: 100%;
+  .left_image {
+    margin: 0 auto -350px 0;
+    border: 1px yellow dashed;
+    height:  350px;
+    width: 60%;
+  }
+  .right_image {
+    margin: 0 0 0 auto;
+    border: 1px red dashed;
+    height: 180px;
+    width: 60%;
+  }
+}
+
+#css_changer {}
+
+
 #buttons {
   .bigicon {
     opacity: 0.8;

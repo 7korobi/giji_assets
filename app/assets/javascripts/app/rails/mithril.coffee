@@ -774,6 +774,14 @@ if gon?.history?
         scroll_spy.pager "div", Cache.items.list(), (v)->
           GUI.message.history(v)
 
+if gon?.form?
+  GUI.if_exist "#forms", (dom)->
+    m.module dom,
+      controller: ->
+      view: ->
+        [ 
+        ]
+
 if gon?.stories?
   Cache.rule.story.set gon.stories
   GUI.if_exist "#stories", (dom)->
