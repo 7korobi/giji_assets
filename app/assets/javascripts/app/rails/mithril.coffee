@@ -747,6 +747,20 @@ if gon?.events? && gon.event?
       icon_mode_menu.change back_state
       m.endComputation()
 
+if gon?.form?
+  icon_menu.icon "pencil",
+    open: ->
+    close: ->
+    view: ->
+      [ m ".paragraph.guide",
+          m "h6", "発言"
+          security_modes Url.prop.talk
+          m "p", "村内の発言を表示します。"
+        potofs_portrates()
+      ]
+
+
+
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
     Cache.rule.item.set gon.villages
@@ -773,14 +787,6 @@ if gon?.history?
       view: ->
         scroll_spy.pager "div", Cache.items.list(), (v)->
           GUI.message.history(v)
-
-if gon?.form?
-  GUI.if_exist "#forms", (dom)->
-    m.module dom,
-      controller: ->
-      view: ->
-        [ 
-        ]
 
 if gon?.stories?
   Cache.rule.story.set gon.stories

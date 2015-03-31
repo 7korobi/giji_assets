@@ -33,4 +33,5 @@ gem "hashie"
 
 group :development do
   gem "capistrano"
+  gem "fog"
 end

@@ -2071,8 +2071,8 @@ this.SOW = {
 
 
 this.URL = {
-  "application": "http://7korobi.gehirn.ne.jp/assets-show-fix",
-  "file": "http://7korobi.gehirn.ne.jp",
+  "application": "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-show-fix",
+  "file": "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com",
   "rails": "http://giji.check.jp"
 } ;
 

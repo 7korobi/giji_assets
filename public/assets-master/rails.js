@@ -1,5 +1,15 @@
 var _ref;
 
+Url.test = function() {
+  var query;
+  query = {
+    method: "GET",
+    url: "/stories/all.html",
+    deserialize: Serial.parser.HtmlGon
+  };
+  return m.request(query);
+};
+
 Url.define(LOCATION.props, LOCATION.bind);
 
 Url.routes = {
@@ -1617,6 +1627,16 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
   });
 }
 
+if ((typeof gon !== "undefined" && gon !== null ? gon.form : void 0) != null) {
+  icon_menu.icon("pencil", {
+    open: function() {},
+    close: function() {},
+    view: function() {
+      return [m(".paragraph.guide", m("h6", "発言"), security_modes(Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates()];
+    }
+  });
+}
+
 if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null) {
   GUI.if_exist("#villages", function(dom) {
     Cache.rule.item.set(gon.villages);
@@ -1654,17 +1674,6 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
         return scroll_spy.pager("div", Cache.items.list(), function(v) {
           return GUI.message.history(v);
         });
-      }
-    });
-  });
-}
-
-if ((typeof gon !== "undefined" && gon !== null ? gon.form : void 0) != null) {
-  GUI.if_exist("#forms", function(dom) {
-    return m.module(dom, {
-      controller: function() {},
-      view: function() {
-        return [];
       }
     });
   });

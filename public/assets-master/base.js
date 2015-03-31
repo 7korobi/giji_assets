@@ -1288,7 +1288,7 @@ GUI = (function() {
     return ((_ref = RAILS.roles[o]) != null ? _ref.name : void 0) || ((_ref1 = RAILS.gifts[o]) != null ? _ref1.name : void 0) || ((_ref2 = RAILS.events[o]) != null ? _ref2.name : void 0) || o || "";
   };
   return {
-    img_head: "http://giji-assets.herokuapp.com/images",
+    img_head: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images",
     portrate: function(face_id, attr) {
       if (attr == null) {
         attr = {};
@@ -1681,6 +1681,44 @@ GUI.Animate = (function() {
 
   return Animate;
 
+})();
+GUI.form = (function() {
+  var submit;
+  submit = function(props, f) {
+    return GUI.attrs({}, function() {
+      return this.start(function(e) {
+        return GUI.message.delegate.submit(props, f);
+      });
+    });
+  };
+  return {
+    delegate: {
+      submit: function() {
+        return console.log(arguments);
+      }
+    },
+    action: function(f, props) {
+      return m("form[name=action_form]", m("." + f.mestype + ".action", {
+        key: f._id
+      }, m("p.text." + f.style, deco_action(f), m("b", m.trust(f.name)), "は、", m("span", m.trust(props.log().deco_preview))), m("h6", "" + f.count + " " + f.title), m(".mark", f.errors), m(".formpl_content", m("select.mini", Txt.input(props.target), f.targets), m("select.mini", Txt.input(props.action), f.actions)), m("input[type=text]", Txt.input(props.log))), m("p", m("a.btn", submit(props, f), "アクション")), m("p", m("span" + f.error, f.valid_text)));
+    },
+    entry: function(f, props) {
+      return m("form[name=entry_form]", m("table." + f.mestype + ".talk", {
+        key: f._id
+      }, m("tr", m("th", GUI.portrate(f.face_id)), m("td", m(".msg", m("p", m("label.medium[for=entry_pwd]", "参加パスワード"), m("input#entry_pwd[type=password][maxlength=8][size=8]", Txt.input(props.password))), m("p", m("label.medium[for=entry_csid]", "希望する配役"), m("select#entry_csid", Txt.input(props.csid_cid), f.csid_cids)), m("p", m("label.medium[for=entry_role]", "希望する役職"), m("select#entry_role", Txt.input(props.role), f.roles)), m("div", is_preview() ? (m("h3.mesname", m("a", "" + f.face.job + " " + f.face.name)), m("p.text." + (props.style()), m.trust(props.log().deco_preview)), m("h6", "参加する時のセリフ")) : (m("textarea[cols=30][rows=" + f.lines + "]", Txt.input(props.log)), m("h6", "参加する時のセリフ"), m(".mark", f.errors))), m("p", is_preview() ? (m("a.btn", Btn.bool(f.is_preview), "戻る"), m("a.btn", submit(props, f), f.title), f.count, m("select.small", Txt.input(props.style), f.styles)) : (m("a.btn", Btn.bool(f.is_preview), f.title), f.count, m("select.small", Txt.input(props.style), f.styles))), m("p", f.caption, m("span." + f.error, f.valid_text), !is_preview() ? m("span", f.diary) : void 0))))));
+    },
+    memo: function(f) {
+      return m("form[name=memo_form]", m("table." + f.mestype + ".memo", {
+        key: f._id
+      }, m("tr", m("th", GUI.portrate(f.face.id), m("div", m("b", "" + f.face.job + " " + f.face.name))), m("td", is_preview() ? (m("p.text." + (props.style()), m.trust(props.log().deco_preview)), m("h6", "参加する時のセリフ")) : (m("textarea[cols=30][rows=" + f.lines + "]", Txt.input(props.log)), m("h6", "参加する時のセリフ"), m(".mark", f.errors)), m("p", is_preview() ? (m("a.btn", Btn.bool(f.is_preview), "戻る"), m("a.btn", submit(props, f), f.title), f.count, m("select.small", Txt.input(props.style), f.styles)) : (m("a.btn", Btn.bool(f.is_preview), f.title), f.count, m("select.small", Txt.input(props.style), f.styles))), m("p", f.caption, m("span." + f.error, f.valid_text), !is_preview() ? m("span", f.diary) : void 0)))));
+    },
+    open: function(f) {},
+    secret: function(f) {},
+    silent: function(f) {},
+    version: function(f) {},
+    votes: function(f) {},
+    story: function(f) {}
+  };
 })();
 GUI.Layout = (function() {
   var move;
@@ -2761,6 +2799,17 @@ Serial = (function() {
   };
 
   Serial.parser = {
+    HtmlGon: function(html) {
+      var code, match, pattern;
+      pattern = /<script.*?>([\s\S]*?)<\/script>/ig;
+      while (match = pattern.exec(html)) {
+        code = match[1];
+        if (code.length > 0) {
+          eval(code);
+        }
+      }
+      return gon;
+    },
     Keys: function(val) {
       var bool, hash, key, list, _j, _len1;
       hash = {};

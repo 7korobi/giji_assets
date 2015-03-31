@@ -19,7 +19,7 @@ module GijiAssets
 #    config.middleware.use Rack::Deflater
 
     branch = `git rev-parse --abbrev-ref HEAD`.chomp
-#    config.action_controller.asset_host = "http://assets.example.com"
+    config.action_controller.asset_host = "giji-assets.s3-website-ap-northeast-1.amazonaws.com"
     config.serve_static_files = false
     config.assets.prefix = "assets-#{branch}"
     # Compress JavaScripts and CSS.

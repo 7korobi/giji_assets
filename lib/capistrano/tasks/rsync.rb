@@ -1,3 +1,6 @@
+require "fog"
+require "hashie"
+FOG = Hashie::Mash.new(yaml: YAML.load_file('config/yaml/fog.yml')).yaml
 
 set :rsync_script, -> { "/utage/#{fetch(:application)}.rsync.sh" }
 
@@ -33,16 +36,35 @@ namespace :build do
 end
 
 namespace :rsync do
-  desc "deploy heroku."
-  task :heroku do
+  desc "deploy amazon s3."
+  task :amazon do
     run_locally do
-      branch = `git rev-parse --abbrev-ref HEAD`.chomp
-      execute "git checkout -b heroku"
-      execute "git cherry-pick 27831e1bb35c39525630dea9f0595fa5dcaffc93" 
-      execute "git push heroku heroku:master --force"
-      execute "git checkout #{branch}"
-      execute "git branch -D heroku"
+      options = "-t --links --recursive --exclude='.git' --exclude='.svn'"
+      execute "rsync #{options} ~/Dropbox/web_work/images/ /www/giji_assets/public/images/"
     end
+
+    remotes = Fog::Storage.new(FOG.storage).directories.find{|o|o.key == "giji-assets"}.files
+    remote_hash = remotes.group_by(&:key)
+    locals = Dir.glob("public/**/*", File::FNM_DOTMATCH).uniq.select do |path|
+      next unless File.file? path
+      key = path.match(/public\/(.*)/)[1]
+      remote_modify = remote_hash[key][0].last_modified
+      local_modify = File.mtime(path)
+
+      remote_modify < local_modify
+    end
+    locals.each_with_index do |path, index|
+      print "(#{index}/#{locals.size})\r"
+
+      key = path.match(/public\/(.*)/)[1]
+      remotes.create(
+        key: key,
+        body: File.open(path),
+        public: true
+      )
+    end
+    puts "---------- transfer complete -----------"
+    puts locals
   end
 
   desc "public rsync."
@@ -65,5 +87,5 @@ namespace :rsync do
     end
   end
   before "deploy:started",  "build:asset"
-  before "deploy:updating", "rsync:heroku"
+  before "deploy:updating", "rsync:amazon"
 end

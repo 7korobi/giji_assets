@@ -30,6 +30,15 @@ class Serial
       "#{val}".split ","
 
   @parser =
+    HtmlGon: (html)->
+      pattern = ///
+        <script.*?>([\s\S]*?)</script>
+      ///ig
+      while match = pattern.exec(html)
+        code = match[1]
+        eval code if code.length > 0
+      gon
+
     Keys: (val)->
       hash = {}
       if val.length

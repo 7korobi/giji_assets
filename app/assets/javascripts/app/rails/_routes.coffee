@@ -1,3 +1,10 @@
+Url.test = ->
+  query =
+    method: "GET"
+    url: "/stories/all.html"
+    deserialize: Serial.parser.HtmlGon
+  m.request(query)
+
 Url.define LOCATION.props, LOCATION.bind
 Url.routes =
   pathname:
