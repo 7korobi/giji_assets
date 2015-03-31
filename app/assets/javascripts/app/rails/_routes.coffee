@@ -1,7 +1,7 @@
 Url.test = ->
   query =
     method: "GET"
-    url: "/stories/all.html"
+    url: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/test-form.html"
     deserialize: Serial.parser.HtmlGon
   m.request(query)
 
