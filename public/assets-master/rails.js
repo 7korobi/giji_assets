@@ -1153,9 +1153,7 @@ GUI.if_exist("#buttons", function(dom) {
         section("search");
       }
       section("cog");
-      return m("table", m("tr", m("td", {
-        style: "height: " + (win.height - 2) + "px;"
-      }, vdoms)));
+      return m("table", m("tr", m("td", vdoms)));
     }
   });
 });

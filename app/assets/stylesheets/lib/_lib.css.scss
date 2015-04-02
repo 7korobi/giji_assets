@@ -129,11 +129,10 @@
     }
   }
 }
-
 @mixin width($base, $step, $h1_margin) {
-  $head-list:  458px, 458px, 458px, 458px, 580px, 580px, 770px, 770px, 770px, 99999px;
-  $width-list: 280px, 340px, 400px, 458px, 520px, 580px, 640px, 705px, 770px, 99999px;
-  @for $idx from 1 through 9 {
+  $head-list:  458px, 458px, 458px, 458px, 458px, 458px, 580px, 580px, 580px, 580px, 770px, 770px, 770px, 770px, 770px, 770px, 770px, 99999px;
+  $width-list: 290px, 320px, 350px, 380px, 410px, 440px, 470px, 500px, 530px, 560px, 590px, 620px, 650px, 680px, 710px, 740px, 770px, 99999px;
+  @for $idx from 1 through 17 {
     $content: nth($width-list, $idx);
     $head: nth($head-list, $idx);
     $min: nth($width-list, $idx    ) + $base + ($idx + 0) * $step;

@@ -322,7 +322,7 @@ GUI.if_exist "#buttons", (dom)->
       section "search" unless "pins" == icon_mode_menu.state()
       section "cog"
 
-      m "table", m "tr", m "td", {style: "height: #{win.height - 2}px;"}, vdoms
+      m "table", m "tr", m "td", vdoms
 
 
 GUI.if_exist "#topviewer", (dom)->
