@@ -374,6 +374,18 @@ GUI.if_exist "#css_changer", (dom)->
         m "hr.black"
 
 
+
+GUI.if_exist "title", (dom)->
+  m.module dom,
+    controller: ->
+    view: ->
+      story = Cache.storys.find Url.prop.story_id()
+      event = Cache.events.find Url.prop.event_id()
+      if story? && event?
+        "#{story.name} #{event.name}"
+      else
+        "人狼議事"
+
 if gon?.potofs?
   Cache.rule.potof.set gon.potofs,
     story_folder: gon.story?.folder
@@ -460,7 +472,7 @@ if gon?.potofs?
                   m "td.WIN_#{o.view.win}.center", {}, o.view.win_result
                   m "td.WIN_#{o.view.win}.calc", {}, o.view.win_side
                   m "td.WIN_#{o.view.win}", {}, o.view.role
-                  m "td.WIN_#{o.view.win}", {}, o.view.text
+                  m "td.WIN_#{o.view.win}", {}, m.trust o.view.text
 
         event = Cache.events.find Url.prop.event_id()
         m "div",

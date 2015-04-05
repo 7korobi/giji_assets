@@ -145,6 +145,7 @@ new Cache.Rule("message").schema ->
     o.show &= mask[o.mask]
     o.vdom = vdom
 
+    o.log ?= ""
     o.search_words = o.log
 
   @map_reduce (o, emit)->

@@ -507,6 +507,9 @@ new Cache.Rule("message").schema(function() {
     }
     o.show &= mask[o.mask];
     o.vdom = vdom;
+    if (o.log == null) {
+      o.log = "";
+    }
     return o.search_words = o.log;
   });
   return this.map_reduce(function(o, emit) {
@@ -1208,6 +1211,22 @@ GUI.if_exist("#css_changer", function(dom) {
   });
 });
 
+GUI.if_exist("title", function(dom) {
+  return m.module(dom, {
+    controller: function() {},
+    view: function() {
+      var event, story;
+      story = Cache.storys.find(Url.prop.story_id());
+      event = Cache.events.find(Url.prop.event_id());
+      if ((story != null) && (event != null)) {
+        return "" + story.name + " " + event.name;
+      } else {
+        return "人狼議事";
+      }
+    }
+  });
+});
+
 if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) {
   Cache.rule.potof.set(gon.potofs, {
     story_folder: (_ref1 = gon.story) != null ? _ref1.folder : void 0,
@@ -1276,7 +1295,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
             filter_class = hides[o.face_id] ? "filter-hide" : "";
             _results.push(m("tr", {
               className: filter_class
-            }, m("th.calc", {}, o.view.job), m("th", {}, o.name), m("td.calc", {}, o.view.stat_at), m("td", {}, o.view.stat_type), m("td.calc", {}, o.view.said_num), m("td.calc", {}, o.view.pt), m("td.center", {}, o.view.urge), m("td.center", {}, o.view.user_id), m("td.center", {}, o.view.select), m("td.WIN_" + o.view.win + ".center", {}, o.view.win_result), m("td.WIN_" + o.view.win + ".calc", {}, o.view.win_side), m("td.WIN_" + o.view.win, {}, o.view.role), m("td.WIN_" + o.view.win, {}, o.view.text)));
+            }, m("th.calc", {}, o.view.job), m("th", {}, o.name), m("td.calc", {}, o.view.stat_at), m("td", {}, o.view.stat_type), m("td.calc", {}, o.view.said_num), m("td.calc", {}, o.view.pt), m("td.center", {}, o.view.urge), m("td.center", {}, o.view.user_id), m("td.center", {}, o.view.select), m("td.WIN_" + o.view.win + ".center", {}, o.view.win_result), m("td.WIN_" + o.view.win + ".calc", {}, o.view.win_side), m("td.WIN_" + o.view.win, {}, o.view.role), m("td.WIN_" + o.view.win, {}, m.trust(o.view.text))));
           }
           return _results;
         })()));
