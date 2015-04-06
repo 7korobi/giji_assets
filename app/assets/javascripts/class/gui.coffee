@@ -5,8 +5,10 @@ GUI = (->
       for key in list
         hash[key] ||= 0
         hash[key] += 1
-      for key, size of hash
-        cb name(key), size
+
+      order = Object.keys(hash).sort (a,b)-> hash[b] - hash[a]
+      for key in order 
+        cb name(key), hash[key]
 
   name_config = (o)->
       RAILS.roles[o]?.name || RAILS.gifts[o]?.name || RAILS.events[o]?.name || o || ""

@@ -288,10 +288,18 @@ new Cache.Rule("story").schema(function() {
         return name;
       }),
       role_cards: GUI.names.config(o.card.role, function(name, size) {
-        return m(".emboss", "" + name + "x" + size);
+        if (size > 1) {
+          return m(".emboss", "" + name + "x" + size);
+        } else {
+          return m(".emboss", "" + name);
+        }
       }),
       event_cards: GUI.names.config(o.card.event, function(name, size) {
-        return m(".emboss", "" + name + "x" + size);
+        if (size > 1) {
+          return m(".emboss", "" + name + "x" + size);
+        } else {
+          return m(".emboss", "" + name);
+        }
       }),
       say_limit: ((_ref = RAILS.saycnt[o.type.say]) != null ? _ref.CAPTION : void 0) || "――",
       game_rule: ((_ref1 = RAILS.game_rule[o.type.game]) != null ? _ref1.CAPTION : void 0) || "タブラの人狼"
@@ -1853,18 +1861,16 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
             view: function(main_menu) {
               return m(".paragraph.guide", m("h6", "検索する。"), m("input.mini", Txt.input(Url.prop.search)), main_menu.drills({}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"]));
             }
-          }), m("table.table.table-border.table-hover", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", query.list(), function(o) {
+          }), m("table", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", query.list(), function(o) {
+            var header;
+            header = m("div", m("a", {
+              href: o.link
+            }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
+              href: o.file
+            }, m.trust(o.name)), m("kbd", o.view.rating));
             return m("tr", {
               key: o._id
-            }, icon_menu.state() === "resize-full" ? m("td", m("a", {
-              href: o.link
-            }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
-              href: o.file
-            }, m.trust(o.name)), o.view.rating, m("table", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m("div", o.view.role_cards), m("div", o.view.event_cards)) : m("td", m("a", {
-              href: o.link
-            }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
-              href: o.file
-            }, o.name), o.view.rating));
+            }, icon_menu.state() === "resize-full" ? m("td", header, m("table.detail", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m(".list", o.view.role_cards), m(".list", o.view.event_cards)) : m("td", header));
           }))
         ];
       }
@@ -1902,21 +1908,13 @@ GUI.if_exist("#head_navi", function(dom) {
           key: "p"
         }, m("a", Btn.set({}, state, "progress"), "進行中の村を見る")), m("th.choice[colspan=2]", {
           key: "f"
-        }, m("strong", "終了した村"))) : void 0, m("tr", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ"))), "progress" === state() ? m("tbody", m("tr", m("td", {
-          key: "L"
-        }, m("a", {
+        }, m("strong", "終了した村"))) : void 0, m("tr", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ"))), "progress" === state() ? m("tbody", m("tr", m("td", m("a", {
           href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
-        }, "lobby"), m("br"), "offparty", m("br"), m("br"), m("br"), m("br"), m("br")), m("td", {
-          key: "D"
-        }, "" + max_morphe + "村:", m("a", {
+        }, "lobby"), m("br"), "offparty"), m("td", "" + max_morphe + "村:", m("a", {
           href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
         }, "morphe"), m("br"), "" + max_cafe + "村:", m("a", {
           href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
-        }, "cafe"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td", {
-          key: "C"
-        }, "wolf", m("br"), "ultimate", m("br"), "allstar", m("br"), m("br"), m("br"), m("br")), m("td", {
-          key: "R"
-        }, "role-play", m("br"), "RP-advance", m("br"), "" + max_vage + "村:", m("a", {
+        }, "cafe")), m("td", "wolf", m("br"), "ultimate", m("br"), "allstar"), m("td", "role-play", m("br"), "RP-advance", m("br"), "" + max_vage + "村:", m("a", {
           href: GAME.PERJURY.config.cfg.URL_SW + "/sow.cgi"
         }, "perjury"), m("br"), "" + max_xebec + "村:", m("a", {
           href: GAME.XEBEC.config.cfg.URL_SW + "/sow.cgi"
@@ -1924,29 +1922,21 @@ GUI.if_exist("#head_navi", function(dom) {
           href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
         }, "crazy"), m("br"), "" + max_ciel + "村:", m("a", {
           href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
-        }, "ciel")))) : void 0, "finish" === state() ? m("tbody", m("tr", m("td", {
-          key: "P"
-        }, m("a", {
+        }, "ciel")))) : void 0, "finish" === state() ? m("tbody", m("tr", m("td", m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
         }, "lobby"), m("br"), m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
-        }, "offparty"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td", {
-          key: "D"
-        }, m("a", {
+        }, "offparty")), m("td", m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
         }, "morphe"), m("br"), m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
-        }, "cafe"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td", {
-          key: "C"
-        }, m("a", {
+        }, "cafe")), m("td", m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
         }, "wolf"), m("br"), m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
         }, "ultimate"), m("br"), m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
-        }, "allstar"), m("br"), m("br"), m("br"), m("br")), m("td", {
-          key: "R"
-        }, m("a", {
+        }, "allstar")), m("td", m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
         }, "role-play"), m("br"), m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"

@@ -100,10 +100,16 @@ new Cache.Rule("story").schema ->
         GUI.names.config o.card.event, (name, size)-> name
       role_cards:
         GUI.names.config o.card.role, (name, size)->
-          m ".emboss", "#{name}x#{size}"
+          if size > 1
+            m ".emboss", "#{name}x#{size}"
+          else
+            m ".emboss", "#{name}"
       event_cards:
         GUI.names.config o.card.event, (name, size)->
-          m ".emboss", "#{name}x#{size}"
+          if size > 1
+            m ".emboss", "#{name}x#{size}"
+          else
+            m ".emboss", "#{name}"
       say_limit: RAILS.saycnt[   o.type.say ]?.CAPTION || "――"
       game_rule: RAILS.game_rule[o.type.game]?.CAPTION || "タブラの人狼"
 

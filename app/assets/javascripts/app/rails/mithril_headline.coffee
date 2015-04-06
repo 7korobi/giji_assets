@@ -42,18 +42,14 @@ GUI.if_exist "#head_navi", (dom)->
           if "progress" == state()
             m "tbody",
               m "tr",
-                m "td", {key: "L"},
+                m "td",
                   m "a",
                     href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
                   , "lobby"
                   m "br"
                   "offparty"
-                  m "br"
-                  m "br"
-                  m "br"
-                  m "br"
-                  m "br"
-                m "td", {key: "D"},
+
+                m "td",
                   "#{max_morphe}村:"
                   m "a",
                     href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
@@ -63,22 +59,15 @@ GUI.if_exist "#head_navi", (dom)->
                   m "a",
                     href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
                   , "cafe"
-                  m "br"
-                  m "br"
-                  m "br"
-                  m "br"
-                  m "br"
-                m "td", {key: "C"},
+
+                m "td",
                   "wolf"
                   m "br"
                   "ultimate"
                   m "br"
                   "allstar"
-                  m "br"
-                  m "br"
-                  m "br"
-                  m "br"
-                m "td", {key: "R"},
+
+                m "td",
                   "role-play"
                   m "br"
                   "RP-advance"
@@ -105,7 +94,7 @@ GUI.if_exist "#head_navi", (dom)->
           if "finish" == state()
             m "tbody",
               m "tr",
-                m "td", {key: "P"},
+                m "td",
                   m "a",
                     href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
                   , "lobby"
@@ -113,12 +102,8 @@ GUI.if_exist "#head_navi", (dom)->
                   m "a",
                     href: "http://7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
                   ,"offparty"
-                  m "br"
-                  m "br"
-                  m "br"
-                  m "br"
-                  m "br"
-                m "td", {key: "D"},
+
+                m "td",
                   m "a",
                     href: "http://7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
                   , "morphe"
@@ -126,12 +111,8 @@ GUI.if_exist "#head_navi", (dom)->
                   m "a",
                     href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
                   , "cafe"
-                  m "br"
-                  m "br"
-                  m "br"
-                  m "br"
-                  m "br"
-                m "td", {key: "C"},
+
+                m "td",
                   m "a",
                     href: "http://7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
                   , "wolf"
@@ -143,11 +124,8 @@ GUI.if_exist "#head_navi", (dom)->
                   m "a",
                     href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
                   , "allstar"
-                  m "br"
-                  m "br"
-                  m "br"
-                  m "br"
-                m "td", {key: "R"},
+
+                m "td",
                   m "a",
                     href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
                   , "role-play"

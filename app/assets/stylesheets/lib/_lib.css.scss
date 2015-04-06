@@ -60,6 +60,10 @@
     width:       $size-base * 2.8;
   }
 
+  kbd img {
+    margin: 0 0 (- $size-base * 0.30) 0;
+  }
+
   kbd,
   code,
   input,
@@ -256,8 +260,12 @@
 
   #stories {
     @include win-tone($tone, $color, $background);
-    table.table {
+    .list,
+    .detail tr {
       border: 1px solid $border;
+    }
+    .detail th {
+      background: $darker;
     }
   }
 

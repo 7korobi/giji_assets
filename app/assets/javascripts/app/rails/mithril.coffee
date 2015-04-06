@@ -885,23 +885,28 @@ if gon?.stories?
                 m "input.mini", Txt.input(Url.prop.search)
                 main_menu.drills {}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"]
 
-          m "table.table.table-border.table-hover",
+          m "table",
             m "thead",
               m "tr",
                 m "th"
             scroll_spy.pager "tbody", query.list(), (o)->
+              header = m "div",
+                m "a",
+                  href: o.link
+                , m "code.icon-download"
+                m "kbd.note", 
+                  o._id
+                m "a",
+                  href: o.file
+                , m.trust o.name
+                m "kbd", 
+                  o.view.rating
+
               m "tr", {key: o._id },
                 if icon_menu.state() == "resize-full"
                   m "td",
-                    m "a",
-                      href: o.link
-                    , m "code.icon-download"
-                    m "kbd.note", o._id
-                    m "a",
-                      href: o.file
-                    , m.trust o.name
-                    o.view.rating
-                    m "table",
+                    header
+                    m "table.detail",
                       m "tbody",
                         m "tr",
                           m "th", "更新"
@@ -912,19 +917,12 @@ if gon?.stories?
                         m "tr",
                           m "th", "ルール"
                           m "td", "#{o.view.game_rule}"
+                    m ".list", o.view.role_cards
+                    m ".list", o.view.event_cards
 
-                    m "div", o.view.role_cards
-                    m "div", o.view.event_cards
                 else
                   m "td",
-                    m "a",
-                      href: o.link
-                    , m "code.icon-download"
-                    m "kbd.note", o._id
-                    m "a",
-                      href: o.file
-                    , o.name
-                    o.view.rating
+                    header
         ]
 
 m.endComputation()
