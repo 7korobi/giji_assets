@@ -36,6 +36,7 @@ new Cache.Rule("chr_job").schema(function() {
   return this.scope(function(all) {
     return {
       face: function(face_id) {
+        console.log(["find face", face_id]);
         return all.where(function(o) {
           return face_id === o.face_id;
         }).sort(false, function(o) {

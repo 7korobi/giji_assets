@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/7korobi/livescript-source.git
+  revision: 7fe7aded35bc383d1ef5975c3e246d109fc9996c
+  specs:
+    livescript-source (1.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -41,9 +47,9 @@ GEM
     bourbon (3.2.4)
       sass (~> 3.2)
       thor
-    bson (1.12.0)
-    bson_ext (1.12.0)
-      bson (~> 1.12.0)
+    bson (1.12.1)
+    bson_ext (1.12.1)
+      bson (~> 1.12.1)
     builder (3.2.2)
     capistrano (3.4.0)
       i18n
@@ -52,23 +58,25 @@ GEM
     coffee-rails (4.0.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.0)
-    coffee-script (2.3.0)
+    coffee-script (2.4.1)
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
     colorize (0.7.5)
     erubis (2.7.0)
     excon (0.45.1)
-    execjs (2.4.0)
+    execjs (2.5.2)
     fission (0.5.0)
       CFPropertyList (~> 2.2)
-    fog (1.28.0)
+    fog (1.29.0)
       fog-atmos
       fog-aws (~> 0.0)
       fog-brightbox (~> 0.4)
-      fog-core (~> 1.27, >= 1.27.3)
+      fog-core (~> 1.27, >= 1.27.4)
       fog-ecloud
       fog-json
+      fog-local
+      fog-powerdns (>= 0.1.1)
       fog-profitbricks
       fog-radosgw (>= 0.0.2)
       fog-riakcs
@@ -85,7 +93,7 @@ GEM
     fog-atmos (0.1.0)
       fog-core
       fog-xml
-    fog-aws (0.1.1)
+    fog-aws (0.1.2)
       fog-core (~> 1.27)
       fog-json (~> 1.0)
       fog-xml (~> 0.1)
@@ -94,23 +102,30 @@ GEM
       fog-core (~> 1.22)
       fog-json
       inflecto (~> 0.0.2)
-    fog-core (1.29.0)
+    fog-core (1.30.0)
       builder
-      excon (~> 0.38)
+      excon (~> 0.45)
       formatador (~> 0.2)
       mime-types
       net-scp (~> 1.1)
       net-ssh (>= 2.1.3)
-    fog-ecloud (0.0.2)
+    fog-ecloud (0.1.1)
       fog-core
       fog-xml
-    fog-json (1.0.0)
+    fog-json (1.0.1)
+      fog-core (~> 1.0)
       multi_json (~> 1.0)
+    fog-local (0.2.1)
+      fog-core (~> 1.27)
+    fog-powerdns (0.1.1)
+      fog-core (~> 1.27)
+      fog-json (~> 1.0)
+      fog-xml (~> 0.1)
     fog-profitbricks (0.0.2)
       fog-core
       fog-xml
       nokogiri
-    fog-radosgw (0.0.3)
+    fog-radosgw (0.0.4)
       fog-core (>= 1.21.0)
       fog-json
       fog-xml (>= 0.0.1)
@@ -118,40 +133,48 @@ GEM
       fog-core
       fog-json
       fog-xml
-    fog-sakuracloud (1.0.0)
+    fog-sakuracloud (1.0.1)
       fog-core
       fog-json
-    fog-serverlove (0.1.1)
+    fog-serverlove (0.1.2)
       fog-core
       fog-json
-    fog-softlayer (0.4.1)
+    fog-softlayer (0.4.3)
       fog-core
       fog-json
-    fog-storm_on_demand (0.1.0)
+    fog-storm_on_demand (0.1.1)
       fog-core
       fog-json
-    fog-terremark (0.0.4)
+    fog-terremark (0.1.0)
       fog-core
       fog-xml
-    fog-vmfusion (0.0.1)
+    fog-vmfusion (0.1.0)
       fission
       fog-core
-    fog-voxel (0.0.2)
+    fog-voxel (0.1.0)
       fog-core
       fog-xml
-    fog-xml (0.1.1)
+    fog-xml (0.1.2)
       fog-core
       nokogiri (~> 1.5, >= 1.5.11)
     formatador (0.2.5)
-    globalid (0.3.3)
+    globalid (0.3.5)
       activesupport (>= 4.1.0)
-    hashie (3.4.0)
+    hashie (3.4.1)
     hike (1.2.3)
     i18n (0.7.0)
     inflecto (0.0.2)
     ipaddress (0.8.0)
     json (1.8.2)
     libv8 (3.16.14.7)
+    livescript (2.2.0)
+      execjs
+      livescript-source
+    livescript-rails (1.1.0)
+      execjs
+      livescript
+      railties
+      tilt
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
     mail (2.6.3)
@@ -227,7 +250,7 @@ GEM
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
     temple (0.7.5)
-    therubyracer (0.12.1)
+    therubyracer (0.12.2)
       libv8 (~> 3.16.14.0)
       ref
     thor (0.19.1)
@@ -251,6 +274,8 @@ DEPENDENCIES
   coffee-script-source (= 1.8.0)
   fog
   hashie
+  livescript-rails
+  livescript-source!
   neat
   pg
   rails (~> 4.2.0)

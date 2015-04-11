@@ -1,77 +1,69 @@
-class Cache
+export class Cache
   @rule = {}
 
 
 class Cache.Query
-  constructor: (@finder, @match, @desc, @sort_by)->
+  (@finder, @filters, @desc, @sort_by)->
 
-  _match: (query, cb)->
-    return @ unless Object.keys(query).length
-    match = @match.concat()
-    for target, req of query
-      is_object = "object" == typeof req
-      match.push cb target, req,
-        switch typeof req
-          when "object"
-            switch 
-              when req.test?
-                RegExp 
-              when req.length?
-                Array
-              else
-                Object
-          when "number"
-            Number
-          when "string"
-            String
-
-    new Cache.Query @finder, match, @desc, @sort_by
+  _filters: (query, cb)->
+    return @ unless query
+    filters = @filters.concat()
+    switch typeof! query
+      when \Object
+        for target, req of query
+          filters.push cb target, req
+      when \Function
+        filters.push cb null, query
+      else
+        console.log [typeof! query, query]
+        ...
+    new Cache.Query @finder, filters, @desc, @sort_by
 
   in: (query)->
-    switch typeof query
-      when "object"
-        @_match query, (target, req, type)->
-          switch type
-            when Array
-              (o)-> 
-                for key in req
-                  for val in o[target]
-                    return true if val == key
-                false
-            when RegExp
-              (o)->
-                for val in o[target]
-                  return true if req.test val
-                false
-            else
-              (o)-> 
-                for val in o[target]
-                  return true if val == req
-                false
+    @_filters query, (target, req)->
+      switch typeof! req
+        when \Array
+          (o)-> 
+            for key in req
+              for val in o[target]
+                return true if val == key
+            false
+        when \RegExp
+          (o)->
+            for val in o[target]
+              return true if req.test val
+            false
+        when \Null, \Boolean, \String, \Number
+          (o)-> 
+            for val in o[target]
+              return true if val == req
+            false
+        else
+          console.log [typeof! req, req]
+          ...
 
   distinct: (reduce, target)->
-    query = new Cache.Query @finder, @match, @desc, @sort_by
+    query = new Cache.Query @finder, @filters, @desc, @sort_by
     query._distinct = {reduce, target}
     query
 
   where: (query)->
-    return @ unless query
-    switch typeof query
-      when "object"
-        @_match query, (target, req, type)->
-          switch type
-            when Array
-              (o)-> 
-                for key in req
-                  return true if o[target] == key
-                false
-            when RegExp
-              (o)-> req.test o[target]
-            else
-              (o)-> o[target] == req
-      when "function"
-        match = @match.concat query
-        new Cache.Query @finder, match, @desc, @sort_by
+    @_filters query, (target, req)->
+      switch typeof! req
+        when \Array
+          (o)-> 
+            for key in req
+              return true if o[target] == key
+            false
+        when \RegExp
+          (o)-> req.test o[target]
+        when \Function
+          req
+        when \Null, \Boolean, \String, \Number
+          (o)-> o[target] == req
+        else
+          console.log [typeof! req, req]
+          ...
 
   search: (text)->
     return @ unless text
@@ -86,13 +78,16 @@ class Cache.Query
 
   sort: (desc, order = @sort_by)->
     sort_by = 
-      switch typeof order
-        when "function"
+      switch typeof! order
+        when \Function
           order
-        when "string"
+        when \String, \Number
           (o)-> o[order]
+        else
+          console.log [typeof! req, req]
+          ...
     return @ if desc == @desc && sort_by == @sort_by
-    new Cache.Query @finder, @match, desc, sort_by
+    new Cache.Query @finder, @filters, desc, sort_by
 
   reduce: ->
     @finder.calculate(@) unless @_reduce?
@@ -110,7 +105,7 @@ class Cache.Query
     @hash()[id]?.item
 
 class Cache.Finder
-  constructor: (@sort_by)->
+  (@sort_by)->
     all = new Cache.Query @, [], false, @sort_by
     all._hash = {}
     @scope = {all}
@@ -127,13 +122,13 @@ class Cache.Finder
     return
 
   calculate_reduce: (query)->
-    init = (map)=>
+    init = (map)->
       o = {}
       o.count = 0 if map.count
       o.all   = 0 if map.all
       o
 
-    reduce = (item, o, map)=>
+    reduce = (item, o, map)->
       unless map.max <= o.max
         o.max_is = item
         o.max = map.max
@@ -143,7 +138,7 @@ class Cache.Finder
       o.count += map.count if map.count
       o.all += map.all if map.all
 
-    calc = (o)=>
+    calc = (o)->
       o.avg = o.all / o.count if o.all && o.count
 
     # map_reduce
@@ -212,8 +207,8 @@ class Cache.Finder
 
     query._list =
       for id, o of all
-        for match in query.match
-          o = null unless match o.item
+        for filters in query.filters
+          o = null unless filters o.item
           break unless o
         continue unless o
         deploy(id, o)
@@ -228,14 +223,14 @@ class Cache.Finder
     return
 
 class Cache.Rule
-  constructor: (field)->
+  (field)->
     @id = "#{field}_id"
     @list_name = "#{field}s"
     @validates = []
     @responses = []
     @map_reduce = ->
     @protect = ->
-    @deploy = (o)=>
+    @deploy = (o)~>
       o._id = o[@id] unless o._id
       o[@id] = o._id unless o[@id]
 
@@ -246,15 +241,15 @@ class Cache.Rule
 
   schema: (cb)->
     definer =
-      scope: (cb)=>
+      scope: (cb)~>
         @finder.scope = cb @finder.query.all
         set_scope = (key, finder, query_call)->
-          finder.query.all[key] = (args...)->
-            finder.query["#{key}:#{JSON.stringify args}"] ?= query_call args...
+          finder.query.all[key] = (...args)->
+            finder.query["#{key}:#{JSON.stringify args}"] ?= query_call ...args
         for key, query_call of @finder.scope
           set_scope(key, @finder, query_call)
 
-      belongs_to: (parent, option)=>
+      belongs_to: (parent, option)~>
         parents = "#{parent}s"
         parent_id = "#{parent}_id"
 
@@ -269,18 +264,18 @@ class Cache.Rule
           else
             ! dependent
 
-      order: (order)=>
+      order: (order)~>
         query = @finder.query.all.sort false, order
         query._hash = @finder.query.all._hash
         Cache[@list_name] = @finder.query.all = query
 
-      protect: (keys...)=>
+      protect: (...keys)~>
         @protect = (o, old)->
           for key in keys
             o[key] = old[key]
 
-      deploy: (@deploy)=>
-      map_reduce: (@map_reduce)=>
+      deploy: (@deploy)~>
+      map_reduce: (@map_reduce)~>
 
     cb.call(definer, @)
 
@@ -290,7 +285,7 @@ class Cache.Rule
     diff = finder.diff
     all = finder.query.all._hash
  
-    validate_item = (item)=>
+    validate_item = (item)~>
       for validate in @validates
         return false unless validate item
       true
@@ -312,7 +307,7 @@ class Cache.Rule
             diff.add = true
           all[item._id] = o
 
-          emit = (keys..., last, map)=>
+          emit = (...keys, last, map)~>
             finder.map_reduce = true
             o.emits.push [keys, last, map]
           @map_reduce o.item, emit

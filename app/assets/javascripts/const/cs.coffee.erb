@@ -28,6 +28,7 @@ new Cache.Rule("chr_job").schema ->
 
   @scope (all)->
     face: (face_id)->
+      console.log ["find face", face_id]
       all.where((o)-> face_id == o.face_id).sort(false, (o)-> o.chr_set_idx )
 
 Cache.rule.face.set <%= JSON.generate FACE %>

@@ -139,224 +139,216 @@ License: MIT
 
 var m=function a(b,c){function d(a){C=a.document,D=a.location,F=a.cancelAnimationFrame||a.clearTimeout,E=a.requestAnimationFrame||a.setTimeout}function e(){var a,b=[].slice.call(arguments),c=!(null==b[1]||K.call(b[1])!==G||"tag"in b[1]||"subtree"in b[1]),d=c?b[1]:{},e="class"in d?"class":"className",f={tag:"div",attrs:{}},g=[];if(K.call(b[0])!=I)throw new Error("selector in m(selector, attrs, children) should be a string");for(;a=L.exec(b[0]);)if(""===a[1]&&a[2])f.tag=a[2];else if("#"===a[1])f.attrs.id=a[2];else if("."===a[1])g.push(a[2]);else if("["===a[3][0]){var h=M.exec(a[3]);f.attrs[h[1]]=h[3]||(h[2]?"":!0)}g.length>0&&(f.attrs[e]=g.join(" "));var i=b.slice(c?2:1);f.children=1===i.length&&K.call(i[0])===H?i[0]:i;for(var j in d)if(j===e){var k=f.attrs[j];f.attrs[j]=(k&&d[j]?k+" ":k||"")+d[j]}else f.attrs[j]=d[j];return f}function f(a,b,d,j,l,m,n,o,p,q,r){try{(null==l||null==l.toString())&&(l="")}catch(s){l=""}if("retain"===l.subtree)return m;var t=K.call(m),u=K.call(l);if(null==m||t!==u){if(null!=m)if(d&&d.nodes){var v=o-j,w=v+(u===H?l:m.nodes).length;i(d.nodes.slice(v,w),d.slice(v,w))}else m.nodes&&i(m.nodes,m);m=new l.constructor,m.tag&&(m={}),m.nodes=[]}if(u===H){for(var x=0,y=l.length;y>x;x++)K.call(l[x])===H&&(l=l.concat.apply([],l),x--,y=l.length);for(var z=[],A=m.length===l.length,B=0,D=1,E=2,F=3,L={},M=!1,x=0;x<m.length;x++)m[x]&&m[x].attrs&&null!=m[x].attrs.key&&(M=!0,L[m[x].attrs.key]={action:D,index:x});for(var O=0,x=0,y=l.length;y>x;x++)if(l[x]&&l[x].attrs&&null!=l[x].attrs.key){for(var P=0,y=l.length;y>P;P++)l[P]&&l[P].attrs&&null==l[P].attrs.key&&(l[P].attrs.key="__mithril__"+O++);break}if(M){var Q=!1;if(l.length!=m.length)Q=!0;else for(var R,S,x=0;R=m[x],S=l[x];x++)if(R.attrs&&S.attrs&&R.attrs.key!=S.attrs.key){Q=!0;break}if(Q){for(var x=0,y=l.length;y>x;x++)if(l[x]&&l[x].attrs&&null!=l[x].attrs.key){var T=l[x].attrs.key;L[T]=L[T]?{action:F,index:x,from:L[T].index,element:m.nodes[L[T].index]||C.createElement("div")}:{action:E,index:x}}var U=[];for(var V in L)U.push(L[V]);var W=U.sort(g),X=new Array(m.length);X.nodes=m.nodes.slice();for(var Y,x=0;Y=W[x];x++){if(Y.action===D&&(i(m[Y.index].nodes,m[Y.index]),X.splice(Y.index,1)),Y.action===E){var Z=C.createElement("div");Z.key=l[Y.index].attrs.key,a.insertBefore(Z,a.childNodes[Y.index]||null),X.splice(Y.index,0,{attrs:{key:l[Y.index].attrs.key},nodes:[Z]}),X.nodes[Y.index]=Z}Y.action===F&&(a.childNodes[Y.index]!==Y.element&&null!==Y.element&&a.insertBefore(Y.element,a.childNodes[Y.index]||null),X[Y.index]=m[Y.from],X.nodes[Y.index]=Y.element)}m=X}}for(var x=0,$=0,y=l.length;y>x;x++){var _=f(a,b,m,o,l[x],m[$],n,o+B||B,p,q,r);_!==c&&(_.nodes.intact||(A=!1),B+=_.$trusted?(_.match(/<[^\/]|\>\s*[^<]/g)||[0]).length:K.call(_)===H?_.length:1,m[$++]=_)}if(!A){for(var x=0,y=l.length;y>x;x++)null!=m[x]&&z.push.apply(z,m[x].nodes);for(var ab,x=0;ab=m.nodes[x];x++)null!=ab.parentNode&&z.indexOf(ab)<0&&i([ab],[m[x]]);l.length<m.length&&(m.length=l.length),m.nodes=z}}else if(null!=l&&u===G){l.attrs||(l.attrs={}),m.attrs||(m.attrs={});var bb=Object.keys(l.attrs),cb=bb.length>("key"in l.attrs?1:0);if((l.tag!=m.tag||bb.join()!=Object.keys(m.attrs).join()||l.attrs.id!=m.attrs.id||"all"==e.redraw.strategy()&&m.configContext&&m.configContext.retain!==!0||"diff"==e.redraw.strategy()&&m.configContext&&m.configContext.retain===!1)&&(m.nodes.length&&i(m.nodes),m.configContext&&typeof m.configContext.onunload===J&&m.configContext.onunload()),K.call(l.tag)!=I)return;var ab,db=0===m.nodes.length;if(l.attrs.xmlns?q=l.attrs.xmlns:"svg"===l.tag?q="http://www.w3.org/2000/svg":"math"===l.tag&&(q="http://www.w3.org/1998/Math/MathML"),db?(ab=l.attrs.is?q===c?C.createElement(l.tag,l.attrs.is):C.createElementNS(q,l.tag,l.attrs.is):q===c?C.createElement(l.tag):C.createElementNS(q,l.tag),m={tag:l.tag,attrs:cb?h(ab,l.tag,l.attrs,{},q):l.attrs,children:null!=l.children&&l.children.length>0?f(ab,l.tag,c,c,l.children,m.children,!0,0,l.attrs.contenteditable?ab:p,q,r):l.children,nodes:[ab]},m.children&&!m.children.nodes&&(m.children.nodes=[]),"select"===l.tag&&l.attrs.value&&h(ab,l.tag,{value:l.attrs.value},{},q),a.insertBefore(ab,a.childNodes[o]||null)):(ab=m.nodes[0],cb&&h(ab,l.tag,l.attrs,m.attrs,q),m.children=f(ab,l.tag,c,c,l.children,m.children,!1,0,l.attrs.contenteditable?ab:p,q,r),m.nodes.intact=!0,n===!0&&null!=ab&&a.insertBefore(ab,a.childNodes[o]||null)),typeof l.attrs.config===J){var eb=m.configContext=m.configContext||{retain:"diff"==e.redraw.strategy()||c},fb=function(a,b){return function(){return a.attrs.config.apply(a,b)}};r.push(fb(l,[ab,!db,eb,m]))}}else if(typeof l!=J){var z;0===m.nodes.length?(l.$trusted?z=k(a,o,l):(z=[C.createTextNode(l)],a.nodeName.match(N)||a.insertBefore(z[0],a.childNodes[o]||null)),m="string number boolean".indexOf(typeof l)>-1?new l.constructor(l):l,m.nodes=z):m.valueOf()!==l.valueOf()||n===!0?(z=m.nodes,p&&p===C.activeElement||(l.$trusted?(i(z,m),z=k(a,o,l)):"textarea"===b?a.value=l:p?p.innerHTML=l:((1===z[0].nodeType||z.length>1)&&(i(m.nodes,m),z=[C.createTextNode(l)]),a.insertBefore(z[0],a.childNodes[o]||null),z[0].nodeValue=l)),m=new l.constructor(l),m.nodes=z):m.nodes.intact=!0}return m}function g(a,b){return a.action-b.action||a.index-b.index}function h(a,b,c,d,e){for(var f in c){var g=c[f],h=d[f];if(f in d&&h===g)"value"===f&&"input"===b&&a.value!=g&&(a.value=g);else{d[f]=g;try{if("config"===f||"key"==f)continue;if(typeof g===J&&0===f.indexOf("on"))a[f]=l(g,a);else if("style"===f&&null!=g&&K.call(g)===G){for(var i in g)(null==h||h[i]!==g[i])&&(a.style[i]=g[i]);for(var i in h)i in g||(a.style[i]="")}else null!=e?"href"===f?a.setAttributeNS("http://www.w3.org/1999/xlink","href",g):"className"===f?a.setAttribute("class",g):a.setAttribute(f,g):f in a&&"list"!==f&&"style"!==f&&"form"!==f&&"type"!==f&&"width"!==f&&"height"!==f?("input"!==b||a[f]!==g)&&(a[f]=g):a.setAttribute(f,g)}catch(j){if(j.message.indexOf("Invalid argument")<0)throw j}}}return d}function i(a,b){for(var c=a.length-1;c>-1;c--)if(a[c]&&a[c].parentNode){try{a[c].parentNode.removeChild(a[c])}catch(d){}b=[].concat(b),b[c]&&j(b[c])}0!=a.length&&(a.length=0)}function j(a){if(a.configContext&&typeof a.configContext.onunload===J&&(a.configContext.onunload(),a.configContext.onunload=null),a.children)if(K.call(a.children)===H)for(var b,c=0;b=a.children[c];c++)j(b);else a.children.tag&&j(a.children)}function k(a,b,c){var d=a.childNodes[b];if(d){var e=1!=d.nodeType,f=C.createElement("span");e?(a.insertBefore(f,d||null),f.insertAdjacentHTML("beforebegin",c),a.removeChild(f)):d.insertAdjacentHTML("beforebegin",c)}else a.insertAdjacentHTML("beforeend",c);for(var g=[];a.childNodes[b]!==d;)g.push(a.childNodes[b]),b++;return g}function l(a,b){return function(c){c=c||event,e.redraw.strategy("diff"),e.startComputation();try{return a.call(b,c)}finally{ab()}}}function m(a){var b=Q.indexOf(a);return 0>b?Q.push(a)-1:b}function n(a){var b=function(){return arguments.length&&(a=arguments[0]),a};return b.toJSON=function(){return a},b}function o(){for(var a,b=0;a=T[b];b++)V[b]&&e.render(a,U[b].view?U[b].view(V[b]):$());Y&&(Y(),Y=null),W=null,X=new Date,e.redraw.strategy("diff")}function p(a){return a.slice(db[e.route.mode].length)}function q(a,b,c){bb={};var d=c.indexOf("?");-1!==d&&(bb=u(c.substr(d+1,c.length)),c=c.substr(0,d));var f=Object.keys(b),g=f.indexOf(c);if(-1!==g)return e.module(a,b[f[g]]),!0;for(var h in b){if(h===c)return e.module(a,b[h]),!0;var i=new RegExp("^"+h.replace(/:[^\/]+?\.{3}/g,"(.*?)").replace(/:[^\/]+/g,"([^\\/]+)")+"/?$");if(i.test(c))return c.replace(i,function(){for(var c=h.match(/:[^\/]+/g)||[],d=[].slice.call(arguments,1,-2),f=0,g=c.length;g>f;f++)bb[c[f].replace(/:|\./g,"")]=decodeURIComponent(d[f]);e.module(a,b[h])}),!0}}function r(a){if(a=a||event,!a.ctrlKey&&!a.metaKey&&2!==a.which){a.preventDefault?a.preventDefault():a.returnValue=!1;for(var b=a.currentTarget||a.srcElement,c="pathname"===e.route.mode&&b.search?u(b.search.slice(1)):{};b&&"A"!=b.nodeName.toUpperCase();)b=b.parentNode;e.route(b[e.route.mode].slice(db[e.route.mode].length),c)}}function s(){"hash"!=e.route.mode&&D.hash?D.hash=D.hash:b.scrollTo(0,0)}function t(a,b){var d={},e=[];for(var f in a){var g=b?b+"["+f+"]":f,h=a[f],i=K.call(h),j=null===h?encodeURIComponent(g):i===G?t(h,g):i===H?h.reduce(function(a,b){return d[g]||(d[g]={}),d[g][b]?a:(d[g][b]=!0,a.concat(encodeURIComponent(g)+"="+encodeURIComponent(b)))},[]).join("&"):encodeURIComponent(g)+"="+encodeURIComponent(h);h!==c&&e.push(j)}return e.join("&")}function u(a){for(var b=a.split("&"),c={},d=0,e=b.length;e>d;d++){var f=b[d].split("="),g=decodeURIComponent(f[0]),h=2==f.length?decodeURIComponent(f[1]):null;null!=c[g]?(K.call(c[g])!==H&&(c[g]=[c[g]]),c[g].push(h)):c[g]=h}return c}function v(a){var b=m(a);i(a.childNodes,R[b]),R[b]=c}function w(a,b){var c=e.prop(b);return a.then(c),c.then=function(c,d){return w(a.then(c,d),b)},c}function x(a,b){function c(a){l=a||j,n.map(function(a){l===i&&a.resolve(m)||a.reject(m)})}function d(a,b,c,d){if((null!=m&&K.call(m)===G||typeof m===J)&&typeof a===J)try{var f=0;a.call(m,function(a){f++||(m=a,b())},function(a){f++||(m=a,c())})}catch(g){e.deferred.onerror(g),m=g,c()}else d()}function f(){var j;try{j=m&&m.then}catch(n){return e.deferred.onerror(n),m=n,l=h,f()}d(j,function(){l=g,f()},function(){l=h,f()},function(){try{l===g&&typeof a===J?m=a(m):l===h&&"function"==typeof b&&(m=b(m),l=g)}catch(f){return e.deferred.onerror(f),m=f,c()}m===k?(m=TypeError(),c()):d(j,function(){c(i)},c,function(){c(l===g&&i)})})}var g=1,h=2,i=3,j=4,k=this,l=0,m=0,n=[];k.promise={},k.resolve=function(a){return l||(m=a,l=g,f()),this},k.reject=function(a){return l||(m=a,l=h,f()),this},k.promise.then=function(a,b){var c=new x(a,b);return l===i?c.resolve(m):l===j?c.reject(m):n.push(c),c.promise}}function y(a){return a}function z(a){if(!a.dataType||"jsonp"!==a.dataType.toLowerCase()){var d=new b.XMLHttpRequest;if(d.open(a.method,a.url,!0,a.user,a.password),d.onreadystatechange=function(){4===d.readyState&&(d.status>=200&&d.status<300?a.onload({type:"load",target:d}):a.onerror({type:"error",target:d}))},a.serialize===JSON.stringify&&a.data&&"GET"!==a.method&&d.setRequestHeader("Content-Type","application/json; charset=utf-8"),a.deserialize===JSON.parse&&d.setRequestHeader("Accept","application/json, text/*"),typeof a.config===J){var e=a.config(d,a);null!=e&&(d=e)}var f="GET"!==a.method&&a.data?a.data:"";if(f&&K.call(f)!=I&&f.constructor!=b.FormData)throw"Request data should be either be a string or FormData. Check the `serialize` option in `m.request`";return d.send(f),d}var g="mithril_callback_"+(new Date).getTime()+"_"+Math.round(1e16*Math.random()).toString(36),h=C.createElement("script");b[g]=function(d){h.parentNode.removeChild(h),a.onload({type:"load",target:{responseText:d}}),b[g]=c},h.onerror=function(){return h.parentNode.removeChild(h),a.onerror({type:"error",target:{status:500,responseText:JSON.stringify({error:"Error making jsonp request"})}}),b[g]=c,!1},h.onload=function(){return!1},h.src=a.url+(a.url.indexOf("?")>0?"&":"?")+(a.callbackKey?a.callbackKey:"callback")+"="+g+"&"+t(a.data||{}),C.body.appendChild(h)}function A(a,b,c){if("GET"===a.method&&"jsonp"!=a.dataType){var d=a.url.indexOf("?")<0?"?":"&",e=t(b);a.url=a.url+(e?d+e:"")}else a.data=c(b);return a}function B(a,b){var c=a.match(/:[a-z]\w+/gi);if(c&&b)for(var d=0;d<c.length;d++){var e=c[d].slice(1);a=a.replace(c[d],b[e]),delete b[e]}return a}var C,D,E,F,G="[object Object]",H="[object Array]",I="[object String]",J="function",K={}.toString,L=/(?:(^|#|\.)([^#\.\[\]]+))|(\[.+?\])/g,M=/\[(.+?)(?:=("|'|)(.*?)\2)?\]/,N=/^(AREA|BASE|BR|COL|COMMAND|EMBED|HR|IMG|INPUT|KEYGEN|LINK|META|PARAM|SOURCE|TRACK|WBR)$/;d(b);var O,P={appendChild:function(a){O===c&&(O=C.createElement("html")),C.documentElement&&C.documentElement!==a?C.replaceChild(a,C.documentElement):C.appendChild(a),this.childNodes=C.childNodes},insertBefore:function(a){this.appendChild(a)},childNodes:[]},Q=[],R={};e.render=function(a,b,d){var e=[];if(!a)throw new Error("Please ensure the DOM element exists before rendering a template into it.");var g=m(a),h=a===C,j=h||a===C.documentElement?P:a;h&&"html"!=b.tag&&(b={tag:"html",attrs:{},children:b}),R[g]===c&&i(j.childNodes),d===!0&&v(a),R[g]=f(j,null,c,c,b,R[g],!1,0,null,c,e);for(var k=0,l=e.length;l>k;k++)e[k]()},e.trust=function(a){return a=new String(a),a.$trusted=!0,a},e.prop=function(a){return(null!=a&&K.call(a)===G||typeof a===J)&&typeof a.then===J?w(a):n(a)};var S,T=[],U=[],V=[],W=null,X=0,Y=null,Z=16;e.module=function(a,b){if(!a)throw new Error("Please ensure the DOM element exists before rendering a template into it.");var c=T.indexOf(a);0>c&&(c=T.length);var d=!1;if(V[c]&&typeof V[c].onunload===J){var f={preventDefault:function(){d=!0}};V[c].onunload(f)}if(!d){e.redraw.strategy("all"),e.startComputation(),T[c]=a;var g=S=b=b||{},h=new(b.controller||function(){});return g===S&&(V[c]=h,U[c]=b),ab(),V[c]}},e.redraw=function(a){W&&a!==!0?(new Date-X>Z||E===b.requestAnimationFrame)&&(W>0&&F(W),W=E(o,Z)):(o(),W=E(function(){W=null},Z))},e.redraw.strategy=e.prop();var $=function(){return""},_=0;e.startComputation=function(){_++},e.endComputation=function(){_=Math.max(_-1,0),0===_&&e.redraw()};var ab=function(){"none"==e.redraw.strategy()?(_--,e.redraw.strategy("diff")):e.endComputation()};e.withAttr=function(a,b){return function(c){c=c||event;var d=c.currentTarget||this;b(a in d?d[a]:d.getAttribute(a))}};var bb,cb,db={pathname:"",hash:"#",search:"?"},eb=function(){};return e.route=function(){if(0===arguments.length)return cb;if(3===arguments.length&&K.call(arguments[1])===I){var a=arguments[0],c=arguments[1],d=arguments[2];eb=function(b){var f=cb=p(b);q(a,d,f)||e.route(c,!0)};var f="hash"===e.route.mode?"onhashchange":"onpopstate";b[f]=function(){var a=D[e.route.mode];"pathname"===e.route.mode&&(a+=D.search),cb!=p(a)&&eb(a)},Y=s,b[f]()}else if(arguments[0].addEventListener||arguments[0].attachEvent){{var g=arguments[0];arguments[1],arguments[2]}g.href=("pathname"!==e.route.mode?D.pathname:"")+db[e.route.mode]+this.attrs.href,g.addEventListener?(g.removeEventListener("click",r),g.addEventListener("click",r)):(g.detachEvent("onclick",r),g.attachEvent("onclick",r))}else if(K.call(arguments[0])===I){var h=cb;cb=arguments[0];var i=arguments[1]||{},j=cb.indexOf("?"),k=j>-1?u(cb.slice(j+1)):{};for(var l in i)k[l]=i[l];var m=t(k),n=j>-1?cb.slice(0,j):cb;m&&(cb=n+(-1===n.indexOf("?")?"?":"&")+m);var o=(3===arguments.length?arguments[2]:arguments[1])===!0||h===arguments[0];b.history.pushState?(Y=function(){b.history[o?"replaceState":"pushState"](null,C.title,db[e.route.mode]+cb),s()},eb(db[e.route.mode]+cb)):(D[e.route.mode]=cb,eb(db[e.route.mode]+cb))}},e.route.param=function(a){if(!bb)throw new Error("You must call m.route(element, defaultRoute, routes) before calling m.route.param()");return bb[a]},e.route.mode="search",e.route.buildQueryString=t,e.route.parseQueryString=u,e.deferred=function(){var a=new x;return a.promise=w(a.promise),a},e.deferred.onerror=function(a){if("[object Error]"===K.call(a)&&!a.constructor.toString().match(/ Error/))throw a},e.sync=function(a){function b(a,b){return function(e){return g[a]=e,b||(c="reject"),0===--f&&(d.promise(g),d[c](g)),e}}var c="resolve",d=e.deferred(),f=a.length,g=new Array(f);if(a.length>0)for(var h=0;h<a.length;h++)a[h].then(b(h,!0),b(h,!1));else d.resolve([]);return d.promise},e.request=function(a){a.background!==!0&&e.startComputation();var b=new x,c=a.dataType&&"jsonp"===a.dataType.toLowerCase(),d=a.serialize=c?y:a.serialize||JSON.stringify,f=a.deserialize=c?y:a.deserialize||JSON.parse,g=a.extract||function(a){return 0===a.responseText.length&&f===JSON.parse?null:a.responseText};return a.url=B(a.url,a.data),a=A(a,a.data,d),a.onload=a.onerror=function(c){try{c=c||event;var d=("load"===c.type?a.unwrapSuccess:a.unwrapError)||y,h=d(f(g(c.target,a)),c.target);if("load"===c.type)if(K.call(h)===H&&a.type)for(var i=0;i<h.length;i++)h[i]=new a.type(h[i]);else a.type&&(h=new a.type(h));b["load"===c.type?"resolve":"reject"](h)}catch(c){e.deferred.onerror(c),b.reject(c)}a.background!==!0&&e.endComputation()},z(a),b.promise=w(b.promise,a.initialValue),b.promise},e.deps=function(a){return d(b=a||b),b},e.deps.factory=a,e}("undefined"!=typeof window?window:{});"undefined"!=typeof module&&null!==module&&module.exports?module.exports=m:"function"==typeof define&&define.amd&&define(function(){return m});
 
-var define;
-
-define = function(type, cb) {
-  return Object.defineProperties(type.prototype, cb());
-};
-
-define(Array, function() {
-  return {
-    last: {
-      get: function() {
-        return this[this.length - 1];
-      }
-    },
-    first: {
-      get: function() {
-        return this[0];
-      }
-    }
-  };
-});
-
-Number.MAX_INT32 = 0x7fffffff;
-
-_.mixin({
-  parseID: function(id) {
-    var time;
-    time = Serial.parser.Date(id.slice(2));
-    return [id.slice(0, 2), time];
-  }
-});
-define(String, function() {
-  var anchor, anchor_preview, br, id_num, link, link_regexp, link_regexp_g, nowrap, player, random, random_preview, space, unanchor, unbr, unhtml, unrandom, uri_to_link;
-  player = function(log) {
+// Generated by LiveScript 1.3.1
+(function(){
+  var player, unanchor, anchor, anchor_preview, unrandom, random, random_preview, link_regexp, link_regexp_g, id_num, uri_to_link, link, space, br, unbr, nowrap, unhtml, ref$;
+  player = function(log){
     if (!log) {
       return log;
     }
     return log.replace(/(\/\*)(.*?)(\*\/|$)/g, '<em>$1<span class="player">$2</span>$3</em>');
   };
-  unanchor = function(log) {
+  unanchor = function(log){
     if (!log) {
       return log;
     }
-    return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id) {
+    return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id){
       return ">>" + id;
     });
   };
-  anchor = function(log) {
+  anchor = function(log){
     if (!log) {
       return log;
     }
-    return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id) {
+    return log.replace(/<mw (\w+),(\d+),([^>]+)>/g, function(key, a, turn, id){
       return "<span anchor=\"" + a + "," + turn + "," + id + "\" class=\"mark\">&gt;&gt;" + id + "</span>";
     });
   };
-  anchor_preview = function(log) {
+  anchor_preview = function(log){
     return log;
   };
-  unrandom = function(log) {
+  unrandom = function(log){
     if (!log) {
       return log;
     }
-    return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd) {
+    return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd){
       return cmd;
     });
   };
-  random = function(log) {
+  random = function(log){
     if (!log) {
       return log;
     }
-    return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd) {
+    return log.replace(/<rand ([^>]+),([^>]+)>/g, function(key, val, cmd){
       cmd = cmd.replace(/]]]]/, "]]");
       return "<span data-tooltip=\"" + cmd + " = " + val + "\" class=\"mark tooltip-top\">" + val + "</span>";
     });
   };
-  random_preview = function(log) {
-    return log.replace(/\[\[([^\[]+)\]\]/g, function(key, val) {
+  random_preview = function(log){
+    return log.replace(/\[\[([^\[]+)\]\]/g, function(key, val){
       return "<span data-tooltip=\"" + val + " = ？\" class=\"mark tooltip-top\">" + val + "</span>";
     });
   };
   link_regexp = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/;
   link_regexp_g = /(\w+):\/\/([^\/<>）］】」\s]+)([^<>）］】」\s]*)/g;
   id_num = 0;
-  uri_to_link = _.memoize(function(uri) {
-    var host, path, protocol, _ref;
+  uri_to_link = _.memoize(function(uri){
+    var ref$, protocol, host, path;
     id_num++;
-    _ref = uri.match(link_regexp), uri = _ref[0], protocol = _ref[1], host = _ref[2], path = _ref[3];
+    ref$ = uri.match(link_regexp), uri = ref$[0], protocol = ref$[1], host = ref$[2], path = ref$[3];
     return "<span external=\"link_" + id_num + "," + uri + "," + protocol + "," + host + "," + path + "\" class=\"emboss\">LINK - " + protocol + "</span>";
   });
-  link = function(log) {
-    var text, uri, uris, _i, _len;
+  link = function(log){
+    var text, uris, i$, len$, uri;
     if (!log) {
       return log;
     }
     text = log.replace(/\s|<br>/g, ' ').replace(/(<([^>]+)>)/ig, "");
     uris = text.match(link_regexp_g);
     if (uris) {
-      for (_i = 0, _len = uris.length; _i < _len; _i++) {
-        uri = uris[_i];
+      for (i$ = 0, len$ = uris.length; i$ < len$; ++i$) {
+        uri = uris[i$];
         log = log.replace(uri, uri_to_link(uri));
       }
     }
     return log;
   };
-  space = function(log) {
+  space = function(log){
     if (!log) {
       return log;
     }
-    return log.replace(/(^|\n|<br>)(\ *)/gm, function(full, s1, s2, offset) {
+    return log.replace(/(^|\n|<br>)(\ *)/gm, function(full, s1, s2, offset){
       var nbsps;
       s1 || (s1 = "");
       nbsps = s2.replace(/\ /g, '&nbsp;');
-      return "" + s1 + nbsps;
+      return s1 + "" + nbsps;
     });
   };
-  br = function(log) {
-    return log.replace(/\n/gm, function(br) {
+  br = function(log){
+    return log.replace(/\n/gm, function(br){
       return "<br>";
     });
   };
-  unbr = function(log) {
-    return log.replace(/<br>/gm, function(br) {
+  unbr = function(log){
+    return log.replace(/<br>/gm, function(br){
       return "\n";
     });
   };
-  nowrap = function(log) {
-    return log.replace(/<br>|\n/gm, function(br) {
+  nowrap = function(log){
+    return log.replace(/<br>|\n/gm, function(br){
       return " ";
     });
   };
-  unhtml = function(log) {
-    return log.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;").replace(/\//g, "&#x2f;");
+  unhtml = function(log){
+    return log.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;").replace(/\//g, "&" + x2f + ";");
   };
-  return {
-    deco_preview: {
-      get: function() {
-        return br(space(player(anchor_preview(link(random_preview(unhtml(this)))))));
-      }
+  Number.MAX_INT32 = 0x7fffffff;
+  ref$ = Array.prototype;
+  Object.defineProperty(ref$, 'last', {
+    get: function(){
+      return this[this.length - 1];
     },
-    deco_text: {
-      get: function() {
-        return space(player(anchor(link(random(this)))));
-      }
+    configurable: true,
+    enumerable: true
+  });
+  Object.defineProperty(ref$, 'first', {
+    get: function(){
+      return this[0];
     },
-    line_text: {
-      get: function() {
-        return nowrap(player(anchor(link(random(this)))));
-      }
+    configurable: true,
+    enumerable: true
+  });
+  ref$ = String.prototype;
+  Object.defineProperty(ref$, 'deco_preview', {
+    get: function(){
+      return br(space(player(anchor_preview(link(random_preview(unhtml(this)))))));
     },
-    undecolate: {
-      get: function() {
-        return unanchor(unrandom(unbr(this)));
-      }
+    configurable: true,
+    enumerable: true
+  });
+  Object.defineProperty(ref$, 'deco_text', {
+    get: function(){
+      return space(player(anchor(link(random(this)))));
     },
-    sjis_length: {
-      get: function() {
-        var other;
-        other = this.match(/[^\x01-\xff]/g) || [];
-        return this.length + other.length;
-      }
-    }
-  };
-});
-var win;
-
-win = (function() {
-  var scroll_end, set_scroll;
-  set_scroll = function(win) {
+    configurable: true,
+    enumerable: true
+  });
+  Object.defineProperty(ref$, 'line_text', {
+    get: function(){
+      return nowrap(player(anchor(link(random(this)))));
+    },
+    configurable: true,
+    enumerable: true
+  });
+  Object.defineProperty(ref$, 'undecolate', {
+    get: function(){
+      return unanchor(unrandom(unbr(this)));
+    },
+    configurable: true,
+    enumerable: true
+  });
+  Object.defineProperty(ref$, 'sjis_length', {
+    get: function(){
+      var other;
+      other = this.match(/[^\x01-\xff]/g) || [];
+      return this.length + other.length;
+    },
+    configurable: true,
+    enumerable: true
+  });
+}).call(this);
+// Generated by LiveScript 1.3.1
+(function(){
+  var set_scroll, scroll_end, win, out$ = typeof exports != 'undefined' && exports || this;
+  set_scroll = function(win){
     win.scrolling = true;
     win.left = window.pageXOffset || window.scrollX;
     return win.top = window.pageYOffset || window.scrollY;
   };
-  scroll_end = function() {
-    var chk, list, scan;
-    chk = function() {
-      var _ref, _ref1;
-      return 3 === list.length && (list[0].left === (_ref = list[1].left) && _ref === list[2].left) && (list[0].top === (_ref1 = list[1].top) && _ref1 === list[2].top);
+  scroll_end = function(){
+    var list, chk, scan;
+    list = [{}, {}, {}];
+    chk = function(){
+      var ref$;
+      list[0] = list[1];
+      list[1] = list[2];
+      list[2] = {};
+      set_scroll(list[2]);
+      return (list[0].top === (ref$ = list[1].top) && ref$ === list[2].top) && (list[0].left === (ref$ = list[1].left) && ref$ === list[2].left);
     };
-    scan = function() {
-      var val;
-      if (3 <= list.length) {
-        list.shift;
-      }
-      list.push(val = {});
-      set_scroll(val);
+    scan = function(){
       if (chk()) {
         win.scrolling = false;
         win.do_event_list(win.on.scroll_end);
-        win["do"].resize();
+        win['do'].resize();
+      } else {
+        window.requestAnimationFrame(scan);
       }
-      return window.requestAnimationFrame(scan);
     };
-    list = [];
-    return scan();
+    scan();
   };
-  return {
-    do_event_list: function(list, e) {
-      var cb, _i, _len, _results;
-      if (!list.length) {
+  out$.win = win = {
+    do_event_list: function(list, e){
+      var i$, len$, cb;
+      if (!(0 < list.length)) {
         return;
       }
-      _results = [];
-      for (_i = 0, _len = list.length; _i < _len; _i++) {
-        cb = list[_i];
-        _results.push(cb(e));
+      for (i$ = 0, len$ = list.length; i$ < len$; ++i$) {
+        cb = list[i$];
+        cb(e);
       }
-      return _results;
     },
-    "do": {
-      resize: function(e) {
-        var body_height, body_width, docBody, docElem, _ref;
+    'do': {
+      resize: function(e){
+        var docElem, docBody, ref$, body_height, body_width;
         docElem = document.documentElement;
         docBody = document.body;
         win.height = Math.max(window.innerHeight, docElem.clientHeight);
         win.width = Math.max(window.innerWidth, docElem.clientWidth);
         if (win.width < 380 || win.height < 380) {
           head.browser.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5";
-          if ((_ref = document.querySelector("meta[name=viewport]")) != null) {
-            _ref.content = head.browser.viewport;
+          if ((ref$ = document.querySelector("meta[name=viewport]")) != null) {
+            ref$.content = head.browser.viewport;
           }
         }
         win.horizon = win.height / 2;
@@ -376,30 +368,30 @@ win = (function() {
         return win.do_event_list(win.on.resize, e);
       },
       scroll_end: _.debounce(scroll_end, DELAY.presto),
-      scroll: function(e) {
+      scroll: function(e){
         var docElem;
         docElem = document.documentElement;
         set_scroll(win);
         win.right = win.left + win.width;
         win.bottom = win.top + win.height;
         win.do_event_list(win.on.scroll, e);
-        return win["do"].scroll_end();
+        return win['do'].scroll_end();
       },
-      orientation: function(e) {
+      orientation: function(e){
         win.orientation = e;
         win.compass = e.webkitCompassHeading;
         return win.do_event_list(win.on.orientation, e);
       },
-      motion: function(e) {
+      motion: function(e){
         win.accel = e.acceleration;
         win.gravity = e.accelerationIncludingGravity;
         win.rotate = e.rotationRate;
         return win.do_event_list(win.on.motion, e);
       },
-      load: function(e) {
+      load: function(e){
         win.do_event_list(win.on.load, e);
-        win["do"].resize();
-        return win["do"].scroll();
+        win['do'].resize();
+        return win['do'].scroll();
       }
     },
     on: {
@@ -428,266 +420,240 @@ win = (function() {
       left: 0
     }
   };
-})();
-var Cache,
-  __slice = [].slice;
-
-Cache = (function() {
-  function Cache() {}
-
-  Cache.rule = {};
-
-  return Cache;
-
-})();
-
-Cache.Query = (function() {
-  function Query(finder, match, desc, sort_by) {
-    this.finder = finder;
-    this.match = match;
-    this.desc = desc;
-    this.sort_by = sort_by;
-  }
-
-  Query.prototype._match = function(query, cb) {
-    var is_object, match, req, target;
-    if (!Object.keys(query).length) {
-      return this;
+}).call(this);
+// Generated by LiveScript 1.3.1
+(function(){
+  var Cache, Query, Finder, Rule, out$ = typeof exports != 'undefined' && exports || this, toString$ = {}.toString, slice$ = [].slice;
+  out$.Cache = Cache = (function(){
+    Cache.displayName = 'Cache';
+    var prototype = Cache.prototype, constructor = Cache;
+    Cache.rule = {};
+    function Cache(){}
+    return Cache;
+  }());
+  Cache.Query = Query = (function(){
+    Query.displayName = 'Query';
+    var prototype = Query.prototype, constructor = Query;
+    function Query(finder, filters, desc, sort_by){
+      this.finder = finder;
+      this.filters = filters;
+      this.desc = desc;
+      this.sort_by = sort_by;
     }
-    match = this.match.concat();
-    for (target in query) {
-      req = query[target];
-      is_object = "object" === typeof req;
-      match.push(cb(target, req, (function() {
-        switch (typeof req) {
-          case "object":
-            switch (false) {
-              case req.test == null:
-                return RegExp;
-              case req.length == null:
-                return Array;
-              default:
-                return Object;
-            }
-            break;
-          case "number":
-            return Number;
-          case "string":
-            return String;
+    prototype._filters = function(query, cb){
+      var filters, target, req;
+      if (!query) {
+        return this;
+      }
+      filters = this.filters.concat();
+      switch (toString$.call(query).slice(8, -1)) {
+      case 'Object':
+        for (target in query) {
+          req = query[target];
+          filters.push(cb(target, req));
         }
-      })()));
-    }
-    return new Cache.Query(this.finder, match, this.desc, this.sort_by);
-  };
-
-  Query.prototype["in"] = function(query) {
-    switch (typeof query) {
-      case "object":
-        return this._match(query, function(target, req, type) {
-          switch (type) {
-            case Array:
-              return function(o) {
-                var key, val, _i, _j, _len, _len1, _ref;
-                for (_i = 0, _len = req.length; _i < _len; _i++) {
-                  key = req[_i];
-                  _ref = o[target];
-                  for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-                    val = _ref[_j];
-                    if (val === key) {
-                      return true;
-                    }
-                  }
-                }
-                return false;
-              };
-            case RegExp:
-              return function(o) {
-                var val, _i, _len, _ref;
-                _ref = o[target];
-                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                  val = _ref[_i];
-                  if (req.test(val)) {
-                    return true;
-                  }
-                }
-                return false;
-              };
-            default:
-              return function(o) {
-                var val, _i, _len, _ref;
-                _ref = o[target];
-                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-                  val = _ref[_i];
-                  if (val === req) {
-                    return true;
-                  }
-                }
-                return false;
-              };
-          }
-        });
-    }
-  };
-
-  Query.prototype.distinct = function(reduce, target) {
-    var query;
-    query = new Cache.Query(this.finder, this.match, this.desc, this.sort_by);
-    query._distinct = {
-      reduce: reduce,
-      target: target
+        break;
+      case 'Function':
+        filters.push(cb(null, query));
+        break;
+      default:
+        console.log([toString$.call(query).slice(8, -1), query]);
+        throw Error('unimplemented');
+      }
+      return new Cache.Query(this.finder, filters, this.desc, this.sort_by);
     };
-    return query;
-  };
-
-  Query.prototype.where = function(query) {
-    var match;
-    if (!query) {
-      return this;
-    }
-    switch (typeof query) {
-      case "object":
-        return this._match(query, function(target, req, type) {
-          switch (type) {
-            case Array:
-              return function(o) {
-                var key, _i, _len;
-                for (_i = 0, _len = req.length; _i < _len; _i++) {
-                  key = req[_i];
-                  if (o[target] === key) {
-                    return true;
-                  }
+    prototype['in'] = function(query){
+      return this._filters(query, function(target, req){
+        switch (toString$.call(req).slice(8, -1)) {
+        case 'Array':
+          return function(o){
+            var i$, ref$, len$, key, j$, ref1$, len1$, val;
+            for (i$ = 0, len$ = (ref$ = req).length; i$ < len$; ++i$) {
+              key = ref$[i$];
+              for (j$ = 0, len1$ = (ref1$ = o[target]).length; j$ < len1$; ++j$) {
+                val = ref1$[j$];
+                if (val === key) {
+                  return true;
                 }
-                return false;
-              };
-            case RegExp:
-              return function(o) {
-                return req.test(o[target]);
-              };
-            default:
-              return function(o) {
-                return o[target] === req;
-              };
-          }
-        });
-      case "function":
-        match = this.match.concat(query);
-        return new Cache.Query(this.finder, match, this.desc, this.sort_by);
-    }
-  };
-
-  Query.prototype.search = function(text) {
-    var item, list, regexp;
-    if (!text) {
-      return this;
-    }
-    list = (function() {
-      var _i, _len, _ref, _results;
-      _ref = text.split(/\s+/);
-      _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        item = _ref[_i];
+              }
+            }
+            return false;
+          };
+        case 'RegExp':
+          return function(o){
+            var i$, ref$, len$, val;
+            for (i$ = 0, len$ = (ref$ = o[target]).length; i$ < len$; ++i$) {
+              val = ref$[i$];
+              if (req.test(val)) {
+                return true;
+              }
+            }
+            return false;
+          };
+        case 'Null':
+        case 'Boolean':
+        case 'String':
+        case 'Number':
+          return function(o){
+            var i$, ref$, len$, val;
+            for (i$ = 0, len$ = (ref$ = o[target]).length; i$ < len$; ++i$) {
+              val = ref$[i$];
+              if (val === req) {
+                return true;
+              }
+            }
+            return false;
+          };
+        default:
+          console.log([toString$.call(req).slice(8, -1), req]);
+          throw Error('unimplemented');
+        }
+      });
+    };
+    prototype.distinct = function(reduce, target){
+      var query;
+      query = new Cache.Query(this.finder, this.filters, this.desc, this.sort_by);
+      query._distinct = {
+        reduce: reduce,
+        target: target
+      };
+      return query;
+    };
+    prototype.where = function(query){
+      return this._filters(query, function(target, req){
+        switch (toString$.call(req).slice(8, -1)) {
+        case 'Array':
+          return function(o){
+            var i$, ref$, len$, key;
+            for (i$ = 0, len$ = (ref$ = req).length; i$ < len$; ++i$) {
+              key = ref$[i$];
+              if (o[target] === key) {
+                return true;
+              }
+            }
+            return false;
+          };
+        case 'RegExp':
+          return function(o){
+            return req.test(o[target]);
+          };
+        case 'Function':
+          return req;
+        case 'Null':
+        case 'Boolean':
+        case 'String':
+        case 'Number':
+          return function(o){
+            return o[target] === req;
+          };
+        default:
+          console.log([toString$.call(req).slice(8, -1), req]);
+          throw Error('unimplemented');
+        }
+      });
+    };
+    prototype.search = function(text){
+      var list, res$, i$, ref$, len$, item, regexp;
+      if (!text) {
+        return this;
+      }
+      res$ = [];
+      for (i$ = 0, len$ = (ref$ = text.split(/\s+/)).length; i$ < len$; ++i$) {
+        item = ref$[i$];
         item = item.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
         if (!item.length) {
           continue;
         }
-        _results.push("(" + item + ")");
+        res$.push("(" + item + ")");
       }
-      return _results;
-    })();
-    if (!list.length) {
-      return this;
-    }
-    regexp = new RegExp(list.join("|"), "ig");
-    return this.where(function(o) {
-      return regexp.test(o.search_words);
-    });
-  };
-
-  Query.prototype.sort = function(desc, order) {
-    var sort_by;
-    if (order == null) {
-      order = this.sort_by;
-    }
-    sort_by = (function() {
-      switch (typeof order) {
-        case "function":
+      list = res$;
+      if (!list.length) {
+        return this;
+      }
+      regexp = new RegExp(list.join("|"), "ig");
+      return this.where(function(o){
+        return regexp.test(o.search_words);
+      });
+    };
+    prototype.sort = function(desc, order){
+      var sort_by;
+      order == null && (order = this.sort_by);
+      sort_by = (function(){
+        switch (toString$.call(order).slice(8, -1)) {
+        case 'Function':
           return order;
-        case "string":
-          return function(o) {
+        case 'String':
+        case 'Number':
+          return function(o){
             return o[order];
           };
+        default:
+          console.log([toString$.call(req).slice(8, -1), req]);
+          throw Error('unimplemented');
+        }
+      }());
+      if (desc === this.desc && sort_by === this.sort_by) {
+        return this;
       }
-    })();
-    if (desc === this.desc && sort_by === this.sort_by) {
-      return this;
-    }
-    return new Cache.Query(this.finder, this.match, desc, sort_by);
-  };
-
-  Query.prototype.reduce = function() {
-    if (this._reduce == null) {
-      this.finder.calculate(this);
-    }
-    return this._reduce;
-  };
-
-  Query.prototype.list = function() {
-    if (this._list == null) {
-      this.finder.calculate(this);
-    }
-    return this._list;
-  };
-
-  Query.prototype.hash = function() {
-    if (this._hash == null) {
-      this.finder.calculate(this);
-    }
-    return this._hash;
-  };
-
-  Query.prototype.find = function(id) {
-    var _ref;
-    return (_ref = this.hash()[id]) != null ? _ref.item : void 0;
-  };
-
-  return Query;
-
-})();
-
-Cache.Finder = (function() {
-  function Finder(sort_by) {
-    var all;
-    this.sort_by = sort_by;
-    all = new Cache.Query(this, [], false, this.sort_by);
-    all._hash = {};
-    this.scope = {
-      all: all
+      return new Cache.Query(this.finder, this.filters, desc, sort_by);
     };
-    this.query = {
-      all: all
+    prototype.reduce = function(){
+      if (this._reduce == null) {
+        this.finder.calculate(this);
+      }
+      return this._reduce;
     };
-  }
-
-  Finder.prototype.rehash = function(rules) {
-    var rule, _i, _len;
-    this.query.all._list = null;
-    this.query.all._reduce = null;
-    this.query = {
-      all: this.query.all
+    prototype.list = function(){
+      if (this._list == null) {
+        this.finder.calculate(this);
+      }
+      return this._list;
     };
-    if (!(this.diff.del || this.diff.change)) {
-      return;
+    prototype.hash = function(){
+      if (this._hash == null) {
+        this.finder.calculate(this);
+      }
+      return this._hash;
+    };
+    prototype.find = function(id){
+      var ref$;
+      return (ref$ = this.hash()[id]) != null ? ref$.item : void 8;
+    };
+    return Query;
+  }());
+  Cache.Finder = Finder = (function(){
+    Finder.displayName = 'Finder';
+    var prototype = Finder.prototype, constructor = Finder;
+    function Finder(sort_by){
+      var all;
+      this.sort_by = sort_by;
+      all = new Cache.Query(this, [], false, this.sort_by);
+      all._hash = {};
+      this.scope = {
+        all: all
+      };
+      this.query = {
+        all: all
+      };
     }
-    for (_i = 0, _len = rules.length; _i < _len; _i++) {
-      rule = rules[_i];
-      rule;
-    }
-  };
-
-  Finder.prototype.calculate_reduce = function(query) {
-    var base, calc, emits, group, id, init, item, key, keys, last, map, o, reduce, _i, _j, _len, _len1, _ref, _ref1, _ref2;
-    init = (function(_this) {
-      return function(map) {
+    prototype.rehash = function(rules){
+      var i$, len$, rule;
+      this.query.all._list = null;
+      this.query.all._reduce = null;
+      this.query = {
+        all: this.query.all
+      };
+      if (!(this.diff.del || this.diff.change)) {
+        return;
+      }
+      for (i$ = 0, len$ = rules.length; i$ < len$; ++i$) {
+        rule = rules[i$];
+        rule;
+      }
+    };
+    prototype.calculate_reduce = function(query){
+      var init, reduce, calc, base, id, ref$, ref1$, item, emits, i$, len$, keys, last, map, o, j$, len1$, key, group;
+      init = function(map){
         var o;
         o = {};
         if (map.count) {
@@ -698,9 +664,7 @@ Cache.Finder = (function() {
         }
         return o;
       };
-    })(this);
-    reduce = (function(_this) {
-      return function(item, o, map) {
+      reduce = function(item, o, map){
         if (!(map.max <= o.max)) {
           o.max_is = item;
           o.max = map.max;
@@ -716,275 +680,247 @@ Cache.Finder = (function() {
           return o.all += map.all;
         }
       };
-    })(this);
-    calc = (function(_this) {
-      return function(o) {
+      calc = function(o){
         if (o.all && o.count) {
           return o.avg = o.all / o.count;
         }
       };
-    })(this);
-    base = {};
-    _ref = query._hash;
-    for (id in _ref) {
-      _ref1 = _ref[id], item = _ref1.item, emits = _ref1.emits;
-      for (_i = 0, _len = emits.length; _i < _len; _i++) {
-        _ref2 = emits[_i], keys = _ref2[0], last = _ref2[1], map = _ref2[2];
-        o = base;
-        for (_j = 0, _len1 = keys.length; _j < _len1; _j++) {
-          key = keys[_j];
-          o = o[key] || (o[key] = {});
-        }
-        o = o[last] || (o[last] = init(map));
-        reduce(item, o, map);
-      }
-    }
-    for (group in base) {
-      emits = base[group];
-      for (key in emits) {
-        map = emits[key];
-        calc(map);
-      }
-    }
-    return query._reduce = base;
-  };
-
-  Finder.prototype.calculate_sort = function(query) {
-    var gt, is_array, list, lt, o, s, _i, _len, _ref;
-    list = query._list;
-    _ref = query.desc ? [1, -1] : [-1, 1], lt = _ref[0], gt = _ref[1];
-    s = query.orders = {};
-    for (_i = 0, _len = list.length; _i < _len; _i++) {
-      o = list[_i];
-      s[o._id] = query.sort_by(o);
-    }
-    if (list.length) {
-      is_array = Array.isArray(query.sort_by(list[0]));
-    }
-    return query._list = is_array ? list.sort(function(a, b) {
-      var a_list, a_val, b_list, b_val, index, _j, _len1;
-      a_list = s[a._id];
-      b_list = s[b._id];
-      for (index = _j = 0, _len1 = a_list.length; _j < _len1; index = ++_j) {
-        a_val = a_list[index];
-        b_val = b_list[index];
-        if (a_val < b_val) {
-          return lt;
-        }
-        if (a_val > b_val) {
-          return gt;
+      base = {};
+      for (id in ref$ = query._hash) {
+        ref1$ = ref$[id], item = ref1$.item, emits = ref1$.emits;
+        for (i$ = 0, len$ = emits.length; i$ < len$; ++i$) {
+          ref1$ = emits[i$], keys = ref1$[0], last = ref1$[1], map = ref1$[2];
+          o = base;
+          for (j$ = 0, len1$ = keys.length; j$ < len1$; ++j$) {
+            key = keys[j$];
+            o = o[key] || (o[key] = {});
+          }
+          o = o[last] || (o[last] = init(map));
+          reduce(item, o, map);
         }
       }
-      return 0;
-    }) : list.sort(function(a, b) {
-      var a_val, b_val;
-      a_val = s[a._id];
-      b_val = s[b._id];
-      if (a_val < b_val) {
-        return lt;
+      for (group in base) {
+        emits = base[group];
+        for (key in emits) {
+          map = emits[key];
+          calc(map);
+        }
       }
-      if (a_val > b_val) {
-        return gt;
+      return query._reduce = base;
+    };
+    prototype.calculate_sort = function(query){
+      var list, ref$, lt, gt, s, i$, len$, o, is_array;
+      list = query._list;
+      ref$ = query.desc
+        ? [1, -1]
+        : [-1, 1], lt = ref$[0], gt = ref$[1];
+      s = query.orders = {};
+      for (i$ = 0, len$ = list.length; i$ < len$; ++i$) {
+        o = list[i$];
+        s[o._id] = query.sort_by(o);
       }
-      return 0;
-    });
-  };
-
-  Finder.prototype.calculate_group = function(query) {
-    var id, o, reduce, target, _ref;
-    _ref = query._distinct, reduce = _ref.reduce, target = _ref.target;
-    return query._list = (function() {
-      var _ref1, _results;
-      _ref1 = query._reduce[reduce];
-      _results = [];
-      for (id in _ref1) {
-        o = _ref1[id];
-        _results.push(o[target]);
+      if (list.length) {
+        is_array = Array.isArray(query.sort_by(list[0]));
       }
-      return _results;
-    })();
-  };
-
-  Finder.prototype.calculate_list = function(query, all) {
-    var deploy, id, match, o;
-    if (query._hash !== all) {
-      query._hash = {};
-      deploy = function(id, o) {
-        query._hash[id] = o;
-        return o.item;
-      };
-    } else {
-      deploy = function(id, o) {
-        return o.item;
-      };
-    }
-    return query._list = (function() {
-      var _i, _len, _ref, _results;
-      _results = [];
-      for (id in all) {
-        o = all[id];
-        _ref = query.match;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          match = _ref[_i];
-          if (!match(o.item)) {
-            o = null;
+      return query._list = is_array
+        ? list.sort(function(a, b){
+          var a_list, b_list, i$, len$, index, a_val, b_val;
+          a_list = s[a._id];
+          b_list = s[b._id];
+          for (i$ = 0, len$ = a_list.length; i$ < len$; ++i$) {
+            index = i$;
+            a_val = a_list[i$];
+            b_val = b_list[index];
+            if (a_val < b_val) {
+              return lt;
+            }
+            if (a_val > b_val) {
+              return gt;
+            }
+          }
+          return 0;
+        })
+        : list.sort(function(a, b){
+          var a_val, b_val;
+          a_val = s[a._id];
+          b_val = s[b._id];
+          if (a_val < b_val) {
+            return lt;
+          }
+          if (a_val > b_val) {
+            return gt;
+          }
+          return 0;
+        });
+    };
+    prototype.calculate_group = function(query){
+      var ref$, reduce, target, id, o;
+      ref$ = query._distinct, reduce = ref$.reduce, target = ref$.target;
+      return query._list = (function(){
+        var ref$, results$ = [];
+        for (id in ref$ = query._reduce[reduce]) {
+          o = ref$[id];
+          results$.push(o[target]);
+        }
+        return results$;
+      }());
+    };
+    prototype.calculate_list = function(query, all){
+      var deploy, id, o, filters;
+      if (query._hash !== all) {
+        query._hash = {};
+        deploy = function(id, o){
+          query._hash[id] = o;
+          return o.item;
+        };
+      } else {
+        deploy = function(id, o){
+          return o.item;
+        };
+      }
+      return query._list = (function(){
+        var ref$, i$, ref1$, len$, results$ = [];
+        for (id in ref$ = all) {
+          o = ref$[id];
+          for (i$ = 0, len$ = (ref1$ = query.filters).length; i$ < len$; ++i$) {
+            filters = ref1$[i$];
+            if (!filters(o.item)) {
+              o = null;
+            }
+            if (!o) {
+              break;
+            }
           }
           if (!o) {
-            break;
+            continue;
           }
+          results$.push(deploy(id, o));
         }
-        if (!o) {
-          continue;
+        return results$;
+      }());
+    };
+    prototype.calculate = function(query){
+      this.calculate_list(query, this.query.all._hash);
+      if (query._list.length && this.map_reduce != null) {
+        this.calculate_reduce(query);
+        if (query._distinct != null) {
+          this.calculate_group(query);
         }
-        _results.push(deploy(id, o));
       }
-      return _results;
-    })();
-  };
-
-  Finder.prototype.calculate = function(query) {
-    this.calculate_list(query, this.query.all._hash);
-    if (query._list.length && (this.map_reduce != null)) {
-      this.calculate_reduce(query);
-      if (query._distinct != null) {
-        this.calculate_group(query);
-      }
-    }
-    this.calculate_sort(query);
-  };
-
-  return Finder;
-
-})();
-
-Cache.Rule = (function() {
-  function Rule(field) {
-    this.id = "" + field + "_id";
-    this.list_name = "" + field + "s";
-    this.validates = [];
-    this.responses = [];
-    this.map_reduce = function() {};
-    this.protect = function() {};
-    this.deploy = (function(_this) {
-      return function(o) {
+      this.calculate_sort(query);
+    };
+    return Finder;
+  }());
+  Cache.Rule = Rule = (function(){
+    Rule.displayName = 'Rule';
+    var prototype = Rule.prototype, constructor = Rule;
+    function Rule(field){
+      var this$ = this;
+      this.id = field + "_id";
+      this.list_name = field + "s";
+      this.validates = [];
+      this.responses = [];
+      this.map_reduce = function(){};
+      this.protect = function(){};
+      this.deploy = function(o){
         if (!o._id) {
-          o._id = o[_this.id];
+          o._id = o[this$.id];
         }
-        if (!o[_this.id]) {
-          return o[_this.id] = o._id;
+        if (!o[this$.id]) {
+          return o[this$.id] = o._id;
         }
       };
-    })(this);
-    this.finder = new Cache.Finder(function(list) {
-      return list;
-    });
-    Cache.rule[field] = this;
-    Cache[this.list_name] = this.finder.query.all;
-  }
-
-  Rule.prototype.schema = function(cb) {
-    var definer;
-    definer = {
-      scope: (function(_this) {
-        return function(cb) {
-          var key, query_call, set_scope, _ref, _results;
-          _this.finder.scope = cb(_this.finder.query.all);
-          set_scope = function(key, finder, query_call) {
-            return finder.query.all[key] = function() {
-              var args, _base, _name;
-              args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-              return (_base = finder.query)[_name = "" + key + ":" + (JSON.stringify(args))] != null ? _base[_name] : _base[_name] = query_call.apply(null, args);
+      this.finder = new Cache.Finder(function(list){
+        return list;
+      });
+      Cache.rule[field] = this;
+      Cache[this.list_name] = this.finder.query.all;
+    }
+    prototype.schema = function(cb){
+      var definer, this$ = this;
+      definer = {
+        scope: function(cb){
+          var set_scope, key, ref$, query_call, results$ = [];
+          this$.finder.scope = cb(this$.finder.query.all);
+          set_scope = function(key, finder, query_call){
+            return finder.query.all[key] = function(){
+              var args, ref$, key$, ref1$;
+              args = slice$.call(arguments);
+              return (ref1$ = (ref$ = finder.query)[key$ = key + ":" + JSON.stringify(args)]) != null
+                ? ref1$
+                : ref$[key$] = query_call.apply(null, args);
             };
           };
-          _ref = _this.finder.scope;
-          _results = [];
-          for (key in _ref) {
-            query_call = _ref[key];
-            _results.push(set_scope(key, _this.finder, query_call));
+          for (key in ref$ = this$.finder.scope) {
+            query_call = ref$[key];
+            results$.push(set_scope(key, this$.finder, query_call));
           }
-          return _results;
-        };
-      })(this),
-      belongs_to: (function(_this) {
-        return function(parent, option) {
-          var dependent, parent_id, parents;
-          parents = "" + parent + "s";
-          parent_id = "" + parent + "_id";
-          dependent = (option != null ? option.dependent : void 0) != null;
+          return results$;
+        },
+        belongs_to: function(parent, option){
+          var parents, parent_id, dependent;
+          parents = parent + "s";
+          parent_id = parent + "_id";
+          dependent = (option != null ? option.dependent : void 8) != null;
           if (dependent) {
-            Cache.rule[parent].responses.push(_this);
+            Cache.rule[parent].responses.push(this$);
           }
-          return _this.validates.push(function(o) {
-            var that, _ref;
-            that = (_ref = Cache[parents]) != null ? _ref.find(o[parent_id]) : void 0;
+          return this$.validates.push(function(o){
+            var that, ref$;
+            that = (ref$ = Cache[parents]) != null ? ref$.find(o[parent_id]) : void 8;
             if (that != null) {
               return o[parent] = that;
             } else {
               return !dependent;
             }
           });
-        };
-      })(this),
-      order: (function(_this) {
-        return function(order) {
+        },
+        order: function(order){
           var query;
-          query = _this.finder.query.all.sort(false, order);
-          query._hash = _this.finder.query.all._hash;
-          return Cache[_this.list_name] = _this.finder.query.all = query;
-        };
-      })(this),
-      protect: (function(_this) {
-        return function() {
+          query = this$.finder.query.all.sort(false, order);
+          query._hash = this$.finder.query.all._hash;
+          return Cache[this$.list_name] = this$.finder.query.all = query;
+        },
+        protect: function(){
           var keys;
-          keys = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-          return _this.protect = function(o, old) {
-            var key, _i, _len, _results;
-            _results = [];
-            for (_i = 0, _len = keys.length; _i < _len; _i++) {
-              key = keys[_i];
-              _results.push(o[key] = old[key]);
+          keys = slice$.call(arguments);
+          return this$.protect = function(o, old){
+            var i$, ref$, len$, key, results$ = [];
+            for (i$ = 0, len$ = (ref$ = keys).length; i$ < len$; ++i$) {
+              key = ref$[i$];
+              results$.push(o[key] = old[key]);
             }
-            return _results;
+            return results$;
           };
-        };
-      })(this),
-      deploy: (function(_this) {
-        return function(deploy) {
-          _this.deploy = deploy;
-        };
-      })(this),
-      map_reduce: (function(_this) {
-        return function(map_reduce) {
-          _this.map_reduce = map_reduce;
-        };
-      })(this)
+        },
+        deploy: function(deploy){
+          this$.deploy = deploy;
+        },
+        map_reduce: function(map_reduce){
+          this$.map_reduce = map_reduce;
+        }
+      };
+      return cb.call(definer, this);
     };
-    return cb.call(definer, this);
-  };
-
-  Rule.prototype.set_base = function(mode, from, parent) {
-    var all, diff, emit, finder, item, key, o, old, val, validate_item, _i, _j, _len, _len1, _ref, _ref1;
-    finder = this.finder;
-    diff = finder.diff;
-    all = finder.query.all._hash;
-    validate_item = (function(_this) {
-      return function(item) {
-        var validate, _i, _len, _ref;
-        _ref = _this.validates;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          validate = _ref[_i];
+    prototype.set_base = function(mode, from, parent){
+      var finder, diff, all, validate_item, i$, ref$, len$, item, key, val, o, old, emit, this$ = this;
+      finder = this.finder;
+      diff = finder.diff;
+      all = finder.query.all._hash;
+      validate_item = function(item){
+        var i$, ref$, len$, validate;
+        for (i$ = 0, len$ = (ref$ = this$.validates).length; i$ < len$; ++i$) {
+          validate = ref$[i$];
           if (!validate(item)) {
             return false;
           }
         }
         return true;
       };
-    })(this);
-    switch (mode) {
+      switch (mode) {
       case "merge":
-        _ref = from || [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          item = _ref[_i];
+        for (i$ = 0, len$ = (ref$ = from || []).length; i$ < len$; ++i$) {
+          item = ref$[i$];
           if (!validate_item(item)) {
             continue;
           }
@@ -1005,21 +941,13 @@ Cache.Rule = (function() {
             diff.add = true;
           }
           all[item._id] = o;
-          emit = (function(_this) {
-            return function() {
-              var keys, last, map, _j;
-              keys = 3 <= arguments.length ? __slice.call(arguments, 0, _j = arguments.length - 2) : (_j = 0, []), last = arguments[_j++], map = arguments[_j++];
-              finder.map_reduce = true;
-              return o.emits.push([keys, last, map]);
-            };
-          })(this);
+          emit = fn$;
           this.map_reduce(o.item, emit);
         }
         break;
       default:
-        _ref1 = from || [];
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          item = _ref1[_j];
+        for (i$ = 0, len$ = (ref$ = from || []).length; i$ < len$; ++i$) {
+          item = ref$[i$];
           this.deploy(item);
           o = {
             item: item,
@@ -1031,36 +959,37 @@ Cache.Rule = (function() {
             delete all[item._id];
           }
         }
-    }
-    finder.rehash(this.responses);
-  };
-
-  Rule.prototype.set = function(list, parent) {
-    var key, val, _ref;
-    this.finder.diff = {};
-    _ref = this.finder.query.all._hash;
-    for (key in _ref) {
-      val = _ref[key];
-      this.finder.query.all._hash = {};
-      this.finder.diff.del = true;
-      break;
-    }
-    return this.set_base("merge", list, parent, "merge");
-  };
-
-  Rule.prototype.reject = function(list) {
-    this.finder.diff = {};
-    return this.set_base(false, list, null);
-  };
-
-  Rule.prototype.merge = function(list, parent) {
-    this.finder.diff = {};
-    return this.set_base("merge", list, parent);
-  };
-
-  return Rule;
-
-})();
+      }
+      finder.rehash(this.responses);
+      function fn$(){
+        var i$, keys, last, map;
+        keys = 0 < (i$ = arguments.length - 2) ? slice$.call(arguments, 0, i$) : (i$ = 0, []), last = arguments[i$], map = arguments[i$ + 1];
+        finder.map_reduce = true;
+        return o.emits.push([keys, last, map]);
+      }
+    };
+    prototype.set = function(list, parent){
+      var key, ref$, val;
+      this.finder.diff = {};
+      for (key in ref$ = this.finder.query.all._hash) {
+        val = ref$[key];
+        this.finder.query.all._hash = {};
+        this.finder.diff.del = true;
+        break;
+      }
+      return this.set_base("merge", list, parent, "merge");
+    };
+    prototype.reject = function(list){
+      this.finder.diff = {};
+      return this.set_base(false, list, null);
+    };
+    prototype.merge = function(list, parent){
+      this.finder.diff = {};
+      return this.set_base("merge", list, parent);
+    };
+    return Rule;
+  }());
+}).call(this);
 var Btn, Btns, Txt,
   __slice = [].slice;
 

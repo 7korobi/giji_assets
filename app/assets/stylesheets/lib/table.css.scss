@@ -15,6 +15,12 @@ table {
     width: 90%;
   }
 }
+#sayfilter,
+#calc {
+  table {
+    width: 100%;
+  }
+}
 
 .table-swipe {
   overflow-y: visible;

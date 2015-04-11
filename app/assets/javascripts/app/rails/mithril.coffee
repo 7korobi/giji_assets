@@ -437,7 +437,7 @@ if gon?.potofs?
                 m.trust o.log.line_text
 
         potofs =
-          m "table.table",
+          m "table",
             m "tfoot",
               m "tr.center",
                 m "th[colspan=2]", m "sup", "(スクロールします。)"
