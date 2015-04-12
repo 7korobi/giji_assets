@@ -2434,7 +2434,7 @@ GUI.timeline = function(_arg) {
   time_width = last_at - first_at;
   max_height = y = 0;
   attr = GUI.attrs({}, function() {
-    var do_point, find_last, point;
+    var find_last, point;
     find_last = function(list, time) {
       var o, _i;
       for (_i = list.length - 1; _i >= 0; _i += -1) {
@@ -2478,20 +2478,19 @@ GUI.timeline = function(_arg) {
       }
       return choice(id);
     };
-    do_point = _.debounce(point, DELAY.presto);
     this.start(function(e) {
       win.is_touch = true;
-      return do_point(e);
+      return point(e);
     });
     this.end(function(e) {
       win.is_touch = false;
-      return do_point(e);
+      return point(e);
     });
     this.cancel(function(e) {
       win.is_touch = false;
-      return do_point(e);
+      return point(e);
     });
-    this.move(do_point);
+    this.move(point);
     return this.canvas(width, 75, {
       cache: function() {
         return base.reduce();

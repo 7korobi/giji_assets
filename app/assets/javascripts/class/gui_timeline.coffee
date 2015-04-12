@@ -75,19 +75,18 @@ GUI.timeline = ({width, base, choice})->
       id = find_last list, Math.ceil(1000 * 3600 * (first_at + offsetX / x))
       return unless id
       choice(id)
-    do_point = _.debounce point, DELAY.presto
 
     @start (e)->
       win.is_touch = true
-      do_point(e)
+      point(e)
     @end (e)->
       win.is_touch = false
-      do_point(e)
+      point(e)
     @cancel (e)->
       win.is_touch = false
-      do_point(e)
+      point(e)
 
-    @move do_point
+    @move point
 
     @canvas width, 75,
       cache: -> base.reduce()
