@@ -45,6 +45,7 @@ class GUI.ScrollSpy
     @start()
 
   rescroll: (@prop)->
+    m.redraw()
     window.requestAnimationFrame ->
       GUI.ScrollSpy.go prop()
 

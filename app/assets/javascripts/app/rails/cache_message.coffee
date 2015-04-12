@@ -94,10 +94,9 @@ new Cache.Rule("message").schema ->
     o.pen = "#{o.logid[0..1]}-#{o.face_id}"
     o.potof_id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
 
-    o.updated_at ?= new Date(o.date) - 0
-    o.updated_timer ?= new Timer o.updated_at,
-      prop: ->
-    delete o.date
+    unless o.updated_at
+      o.updated_at = new Date(o.date) - 0
+      delete o.date
 
     vdom = GUI.message.xxx
     o.mask =

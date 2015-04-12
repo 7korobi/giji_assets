@@ -265,8 +265,6 @@ describe "Cache", ->
           anchor_num  = o.logid.substring(2) - 0 || 0
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
           o.updated_at ?= new Date(o.date) - 0
-          o.updated_timer ?= new Timer o.updated_at,
-            prop: ->
           delete o.date
 
           vdom = GUI.message.xxx

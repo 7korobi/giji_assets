@@ -112,7 +112,7 @@ GUI.message = (->
       m "p.text.#{v.style}", deco_action(v), m.trust v.log.deco_text
       m "p.mes_date",
         m "span.mark", identity_action(v), v.anchor
-        GUI.timer "span", v.updated_timer
+        GUI.timer "span", v
 
   action: (v)->
     m ".#{v.mestype}.action", {key: v._id},
@@ -121,7 +121,8 @@ GUI.message = (->
         "は、"
         m "span",
           m.trust v.log.deco_text
-      GUI.timer "p.mes_date", v.updated_timer
+      m "p.mes_date",
+        GUI.timer "span", v
 
   memo: (v)->
     m "table.#{v.mestype}.memo", {key: v._id},
@@ -133,12 +134,12 @@ GUI.message = (->
           m "td",
             m "p.text.#{v.style}", deco_action(v), m.trust v.log.deco_text
             m "p.mes_date",
-              GUI.timer "span", v.updated_timer
+              GUI.timer "span", v
 
   talk: (v)->
     GUI.message.say_base v,
       m "span.mark", identity_action(v), v.anchor
-      GUI.timer "span", v.updated_timer
+      GUI.timer "span", v
 
   history: (v)->
     GUI.message.say_base v,

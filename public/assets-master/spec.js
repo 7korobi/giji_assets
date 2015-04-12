@@ -3815,7 +3815,6 @@ new Cache.Rule("chr_job").schema(function() {
   return this.scope(function(all) {
     return {
       face: function(face_id) {
-        console.log(["find face", face_id]);
         return all.where(function(o) {
           return face_id === o.face_id;
         }).sort(false, function(o) {
@@ -8613,11 +8612,6 @@ describe("Cache", function() {
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
           if (o.updated_at == null) {
             o.updated_at = new Date(o.date) - 0;
-          }
-          if (o.updated_timer == null) {
-            o.updated_timer = new Timer(o.updated_at, {
-              prop: function() {}
-            });
           }
           delete o.date;
           vdom = GUI.message.xxx;

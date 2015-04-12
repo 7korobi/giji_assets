@@ -160,6 +160,8 @@ GUI.if_exist "#to_root", (dom)->
       GUI.do_tick (now)->
         zone = now + 3*hour # means - 6hours base. (GMT is - 9 hours)
         day_or_night Math.floor(zone / (12*hour)) % 2
+
+        m.redraw()
         12*hour - zone % (12*hour)
 
     view: ->

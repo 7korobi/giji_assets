@@ -240,7 +240,7 @@ var m=function a(b,c){function d(a){C=a.document,D=a.location,F=a.cancelAnimatio
     });
   };
   unhtml = function(log){
-    return log.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;").replace(/\//g, "&" + x2f + ";");
+    return log.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;").replace(/\//g, "&#x2f;");
   };
   Number.MAX_INT32 = 0x7fffffff;
   ref$ = Array.prototype;
@@ -1422,17 +1422,27 @@ GUI = (function() {
       dsl.call(func);
       return o;
     },
-    timer: function(query, at) {
-      var attr;
+    timer: function(query, o) {
+      var attr, child;
+      child = "";
       attr = {
         config: function(elem, is_continue, context) {
-          return at.prop = function(text) {
-            elem.innerText && (elem.innerText = text);
-            return elem.textContent && (elem.textContent = text);
+          var at;
+          at = Timer.fetch(o.updated_at);
+          context.onunload = function() {
+            return delete context.update;
           };
+          context.update = function(text) {
+            child = text;
+            elem.innerText = text;
+            return elem.textContent = text;
+          };
+          if (!is_continue) {
+            return at.start(context);
+          }
         }
       };
-      return m(query, attr, at.text);
+      return m(query, attr, child);
     },
     inline_item: function(cb) {
       var inline_item_span, list_cmds;
@@ -1464,14 +1474,12 @@ GUI = (function() {
       var action;
       action = function() {
         var tick;
-        m.startComputation();
         tick = cb(_.now());
         if (tick) {
-          setTimeout(function() {
+          return setTimeout(function() {
             return action();
           }, tick);
         }
-        return m.endComputation();
       };
       return action();
     },
@@ -2129,20 +2137,20 @@ GUI.message = (function() {
     guide: function(v) {
       return m("." + v.mestype + ".guide", {
         key: v._id
-      }, m("p.name", m("b", m.trust(v.name))), m("p.text." + v.style, deco_action(v), m.trust(v.log.deco_text)), m("p.mes_date", m("span.mark", identity_action(v), v.anchor), GUI.timer("span", v.updated_timer)));
+      }, m("p.name", m("b", m.trust(v.name))), m("p.text." + v.style, deco_action(v), m.trust(v.log.deco_text)), m("p.mes_date", m("span.mark", identity_action(v), v.anchor), GUI.timer("span", v)));
     },
     action: function(v) {
       return m("." + v.mestype + ".action", {
         key: v._id
-      }, m("p.text." + v.style, deco_action(v), m("b", m.trust(v.name)), "は、", m("span", m.trust(v.log.deco_text))), GUI.timer("p.mes_date", v.updated_timer));
+      }, m("p.text." + v.style, deco_action(v), m("b", m.trust(v.name)), "は、", m("span", m.trust(v.log.deco_text))), m("p.mes_date", GUI.timer("span", v)));
     },
     memo: function(v) {
       return m("table." + v.mestype + ".memo", {
         key: v._id
-      }, m("tr", m("th", GUI.portrate(v.face_id), m("div", m("b", v.name))), m("td", m("p.text." + v.style, deco_action(v), m.trust(v.log.deco_text)), m("p.mes_date", GUI.timer("span", v.updated_timer)))));
+      }, m("tr", m("th", GUI.portrate(v.face_id), m("div", m("b", v.name))), m("td", m("p.text." + v.style, deco_action(v), m.trust(v.log.deco_text)), m("p.mes_date", GUI.timer("span", v)))));
     },
     talk: function(v) {
-      return GUI.message.say_base(v, m("span.mark", identity_action(v), v.anchor), GUI.timer("span", v.updated_timer));
+      return GUI.message.say_base(v, m("span.mark", identity_action(v), v.anchor), GUI.timer("span", v));
     },
     history: function(v) {
       return GUI.message.say_base(v, m("span.mark", v.anchor));
@@ -2239,6 +2247,7 @@ GUI.ScrollSpy = (function() {
 
   ScrollSpy.prototype.rescroll = function(prop) {
     this.prop = prop;
+    m.redraw();
     return window.requestAnimationFrame(function() {
       return GUI.ScrollSpy.go(prop());
     });
@@ -2425,7 +2434,7 @@ GUI.timeline = function(_arg) {
   time_width = last_at - first_at;
   max_height = y = 0;
   attr = GUI.attrs({}, function() {
-    var find_last, point;
+    var do_point, find_last, point;
     find_last = function(list, time) {
       var o, _i;
       for (_i = list.length - 1; _i >= 0; _i += -1) {
@@ -2467,23 +2476,22 @@ GUI.timeline = function(_arg) {
       if (!id) {
         return;
       }
-      m.startComputation();
-      choice(id);
-      return m.endComputation();
+      return choice(id);
     };
+    do_point = _.debounce(point, DELAY.presto);
     this.start(function(e) {
       win.is_touch = true;
-      return point(e);
+      return do_point(e);
     });
     this.end(function(e) {
       win.is_touch = false;
-      return point(e);
+      return do_point(e);
     });
     this.cancel(function(e) {
       win.is_touch = false;
-      return point(e);
+      return do_point(e);
     });
-    this.move(point);
+    this.move(do_point);
     return this.canvas(width, 75, {
       cache: function() {
         return base.reduce();
@@ -2973,17 +2981,19 @@ Timer = (function() {
     return "" + yyyy + "-" + mm + "-" + dd + " (" + dow + ") " + (Timer.hh(hh)) + postfix;
   });
 
-  function Timer(at, options) {
-    var key, val;
+  Timer.cache = {};
+
+  Timer.fetch = function(at) {
+    var _base;
+    return (_base = Timer.cache)[at] != null ? _base[at] : _base[at] = new Timer(at);
+  };
+
+  function Timer(at) {
     this.at = at;
-    if (options == null) {
-      options = {};
-    }
-    for (key in options) {
-      val = options[key];
-      this[key] = val;
-    }
-    GUI.do_tick((function(_this) {
+  }
+
+  Timer.prototype.start = function(bind) {
+    return GUI.do_tick((function(_this) {
       return function(now) {
         _this.msec = now - _this.at;
         return _this.next(_this.msec / 1000, function(text, sec_span) {
@@ -2992,9 +3002,10 @@ Timer = (function() {
           if (sec_span == null) {
             sec_span = Number.NaN;
           }
-          if (_this.prop) {
-            _this.prop(_this.text);
+          if (!bind.update) {
+            return 0;
           }
+          bind.update(_this.text);
           msec_span = sec_span * 1000;
           diff = _this.msec % msec_span;
           if (0 < diff) {
@@ -3005,7 +3016,7 @@ Timer = (function() {
         });
       };
     })(this));
-  }
+  };
 
   Timer.prototype.next = function(second, tick) {
     var hour, limit, minute;

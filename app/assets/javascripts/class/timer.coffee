@@ -45,15 +45,18 @@ class Timer
 
     "#{yyyy}-#{mm}-#{dd} (#{dow}) #{Timer.hh(hh)}#{postfix}"
 
+  @cache = {}
+  @fetch = (at)->
+    Timer.cache[at] ?= new Timer at
 
-  constructor: (@at, options = {})->
-    for key, val of options
-      @[key] = val
+  constructor: (@at)->
 
+  start: (bind)->
     GUI.do_tick (now)=>
       @msec = (now - @at)
       @next @msec / 1000, (@text, sec_span = Number.NaN)=>
-        @prop @text if @prop
+        return 0 unless bind.update
+        bind.update @text
 
         msec_span = sec_span * 1000
         diff = @msec % msec_span

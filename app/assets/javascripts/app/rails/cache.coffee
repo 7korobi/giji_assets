@@ -39,8 +39,6 @@ new Cache.Rule("map_face_story_log").schema ->
 
 new Cache.Rule("item").schema ->
   @deploy (o)->
-    o.updated_timer ?= new Timer o.updated_at,
-      prop: ->
 
 new Cache.Rule("event").schema ->
   @order "_id"

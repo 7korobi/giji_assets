@@ -76,7 +76,7 @@ unhtml = (log)->
      .replace />/g, "&gt;"
      .replace /"/g, "&quot;"
      .replace /'/g, "&apos;"
-     .replace /\//g, "&#x2f;"
+     .replace /\//g, "&\#x2f;"
 
 Number.MAX_INT32 = 0x7fffffff
 

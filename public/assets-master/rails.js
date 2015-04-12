@@ -189,11 +189,7 @@ new Cache.Rule("map_face_story_log").schema(function() {
 });
 
 new Cache.Rule("item").schema(function() {
-  return this.deploy(function(o) {
-    return o.updated_timer != null ? o.updated_timer : o.updated_timer = new Timer(o.updated_at, {
-      prop: function() {}
-    });
-  });
+  return this.deploy(function(o) {});
 });
 
 new Cache.Rule("event").schema(function() {
@@ -455,15 +451,10 @@ new Cache.Rule("message").schema(function() {
     o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
     o.pen = "" + o.logid.slice(0, 2) + "-" + o.face_id;
     o.potof_id = "" + o.event_id + "-" + o.csid + "-" + o.face_id;
-    if (o.updated_at == null) {
+    if (!o.updated_at) {
       o.updated_at = new Date(o.date) - 0;
+      delete o.date;
     }
-    if (o.updated_timer == null) {
-      o.updated_timer = new Timer(o.updated_at, {
-        prop: function() {}
-      });
-    }
-    delete o.date;
     vdom = GUI.message.xxx;
     o.mask = (function() {
       switch (false) {
@@ -1565,15 +1556,10 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
           var anchor_num;
           anchor_num = o.logid.slice(2) - 0 || 0;
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
-          if (o.updated_at == null) {
+          if (!o.updated_at) {
             o.updated_at = new Date(o.date) - 0;
+            delete o.date;
           }
-          if (o.updated_timer == null) {
-            o.updated_timer = new Timer(o.updated_at, {
-              prop: function() {}
-            });
-          }
-          delete o.date;
           if (o.vdom) {
             return o.vdom(o);
           } else {
@@ -1965,6 +1951,7 @@ GUI.if_exist("#to_root", function(dom) {
         var zone;
         zone = now + 3 * hour;
         day_or_night(Math.floor(zone / (12 * hour)) % 2);
+        m.redraw();
         return 12 * hour - zone % (12 * hour);
       });
     },

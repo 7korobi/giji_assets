@@ -157,13 +157,21 @@ GUI = (->
     dsl.call func
     o
 
-  timer: (query, at)->
+  timer: (query, o)->
+    child = ""
     attr =
       config: (elem, is_continue, context)->
-        at.prop = (text)->
-          elem.innerText &&= text
-          elem.textContent &&= text
-    m query, attr, at.text
+        at = Timer.fetch o.updated_at
+        context.onunload = -> 
+          delete context.update
+        context.update = (text)->
+          child = text
+          elem.innerText = text
+          elem.textContent = text
+        unless is_continue
+          at.start context
+
+    m query, attr, child
 
   inline_item: (cb)->
     inline_item_span = (align, em, vdom)->
@@ -179,13 +187,13 @@ GUI = (->
 
   do_tick: (cb)->
     action = ->
-      m.startComputation()
+#      m.startComputation()
       tick = cb(_.now())
       if tick
         setTimeout ->
           action()
         , tick
-      m.endComputation()
+#      m.endComputation()
     action()
 
   if_exist: (query, cb)->
