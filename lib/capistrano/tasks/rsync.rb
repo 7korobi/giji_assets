@@ -43,18 +43,30 @@ namespace :rsync do
       execute "rsync #{options} ~/Dropbox/web_work/images/ /www/giji_assets/public/images/"
     end
 
-    remotes = Fog::Storage.new(FOG.storage).directories.find{|o|o.key == "giji-assets"}.files
+    remotes = Fog::Storage.new(FOG.storage).directories.find{|o|o.key == "giji-assets"}.files.select {|o| not o.key[/^stories/]}
     remote_hash = remotes.group_by(&:key)
-    locals = Dir.glob("public/**/*", File::FNM_DOTMATCH).uniq.select do |path|
+    locals = Dir.glob("public/**/*", File::FNM_DOTMATCH).uniq
+    appends = locals.select do |path|
       next unless File.file? path
       key = path.match(/public\/(.*)/)[1]
-      remote_modify = remote_hash[key][0].last_modified
-      local_modify = File.mtime(path)
+      if remote_hash[key]
+        remote_modify = remote_hash[key][0].last_modified
+        local_modify = File.mtime(path)
 
-      remote_modify < local_modify
+        remote_modify < local_modify
+      else
+        true
+      end
     end
-    locals.each_with_index do |path, index|
-      print "(#{index}/#{locals.size})\r"
+    deletes = remotes.map {|o| "public/" + o.key } - locals
+    deletes.each_with_index do |path, index|
+      print "(delete #{index}/#{deletes.size})\r"
+
+      key = path.match(/public\/(.*)/)[1]
+      remote_hash[key][0].destroy
+    end
+    appends.each_with_index do |path, index|
+      print "(append #{index}/#{appends.size})\r"
 
       key = path.match(/public\/(.*)/)[1]
       remotes.create(
@@ -64,7 +76,9 @@ namespace :rsync do
       )
     end
     puts "---------- transfer complete -----------"
-    puts locals
+    puts appends
+    puts "-------------- (destroy) ---------------"
+    puts deletes
   end
 
   desc "public rsync."
