@@ -2247,7 +2247,6 @@ GUI.ScrollSpy = (function() {
 
   ScrollSpy.prototype.rescroll = function(prop) {
     this.prop = prop;
-    m.redraw();
     return window.requestAnimationFrame(function() {
       return GUI.ScrollSpy.go(prop());
     });
