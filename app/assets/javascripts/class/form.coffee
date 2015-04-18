@@ -5,6 +5,18 @@ Txt = (->
     value: prop()
 )()
 
+Submit = (->
+  test: (object)->
+    query =
+      method: "POST"
+      url: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/test-form.html"
+      serialize: (data)->
+        console.log data
+        data
+      deserialize: Serial.parser.HtmlGon
+    m.request(query)
+)()
+
 Btns = (->
   base = (btn, style, prop, options, order = Object.keys options)->
     for key in order
@@ -39,6 +51,15 @@ Btn = (->
     to_s(load()) == to_s(keys)
 
   base: base
+
+  submit: (style, object)->
+    submit = (objecct)->
+      untap = -> true
+      Submit.test()
+
+    untap = -> false
+    base style, untap, submit, null, object
+
   bool: (style, prop)->
     base style, is_true, prop, prop, !prop()
 

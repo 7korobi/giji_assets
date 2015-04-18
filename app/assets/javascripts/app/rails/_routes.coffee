@@ -1,16 +1,9 @@
-Url.test = ->
-  query =
-    method: "GET"
-    url: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/test-form.html"
-    deserialize: Serial.parser.HtmlGon
-  m.request(query)
-
 Url.define LOCATION.props, LOCATION.bind
 Url.routes =
   pathname:
     events: new Url "/:story_id/file"
     event:  new Url "/:story_id/:turn/messages"
-    story:  new Url "/:story_id.html"
+    story:  new Url "/stories/:story_id"
 
   hash:
     css: new Url "css=:theme~:width~:layout~:font",

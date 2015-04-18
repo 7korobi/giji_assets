@@ -990,7 +990,7 @@ var m=function a(b,c){function d(a){C=a.document,D=a.location,F=a.cancelAnimatio
     return Rule;
   }());
 }).call(this);
-var Btn, Btns, Txt,
+var Btn, Btns, Submit, Txt,
   __slice = [].slice;
 
 Txt = (function() {
@@ -1001,6 +1001,24 @@ Txt = (function() {
         onchange: m.withAttr("value", prop),
         value: prop()
       };
+    }
+  };
+})();
+
+Submit = (function() {
+  return {
+    test: function(object) {
+      var query;
+      query = {
+        method: "POST",
+        url: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/test-form.html",
+        serialize: function(data) {
+          console.log(data);
+          return data;
+        },
+        deserialize: Serial.parser.HtmlGon
+      };
+      return m.request(query);
     }
   };
 })();
@@ -1064,6 +1082,20 @@ Btn = (function() {
   };
   return {
     base: base,
+    submit: function(style, object) {
+      var submit, untap;
+      submit = function(objecct) {
+        var untap;
+        untap = function() {
+          return true;
+        };
+        return Submit.test();
+      };
+      untap = function() {
+        return false;
+      };
+      return base(style, untap, submit, null, object);
+    },
     bool: function(style, prop) {
       return base(style, is_true, prop, prop, !prop());
     },
@@ -2072,6 +2104,36 @@ GUI.message = (function() {
       tap_external: function() {
         return console.log(arguments);
       }
+    },
+    cmd_target: function() {
+      var button, buttons, target, targets;
+      targets = (function() {
+        var _i, _len, _ref, _results;
+        _ref = Cache.targets.command(o.cmd).list();
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          target = _ref[_i];
+          _results.push(m("option", {
+            value: target.val
+          }, target.name));
+        }
+        return _results;
+      })();
+      targets.unshift(m("option", {
+        value: "?",
+        selected: true
+      }, "- 選択してください -"));
+      buttons = (function() {
+        var _i, _len, _ref, _results;
+        _ref = Cache.commands.target().list();
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          button = _ref[_i];
+          _results.push(m("option", button.title));
+        }
+        return _results;
+      })();
+      return m("p.commitbutton", m("select", targets), m("select", buttons), Btn.submit({}, {}));
     },
     game: function(story, event) {
       var mob, option, option_id, roletable;

@@ -1,22 +1,12 @@
 var _ref;
 
-Url.test = function() {
-  var query;
-  query = {
-    method: "GET",
-    url: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/test-form.html",
-    deserialize: Serial.parser.HtmlGon
-  };
-  return m.request(query);
-};
-
 Url.define(LOCATION.props, LOCATION.bind);
 
 Url.routes = {
   pathname: {
     events: new Url("/:story_id/file"),
     event: new Url("/:story_id/:turn/messages"),
-    story: new Url("/:story_id.html")
+    story: new Url("/stories/:story_id")
   },
   hash: {
     css: new Url("css=:theme~:width~:layout~:font", {
@@ -328,6 +318,32 @@ new Cache.Rule("story").schema(function() {
     }
     return _results;
   });
+});
+new Cache.Rule("target").schema(function() {
+  this.scope(function(all) {
+    return {
+      command: function(type) {
+        return all;
+      },
+      vote: function(type) {
+        return all;
+      }
+    };
+  });
+  return this.deploy(function(o) {});
+});
+
+new Cache.Rule("command").schema(function() {
+  this.scope(function(all) {
+    return {
+      target: function() {
+        return all.where({
+          jst: "target"
+        });
+      }
+    };
+  });
+  return this.deploy(function(o) {});
 });
 new Cache.Rule("message").schema(function() {
   var bit, has_face, mask, timespan, visible, _ref;

@@ -30,6 +30,26 @@ GUI.message = (->
     tap_random:   -> console.log arguments
     tap_external: -> console.log arguments
 
+  cmd_target: ->
+    targets = for target in Cache.targets.command(o.cmd).list()
+      m "option",
+        { value: target.val }
+        target.name
+    targets.unshift(
+      m "option",
+        { value: "?", selected: true }
+        "- 選択してください -"
+    )
+    
+    buttons = for button in Cache.commands.target().list()
+      m "option",
+        button.title
+
+    m "p.commitbutton",
+      m "select", targets
+      m "select", buttons
+      Btn.submit {}, {}
+
   game: (story, event)->
     roletable = RAILS.roletable[story.type.roletable]
     mob = RAILS.mob[story.type.mob]

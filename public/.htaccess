@@ -7,7 +7,6 @@
   AddEncoding x-gzip .gz
 </FilesMatch>
 
-ErrorDocument 403 http://giji.check.jp/
 Header append Access-Control-Allow-Origin: *
 
 

@@ -1,4 +1,3 @@
-
 Cache.potofs.has_faces =
   all:    ->
     delete Cache.messages.has_face.undefined
