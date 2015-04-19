@@ -113,7 +113,52 @@ GUI.message = (->
   ###
 
   potofs: (v)->
-    m "div", {key: v._id}, ".U.C #{v._id}"
+    {potofs_order, potofs_desc} = Url.prop
+    toggle_desc = (prop, value)->
+      if prop() == value
+        attr = Btn.bool {}, potofs_desc
+        attr.className = "btn active"
+        attr
+      else
+        Btn.set {}, prop, value
+    hides = Url.prop.potofs_hide()
+    m "section.table-swipe", 
+      m "table",
+        m "tfoot",
+          m "tr.center",
+            m "th[colspan=2]", m "sup", "(スクロールします。)"
+            m "th", m "a", toggle_desc(potofs_order, "stat_at"),  "日程"
+            m "th", m "a", toggle_desc(potofs_order, "stat_type"),"状態"
+            m "th", m "a", toggle_desc(potofs_order, "said_num"), "発言"
+            m "th", m "a", toggle_desc(potofs_order, "pt"),       "残り"
+            m "th", m "a", toggle_desc(potofs_order, "urge"),     "促"
+            m "th", m "span.icon-user", " "
+            m "th", m "a", toggle_desc(potofs_order, "select"),     "希望"
+            m "th", m "a", toggle_desc(potofs_order, "win_result"), "勝敗"
+            m "th", m "a", toggle_desc(potofs_order, "win_side"),   "陣営"
+            m "th", m "a", toggle_desc(potofs_order, "role"),       "役割"
+            m "th", m "a", toggle_desc(potofs_order, "text"),       "補足"
+        m "tbody.plane", {test:"test"},
+          for o in Cache.potofs.view(potofs_desc(), potofs_order()).list()
+            filter_class =
+              if hides[o.face_id]
+                "filter-hide"
+              else
+                ""
+            m "tr", {className: filter_class},
+              m "th.calc", {}, o.view.job
+              m "th", {}, o.name
+              m "td.calc", {}, o.view.stat_at
+              m "td", {}, o.view.stat_type
+              m "td.calc", {}, o.view.said_num
+              m "td.calc", {}, o.view.pt
+              m "td.center", {}, o.view.urge
+              m "td.center", {}, o.view.user_id
+              m "td.center", {}, o.view.select
+              m "td.WIN_#{o.view.win}.center", {}, o.view.win_result
+              m "td.WIN_#{o.view.win}.calc", {}, o.view.win_side
+              m "td.WIN_#{o.view.win}", {}, o.view.role
+              m "td.WIN_#{o.view.win}", {}, m.trust o.view.text
 
   xxx: (v)->
     m "div", {key: v._id}, ".U.C #{v._id}"

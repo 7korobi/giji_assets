@@ -514,6 +514,9 @@ new Cache.Rule("message").schema(function() {
         }
         o.mask = "ANNOUNCE";
         break;
+      case "CAST":
+        vdom = GUI.message.potofs;
+        break;
       case "EVENT":
         vdom = GUI.message.event;
         o.pen = o.event_id;
@@ -1250,23 +1253,14 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
     event_winner: ((_ref4 = gon.event) != null ? _ref4.winner : void 0) || ((_ref5 = gon.events) != null ? (_ref6 = _ref5.last) != null ? _ref6.winner : void 0 : void 0)
   });
   GUI.if_exist("#sayfilter", function(dom) {
-    var layout, toggle_desc, wide_attr;
+    var layout, wide_attr;
     layout = new GUI.Layout(dom, -1, 1, 100);
     layout.small_mode = true;
     layout.large_mode = function() {
       return !(icon_menu.state() || layout.small_mode);
     };
-    toggle_desc = function(prop, value) {
-      var attr;
-      if (prop() === value) {
-        attr = Btn.bool({}, Url.prop.potofs_desc);
-        attr.className = "btn active";
-        return attr;
-      } else {
-        return Btn.set({}, prop, value);
-      }
-    };
     wide_attr = GUI.attrs({}, function() {
+      this.className("plane");
       this.click(function() {
         layout.small_mode = !layout.small_mode;
         if (!layout.small_mode) {
@@ -1280,8 +1274,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var event, filter, filter_class, hides, o, potofs, subview;
-        hides = Url.prop.potofs_hide();
+        var event, filter, key, o, potofs, subview, val;
         layout.width = Url.prop.right_width();
         if (layout.large_mode()) {
           layout.width += Url.prop.content_width();
@@ -1292,7 +1285,12 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           layout.mode = "show";
         }
         subview = messages.anchor(Url.prop).list();
-        filter = m("section.plane", wide_attr, m("h6", "参照ログ"), (function() {
+        potofs = GUI.message.potofs();
+        for (key in wide_attr) {
+          val = wide_attr[key];
+          potofs.children[0].children[1].attrs[key] = val;
+        }
+        filter = m("section", wide_attr, m("h6", "参照ログ"), (function() {
           var _i, _len, _results;
           _results = [];
           for (_i = 0, _len = subview.length; _i < _len; _i++) {
@@ -1301,21 +1299,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           }
           return _results;
         })());
-        potofs = m("table", m("tfoot", m("tr.center", m("th[colspan=2]", m("sup", "(スクロールします。)")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_at"), "日程")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "stat_type"), "状態")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "said_num"), "発言")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "pt"), "残り")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "urge"), "促")), m("th", m("span.icon-user", " ")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "select"), "希望")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_result"), "勝敗")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "win_side"), "陣営")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "role"), "役割")), m("th", m("a", toggle_desc(Url.prop.potofs_order, "text"), "補足")))), m("tbody.plane", wide_attr, (function() {
-          var _i, _len, _ref7, _results;
-          _ref7 = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
-          _results = [];
-          for (_i = 0, _len = _ref7.length; _i < _len; _i++) {
-            o = _ref7[_i];
-            filter_class = hides[o.face_id] ? "filter-hide" : "";
-            _results.push(m("tr", {
-              className: filter_class
-            }, m("th.calc", {}, o.view.job), m("th", {}, o.name), m("td.calc", {}, o.view.stat_at), m("td", {}, o.view.stat_type), m("td.calc", {}, o.view.said_num), m("td.calc", {}, o.view.pt), m("td.center", {}, o.view.urge), m("td.center", {}, o.view.user_id), m("td.center", {}, o.view.select), m("td.WIN_" + o.view.win + ".center", {}, o.view.win_result), m("td.WIN_" + o.view.win + ".calc", {}, o.view.win_side), m("td.WIN_" + o.view.win, {}, o.view.role), m("td.WIN_" + o.view.win, {}, m.trust(o.view.text))));
-          }
-          return _results;
-        })()));
         event = Cache.events.find(Url.prop.event_id());
-        return m("div", event != null ? m(".head", event.name) : m(".foot"), m("aside", m("section.table-swipe", potofs), filter), m(".foot"));
+        return m("div", event != null ? m(".head", event.name) : m(".foot"), m("aside", potofs, filter), m(".foot"));
       }
     });
   });
@@ -1957,7 +1942,7 @@ GUI.if_exist("#head_navi", function(dom) {
 });
 
 GUI.if_exist("#to_root", function(dom) {
-  var day_or_night;
+  var day_or_night, width, _base;
   day_or_night = m.prop();
   return m.module(dom, {
     controller: function() {
@@ -1970,12 +1955,13 @@ GUI.if_exist("#to_root", function(dom) {
         m.redraw();
         return 12 * hour - zone % (12 * hour);
       });
-    },
+    }
+  }, width = typeof (_base = Url.prop).h1_width === "function" ? _base.h1_width() : void 0, width != null ? width : width = 458, {
     view: function() {
       return [
         m("a", {
           href: "//giji.check.jp/"
-        }, GUI.title(Url.prop.h1_width(), Url.prop.theme(), day_or_night()))
+        }, GUI.title(width, Url.prop.theme(), day_or_night()))
       ];
     }
   });
@@ -2066,96 +2052,57 @@ GUI.if_exist("#headline", function(dom) {
     }
   });
 });
-var chrs, links;
+var chr_box, chrs, new_chrs, old_chrs;
 
 if (((typeof gon !== "undefined" && gon !== null ? gon.new_chr_faces : void 0) != null) && ((typeof gon !== "undefined" && gon !== null ? gon.new_chr_jobs : void 0) != null)) {
-  Cache.faces._hash.t12.item.order = 100000;
   Cache.rule.face.merge(gon.new_chr_faces);
   Cache.rule.chr_job.merge(gon.new_chr_jobs);
   chrs = Cache.chr_jobs.where({
-    chr_set_id: "sf"
+    chr_set_id: "time"
   }).sort(false, function(o) {
     return o.face.order;
   }).list();
-  links = {
-    "アルミニウム赤泥流出事故": "http://ja.wikipedia.org/wiki/ハンガリーアルミニウム赤泥流出事故",
-    "未来ロードマップ": "http://forevision.jp/wiki/?未来ロードマップ",
-    "蒼井印の創作忍者bot": "https://twitter.com/Aonnj_bot",
-    "宇宙人": "http://ja.wikipedia.org/wiki/宇宙人",
-    "創世記": "http://ja.wikipedia.org/wiki/創世記",
-    "ケイ素生物": "http://ja.wikipedia.org/wiki/ケイ素生物",
-    "赤ちゃん命名辞典": "http://www.baby-name.jp",
-    "架空の人名": "http://ja.wikipedia.org/wiki/Category:架空の人物"
+  old_chrs = chrs.slice(0, 24);
+  new_chrs = chrs.slice(24);
+  chr_box = function(o) {
+    var attr;
+    attr = GUI.attrs({}, function() {
+      var elem;
+      elem = null;
+      this.over(function() {
+        return GUI.Animate.jelly.up(elem);
+      });
+      this.out(function() {
+        return GUI.Animate.jelly.down(elem);
+      });
+      return this.config(function(_elem) {
+        return elem = _elem;
+      });
+    });
+    return m(".chrbox", {
+      key: o._id
+    }, GUI.portrate(o.face_id, attr), m(".chrblank", m("div", m.trust(o.job)), m("div", m.trust(o.face.name))));
   };
-  setTimeout(function() {
-    Cache.chr_jobs._hash.all_t12.item.chr_set_id = "sf";
-    Cache.chr_jobs._hash.all_c71.item.chr_set_id = "sf";
-    Cache.faces._hash.sf15.item.order = 21 - 0.1;
-    Cache.faces._hash.sf10.item.order = 21 + 0.1;
-    Cache.faces._hash.sf028.item.order = 22 - 0.1;
-    Cache.faces._hash.sf027.item.order = 22 + 0.1;
-    Cache.faces._hash.sf032.item.order = 22 + 0.2;
-    Cache.faces._hash.sf16.item.order = 22 + 0.3;
-    Cache.faces._hash.t12.item.order = 23 - 0.1;
-    Cache.faces._hash.sf06.item.order = 25 - 0.1;
-    Cache.faces._hash.c71.item.order = 26 - 0.1;
-    Cache.faces._hash.sf04.item.order = 29 - 0.1;
-    Cache.faces._hash.sf05.item.order = 29 + 0.1;
-    Cache.faces._hash.sf20.item.order = 30 - 0.1;
-    Cache.faces._hash.sf07.item.order = 30 + 0.1;
-    Cache.faces._hash.sf024.item.order = 31 - 0.2;
-    Cache.faces._hash.sf08.item.order = 31 - 0.1;
-    Cache.rule.chr_job.reject([]);
-    chrs = Cache.chr_jobs.where({
-      chr_set_id: "sf"
-    }).sort(false, function(o) {
-      return o.face.order;
-    }).list();
-    return m.redraw();
-  }, 10000);
   GUI.if_exist("#map_faces", function(dom) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var attr, blank_attr, link, o, title;
+        var o;
         return [
-          m("h6", "参考文献"), m(".paragraph", (function() {
-            var _results;
-            _results = [];
-            for (title in links) {
-              link = links[title];
-              _results.push(m("a.btn.btn-default.mark", {
-                href: link,
-                target: "_blank"
-              }, title));
-            }
-            return _results;
-          })()), m("hr.black"), m(".mark", "明後日の道標 〜 新人さん歓迎パーティー"), m("h6", "１０秒経つと、親近感のある人たちが新人さんのまわりに集まります。"), m("h6", "いま記述のある新人さんの肩書、名前は仮のものです。"), m("h6", ""), (function() {
+          m("h6", "参考文献"), m("hr.black"), m(".mark", "〜 新人さん歓迎パーティー 〜"), m("h6", "いま記述のある新人さんの肩書、名前は仮のものです。"), (function() {
             var _i, _len, _results;
             _results = [];
-            for (_i = 0, _len = chrs.length; _i < _len; _i++) {
-              o = chrs[_i];
-              attr = GUI.attrs({}, function() {
-                var elem;
-                elem = null;
-                this.over(function() {
-                  return GUI.Animate.jelly.up(elem);
-                });
-                this.out(function() {
-                  return GUI.Animate.jelly.down(elem);
-                });
-                return this.config(function(_elem) {
-                  return elem = _elem;
-                });
-              });
-              blank_attr = /sf\d\d\d/.test(o.face_id) ? {
-                style: 'background-color: #126; min-height: 100px;'
-              } : {
-                style: 'min-height: 100px;'
-              };
-              _results.push(m(".chrbox", {
-                key: o._id
-              }, GUI.portrate(o.face_id, attr), m(".chrblank", blank_attr, m("div", m.trust(o.job)), m("div", m.trust(o.face.name)))));
+            for (_i = 0, _len = new_chrs.length; _i < _len; _i++) {
+              o = new_chrs[_i];
+              _results.push(chr_box(o));
+            }
+            return _results;
+          })(), m("h6", "歓迎する人達"), (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = old_chrs.length; _i < _len; _i++) {
+              o = old_chrs[_i];
+              _results.push(chr_box(o));
             }
             return _results;
           })(), m("hr.black")

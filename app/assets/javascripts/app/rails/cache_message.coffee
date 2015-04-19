@@ -135,6 +135,8 @@ new Cache.Rule("message").schema ->
       when "MAKER", "ADMIN"
         vdom = GUI.message.guide unless o.show == bit.ACTION
         o.mask = "ANNOUNCE"
+      when "CAST"
+        vdom = GUI.message.potofs
       when "EVENT"
         vdom = GUI.message.event
         o.pen = o.event_id

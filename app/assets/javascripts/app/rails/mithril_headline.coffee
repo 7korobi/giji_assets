@@ -164,10 +164,13 @@ GUI.if_exist "#to_root", (dom)->
         m.redraw()
         12*hour - zone % (12*hour)
 
+    width = Url.prop.h1_width?()
+    width?= 458 
+
     view: ->
       [ m "a",
           href: "//giji.check.jp/"
-        , GUI.title Url.prop.h1_width(), Url.prop.theme(), day_or_night()
+        , GUI.title width, Url.prop.theme(), day_or_night()
       ]
 
 GUI.if_exist "#headline", (dom)->

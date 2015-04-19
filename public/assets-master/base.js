@@ -2177,9 +2177,34 @@ GUI.message = (function() {
     "turn":0,
      */
     potofs: function(v) {
-      return m("div", {
-        key: v._id
-      }, ".U.C " + v._id);
+      var filter_class, hides, o, potofs_desc, potofs_order, toggle_desc, _ref;
+      _ref = Url.prop, potofs_order = _ref.potofs_order, potofs_desc = _ref.potofs_desc;
+      toggle_desc = function(prop, value) {
+        var attr;
+        if (prop() === value) {
+          attr = Btn.bool({}, potofs_desc);
+          attr.className = "btn active";
+          return attr;
+        } else {
+          return Btn.set({}, prop, value);
+        }
+      };
+      hides = Url.prop.potofs_hide();
+      return m("section.table-swipe", m("table", m("tfoot", m("tr.center", m("th[colspan=2]", m("sup", "(スクロールします。)")), m("th", m("a", toggle_desc(potofs_order, "stat_at"), "日程")), m("th", m("a", toggle_desc(potofs_order, "stat_type"), "状態")), m("th", m("a", toggle_desc(potofs_order, "said_num"), "発言")), m("th", m("a", toggle_desc(potofs_order, "pt"), "残り")), m("th", m("a", toggle_desc(potofs_order, "urge"), "促")), m("th", m("span.icon-user", " ")), m("th", m("a", toggle_desc(potofs_order, "select"), "希望")), m("th", m("a", toggle_desc(potofs_order, "win_result"), "勝敗")), m("th", m("a", toggle_desc(potofs_order, "win_side"), "陣営")), m("th", m("a", toggle_desc(potofs_order, "role"), "役割")), m("th", m("a", toggle_desc(potofs_order, "text"), "補足")))), m("tbody.plane", {
+        test: "test"
+      }, (function() {
+        var _i, _len, _ref1, _results;
+        _ref1 = Cache.potofs.view(potofs_desc(), potofs_order()).list();
+        _results = [];
+        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+          o = _ref1[_i];
+          filter_class = hides[o.face_id] ? "filter-hide" : "";
+          _results.push(m("tr", {
+            className: filter_class
+          }, m("th.calc", {}, o.view.job), m("th", {}, o.name), m("td.calc", {}, o.view.stat_at), m("td", {}, o.view.stat_type), m("td.calc", {}, o.view.said_num), m("td.calc", {}, o.view.pt), m("td.center", {}, o.view.urge), m("td.center", {}, o.view.user_id), m("td.center", {}, o.view.select), m("td.WIN_" + o.view.win + ".center", {}, o.view.win_result), m("td.WIN_" + o.view.win + ".calc", {}, o.view.win_side), m("td.WIN_" + o.view.win, {}, o.view.role), m("td.WIN_" + o.view.win, {}, m.trust(o.view.text))));
+        }
+        return _results;
+      })())));
     },
     xxx: function(v) {
       return m("div", {

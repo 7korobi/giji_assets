@@ -398,15 +398,8 @@ if gon?.potofs?
     layout.large_mode = ->
       ! (icon_menu.state() || layout.small_mode)
 
-    toggle_desc = (prop, value)->
-      if prop() == value
-        attr = Btn.bool {}, Url.prop.potofs_desc
-        attr.className = "btn active"
-        attr
-      else
-        Btn.set {}, prop, value
-
     wide_attr = GUI.attrs {}, ->
+      @className "plane"
       @click ->
         layout.small_mode = ! layout.small_mode
         unless layout.small_mode
@@ -417,7 +410,6 @@ if gon?.potofs?
     m.module dom,
       controller: ->
       view: ->
-        hides = Url.prop.potofs_hide()
         layout.width  = Url.prop.right_width()
         layout.width += Url.prop.content_width() if layout.large_mode()
 
@@ -427,51 +419,17 @@ if gon?.potofs?
           layout.mode = "show"
 
         subview = messages.anchor(Url.prop).list()
+        potofs = GUI.message.potofs()
+        for key, val of wide_attr
+          potofs.children[0].children[1].attrs[key] = val
+
         filter =
-          m "section.plane", wide_attr,
+          m "section", wide_attr,
             m "h6", "参照ログ"
             for o in subview
               m ".line_text",
                 m ".#{o.mestype}.badge", "#{o.turn}:#{o.anchor}"
                 m.trust o.log.line_text
-
-        potofs =
-          m "table",
-            m "tfoot",
-              m "tr.center",
-                m "th[colspan=2]", m "sup", "(スクロールします。)"
-                m "th", m "a", toggle_desc(Url.prop.potofs_order, "stat_at"),  "日程"
-                m "th", m "a", toggle_desc(Url.prop.potofs_order, "stat_type"),"状態"
-                m "th", m "a", toggle_desc(Url.prop.potofs_order, "said_num"), "発言"
-                m "th", m "a", toggle_desc(Url.prop.potofs_order, "pt"),       "残り"
-                m "th", m "a", toggle_desc(Url.prop.potofs_order, "urge"),     "促"
-                m "th", m "span.icon-user", " "
-                m "th", m "a", toggle_desc(Url.prop.potofs_order, "select"),     "希望"
-                m "th", m "a", toggle_desc(Url.prop.potofs_order, "win_result"), "勝敗"
-                m "th", m "a", toggle_desc(Url.prop.potofs_order, "win_side"),   "陣営"
-                m "th", m "a", toggle_desc(Url.prop.potofs_order, "role"),       "役割"
-                m "th", m "a", toggle_desc(Url.prop.potofs_order, "text"),       "補足"
-            m "tbody.plane", wide_attr,
-              for o in Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
-                filter_class =
-                  if hides[o.face_id]
-                    "filter-hide"
-                  else
-                    ""
-                m "tr", {className: filter_class},
-                  m "th.calc", {}, o.view.job
-                  m "th", {}, o.name
-                  m "td.calc", {}, o.view.stat_at
-                  m "td", {}, o.view.stat_type
-                  m "td.calc", {}, o.view.said_num
-                  m "td.calc", {}, o.view.pt
-                  m "td.center", {}, o.view.urge
-                  m "td.center", {}, o.view.user_id
-                  m "td.center", {}, o.view.select
-                  m "td.WIN_#{o.view.win}.center", {}, o.view.win_result
-                  m "td.WIN_#{o.view.win}.calc", {}, o.view.win_side
-                  m "td.WIN_#{o.view.win}", {}, o.view.role
-                  m "td.WIN_#{o.view.win}", {}, m.trust o.view.text
 
         event = Cache.events.find Url.prop.event_id()
         m "div",
@@ -480,7 +438,7 @@ if gon?.potofs?
           else
             m ".foot"
           m "aside",
-            m "section.table-swipe", potofs
+            potofs 
             filter
           m ".foot"
 
