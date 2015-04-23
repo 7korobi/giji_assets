@@ -19,13 +19,14 @@
 
 #buttons {
   .bigicon {
-    opacity: 0.3;
+    color: rgba(255,255,255,0.3);
   }
   .badge {
-    color: #ddd;
-    background-color: #999;
     position: relative;
-    margin: -3.0em 0.5em 0 0;
+    margin: -2.5em 0.5em 0 0;
+    color: rgba(255,255,255,0.3);
+    background-color: rgba(64,64,64,0.3);
+    text-align: right;
   }
 }
 
@@ -60,7 +61,8 @@
     .chrblank,
     .chrM,
     .chrF {
-      margin-top: -4px;
+      margin-top: -3px;
+      margin-bottom: 3px;
     }
   }
 }

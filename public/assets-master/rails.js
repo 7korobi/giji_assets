@@ -1946,7 +1946,7 @@ GUI.if_exist("#head_navi", function(dom) {
 });
 
 GUI.if_exist("#to_root", function(dom) {
-  var day_or_night, width, _base;
+  var day_or_night;
   day_or_night = m.prop();
   return m.module(dom, {
     controller: function() {
@@ -1959,14 +1959,16 @@ GUI.if_exist("#to_root", function(dom) {
         m.redraw();
         return 12 * hour - zone % (12 * hour);
       });
-    }
-  }, width = typeof (_base = Url.prop).h1_width === "function" ? _base.h1_width() : void 0, width != null ? width : width = 458, {
+    },
     view: function() {
-      return [
-        m("a", {
-          href: "//giji.check.jp/"
-        }, GUI.title(width, Url.prop.theme(), day_or_night()))
-      ];
+      var width, _base;
+      width = typeof (_base = Url.prop).h1_width === "function" ? _base.h1_width() : void 0;
+      if (width == null) {
+        width = 458;
+      }
+      return m("a", {
+        href: "//giji.check.jp/"
+      }, GUI.title(width, Url.prop.theme(), day_or_night()));
     }
   });
 });
