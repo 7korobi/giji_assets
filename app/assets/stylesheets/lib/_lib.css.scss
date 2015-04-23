@@ -69,13 +69,14 @@
   input,
   button,
   textarea,
-  .btn,
+  .btn.edge,
   .mark,
   .badge,
   .menuicon {
     padding: $size-base * 0.15 $size-base * 0.4;
   }
 
+  .btn.glass,
   .mark,
   .badge,
   .emboss {
@@ -101,18 +102,36 @@
   .btn {
     $picnic-dark-overlay:      rgba(0, 0, 0, .3) !default;
     $picnic-soft-dark-overlay: rgba(0, 0, 0, .1) !default;
-    box-shadow:   inset 0 0 0  $size-base *  100 transparent,               inset 0 $size-base * -.15 $picnic-dark-overlay;
-    &:hover,
-    &:focus {
-      box-shadow: inset 0 0 0  $size-base *  100 $picnic-soft-dark-overlay;
-      box-shadow: inset 0 0 0  $size-base * 1000 $picnic-soft-dark-overlay, inset 0 $size-base * -.05 $picnic-dark-overlay;
-    }
+    &.glass {
+      box-shadow:   inset 0 0 0  $size-base *  100 $picnic-soft-dark-overlay;
 
-    &.active,
-    &:active,
-    &:checked {
-      box-shadow: inset 0 0 0  $size-base *  100 $picnic-dark-overlay;
-      box-shadow: inset 0 0 0  $size-base * 1000 $picnic-dark-overlay,      inset 0 $size-base * .10 $size-base * .10 $picnic-dark-overlay;
+      &:hover,
+      &:focus {
+        box-shadow: inset 0 0 0  $size-base *  100 $picnic-soft-dark-overlay;
+      }
+
+      &.active,
+      &:active,
+      &:checked {
+        box-shadow: inset 0 0 0  $size-base *  100 $picnic-dark-overlay;
+        box-shadow: inset 0 0 0  $size-base * 1000 $picnic-dark-overlay,      inset 0 2px 2px $picnic-dark-overlay;
+      }
+    }
+    &.edge {
+      box-shadow:   inset 0 0 0  $size-base *  100 transparent,               inset 0 -3px $picnic-dark-overlay;
+
+      &:hover,
+      &:focus {
+        box-shadow: inset 0 0 0  $size-base *  100 $picnic-soft-dark-overlay;
+        box-shadow: inset 0 0 0  $size-base * 1000 $picnic-soft-dark-overlay, inset 0 -1px $picnic-dark-overlay;
+      }
+
+      &.active,
+      &:active,
+      &:checked {
+        box-shadow: inset 0 0 0  $size-base *  100 $picnic-dark-overlay;
+        box-shadow: inset 0 0 0  $size-base * 1000 $picnic-dark-overlay,      inset 0 2px 2px $picnic-dark-overlay;
+      }
     }
   }
 
@@ -133,6 +152,7 @@
     }
   }
 }
+
 @mixin width($base, $step, $h1_margin) {
   $head-list:  458px, 458px, 458px, 458px, 458px, 458px, 580px, 580px, 580px, 580px, 770px, 770px, 770px, 770px, 770px, 770px, 770px, 99999px;
   $width-list: 290px, 320px, 350px, 380px, 410px, 440px, 470px, 500px, 530px, 560px, 590px, 620px, 650px, 680px, 710px, 740px, 770px, 99999px;
@@ -285,18 +305,16 @@
       border: 1px solid $border;
     }
   }
-  &.left-layout,
-  &.center-layout {
-    .outframe {
-      border-right: $line-style $border;
-      border-left : $line-style $border;
-    }
+  &.left-layout .outframe {
+    border-right: $line-style $border;
+  }
+  &.center-layout .outframe {
+    border-right: $line-style $border;
+    border-left : $line-style $border;
   }
 
-  &.right-layout {
-    .outframe {
-      border-left : $line-style $border;
-    }
+  &.right-layout .outframe {
+    border-left : $line-style $border;
   }
 }
 

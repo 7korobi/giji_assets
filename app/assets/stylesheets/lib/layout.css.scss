@@ -157,19 +157,19 @@ table .talk td .msg,
 }
 
 .left-layout {  
-  &.mini-width { @include width(80px, 12px, 2) };
-  &.std-width  { @include width( 0px, 90px, 2) };
-  &.wide-width { @include width(60px, 30px, 2) };
+  &.mini-width { @include width( 0px, 10px, 2) };
+  &.std-width  { @include width( 0px, 30px, 2) };
+  &.wide-width { @include width( 0px, 10px, 2) };
   .outframe {
-    margin: 0 auto 0 90px;
+    margin: 0 auto 0 0;
     padding: 0px;
   }
 }
 
 .center-layout {
-  &.mini-width { @include width(30px,  8px, 2) };
-  &.std-width  { @include width(30px, 60px, 2) };
-  &.wide-width { @include width(70px, 20px, 2) };
+  &.mini-width { @include width( 0px, 20px, 2) };
+  &.std-width  { @include width( 0px, 60px, 2) };
+  &.wide-width { @include width( 0px, 20px, 2) };
   .outframe {
     margin: 0 auto;
     padding: 0px;
@@ -178,8 +178,8 @@ table .talk td .msg,
 
 .right-layout {
   &.mini-width { @include width( 0px, 10px, 1) };
-  &.std-width  { @include width(90px,  0px, 1) };
-  &.wide-width { @include width(90px,  0px, 1) };
+  &.std-width  { @include width( 0px, 30px, 1) };
+  &.wide-width { @include width( 0px, 10px, 1) };
   .outframe {
     margin: 0 0 0 auto;
     padding: 0px;

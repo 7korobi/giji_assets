@@ -70,7 +70,7 @@ win.on.resize.push ->
     when "right"
       Url.prop.right_width = -> 0
     when "center"
-      Url.prop.right_width = -> (win.width - width -  4) / 2
+      Url.prop.right_width = -> (win.width - width - 4) / 2
     when "left"
-      Url.prop.right_width = -> (win.width - width - 94)
+      Url.prop.right_width = -> (win.width - width - 4)
 win.do.resize()

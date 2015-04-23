@@ -1055,6 +1055,9 @@ Btns = (function() {
 Btn = (function() {
   var base, eq, include, is_true, keys_eq;
   base = function(style, check, store, load, key) {
+    if (style["class"] == null) {
+      style["class"] = 'edge';
+    }
     return GUI.attrs({}, function() {
       this.end(function() {
         return store(key);
@@ -2183,7 +2186,7 @@ GUI.message = (function() {
         var attr;
         if (prop() === value) {
           attr = Btn.bool({}, potofs_desc);
-          attr.className = "btn active";
+          attr.className = "btn edge active";
           return attr;
         } else {
           return Btn.set({}, prop, value);

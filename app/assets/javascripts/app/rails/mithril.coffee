@@ -264,7 +264,7 @@ GUI.if_exist "#buttons", (dom)->
       section = (icon)->
         return unless icon_menu.nodes[icon]
         vdom =
-          m "section", icon_menu.start({}, icon),
+          m "section", icon_menu.start({class:"glass"}, icon),
             m ".bigicon",
               m ".icon-#{icon}", " "
             m ".badge.pull-right", badges[icon]() if badges[icon]
@@ -347,7 +347,6 @@ GUI.if_exist "#css_changer", (dom)->
         Btns.radio {}, Url.prop.width,
           wide: "広域"
           std:  "普通"
-          mini: "携帯"
         m "h6", "位置"
         Btns.radio {}, Url.prop.layout,
           left:   "左詰"
@@ -413,23 +412,32 @@ if gon?.potofs?
         layout.width  = Url.prop.right_width()
         layout.width += Url.prop.content_width() if layout.large_mode()
 
-        if layout.width < 90
-          layout.mode = "hide"
-        else
-          layout.mode = "show"
 
-        subview = messages.anchor(Url.prop).list()
-        potofs = GUI.message.potofs()
+        if layout.width < 90
+          layout.width = 90
+          potofs =
+            m "section.table-swipe", 
+              m "table",
+                m "tfoot",
+                  m "tr.center",
+                    m "th[colspan=2]"
+                m "tbody.plane", {test:"test"},
+                  m "tr",
+                      m "th.calc", "…"
+          filter = []
+        else
+          potofs = GUI.message.potofs()
+          subview = messages.anchor(Url.prop).list()
+          filter =
+            m "section", wide_attr,
+              m "h6", "参照ログ"
+              for o in subview
+                m ".line_text",
+                  m ".#{o.mestype}.badge", "#{o.turn}:#{o.anchor}"
+                  m.trust o.log.line_text
+
         for key, val of wide_attr
           potofs.children[0].children[1].attrs[key] = val
-
-        filter =
-          m "section", wide_attr,
-            m "h6", "参照ログ"
-            for o in subview
-              m ".line_text",
-                m ".#{o.mestype}.badge", "#{o.turn}:#{o.anchor}"
-                m.trust o.log.line_text
 
         event = Cache.events.find Url.prop.event_id()
         m "div",

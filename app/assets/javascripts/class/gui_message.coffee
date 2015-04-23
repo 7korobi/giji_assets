@@ -117,7 +117,7 @@ GUI.message = (->
     toggle_desc = (prop, value)->
       if prop() == value
         attr = Btn.bool {}, potofs_desc
-        attr.className = "btn active"
+        attr.className = "btn edge active"
         attr
       else
         Btn.set {}, prop, value

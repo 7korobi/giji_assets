@@ -108,7 +108,7 @@ win.on.resize.push(function() {
       };
     case "left":
       return Url.prop.right_width = function() {
-        return win.width - width - 94;
+        return win.width - width - 4;
       };
   }
 });
@@ -1086,7 +1086,9 @@ GUI.if_exist("#buttons", function(dom) {
         if (!icon_menu.nodes[icon]) {
           return;
         }
-        vdom = m("section", icon_menu.start({}, icon), m(".bigicon", m(".icon-" + icon, " ")), badges[icon] ? m(".badge.pull-right", badges[icon]()) : void 0);
+        vdom = m("section", icon_menu.start({
+          "class": "glass"
+        }, icon), m(".bigicon", m(".icon-" + icon, " ")), badges[icon] ? m(".badge.pull-right", badges[icon]()) : void 0);
         return vdoms.push(vdom);
       };
       badges = {
@@ -1201,8 +1203,7 @@ GUI.if_exist("#css_changer", function(dom) {
         wa: "和の国"
       }), m("h6", "幅の広さ"), Btns.radio({}, Url.prop.width, {
         wide: "広域",
-        std: "普通",
-        mini: "携帯"
+        std: "普通"
       }), m("h6", "位置"), Btns.radio({}, Url.prop.layout, {
         left: "左詰",
         center: "中央",
@@ -1280,25 +1281,28 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           layout.width += Url.prop.content_width();
         }
         if (layout.width < 90) {
-          layout.mode = "hide";
+          layout.width = 90;
+          potofs = m("section.table-swipe", m("table", m("tfoot", m("tr.center", m("th[colspan=2]"))), m("tbody.plane", {
+            test: "test"
+          }, m("tr", m("th.calc", "…")))));
+          filter = [];
         } else {
-          layout.mode = "show";
+          potofs = GUI.message.potofs();
+          subview = messages.anchor(Url.prop).list();
+          filter = m("section", wide_attr, m("h6", "参照ログ"), (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = subview.length; _i < _len; _i++) {
+              o = subview[_i];
+              _results.push(m(".line_text", m("." + o.mestype + ".badge", "" + o.turn + ":" + o.anchor), m.trust(o.log.line_text)));
+            }
+            return _results;
+          })());
         }
-        subview = messages.anchor(Url.prop).list();
-        potofs = GUI.message.potofs();
         for (key in wide_attr) {
           val = wide_attr[key];
           potofs.children[0].children[1].attrs[key] = val;
         }
-        filter = m("section", wide_attr, m("h6", "参照ログ"), (function() {
-          var _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = subview.length; _i < _len; _i++) {
-            o = subview[_i];
-            _results.push(m(".line_text", m("." + o.mestype + ".badge", "" + o.turn + ":" + o.anchor), m.trust(o.log.line_text)));
-          }
-          return _results;
-        })());
         event = Cache.events.find(Url.prop.event_id());
         return m("div", event != null ? m(".head", event.name) : m(".foot"), m("aside", potofs, filter), m(".foot"));
       }

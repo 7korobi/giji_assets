@@ -31,6 +31,7 @@ Btns = (->
 
 Btn = (->
   base = (style, check, store, load, key)->
+    style.class ?= 'edge'
     GUI.attrs {}, ->
       @end ->
         store key
