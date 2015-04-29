@@ -49,60 +49,27 @@ table.memo {
 
 // $width-list: 280px, 340px, 400px, 458px, 520px, 580px, 640px, 705px, 770px, 99999px;
 
-.mini-width {
-  @include film(9px, 99px, 14px);
-  .chrlist {
-    margin: 0 0 0 7px;
-  }
-
-  .CAST {
-    margin-bottom: 4px
-  }
-  table.talk td .msg {
-    padding: 0px 4px;
-  }
-
-  &.box {
-    .formpl_frame {
-      margin: 0px 0px 12px 0px;
-    }
-    .formpl_content {
-      padding: 4px;
-    }
-    .formpl_action {
-      padding: 4px;
-    }
-  }
-  &.speech-item {
-    table.talk th {
-      padding: 0 0 4px 0;
-    }
-  }
+@include film(12px, 107px, 18px);
+table.talk td .msg {
+  margin: 0 7px 6px 6px;
+  padding: 0 4px;
 }
 
+.chrlist {
+  margin: 0 0 0 16px;
+}
+.CAST {
+  margin-bottom: 9px
+}
 
-.std-width,
-.wide-width {
-  @include film(12px, 107px, 18px);
-  .chrlist {
-    margin: 0 0 0 16px;
+.box {
+  .formpl_frame {
+    margin: 0px 0px 12px 0px;
   }
-  .CAST {
-    margin-bottom: 9px
+  .formpl_content {
+    padding: 4px;
   }
-  table.talk td .msg {
-    padding: 0 4px;
-  }
-
-  &.box {
-    .formpl_frame {
-      margin: 0px 0px 12px 0px;
-    }
-    .formpl_content {
-      padding: 4px;
-    }
-    .formpl_action {
-      padding: 4px;
-    }
+  .formpl_action {
+    padding: 4px;
   }
 }

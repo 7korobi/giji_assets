@@ -106,6 +106,10 @@ kbd,
     min-height: 1 * 16.25px + 2px;
     height:     1 * 16.25px + 2px;
   }
+  &.line2 {
+    min-height: 2 * 16.25px + 2px;
+    height:     2 * 16.25px + 2px;
+  }
   &.line3 {
     min-height: 3 * 16.25px + 2px;
     height:     3 * 16.25px + 2px;

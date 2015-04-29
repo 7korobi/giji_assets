@@ -13,24 +13,7 @@
     background-repeat: repeat-y;
     background-position: left;
     background-attachment: local;
-  }
-
-  &.wide-width {
-    .contentframe {
-      background-image: url("../images/bg/film-L.png");
-    }
-  }
-
-  &.std-width {
-    .contentframe {
-      background-image: url("../images/bg/film-L.png");
-    }
-  }
-
-  &.mini-width {
-    .contentframe {
-      background-image: url("../images/bg/film-S.png");
-    }
+    background-image: url("../images/bg/film-L.png");
   }
 
   body {

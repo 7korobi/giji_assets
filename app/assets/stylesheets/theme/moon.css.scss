@@ -14,24 +14,7 @@
     background-repeat: repeat-y;
     background-position: left;
     background-attachment: local;
-  }
-
-  &.wide-width {
-    .contentframe {
-      background-image: url("../images/bg/film-wa-L.png");
-    }
-  }
-
-  &.std-width {
-    .contentframe {
-      background-image: url("../images/bg/film-wa-L.png");
-    }
-  }
-
-  &.mini-width {
-    .contentframe {
-      background-image: url("../images/bg/film-wa-S.png");
-    }
+    background-image: url("../images/bg/film-wa-L.png");
   }
 
   body {

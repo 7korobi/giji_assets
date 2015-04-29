@@ -42,6 +42,7 @@ table.memo td p {
   }
 }
 
+
 .text,
 .head
 .mono {
@@ -157,17 +158,6 @@ table.memo td p {
 
   .name {
     @include line-bottom();
-  }
-
-  &.mini-width {
-    table.talk td .msg {
-      margin: 0 6px 4px 3px;
-    }
-  }
-  &.std-width, &.wide-width {
-    table.talk td .msg {
-      margin: 0 7px 6px 6px;
-    }
   }
 
   .caution,       {  @include color-tone(white, #000, #666); }
