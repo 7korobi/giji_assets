@@ -86,22 +86,37 @@ chr_job:
     job: "学園特警"
 
   - face_id: t23
-    job: ""
+    job: "孤高天使連合"
 
   - face_id: t24
-    job: ""
+    job: "トレーサー"
 
   - face_id: t25
-    job: ""
+    job: "2.14革命機構"
 
   - face_id: t26
-    job: ""
+    job: "法隆寺"
 
   - face_id: t27
-    job: ""
+    job: "硯友社"
 
   - face_id: t28
-    job: ""
+    job: "樫の樹の子ら"
 
   - face_id: t29
-    job: ""
+    job: "透明女子会"
+
+  - face_id: t30
+    job: "旅団✡肘笠雨"
+
+  - face_id: t31
+    job: "呵呵老会"
+
+  - face_id: t32
+    job: "安全調査局"
+
+  - face_id: t33
+    job: "亡命同盟"
+
+  - face_id: t34
+    job: "大銃協会"

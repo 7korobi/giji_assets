@@ -345,6 +345,7 @@ GUI.if_exist "#css_changer", (dom)->
           wa:     "和の国"
         m "h6", "幅の広さ"
         Btns.radio {}, Url.prop.width,
+          full: "最大"
           wide: "広域"
           std:  "普通"
         m "h6", "位置"

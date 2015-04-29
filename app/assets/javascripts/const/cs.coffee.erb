@@ -1,10 +1,34 @@
 new Cache.Rule("face").schema ->
   @order "order"
+  @scope (all)->
+    tag: (tag_id)->
+      switch tag_id
+        when "all"
+          all
+        else
+          all.in(tags:tag_id)
+
+    chr_jobs: (chr_job_id)->
+      all.where({chr_job_id})
+
+  item = 
+    count: 1
+  @map_reduce (o, emit)->
+    emit "all", "all", item
+    for tag in o.tags
+      emit "tag", tag, item
+
+
+
 new Cache.Rule("chr_set").schema ->
   @order "caption"
+
+
 new Cache.Rule("chr_npc").schema ->
   @belongs_to "chr_set", dependent: true
   @belongs_to "face", dependent: true
+
+
 new Cache.Rule("chr_job").schema ->
   @order (o)-> o.face.order
   @belongs_to "chr_set", dependent: true
@@ -30,15 +54,17 @@ new Cache.Rule("chr_job").schema ->
     face: (face_id)->
       all.where((o)-> face_id == o.face_id).sort(false, (o)-> o.chr_set_idx )
 
+
 Cache.rule.face.set <%= JSON.generate FACE %>
+
 
 <%
 %i[CS_GER CS_MAD CS_SCHOOL CS_SF CS_TIME CS_WA CS_RIRINRA  CS_ANIMAL CS_CHANGED  CS_ALL].each do |const|
   data = Kernel.const_get( const )
  %>
 Cache.rule.chr_set.merge [<%= JSON.generate(data.chr_set) %>]
-Cache.rule.chr_npc.merge <%= JSON.generate(data.chr_npc) %>
-Cache.rule.chr_job.merge <%= JSON.generate(data.chr_job) %>
+Cache.rule.chr_npc.merge <%=  JSON.generate(data.chr_npc) %>
+Cache.rule.chr_job.merge <%=  JSON.generate(data.chr_job) %>
 <%
 end
 %>
@@ -48,7 +74,7 @@ list =
     chr_set_id = "all"
     face_id = face._id
     _id = "all_#{face_id}"
-    job = Cache.chr_jobs.face(face_id).list()?.first?.job
+    job = Cache.chr_jobs.face(face_id).list().first?.job
     continue unless job?
     {chr_set_id, face_id, job, _id}
 
