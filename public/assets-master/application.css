@@ -1199,13 +1199,13 @@ table.memo td p {
   word-break: break-all;
 }
 
-/* line 47, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 48, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .text,
 .head
 .mono {
   padding: 0px;
 }
-/* line 49, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 50, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .text em,
 .head
 .mono em {
@@ -1213,27 +1213,27 @@ table.memo td p {
   font-style: normal;
 }
 
-/* line 55, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 56, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .head:first-line {
   font-weight: bold !important;
 }
 
-/* line 59, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 60, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .action {
   padding: 4px 12px 4px 4px;
 }
-/* line 61, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 62, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .action .text {
   overflow-x: visible;
 }
 
-/* line 66, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 67, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .mono {
   layout-grid: both loose 0 0;
   font-family: monospace !important;
 }
 
-/* line 71, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 72, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .MAKER {
   color: #ccccff;
 }
@@ -1329,7 +1329,7 @@ table.memo td p {
   background-color: black;
 }
 
-/* line 72, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 73, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .ADMIN {
   color: #cc9999;
 }
@@ -1425,20 +1425,20 @@ table.memo td p {
   background-color: black;
 }
 
-/* line 74, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 75, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .DELETED img,
 .DELETEDADMIN img {
   opacity: 0.25;
 }
 
-/* line 80, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 81, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .mono,
 .moon-theme .mes_text_monospace, .night-theme .mono,
 .night-theme .mes_text_monospace, .star-theme .mono,
 .star-theme .mes_text_monospace {
   background-image: url("../images/bg/grid_blue.svg");
 }
-/* line 85, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 86, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .drag,
 .moon-theme .ajax, .night-theme .drag,
 .night-theme .ajax, .star-theme .drag,
@@ -1446,31 +1446,31 @@ table.memo td p {
   border: 0 solid #348;
   border-width: 2px 0 2px 0;
 }
-/* line 90, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 91, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .infotext, .night-theme .infotext, .star-theme .infotext {
   color: #aaa;
 }
-/* line 94, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 95, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .cautiontext, .night-theme .cautiontext, .star-theme .cautiontext {
   font-weight: bold;
   color: #f44;
 }
-/* line 99, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 100, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .name, .night-theme .name, .star-theme .name {
   border-bottom: 1px dashed;
 }
-/* line 102, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 103, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .msg, .night-theme .msg, .star-theme .msg {
   border-style: none solid solid solid;
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
   border-width: 2px;
 }
-/* line 108, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 109, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .action, .night-theme .action, .star-theme .action {
   border-style: solid none solid solid;
 }
-/* line 112, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 113, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .caution, .night-theme .caution, .star-theme .caution {
   color: #666666;
 }
@@ -1615,7 +1615,7 @@ table.memo td p {
   color: #666666;
   background-color: rgba(30, 30, 30, 0.6);
 }
-/* line 115, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 116, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .TSAY .action,
 .moon-theme .INFONOM, .night-theme .TSAY .action,
 .night-theme .INFONOM, .star-theme .TSAY .action,
@@ -1928,7 +1928,7 @@ table.memo td p {
   color: #999977;
   background-color: rgba(0, 0, 0, 0.6);
 }
-/* line 116, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 117, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .INFOSP, .night-theme .INFOSP, .star-theme .INFOSP {
   color: #999977;
 }
@@ -2073,7 +2073,7 @@ table.memo td p {
   color: #999977;
   background-color: rgba(0, 0, 30, 0.6);
 }
-/* line 117, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 118, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .INFOWOLF, .night-theme .INFOWOLF, .star-theme .INFOWOLF {
   color: #ff7788;
 }
@@ -2218,7 +2218,7 @@ table.memo td p {
   color: #ff7788;
   background-color: rgba(0, 30, 30, 0.6);
 }
-/* line 120, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 121, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .DELETEDADMIN,
 .moon-theme .DELETED, .night-theme .DELETEDADMIN,
 .night-theme .DELETED, .star-theme .DELETEDADMIN,
@@ -2531,7 +2531,7 @@ table.memo td p {
   color: #444444;
   background-color: rgba(40, 40, 40, 0.4);
 }
-/* line 121, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 122, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .QUE, .night-theme .QUE, .star-theme .QUE {
   color: #aaaaaa;
 }
@@ -2676,11 +2676,11 @@ table.memo td p {
   color: #aaaaaa;
   background-color: rgba(0, 0, 0, 0.4);
 }
-/* line 121, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 122, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .QUE .msg, .night-theme .QUE .msg, .star-theme .QUE .msg {
   border: none;
 }
-/* line 122, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 123, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .TSAY, .night-theme .TSAY, .star-theme .TSAY {
   color: #aa9966;
 }
@@ -2825,7 +2825,7 @@ table.memo td p {
   color: #aa9966;
   background-color: rgba(0, 0, 60, 0.4);
 }
-/* line 123, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 124, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .GSAY, .night-theme .GSAY, .star-theme .GSAY {
   color: #9999ff;
 }
@@ -2970,7 +2970,7 @@ table.memo td p {
   color: #9999ff;
   background-color: rgba(30, 30, 0, 0.4);
 }
-/* line 124, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 125, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .VSAY, .night-theme .VSAY, .star-theme .VSAY {
   color: #ffffbb;
 }
@@ -3115,7 +3115,7 @@ table.memo td p {
   color: #ffffbb;
   background-color: rgba(0, 0, 0, 0.4);
 }
-/* line 125, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 126, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .WSAY, .night-theme .WSAY, .star-theme .WSAY {
   color: #ff7788;
 }
@@ -3260,7 +3260,7 @@ table.memo td p {
   color: #ff7788;
   background-color: rgba(0, 30, 30, 0.4);
 }
-/* line 127, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 128, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .AIM,
 .moon-theme .SPSAY, .night-theme .AIM,
 .night-theme .SPSAY, .star-theme .AIM,
@@ -3573,7 +3573,7 @@ table.memo td p {
   color: #ffccaa;
   background-color: rgba(20, 40, 50, 0.4);
 }
-/* line 129, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 130, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .moon-theme .BSAY,
 .moon-theme .XSAY, .night-theme .BSAY,
 .night-theme .XSAY, .star-theme .BSAY,
@@ -3887,46 +3887,38 @@ table.memo td p {
   background-color: rgba(30, 0, 30, 0.4);
 }
 
-/* line 135, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 136, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .mono,
 .cinema-theme .mes_text_monospace, .wa-theme .mono,
 .wa-theme .mes_text_monospace {
   background-image: url("../images/bg/grid.gif");
 }
-/* line 140, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 141, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .drag,
 .cinema-theme .ajax, .wa-theme .drag,
 .wa-theme .ajax {
   border: 0 solid #444;
   border-width: 2px 0 2px 0;
 }
-/* line 145, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 146, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .mes_date, .wa-theme .mes_date {
   color: #442;
 }
-/* line 149, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 150, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .infotext, .wa-theme .infotext {
   color: #999;
 }
-/* line 153, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 154, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .cautiontext, .wa-theme .cautiontext {
   font-weight: bold;
   color: #f44;
 }
-/* line 158, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 159, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .name, .wa-theme .name {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   box-shadow: rgba(255, 255, 255, 0.3) 0 1px 0;
 }
 /* line 163, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
-.cinema-theme.mini-width table.talk td .msg, .wa-theme.mini-width table.talk td .msg {
-  margin: 0 6px 4px 3px;
-}
-/* line 168, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
-.cinema-theme.std-width table.talk td .msg, .cinema-theme.wide-width table.talk td .msg, .wa-theme.std-width table.talk td .msg, .wa-theme.wide-width table.talk td .msg {
-  margin: 0 7px 6px 6px;
-}
-/* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .caution, .wa-theme .caution {
   color: black;
 }
@@ -4042,7 +4034,7 @@ table.memo td p {
   color: black;
   background-color: #666666;
 }
-/* line 176, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 166, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .TSAY .action,
 .cinema-theme .INFONOM, .wa-theme .TSAY .action,
 .wa-theme .INFONOM {
@@ -4266,7 +4258,7 @@ table.memo td p {
   color: black;
   background-color: #aa9977;
 }
-/* line 177, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 167, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .INFOSP, .wa-theme .INFOSP {
   color: #444400;
 }
@@ -4382,7 +4374,7 @@ table.memo td p {
   color: #444400;
   background-color: #aa9977;
 }
-/* line 178, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 168, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .INFOWOLF, .wa-theme .INFOWOLF {
   color: #444400;
 }
@@ -4498,29 +4490,29 @@ table.memo td p {
   color: #444400;
   background-color: #aa5555;
 }
-/* line 181, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 171, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .TSAY .action,
 .cinema-theme .INFONOM, .wa-theme .TSAY .action,
 .wa-theme .INFONOM {
   color: #000;
   background: #a97;
 }
-/* line 182, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 172, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .INFOSP, .wa-theme .INFOSP {
   color: #440;
   background: #a97;
 }
-/* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .INFOWOLF, .wa-theme .INFOWOLF {
   color: #440;
   background: #a55;
 }
-/* line 184, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 174, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .caution, .wa-theme .caution {
   color: #000;
   background: #666;
 }
-/* line 187, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 177, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .DELETEDADMIN,
 .cinema-theme .DELETED, .wa-theme .DELETEDADMIN,
 .wa-theme .DELETED {
@@ -4744,7 +4736,7 @@ table.memo td p {
   color: #aaaaaa;
   background-color: #666666;
 }
-/* line 188, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 178, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .QUE, .wa-theme .QUE {
   color: #666644;
 }
@@ -4860,11 +4852,11 @@ table.memo td p {
   color: #666644;
   background-color: #ccbb88;
 }
-/* line 188, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 178, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .QUE *, .wa-theme .QUE * {
   border: none;
 }
-/* line 189, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 179, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .TSAY, .wa-theme .TSAY {
   color: black;
 }
@@ -4980,7 +4972,7 @@ table.memo td p {
   color: black;
   background-color: #aa9988;
 }
-/* line 190, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 180, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .GSAY, .wa-theme .GSAY {
   color: black;
 }
@@ -5096,7 +5088,7 @@ table.memo td p {
   color: black;
   background-color: #bbbbdd;
 }
-/* line 191, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 181, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .VSAY, .wa-theme .VSAY {
   color: black;
 }
@@ -5212,7 +5204,7 @@ table.memo td p {
   color: black;
   background-color: #ccaa66;
 }
-/* line 192, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 182, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .WSAY, .wa-theme .WSAY {
   color: black;
 }
@@ -5328,7 +5320,7 @@ table.memo td p {
   color: black;
   background-color: #aa5555;
 }
-/* line 194, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 184, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .AIM,
 .cinema-theme .SPSAY, .wa-theme .AIM,
 .wa-theme .SPSAY {
@@ -5552,7 +5544,7 @@ table.memo td p {
   color: black;
   background-color: #ddccbb;
 }
-/* line 196, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
+/* line 186, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/message.css.scss */
 .cinema-theme .BSAY,
 .cinema-theme .XSAY, .wa-theme .BSAY,
 .wa-theme .XSAY {
@@ -6973,20 +6965,27 @@ kbd,
   height: 18.25px;
 }
 /* line 109, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+.chrblank.line2,
+.chrM.line2,
+.chrF.line2 {
+  min-height: 34.5px;
+  height: 34.5px;
+}
+/* line 113, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
 .chrblank.line3,
 .chrM.line3,
 .chrF.line3 {
   min-height: 50.75px;
   height: 50.75px;
 }
-/* line 113, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+/* line 117, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
 .chrblank.line4,
 .chrM.line4,
 .chrF.line4 {
   min-height: 67px;
   height: 67px;
 }
-/* line 117, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+/* line 121, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
 .chrblank.line9,
 .chrM.line9,
 .chrF.line9 {
@@ -7198,295 +7197,6 @@ table .talk td .msg,
   -webkit-box-sizing: content-box;
 }
 
-@media screen and (min-width: 1px) and (max-width: 339px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -84px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 290px;
-  }
-}
-@media screen and (min-width: 340px) and (max-width: 379px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -69px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 320px;
-  }
-}
-@media screen and (min-width: 380px) and (max-width: 419px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -54px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 350px;
-  }
-}
-@media screen and (min-width: 420px) and (max-width: 459px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -39px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 380px;
-  }
-}
-@media screen and (min-width: 460px) and (max-width: 499px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -24px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 410px;
-  }
-}
-@media screen and (min-width: 500px) and (max-width: 539px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -9px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 440px;
-  }
-}
-@media screen and (min-width: 540px) and (max-width: 579px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -55px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 470px;
-  }
-}
-@media screen and (min-width: 580px) and (max-width: 619px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -40px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 500px;
-  }
-}
-@media screen and (min-width: 620px) and (max-width: 659px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -25px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 530px;
-  }
-}
-@media screen and (min-width: 660px) and (max-width: 699px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -10px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 560px;
-  }
-}
-@media screen and (min-width: 700px) and (max-width: 739px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -90px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 590px;
-  }
-}
-@media screen and (min-width: 740px) and (max-width: 779px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -75px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 620px;
-  }
-}
-@media screen and (min-width: 780px) and (max-width: 819px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -60px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 650px;
-  }
-}
-@media screen and (min-width: 820px) and (max-width: 859px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -45px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 680px;
-  }
-}
-@media screen and (min-width: 860px) and (max-width: 899px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -30px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 710px;
-  }
-}
-@media screen and (min-width: 900px) and (max-width: 939px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -15px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 740px;
-  }
-}
-@media screen and (min-width: 940px) and (max-width: 100178px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width h1 {
-    width: 770px;
-    margin-left: 0px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .left-layout.mini-width .drag,
-  .left-layout.mini-width .ajax,
-  .left-layout.mini-width .memo,
-  .left-layout.mini-width .pagenavi,
-  .left-layout.mini-width .toppage,
-  .left-layout.mini-width .outframe,
-  .left-layout.mini-width .contentframe {
-    width: 770px;
-  }
-}
 @media screen and (min-width: 1px) and (max-width: 379px) {
   /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
   .left-layout.std-width h1 {
@@ -8065,301 +7775,301 @@ table .talk td .msg,
     width: 770px;
   }
 }
+@media screen and (min-width: 1px) and (max-width: 319px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 458px;
+    margin-left: -84px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 290px;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 349px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 458px;
+    margin-left: -69px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 320px;
+  }
+}
+@media screen and (min-width: 350px) and (max-width: 379px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 458px;
+    margin-left: -54px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 350px;
+  }
+}
+@media screen and (min-width: 380px) and (max-width: 409px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 458px;
+    margin-left: -39px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 380px;
+  }
+}
+@media screen and (min-width: 410px) and (max-width: 439px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 458px;
+    margin-left: -24px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 410px;
+  }
+}
+@media screen and (min-width: 440px) and (max-width: 469px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 458px;
+    margin-left: -9px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 440px;
+  }
+}
+@media screen and (min-width: 470px) and (max-width: 499px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 580px;
+    margin-left: -55px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 470px;
+  }
+}
+@media screen and (min-width: 500px) and (max-width: 529px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 580px;
+    margin-left: -40px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 500px;
+  }
+}
+@media screen and (min-width: 530px) and (max-width: 559px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 580px;
+    margin-left: -25px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 530px;
+  }
+}
+@media screen and (min-width: 560px) and (max-width: 589px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 580px;
+    margin-left: -10px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 560px;
+  }
+}
+@media screen and (min-width: 590px) and (max-width: 619px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 770px;
+    margin-left: -90px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 590px;
+  }
+}
+@media screen and (min-width: 620px) and (max-width: 649px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 770px;
+    margin-left: -75px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 620px;
+  }
+}
+@media screen and (min-width: 650px) and (max-width: 679px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 770px;
+    margin-left: -60px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 650px;
+  }
+}
+@media screen and (min-width: 680px) and (max-width: 709px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 770px;
+    margin-left: -45px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 680px;
+  }
+}
+@media screen and (min-width: 710px) and (max-width: 739px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 770px;
+    margin-left: -30px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 710px;
+  }
+}
+@media screen and (min-width: 740px) and (max-width: 769px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 770px;
+    margin-left: -15px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 740px;
+  }
+}
+@media screen and (min-width: 770px) and (max-width: 99998px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width h1 {
+    width: 770px;
+    margin-left: 0px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .left-layout.full-width .drag,
+  .left-layout.full-width .ajax,
+  .left-layout.full-width .memo,
+  .left-layout.full-width .pagenavi,
+  .left-layout.full-width .toppage,
+  .left-layout.full-width .outframe,
+  .left-layout.full-width .contentframe {
+    width: 770px;
+  }
+}
 /* line 163, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/layout.css.scss */
 .left-layout .outframe {
   margin: 0 auto 0 0;
   padding: 0px;
 }
 
-@media screen and (min-width: 1px) and (max-width: 359px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -84px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 290px;
-  }
-}
-@media screen and (min-width: 360px) and (max-width: 409px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -69px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 320px;
-  }
-}
-@media screen and (min-width: 410px) and (max-width: 459px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -54px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 350px;
-  }
-}
-@media screen and (min-width: 460px) and (max-width: 509px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -39px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 380px;
-  }
-}
-@media screen and (min-width: 510px) and (max-width: 559px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -24px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 410px;
-  }
-}
-@media screen and (min-width: 560px) and (max-width: 609px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -9px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 440px;
-  }
-}
-@media screen and (min-width: 610px) and (max-width: 659px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -55px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 470px;
-  }
-}
-@media screen and (min-width: 660px) and (max-width: 709px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -40px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 500px;
-  }
-}
-@media screen and (min-width: 710px) and (max-width: 759px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -25px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 530px;
-  }
-}
-@media screen and (min-width: 760px) and (max-width: 809px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -10px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 560px;
-  }
-}
-@media screen and (min-width: 810px) and (max-width: 859px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -90px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 590px;
-  }
-}
-@media screen and (min-width: 860px) and (max-width: 909px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -75px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 620px;
-  }
-}
-@media screen and (min-width: 910px) and (max-width: 959px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -60px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 650px;
-  }
-}
-@media screen and (min-width: 960px) and (max-width: 1009px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -45px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 680px;
-  }
-}
-@media screen and (min-width: 1010px) and (max-width: 1059px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -30px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 710px;
-  }
-}
-@media screen and (min-width: 1060px) and (max-width: 1109px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -15px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 740px;
-  }
-}
-@media screen and (min-width: 1110px) and (max-width: 100358px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width h1 {
-    width: 770px;
-    margin-left: 0px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .center-layout.mini-width .drag,
-  .center-layout.mini-width .ajax,
-  .center-layout.mini-width .memo,
-  .center-layout.mini-width .pagenavi,
-  .center-layout.mini-width .toppage,
-  .center-layout.mini-width .outframe,
-  .center-layout.mini-width .contentframe {
-    width: 770px;
-  }
-}
 @media screen and (min-width: 1px) and (max-width: 439px) {
   /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
   .center-layout.std-width h1 {
@@ -8938,301 +8648,301 @@ table .talk td .msg,
     width: 770px;
   }
 }
+@media screen and (min-width: 1px) and (max-width: 319px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 458px;
+    margin-left: -84px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 290px;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 349px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 458px;
+    margin-left: -69px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 320px;
+  }
+}
+@media screen and (min-width: 350px) and (max-width: 379px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 458px;
+    margin-left: -54px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 350px;
+  }
+}
+@media screen and (min-width: 380px) and (max-width: 409px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 458px;
+    margin-left: -39px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 380px;
+  }
+}
+@media screen and (min-width: 410px) and (max-width: 439px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 458px;
+    margin-left: -24px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 410px;
+  }
+}
+@media screen and (min-width: 440px) and (max-width: 469px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 458px;
+    margin-left: -9px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 440px;
+  }
+}
+@media screen and (min-width: 470px) and (max-width: 499px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 580px;
+    margin-left: -55px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 470px;
+  }
+}
+@media screen and (min-width: 500px) and (max-width: 529px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 580px;
+    margin-left: -40px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 500px;
+  }
+}
+@media screen and (min-width: 530px) and (max-width: 559px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 580px;
+    margin-left: -25px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 530px;
+  }
+}
+@media screen and (min-width: 560px) and (max-width: 589px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 580px;
+    margin-left: -10px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 560px;
+  }
+}
+@media screen and (min-width: 590px) and (max-width: 619px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 770px;
+    margin-left: -90px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 590px;
+  }
+}
+@media screen and (min-width: 620px) and (max-width: 649px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 770px;
+    margin-left: -75px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 620px;
+  }
+}
+@media screen and (min-width: 650px) and (max-width: 679px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 770px;
+    margin-left: -60px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 650px;
+  }
+}
+@media screen and (min-width: 680px) and (max-width: 709px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 770px;
+    margin-left: -45px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 680px;
+  }
+}
+@media screen and (min-width: 710px) and (max-width: 739px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 770px;
+    margin-left: -30px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 710px;
+  }
+}
+@media screen and (min-width: 740px) and (max-width: 769px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 770px;
+    margin-left: -15px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 740px;
+  }
+}
+@media screen and (min-width: 770px) and (max-width: 99998px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width h1 {
+    width: 770px;
+    margin-left: 0px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .center-layout.full-width .drag,
+  .center-layout.full-width .ajax,
+  .center-layout.full-width .memo,
+  .center-layout.full-width .pagenavi,
+  .center-layout.full-width .toppage,
+  .center-layout.full-width .outframe,
+  .center-layout.full-width .contentframe {
+    width: 770px;
+  }
+}
 /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/layout.css.scss */
 .center-layout .outframe {
   margin: 0 auto;
   padding: 0px;
 }
 
-@media screen and (min-width: 1px) and (max-width: 339px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -168px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 290px;
-  }
-}
-@media screen and (min-width: 340px) and (max-width: 379px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -138px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 320px;
-  }
-}
-@media screen and (min-width: 380px) and (max-width: 419px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -108px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 350px;
-  }
-}
-@media screen and (min-width: 420px) and (max-width: 459px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -78px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 380px;
-  }
-}
-@media screen and (min-width: 460px) and (max-width: 499px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -48px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 410px;
-  }
-}
-@media screen and (min-width: 500px) and (max-width: 539px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 458px;
-    margin-left: -18px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 440px;
-  }
-}
-@media screen and (min-width: 540px) and (max-width: 579px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -110px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 470px;
-  }
-}
-@media screen and (min-width: 580px) and (max-width: 619px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -80px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 500px;
-  }
-}
-@media screen and (min-width: 620px) and (max-width: 659px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -50px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 530px;
-  }
-}
-@media screen and (min-width: 660px) and (max-width: 699px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 580px;
-    margin-left: -20px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 560px;
-  }
-}
-@media screen and (min-width: 700px) and (max-width: 739px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -180px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 590px;
-  }
-}
-@media screen and (min-width: 740px) and (max-width: 779px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -150px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 620px;
-  }
-}
-@media screen and (min-width: 780px) and (max-width: 819px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -120px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 650px;
-  }
-}
-@media screen and (min-width: 820px) and (max-width: 859px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -90px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 680px;
-  }
-}
-@media screen and (min-width: 860px) and (max-width: 899px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -60px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 710px;
-  }
-}
-@media screen and (min-width: 900px) and (max-width: 939px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 770px;
-    margin-left: -30px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 740px;
-  }
-}
-@media screen and (min-width: 940px) and (max-width: 100178px) {
-  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width h1 {
-    width: 770px;
-    margin-left: 0px;
-  }
-  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-  .right-layout.mini-width .drag,
-  .right-layout.mini-width .ajax,
-  .right-layout.mini-width .memo,
-  .right-layout.mini-width .pagenavi,
-  .right-layout.mini-width .toppage,
-  .right-layout.mini-width .outframe,
-  .right-layout.mini-width .contentframe {
-    width: 770px;
-  }
-}
 @media screen and (min-width: 1px) and (max-width: 379px) {
   /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
   .right-layout.std-width h1 {
@@ -9811,6 +9521,295 @@ table .talk td .msg,
     width: 770px;
   }
 }
+@media screen and (min-width: 1px) and (max-width: 319px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 458px;
+    margin-left: -168px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 290px;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 349px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 458px;
+    margin-left: -138px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 320px;
+  }
+}
+@media screen and (min-width: 350px) and (max-width: 379px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 458px;
+    margin-left: -108px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 350px;
+  }
+}
+@media screen and (min-width: 380px) and (max-width: 409px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 458px;
+    margin-left: -78px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 380px;
+  }
+}
+@media screen and (min-width: 410px) and (max-width: 439px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 458px;
+    margin-left: -48px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 410px;
+  }
+}
+@media screen and (min-width: 440px) and (max-width: 469px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 458px;
+    margin-left: -18px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 440px;
+  }
+}
+@media screen and (min-width: 470px) and (max-width: 499px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 580px;
+    margin-left: -110px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 470px;
+  }
+}
+@media screen and (min-width: 500px) and (max-width: 529px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 580px;
+    margin-left: -80px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 500px;
+  }
+}
+@media screen and (min-width: 530px) and (max-width: 559px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 580px;
+    margin-left: -50px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 530px;
+  }
+}
+@media screen and (min-width: 560px) and (max-width: 589px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 580px;
+    margin-left: -20px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 560px;
+  }
+}
+@media screen and (min-width: 590px) and (max-width: 619px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 770px;
+    margin-left: -180px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 590px;
+  }
+}
+@media screen and (min-width: 620px) and (max-width: 649px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 770px;
+    margin-left: -150px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 620px;
+  }
+}
+@media screen and (min-width: 650px) and (max-width: 679px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 770px;
+    margin-left: -120px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 650px;
+  }
+}
+@media screen and (min-width: 680px) and (max-width: 709px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 770px;
+    margin-left: -90px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 680px;
+  }
+}
+@media screen and (min-width: 710px) and (max-width: 739px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 770px;
+    margin-left: -60px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 710px;
+  }
+}
+@media screen and (min-width: 740px) and (max-width: 769px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 770px;
+    margin-left: -30px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 740px;
+  }
+}
+@media screen and (min-width: 770px) and (max-width: 99998px) {
+  /* line 173, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width h1 {
+    width: 770px;
+    margin-left: 0px;
+  }
+  /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
+  .right-layout.full-width .drag,
+  .right-layout.full-width .ajax,
+  .right-layout.full-width .memo,
+  .right-layout.full-width .pagenavi,
+  .right-layout.full-width .toppage,
+  .right-layout.full-width .outframe,
+  .right-layout.full-width .contentframe {
+    width: 770px;
+  }
+}
 /* line 183, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/layout.css.scss */
 .right-layout .outframe {
   margin: 0 0 0 auto;
@@ -9924,136 +9923,67 @@ table.memo td {
 }
 
 /* line 195, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.mini-width .accordion dd th,
-.mini-width .CAST code th,
-.mini-width table.memo th {
-  width: 110px;
-}
-/* line 200, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.mini-width table.talk th {
-  margin: 0 4px 6px 12px;
-  padding: 0 4px;
-  width: 110px;
-}
-/* line 205, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.mini-width table.talk th .chrblank,
-.mini-width table.talk th img {
-  margin-left: 9px;
-}
-/* line 209, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.mini-width table.talk td .msg {
-  margin: 0 6px 6px 3px;
-}
-/* line 214, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.mini-width .action {
-  margin: 0 0 6px 99px;
-  border-width: 2px 0 2px 14px;
-}
-/* line 220, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.mini-width .drag_head .badge,
-.mini-width .drag_foot .badge {
-  width: 84px;
-  margin-left: 12px;
-}
-/* line 54, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.mini-width .chrlist {
-  margin: 0 0 0 7px;
-}
-/* line 58, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.mini-width .CAST {
-  margin-bottom: 4px;
-}
-/* line 61, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.mini-width table.talk td .msg {
-  padding: 0px 4px;
-}
-/* line 66, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.mini-width.box .formpl_frame {
-  margin: 0px 0px 12px 0px;
-}
-/* line 69, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.mini-width.box .formpl_content {
-  padding: 4px;
-}
-/* line 72, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.mini-width.box .formpl_action {
-  padding: 4px;
-}
-/* line 77, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.mini-width.speech-item table.talk th {
-  padding: 0 0 4px 0;
+.accordion dd th,
+.CAST code th,
+table.memo th {
+  width: 118px;
 }
 
-/* line 195, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.std-width .accordion dd th,
-.std-width .CAST code th,
-.std-width table.memo th,
-.wide-width .accordion dd th,
-.wide-width .CAST code th,
-.wide-width table.memo th {
-  width: 118px;
-}
 /* line 200, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.std-width table.talk th,
-.wide-width table.talk th {
+table.talk th {
   margin: 0 4px 6px 12px;
   padding: 0 4px;
   width: 118px;
 }
 /* line 205, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.std-width table.talk th .chrblank,
-.std-width table.talk th img,
-.wide-width table.talk th .chrblank,
-.wide-width table.talk th img {
+table.talk th .chrblank,
+table.talk th img {
   margin-left: 12px;
 }
 /* line 209, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.std-width table.talk td .msg,
-.wide-width table.talk td .msg {
+table.talk td .msg {
   margin: 0 6px 6px 3px;
 }
+
 /* line 214, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.std-width .action,
-.wide-width .action {
+.action {
   margin: 0 0 6px 107px;
   border-width: 2px 0 2px 18px;
 }
+
 /* line 220, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/_lib.css.scss */
-.std-width .drag_head .badge,
-.std-width .drag_foot .badge,
-.wide-width .drag_head .badge,
-.wide-width .drag_foot .badge {
+.drag_head .badge,
+.drag_foot .badge {
   width: 84px;
   margin-left: 18px;
 }
-/* line 87, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.std-width .chrlist,
-.wide-width .chrlist {
-  margin: 0 0 0 16px;
-}
-/* line 90, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.std-width .CAST,
-.wide-width .CAST {
-  margin-bottom: 9px;
-}
-/* line 93, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.std-width table.talk td .msg,
-.wide-width table.talk td .msg {
+
+/* line 53, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
+table.talk td .msg {
+  margin: 0 7px 6px 6px;
   padding: 0 4px;
 }
-/* line 98, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.std-width.box .formpl_frame,
-.wide-width.box .formpl_frame {
+
+/* line 58, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
+.chrlist {
+  margin: 0 0 0 16px;
+}
+
+/* line 61, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
+.CAST {
+  margin-bottom: 9px;
+}
+
+/* line 66, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
+.box .formpl_frame {
   margin: 0px 0px 12px 0px;
 }
-/* line 101, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.std-width.box .formpl_content,
-.wide-width.box .formpl_content {
+/* line 69, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
+.box .formpl_content {
   padding: 4px;
 }
-/* line 104, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
-.std-width.box .formpl_action,
-.wide-width.box .formpl_action {
+/* line 72, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/width.css.scss */
+.box .formpl_action {
   padding: 4px;
 }
 
@@ -11846,24 +11776,13 @@ table.memo td {
   background-repeat: repeat-y;
   background-position: left;
   background-attachment: local;
+  background-image: url("../images/bg/film-L.png");
 }
 /* line 17, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
-.cinema-theme.wide-width .contentframe {
-  background-image: url("../images/bg/film-L.png");
-}
-/* line 23, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
-.cinema-theme.std-width .contentframe {
-  background-image: url("../images/bg/film-L.png");
-}
-/* line 29, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
-.cinema-theme.mini-width .contentframe {
-  background-image: url("../images/bg/film-S.png");
-}
-/* line 34, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme body {
   background: #764;
 }
-/* line 38, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 21, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme h1 a img {
   box-shadow: rgba(208, 208, 255, 0.3) 0 2px 2px;
 }
@@ -12146,13 +12065,13 @@ table.memo td {
 .cinema-theme.right-layout .outframe {
   border-left: 3px double #886633;
 }
-/* line 45, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 28, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme #calc th, .cinema-theme #calc td {
   border-width: 2px 4px;
   border-color: #333;
   border-style: solid;
 }
-/* line 53, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 36, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme nav,
 .cinema-theme header {
   color: #776655;
@@ -12311,11 +12230,11 @@ table.memo td {
   color: #776655;
   background-color: #444444;
 }
-/* line 57, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 40, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme #sayfilter {
   padding-left: 6px;
 }
-/* line 58, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 41, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme #sayfilter aside {
   color: #444444;
   background-color: #eeeedd;
@@ -12499,12 +12418,12 @@ table.memo td {
   color: #eeeedd;
   background-color: #cccc99;
 }
-/* line 62, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 45, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme #sayfilter .head,
 .cinema-theme #sayfilter .foot {
   background-color: #863;
 }
-/* line 66, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 49, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme #sayfilter aside {
   margin-left: 6px;
   border-width: 0;
@@ -12513,12 +12432,12 @@ table.memo td {
   border-left: 2px solid #aa7;
   border-right: 3px solid #863;
 }
-/* line 75, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 58, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme #sayfilter .head,
 .cinema-theme #sayfilter .foot {
   border-radius: 0.5em;
 }
-/* line 83, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 66, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme .MSAY,
 .cinema-theme .SSAY,
 .cinema-theme .SAY,
@@ -12775,7 +12694,7 @@ table.memo td {
   color: black;
   background-color: #ccbb88;
 }
-/* line 89, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 72, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme .MAKER.guide,
 .cinema-theme .ADMIN.guide,
 .cinema-theme .INFONOM,
@@ -12785,31 +12704,31 @@ table.memo td {
   border-style: dashed none;
   border-color: #863;
 }
-/* line 94, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 77, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme .caution {
   border-width: 2px 0;
   border-style: dashed none;
   border-color: #ccc;
 }
-/* line 100, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 83, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme .msg {
   border-radius: 0.5rem;
 }
-/* line 104, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 87, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme .action {
   border-style: dashed none dashed solid;
   border-color: #663;
 }
-/* line 109, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 92, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme .memo {
   border-color: #664;
   color: #000;
 }
-/* line 112, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 95, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme .memo th {
   border-color: #000;
 }
-/* line 115, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
+/* line 98, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/cinema.css.scss */
 .cinema-theme .memo td {
   border-color: #000;
 }
@@ -12831,24 +12750,13 @@ table.memo td {
   background-repeat: repeat-y;
   background-position: left;
   background-attachment: local;
+  background-image: url("../images/bg/film-wa-L.png");
 }
 /* line 20, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
-.moon-theme.wide-width .contentframe {
-  background-image: url("../images/bg/film-wa-L.png");
-}
-/* line 26, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
-.moon-theme.std-width .contentframe {
-  background-image: url("../images/bg/film-wa-L.png");
-}
-/* line 32, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
-.moon-theme.mini-width .contentframe {
-  background-image: url("../images/bg/film-wa-S.png");
-}
-/* line 37, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme body {
   background: #220005;
 }
-/* line 41, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 24, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme h1 a img {
   box-shadow: #806 0 2px 2px;
 }
@@ -13131,13 +13039,13 @@ table.memo td {
 .moon-theme.right-layout .outframe {
   border-left: 2px solid #772200;
 }
-/* line 48, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 31, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme #calc th, .moon-theme #calc td {
   border-width: 2px 4px;
   border-color: #333;
   border-style: solid;
 }
-/* line 56, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 39, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme nav,
 .moon-theme header {
   color: #776655;
@@ -13296,11 +13204,11 @@ table.memo td {
   color: #776655;
   background-color: #444444;
 }
-/* line 60, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 43, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme #sayfilter {
   padding-left: 6px;
 }
-/* line 61, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 44, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme #sayfilter aside {
   color: #ddffff;
   background-color: #442222;
@@ -13484,16 +13392,16 @@ table.memo td {
   color: #c3c3c3;
   background-color: #5d5d5d;
 }
-/* line 65, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 48, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme #sayfilter .head,
 .moon-theme #sayfilter .foot {
   background-color: #444;
 }
-/* line 69, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 52, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme #sayfilter aside {
   margin-left: 6px;
 }
-/* line 77, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 60, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme .MSAY,
 .moon-theme .SSAY,
 .moon-theme .SAY,
@@ -13764,7 +13672,7 @@ table.memo td {
   color: #eeeebb;
   background-color: rgba(0, 0, 0, 0.4);
 }
-/* line 83, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 66, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme .MAKER.guide,
 .moon-theme .ADMIN.guide,
 .moon-theme .INFONOM,
@@ -13774,30 +13682,30 @@ table.memo td {
   border-style: double none;
   border-color: #720;
 }
-/* line 88, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 71, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme .caution {
   border-width: 3px 0;
   border-style: double none;
   border-color: #ccc;
 }
-/* line 94, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 77, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme .msg {
   border-radius: 0.5rem;
 }
-/* line 98, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 81, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme .action {
   border-style: none none solid solid;
   border-color: #663;
 }
-/* line 103, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 86, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme .memo {
   border-color: #113;
 }
-/* line 105, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 88, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme .memo th {
   background-color: #000;
 }
-/* line 108, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
+/* line 91, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/moon.css.scss */
 .moon-theme .memo td {
   border-color: #113;
 }
@@ -13819,24 +13727,13 @@ table.memo td {
   background-repeat: repeat-y;
   background-position: left;
   background-attachment: local;
+  background-image: url("../images/bg/film-L.png");
 }
 /* line 20, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
-.night-theme.wide-width .contentframe {
-  background-image: url("../images/bg/film-L.png");
-}
-/* line 26, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
-.night-theme.std-width .contentframe {
-  background-image: url("../images/bg/film-L.png");
-}
-/* line 32, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
-.night-theme.mini-width .contentframe {
-  background-image: url("../images/bg/film-S.png");
-}
-/* line 37, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme body {
   background: #000;
 }
-/* line 41, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 24, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme h1 a img {
   box-shadow: #777 0 2px 2px;
 }
@@ -14119,13 +14016,13 @@ table.memo td {
 .night-theme.right-layout .outframe {
   border-left: 3px double #777777;
 }
-/* line 48, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 31, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme #calc th, .night-theme #calc td {
   border-width: 2px 4px;
   border-color: #333;
   border-style: solid;
 }
-/* line 56, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 39, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme nav,
 .night-theme header {
   color: #777777;
@@ -14284,11 +14181,11 @@ table.memo td {
   color: #777777;
   background-color: #444444;
 }
-/* line 60, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 43, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme #sayfilter {
   padding-left: 6px;
 }
-/* line 61, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 44, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme #sayfilter aside {
   color: #ddffff;
   background-color: #444444;
@@ -14472,16 +14369,16 @@ table.memo td {
   color: #c7d0d0;
   background-color: #5d6e6e;
 }
-/* line 65, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 48, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme #sayfilter .head,
 .night-theme #sayfilter .foot {
   background-color: #444;
 }
-/* line 69, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 52, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme #sayfilter aside {
   margin-left: 6px;
 }
-/* line 77, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 60, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme .MSAY,
 .night-theme .SSAY,
 .night-theme .SAY,
@@ -14752,7 +14649,7 @@ table.memo td {
   color: #ddddff;
   background-color: rgba(0, 0, 0, 0.4);
 }
-/* line 83, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 66, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme .MAKER.guide,
 .night-theme .ADMIN.guide,
 .night-theme .INFONOM,
@@ -14762,30 +14659,30 @@ table.memo td {
   border-style: double none;
   border-color: #555;
 }
-/* line 88, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 71, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme .caution {
   border-width: 3px 0;
   border-style: double none;
   border-color: #ccc;
 }
-/* line 94, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 77, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme .msg {
   border-radius: 0.5rem;
 }
-/* line 98, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 81, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme .action {
   border-style: none none solid solid;
   border-color: #663;
 }
-/* line 103, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 86, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme .memo {
   border-color: #113;
 }
-/* line 105, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 88, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme .memo th {
   background-color: #000;
 }
-/* line 108, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
+/* line 91, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/night.css.scss */
 .night-theme .memo td {
   border-color: #113;
 }
@@ -14806,24 +14703,13 @@ table.memo td {
   background-repeat: repeat-y;
   background-position: left;
   background-attachment: local;
+  background-image: url("../images/bg/film-L.png");
 }
 /* line 19, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
-.star-theme.wide-width .contentframe {
-  background-image: url("../images/bg/film-L.png");
-}
-/* line 25, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
-.star-theme.std-width .contentframe {
-  background-image: url("../images/bg/film-L.png");
-}
-/* line 31, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
-.star-theme.mini-width .contentframe {
-  background-image: url("../images/bg/film-S.png");
-}
-/* line 36, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme body {
   background: #226;
 }
-/* line 40, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 23, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme h1 a img {
   box-shadow: rgba(128, 255, 208, 0.3) 0 2px 2px;
 }
@@ -15106,13 +14992,13 @@ table.memo td {
 .star-theme.right-layout .outframe {
   border-left: 3px double #119966;
 }
-/* line 47, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 30, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme #calc th, .star-theme #calc td {
   border-width: 2px 4px;
   border-color: #333;
   border-style: solid;
 }
-/* line 55, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 38, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme nav,
 .star-theme header {
   color: #776655;
@@ -15271,11 +15157,11 @@ table.memo td {
   color: #776655;
   background-color: #444444;
 }
-/* line 59, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 42, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme #sayfilter {
   padding-left: 6px;
 }
-/* line 60, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 43, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme #sayfilter aside {
   color: #ddffff;
   background-color: #222266;
@@ -15459,16 +15345,16 @@ table.memo td {
   color: #bfc7d8;
   background-color: #4c5d7f;
 }
-/* line 64, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 47, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme #sayfilter .head,
 .star-theme #sayfilter .foot {
   background-color: #044;
 }
-/* line 68, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 51, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme #sayfilter aside {
   margin-left: 6px;
 }
-/* line 76, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 59, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme .MSAY,
 .star-theme .SSAY,
 .star-theme .SAY,
@@ -15739,7 +15625,7 @@ table.memo td {
   color: #ddddff;
   background-color: rgba(0, 0, 0, 0.4);
 }
-/* line 82, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 65, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme .MAKER.guide,
 .star-theme .ADMIN.guide,
 .star-theme .INFONOM,
@@ -15749,26 +15635,26 @@ table.memo td {
   border-style: dashed none;
   border-color: #468;
 }
-/* line 87, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 70, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme .caution {
   border-width: 2px 0;
   border-style: dashed none;
   border-color: #ccc;
 }
-/* line 93, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 76, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme .msg {
   border-radius: 0.5rem;
 }
-/* line 97, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 80, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme .action {
   border-style: none none solid solid;
   border-color: #663;
 }
-/* line 102, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 85, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme .memo {
   border-color: #1b7;
 }
-/* line 104, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
+/* line 87, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/star.css.scss */
 .star-theme .memo th {
   background-color: #114;
 }
@@ -15787,31 +15673,20 @@ table.memo td {
   background-repeat: repeat-y;
   background-position: left;
   background-attachment: local;
+  background-image: url("../images/bg/film-wa-L.png");
 }
 /* line 19, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
-.wa-theme.wide-width .contentframe {
-  background-image: url("../images/bg/film-wa-L.png");
-}
-/* line 25, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
-.wa-theme.std-width .contentframe {
-  background-image: url("../images/bg/film-wa-L.png");
-}
-/* line 31, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
-.wa-theme.mini-width .contentframe {
-  background-image: url("../images/bg/film-wa-S.png");
-}
-/* line 36, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme body {
   color: #ccf;
   background-image: url("../images/bg/nagatanienn.png");
   background-repeat: repeat;
   background-position: center;
 }
-/* line 43, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 26, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme h1 a img {
   box-shadow: rgba(208, 208, 255, 0.3) 0 2px 2px;
 }
-/* line 47, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 30, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme .board th,
 .wa-theme h2 {
   color: #ffc926;
@@ -16095,13 +15970,13 @@ table.memo td {
 .wa-theme.right-layout .outframe {
   border-left: 0 none #eebb22;
 }
-/* line 54, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 37, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme #calc th, .wa-theme #calc td {
   border-width: 2px 4px;
   border-color: #333;
   border-style: solid;
 }
-/* line 62, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 45, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme nav,
 .wa-theme header {
   color: #776655;
@@ -16260,11 +16135,11 @@ table.memo td {
   color: #776655;
   background-color: #444444;
 }
-/* line 66, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 49, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme #sayfilter {
   padding-left: 6px;
 }
-/* line 67, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 50, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme #sayfilter aside {
   color: #444444;
   background-color: #eeeedd;
@@ -16448,7 +16323,7 @@ table.memo td {
   color: #eeeedd;
   background-color: #cccc99;
 }
-/* line 71, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 54, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme #sayfilter .head,
 .wa-theme #sayfilter .foot {
   font-weight: bold;
@@ -16457,18 +16332,18 @@ table.memo td {
   border-bottom: 2px solid #863;
   color: #444;
 }
-/* line 78, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 61, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme #sayfilter .foot {
   height: 10px;
 }
-/* line 82, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 65, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme #sayfilter aside {
   margin: 0 6px;
   border-width: 0;
   border-left: 2px solid #aa7;
   border-right: 3px solid #863;
 }
-/* line 93, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 76, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme .MSAY,
 .wa-theme .SSAY,
 .wa-theme .SAY,
@@ -16725,7 +16600,7 @@ table.memo td {
   color: black;
   background-color: #ccbb88;
 }
-/* line 99, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 82, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme .MAKER.guide,
 .wa-theme .ADMIN.guide,
 .wa-theme .INFONOM,
@@ -16735,32 +16610,32 @@ table.memo td {
   border-style: double none;
   border-color: #720;
 }
-/* line 104, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 87, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme .caution {
   border-width: 3px 0;
   border-style: double none;
   border-color: #ccc;
 }
-/* line 110, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 93, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme .msg {
   border-top: 2px solid #444;
   border-bottom: 2px solid #444;
 }
-/* line 115, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 98, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme .action {
   border-style: solid none solid solid;
   border-color: #222;
 }
-/* line 120, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 103, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme .memo {
   border-color: #664;
   color: #000;
 }
-/* line 123, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 106, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme .memo th {
   border-color: #000;
 }
-/* line 126, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
+/* line 109, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/theme/wa.css.scss */
 .wa-theme .memo td {
   border-color: #000;
 }

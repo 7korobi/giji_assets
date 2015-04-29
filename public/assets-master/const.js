@@ -1,7 +1,41 @@
 var chr_set_id, face, face_id, job, list, _id;
 
 new Cache.Rule("face").schema(function() {
-  return this.order("order");
+  var item;
+  this.order("order");
+  this.scope(function(all) {
+    return {
+      tag: function(tag_id) {
+        switch (tag_id) {
+          case "all":
+            return all;
+          default:
+            return all["in"]({
+              tags: tag_id
+            });
+        }
+      },
+      chr_jobs: function(chr_job_id) {
+        return all.where({
+          chr_job_id: chr_job_id
+        });
+      }
+    };
+  });
+  item = {
+    count: 1
+  };
+  return this.map_reduce(function(o, emit) {
+    var tag, _i, _len, _ref, _results;
+    emit("all", "all", item);
+    _ref = o.tags;
+    _results = [];
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      tag = _ref[_i];
+      _results.push(emit("tag", tag, item));
+    }
+    return _results;
+  });
 });
 
 new Cache.Rule("chr_set").schema(function() {
@@ -52,1443 +86,1787 @@ Cache.rule.face.set([
     "comment": "test",
     "face_id": "c49",
     "name": "ボリス",
-    "order": 1
+    "order": 1,
+    "tags": ["guild"]
   }, {
     "_id": "c38",
     "order": 2,
     "face_id": "c38",
-    "name": "コリーン"
+    "name": "コリーン",
+    "tags": ["market"]
   }, {
     "_id": "c77",
     "order": 3,
     "face_id": "c77",
-    "name": "キャロライナ"
+    "name": "キャロライナ",
+    "tags": ["servant", "road", "farm"]
   }, {
     "_id": "c35",
     "order": 4,
     "face_id": "c35",
-    "name": "ダン"
+    "name": "ダン",
+    "tags": ["guild"]
   }, {
     "_id": "c53",
     "order": 5,
     "face_id": "c53",
-    "name": "ゼルダ"
+    "name": "ゼルダ",
+    "tags": ["law", "farm", "elegant"]
   }, {
     "_id": "c74",
     "order": 6,
     "face_id": "c74",
-    "name": "フランシスカ"
+    "name": "フランシスカ",
+    "tags": ["market"]
   }, {
     "_id": "c50",
-    "order": 7,
+    "order": 8,
     "face_id": "c50",
-    "name": "ディーン"
+    "name": "ディーン",
+    "tags": ["guild"]
   }, {
     "_id": "c36",
     "order": 8,
     "face_id": "c36",
-    "name": "ミッシェル"
+    "name": "ミッシェル",
+    "tags": ["guild", "servant"]
   }, {
     "_id": "c26",
-    "order": 9,
+    "order": 8,
     "face_id": "c26",
-    "name": "モニカ"
+    "name": "モニカ",
+    "tags": ["guild"]
+  }, {
+    "_id": "c09",
+    "order": 9,
+    "face_id": "c09",
+    "name": "ヒロシ",
+    "tags": ["immoral", "travel", "road"]
   }, {
     "_id": "c55",
     "order": 10,
     "face_id": "c55",
-    "name": "パピヨン"
+    "name": "パピヨン",
+    "tags": ["elegant"]
   }, {
     "_id": "c29",
     "order": 11,
     "face_id": "c29",
-    "name": "イアン"
+    "name": "イアン",
+    "tags": ["guild"]
   }, {
     "_id": "c12",
     "order": 12,
     "face_id": "c12",
-    "name": "バーナバス"
+    "name": "バーナバス",
+    "tags": ["servant", "road"]
   }, {
     "_id": "c16",
     "order": 13,
     "face_id": "c16",
-    "name": "マリアンヌ"
+    "name": "マリアンヌ",
+    "tags": ["apartment", "market", "medical"]
   }, {
     "_id": "c34",
     "order": 14,
     "face_id": "c34",
-    "name": "トニー"
+    "name": "トニー",
+    "tags": ["road", "servant"]
   }, {
     "_id": "c44",
     "order": 15,
     "face_id": "c44",
-    "name": "ドナルド"
+    "name": "ドナルド",
+    "tags": ["immoral"]
   }, {
     "_id": "c11",
     "order": 16,
     "face_id": "c11",
-    "name": "カルヴィン"
+    "name": "カルヴィン",
+    "tags": ["elegant", "apartment"]
   }, {
     "_id": "c10",
     "order": 17,
     "face_id": "c10",
-    "name": "ゾーイ"
+    "name": "ゾーイ",
+    "tags": ["apartment", "travel"]
   }, {
     "_id": "c70",
     "order": 18,
     "face_id": "c70",
-    "name": "パティ"
+    "name": "パティ",
+    "tags": ["apartment"]
   }, {
     "_id": "c56",
     "order": 19,
     "face_id": "c56",
-    "name": "ゴドウィン"
+    "name": "ゴドウィン",
+    "tags": ["guild"]
   }, {
     "_id": "c07",
     "order": 20,
     "face_id": "c07",
-    "name": "ティモシー"
+    "name": "ティモシー",
+    "tags": ["guild"]
   }, {
     "_id": "c41",
     "order": 21,
     "face_id": "c41",
-    "name": "ヤニク"
+    "name": "ヤニク",
+    "tags": ["road"]
   }, {
     "_id": "c58",
     "order": 22,
     "face_id": "c58",
-    "name": "ブルーノ"
+    "name": "ブルーノ",
+    "tags": ["ecclesia"]
   }, {
     "_id": "c17",
     "order": 23,
     "face_id": "c17",
-    "name": "ユリシーズ"
+    "name": "ユリシーズ",
+    "tags": ["market", "elegant"]
   }, {
     "_id": "c39",
     "order": 24,
     "face_id": "c39",
-    "name": "シビル"
+    "name": "シビル",
+    "tags": ["servant", "guild"]
   }, {
     "_id": "c40",
     "order": 25,
     "face_id": "c40",
-    "name": "ハワード"
+    "name": "ハワード",
+    "tags": ["servant", "elegant"]
   }, {
     "_id": "c65",
     "order": 26,
     "face_id": "c65",
-    "name": "ズリエル"
+    "name": "ズリエル",
+    "tags": ["immoral"]
   }, {
     "_id": "c59",
     "order": 27,
     "face_id": "c59",
-    "name": "ムパムピス"
+    "name": "ムパムピス",
+    "tags": ["ecclesia"]
   }, {
     "_id": "c57",
     "order": 28,
     "face_id": "c57",
-    "name": "ツェツィーリヤ"
+    "name": "ツェツィーリヤ",
+    "tags": ["ecclesia"]
   }, {
     "_id": "c04",
     "order": 29,
     "face_id": "c04",
-    "name": "ノーリーン"
+    "name": "ノーリーン",
+    "tags": ["servant", "elegant"]
   }, {
     "_id": "c46",
     "order": 30,
     "face_id": "c46",
-    "name": "ゲイル"
+    "name": "ゲイル",
+    "tags": ["medical"]
   }, {
     "_id": "c14",
     "order": 31,
     "face_id": "c14",
-    "name": "レティーシャ"
-  }, {
-    "_id": "c09",
-    "order": 32,
-    "face_id": "c09",
-    "name": "ヒロシ"
+    "name": "レティーシャ",
+    "tags": ["ecclesia"]
   }, {
     "_id": "c42",
     "order": 33,
     "face_id": "c42",
-    "name": "ラルフ"
+    "name": "ラルフ",
+    "tags": ["servant"]
   }, {
     "_id": "c37",
     "order": 34,
     "face_id": "c37",
-    "name": "セシル"
+    "name": "セシル",
+    "tags": ["elegant", "market"]
   }, {
     "_id": "c75",
     "order": 35,
     "face_id": "c75",
-    "name": "ビリー"
+    "name": "ビリー",
+    "tags": ["elegant", "market"]
   }, {
     "_id": "c32",
     "order": 36,
     "face_id": "c32",
-    "name": "オスカー"
+    "name": "オスカー",
+    "tags": ["apartment"]
   }, {
     "_id": "c33",
     "order": 37,
     "face_id": "c33",
-    "name": "ホリー"
+    "name": "ホリー",
+    "tags": ["apartment"]
   }, {
     "_id": "c02",
     "order": 38,
     "face_id": "c02",
-    "name": "アルフレッド"
+    "name": "アルフレッド",
+    "tags": ["law", "elegant"]
   }, {
     "_id": "c66",
     "order": 39,
     "face_id": "c66",
-    "name": "クリストファー"
+    "name": "クリストファー",
+    "tags": ["servant", "guild", "farm"]
   }, {
     "_id": "c24",
     "order": 41,
     "face_id": "c24",
-    "name": "ナタリア"
+    "name": "ナタリア",
+    "tags": ["law", "apartment"]
   }, {
     "_id": "c79",
     "order": 42,
     "face_id": "c79",
-    "name": "マーゴ"
+    "name": "マーゴ",
+    "tags": ["elegant", "apartment"]
   }, {
     "_id": "c61",
     "order": 43,
     "face_id": "c61",
-    "name": "ヌマタロウ"
+    "name": "ヌマタロウ",
+    "tags": ["road", "farm"]
   }, {
     "_id": "c23",
     "order": 44,
     "face_id": "c23",
-    "name": "チャールズ"
+    "name": "チャールズ",
+    "tags": ["ecclesia"]
   }, {
     "_id": "c28",
     "comment": "",
     "face_id": "c28",
     "name": "ケイト",
-    "order": 47
+    "order": 47,
+    "tags": ["apartment"]
   }, {
     "_id": "c68",
     "order": 48,
     "face_id": "c68",
-    "name": "ヨアヒム"
+    "name": "ヨアヒム",
+    "tags": ["market", "immoral", "elegant"]
   }, {
     "_id": "c30",
     "order": 49,
     "face_id": "c30",
-    "name": "フィリップ"
+    "name": "フィリップ",
+    "tags": ["road", "market"]
   }, {
     "_id": "c21",
     "order": 50,
     "face_id": "c21",
-    "name": "ニール"
+    "name": "ニール",
+    "tags": ["farm", "guild"]
   }, {
     "_id": "c52",
     "order": 52,
     "face_id": "c52",
-    "name": "ギリアン"
+    "name": "ギリアン",
+    "tags": ["medical", "ecclesia"]
   }, {
     "_id": "c51",
     "order": 53,
     "face_id": "c51",
-    "name": "ヨーランダ"
+    "name": "ヨーランダ",
+    "tags": ["medical", "ecclesia"]
   }, {
     "_id": "c01",
     "comment": "",
     "face_id": "c01",
     "name": "メアリー",
-    "order": 55
+    "order": 55,
+    "tags": ["road"]
   }, {
     "_id": "c69",
     "order": 56,
     "face_id": "c69",
-    "name": "ギネス"
+    "name": "ギネス",
+    "tags": ["guild", "market"]
   }, {
     "_id": "c63",
     "order": 57,
     "face_id": "c63",
-    "name": "ピッパ"
+    "name": "ピッパ",
+    "tags": ["guild"]
   }, {
     "_id": "c05",
     "order": 59,
     "face_id": "c05",
-    "name": "キャサリン"
+    "name": "キャサリン",
+    "tags": ["medical"]
   }, {
     "_id": "c22",
     "order": 60,
     "face_id": "c22",
-    "name": "ワット"
+    "name": "ワット",
+    "tags": ["farm"]
   }, {
     "_id": "c62",
     "order": 61,
     "face_id": "c62",
-    "name": "ヴェラ"
+    "name": "ヴェラ",
+    "tags": ["road"]
   }, {
     "_id": "c13",
     "order": 62,
     "face_id": "c13",
-    "name": "ロミオ"
+    "name": "ロミオ",
+    "tags": ["medical"]
   }, {
     "_id": "c18",
     "order": 63,
     "face_id": "c18",
-    "name": "エマ"
+    "name": "エマ",
+    "tags": ["medical"]
   }, {
     "_id": "c27",
     "order": 65,
     "face_id": "c27",
-    "name": "リンダ"
+    "name": "リンダ",
+    "tags": ["farm"]
   }, {
     "_id": "c08",
     "order": 66,
     "face_id": "c08",
-    "name": "ベネット"
+    "name": "ベネット",
+    "tags": ["guild"]
   }, {
     "_id": "c19",
     "order": 67,
     "face_id": "c19",
-    "name": "タバサ"
+    "name": "タバサ",
+    "tags": ["immoral", "market"]
   }, {
     "_id": "c71",
     "order": 70,
     "face_id": "c71",
-    "name": "ノックス"
+    "name": "ノックス",
+    "tags": ["road", "farm"]
   }, {
     "_id": "c03",
     "order": 71,
     "face_id": "c03",
-    "name": "スティーブン"
+    "name": "スティーブン",
+    "tags": ["medical"]
   }, {
     "_id": "c43",
     "order": 72,
     "face_id": "c43",
-    "name": "ガストン"
+    "name": "ガストン",
+    "tags": ["farm"]
   }, {
     "_id": "c15",
     "order": 73,
     "face_id": "c15",
-    "name": "ウェーズリー"
+    "name": "ウェーズリー",
+    "tags": ["law", "road"]
   }, {
     "_id": "c54",
     "order": 75,
     "face_id": "c54",
-    "name": "ザック"
+    "name": "ザック",
+    "tags": ["guild", "medical"]
   }, {
     "_id": "c25",
     "order": 77,
     "face_id": "c25",
-    "name": "ルーカス"
+    "name": "ルーカス",
+    "tags": ["elegant"]
   }, {
     "_id": "c20",
-    "order": 78,
+    "order": 79,
     "face_id": "c20",
-    "name": "グロリア"
+    "name": "グロリア",
+    "tags": ["elegant"]
   }, {
     "_id": "c72",
-    "order": 79,
+    "order": 81,
     "face_id": "c72",
-    "name": "ヴェスパタイン"
+    "name": "ヴェスパタイン",
+    "tags": ["guild"]
+  }, {
+    "_id": "c73",
+    "order": 83,
+    "face_id": "c73",
+    "name": "ローズマリー",
+    "tags": ["immoral", "market"]
   }, {
     "_id": "c47",
-    "order": 80,
+    "order": 85,
     "face_id": "c47",
-    "name": "ペラジー"
+    "name": "ペラジー",
+    "tags": ["road"]
   }, {
     "_id": "c80",
-    "order": 81,
+    "order": 87,
     "face_id": "c80",
-    "name": "テッド"
-  }, {
-    "_id": "c105",
-    "comment": "年末カウントダウン♪",
-    "name": "シメオン",
-    "face_id": "c105",
-    "order": 82
+    "name": "テッド",
+    "tags": ["road", "apartment"]
   }, {
     "_id": "c96",
     "face_id": "c96",
     "name": "レオナルド",
     "comment": "2011/12/11",
-    "order": 83
+    "order": 89,
+    "tags": ["law", "ecclesia"]
   }, {
     "_id": "c95",
     "face_id": "c95",
     "name": "モリス",
     "comment": "2011/12/11",
-    "order": 84
+    "order": 91,
+    "tags": ["guild", "road"]
   }, {
     "_id": "c97",
     "face_id": "c97",
     "name": "ジェフ",
     "comment": "2011/12/14 超常現象はあるんだ…",
-    "order": 85
+    "order": 93,
+    "tags": ["law"]
   }, {
     "_id": "c98",
     "face_id": "c98",
     "name": "オズワルド",
     "comment": "2011/12/29 この髭はぜったいワックス使ってる。",
-    "order": 86
+    "order": 95,
+    "tags": ["elegant", "law"]
   }, {
     "_id": "c100",
     "face_id": "c100",
     "name": "グレッグ",
     "comment": "2012/12/30 スポーツ系中学生くらいに見える",
-    "order": 87
+    "order": 97,
+    "tags": ["guild"]
   }, {
     "_id": "c101",
     "face_id": "c101",
     "name": "クラリッサ",
     "comment": "2011/12/30 美人さん♪",
-    "order": 88
-  }, {
-    "_id": "c104",
-    "comment": "年末カウントダウン♪",
-    "name": "ヒュー",
-    "face_id": "c104",
-    "order": 89
-  }, {
-    "_id": "c106",
-    "comment": "年末カウントダウン♪",
-    "face_id": "c106",
-    "name": "ワンダ",
-    "order": 90
-  }, {
-    "_id": "c108",
-    "face_id": "c108",
-    "name": "ブローリン",
-    "comment": "年末カウントダウン♪",
-    "order": 91
+    "order": 99,
+    "tags": ["apartment"]
   }, {
     "_id": "c90",
     "face_id": "c90",
     "name": "ケヴィン",
     "comment": "2011/12/06",
-    "order": 125
+    "order": 125,
+    "tags": ["law", "road", "farm"]
   }, {
     "_id": "c88",
     "face_id": "c88",
     "name": "ピエール",
     "order": 126,
-    "comment": "2011/12/05"
+    "comment": "2011/12/05",
+    "tags": ["elegant", "servant", "market"]
   }, {
     "_id": "c89",
     "face_id": "c89",
     "name": "カトリーナ",
     "comment": "2011/12/06",
-    "order": 127
+    "order": 127,
+    "tags": ["apartment"]
   }, {
     "_id": "c84",
     "face_id": "c84",
     "name": "ブレンダ",
     "order": 129,
-    "comment": "2011/12/05"
+    "comment": "2011/12/05",
+    "tags": ["apartment"]
   }, {
     "_id": "c85",
     "face_id": "c85",
     "name": "ハナ",
     "order": 130,
-    "comment": "2011/12/05"
+    "comment": "2011/12/05",
+    "tags": ["road", "servant"]
   }, {
     "_id": "c91",
     "comment": "2011/12/06 姦しい奥様♪",
     "face_id": "c91",
     "name": "ドロシー",
-    "order": 143
+    "order": 143,
+    "tags": ["road", "servant"]
   }, {
     "_id": "c92",
     "comment": "2011/12/06 姦し娘ーず♪",
     "face_id": "c92",
     "name": "セレスト",
-    "order": 144
+    "order": 144,
+    "tags": ["road", "servant"]
   }, {
     "_id": "c93",
     "comment": "2011/12/06 えー○○が許されるのは小学生までだよねー♪",
     "face_id": "c93",
     "name": "ベッキー",
-    "order": 145
+    "order": 145,
+    "tags": ["road", "servant"]
   }, {
     "_id": "c78",
     "order": 150,
     "face_id": "c78",
-    "name": "ネイサン"
+    "name": "ネイサン",
+    "tags": ["law", "market"]
   }, {
     "_id": "c82",
-    "order": 160,
+    "order": 148,
     "face_id": "c82",
-    "name": "ロビン"
-  }, {
-    "_id": "c109",
-    "face_id": "c109",
-    "name": "ラディスラヴァ",
-    "comment": "年末カウントダウン♪",
-    "order": 163
+    "name": "ロビン",
+    "tags": ["servant", "elegant"]
   }, {
     "_id": "c94",
     "face_id": "c94",
     "name": "ダーラ",
     "comment": "2011/12/11",
-    "order": 165
-  }, {
-    "_id": "c102",
-    "comment": "年末カウントダウン♪",
-    "face_id": "c102",
-    "name": "ウォーレン",
-    "order": 168
-  }, {
-    "_id": "c73",
-    "order": 170,
-    "face_id": "c73",
-    "name": "ローズマリー"
-  }, {
-    "_id": "c81",
-    "order": 180,
-    "face_id": "c81",
-    "name": "サイラス"
+    "order": 165,
+    "tags": ["road", "elegant", "immoral", "market"]
   }, {
     "_id": "c64",
-    "order": 190,
+    "order": 180,
     "face_id": "c64",
-    "name": "ヘクター"
+    "name": "ヘクター",
+    "tags": ["immoral"]
   }, {
-    "_id": "c107",
-    "face_id": "c107",
-    "name": "イヴォン",
-    "comment": "年末カウントダウン♪",
-    "order": 195
+    "_id": "c81",
+    "order": 190,
+    "face_id": "c81",
+    "name": "サイラス",
+    "tags": ["medical", "guild", "farm"]
   }, {
     "_id": "c67",
     "order": 200,
     "face_id": "c67",
-    "name": "ソフィア"
+    "name": "ソフィア",
+    "tags": ["guild"]
   }, {
     "_id": "c76",
     "order": 210,
     "face_id": "c76",
-    "name": "ジョージ"
+    "name": "ジョージ",
+    "tags": ["apartment"]
   }, {
     "_id": "c60",
-    "order": 215,
+    "order": 213,
     "face_id": "c60",
-    "name": "ポーチュラカ"
-  }, {
-    "_id": "c45",
-    "order": 218,
-    "face_id": "c45",
-    "name": "プリシラ"
+    "name": "ポーチュラカ",
+    "tags": ["elegant"]
   }, {
     "_id": "c87",
     "face_id": "c87",
     "name": "エリアス",
+    "order": 217,
+    "comment": "2011/12/05",
+    "tags": ["medical"]
+  }, {
+    "_id": "c45",
     "order": 220,
-    "comment": "2011/12/05"
+    "face_id": "c45",
+    "name": "プリシラ",
+    "tags": ["immoral"]
   }, {
     "_id": "c48",
     "order": 225,
     "face_id": "c48",
-    "name": "ビアンカ"
+    "name": "ビアンカ",
+    "tags": ["elegant"]
   }, {
     "_id": "c86",
     "face_id": "c86",
     "name": "ホレーショー",
     "order": 230,
-    "comment": "2011/12/05"
+    "comment": "2011/12/05",
+    "tags": ["immoral", "apartment"]
   }, {
     "_id": "c83",
     "order": 240,
     "face_id": "c83",
-    "name": "アイリス"
+    "name": "アイリス",
+    "tags": ["road", "medical", "market", "marchen"]
   }, {
     "_id": "c31",
     "order": 250,
     "face_id": "c31",
-    "name": "ネル"
-  }, {
-    "_id": "c103",
-    "comment": "年末カウントダウン♪",
-    "name": "ナンシー",
-    "face_id": "c103",
-    "order": 998
+    "name": "ネル",
+    "tags": ["apartment"]
   }, {
     "_id": "c99",
     "order": 999,
     "face_id": "c99",
-    "name": "サイモン"
+    "name": "サイモン",
+    "tags": ["apartment"]
   }, {
     "order": 10001,
     "face_id": "g01",
     "name": "露蝶",
     "comment": "中国女性名",
-    "_id": "g01"
+    "_id": "g01",
+    "tags": ["asia"]
   }, {
-    "order": 10002,
+    "order": 215,
     "face_id": "g02",
     "name": "志偉",
     "comment": "台湾男性名 越南の名前も探したかったが、見つからぬ…",
-    "_id": "g02"
+    "_id": "g02",
+    "tags": ["asia"]
   }, {
     "order": 10003,
     "face_id": "g03",
     "name": "芙蓉",
     "comment": "里帰り",
-    "_id": "g03"
+    "_id": "g03",
+    "tags": ["asia"]
   }, {
     "order": 10004,
     "face_id": "gc61",
     "name": "沼太郎",
     "comment": "里帰り",
-    "_id": "gc61"
+    "_id": "gc61",
+    "tags": ["asia"]
   }, {
     "name": "デメテル",
     "face_id": "mad01",
     "comment": "阿片窟からきました",
     "order": 20001,
-    "_id": "mad01"
+    "_id": "mad01",
+    "tags": ["marchen"]
   }, {
     "name": "エルゴット",
     "face_id": "mad02",
     "comment": "阿片窟からきました",
-    "order": 20002,
-    "_id": "mad02"
+    "order": 245,
+    "_id": "mad02",
+    "tags": ["marchen"]
   }, {
     "name": "シーシャ",
     "face_id": "mad03",
     "comment": "阿片窟からきました",
-    "order": 20003,
-    "_id": "mad03"
+    "order": 223,
+    "_id": "mad03",
+    "tags": ["marchen"]
   }, {
     "name": "ドリベル",
     "face_id": "mad04",
     "comment": "阿片窟からきました",
     "order": 20004,
-    "_id": "mad04"
+    "_id": "mad04",
+    "tags": ["marchen"]
   }, {
     "name": "ヤヘイ",
     "face_id": "mad05",
     "comment": "阿片窟からきました",
-    "order": 20005,
-    "_id": "mad05"
+    "order": 1010,
+    "_id": "mad05",
+    "tags": ["marchen"]
   }, {
     "name": "アヤワスカ",
     "face_id": "mad06",
     "comment": "阿片窟からきました",
-    "order": 20006,
-    "_id": "mad06"
+    "order": 236,
+    "_id": "mad06",
+    "tags": ["marchen"]
   }, {
     "name": "チアキ",
     "face_id": "t01",
     "comment": "時をかける少女",
     "order": 30001,
-    "_id": "t01"
+    "_id": "t01",
+    "tags": ["travel"]
   }, {
     "name": "リッキィ",
     "face_id": "t02",
     "comment": "夏への扉",
     "order": 30002,
-    "_id": "t02"
+    "_id": "t02",
+    "tags": ["travel"]
   }, {
     "name": "ミナカタ",
     "face_id": "t03",
     "comment": "ー仁ー",
-    "order": 30003,
-    "_id": "t03"
+    "order": 156,
+    "_id": "t03",
+    "tags": ["travel"]
   }, {
     "name": "カイル",
     "face_id": "t04",
     "comment": "サラ・コナー・クロニクルズ",
     "order": 30004,
-    "_id": "t04"
+    "_id": "t04",
+    "tags": ["travel"]
   }, {
     "name": "ジェニファー",
     "face_id": "t05",
     "comment": "バック・トゥ・ザ・フューチャー",
     "order": 30005,
-    "_id": "t05"
+    "_id": "t05",
+    "tags": ["travel"]
   }, {
     "_id": "m99",
     "order": 70001,
     "face_id": "m99",
-    "name": "パルック"
+    "name": "パルック",
+    "tags": ["myth"]
   }, {
     "_id": "m06",
     "order": 70002,
     "face_id": "m06",
-    "name": "リリンラ"
+    "name": "リリンラ",
+    "tags": ["myth"]
   }, {
     "_id": "m03",
     "order": 70003,
     "face_id": "m03",
-    "name": "トノサマ"
+    "name": "トノサマ",
+    "tags": ["myth"]
   }, {
     "_id": "m05",
     "order": 70004,
     "face_id": "m05",
-    "name": "ナナコロ"
+    "name": "ナナコロ",
+    "tags": ["myth"]
   }, {
     "_id": "m15",
     "order": 70005,
     "face_id": "m15",
-    "name": "ミソチャ"
+    "name": "ミソチャ",
+    "tags": ["myth"]
   }, {
     "_id": "m07",
     "order": 70006,
     "face_id": "m07",
-    "name": "アリス"
+    "name": "アリス",
+    "tags": ["myth"]
   }, {
     "_id": "r30",
     "order": 70006,
     "face_id": "r30",
-    "name": "トリ"
+    "name": "トリ",
+    "tags": ["myth"]
   }, {
     "_id": "m01",
     "order": 70007,
     "face_id": "m01",
-    "name": "ケムシ"
+    "name": "ケムシ",
+    "tags": ["myth"]
   }, {
     "_id": "m02",
     "order": 70008,
     "face_id": "m02",
-    "name": "ポプラ"
+    "name": "ポプラ",
+    "tags": ["myth"]
   }, {
     "_id": "m04",
     "order": 70009,
     "face_id": "m04",
-    "name": "アオイ"
+    "name": "アオイ",
+    "tags": ["myth"]
   }, {
     "_id": "b44",
     "comment": "",
     "face_id": "b44",
     "name": "ドナルド",
-    "order": 70010
+    "order": 70010,
+    "tags": ["myth"]
   }, {
     "_id": "m08",
     "order": 70011,
     "face_id": "m08",
-    "name": "おっぱい"
+    "name": "おっぱい",
+    "tags": ["myth"]
   }, {
     "_id": "m09",
     "order": 70012,
     "face_id": "m09",
-    "name": "カミジャー"
+    "name": "カミジャー",
+    "tags": ["myth"]
   }, {
     "_id": "r12",
     "order": 70012,
     "face_id": "r12",
-    "name": "バーナバス"
+    "name": "バーナバス",
+    "tags": ["myth"]
   }, {
     "_id": "b49",
     "comment": "",
     "face_id": "b49",
     "name": "ボリス",
-    "order": 70012
+    "order": 70012,
+    "tags": ["myth"]
   }, {
     "_id": "m10",
     "order": 70013,
     "face_id": "m10",
-    "name": "アチャポ"
+    "name": "アチャポ",
+    "tags": ["myth"]
   }, {
     "_id": "m12",
     "comment": "",
     "face_id": "m12",
     "name": "トルニトス",
-    "order": 70014
+    "order": 70014,
+    "tags": ["myth"]
   }, {
     "_id": "m11",
     "order": 70015,
     "face_id": "m11",
-    "name": "ライトニング"
+    "name": "ライトニング",
+    "tags": ["myth"]
   }, {
     "_id": "m13",
     "order": 70016,
     "face_id": "m13",
-    "name": "ミケ"
+    "name": "ミケ",
+    "tags": ["myth"]
   }, {
     "_id": "m14",
     "order": 70017,
     "face_id": "m14",
-    "name": "カリュクス"
+    "name": "カリュクス",
+    "tags": ["myth"]
   }, {
     "_id": "sf01",
     "order": 80000,
     "face_id": "sf01",
     "name": "ラッシード",
-    "comment": "りしあさん＆かれやなぎさん"
+    "comment": "りしあさん＆かれやなぎさん",
+    "tags": ["stratos"]
   }, {
     "_id": "sf02",
     "order": 80001,
     "face_id": "sf02",
     "name": "エスペラント",
-    "comment": "ふらぅさん＆かれやなぎさん"
+    "comment": "ふらぅさん＆かれやなぎさん",
+    "tags": ["stratos"]
   }, {
     "_id": "sf03",
     "order": 80002,
     "face_id": "sf03",
     "name": "ピート",
-    "comment": "たるっとさん＆りちゃさん"
+    "comment": "たるっとさん＆りちゃさん",
+    "tags": ["stratos"]
   }, {
     "_id": "sf04",
     "order": 80003,
     "face_id": "sf04",
     "name": "アシモフ",
-    "comment": "あすたん＆りりんら"
+    "comment": "あすたん＆りりんら",
+    "tags": ["stratos"]
   }, {
     "_id": "sf05",
     "order": 80004,
     "face_id": "sf05",
     "name": "モナリザ",
-    "comment": "ななころび＆りりんら"
+    "comment": "ななころび＆りりんら",
+    "tags": ["stratos"]
   }, {
     "_id": "sf06",
     "order": 80005,
     "face_id": "sf06",
     "name": "ワレンチナ",
-    "comment": "まりもさん＆あずまさん"
+    "comment": "まりもさん＆あずまさん",
+    "tags": ["stratos"]
   }, {
     "_id": "sf07",
     "order": 80007,
     "face_id": "sf07",
     "name": "ヤンファ",
-    "comment": "りしあさん＆はむおくん"
+    "comment": "りしあさん＆はむおくん",
+    "tags": ["stratos"]
   }, {
     "_id": "sf08",
     "order": 80008,
     "face_id": "sf08",
     "name": "ＰＪ",
-    "comment": "りしあさん＆ふらぅさん"
+    "comment": "りしあさん＆ふらぅさん",
+    "tags": ["stratos"]
   }, {
     "_id": "sf09",
     "order": 80009,
     "face_id": "sf09",
     "name": "キリシマ",
-    "comment": "ななころび＆ふらぅさん"
+    "comment": "ななころび＆ふらぅさん",
+    "tags": ["stratos"]
   }, {
     "_id": "sf10",
     "order": 80010,
     "face_id": "sf10",
     "name": "ナユタ",
-    "comment": "かれやなぎさん＆かいさん"
+    "comment": "かれやなぎさん＆かいさん",
+    "tags": ["stratos"]
   }, {
     "_id": "sf11",
     "order": 80011,
     "face_id": "sf11",
     "name": "イワノフ",
-    "comment": "かれやなぎさん＆りちゃさん"
+    "comment": "かれやなぎさん＆りちゃさん",
+    "tags": ["stratos"]
   }, {
     "order": 80012,
     "face_id": "sf12",
     "name": "†ルシフェル†",
     "comment": null,
-    "_id": "sf12"
+    "_id": "sf12",
+    "tags": ["stratos"]
   }, {
     "order": 80013,
     "face_id": "sf13",
     "name": "トルドヴィン",
     "comment": null,
-    "_id": "sf13"
+    "_id": "sf13",
+    "tags": ["stratos"]
   }, {
     "order": 80014,
     "face_id": "sf18",
     "name": "玖休",
     "comment": null,
-    "_id": "sf18"
+    "_id": "sf18",
+    "tags": ["stratos"]
   }, {
     "order": 80015,
     "face_id": "sf19",
     "name": "参休",
     "comment": null,
-    "_id": "sf19"
+    "_id": "sf19",
+    "tags": ["stratos"]
   }, {
     "order": 80016,
     "face_id": "sf14",
     "name": "クリスマス",
     "comment": null,
-    "_id": "sf14"
+    "_id": "sf14",
+    "tags": ["stratos"]
   }, {
     "order": 80017,
     "face_id": "sf15",
     "name": "ジェームス",
     "comment": null,
-    "_id": "sf15"
+    "_id": "sf15",
+    "tags": ["stratos"]
   }, {
     "order": 80018,
     "face_id": "sf16",
     "name": "ライジ",
     "comment": null,
-    "_id": "sf16"
+    "_id": "sf16",
+    "tags": ["stratos"]
   }, {
     "order": 80019,
     "face_id": "sf17",
     "name": "ジャック",
     "comment": null,
-    "_id": "sf17"
+    "_id": "sf17",
+    "tags": ["stratos"]
   }, {
     "_id": "w05",
     "order": 90001,
     "face_id": "w05",
     "name": "定吉",
-    "comment": "ぷえるとりこの旅人　エージ―エー"
+    "comment": "ぷえるとりこの旅人　エージ―エー",
+    "tags": ["shoji"]
   }, {
     "_id": "w21",
     "order": 90002,
     "face_id": "w21",
     "name": "鉄平",
-    "comment": "日本の伝統　熊木彫"
+    "comment": "日本の伝統　熊木彫",
+    "tags": ["shoji"]
   }, {
     "_id": "w22",
     "order": 90003,
     "face_id": "w22",
     "name": "竹三",
-    "comment": "雪国の風雅　熊木彫"
+    "comment": "雪国の風雅　熊木彫",
+    "tags": ["shoji"]
   }, {
     "_id": "w36",
     "order": 90004,
     "face_id": "w36",
-    "name": "ウト"
+    "name": "ウト",
+    "tags": ["shoji"]
   }, {
     "_id": "w16",
     "order": 90005,
     "face_id": "w16",
     "name": "勢",
-    "comment": "ぶたさん印の　あおいジンギスカン"
+    "comment": "ぶたさん印の　あおいジンギスカン",
+    "tags": ["shoji"]
   }, {
     "_id": "w18",
     "order": 90006,
     "face_id": "w18",
-    "name": "菊"
+    "name": "菊",
+    "tags": ["shoji"]
   }, {
     "_id": "w26",
     "order": 90007,
     "face_id": "w26",
-    "name": "勝丸"
+    "name": "勝丸",
+    "tags": ["shoji"]
   }, {
     "_id": "w35",
     "comment": "",
     "face_id": "w35",
     "name": "奈須麿",
-    "order": 90008
+    "order": 90008,
+    "tags": ["shoji"]
   }, {
     "_id": "w24",
     "order": 90009,
     "face_id": "w24",
     "name": "辰次",
-    "comment": "桃源郷ぐた国のめぐみ　ふらう乳業"
+    "comment": "桃源郷ぐた国のめぐみ　ふらう乳業",
+    "tags": ["shoji"]
   }, {
     "_id": "w37",
     "order": 90010,
     "face_id": "w37",
-    "name": "芙蓉"
+    "name": "芙蓉",
+    "tags": ["shoji"]
   }, {
     "_id": "w29",
     "order": 90011,
     "face_id": "w29",
-    "name": "志乃"
+    "name": "志乃",
+    "tags": ["shoji"]
   }, {
     "_id": "w20",
     "order": 90012,
     "face_id": "w20",
-    "name": "藤之助"
+    "name": "藤之助",
+    "tags": ["shoji"]
   }, {
     "_id": "w31",
     "order": 90013,
     "face_id": "w31",
-    "name": "日向"
+    "name": "日向",
+    "tags": ["shoji"]
   }, {
     "_id": "w12",
     "order": 90014,
     "face_id": "w12",
     "name": "おみつ",
-    "comment": "道を外して60年　GEDOU協会"
+    "comment": "道を外して60年　GEDOU協会",
+    "tags": ["shoji"]
   }, {
     "_id": "w10",
     "order": 90015,
     "face_id": "w10",
-    "name": "博史"
+    "name": "博史",
+    "tags": ["shoji"]
   }, {
     "_id": "w25",
     "order": 90016,
     "face_id": "w25",
-    "name": "法泉"
+    "name": "法泉",
+    "tags": ["shoji"]
   }, {
     "_id": "w09",
     "order": 90017,
     "face_id": "w09",
     "name": "チャールズ",
-    "comment": "チャールズ派遣ならおまかせ　O-ririn"
+    "comment": "チャールズ派遣ならおまかせ　O-ririn",
+    "tags": ["shoji"]
   }, {
     "_id": "w30",
     "order": 90018,
     "face_id": "w30",
-    "name": "雪代"
+    "name": "雪代",
+    "tags": ["shoji"]
   }, {
     "_id": "w14",
     "order": 90019,
     "face_id": "w14",
     "name": "華月斎",
-    "comment": "めげないゼラチン作り　MEGEゼラチン"
+    "comment": "めげないゼラチン作り　MEGEゼラチン",
+    "tags": ["shoji"]
   }, {
     "_id": "w13",
     "order": 90020,
     "face_id": "w13",
     "name": "たまこ",
-    "comment": "世界の道をつなぐ　議事国地図"
+    "comment": "世界の道をつなぐ　議事国地図",
+    "tags": ["shoji"]
   }, {
     "_id": "w11",
     "order": 90021,
     "face_id": "w11",
-    "name": "沼太郎"
+    "name": "沼太郎",
+    "tags": ["shoji"]
   }, {
     "_id": "w03",
     "order": 90022,
     "face_id": "w03",
     "name": "朔",
-    "comment": "新しい議事をつくる　たき学会"
+    "comment": "新しい議事をつくる　たき学会",
+    "tags": ["shoji"]
   }, {
     "_id": "w34",
     "order": 90023,
     "face_id": "w34",
-    "name": "余四朗"
+    "name": "余四朗",
+    "tags": ["shoji"]
   }, {
     "_id": "w27",
     "order": 90024,
     "face_id": "w27",
-    "name": "源蔵"
+    "name": "源蔵",
+    "tags": ["shoji"]
   }, {
     "_id": "w28",
     "order": 90025,
     "face_id": "w28",
-    "name": "甚六"
+    "name": "甚六",
+    "tags": ["shoji"]
   }, {
     "_id": "w17",
     "order": 90026,
     "face_id": "w17",
     "name": "雷門",
-    "comment": "輝く月に未来を託す　暁月商事"
+    "comment": "輝く月に未来を託す　暁月商事",
+    "tags": ["shoji"]
   }, {
     "_id": "w39",
     "comment": "",
     "face_id": "w39",
     "name": "沙耶",
-    "order": 90027
+    "order": 90027,
+    "tags": ["shoji"]
   }, {
     "_id": "w08",
     "order": 90028,
     "face_id": "w08",
-    "name": "朝顔"
+    "name": "朝顔",
+    "tags": ["shoji"]
   }, {
     "_id": "w43",
     "order": 90029,
     "face_id": "w43",
-    "name": "春松"
+    "name": "春松",
+    "tags": ["shoji"]
   }, {
     "_id": "w07",
     "order": 90030,
     "face_id": "w07",
-    "name": "夕顔"
+    "name": "夕顔",
+    "tags": ["shoji"]
   }, {
     "_id": "w40",
     "order": 90031,
     "face_id": "w40",
-    "name": "朧"
+    "name": "朧",
+    "tags": ["shoji"]
   }, {
     "_id": "w33",
     "comment": "",
     "face_id": "w33",
     "name": "団十郎",
-    "order": 90032
+    "order": 90032,
+    "tags": ["shoji"]
   }, {
     "_id": "w23",
     "order": 90033,
     "face_id": "w23",
-    "name": "仁右衛門"
+    "name": "仁右衛門",
+    "tags": ["shoji"]
   }, {
     "_id": "w04",
     "order": 90034,
     "face_id": "w04",
     "name": "小鈴",
-    "comment": "お口の愛人　タルッティ・タルット"
+    "comment": "お口の愛人　タルッティ・タルット",
+    "tags": ["shoji"]
   }, {
     "_id": "w06",
     "order": 90035,
     "face_id": "w06",
     "name": "ゆり",
-    "comment": "道を外して60年　GEDOU協会"
+    "comment": "道を外して60年　GEDOU協会",
+    "tags": ["shoji"]
   }, {
     "_id": "w38",
     "comment": "",
     "face_id": "w38",
     "name": "一平太",
-    "order": 90037
+    "order": 90037,
+    "tags": ["shoji"]
   }, {
     "_id": "w01",
     "order": 90038,
     "face_id": "w01",
     "name": "鏡花",
-    "comment": "輝く月に未来を託す　暁月商事"
+    "comment": "輝く月に未来を託す　暁月商事",
+    "tags": ["shoji"]
   }, {
     "_id": "w15",
     "order": 90039,
     "face_id": "w15",
     "name": "八重",
-    "comment": "桃源郷ぐた国のめぐみ　ふらう乳業"
+    "comment": "桃源郷ぐた国のめぐみ　ふらう乳業",
+    "tags": ["shoji"]
   }, {
     "_id": "w32",
     "order": 90040,
     "face_id": "w32",
-    "name": "明之進"
+    "name": "明之進",
+    "tags": ["shoji"]
   }, {
     "_id": "w02",
     "order": 90041,
     "face_id": "w02",
     "name": "慶三郎",
-    "comment": "カメラのことなら　MISEKI"
+    "comment": "カメラのことなら　MISEKI",
+    "tags": ["shoji"]
   }, {
     "_id": "w44",
     "face_id": "w44",
     "name": "雪客",
     "comment": "りりんラハウス呑んだくれ大会",
-    "order": 90042
+    "order": 90042,
+    "tags": ["shoji"]
   }, {
     "_id": "w45",
     "face_id": "w45",
     "name": "亀吉",
     "comment": "りりんラハウス呑んだくれ大会",
-    "order": 90043
+    "order": 90043,
+    "tags": ["shoji"]
   }, {
     "_id": "w46",
     "face_id": "w46",
     "name": "梅子",
     "order": 90044,
-    "comment": "お誕生日記念☆"
+    "comment": "お誕生日記念☆",
+    "tags": ["shoji"]
   }, {
     "face_id": "w47",
     "name": "置壱",
     "comment": "日本の美徳強化月間",
     "order": 90045,
-    "_id": "w47"
+    "_id": "w47",
+    "tags": ["shoji"]
   }, {
     "face_id": "all",
     "name": "パルック",
     "order": 99999,
-    "_id": "all"
+    "_id": "all",
+    "tags": ["god"]
   }, {
     "_id": "g04",
     "face_id": "g04",
     "name": "攻芸",
     "comment": "台湾男性名",
-    "order": 10005
+    "order": 10005,
+    "tags": ["asia"]
   }, {
     "_id": "g05",
     "face_id": "g05",
     "name": "麻雀",
     "comment": "中国女性名",
-    "order": 10006
+    "order": 170,
+    "tags": ["asia"]
   }, {
     "_id": "g06",
     "face_id": "g06",
     "name": "黍炉",
     "comment": "ダリダイ・オッチギン",
-    "order": 10007
+    "order": 10007,
+    "tags": ["asia"]
   }, {
     "_id": "mad07",
     "face_id": "mad07",
     "name": "ダイミ",
     "comment": "阿片窟からきました",
-    "order": 20007
+    "order": 20007,
+    "tags": ["marchen"]
   }, {
     "_id": "mad08",
     "face_id": "mad08",
     "name": "エフェドラ",
     "comment": "阿片窟からきました",
-    "order": 20008
+    "order": 20008,
+    "tags": ["marchen"]
   }, {
     "_id": "t06",
     "face_id": "t06",
     "name": "サミュエル",
     "comment": "トランスフォーマー",
-    "order": 30006
+    "order": 30006,
+    "tags": ["travel"]
   }, {
     "_id": "t07",
     "face_id": "t07",
     "name": "アカリ",
     "comment": "時をかける少女",
-    "order": 30007
+    "order": 30019,
+    "tags": ["travel"]
   }, {
     "_id": "t08",
     "face_id": "t08",
     "name": "ミルフィ",
     "comment": "海賊戦隊ゴーカイジャー",
-    "order": 30008
+    "order": 30020,
+    "tags": ["travel"]
   }, {
     "_id": "t09",
     "face_id": "t09",
     "name": "ゴロウ",
     "comment": "時をかける少女",
-    "order": 30009
+    "order": 30009,
+    "tags": ["travel"]
   }, {
     "_id": "t10",
     "face_id": "t10",
     "name": "トレイル",
     "comment": "ゼルダの伝説 ムジュラの仮面",
-    "order": 30010
+    "order": 30010,
+    "tags": ["travel"]
   }, {
     "_id": "t11",
     "face_id": "t11",
     "name": "マドカ",
     "comment": "宇宙戦艦ヤマモト・ヨーコ",
-    "order": 30011
+    "order": 30019,
+    "tags": ["travel"]
   }, {
     "_id": "t12",
     "face_id": "t12",
     "name": "フランク",
     "comment": "オーロラの彼方へ",
-    "order": 30012
+    "order": 30012,
+    "tags": ["travel"]
   }, {
     "_id": "t13",
     "face_id": "t13",
     "name": "ジャニス",
     "comment": "フラッシュフォワード",
-    "order": 30013
+    "order": 30013,
+    "tags": ["travel"]
+  }, {
+    "_id": "c105",
+    "comment": "年末カウントダウン♪",
+    "name": "シメオン",
+    "face_id": "c105",
+    "order": 82,
+    "tags": ["ecclesia"]
+  }, {
+    "_id": "c104",
+    "comment": "年末カウントダウン♪",
+    "name": "ヒュー",
+    "face_id": "c104",
+    "order": 89,
+    "tags": ["road", "medical"]
+  }, {
+    "_id": "c106",
+    "comment": "年末カウントダウン♪",
+    "face_id": "c106",
+    "name": "ワンダ",
+    "order": 90,
+    "tags": ["road", "guild"]
+  }, {
+    "_id": "c108",
+    "face_id": "c108",
+    "name": "ブローリン",
+    "comment": "年末カウントダウン♪",
+    "order": 91,
+    "tags": ["farm"]
+  }, {
+    "_id": "c109",
+    "face_id": "c109",
+    "name": "ラディスラヴァ",
+    "comment": "年末カウントダウン♪",
+    "order": 185,
+    "tags": ["apartment"]
+  }, {
+    "_id": "c102",
+    "comment": "年末カウントダウン♪",
+    "face_id": "c102",
+    "name": "ウォーレン",
+    "order": 155,
+    "tags": ["elegant", "market"]
+  }, {
+    "_id": "c107",
+    "face_id": "c107",
+    "name": "イヴォン",
+    "comment": "年末カウントダウン♪",
+    "order": 205,
+    "tags": ["elegant"]
+  }, {
+    "_id": "c103",
+    "comment": "年末カウントダウン♪",
+    "name": "ナンシー",
+    "face_id": "c103",
+    "order": 234,
+    "tags": ["apartment"]
   }, {
     "_id": "t14",
     "face_id": "t14",
     "name": "クシャミ",
     "comment": "吾輩は猫である。",
-    "order": 30014
+    "order": 30014,
+    "tags": ["travel"]
   }, {
     "_id": "t15",
     "face_id": "t15",
     "name": "ガーディ",
     "comment": "ベイカー街少年探偵団",
-    "order": 30015
+    "order": 30015,
+    "tags": ["travel"]
   }, {
     "_id": "sf20",
     "face_id": "sf20",
     "name": "ティソ",
     "comment": null,
-    "order": 80020
+    "order": 80020,
+    "tags": ["stratos"]
   }, {
     "_id": "g07",
     "face_id": "g07",
     "name": "ジリヤ",
     "comment": "ロシア女性名",
-    "order": 10008
+    "order": 10008,
+    "tags": ["asia"]
   }, {
     "_id": "t16",
     "face_id": "t16",
     "name": "アラン",
     "comment": "映画監督たちの共用偽名",
-    "order": 30016
+    "order": 30016,
+    "tags": ["travel"]
   }, {
     "_id": "w48",
     "face_id": "w48",
     "name": "直円",
     "comment": "和算復活月間",
-    "order": 90048
+    "order": 90048,
+    "tags": ["shoji"]
   }, {
     "_id": "w49",
     "face_id": "w49",
     "name": "錠",
     "comment": "ポルトガル人にジオゴっているんだぜ。へー。かっこいー。",
-    "order": 90049
+    "order": 90049,
+    "tags": ["shoji"]
   }, {
     "_id": "w50",
     "face_id": "w50",
     "name": "丁助",
     "comment": "負けるたびに追い博打",
-    "order": 90050
+    "order": 90050,
+    "tags": ["shoji"]
   }, {
     "_id": "t17",
     "face_id": "t17",
     "name": "ススム",
     "comment": "おもいっきり探偵団 覇悪怒組",
-    "order": 30018
+    "order": 30018,
+    "tags": ["travel"]
   }, {
     "_id": "t18",
     "face_id": "t18",
     "name": "マユミ",
     "comment": "まんがはじめて物語（二代目）",
-    "order": 30019
+    "order": 30018,
+    "tags": ["travel"]
   }, {
     "_id": "c110",
     "face_id": "c110",
     "name": "リー",
     "comment": "",
-    "order": 92
+    "order": 92,
+    "tags": ["dingy", "immoral", "apartment"]
   }, {
     "_id": "t19",
     "face_id": "t19",
     "name": "ハルカ",
     "comment": "はるかリフレイン",
-    "order": 30017
+    "order": 30017,
+    "tags": ["travel"]
   }, {
     "_id": "w51",
     "face_id": "w51",
     "name": "鬼丞",
     "comment": "リニューアル記念！",
-    "order": 90051
+    "order": 90051,
+    "tags": ["shoji"]
   }, {
     "_id": "w52",
     "face_id": "w52",
     "name": "櫻子",
     "comment": "リニューアル記念！",
-    "order": 90052
+    "order": 90052,
+    "tags": ["shoji"]
   }, {
     "_id": "c111",
     "face_id": "c111",
     "name": "スージー",
     "comment": "リニューアル記念！ 弟がいるという噂が…",
-    "order": 93
+    "order": 160,
+    "tags": ["apartment", "elegant", "immoral"]
   }, {
     "_id": "c113",
     "face_id": "c113",
     "name": "ジェレミー",
     "comment": "リニューアル記念！",
-    "order": 94
+    "order": 228,
+    "tags": ["apartment", "immoral"]
   }, {
     "_id": "c112",
     "face_id": "c112",
     "name": "ニコラス",
     "comment": "！？",
-    "order": 128
+    "order": 128,
+    "tags": ["elegant"]
   }, {
     "_id": "m16",
     "face_id": "m16",
     "name": "アーサー",
     "comment": "円卓の騎士",
-    "order": 70018
+    "order": 70018,
+    "tags": ["myth"]
   }, {
     "_id": "t20",
     "face_id": "t20",
     "name": "エリ",
     "comment": "英国情報局秘密組織チェラブ (CHERUB)",
-    "order": 30020
+    "order": 30022,
+    "tags": ["travel"]
   }, {
     "_id": "g08",
     "face_id": "g08",
     "name": "イワン",
     "comment": "Иван-дурак",
-    "order": 10009
+    "order": 10009,
+    "tags": ["asia"]
   }, {
     "_id": "c114",
     "face_id": "c114",
     "name": "モンド",
     "comment": "８８件のご応募、ありがとう。そして、ありがとう。",
-    "order": 131
+    "order": 131,
+    "tags": ["immoral"]
   }, {
     "_id": "m18",
     "face_id": "m18",
     "name": "ミーム",
     "comment": "インターネット・ミームから。 えんいー",
-    "order": 70020
+    "order": 70020,
+    "tags": ["myth"]
   }, {
     "_id": "m19",
     "face_id": "m19",
     "name": "タルト",
     "comment": "https://twitter.com/7korobi/status/510069062974447617",
-    "order": 70021
+    "order": 70021,
+    "tags": ["myth"]
   }, {
     "_id": "m20",
     "face_id": "m20",
     "name": "ショコラ",
     "comment": "https://twitter.com/noa_marimo/status/510100541536358400",
-    "order": 70022
+    "order": 70022,
+    "tags": ["myth"]
   }, {
     "_id": "c115",
     "face_id": "c115",
     "name": "マリオ",
     "comment": "じつは、牧場育ちらしいよ。",
-    "order": 132
+    "order": 132,
+    "tags": ["road"]
   }, {
     "_id": "t21",
     "face_id": "t21",
     "name": "トシミ",
     "comment": "代紋TAKE2",
-    "order": 30021
+    "order": 30019,
+    "tags": ["travel"]
   }, {
     "_id": "t22",
     "face_id": "t22",
     "name": "ケイイチ",
     "comment": "ひぐらしのなく頃に",
-    "order": 30022
+    "order": 30021,
+    "tags": ["travel"]
   }, {
     "_id": "w53",
     "face_id": "w53",
     "name": "おもん",
     "comment": "三拾糎程の「もふもふねこひよこ」　せんいち",
-    "order": 90053
+    "order": 90053,
+    "tags": ["shoji"]
   }, {
     "_id": "sf021",
     "face_id": "sf021",
     "name": "アンタレス",
     "comment": "",
-    "order": 80022
+    "order": 80022,
+    "tags": ["stratos"]
   }, {
     "_id": "sf023",
     "face_id": "sf023",
     "name": "エフ",
     "comment": "",
-    "order": 80023
+    "order": 80023,
+    "tags": ["stratos"]
   }, {
     "_id": "sf024",
     "face_id": "sf024",
     "name": "アイライト",
     "comment": "",
-    "order": 80024
+    "order": 80024,
+    "tags": ["stratos"]
   }, {
     "_id": "sf025",
     "face_id": "sf025",
     "name": "アマルテア",
     "comment": "",
-    "order": 80006
+    "order": 80006,
+    "tags": ["stratos"]
   }, {
     "_id": "sf026",
     "face_id": "sf026",
     "name": "ポーラ",
     "comment": "",
-    "order": 80026
+    "order": 80026,
+    "tags": ["stratos"]
   }, {
     "_id": "sf022",
     "face_id": "sf022",
     "name": "チェビイ",
     "comment": "",
-    "order": 80027
+    "order": 80027,
+    "tags": ["stratos"]
   }, {
     "_id": "sf027",
     "face_id": "sf027",
     "name": "モスキート",
     "comment": "",
-    "order": 80028
+    "order": 80028,
+    "tags": ["stratos"]
   }, {
     "_id": "sf032",
     "face_id": "sf032",
     "name": "ワクラバ",
     "comment": "",
-    "order": 80029
+    "order": 80029,
+    "tags": ["stratos"]
   }, {
     "_id": "sf028",
     "face_id": "sf028",
     "name": "コータ",
     "comment": "",
-    "order": 80030
+    "order": 80030,
+    "tags": ["stratos"]
   }, {
     "_id": "sf029",
     "face_id": "sf029",
     "name": "ミツボシ",
     "comment": "",
-    "order": 80031
+    "order": 80031,
+    "tags": ["stratos"]
   }, {
     "_id": "sf030",
     "face_id": "sf030",
     "name": "クレパスキュール",
     "comment": "",
-    "order": 80032
+    "order": 80032,
+    "tags": ["stratos"]
   }, {
     "_id": "sf031",
     "face_id": "sf031",
     "name": "シルク",
     "comment": "",
-    "order": 80033
+    "order": 80033,
+    "tags": ["stratos"]
+  }, {
+    "_id": "t23",
+    "face_id": "t23",
+    "name": "ナナオ",
+    "comment": "",
+    "order": 30023,
+    "tags": ["travel"]
+  }, {
+    "_id": "t24",
+    "face_id": "t24",
+    "name": "キルロイ",
+    "comment": "「キルロイここに現る」",
+    "order": 30024,
+    "tags": ["travel"]
+  }, {
+    "_id": "t25",
+    "face_id": "t25",
+    "name": "ミサキ",
+    "comment": "",
+    "order": 30025,
+    "tags": ["travel"]
+  }, {
+    "_id": "t26",
+    "face_id": "t26",
+    "name": "アツタネ",
+    "comment": "平田篤胤",
+    "order": 30026,
+    "tags": ["travel"]
+  }, {
+    "_id": "t27",
+    "face_id": "t27",
+    "name": "みょんこ",
+    "comment": "",
+    "order": 30027,
+    "tags": ["travel"]
+  }, {
+    "_id": "t28",
+    "face_id": "t28",
+    "name": "リツ",
+    "comment": "",
+    "order": 30028,
+    "tags": ["travel"]
+  }, {
+    "_id": "t29",
+    "face_id": "t29",
+    "name": "ヒナコ",
+    "comment": "",
+    "order": 30020,
+    "tags": ["travel"]
+  }, {
+    "_id": "t30",
+    "face_id": "t30",
+    "name": "ワタヌキ",
+    "comment": "四月朔日",
+    "order": 30030,
+    "tags": ["travel"]
+  }, {
+    "_id": "t31",
+    "face_id": "t31",
+    "name": "ホウイチ",
+    "comment": "",
+    "order": 158,
+    "tags": ["travel"]
+  }, {
+    "_id": "t32",
+    "face_id": "t32",
+    "name": "トヨタ",
+    "comment": "洋画の日本人名",
+    "order": 30032,
+    "tags": ["travel"]
+  }, {
+    "_id": "t33",
+    "face_id": "t33",
+    "name": "エツコ",
+    "comment": "",
+    "order": 30033,
+    "tags": ["travel"]
+  }, {
+    "_id": "t34",
+    "face_id": "t34",
+    "name": "ドン",
+    "comment": "",
+    "order": 17,
+    "tags": ["travel"]
   }
 ]);
 
@@ -2546,6 +2924,66 @@ Cache.rule.chr_job.merge([
     "face_id": "t22",
     "job": "学園特警",
     "_id": "time_t22",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t23",
+    "job": "孤高天使連合",
+    "_id": "time_t23",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t24",
+    "job": "トレーサー",
+    "_id": "time_t24",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t25",
+    "job": "2.14革命機構",
+    "_id": "time_t25",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t26",
+    "job": "法隆寺",
+    "_id": "time_t26",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t27",
+    "job": "硯友社",
+    "_id": "time_t27",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t28",
+    "job": "樫の樹の子ら",
+    "_id": "time_t28",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t29",
+    "job": "透明女子会",
+    "_id": "time_t29",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t30",
+    "job": "旅団✡肘笠雨",
+    "_id": "time_t30",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t31",
+    "job": "呵呵老会",
+    "_id": "time_t31",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t32",
+    "job": "安全調査局",
+    "_id": "time_t32",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t33",
+    "job": "亡命同盟",
+    "_id": "time_t33",
+    "chr_set_id": "time"
+  }, {
+    "face_id": "t34",
+    "job": "大銃協会",
+    "_id": "time_t34",
     "chr_set_id": "time"
   }
 ]);
@@ -4264,7 +4702,7 @@ Cache.rule.chr_job.merge([
 ]);
 
 list = (function() {
-  var _i, _len, _ref, _ref1, _ref2, _results;
+  var _i, _len, _ref, _ref1, _results;
   _ref = Cache.faces.list();
   _results = [];
   for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -4272,7 +4710,7 @@ list = (function() {
     chr_set_id = "all";
     face_id = face._id;
     _id = "all_" + face_id;
-    job = (_ref1 = Cache.chr_jobs.face(face_id).list()) != null ? (_ref2 = _ref1.first) != null ? _ref2.job : void 0 : void 0;
+    job = (_ref1 = Cache.chr_jobs.face(face_id).list().first) != null ? _ref1.job : void 0;
     if (job == null) {
       continue;
     }
@@ -4289,8 +4727,10 @@ list = (function() {
 Cache.rule.chr_job.merge(list);
 SOW_RECORD = {"monospace":[null,"mono","head",null],"roles":[null,"villager","stigma","fm","sympathy","seer","seerwin","aura","seerrole","guard","medium","mediumwin","mediumrole","necromancer","follow","fan","hunter","weredog","prince","rightwolf","doctor","curse","dying","invalid","alchemist","witch","girl","scapegoat","elder",29,30,"jammer","snatch","bat",34,35,36,37,38,39,40,"possess","fanatic","muppeting","wisper","semiwolf","dyingpossess","oracle","sorcerer","walpurgis",50,51,"headless",53,54,55,56,57,58,59,60,"wolf","aurawolf","intwolf","cursewolf","whitewolf","childwolf","dyingwolf","silentwolf",69,70,71,72,73,74,75,76,77,78,79,80,"hamster",82,83,84,85,"mimicry",87,"dyingpixi","trickster","hatedevil","loveangel","passion","lover","robber",95,"lonewolf","guru","dish",99,100,"bitch","tangle",103,104,105,106,107,108,109,null],"gifts":[null,null,"lost","bind",4,"shield","glass","ogre","fairy","fink",10,"decide","seeronce","dipsy",14,15,16,17,18,19,null],"events":[null,"nothing","aprilfool","turnfink","turnfairy","eclipse","cointoss","force","miracle","prophecy",10,"clamor","fire","nightmare","ghost","escape","seance",17,18,19,null],"winners":["WIN_NONE","WIN_HUMAN","WIN_WOLF","WIN_GURU","WIN_PIXI","WIN_PIXI","WIN_LONEWOLF","WIN_LOVER","WIN_HATER",null],"mestypes":[null,"INFOSP","DELETEDADMIN","CAST","MAKER","ADMIN","QUEUE","INFONOM","DELETED","SAY","TSAY","WSAY","GSAY","SPSAY","XSAY","VSAY","MSAY","AIM","ANONYMOUS","INFOWOLF",null]};
 LOCATION = {"props":{"scroll":{"type":"Text","current":""},"back":{"type":"Text","current":""},"pins":{"type":"Keys","current":{}},"search":{"type":"Text","current":""},"w":{"type":"Number"},"width":{"current":"std"},"layout":{"current":"center"},"font":{"current":"std"},"theme":{"current":"cinema"},"item":null,"color":null,"title":null,"nation":null,"icon":{"type":"Text","current":""},"updated_at":{"type":"Date"},"turn":{"type":"Number"},"message_id":null,"event_id":null,"story_id":null,"mode_id":{"current":"talk"},"potofs_order":{"current":"said_num"},"potofs_desc":{"type":"Bool","current":true},"potofs_hide":{"type":"Keys","current":{}},"scope":{"current":"talk"},"home":{"current":"village"},"home_at":{"type":"Text","current":""},"talk":{"current":"open"},"talk_at":{"type":"Text","current":""},"memo":{"current":"all"},"memo_at":{"type":"Text","current":""},"open":{"type":"Bool","current":true},"uniq":{"type":"Bool","current":true},"human":{"type":"Bool","current":true},"roletable":{"current":"ALL"},"card_win":{"current":"ALL"},"chr_set":{"current":"all"},"order":{"current":"all"},"folder":{"current":"all"},"game":{"current":"all"},"say_limit":{"current":"all"},"player_length":{"current":"all"},"rating":{"current":"all"},"config":{"current":"all"},"event_type":{"current":"all"},"gift_type":{"current":"all"},"role_type":{"current":"all"},"update_at":{"current":"all"},"update_interval":{"current":"all"}},"bind":{"folder":[{"folder":"all","nation":"- すべて -"},{"folder":"PAN","nation":"似顔絵人狼"},{"folder":"WOLF","nation":"人狼議事標準"},{"folder":"RP","nation":"人狼議事RP:"},{"folder":"PRETENSE","nation":"人狼議事RP:Advance"},{"folder":"XEBEC","nation":"人狼議事RP:Braid XEBEC"},{"folder":"CRAZY","nation":"人狼議事RP:Braid Crazy"},{"folder":"CIEL","nation":"人狼議事RP:Cheat Ciel"},{"folder":"PERJURY","nation":"人狼議事RP:Cheat Perjury"},{"folder":"ULTIMATE","nation":"人狼議事大乱闘:"},{"folder":"ALLSTAR","nation":"人狼議事大乱闘:Allstar"},{"folder":"CABALA","nation":"人狼議事CabalaCafe"},{"folder":"MORPHE","nation":"人狼議事モルペウス"},{"folder":"SOYBEAN","nation":"人狼議事鯖の味噌煮"},{"folder":"LOBBY","nation":"人狼議事ロビー"},{"folder":"OFFPARTY","nation":"人狼議事オフ相談所"},{"folder":"TEST","nation":"人狼議事テスト"}],"theme":[{"theme":"juna","item":"box-msg","title":"審問"},{"theme":"sow","item":"box-msg","title":"物語"},{"theme":"night","item":"speech","title":"闇夜"},{"theme":"moon","item":"speech","title":"月夜"},{"theme":"cinema","item":"speech","title":"煉瓦"},{"theme":"wa","item":"speech","title":"和の国"},{"theme":"star","item":"speech","title":"蒼穹"}]}};
-RAILS = {"maskstates":{"268435200":null,"1024":"投票対象外","512":"恩恵対象外","256":"能力対象外","64":"感染","32":"負傷","8":"<s>投票</s>","7":"<s>全能力</s>","4":"<s>恩恵</s>","3":"<s>能力</s>","2":"<s>毒薬</s>","1":"<s>蘇生薬</s>"},"message":{"visible":{"home":{"village":3968,"cast":1920,"announce":896},"warning":{"all":576},"talk":{"open":544,"clan":816,"think":680,"all":952},"memo":{"open":4,"clan":6,"think":5,"all":7}},"bit":{"EVENT":1023,"INFO":896,"ACTION":120,"TALK":56,"MEMO":7},"mask":{"ALL":4095,"NOT_OPEN":3547,"ANNOUNCE":4095,"OPEN":3684,"CLAN":3410,"THINK":3273,"DELETE":9,"ZERO":0}},"head_img":{"770":{"cinema":["morning.png","moon.png"],"night":["morning.png","moon.png"],"moon":["morning.png","moon.png"],"wa":["morning.png","lupino.png"],"star":["morning.png","lupino.png"],"juna":["morning.png","lupino.png"],"sow":["morning.png","lupino.png"]},"580":{"cinema":["b.jpg","w.jpg"],"night":["b.jpg","w.jpg"],"moon":["b.jpg","w.jpg"],"wa":["b.jpg","w.jpg"],"star":["r.jpg","c.jpg"],"juna":["b.jpg","w.jpg"],"sow":["r.jpg","c.jpg"]},"458":{"cinema":["b.jpg","w.jpg"],"night":["b.jpg","w.jpg"],"moon":["b.jpg","w.jpg"],"wa":["b.jpg","w.jpg"],"star":["r.jpg","c.jpg"],"juna":["b.jpg","w.jpg"],"sow":["r.jpg","c.jpg"]}},"clearance":["IR-","R-","O-","Y-","G-","B-","I-","V-","UV-"],"rating":{"default":{"caption":"とくになし"},"love":{"caption":"[愛] 恋愛を重視","alt":"愛"},"sexy":{"caption":"[性] 性表現あり","alt":"性"},"sexylove":{"caption":"[性愛] 大人の恋愛","alt":"性愛"},"violence":{"caption":"[暴] 暴力、グロ","alt":"暴"},"sexyviolence":{"caption":"[性暴] えろぐろ","alt":"性暴"},"teller":{"caption":"[怖] 恐怖を煽る","alt":"怖"},"drunk":{"caption":"[楽] 享楽に耽る","alt":"楽"},"gamble":{"caption":"[賭] 賭博に耽る","alt":"賭"},"crime":{"caption":"[罪] 犯罪描写あり","alt":"罪"},"drug":{"caption":"[薬] 薬物表現あり","alt":"薬"},"word":{"caption":"[言] 殺伐、暴言あり","alt":"言"},"fireplace":{"caption":"[暢] のんびり雑談","alt":"暢"},"appare":{"caption":"[遖] あっぱれネタ風味","alt":"遖"},"ukkari":{"caption":"[張] うっかりハリセン","alt":"張"},"child":{"caption":"[全] 大人も子供も初心者も、みんな安心","alt":"全"},"biohazard":{"caption":"[危] 無茶ぶり上等","alt":"危"},"":{"caption":"null","alt":""},"0":{"caption":"0","alt":""},"r15":{"caption":"１５禁","alt":""},"r18":{"caption":"１８禁","alt":""},"gro":{"caption":"暴力、グロ","alt":""},"view":{"caption":"view"},"alert":{"caption":"要注意","alt":""}},"folders":{"PAN":{"evil":"WOLF","role_play":false},"OFFPARTY":{"evil":"EVIL","role_play":false},"LOBBY":{"evil":"EVIL","role_play":false},"RP":{"evil":"WOLF","role_play":true},"PRETENSE":{"evil":"WOLF","role_play":true},"PERJURY":{"evil":"WOLF","role_play":true},"XEBEC":{"evil":"WOLF","role_play":true},"CRAZY":{"evil":"WOLF","role_play":true},"SOYBEAN":{"evil":"WOLF","role_play":true},"BRAID":{"evil":"WOLF","role_play":true},"CIEL":{"evil":"WOLF","role_play":true},"WOLF":{"evil":"WOLF","role_play":false},"ULTIMATE":{"evil":"EVIL","role_play":false},"ALLSTAR":{"evil":"EVIL","role_play":false},"CABALA":{"evil":"EVIL","role_play":false},"MORPHE":{"evil":"EVIL","role_play":false}},"map_faces_orders":{"all":{"caption":"登場","headline":"登場した","order":"合計"},"human":{"caption":"村側","headline":"人間だった","order":"村人陣営"},"wolf":{"caption":"狼側","headline":"人狼だった","order":"人狼陣営"},"enemy":{"caption":"敵側","headline":"敵側の人間だった","order":"敵側の人間"},"pixi":{"caption":"妖精","headline":"妖精だった","order":"妖精"},"other":{"caption":"その他","headline":"その他だった","order":"その他"}},"options":{"seq-event":{"help":"事件が順序どおりに発生する"},"show-id":{"help":"ユーザーIDを公開する"},"entrust":{"help":"委任投票をする"},"select-role":{"help":"役職希望を受け付ける"},"random-target":{"help":"投票・能力の対象に「ランダム」を含める"},"undead-talk":{"help":"狼・妖精と死者との間で、会話ができる"},"aiming-talk":{"help":"ふたりだけの内緒話をすることができる"}},"roletable":{"secret":"詳細は黒幕だけが知っています。","custom":"自由設定","default":"標準","hamster":"ハムスター","mistery":"（なんだっけ？？？）","random":"ランダム","test1st":"人狼審問試験壱型","test2nd":"人狼審問試験弐型","ultimate":"アルティメット","wbbs_c":"人狼BBS-C国","wbbs_f":"人狼BBS-F国","wbbs_g":"人狼BBS-G国","lover":"恋愛天使"},"vote":{"sign":{"CAPTION":"記名で投票"},"anonymity":{"CAPTION":"匿名で投票"}},"mes_text":["mes_text","mes_text_monospace","mes_text_report"],"monospace":{"mono":1,"head":2},"n_rule_name":["短期はここではできない。","情報ページ（ここ）を熟読する。","ルールを守り、つねに心構えに気を配る。","進行中は、どんな嘘でもＯＫ。","ただし、（村建て人）、（管理人）の発言では嘘をつかないこと。","突然死をしない。"],"switch":{"wolf":{"mestype":"WSAY"},"pixi":{"mestype":"XSAY"},"muppet":{"mestype":"SAY"},"sympathy":{"mestype":"SPSAY"}},"loves":{"love":{"win":"LOVER"},"hate":{"win":"HATER"}},"wins":{"HUMAN":{"name":"村人陣営","order":1},"EVIL":{"name":"敵側の人間","order":2},"WOLF":{"name":"人狼陣営","order":3},"LONEWOLF":{"name":"一匹狼","order":4},"PIXI":{"name":"妖精","order":5},"OTHER":{"name":"その他","order":6},"GURU":{"name":"笛吹き","order":6},"LOVER":{"name":"恋人陣営","order":7},"HATER":{"name":"邪気陣営","order":8},"DISH":{"name":"据え膳","order":9},"NONE":{"name":"(なし)","order":98},"MOB":{"name":"見物人","order":99}},"winner":{"WIN_NONE":"--","WIN_DISH":"据え膳","WIN_LOVER":"恋人陣営","WIN_HATER":"邪気陣営","WIN_LONEWOLF":"一匹狼","WIN_HUMAN":"村人陣営","WIN_WOLF":"人狼陣営","WIN_PIXI":"妖精","WIN_GURU":"笛吹き","WIN_EVIL":"裏切りの陣営"},"specials":{"mob":{"name":"見物人","win":"MOB"}},"roles":{"mob":{"name":"見物人","win":"MOB","group":"OTHER"},"lover":{"name":"弟子","win":null,"group":"OTHER"},"robber":{"name":"盗賊","win":null,"group":"OTHER"},"tangle":{"name":"怨念","win":null,"group":"OTHER"},"villager":{"name":"村人","win":"HUMAN","group":"HUMAN"},"stigma":{"name":"聖痕者","win":"HUMAN","group":"HUMAN"},"fm":{"name":"結社員","win":"HUMAN","group":"HUMAN"},"sympathy":{"name":"共鳴者","win":"HUMAN","group":"HUMAN"},"seer":{"name":"占い師","win":"HUMAN","group":"HUMAN"},"seerwin":{"name":"信仰占師","win":"HUMAN","group":"HUMAN"},"oura":{"name":"気占師","win":"HUMAN","group":"HUMAN"},"aura":{"name":"気占師","win":"HUMAN","group":"HUMAN"},"seerrole":{"name":"賢者","win":"HUMAN","group":"HUMAN"},"guard":{"name":"守護者","win":"HUMAN","group":"HUMAN"},"medium":{"name":"霊能者","win":"HUMAN","group":"HUMAN"},"mediumwin":{"name":"信仰霊能者","win":"HUMAN","group":"HUMAN"},"mediumrole":{"name":"導師","win":"HUMAN","group":"HUMAN"},"necromancer":{"name":"降霊者","win":"HUMAN","group":"HUMAN"},"follow":{"name":"追従者","win":"HUMAN","group":"HUMAN"},"fan":{"name":"煽動者","win":"HUMAN","group":"HUMAN"},"hunter":{"name":"賞金稼","win":"HUMAN","group":"HUMAN"},"weredog":{"name":"人犬","win":"HUMAN","group":"HUMAN"},"prince":{"name":"王子様","win":"HUMAN","group":"HUMAN"},"rightwolf":{"name":"狼血族","win":"HUMAN","group":"HUMAN"},"doctor":{"name":"医師","win":"HUMAN","group":"HUMAN"},"curse":{"name":"呪人","win":"HUMAN","group":"HUMAN"},"dying":{"name":"預言者","win":"HUMAN","group":"HUMAN"},"invalid":{"name":"病人","win":"HUMAN","group":"HUMAN"},"alchemist":{"name":"錬金術師","win":"HUMAN","group":"HUMAN"},"witch":{"name":"魔女","win":"HUMAN","group":"HUMAN"},"girl":{"name":"少女","win":"HUMAN","group":"HUMAN"},"scapegoat":{"name":"生贄","win":"HUMAN","group":"HUMAN"},"elder":{"name":"長老","win":"HUMAN","group":"HUMAN"},"jammer":{"name":"邪魔之民","win":"EVIL","group":"EVIL"},"snatch":{"name":"宿借之民","win":"EVIL","group":"EVIL"},"bat":{"name":"念波之民","win":"EVIL","group":"EVIL"},"cpossess":{"name":"囁き狂人","win":"EVIL","group":"EVIL"},"possess":{"name":"狂人","win":"EVIL","group":"EVIL"},"fanatic":{"name":"狂信者","win":"EVIL","group":"EVIL"},"muppeting":{"name":"人形使い","win":"EVIL","group":"EVIL"},"wisper":{"name":"囁き狂人","win":"EVIL","group":"EVIL"},"semiwolf":{"name":"半狼","win":"EVIL","group":"EVIL"},"dyingpossess":{"name":"---","win":"EVIL","group":"EVIL"},"oracle":{"name":"魔神官","win":"EVIL","group":"EVIL"},"sorcerer":{"name":"魔術師","win":"EVIL","group":"EVIL"},"walpurgis":{"name":"魔法少年","win":"EVIL","group":"EVIL"},"headless":{"name":"首無騎士","win":"WOLF","group":"WOLF"},"wolf":{"name":"人狼","win":"WOLF","group":"WOLF"},"aurawolf":{"name":"---","win":"WOLF","group":"WOLF"},"intwolf":{"name":"智狼","win":"WOLF","group":"WOLF"},"cwolf":{"name":"呪狼","win":"WOLF","group":"WOLF"},"cursewolf":{"name":"呪狼","win":"WOLF","group":"WOLF"},"whitewolf":{"name":"白狼","win":"WOLF","group":"WOLF"},"childwolf":{"name":"仔狼","win":"WOLF","group":"WOLF"},"dyingwolf":{"name":"衰狼","win":"WOLF","group":"WOLF"},"silentwolf":{"name":"黙狼","win":"WOLF","group":"WOLF"},"werebat":{"name":"蝙蝠人間","win":"PIXI","group":"PIXI"},"hamster":{"name":"栗鼠妖精","win":"PIXI","group":"PIXI"},"mimicry":{"name":"擬狼妖精","win":"PIXI","group":"PIXI"},"dyingpixi":{"name":"風花妖精","win":"PIXI","group":"PIXI"},"trickster":{"name":"悪戯妖精","win":"PIXI","group":"PIXI"},"hatedevil":{"name":"邪気悪魔","win":"HATER","group":"OTHER"},"loveangel":{"name":"恋愛天使","win":"LOVER","group":"OTHER"},"passion":{"name":"片思い","win":"LOVER","group":"OTHER"},"lonewolf":{"name":"一匹狼","win":"LONEWOLF","group":"WOLF"},"guru":{"name":"笛吹き","win":"GURU","group":"OTHER"},"dish":{"name":"鱗魚人","win":"DISH","group":"OTHER"},"bitch":{"name":"遊び人","win":"LOVER","group":"OTHER"}},"gifts":{"none":{"name":"","win":null,"group":null},"lost":{"name":"喪失","win":null,"group":"OTHER"},"bind":{"name":"---","win":null,"group":null},"shield":{"name":"光の輪","win":null,"group":"OTHER"},"glass":{"name":"魔鏡","win":null,"group":"OTHER"},"ogre":{"name":"悪鬼","win":"WOLF","group":"WOLF"},"fairy":{"name":"妖精の子","win":"PIXI","group":"PIXI"},"fink":{"name":"半端者","win":"EVIL","group":"EVIL"},"decide":{"name":"決定者","win":null,"group":"OTHER"},"seeronce":{"name":"夢占師","win":null,"group":"OTHER"},"dipsy":{"name":"酔払い","win":null,"group":"OTHER"}},"events":{"nothing":{"name":"普通の日"},"aprilfool":{"name":"四月馬鹿"},"turnfink":{"name":"二重スパイ"},"turnfairy":{"name":"妖精の輪"},"eclipse":{"name":"日蝕"},"cointoss":{"name":"Sir Cointoss"},"force":{"name":"影響力"},"miracle":{"name":"奇跡"},"prophecy":{"name":"聖者のお告げ"},"clamor":{"name":"不満"},"fire":{"name":"熱意"},"nightmare":{"name":"悪夢"},"ghost":{"name":"亡霊"},"escape":{"name":"逃亡"},"seance":{"name":"降霊会"}},"event_state":{"grudge":"今夜は２名分の襲撃をします。それが奴等への復讐なのです。","riot":"今夜は２名分の投票をします。この荒波のような流行に乗らなくては！","scapegoat":"今夜の投票相手は決まっています。","eclipse":"今日の議論は、誰が発言しているか不明になります。"},"live":{"mob":{"name":"見物人","order":1},"live":{"name":"生存者","order":2},"executed":{"name":"処刑","order":3},"victim":{"name":"襲撃","order":4},"cursed":{"name":"呪詛","order":5},"droop":{"name":"衰退","order":6},"suicide":{"name":"後追","order":7},"feared":{"name":"恐怖","order":8},"suddendead":{"name":"突然死","order":9}},"live_caption":{"live":"生存者","executed":"処刑","victim":"犠牲者","cursed":"犠牲者","droop":"犠牲者","suicide":"犠牲者","feared":"犠牲者","suddendead":"突然死","mob":"見物人"},"mob":{"visiter":{"CAPTION":"客席","HELP":"進行中会話は客席同士のみ"},"grave":{"CAPTION":"裏方","HELP":"進行中会話は墓下と"},"alive":{"CAPTION":"舞台","HELP":"進行中会話は地上、墓下、両方と"},"juror":{"CAPTION":"陪審","HELP":"進行中会話は陪審同士のみ。陪審（＆決定者）だけが投票する。"},"gamemaster":{"CAPTION":"黒幕","HELP":"進行中会話は地上、墓下、両方と。場を支配する特権をもつ。"}},"game_rule":{"TABULA":{"CAPTION":"タブラの人狼","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"},"MILLERHOLLOW":{"CAPTION":"ミラーズホロウ","HELP":"<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>すべての死者は役職が公開される。\n<li>狼を全滅させると、村勝利。\n<li>「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"},"LIVE_TABULA":{"CAPTION":"タブラの人狼（死んだら負け）","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"},"LIVE_MILLERHOLLOW":{"CAPTION":"ミラーズホロウ（死んだら負け）","HELP":"<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>「村人」を全滅させると、狼勝利。役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"},"TROUBLE":{"CAPTION":"Trouble☆Aliens","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>守護者は、より大人数の人狼からは守りきることができず、身代わりに感染する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村側の生存者が勝利（村側は死んだら負ける）。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼と感染者の勝利。\n"},"MISTERY":{"CAPTION":"深い霧の夜","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>村側は自分の役職を自覚しない。\n<li>村側は、能力の結果不審者を見かけることがある。\n<li>人狼の行動対象に選ばれると、不審者を見かける。\n<li>狼を全滅させると、村勝利。\n<li>役職「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"},"VOV":{"CAPTION":"狂犬病の谷","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"},"SECRET":{"CAPTION":"陰謀に集う胡蝶","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼の生存者が勝利。\n<li>いかなる場合も、死んでしまったものは敗北である。\n"}},"trs":{"all":{"CAPTION":"オール☆スター","HELP":"すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。"},"simple":{"CAPTION":"ラッキー☆スター","HELP":"初心者向けの、シンプルな設定です。拡張設定の一部が固定になっています。"},"star":{"CAPTION":"Orbital☆Star","HELP":"すべての役職、恩恵、事件を楽しむことができます。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>宇宙時代に突入した「全部入り」のセットです。村落共同体は渓谷や高原ではなく、小惑星帯や人工コロニー、移民船にあるでしょう。事件が始まるまでは、とても充実した近代的なインフラが整っていたのですが……"},"regend":{"CAPTION":"議事☆伝承","HELP":"すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。アクション内容は穏当になり、未来的ですばらしいクローンも居ません。"},"fool":{"CAPTION":"適当系","HELP":"てきとーな感じ。"},"sow":{"CAPTION":"人狼物語","HELP":"ウェブゲーム「人狼物語」風の役職を楽しめます。ただし、細かい動作に違いがあります。"},"wbbs":{"CAPTION":"人狼BBS","HELP":"ウェブゲーム「人狼BBS」風の役職を楽しめます。ただし、細かい動作に違いがあります。"},"juna":{"CAPTION":"人狼審問","HELP":"ウェブゲーム「人狼審問」風の役職を楽しめます。ただし、細かい動作に違いがあります。"},"complex":{"CAPTION":"PARANOIA","HELP":"ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"},"complexx":{"CAPTION":"ParanoiA","HELP":"ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"},"cabala":{"CAPTION":"ギロチン広場","HELP":"権謀術数を弄び、虚実まじえた会話を楽しむためのセットです。"},"tabula":{"CAPTION":"タブラの人狼","HELP":"カードゲーム「Lupus in Tabula」風の役職を楽しめます。ただし、疫病神、公証人、悪魔くん、には対応していません。"},"millerhollow":{"CAPTION":"ミラーズホロウ","HELP":"カードゲーム「The Werewolves of Millers Hollow + New Moon」風の役職を楽しめます。ただし、愚か者には対応していません。守護者、笛吹きにすこし違いがあります。"},"ultimate":{"CAPTION":"アルティメット","HELP":"カードゲーム「アルティメット人狼」風の役職を楽しめます。ただし、ドワーフ、ドッペルゲンガー、アル中、愚か者、倫理学者には対応していません。"}},"saycnt":{"sow":{"CAPTION":"人狼物語","HELP":null},"say5":{"CAPTION":"寡黙への挑戦","COST_SAY":"count","COST_MEMO":"none","COST_ACT":"count","RECOVERY":1,"MAX_SAY":5,"MAX_TSAY":5,"MAX_SPSAY":5,"MAX_WSAY":10,"MAX_GSAY":10,"MAX_PSAY":10,"MAX_ESAY":999,"MAX_SAY_ACT":5,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESLINE":10},"point":{"COST_SAY":"point","COST_MEMO":"count","COST_ACT":"count","MAX_ESAY":9999},"count":{"COST_SAY":"count","COST_MEMO":"count","COST_ACT":"count","ADD_SAY":0,"MAX_ADDSAY":0},"lobby":{"CAPTION":"ロビー","HELP":"∞pt/∞act","COST_SAY":"none","COST_MEMO":"none","COST_ACT":"none","RECOVERY":1,"MAX_SAY":9999,"MAX_TSAY":9999,"MAX_SPSAY":9999,"MAX_WSAY":9999,"MAX_GSAY":9999,"MAX_PSAY":9999,"MAX_ESAY":9999,"MAX_SAY_ACT":99,"ADD_SAY":9999,"MAX_ADDSAY":0,"MAX_MESCNT":1000,"MAX_MESLINE":20},"say5x200":{"CAPTION":"寡黙への挑戦","COST_SAY":"count","COST_MEMO":"none","COST_ACT":"count","RECOVERY":1,"MAX_SAY":5,"MAX_TSAY":5,"MAX_SPSAY":5,"MAX_WSAY":10,"MAX_GSAY":10,"MAX_PSAY":10,"MAX_ESAY":999,"MAX_SAY_ACT":5,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESLINE":10,"HELP":"（24h回復） 200字x5回/5act'","MAX_MESCNT":200},"say5x300":{"CAPTION":"小論文への挑戦","COST_SAY":"count","COST_MEMO":"none","COST_ACT":"count","RECOVERY":1,"MAX_SAY":5,"MAX_TSAY":5,"MAX_SPSAY":5,"MAX_WSAY":10,"MAX_GSAY":10,"MAX_PSAY":10,"MAX_ESAY":999,"MAX_SAY_ACT":5,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESLINE":10,"HELP":"（24h回復） 300字x5回/15act'","MAX_MESCNT":300},"saving":{"COST_SAY":"count","COST_MEMO":"count","COST_ACT":"count","ADD_SAY":0,"MAX_ADDSAY":0,"CAPTION":"節約","HELP":"250字x20回/15act","RECOVERY":0,"MAX_SAY":20,"MAX_TSAY":10,"MAX_SPSAY":10,"MAX_WSAY":30,"MAX_GSAY":20,"MAX_PSAY":20,"MAX_ESAY":999,"MAX_SAY_ACT":15,"MAX_MESCNT":250,"MAX_MESLINE":10},"wbbs":{"COST_SAY":"count","COST_MEMO":"none","COST_ACT":"count","ADD_SAY":0,"MAX_ADDSAY":0,"CAPTION":"人狼BBS","HELP":"200字x20回","RECOVERY":0,"MAX_SAY":20,"MAX_TSAY":5,"MAX_SPSAY":20,"MAX_WSAY":40,"MAX_GSAY":20,"MAX_PSAY":20,"MAX_ESAY":999,"MAX_SAY_ACT":0,"MAX_MESCNT":200,"MAX_MESLINE":5},"euro":{"COST_SAY":"count","COST_MEMO":"count","COST_ACT":"count","ADD_SAY":0,"MAX_ADDSAY":0,"CAPTION":"欧州","HELP":"（24h回復） 800字x30回/30act","RECOVERY":1,"MAX_SAY":30,"MAX_TSAY":999,"MAX_SPSAY":999,"MAX_WSAY":999,"MAX_GSAY":999,"MAX_PSAY":30,"MAX_ESAY":999,"MAX_SAY_ACT":30,"MAX_MESCNT":800,"MAX_MESLINE":20},"tiny":{"COST_SAY":"point","COST_MEMO":"point","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"たりない","HELP":"（24h回復）（メモは20pt） 333pt/9act","RECOVERY":1,"MAX_SAY":333,"MAX_TSAY":999,"MAX_SPSAY":333,"MAX_WSAY":999,"MAX_GSAY":999,"MAX_PSAY":999,"MAX_SAY_ACT":9,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESCNT":300,"MAX_MESLINE":10},"weak":{"COST_SAY":"point","COST_MEMO":"point","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"むりせず","HELP":"（24h回復）（メモは20pt） 777pt/15act","RECOVERY":1,"MAX_SAY":777,"MAX_TSAY":777,"MAX_SPSAY":777,"MAX_WSAY":999,"MAX_GSAY":999,"MAX_PSAY":1200,"MAX_SAY_ACT":15,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESCNT":600,"MAX_MESLINE":15},"juna":{"COST_SAY":"point","COST_MEMO":"count","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"しんもん","HELP":"（24h回復） 1200pt/24act","RECOVERY":1,"MAX_SAY":1200,"MAX_TSAY":700,"MAX_SPSAY":700,"MAX_WSAY":3000,"MAX_GSAY":2000,"MAX_PSAY":2000,"MAX_SAY_ACT":24,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESCNT":1000,"MAX_MESLINE":20},"vulcan":{"COST_SAY":"point","COST_MEMO":"count","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"いっぱい","HELP":"（24h回復） 1000pt+++300pt/36act","RECOVERY":1,"MAX_SAY":1000,"MAX_TSAY":1000,"MAX_SPSAY":1500,"MAX_WSAY":4000,"MAX_GSAY":3000,"MAX_PSAY":3000,"MAX_SAY_ACT":36,"ADD_SAY":300,"MAX_ADDSAY":3,"MAX_MESCNT":1000,"MAX_MESLINE":20},"infinity":{"CAPTION":"むげん","HELP":"∞pt/∞act","COST_SAY":"none","COST_MEMO":"none","COST_ACT":"none","RECOVERY":1,"MAX_SAY":9999,"MAX_TSAY":9999,"MAX_SPSAY":9999,"MAX_WSAY":9999,"MAX_GSAY":9999,"MAX_PSAY":9999,"MAX_ESAY":9999,"MAX_SAY_ACT":99,"ADD_SAY":9999,"MAX_ADDSAY":0,"MAX_MESCNT":1000,"MAX_MESLINE":20},"weak_braid":{"COST_SAY":"point","COST_MEMO":"point","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"むりせず","HELP":"（24h回復）（メモは20pt） 600pt++100pt/15act","RECOVERY":1,"MAX_SAY":600,"MAX_TSAY":600,"MAX_SPSAY":600,"MAX_WSAY":999,"MAX_GSAY":999,"MAX_PSAY":1200,"MAX_SAY_ACT":15,"ADD_SAY":100,"MAX_ADDSAY":2,"MAX_MESCNT":600,"MAX_MESLINE":15},"juna_braid":{"COST_SAY":"point","COST_MEMO":"count","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"しんもん","HELP":"（24h回復） 800pt++200pt/24act","RECOVERY":1,"MAX_SAY":800,"MAX_TSAY":700,"MAX_SPSAY":700,"MAX_WSAY":3000,"MAX_GSAY":2000,"MAX_PSAY":2000,"MAX_SAY_ACT":24,"ADD_SAY":200,"MAX_ADDSAY":2,"MAX_MESCNT":1000,"MAX_MESLINE":20},"vulcan_braid":{"COST_SAY":"point","COST_MEMO":"count","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"いっぱい","HELP":"（24h回復） 1000pt+++300pt/36act","RECOVERY":1,"MAX_SAY":1000,"MAX_TSAY":1000,"MAX_SPSAY":1500,"MAX_WSAY":4000,"MAX_GSAY":3000,"MAX_PSAY":3000,"MAX_SAY_ACT":36,"ADD_SAY":300,"MAX_ADDSAY":3,"MAX_MESCNT":1000,"MAX_MESLINE":20},"infinity_braid":{"CAPTION":"むげん","HELP":"∞pt/∞act","COST_SAY":"none","COST_MEMO":"none","COST_ACT":"none","RECOVERY":1,"MAX_SAY":9999,"MAX_TSAY":9999,"MAX_SPSAY":9999,"MAX_WSAY":9999,"MAX_GSAY":9999,"MAX_PSAY":9999,"MAX_ESAY":9999,"MAX_SAY_ACT":99,"ADD_SAY":9999,"MAX_ADDSAY":0,"MAX_MESCNT":1000,"MAX_MESLINE":20}},"log":{"anchor":{"m":"#","a":"%","S":"","T":"-","W":"*","G":"+","P":"=","X":"!","V":"@"},"mestypetext":[null,null,"【管理人削除】",null,null,null,"【未確】",null,"【削除】","【人】","【独】","【赤】","【墓】","【鳴】","【念】","【見】","【憑】",null,null,null],"font":[null,null,"color=\"gray\"",null,null,null,null,null,"color=\"gray\"",null,"color=\"gray\"","color=\"red\"","color=\"teal\"","color=\"blue\"","color=\"green\"","color=\"maroon\"",null,"color=\"purple\"",null,"color=\"red\""]}};
+RAILS = {"maskstates":{"268435200":null,"1024":"投票対象外","512":"恩恵対象外","256":"能力対象外","64":"感染","32":"負傷","8":"<s>投票</s>","7":"<s>全能力</s>","4":"<s>恩恵</s>","3":"<s>能力</s>","2":"<s>毒薬</s>","1":"<s>蘇生薬</s>"},"tag":{"all":{"name":"すべて","long":"「人狼議事 ちゃんぷる」のキャラクター"},"shoji":{"name":"てやんでえ","long":"「和の国てやんでえ」のキャラクター"},"travel":{"name":"帰還者議事","long":"「帰還者議事」のキャラクター"},"stratos":{"name":"明後日への道標","long":"「明後日への道標」のキャラクター"},"myth":{"name":"はおうのひろば","long":"「はおうのひろば」のキャラクター"},"asia":{"name":"大陸議事","long":"「大陸議事」のキャラクター"},"marchen":{"name":"狂騒議事","long":"「狂騒議事」のキャラクター"},"pioneer":{"name":"-開拓史-","long":"開拓地を切り開く"},"elegant":{"name":"-舞踏会-","long":"瀟洒な館の舞踏会"},"guild":{"name":"-商工会-","long":"商人と職人の集うギルド"},"road":{"name":"-運河往来-","long":"往く人来る人休む人"},"apartment":{"name":"-自室の窓-","long":"窓から外を眺めると"},"farm":{"name":"-森の農場-","long":"森に接する田畑"},"servant":{"name":"-使用人-","long":"良家を支えるスタッフ"},"medical":{"name":"-施療院-","long":"病苦毒霊と戦う砦"},"market":{"name":"-歓楽街・表-","long":"芸の極みに華が咲く"},"immoral":{"name":"-歓楽街・裏-","long":"街灯の裏の背徳達"},"law":{"name":"-法の支配-","long":"所領を治める権能者"},"ecclesia":{"name":"-公教会-","long":"信仰と道徳と学識の源泉"},"god":{"name":"-かみさま-","long":"かみさま"}},"message":{"visible":{"home":{"village":3968,"cast":1920,"announce":896},"warning":{"all":576},"talk":{"open":544,"clan":816,"think":680,"all":952},"memo":{"open":4,"clan":6,"think":5,"all":7}},"bit":{"EVENT":1023,"INFO":896,"ACTION":120,"TALK":56,"MEMO":7},"mask":{"ALL":4095,"NOT_OPEN":3547,"ANNOUNCE":4095,"OPEN":3684,"CLAN":3410,"THINK":3273,"DELETE":9,"ZERO":0}},"head_img":{"770":{"cinema":["morning.png","moon.png"],"night":["morning.png","moon.png"],"moon":["morning.png","moon.png"],"wa":["morning.png","lupino.png"],"star":["morning.png","lupino.png"],"juna":["morning.png","lupino.png"],"sow":["morning.png","lupino.png"]},"580":{"cinema":["b.jpg","w.jpg"],"night":["b.jpg","w.jpg"],"moon":["b.jpg","w.jpg"],"wa":["b.jpg","w.jpg"],"star":["r.jpg","c.jpg"],"juna":["b.jpg","w.jpg"],"sow":["r.jpg","c.jpg"]},"458":{"cinema":["b.jpg","w.jpg"],"night":["b.jpg","w.jpg"],"moon":["b.jpg","w.jpg"],"wa":["b.jpg","w.jpg"],"star":["r.jpg","c.jpg"],"juna":["b.jpg","w.jpg"],"sow":["r.jpg","c.jpg"]}},"clearance":["IR-","R-","O-","Y-","G-","B-","I-","V-","UV-"],"rating":{"default":{"caption":"とくになし"},"love":{"caption":"[愛] 恋愛を重視","alt":"愛"},"sexy":{"caption":"[性] 性表現あり","alt":"性"},"sexylove":{"caption":"[性愛] 大人の恋愛","alt":"性愛"},"violence":{"caption":"[暴] 暴力、グロ","alt":"暴"},"sexyviolence":{"caption":"[性暴] えろぐろ","alt":"性暴"},"teller":{"caption":"[怖] 恐怖を煽る","alt":"怖"},"drunk":{"caption":"[楽] 享楽に耽る","alt":"楽"},"gamble":{"caption":"[賭] 賭博に耽る","alt":"賭"},"crime":{"caption":"[罪] 犯罪描写あり","alt":"罪"},"drug":{"caption":"[薬] 薬物表現あり","alt":"薬"},"word":{"caption":"[言] 殺伐、暴言あり","alt":"言"},"fireplace":{"caption":"[暢] のんびり雑談","alt":"暢"},"appare":{"caption":"[遖] あっぱれネタ風味","alt":"遖"},"ukkari":{"caption":"[張] うっかりハリセン","alt":"張"},"child":{"caption":"[全] 大人も子供も初心者も、みんな安心","alt":"全"},"biohazard":{"caption":"[危] 無茶ぶり上等","alt":"危"},"":{"caption":"null","alt":""},"0":{"caption":"0","alt":""},"r15":{"caption":"１５禁","alt":""},"r18":{"caption":"１８禁","alt":""},"gro":{"caption":"暴力、グロ","alt":""},"view":{"caption":"view"},"alert":{"caption":"要注意","alt":""}},"folders":{"PAN":{"evil":"WOLF","role_play":false},"OFFPARTY":{"evil":"EVIL","role_play":false},"LOBBY":{"evil":"EVIL","role_play":false},"RP":{"evil":"WOLF","role_play":true},"PRETENSE":{"evil":"WOLF","role_play":true},"PERJURY":{"evil":"WOLF","role_play":true},"XEBEC":{"evil":"WOLF","role_play":true},"CRAZY":{"evil":"WOLF","role_play":true},"SOYBEAN":{"evil":"WOLF","role_play":true},"BRAID":{"evil":"WOLF","role_play":true},"CIEL":{"evil":"WOLF","role_play":true},"WOLF":{"evil":"WOLF","role_play":false},"ULTIMATE":{"evil":"EVIL","role_play":false},"ALLSTAR":{"evil":"EVIL","role_play":false},"CABALA":{"evil":"EVIL","role_play":false},"MORPHE":{"evil":"EVIL","role_play":false}},"map_faces_orders":{"all":{"caption":"登場","headline":"登場した","order":"合計"},"human":{"caption":"村側","headline":"人間だった","order":"村人陣営"},"wolf":{"caption":"狼側","headline":"人狼だった","order":"人狼陣営"},"enemy":{"caption":"敵側","headline":"敵側の人間だった","order":"敵側の人間"},"pixi":{"caption":"妖精","headline":"妖精だった","order":"妖精"},"other":{"caption":"その他","headline":"その他だった","order":"その他"}},"options":{"seq-event":{"help":"事件が順序どおりに発生する"},"show-id":{"help":"ユーザーIDを公開する"},"entrust":{"help":"委任投票をする"},"select-role":{"help":"役職希望を受け付ける"},"random-target":{"help":"投票・能力の対象に「ランダム」を含める"},"undead-talk":{"help":"狼・妖精と死者との間で、会話ができる"},"aiming-talk":{"help":"ふたりだけの内緒話をすることができる"}},"roletable":{"secret":"詳細は黒幕だけが知っています。","custom":"自由設定","default":"標準","hamster":"ハムスター","mistery":"（なんだっけ？？？）","random":"ランダム","test1st":"人狼審問試験壱型","test2nd":"人狼審問試験弐型","ultimate":"アルティメット","wbbs_c":"人狼BBS-C国","wbbs_f":"人狼BBS-F国","wbbs_g":"人狼BBS-G国","lover":"恋愛天使"},"vote":{"sign":{"CAPTION":"記名で投票"},"anonymity":{"CAPTION":"匿名で投票"}},"mes_text":["mes_text","mes_text_monospace","mes_text_report"],"monospace":{"mono":1,"head":2},"n_rule_name":["短期はここではできない。","情報ページ（ここ）を熟読する。","ルールを守り、つねに心構えに気を配る。","進行中は、どんな嘘でもＯＫ。","ただし、（村建て人）、（管理人）の発言では嘘をつかないこと。","突然死をしない。"],"switch":{"wolf":{"mestype":"WSAY"},"pixi":{"mestype":"XSAY"},"muppet":{"mestype":"SAY"},"sympathy":{"mestype":"SPSAY"}},"loves":{"love":{"win":"LOVER"},"hate":{"win":"HATER"}},"wins":{"HUMAN":{"name":"村人陣営","order":1},"EVIL":{"name":"敵側の人間","order":2},"WOLF":{"name":"人狼陣営","order":3},"LONEWOLF":{"name":"一匹狼","order":4},"PIXI":{"name":"妖精","order":5},"OTHER":{"name":"その他","order":6},"GURU":{"name":"笛吹き","order":6},"LOVER":{"name":"恋人陣営","order":7},"HATER":{"name":"邪気陣営","order":8},"DISH":{"name":"据え膳","order":9},"NONE":{"name":"(なし)","order":98},"MOB":{"name":"見物人","order":99}},"winner":{"WIN_NONE":"--","WIN_DISH":"据え膳","WIN_LOVER":"恋人陣営","WIN_HATER":"邪気陣営","WIN_LONEWOLF":"一匹狼","WIN_HUMAN":"村人陣営","WIN_WOLF":"人狼陣営","WIN_PIXI":"妖精","WIN_GURU":"笛吹き","WIN_EVIL":"裏切りの陣営"},"specials":{"mob":{"name":"見物人","win":"MOB"}},"roles":{"mob":{"name":"見物人","win":"MOB","group":"OTHER"},"lover":{"name":"弟子","win":null,"group":"OTHER"},"robber":{"name":"盗賊","win":null,"group":"OTHER"},"tangle":{"name":"怨念","win":null,"group":"OTHER"},"villager":{"name":"村人","win":"HUMAN","group":"HUMAN"},"stigma":{"name":"聖痕者","win":"HUMAN","group":"HUMAN"},"fm":{"name":"結社員","win":"HUMAN","group":"HUMAN"},"sympathy":{"name":"共鳴者","win":"HUMAN","group":"HUMAN"},"seer":{"name":"占い師","win":"HUMAN","group":"HUMAN"},"seerwin":{"name":"信仰占師","win":"HUMAN","group":"HUMAN"},"oura":{"name":"気占師","win":"HUMAN","group":"HUMAN"},"aura":{"name":"気占師","win":"HUMAN","group":"HUMAN"},"seerrole":{"name":"賢者","win":"HUMAN","group":"HUMAN"},"guard":{"name":"守護者","win":"HUMAN","group":"HUMAN"},"medium":{"name":"霊能者","win":"HUMAN","group":"HUMAN"},"mediumwin":{"name":"信仰霊能者","win":"HUMAN","group":"HUMAN"},"mediumrole":{"name":"導師","win":"HUMAN","group":"HUMAN"},"necromancer":{"name":"降霊者","win":"HUMAN","group":"HUMAN"},"follow":{"name":"追従者","win":"HUMAN","group":"HUMAN"},"fan":{"name":"煽動者","win":"HUMAN","group":"HUMAN"},"hunter":{"name":"賞金稼","win":"HUMAN","group":"HUMAN"},"weredog":{"name":"人犬","win":"HUMAN","group":"HUMAN"},"prince":{"name":"王子様","win":"HUMAN","group":"HUMAN"},"rightwolf":{"name":"狼血族","win":"HUMAN","group":"HUMAN"},"doctor":{"name":"医師","win":"HUMAN","group":"HUMAN"},"curse":{"name":"呪人","win":"HUMAN","group":"HUMAN"},"dying":{"name":"預言者","win":"HUMAN","group":"HUMAN"},"invalid":{"name":"病人","win":"HUMAN","group":"HUMAN"},"alchemist":{"name":"錬金術師","win":"HUMAN","group":"HUMAN"},"witch":{"name":"魔女","win":"HUMAN","group":"HUMAN"},"girl":{"name":"少女","win":"HUMAN","group":"HUMAN"},"scapegoat":{"name":"生贄","win":"HUMAN","group":"HUMAN"},"elder":{"name":"長老","win":"HUMAN","group":"HUMAN"},"jammer":{"name":"邪魔之民","win":"EVIL","group":"EVIL"},"snatch":{"name":"宿借之民","win":"EVIL","group":"EVIL"},"bat":{"name":"念波之民","win":"EVIL","group":"EVIL"},"cpossess":{"name":"囁き狂人","win":"EVIL","group":"EVIL"},"possess":{"name":"狂人","win":"EVIL","group":"EVIL"},"fanatic":{"name":"狂信者","win":"EVIL","group":"EVIL"},"muppeting":{"name":"人形使い","win":"EVIL","group":"EVIL"},"wisper":{"name":"囁き狂人","win":"EVIL","group":"EVIL"},"semiwolf":{"name":"半狼","win":"EVIL","group":"EVIL"},"dyingpossess":{"name":"---","win":"EVIL","group":"EVIL"},"oracle":{"name":"魔神官","win":"EVIL","group":"EVIL"},"sorcerer":{"name":"魔術師","win":"EVIL","group":"EVIL"},"walpurgis":{"name":"魔法少年","win":"EVIL","group":"EVIL"},"headless":{"name":"首無騎士","win":"WOLF","group":"WOLF"},"wolf":{"name":"人狼","win":"WOLF","group":"WOLF"},"aurawolf":{"name":"---","win":"WOLF","group":"WOLF"},"intwolf":{"name":"智狼","win":"WOLF","group":"WOLF"},"cwolf":{"name":"呪狼","win":"WOLF","group":"WOLF"},"cursewolf":{"name":"呪狼","win":"WOLF","group":"WOLF"},"whitewolf":{"name":"白狼","win":"WOLF","group":"WOLF"},"childwolf":{"name":"仔狼","win":"WOLF","group":"WOLF"},"dyingwolf":{"name":"衰狼","win":"WOLF","group":"WOLF"},"silentwolf":{"name":"黙狼","win":"WOLF","group":"WOLF"},"werebat":{"name":"蝙蝠人間","win":"PIXI","group":"PIXI"},"hamster":{"name":"栗鼠妖精","win":"PIXI","group":"PIXI"},"mimicry":{"name":"擬狼妖精","win":"PIXI","group":"PIXI"},"dyingpixi":{"name":"風花妖精","win":"PIXI","group":"PIXI"},"trickster":{"name":"悪戯妖精","win":"PIXI","group":"PIXI"},"hatedevil":{"name":"邪気悪魔","win":"HATER","group":"OTHER"},"loveangel":{"name":"恋愛天使","win":"LOVER","group":"OTHER"},"passion":{"name":"片思い","win":"LOVER","group":"OTHER"},"lonewolf":{"name":"一匹狼","win":"LONEWOLF","group":"WOLF"},"guru":{"name":"笛吹き","win":"GURU","group":"OTHER"},"dish":{"name":"鱗魚人","win":"DISH","group":"OTHER"},"bitch":{"name":"遊び人","win":"LOVER","group":"OTHER"}},"gifts":{"none":{"name":"","win":null,"group":null},"lost":{"name":"喪失","win":null,"group":"OTHER"},"bind":{"name":"---","win":null,"group":null},"shield":{"name":"光の輪","win":null,"group":"OTHER"},"glass":{"name":"魔鏡","win":null,"group":"OTHER"},"ogre":{"name":"悪鬼","win":"WOLF","group":"WOLF"},"fairy":{"name":"妖精の子","win":"PIXI","group":"PIXI"},"fink":{"name":"半端者","win":"EVIL","group":"EVIL"},"decide":{"name":"決定者","win":null,"group":"OTHER"},"seeronce":{"name":"夢占師","win":null,"group":"OTHER"},"dipsy":{"name":"酔払い","win":null,"group":"OTHER"}},"events":{"nothing":{"name":"普通の日"},"aprilfool":{"name":"四月馬鹿"},"turnfink":{"name":"二重スパイ"},"turnfairy":{"name":"妖精の輪"},"eclipse":{"name":"日蝕"},"cointoss":{"name":"Sir Cointoss"},"force":{"name":"影響力"},"miracle":{"name":"奇跡"},"prophecy":{"name":"聖者のお告げ"},"clamor":{"name":"不満"},"fire":{"name":"熱意"},"nightmare":{"name":"悪夢"},"ghost":{"name":"亡霊"},"escape":{"name":"逃亡"},"seance":{"name":"降霊会"}},"event_state":{"grudge":"今夜は２名分の襲撃をします。それが奴等への復讐なのです。","riot":"今夜は２名分の投票をします。この荒波のような流行に乗らなくては！","scapegoat":"今夜の投票相手は決まっています。","eclipse":"今日の議論は、誰が発言しているか不明になります。"},"live":{"mob":{"name":"見物人","order":1},"live":{"name":"生存者","order":2},"executed":{"name":"処刑","order":3},"victim":{"name":"襲撃","order":4},"cursed":{"name":"呪詛","order":5},"droop":{"name":"衰退","order":6},"suicide":{"name":"後追","order":7},"feared":{"name":"恐怖","order":8},"suddendead":{"name":"突然死","order":9}},"live_caption":{"live":"生存者","executed":"処刑","victim":"犠牲者","cursed":"犠牲者","droop":"犠牲者","suicide":"犠牲者","feared":"犠牲者","suddendead":"突然死","mob":"見物人"},"mob":{"visiter":{"CAPTION":"客席","HELP":"進行中会話は客席同士のみ"},"grave":{"CAPTION":"裏方","HELP":"進行中会話は墓下と"},"alive":{"CAPTION":"舞台","HELP":"進行中会話は地上、墓下、両方と"},"juror":{"CAPTION":"陪審","HELP":"進行中会話は陪審同士のみ。陪審（＆決定者）だけが投票する。"},"gamemaster":{"CAPTION":"黒幕","HELP":"進行中会話は地上、墓下、両方と。場を支配する特権をもつ。"}},"game_rule":{"TABULA":{"CAPTION":"タブラの人狼","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"},"MILLERHOLLOW":{"CAPTION":"ミラーズホロウ","HELP":"<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>すべての死者は役職が公開される。\n<li>狼を全滅させると、村勝利。\n<li>「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"},"LIVE_TABULA":{"CAPTION":"タブラの人狼（死んだら負け）","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"},"LIVE_MILLERHOLLOW":{"CAPTION":"ミラーズホロウ（死んだら負け）","HELP":"<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>「村人」を全滅させると、狼勝利。役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"},"TROUBLE":{"CAPTION":"Trouble☆Aliens","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>守護者は、より大人数の人狼からは守りきることができず、身代わりに感染する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村側の生存者が勝利（村側は死んだら負ける）。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼と感染者の勝利。\n"},"MISTERY":{"CAPTION":"深い霧の夜","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>村側は自分の役職を自覚しない。\n<li>村側は、能力の結果不審者を見かけることがある。\n<li>人狼の行動対象に選ばれると、不審者を見かける。\n<li>狼を全滅させると、村勝利。\n<li>役職「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"},"VOV":{"CAPTION":"狂犬病の谷","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"},"SECRET":{"CAPTION":"陰謀に集う胡蝶","HELP":"<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼の生存者が勝利。\n<li>いかなる場合も、死んでしまったものは敗北である。\n"}},"trs":{"all":{"CAPTION":"オール☆スター","HELP":"すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。"},"simple":{"CAPTION":"ラッキー☆スター","HELP":"初心者向けの、シンプルな設定です。拡張設定の一部が固定になっています。"},"star":{"CAPTION":"Orbital☆Star","HELP":"すべての役職、恩恵、事件を楽しむことができます。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>宇宙時代に突入した「全部入り」のセットです。村落共同体は渓谷や高原ではなく、小惑星帯や人工コロニー、移民船にあるでしょう。事件が始まるまでは、とても充実した近代的なインフラが整っていたのですが……"},"regend":{"CAPTION":"議事☆伝承","HELP":"すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。アクション内容は穏当になり、未来的ですばらしいクローンも居ません。"},"fool":{"CAPTION":"適当系","HELP":"てきとーな感じ。"},"sow":{"CAPTION":"人狼物語","HELP":"ウェブゲーム「人狼物語」風の役職を楽しめます。ただし、細かい動作に違いがあります。"},"wbbs":{"CAPTION":"人狼BBS","HELP":"ウェブゲーム「人狼BBS」風の役職を楽しめます。ただし、細かい動作に違いがあります。"},"juna":{"CAPTION":"人狼審問","HELP":"ウェブゲーム「人狼審問」風の役職を楽しめます。ただし、細かい動作に違いがあります。"},"complex":{"CAPTION":"PARANOIA","HELP":"ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"},"complexx":{"CAPTION":"ParanoiA","HELP":"ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"},"cabala":{"CAPTION":"ギロチン広場","HELP":"権謀術数を弄び、虚実まじえた会話を楽しむためのセットです。"},"tabula":{"CAPTION":"タブラの人狼","HELP":"カードゲーム「Lupus in Tabula」風の役職を楽しめます。ただし、疫病神、公証人、悪魔くん、には対応していません。"},"millerhollow":{"CAPTION":"ミラーズホロウ","HELP":"カードゲーム「The Werewolves of Millers Hollow + New Moon」風の役職を楽しめます。ただし、愚か者には対応していません。守護者、笛吹きにすこし違いがあります。"},"ultimate":{"CAPTION":"アルティメット","HELP":"カードゲーム「アルティメット人狼」風の役職を楽しめます。ただし、ドワーフ、ドッペルゲンガー、アル中、愚か者、倫理学者には対応していません。"}},"saycnt":{"sow":{"CAPTION":"人狼物語","HELP":null},"say5":{"CAPTION":"寡黙への挑戦","COST_SAY":"count","COST_MEMO":"none","COST_ACT":"count","RECOVERY":1,"MAX_SAY":5,"MAX_TSAY":5,"MAX_SPSAY":5,"MAX_WSAY":10,"MAX_GSAY":10,"MAX_PSAY":10,"MAX_ESAY":999,"MAX_SAY_ACT":5,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESLINE":10},"point":{"COST_SAY":"point","COST_MEMO":"count","COST_ACT":"count","MAX_ESAY":9999},"count":{"COST_SAY":"count","COST_MEMO":"count","COST_ACT":"count","ADD_SAY":0,"MAX_ADDSAY":0},"lobby":{"CAPTION":"ロビー","HELP":"∞pt/∞act","COST_SAY":"none","COST_MEMO":"none","COST_ACT":"none","RECOVERY":1,"MAX_SAY":9999,"MAX_TSAY":9999,"MAX_SPSAY":9999,"MAX_WSAY":9999,"MAX_GSAY":9999,"MAX_PSAY":9999,"MAX_ESAY":9999,"MAX_SAY_ACT":99,"ADD_SAY":9999,"MAX_ADDSAY":0,"MAX_MESCNT":1000,"MAX_MESLINE":20},"say5x200":{"CAPTION":"寡黙への挑戦","COST_SAY":"count","COST_MEMO":"none","COST_ACT":"count","RECOVERY":1,"MAX_SAY":5,"MAX_TSAY":5,"MAX_SPSAY":5,"MAX_WSAY":10,"MAX_GSAY":10,"MAX_PSAY":10,"MAX_ESAY":999,"MAX_SAY_ACT":5,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESLINE":10,"HELP":"（24h回復） 200字x5回/5act'","MAX_MESCNT":200},"say5x300":{"CAPTION":"小論文への挑戦","COST_SAY":"count","COST_MEMO":"none","COST_ACT":"count","RECOVERY":1,"MAX_SAY":5,"MAX_TSAY":5,"MAX_SPSAY":5,"MAX_WSAY":10,"MAX_GSAY":10,"MAX_PSAY":10,"MAX_ESAY":999,"MAX_SAY_ACT":5,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESLINE":10,"HELP":"（24h回復） 300字x5回/15act'","MAX_MESCNT":300},"saving":{"COST_SAY":"count","COST_MEMO":"count","COST_ACT":"count","ADD_SAY":0,"MAX_ADDSAY":0,"CAPTION":"節約","HELP":"250字x20回/15act","RECOVERY":0,"MAX_SAY":20,"MAX_TSAY":10,"MAX_SPSAY":10,"MAX_WSAY":30,"MAX_GSAY":20,"MAX_PSAY":20,"MAX_ESAY":999,"MAX_SAY_ACT":15,"MAX_MESCNT":250,"MAX_MESLINE":10},"wbbs":{"COST_SAY":"count","COST_MEMO":"none","COST_ACT":"count","ADD_SAY":0,"MAX_ADDSAY":0,"CAPTION":"人狼BBS","HELP":"200字x20回","RECOVERY":0,"MAX_SAY":20,"MAX_TSAY":5,"MAX_SPSAY":20,"MAX_WSAY":40,"MAX_GSAY":20,"MAX_PSAY":20,"MAX_ESAY":999,"MAX_SAY_ACT":0,"MAX_MESCNT":200,"MAX_MESLINE":5},"euro":{"COST_SAY":"count","COST_MEMO":"count","COST_ACT":"count","ADD_SAY":0,"MAX_ADDSAY":0,"CAPTION":"欧州","HELP":"（24h回復） 800字x30回/30act","RECOVERY":1,"MAX_SAY":30,"MAX_TSAY":999,"MAX_SPSAY":999,"MAX_WSAY":999,"MAX_GSAY":999,"MAX_PSAY":30,"MAX_ESAY":999,"MAX_SAY_ACT":30,"MAX_MESCNT":800,"MAX_MESLINE":20},"tiny":{"COST_SAY":"point","COST_MEMO":"point","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"たりない","HELP":"（24h回復）（メモは20pt） 333pt/9act","RECOVERY":1,"MAX_SAY":333,"MAX_TSAY":999,"MAX_SPSAY":333,"MAX_WSAY":999,"MAX_GSAY":999,"MAX_PSAY":999,"MAX_SAY_ACT":9,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESCNT":300,"MAX_MESLINE":10},"weak":{"COST_SAY":"point","COST_MEMO":"point","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"むりせず","HELP":"（24h回復）（メモは20pt） 777pt/15act","RECOVERY":1,"MAX_SAY":777,"MAX_TSAY":777,"MAX_SPSAY":777,"MAX_WSAY":999,"MAX_GSAY":999,"MAX_PSAY":1200,"MAX_SAY_ACT":15,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESCNT":600,"MAX_MESLINE":15},"juna":{"COST_SAY":"point","COST_MEMO":"count","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"しんもん","HELP":"（24h回復） 1200pt/24act","RECOVERY":1,"MAX_SAY":1200,"MAX_TSAY":700,"MAX_SPSAY":700,"MAX_WSAY":3000,"MAX_GSAY":2000,"MAX_PSAY":2000,"MAX_SAY_ACT":24,"ADD_SAY":0,"MAX_ADDSAY":0,"MAX_MESCNT":1000,"MAX_MESLINE":20},"vulcan":{"COST_SAY":"point","COST_MEMO":"count","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"いっぱい","HELP":"（24h回復） 1000pt+++300pt/36act","RECOVERY":1,"MAX_SAY":1000,"MAX_TSAY":1000,"MAX_SPSAY":1500,"MAX_WSAY":4000,"MAX_GSAY":3000,"MAX_PSAY":3000,"MAX_SAY_ACT":36,"ADD_SAY":300,"MAX_ADDSAY":3,"MAX_MESCNT":1000,"MAX_MESLINE":20},"infinity":{"CAPTION":"むげん","HELP":"∞pt/∞act","COST_SAY":"none","COST_MEMO":"none","COST_ACT":"none","RECOVERY":1,"MAX_SAY":9999,"MAX_TSAY":9999,"MAX_SPSAY":9999,"MAX_WSAY":9999,"MAX_GSAY":9999,"MAX_PSAY":9999,"MAX_ESAY":9999,"MAX_SAY_ACT":99,"ADD_SAY":9999,"MAX_ADDSAY":0,"MAX_MESCNT":1000,"MAX_MESLINE":20},"weak_braid":{"COST_SAY":"point","COST_MEMO":"point","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"むりせず","HELP":"（24h回復）（メモは20pt） 600pt++100pt/15act","RECOVERY":1,"MAX_SAY":600,"MAX_TSAY":600,"MAX_SPSAY":600,"MAX_WSAY":999,"MAX_GSAY":999,"MAX_PSAY":1200,"MAX_SAY_ACT":15,"ADD_SAY":100,"MAX_ADDSAY":2,"MAX_MESCNT":600,"MAX_MESLINE":15},"juna_braid":{"COST_SAY":"point","COST_MEMO":"count","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"しんもん","HELP":"（24h回復） 800pt++200pt/24act","RECOVERY":1,"MAX_SAY":800,"MAX_TSAY":700,"MAX_SPSAY":700,"MAX_WSAY":3000,"MAX_GSAY":2000,"MAX_PSAY":2000,"MAX_SAY_ACT":24,"ADD_SAY":200,"MAX_ADDSAY":2,"MAX_MESCNT":1000,"MAX_MESLINE":20},"vulcan_braid":{"COST_SAY":"point","COST_MEMO":"count","COST_ACT":"count","MAX_ESAY":9999,"CAPTION":"いっぱい","HELP":"（24h回復） 1000pt+++300pt/36act","RECOVERY":1,"MAX_SAY":1000,"MAX_TSAY":1000,"MAX_SPSAY":1500,"MAX_WSAY":4000,"MAX_GSAY":3000,"MAX_PSAY":3000,"MAX_SAY_ACT":36,"ADD_SAY":300,"MAX_ADDSAY":3,"MAX_MESCNT":1000,"MAX_MESLINE":20},"infinity_braid":{"CAPTION":"むげん","HELP":"∞pt/∞act","COST_SAY":"none","COST_MEMO":"none","COST_ACT":"none","RECOVERY":1,"MAX_SAY":9999,"MAX_TSAY":9999,"MAX_SPSAY":9999,"MAX_WSAY":9999,"MAX_GSAY":9999,"MAX_PSAY":9999,"MAX_ESAY":9999,"MAX_SAY_ACT":99,"ADD_SAY":9999,"MAX_ADDSAY":0,"MAX_MESCNT":1000,"MAX_MESLINE":20}},"log":{"anchor":{"m":"#","a":"%","S":"","T":"-","W":"*","G":"+","P":"=","X":"!","V":"@"},"mestypetext":[null,null,"【管理人削除】",null,null,null,"【未確】",null,"【削除】","【人】","【独】","【赤】","【墓】","【鳴】","【念】","【見】","【憑】",null,null,null],"font":[null,null,"color=\"gray\"",null,null,null,null,null,"color=\"gray\"",null,"color=\"gray\"","color=\"red\"","color=\"teal\"","color=\"blue\"","color=\"green\"","color=\"maroon\"",null,"color=\"purple\"",null,"color=\"red\""]}};
 GAME = {"PERL_DEFAULT":{"config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"path":{"DIR_LIB":"../cabala/lib","DIR_HTML":"../cabala/html","DIR_RS":"../cabala/rs","DIR_VIL":"./data/vil","DIR_USER":"../sow/data/user"},"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[1,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[1,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[1,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[0,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[0,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[1,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[1,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[1,"1:自殺投票"]}}},"PERL_NEW":{"config":{"trsid":["all","star","regend","heavy","complexx","secret"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY","SECRET"]}},"PERL_GAME":{"config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"戦","maxsize":{"MAXSIZE_ACTION":60,"MAXSIZE_MEMOCNT":1000,"MAXSIZE_MEMOLINE":25},"saycnt":["tiny","weak","juna","say5x200","say5x300","saving","euro"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY"],"trsid":["all","star","regend","heavy","complexx"],"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"../sow/data/user"}}},"PERL_UNION":{"config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"戦","maxsize":{"MAXSIZE_ACTION":60,"MAXSIZE_MEMOCNT":1000,"MAXSIZE_MEMOLINE":25},"saycnt":["tiny","weak","juna","say5x200","say5x300","wbbs","saving","euro"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY","SECRET"],"trsid":["sow","all","star","regend","heavy","complexx","tabula","millerhollow","ultimate"],"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"../sow/data/user"},"cfg":{"TYPE":"CABALA","RULE":"UNION","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":3,"TIMEOUT_SCRAP":10,"TOPPAGE_INFO":"../sow/_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com"}}},"PERL_BRAID":{"config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"演","maxsize":{"MAXSIZE_ACTION":120,"MAXSIZE_MEMOCNT":2000,"MAXSIZE_MEMOLINE":25},"saycnt":["weak","juna","vulcan"],"game":["TABULA","MILLERHOLLOW","TROUBLE","MISTERY"],"trsid":["all","star","regend","heavy","complexx"],"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[0,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[0,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[0,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[1,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[0,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[0,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[0,"1:自殺投票"]},"cfg":{"TYPE":"BRAID","RULE":"BRAID","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":2,"TIMEOUT_SCRAP":5,"TOPPAGE_INFO":"./_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com"}}},"TESTBED":{"config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"戦","maxsize":{"MAXSIZE_ACTION":60,"MAXSIZE_MEMOCNT":1000,"MAXSIZE_MEMOLINE":25},"saycnt":["weak","juna","say5x200","say5x300","wbbs","saving","euro","vulcan","infinity"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY","SECRET"],"trsid":["sow","all","star","regend","heavy","complexx","tabula","millerhollow","ultimate"],"path":{"DIR_LIB":"../testbed/lib","DIR_HTML":"../testbed/html","DIR_RS":"../testbed/rs","DIR_VIL":"./data/vil","DIR_USER":"../sow/data/user"},"cfg":{"TYPE":"CABALA","RULE":"ALLSTAR","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":1,"TIMEOUT_SCRAP":1,"TOPPAGE_INFO":"../sow/_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://utage.family.jp/testbed","BASEDIR_CGIERR":"http://utage.family.jp//testbed","NAME_HOME":"人狼議事 手元テスト","MAX_VILLAGES":9},"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[1,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[1,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[0,"1:突然死あり"],"ENABLED_BITTY":[1,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[0,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[1,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[1,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[1,"1:自殺投票"]},"pl":"/www/giji_log/testbed/config.pl"}},"PERJURY_OLD":{"server":"utage.family.jp","oldlog":"/perjury/sow.cgi?cmd=oldlog&rowall=on","livelog":"/perjury/sow.cgi?cmd=rss","folder":"PERJURY_OLD","info_url":"/perjury/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事RP:Bp","epi_url":"/perjury/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"Bp","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"演","maxsize":{"MAXSIZE_ACTION":120,"MAXSIZE_MEMOCNT":2000,"MAXSIZE_MEMOLINE":25},"saycnt":["weak","juna","vulcan"],"game":["TABULA","MILLERHOLLOW","TROUBLE","MISTERY"],"trsid":["all","star","regend","heavy","complexx"],"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[0,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[0,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[0,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[1,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[0,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[0,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[0,"1:自殺投票"]},"cfg":{"TYPE":"CABALA","RULE":"BRAID","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":0,"TIMEOUT_ENTRY":2,"TIMEOUT_SCRAP":5,"TOPPAGE_INFO":"../sow/_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://utage.family.jp/perjury","BASEDIR_CGIERR":"http://utage.family.jp//perjury","NAME_HOME":"人狼議事 Role Play braid perjury","MAX_VILLAGES":0},"path":{"DIR_LIB":"../cabala/lib","DIR_HTML":"../cabala/html","DIR_RS":"../cabala/rs","DIR_VIL":"./data/vil","DIR_USER":"../sow/data/user"},"pl":"/www/giji_log/perjury/config.pl"}},"PRETENSE":{"server":"utage.family.jp","oldlog":"/pretense/sow.cgi?cmd=oldlog&rowall=on","folder":"PRETENSE","info_url":"/pretense/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事RP:A","epi_url":"/pretense/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"A"},"RP":{"server":"utage.family.jp","oldlog":"/rp/sow.cgi?cmd=oldlog&rowall=on","folder":"RP","info_url":"/rp/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事RP:","epi_url":"/rp/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":""},"CABALA_OLD":{"server":"utage.family.jp","oldlog":"/cabala/sow.cgi?cmd=oldlog&rowall=on","livelog":"/cabala/sow.cgi?cmd=rss","folder":"CABALA","info_url":"/cabala/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事陰謀:","epi_url":"/cabala/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"C","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"戦","maxsize":{"MAXSIZE_ACTION":60,"MAXSIZE_MEMOCNT":1000,"MAXSIZE_MEMOLINE":25},"saycnt":["tiny","weak","juna","say5x200","say5x300","saving","euro"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY"],"trsid":["all","star","regend","heavy","complexx"],"path":{"DIR_LIB":"../cabala/lib","DIR_HTML":"../cabala/html","DIR_RS":"../cabala/rs","DIR_VIL":"../cafe/data/vil","DIR_USER":"../sow/data/user"},"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[1,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[1,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[1,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[0,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[1,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[1,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[1,"1:自殺投票"]},"cfg":{"TYPE":"CABALA","RULE":"CABALA","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":3,"TIMEOUT_SCRAP":10,"TOPPAGE_INFO":"../sow/_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://utage.family.jp/cabala","BASEDIR_CGIERR":"http://utage.family.jp//cabala","NAME_HOME":"人狼議事 陰謀の苑","MAX_VILLAGES":0},"pl":"/www/giji_log/cabala/config.pl"}},"ALLSTAR_OLD":{"server":"utage.family.jp","oldlog":"/allstar/sow.cgi?cmd=oldlog&rowall=on","livelog":"/allstar/sow.cgi?cmd=rss","folder":"ALLSTAR","info_url":"/allstar/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事大乱闘:A","epi_url":"/allstar/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"A","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"戦","maxsize":{"MAXSIZE_ACTION":60,"MAXSIZE_MEMOCNT":1000,"MAXSIZE_MEMOLINE":25},"saycnt":["tiny","weak","juna","say5x200","say5x300","wbbs","saving","euro"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY","SECRET"],"trsid":["sow","all","star","regend","heavy","complexx","tabula","millerhollow","ultimate"],"path":{"DIR_LIB":"../cabala/lib","DIR_HTML":"../cabala/html","DIR_RS":"../cabala/rs","DIR_VIL":"../jksy/data/vil","DIR_USER":"../sow/data/user"},"cfg":{"TYPE":"CABALA","RULE":"ALLSTAR","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":3,"TIMEOUT_SCRAP":10,"TOPPAGE_INFO":"../sow/_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://utage.family.jp/allstar","BASEDIR_CGIERR":"http://utage.family.jp//allstar","NAME_HOME":"人狼議事 大乱闘オールスター","MAX_VILLAGES":0},"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[1,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[1,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[1,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[0,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[0,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[1,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[1,"1:自殺投票"]},"pl":"/www/giji_log/allstar/config.pl"}},"ULTIMATE":{"server":"utage.family.jp","oldlog":"/ultimate/sow.cgi?cmd=oldlog&rowall=on","folder":"ULTIMATE","info_url":"/ultimate/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事大乱闘:","epi_url":"/ultimate/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":""},"WOLF":{"folder":"WOLF","nation":"人狼議事標準:","server":"utage.family.jp","oldlog":"/wolf/sow.cgi?cmd=oldlog&rowall=on","livelog":"/wolf/sow.cgi?cmd=rss","info_url":"/wolf/sow.cgi?ua=mb&vid=%s&cmd=vinfo","epi_url":"/wolf/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":""},"PAN":{"server":"soy-bean.sakura.ne.jp","oldlog":"/pan/sow.cgi?cmd=oldlog&rowall=on","livelog":"/pan/sow.cgi?cmd=rss","folder":"PAN","info_url":"/pan/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"似顔絵人狼","epi_url":"/pan/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","config":{"csid":["sow","juna","name","bloody","orange","15girls","tmmi","cat","bunmei"],"erb":"./app/views/sow/pan.pl.erb","cd_default":"戦","maxsize":{"MAXSIZE_ACTION":60,"MAXSIZE_MEMOCNT":1000,"MAXSIZE_MEMOLINE":25},"saycnt":["tiny","weak","juna","say5x200","say5x300","wbbs","saving","euro"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY","SECRET"],"trsid":["sow","all","star","regend","heavy","complexx","tabula","millerhollow","ultimate"],"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"./data/user"},"cfg":{"TYPE":"CABALA","RULE":"PAN","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":3,"TIMEOUT_SCRAP":10,"TOPPAGE_INFO":"../sow/_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://soy-bean.sakura.ne.jp/pan","BASEDIR_CGIERR":"http://soy-bean.sakura.ne.jp/pan//","NAME_HOME":"似顔絵人狼","MAX_VILLAGES":1},"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[1,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[1,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[1,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[1,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[0,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[0,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[0,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[1,"1:自殺投票"],"ENABLED_SEQ_EVENT":[0,"0:ランダムイベント 1:順序通りのイベント"]},"pl":"/www/giji_log/pan/config.pl","is_angular":"show-fix"}},"MORPHE":{"server":"morphe.sakura.ne.jp","oldlog":"/sow.cgi?cmd=oldlog&rowall=on","livelog":"/sow.cgi?cmd=rss","folder":"MORPHE","info_url":"/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事:M","epi_url":"/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"M","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"戦","maxsize":{"MAXSIZE_ACTION":60,"MAXSIZE_MEMOCNT":1000,"MAXSIZE_MEMOLINE":25},"saycnt":["tiny","weak","juna","vulcan","say5x200","say5x300","saving","euro"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY"],"trsid":["all","star","regend","heavy","complexx"],"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"./data/user"},"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[1,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[1,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[1,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[0,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[0,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[1,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[1,"1:自殺投票"]},"cfg":{"TYPE":"BRAID","RULE":"MORPHE","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":2,"TIMEOUT_SCRAP":5,"TOPPAGE_INFO":"./_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://morphe.sakura.ne.jp/morphe","BASEDIR_CGIERR":"http://morphe.sakura.ne.jp/morphe//","NAME_HOME":"人狼議事 夢の形","MAX_VILLAGES":4},"pl":"/www/giji_log/morphe/config.pl"}},"SOYBEAN":{"server":"soy-bean.sakura.ne.jp","oldlog":"/sow.cgi?cmd=oldlog&rowall=on","livelog":"/sow.cgi?cmd=rss","folder":"SOYBEAN","info_url":"/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事RP:Cs","epi_url":"/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"Bs","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"演","maxsize":{"MAXSIZE_ACTION":120,"MAXSIZE_MEMOCNT":2000,"MAXSIZE_MEMOLINE":25},"saycnt":["weak","juna","vulcan","infinity"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY","SECRET"],"trsid":["all","star","regend","heavy","complexx","secret"],"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[0,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[0,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[0,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[1,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[1,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[0,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[1,"1:自殺投票"],"ENABLED_SEQ_EVENT":[1,"1:事件正順の選択を有効にする。"],"ENABLED_TEST_ROLE":[1,"1:テスト中役職を有効にする。"]},"cfg":{"TYPE":"BRAID","RULE":"BRAID","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":2,"TIMEOUT_SCRAP":5,"TOPPAGE_INFO":"./_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://soy-bean.sakura.ne.jp/soy-bean","BASEDIR_CGIERR":"http://soy-bean.sakura.ne.jp/soy-bean//","NAME_HOME":"人狼議事 鯖の味噌煮","MAX_VILLAGES":2},"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"./data/user"},"pl":"/www/giji_log/soy-bean/config.pl","is_angular":"show-fix"}},"CIEL":{"server":"ciel.moo.jp","oldlog":"/cheat/sow.cgi?cmd=oldlog&rowall=on","livelog":"/cheat/sow.cgi?cmd=rss","folder":"CIEL","info_url":"/cheat/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事RP:Cc","epi_url":"/cheat/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"Cc","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"演","maxsize":{"MAXSIZE_ACTION":120,"MAXSIZE_MEMOCNT":2000,"MAXSIZE_MEMOLINE":25},"saycnt":["weak","juna","vulcan","infinity"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY","SECRET"],"trsid":["all","star","regend","heavy","complexx","secret"],"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[0,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[0,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[0,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[1,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[1,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[0,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[0,"1:自殺投票"]},"cfg":{"TYPE":"CHEAT","RULE":"CIEL","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":2,"TIMEOUT_SCRAP":5,"TOPPAGE_INFO":"./_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","BASEDIR_CGIERR":"http://ciel.moo.jp//cheat","URL_SW":"http://ciel.moo.jp/cheat","MAX_VILLAGES":2,"NAME_HOME":"人狼議事 ciel<br>- Role Play Cheat -"},"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"./data/user"},"pl":"/www/giji_log/ciel/config.pl","is_angular":"show-fix"}},"PERJURY":{"server":"perjury.rulez.jp","oldlog":"/sow.cgi?cmd=oldlog&rowall=on","livelog":"/sow.cgi?cmd=rss","folder":"PERJURY","info_url":"/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事RP:Cp","epi_url":"/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"Bp","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"演","maxsize":{"MAXSIZE_ACTION":120,"MAXSIZE_MEMOCNT":2000,"MAXSIZE_MEMOLINE":25},"saycnt":["weak","juna","vulcan","infinity"],"game":["TABULA","MILLERHOLLOW","TROUBLE","MISTERY"],"trsid":["all","star","regend","heavy","complexx"],"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[0,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[0,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[0,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[1,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[0,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[0,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[0,"1:自殺投票"]},"cfg":{"TYPE":"CHEAT","RULE":"PERJURY","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":2,"TIMEOUT_SCRAP":5,"TOPPAGE_INFO":"./_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","BASEDIR_CGIERR":"http://perjury.rulez.jp//","URL_SW":"http://perjury.rulez.jp","MAX_VILLAGES":2,"NAME_HOME":"人狼議事 perjury rulez<br>- Role Play Cheat -"},"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"../sow/data/user"},"pl":"/www/giji_log/vage/config.pl","is_angular":"show-fix"}},"XEBEC":{"server":"xebec.x0.to","oldlog":"/xebec/sow.cgi?cmd=oldlog&rowall=on","livelog":"/xebec/sow.cgi?cmd=rss","folder":"XEBEC","info_url":"/xebec/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事RP:Bx","epi_url":"/xebec/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"Bx","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"演","maxsize":{"MAXSIZE_ACTION":120,"MAXSIZE_MEMOCNT":2000,"MAXSIZE_MEMOLINE":25},"saycnt":["weak","juna","vulcan"],"game":["TABULA","MILLERHOLLOW","TROUBLE","MISTERY"],"trsid":["all","star","regend","heavy","complexx"],"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[0,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[0,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[0,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[1,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[0,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[0,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[0,"1:自殺投票"]},"cfg":{"TYPE":"BRAID","RULE":"BRAID","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":2,"TIMEOUT_SCRAP":5,"TOPPAGE_INFO":"./_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://xebec.x0.to/xebec","BASEDIR_CGIERR":"http://xebec.x0.to//xebec","NAME_HOME":"人狼議事 xebec<br>- Role Play braid -","MAX_VILLAGES":3},"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"../sow/data/user"},"pl":"/www/giji_log/xebec/config.pl"}},"CRAZY":{"server":"crazy-crazy.sakura.ne.jp","oldlog":"/crazy/sow.cgi?cmd=oldlog&rowall=on","livelog":"/crazy/sow.cgi?cmd=rss","folder":"CRAZY","info_url":"/crazy/sow.cgi?\\ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事RP:Bc","epi_url":"/crazy/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"Bc","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"演","maxsize":{"MAXSIZE_ACTION":120,"MAXSIZE_MEMOCNT":2000,"MAXSIZE_MEMOLINE":25},"saycnt":["infinity"],"game":["TABULA","MILLERHOLLOW","TROUBLE","MISTERY"],"trsid":["all","star","regend","heavy","complexx"],"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[0,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[0,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[0,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[1,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[1,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[0,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[0,"1:自殺投票"]},"cfg":{"TYPE":"BRAID","RULE":"BRAID","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":2,"TIMEOUT_SCRAP":5,"TOPPAGE_INFO":"./_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://crazy-crazy.sakura.ne.jp/crazy","BASEDIR_CGIERR":"http://crazy-crazy.sakura.ne.jp//crazy","NAME_HOME":"人狼議事 crazy<br>- Role Play braid -","MAX_VILLAGES":2},"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"./data/user"},"pl":"/www/giji_log/crazy/config.pl"}},"CABALA":{"server":"cabala.halfmoon.jp","oldlog":"/cafe/sow.cgi?cmd=oldlog&rowall=on","livelog":"/cafe/sow.cgi?cmd=rss","folder":"CABALA","info_url":"/cafe/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事CabalaCafe:","epi_url":"/cafe/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"C","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"戦","maxsize":{"MAXSIZE_ACTION":60,"MAXSIZE_MEMOCNT":1000,"MAXSIZE_MEMOLINE":25},"saycnt":["tiny","weak","juna","say5x200","say5x300","saving","euro"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY","SECRET"],"trsid":["all","star","regend","heavy","complexx","secret"],"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"../sow/data/user"},"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[1,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[1,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[1,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[0,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[1,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[1,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[1,"1:自殺投票"]},"cfg":{"TYPE":"BRAID","RULE":"CABALA","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":1,"TIMEOUT_ENTRY":2,"TIMEOUT_SCRAP":5,"TOPPAGE_INFO":"./_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://cabala.halfmoon.jp/cafe","BASEDIR_CGIERR":"http://cabala.halfmoon.jp//cafe","NAME_HOME":"人狼議事 Cabala Cafe","MAX_VILLAGES":4},"pl":"/www/giji_log/cafe/config.pl","is_angular":"show-fix"}},"ALLSTAR":{"server":"jinro.jksy.org","oldlog":"/~nanakorobi?cmd=oldlog&rowall=on","livelog":"/~nanakorobi?cmd=rss","folder":"ALLSTAR","info_url":"/~nanakorobi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事大乱闘:A","epi_url":"/~nanakorobi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"A","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"戦","maxsize":{"MAXSIZE_ACTION":60,"MAXSIZE_MEMOCNT":1000,"MAXSIZE_MEMOLINE":25},"saycnt":["tiny","weak","juna","say5x200","say5x300","wbbs","saving","euro"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY","SECRET"],"trsid":["sow","all","star","regend","heavy","complexx","tabula","millerhollow","ultimate"],"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"../sow/data/user"},"cfg":{"TYPE":"BRAID","RULE":"ALLSTAR","USERID_NPC":"master","USERID_ADMIN":"admin","ENABLED_VMAKE":0,"TIMEOUT_ENTRY":3,"TIMEOUT_SCRAP":10,"TOPPAGE_INFO":"./_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://jinro.jksy.org/~nanakorobi","BASEDIR_CGIERR":"http://jinro.jksy.org//~nanakorobi","NAME_HOME":"人狼議事 大乱闘All☆Star","MAX_VILLAGES":4},"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[1,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[1,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[1,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[0,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[1,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[0,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[1,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[1,"1:自殺投票"]},"pl":"/www/giji_log/jksy/config.pl"}},"LOBBY_OLD":{"folder":"LOBBY_OLD","nation":"人狼議事旧ロビー","vid_code":"O"},"LOBBY":{"server":"crazy-crazy.sakura.ne.jp","oldlog":"/giji_lobby/lobby/sow.cgi?cmd=oldlog&rowall=on","livelog":"/giji_lobby/lobby/sow.cgi?cmd=rss","folder":"LOBBY","info_url":"/giji_lobby/lobby/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事ロビー","epi_url":"/giji_lobby/lobby/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"L","config":{"csid":["ririnra","ririnra_c05","ririnra_c08","ririnra_c19","ririnra_c67","ririnra_c68","ririnra_c72","ririnra_c51","ririnra_c20","ririnra_c32","all","mad","time","ger","animal","school","changed","changed_m05","SF","SF_sf10","wa","wa_w23"],"erb":"./app/views/sow/giji.pl.erb","cd_default":"戦","maxsize":{"MAXSIZE_ACTION":60,"MAXSIZE_MEMOCNT":1000,"MAXSIZE_MEMOLINE":25},"saycnt":["lobby"],"game":["TABULA","LIVE_TABULA","MILLERHOLLOW","LIVE_MILLERHOLLOW","TROUBLE","MISTERY","SECRET"],"trsid":["all","star","regend","heavy","complexx","secret"],"path":{"DIR_LIB":"./lib","DIR_HTML":"./html","DIR_RS":"./rs","DIR_VIL":"./data/vil","DIR_USER":"../data/user"},"cfg":{"TYPE":"BRAID","RULE":"LOBBY","USERID_NPC":"master","USERID_ADMIN":"master","ENABLED_VMAKE":0,"TIMEOUT_ENTRY":3,"TIMEOUT_SCRAP":365,"TOPPAGE_INFO":"./_info.pl","BASEDIR_CGI":".","BASEDIR_DAT":"./data","BASEDIR_DOC":"http://giji-assets.s3-website-ap-northeast-1.amazonaws.com","URL_SW":"http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby","BASEDIR_CGIERR":"http://crazy-crazy.sakura.ne.jp//giji_lobby/lobby","NAME_HOME":"人狼議事 ロビー","MAX_VILLAGES":10,"MAX_LOG":750},"enable":{"DEFAULT_VOTETYPE":["anonymity","標準の投票方法(sign: 記名、anonymity:無記名)"],"ENABLED_DELETED":[1,"削除発言を表示するかどうか"],"ENABLED_WINNER_LABEL":[1,"1:勝利者表示をする。"],"ENABLED_MAX_ESAY":[0,"エピローグを発言制限対象に 0:しない、1:する"],"ENABLED_RANDOMTARGET":[1,"1:投票・能力先に「ランダム」を含める"],"ENABLED_SUDDENDEATH":[1,"1:突然死あり"],"ENABLED_BITTY":[1,"少女や交霊者ののぞきみがひらがなのみ。"],"ENABLED_PERMIT_DEAD":[0,"墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"],"ENABLED_UNDEAD":[0,"1:幽界トーク村を設定可能"],"ENABLED_AIMING":[1,"1:対象を指定した発言（内緒話）を含める"],"ENABLED_MOB_AIMING":[1,"1:見物人が内緒話を使える。"],"ENABLED_AMBIDEXTER":[1,"1:狂人の裏切りを認める（狂人は、人狼陣営ではなく裏切りの陣営＝村が負ければよい）"],"ENABLED_SUICIDE_VOTE":[1,"1:自殺投票"],"ENABLED_SEQ_EVENT":[0,"0:ランダムイベント 1:順序通りのイベント"]},"pl":"/www/giji_log/lobby/config.pl","is_angular":"show-fix"}},"OFFPARTY":{"server":"party.ps.land.to","oldlog":"/kitchen/sow.cgi?cmd=oldlog&rowall=on","livelog":"/kitchen/sow.cgi?cmd=rss","folder":"OFFPARTY","info_url":"/kitchen/sow.cgi?ua=mb&vid=%s&cmd=vinfo","nation":"人狼議事オフ相談所","epi_url":"/kitchen/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50","vid_code":"P"}};
+
+
 var giji;
 
 giji = {

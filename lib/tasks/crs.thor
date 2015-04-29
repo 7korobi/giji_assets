@@ -7,6 +7,7 @@ class Crs < Thor
     require './lib/rsync'
     require 'erubis'
 
+    # chr set create.
     chr_sets = [
       CS_RIRINRA,
       CS_WA,
@@ -40,6 +41,9 @@ class Crs < Thor
       CrsCreate.new.activate(Hashie::Mash.new params)
     end
 
+    # tag create.
+    TagCreate.new.activate
+
     rsync = Giji::RSync.new
     rsync.each do |folder, protocol, set|
       rsync.put(protocol, set, 'rs/', :lapp, :app)
@@ -55,12 +59,53 @@ class Crs < Thor
     end
     def to_s
       render_exec
-      return @content_for_layout
+      result = @content_for_layout
+      result = result.gsub(/[✡]/) do |chr| 
+        "&#x#{chr.ord.to_s(16)};"
+      end
+      result = result.gsub(/[—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/) do |chr|
+        chr + '\\'
+      end
+      return result
     end
     def render( ml = :html)
       render_exec
       print "Content-Type: text/%s\r\n\r\n"%[ ml.to_s ]
       print @content_for_layout
+    end
+  end
+
+  class TagCreate < WebHtml
+    def activate
+      @tags = RAILS.tag
+
+      @rhtml_content = "./app/views/sow/tag.pl.erb"
+      result = to_s
+
+      @rhtml_src_testbed_out = "/www/sow-giji/show-fix/rs/tag.pl"
+      @rhtml_src_cabala_out  = "/www/sow-giji/cabala/rs/tag.pl"
+
+      @rhtml_testbed_out  = "/www/giji_log/testbed/rs/tag.pl"
+      @rhtml_wolf_out     = "/www/giji_log/wolf/rs/tag.pl"
+      @rhtml_ultimate_out = "/www/giji_log/ultimate/rs/tag.pl"
+      @rhtml_cabala_out   = "/www/giji_log/cabala/rs/tag.pl"
+      @rhtml_lobby_out    = "/www/giji_log/lobby/rs/tag.pl"
+
+      File.open(@rhtml_src_testbed_out ,'w:sjis:utf-8'){|f| f.write( result ) }
+      File.open(@rhtml_src_cabala_out  ,'w:sjis:utf-8'){|f| f.write( result ) }
+      FileUtils.chmod( 0666, @rhtml_src_testbed_out )
+      FileUtils.chmod( 0666, @rhtml_src_cabala_out  )
+
+      File.open(@rhtml_testbed_out ,'w:sjis:utf-8'){|f| f.write( result ) }
+      File.open(@rhtml_wolf_out    ,'w:sjis:utf-8'){|f| f.write( result ) }
+      File.open(@rhtml_ultimate_out,'w:sjis:utf-8'){|f| f.write( result ) }
+      File.open(@rhtml_cabala_out  ,'w:sjis:utf-8'){|f| f.write( result ) }
+      File.open(@rhtml_lobby_out   ,'w:sjis:utf-8'){|f| f.write( result ) }
+      FileUtils.chmod( 0666, @rhtml_testbed_out )
+      FileUtils.chmod( 0666, @rhtml_lobby_out   )
+      FileUtils.chmod( 0666, @rhtml_cabala_out  )
+      FileUtils.chmod( 0666, @rhtml_ultimate_out)
+      FileUtils.chmod( 0666, @rhtml_wolf_out  )
     end
   end
 
@@ -70,38 +115,47 @@ class Crs < Thor
       @chrset = params.set
       @chrnpc = params.npc
 
-      perl_change = -> s { s.gsub(/[—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/){ $& + '\\' }}
-      @chrnpc.say_0 = perl_change.call @chrnpc.say_0.inspect
-      @chrnpc.say_1 = perl_change.call @chrnpc.say_1.inspect
+      @chrnpc.say_0 = @chrnpc.say_0.inspect
+      @chrnpc.say_1 = @chrnpc.say_1.inspect
 
       jobs  = params.chr_jobs
       job_groups = jobs.group_by(&:face_id)
 
       faces = params.faces
       faces.each do |face|
-        face.name = perl_change.call face.name
+        face.name = face.name
         job = job_groups[face.face_id].first
 
         [:job].each do |col|
-          face[col] = perl_change.call job[col]
+          face[col] = job[col]
         end
       end
+
       @orders = faces.sort_by(&:order)
       @lists  = faces.sort_by(&:face_id)
+      @tag_names = {}
+      @chr_orders = {}
+      @orders.each do |face|
+        face.tags.each do |tag|
+          next unless RAILS.tag[tag].chr_set_ids.any? {|csid| @csid[csid] }
+          @tag_names[tag] = RAILS.tag[tag].name
+          @chr_orders[tag] = (@chr_orders[tag] || []) + [face.face_id]
+        end
+      end
+      @tag_order = RAILS.tag.keys.select {|tag| @chr_orders[tag] }
 
-      @rhtml_content      = "./app/views/sow/crs.pl.erb"
+      @rhtml_content = "./app/views/sow/crs.pl.erb"
+      result = to_s
 
-      @rhtml_src_testbed_out  = "/www/sow-giji/show-fix/rs/crs_"  + @csid +".pl"
-      @rhtml_src_angular_out  = "/www/sow-giji/show-fix/rs/crs_"  + @csid +".pl"
-      @rhtml_src_cabala_out   = "/www/sow-giji/cabala/rs/crs_"   + @csid +".pl"
+      @rhtml_src_testbed_out = "/www/sow-giji/show-fix/rs/crs_" + @csid +".pl"
+      @rhtml_src_angular_out = "/www/sow-giji/show-fix/rs/crs_" + @csid +".pl"
+      @rhtml_src_cabala_out  = "/www/sow-giji/cabala/rs/crs_"   + @csid +".pl"
 
       @rhtml_testbed_out  = "/www/giji_log/testbed/rs/crs_"  + @csid +".pl"
       @rhtml_wolf_out     = "/www/giji_log/wolf/rs/crs_"     + @csid +".pl"
       @rhtml_ultimate_out = "/www/giji_log/ultimate/rs/crs_" + @csid +".pl"
       @rhtml_cabala_out   = "/www/giji_log/cabala/rs/crs_"   + @csid +".pl"
       @rhtml_lobby_out    = "/www/giji_log/lobby/rs/crs_"    + @csid +".pl"
-
-      result = to_s
 
       File.open(@rhtml_src_testbed_out ,'w:sjis:utf-8'){|f| f.write( result ) }
       File.open(@rhtml_src_angular_out ,'w:sjis:utf-8'){|f| f.write( result ) }
