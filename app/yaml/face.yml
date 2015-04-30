@@ -31,7 +31,7 @@
     face_id: c53
     name: "ゼルダ"
     tags:
-      - law
+      - government
       - farm
       - elegant
 -   _id: c74
@@ -45,6 +45,7 @@
     face_id: c50
     name: "ディーン"
     tags:
+      - government
       - guild
 -   _id: c36
     order: 8
@@ -66,12 +67,13 @@
     tags:
       - immoral
       - travel
-      - road
+      - river
 -   _id: c55
     order: 10
     face_id: c55
     name: "パピヨン"
     tags:
+      - apartment
       - elegant
 -   _id: c29
     order: 11
@@ -87,7 +89,7 @@
       - servant
       - road
 -   _id: c16
-    order: 13
+    order: 127
     face_id: c16
     name: "マリアンヌ"
     tags:
@@ -126,6 +128,7 @@
     face_id: c70
     name: "パティ"
     tags:
+      - servant
       - apartment
 -   _id: c56
     order: 19
@@ -144,7 +147,8 @@
     face_id: c41
     name: "ヤニク"
     tags:
-      - road
+      - immoral
+      - river
 -   _id: c58
     order: 22
     face_id: c58
@@ -202,6 +206,7 @@
     face_id: c46
     name: "ゲイル"
     tags:
+      - apartment
       - medical
 -   _id: c14
     order: 31
@@ -246,7 +251,7 @@
     face_id: c02
     name: "アルフレッド"
     tags:
-      - law
+      - government
       - elegant
 -   _id: c66
     order: 39
@@ -261,7 +266,7 @@
     face_id: c24
     name: "ナタリア"
     tags:
-      - law
+      - government
       - apartment
 -   _id: c79
     order: 42
@@ -275,7 +280,7 @@
     face_id: c61
     name: "ヌマタロウ"
     tags:
-      - road
+      - river
       - farm
 -   _id: c23
     order: 44
@@ -304,6 +309,7 @@
     name: "フィリップ"
     tags:
       - road
+      - river
       - market
 -   _id: c21
     order: 50
@@ -332,6 +338,7 @@
     name: "メアリー"
     order: 55
     tags:
+      - market
       - road
 -   _id: c69
     order: 56
@@ -363,7 +370,8 @@
     face_id: c62
     name: "ヴェラ"
     tags:
-      - road
+      - immoral
+      - river
 -   _id: c13
     order: 62
     face_id: c13
@@ -419,7 +427,7 @@
     face_id: c15
     name: "ウェーズリー"
     tags:
-      - law
+      - government
       - road
 -   _id: c54
     order: 75
@@ -458,7 +466,8 @@
     face_id: c47
     name: "ペラジー"
     tags:
-      - road
+      - ecclesia
+      - river
 -   _id: c80
     order: 87
     face_id: c80
@@ -472,7 +481,7 @@
     comment: 2011/12/11
     order: 89
     tags:
-      - law
+      - government
       - ecclesia
 -   _id: c95
     face_id: c95
@@ -488,7 +497,8 @@
     comment: 2011/12/14 超常現象はあるんだ…
     order: 93
     tags:
-      - law
+      - government
+      - river
 -   _id: c98
     face_id: c98
     name: "オズワルド"
@@ -496,7 +506,7 @@
     order: 95
     tags:
       - elegant
-      - law
+      - river
 -   _id: c100
     face_id: c100
     name: "グレッグ"
@@ -510,6 +520,7 @@
     comment: 2011/12/30 美人さん♪
     order: 99
     tags:
+      - servant
       - apartment
 -   _id: c90
     face_id: c90
@@ -517,8 +528,8 @@
     comment: 2011/12/06
     order: 125
     tags:
-      - law
-      - road
+      - government
+      - river
       - farm
 -   _id: c88
     face_id: c88
@@ -533,7 +544,7 @@
     face_id: c89
     name: "カトリーナ"
     comment: 2011/12/06
-    order: 127
+    order: 128
     tags:
       - apartment
 -   _id: c84
@@ -557,7 +568,7 @@
     name: "ドロシー"
     order: 143
     tags:
-      - road
+      - river
       - servant
 -   _id: c92
     comment: 2011/12/06 姦し娘ーず♪
@@ -565,7 +576,7 @@
     name: "セレスト"
     order: 144
     tags:
-      - road
+      - river
       - servant
 -   _id: c93
     comment: 2011/12/06 えー○○が許されるのは小学生までだよねー♪
@@ -573,14 +584,13 @@
     name: "ベッキー"
     order: 145
     tags:
-      - road
+      - river
       - servant
 -   _id: c78
     order: 150
     face_id: c78
     name: "ネイサン"
     tags:
-      - law
       - market
 -   _id: c82
     order: 148
@@ -595,7 +605,6 @@
     comment: 2011/12/11
     order: 165
     tags:
-      - road
       - elegant
       - immoral
       - market
@@ -637,6 +646,7 @@
     order: 217
     comment: 2011/12/05
     tags:
+      - elegant
       - medical
 -   _id: c45
     order: 220
@@ -672,6 +682,7 @@
     face_id: c31
     name: "ネル"
     tags:
+      - guild
       - apartment
 -   _id: c99
     order: 999
@@ -1450,6 +1461,7 @@
     face_id: c105
     order: 82
     tags:
+      - apartment
       - ecclesia
 -   _id: c104
     comment: "年末カウントダウン♪"
@@ -1457,7 +1469,6 @@
     face_id: c104
     order: 89
     tags:
-      - road
       - medical
 -   _id: c106
     comment: "年末カウントダウン♪"
@@ -1465,7 +1476,7 @@
     name: "ワンダ"
     order: 90
     tags:
-      - road
+      - river
       - guild
 -   _id: c108
     face_id: c108
@@ -1703,6 +1714,7 @@
     comment: "８８件のご応募、ありがとう。そして、ありがとう。"
     order: 131
     tags:
+      - government
       - immoral
 
 #########################
@@ -1741,6 +1753,7 @@
     comment: "じつは、牧場育ちらしいよ。"
     order: 132
     tags:
+      - guild
       - road
 
 -   _id: t21
@@ -1964,6 +1977,19 @@
     order: 17
     tags:
       - travel
+
+#########################
+# 2015-04-30 update
+
+-   _id: c116
+    face_id: c116
+    name: "メルヤ"
+    comment: ""
+    order: 116
+    tags:
+      - medical
+      - immoral
+
 
 
 #########################

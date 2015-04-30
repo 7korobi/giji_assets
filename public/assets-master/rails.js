@@ -1896,17 +1896,18 @@ GUI.if_exist("#character_tag", function(dom) {
               myth: vdom(RAILS.tag.myth.name, Cache.faces.reduce().tag.myth.count),
               asia: vdom(RAILS.tag.asia.name, Cache.faces.reduce().tag.asia.count),
               marchen: vdom(RAILS.tag.marchen.name, Cache.faces.reduce().tag.marchen.count),
-              road: vdom(RAILS.tag.road.name, Cache.faces.reduce().tag.road.count),
+              apartment: vdom(RAILS.tag.apartment.name, Cache.faces.reduce().tag.apartment.count),
               elegant: vdom(RAILS.tag.elegant.name, Cache.faces.reduce().tag.elegant.count),
               guild: vdom(RAILS.tag.guild.name, Cache.faces.reduce().tag.guild.count),
-              apartment: vdom(RAILS.tag.apartment.name, Cache.faces.reduce().tag.apartment.count),
               servant: vdom(RAILS.tag.servant.name, Cache.faces.reduce().tag.servant.count),
               market: vdom(RAILS.tag.market.name, Cache.faces.reduce().tag.market.count),
               immoral: vdom(RAILS.tag.immoral.name, Cache.faces.reduce().tag.immoral.count),
               medical: vdom(RAILS.tag.medical.name, Cache.faces.reduce().tag.medical.count),
+              river: vdom(RAILS.tag.river.name, Cache.faces.reduce().tag.river.count),
+              road: vdom(RAILS.tag.road.name, Cache.faces.reduce().tag.road.count),
               farm: vdom(RAILS.tag.farm.name, Cache.faces.reduce().tag.farm.count),
-              law: vdom(RAILS.tag.law.name, Cache.faces.reduce().tag.law.count),
               ecclesia: vdom(RAILS.tag.ecclesia.name, Cache.faces.reduce().tag.ecclesia.count),
+              government: vdom(RAILS.tag.government.name, Cache.faces.reduce().tag.government.count),
               god: vdom(RAILS.tag.god.name, Cache.faces.reduce().tag.god.count)
             }));
           }

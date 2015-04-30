@@ -411,3 +411,6 @@ chr_job:
 
   - face_id: c115
     job: "廃品回収"
+
+  - face_id: c116
+    job: "逃亡者"

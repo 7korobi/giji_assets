@@ -133,8 +133,12 @@ class Crs < Thor
 
       @orders = faces.sort_by(&:order)
       @lists  = faces.sort_by(&:face_id)
-      @tag_names = {}
-      @chr_orders = {}
+      @tag_names = {
+        all: RAILS.tag.all.name
+      }
+      @chr_orders = {
+        all: @orders.map(&:face_id)
+      }
       @orders.each do |face|
         face.tags.each do |tag|
           next unless RAILS.tag[tag].chr_set_ids.any? {|csid| @csid[csid] }

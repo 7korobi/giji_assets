@@ -13,12 +13,6 @@ maskstates:
   0b0000000000000000_0000_000_00001: <s>蘇生薬</s>
 
 tag:
-  all:
-    name: すべて
-    long: 「人狼議事 ちゃんぷる」のキャラクター
-    chr_set_ids:
-      - all
-
   shoji:
     name: てやんでえ
     long: 「和の国てやんでえ」のキャラクター
@@ -81,7 +75,16 @@ tag:
       - ririnra
 
   road:
-    name: -運河往来-
+    name: -往来-
+    long: 往く人来る人休む人
+    chr_set_ids:
+      - all
+      - animal
+      - school
+      - ririnra
+
+  river:
+    name: -運河-
     long: 往く人来る人休む人
     chr_set_ids:
       - all
@@ -143,8 +146,8 @@ tag:
       - school
       - ririnra
 
-  law:
-    name: -法の支配-
+  government:
+    name: -統治公共-
     long: 所領を治める権能者
     chr_set_ids:
       - all
@@ -166,6 +169,13 @@ tag:
     long: かみさま
     chr_set_ids:
       - all
+
+  all:
+    name: すべて
+    long: 「人狼議事 ちゃんぷる」のキャラクター
+    chr_set_ids:
+      - all
+
 
 message:
   visible:
