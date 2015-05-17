@@ -2204,7 +2204,7 @@ GUI.message = (function() {
           filter_class = hides[o.face_id] ? "filter-hide" : "";
           _results.push(m("tr", {
             className: filter_class
-          }, m("th.calc", {}, o.view.job), m("th", {}, o.name), m("td.calc", {}, o.view.stat_at), m("td", {}, o.view.stat_type), m("td.calc", {}, o.view.said_num), m("td.calc", {}, o.view.pt), m("td.center", {}, o.view.urge), m("td.center", {}, o.view.user_id), m("td.center", {}, o.view.select), m("td.WIN_" + o.view.win + ".center", {}, o.view.win_result), m("td.WIN_" + o.view.win + ".calc", {}, o.view.win_side), m("td.WIN_" + o.view.win, {}, o.view.role), m("td.WIN_" + o.view.win, {}, m.trust(o.view.text))));
+          }, m("th." + o.live + ".calc", {}, o.view.job), m("th." + o.live, {}, o.name), m("td." + o.live + ".calc", {}, o.view.stat_at), m("td." + o.live, {}, o.view.stat_type), m("td." + o.live + ".calc", {}, o.view.said_num), m("td." + o.live + ".calc", {}, o.view.pt), m("td." + o.live + ".center", {}, o.view.urge), m("td." + o.live + ".center", {}, o.view.user_id), m("td." + o.live + ".center", {}, o.view.select), m("td.WIN_" + o.view.win + ".center", {}, o.view.win_result), m("td.WIN_" + o.view.win + ".calc", {}, o.view.win_side), m("td.WIN_" + o.view.win, {}, o.view.role), m("td.WIN_" + o.view.win, {}, m.trust(o.view.text))));
         }
         return _results;
       })())));
@@ -3421,33 +3421,92 @@ Url = (function() {
   return Url;
 
 })();
-var InputBase, InputSow,
+var InputBase, InputSow, player_talk,
   __hasProp = {}.hasOwnProperty,
   __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-InputBase = (function() {
-  var calc_point;
+new Cache.Rule("check").schema(function() {
+  this.scope(function(all) {
+    return {
+      error: function(mode, text) {
+        var max, query, validate;
+        max = {
+          unit: point,
+          size: 1000,
+          line: 20
+        };
+        validate = {
+          type: null,
+          is_open: true,
+          is_disable: false,
+          is_change: true,
+          preview: "action",
+          target: "TARGET",
+          head: "HEAD"
+        };
+        query = all.where({
+          type: "error",
+          mode: mode
+        }).where(function(o) {});
+        query.input = InputSow["new"](max, validate);
+        return query;
+      }
+    };
+  });
+  return this.deploy(function(o) {});
+});
 
-  function InputBase() {}
+player_talk = /(^|\/\*)(.*)(\*\/|$)/ig;
 
-  calc_point = function(size) {
-    var point;
+Cache.rule.check.merge([
+  {
+    type: "error",
+    chk: function(o) {
+      return o.text == null;
+    }
+  }, {
+    type: "error",
+    chk: function(o) {
+      return o.compact_size < 4;
+    }
+  }, {
+    type: "warn",
+    msg: "/*中の人の発言があります*/",
+    chk: function(o) {
+      return player_talk.exec;
+    }
+  }
+]);
+
+new Cache.Rule("history").schema(function() {
+  var point;
+  point = function(size) {
     point = 20;
     if (50 < size) {
       point += (size - 50) / 14;
     }
     return Math.floor(point);
   };
+  return this.deploy(function(o, form) {
+    o.text = o.text.replace(/\n$/g, '\n ');
+    o.form = form;
+    o._id = JSON.stringify([form, text]);
+    o.compact = o.text.replace(/\s/g, '');
+    o.compact_size = o.compact.sjis_length;
+    o.lines = o.text.split("\n").length;
+    o.size = o.text.sjis_length;
+    return o.point = point(o.size);
+  });
+});
+
+InputBase = (function() {
+  function InputBase() {}
 
   InputBase.prototype.change = function(text) {
     var mark, message;
     if (text == null) {
       text = "";
     }
-    this.text = text.replace(/\n$/g, '\n ');
-    this.lines = this.text.split("\n").length;
-    this.size = this.text.sjis_length;
-    this.point = calc_point(this.size);
     message = this.bad[this.validate.type]();
     this.is_bad = !!message;
     this.can_preview = !this.is_bad;

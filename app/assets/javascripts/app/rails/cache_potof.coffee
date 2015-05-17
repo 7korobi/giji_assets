@@ -15,6 +15,9 @@ new Cache.Rule("potof").schema ->
     o._id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
     o.user_id = o.sow_auth_id
 
+    if o.event_id.match /-0$/
+      o.live = "leave"
+
     face = Cache.faces.find(o.face_id)
     name =
       if face
@@ -31,6 +34,7 @@ new Cache.Rule("potof").schema ->
       if 0 < o.deathday
         "#{o.deathday}日"
       else
+        o.deathday = -1
         ""
 
     said_num = o.point.saidcount
@@ -55,8 +59,6 @@ new Cache.Rule("potof").schema ->
             "∞"
 
     select = GUI.name.config o.select
-    stat_type = RAILS.live[o.live].name
-    stat_order = RAILS.live[o.live].order
     win_result = "参加"
     zombie = 0x040
 
@@ -71,7 +73,12 @@ new Cache.Rule("potof").schema ->
       when "mob"
         win_juror = 'HUMAN' if ('juror' == o.story_type.mob)
       when "suddendead"
-        win_result = ""
+        win_juror = 'LEAVE'
+      when "leave"
+        win_juror = 'LEAVE'
+        pt = 0
+        urge = 0
+        said_num = 0
 
     win_love = RAILS.loves[o.love]?.win
 
@@ -86,17 +93,24 @@ new Cache.Rule("potof").schema ->
       when "LOVER"
         is_lone_lose = 1 if ! _.include o.role, "LOVEANGEL"
 
-    if o.story_epilogue && "suddendead" != o.live
-      winner = o.event_winner
-      win_result = "敗北"
-      win_result = "勝利" if winner == "WIN_" + win
-      win_result = "勝利" if winner != "WIN_HUMAN"  && winner != "WIN_LOVER" && "EVIL" == win
-      win_result = "勝利" if "victim" == o.live && "DISH" == win
-      win_result = "敗北" if is_lone_lose && _.any @potofs, (o)-> o.live != 'live' && _.any o.bonds, o.pno
-      win_result = "敗北" if is_dead_lose && 'live' != @live
-      win_result = "参加" if "NONE" == win
-    role_side_order = RAILS.wins[win_role].order
+    if o.story_epilogue
+      switch o.live
+        when "suddendead", "leave"
+          win_result = "―"
+        else
+          winner = o.event_winner
+          win_result = "敗北"
+          win_result = "勝利" if winner == "WIN_" + win
+          win_result = "勝利" if winner != "WIN_HUMAN"  && winner != "WIN_LOVER" && "EVIL" == win
+          win_result = "勝利" if "victim" == o.live && "DISH" == win
+          win_result = "敗北" if is_dead_lose && 'live' != o.live
+          win_result = "敗北" if is_lone_lose && _.any o.bonds, (o)-> o.live != 'live' && _.any o.bonds, o.pno
+          win_result = "参加" if "NONE" == win
+
+    stat_type = RAILS.live[o.live].name
+    stat_order = RAILS.live[o.live].order
     win_side_order = RAILS.wins[win].order
+    role_side_order = RAILS.wins[win_role].order
 
     roles =
       for role in o.role
@@ -119,8 +133,8 @@ new Cache.Rule("potof").schema ->
     text_str = text.join()
 
     o.order =
-      stat_at:   [o.deathday, stat_order]
-      stat_type: [stat_order, o.deathday]
+      stat_at:   [- o.deathday, stat_order]
+      stat_type: [stat_order, - o.deathday]
       said_num: [said_num, pt_no, urge]
       pt:       [pt_no, said_num, urge]
       urge:     [urge, pt_no, said_num]
@@ -138,7 +152,7 @@ new Cache.Rule("potof").schema ->
       user_id: m "kbd", o.user_id
       stat_at: stat_at
       stat_type: stat_type
-      said_num: "#{said_num}回"
+      said_num: if said_num then "#{said_num}回" else ""
       pt: pt
       urge: String.fromCharCode(if urge then 9311 + urge else 3000)
       win: win

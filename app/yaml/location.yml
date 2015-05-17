@@ -115,6 +115,13 @@ props:
   update_interval:
     current: all
 
+  content_width:
+    type: Number
+  h1_width:
+    type: Number
+  right_width:
+    type: Number
+
 
 bind:
   folder:

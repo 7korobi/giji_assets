@@ -13,6 +13,14 @@ maskstates:
   0b0000000000000000_0000_000_00001: <s>蘇生薬</s>
 
 tag:
+  giji:
+    name: 人狼議事
+    long: 「人狼議事」のキャラクター
+    chr_set_ids:
+      - animal
+      - school
+      - ririnra
+
   shoji:
     name: てやんでえ
     long: 「和の国てやんでえ」のキャラクター
@@ -55,19 +63,46 @@ tag:
       - all
       - mad
 
-
-  elegant:
-    name: -舞踏会-
-    long: 瀟洒な館の舞踏会
+  kid:
+    name: (児童)
+    long: 児童のキャラクター
     chr_set_ids:
       - all
       - animal
       - school
       - ririnra
 
-  guild:
-    name: -商工会-
-    long: 商人と職人の集うギルド
+  young:
+    name: (若者)
+    long: 若者のキャラクター
+    chr_set_ids:
+      - all
+      - animal
+      - school
+      - ririnra
+
+  middle:
+    name: (中年)
+    long: 中年のキャラクター
+    chr_set_ids:
+      - all
+      - animal
+      - school
+      - ririnra
+
+  elder:
+    name: (老人)
+    long: 老人のキャラクター
+    chr_set_ids:
+      - all
+      - animal
+      - school
+      - ririnra
+
+
+  river:
+    name: -運河-
+    long: 往く人来る人休む人
     chr_set_ids:
       - all
       - animal
@@ -83,9 +118,56 @@ tag:
       - school
       - ririnra
 
-  river:
-    name: -運河-
-    long: 往く人来る人休む人
+  immoral:
+    name: -裏道-
+    long: 街灯の裏の背徳達
+    chr_set_ids:
+      - all
+      - animal
+      - school
+      - ririnra
+
+
+  guild:
+    name: -商工会-
+    long: 商人と職人の集うギルド
+    chr_set_ids:
+      - all
+      - animal
+      - school
+      - ririnra
+
+  elegant:
+    name: -舞踏会-
+    long: 瀟洒な館の舞踏会
+    chr_set_ids:
+      - all
+      - animal
+      - school
+      - ririnra
+
+  ecclesia:
+    name: -公教会-
+    long: 信仰と道徳と学識の源泉
+    chr_set_ids:
+      - all
+      - animal
+      - school
+      - ririnra
+
+
+  medical:
+    name: -施療院-
+    long: 病苦毒霊と戦う砦
+    chr_set_ids:
+      - all
+      - animal
+      - school
+      - ririnra
+
+  market:
+    name: -歌劇酒場-
+    long: 芸の極みに華が咲く
     chr_set_ids:
       - all
       - animal
@@ -101,15 +183,6 @@ tag:
       - school
       - ririnra
 
-  farm:
-    name: -森の農場-
-    long: 森に接する田畑
-    chr_set_ids:
-      - all
-      - animal
-      - school
-      - ririnra
-
   servant:
     name: -使用人-
     long: 良家を支えるスタッフ
@@ -119,27 +192,9 @@ tag:
       - school
       - ririnra
 
-  medical:
-    name: -施療院-
-    long: 病苦毒霊と戦う砦
-    chr_set_ids:
-      - all
-      - animal
-      - school
-      - ririnra
-
-  market:
-    name: -歓楽街・表-
-    long: 芸の極みに華が咲く
-    chr_set_ids:
-      - all
-      - animal
-      - school
-      - ririnra
-
-  immoral:
-    name: -歓楽街・裏-
-    long: 街灯の裏の背徳達
+  farm:
+    name: -森の農場-
+    long: 森に接する田畑
     chr_set_ids:
       - all
       - animal
@@ -149,15 +204,6 @@ tag:
   government:
     name: -統治公共-
     long: 所領を治める権能者
-    chr_set_ids:
-      - all
-      - animal
-      - school
-      - ririnra
-
-  ecclesia:
-    name: -公教会-
-    long: 信仰と道徳と学識の源泉
     chr_set_ids:
       - all
       - animal
@@ -548,14 +594,18 @@ wins:
     name: 据え膳
     order: 9
   NONE:
-    name: (なし)
+    name: ―
     order: 98
   MOB:
     name: 見物人
     order: 99
+  LEAVE:
+    name: ―
+    order: 100
 
 winner:
-  WIN_NONE:     '--'
+  WIN_NONE:     '―'
+  WIN_LEAVE:    '―'
   WIN_DISH:     据え膳
   WIN_LOVER:    恋人陣営
   WIN_HATER:    邪気陣営
@@ -930,9 +980,6 @@ event_state:
   eclipse:   今日の議論は、誰が発言しているか不明になります。
 
 live:
-  mob:
-    name: 見物人
-    order: 1
   live:
     name: 生存者
     order: 2
@@ -954,9 +1001,15 @@ live:
   feared:
     name: 恐怖
     order: 8
+  mob:
+    name: 見物人
+    order: 10
   suddendead:
     name: 突然死
-    order: 9
+    order: 100
+  leave:
+    name: ―
+    order: 101
 
 live_caption:
   live:       生存者

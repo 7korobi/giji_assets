@@ -414,3 +414,15 @@ chr_job:
 
   - face_id: c116
     job: "逃亡者"
+
+  - face_id: c117
+    job: "宿屋"
+
+  - face_id: c118
+    job: "渡し船"
+
+  - face_id: c119
+    job: "信徒"
+
+  - face_id: c120
+    job: "庭師"

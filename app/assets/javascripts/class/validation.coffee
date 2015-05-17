@@ -1,16 +1,56 @@
-class InputBase
-  calc_point = (size)->
-    point  = 20
+new Cache.Rule("check").schema ->
+  @scope (all)->
+    error: (mode, text)->
+      max =
+        unit: point
+        size: 1000
+        line: 20
+      validate =
+        type: null
+        is_open: true
+        is_disable: false
+        is_change: true
+        preview: "action"
+        target: "TARGET"
+        head: "HEAD"
+
+      query = all.where(type: "error", mode: mode).where (o)->
+      query.input = InputSow.new max, validate
+      query
+
+  @deploy (o)->
+
+player_talk = /(^|\/\*)(.*)(\*\/|$)/ig
+
+Cache.rule.check.merge [
+  { type: "error", chk: (o)-> ! o.text? }
+  { type: "error", chk: (o)-> o.compact_size < 4 }
+  { type: "warn", msg: "/*中の人の発言があります*/", chk: (o)-> player_talk.exec }
+]
+
+
+new Cache.Rule("history").schema ->
+  point = (size)->
+    point = 20
     point += (size - 50)/14 if 50 < size
     Math.floor point
 
+  @deploy (o, form)->
+    o.text = o.text.replace(/\n$/g, '\n ')
+    o.form = form
+    o._id = JSON.stringify [form, text]
+
+    o.compact = o.text.replace(/\s/g, '')
+    o.compact_size = o.compact.sjis_length
+
+    o.lines = o.text.split("\n").length
+    o.size = o.text.sjis_length
+
+    o.point = point o.size
+
+
+class InputBase
   change: (text = "")->
-    @text = text.replace(/\n$/g, '\n ')
-    @lines = @text.split("\n").length
-
-    @size = @text.sjis_length
-    @point = calc_point(@size)
-
     message = @bad[@validate.type]()
     @is_bad = !!message
     @can_preview = !@is_bad

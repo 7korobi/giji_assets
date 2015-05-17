@@ -4,6 +4,8 @@ Url.define(LOCATION.props, LOCATION.bind);
 
 Url.routes = {
   pathname: {
+    root: new Url("/"),
+    faces: new Url("/map_reduce/faces"),
     events: new Url("/:story_id/file"),
     event: new Url("/:story_id/:turn/messages"),
     story: new Url("/stories/:story_id")
@@ -79,37 +81,23 @@ Url.routes = {
 win.on.resize.push(function() {
   var width;
   width = document.querySelector("#contentframe").offsetWidth;
-  Url.prop.content_width = function() {
-    return width;
-  };
+  Url.prop.content_width(width);
   if (width <= 770) {
-    Url.prop.h1_width = function() {
-      return 770;
-    };
+    Url.prop.h1_width(770);
   }
   if (width <= 580) {
-    Url.prop.h1_width = function() {
-      return 580;
-    };
+    Url.prop.h1_width(580);
   }
   if (width <= 458) {
-    Url.prop.h1_width = function() {
-      return 458;
-    };
+    Url.prop.h1_width(458);
   }
   switch (Url.prop.layout()) {
     case "right":
-      return Url.prop.right_width = function() {
-        return 0;
-      };
+      return Url.prop.right_width(0);
     case "center":
-      return Url.prop.right_width = function() {
-        return (win.width - width - 4) / 2;
-      };
+      return Url.prop.right_width((win.width - width - 4) / 2);
     case "left":
-      return Url.prop.right_width = function() {
-        return win.width - width - 4;
-      };
+      return Url.prop.right_width(win.width - width - 4);
   }
 });
 
@@ -583,10 +571,13 @@ new Cache.Rule("potof").schema(function() {
     var chr_job, face, is_dead_lose, is_lone_lose, job, mask, name, pt, pt_no, role, role_side_order, role_text, roles, rolestate, said_num, say_type, select, stat_at, stat_order, stat_type, state, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie, _i, _len, _ref;
     o._id = "" + o.event_id + "-" + o.csid + "-" + o.face_id;
     o.user_id = o.sow_auth_id;
+    if (o.event_id.match(/-0$/)) {
+      o.live = "leave";
+    }
     face = Cache.faces.find(o.face_id);
     name = face ? face.name : o.name;
     o.name = o.zapcount ? "" + RAILS.clearance[o.clearance] + name + "-" + o.zapcount : name;
-    stat_at = 0 < o.deathday ? "" + o.deathday + "日" : "";
+    stat_at = 0 < o.deathday ? "" + o.deathday + "日" : (o.deathday = -1, "");
     said_num = o.point.saidcount;
     urge = o.point.actaddpt;
     pt_no = "live" === o.live ? o.say.say : o.say.gsay;
@@ -606,8 +597,6 @@ new Cache.Rule("potof").schema(function() {
       })();
     }
     select = GUI.name.config(o.select);
-    stat_type = RAILS.live[o.live].name;
-    stat_order = RAILS.live[o.live].order;
     win_result = "参加";
     zombie = 0x040;
     switch (o.story_type.game) {
@@ -631,7 +620,13 @@ new Cache.Rule("potof").schema(function() {
         }
         break;
       case "suddendead":
-        win_result = "";
+        win_juror = 'LEAVE';
+        break;
+      case "leave":
+        win_juror = 'LEAVE';
+        pt = 0;
+        urge = 0;
+        said_num = 0;
     }
     win_love = (_ref = RAILS.loves[o.love]) != null ? _ref.win : void 0;
     win_role = win_by_role(o, RAILS.gifts) || win_by_role(o, RAILS.roles) || "NONE";
@@ -653,32 +648,41 @@ new Cache.Rule("potof").schema(function() {
           is_lone_lose = 1;
         }
     }
-    if (o.story_epilogue && "suddendead" !== o.live) {
-      winner = o.event_winner;
-      win_result = "敗北";
-      if (winner === "WIN_" + win) {
-        win_result = "勝利";
-      }
-      if (winner !== "WIN_HUMAN" && winner !== "WIN_LOVER" && "EVIL" === win) {
-        win_result = "勝利";
-      }
-      if ("victim" === o.live && "DISH" === win) {
-        win_result = "勝利";
-      }
-      if (is_lone_lose && _.any(this.potofs, function(o) {
-        return o.live !== 'live' && _.any(o.bonds, o.pno);
-      })) {
-        win_result = "敗北";
-      }
-      if (is_dead_lose && 'live' !== this.live) {
-        win_result = "敗北";
-      }
-      if ("NONE" === win) {
-        win_result = "参加";
+    if (o.story_epilogue) {
+      switch (o.live) {
+        case "suddendead":
+        case "leave":
+          win_result = "―";
+          break;
+        default:
+          winner = o.event_winner;
+          win_result = "敗北";
+          if (winner === "WIN_" + win) {
+            win_result = "勝利";
+          }
+          if (winner !== "WIN_HUMAN" && winner !== "WIN_LOVER" && "EVIL" === win) {
+            win_result = "勝利";
+          }
+          if ("victim" === o.live && "DISH" === win) {
+            win_result = "勝利";
+          }
+          if (is_dead_lose && 'live' !== o.live) {
+            win_result = "敗北";
+          }
+          if (is_lone_lose && _.any(o.bonds, function(o) {
+            return o.live !== 'live' && _.any(o.bonds, o.pno);
+          })) {
+            win_result = "敗北";
+          }
+          if ("NONE" === win) {
+            win_result = "参加";
+          }
       }
     }
-    role_side_order = RAILS.wins[win_role].order;
+    stat_type = RAILS.live[o.live].name;
+    stat_order = RAILS.live[o.live].order;
     win_side_order = RAILS.wins[win].order;
+    role_side_order = RAILS.wins[win_role].order;
     roles = (function() {
       var _i, _len, _ref1, _results;
       _ref1 = o.role;
@@ -721,8 +725,8 @@ new Cache.Rule("potof").schema(function() {
     }
     text_str = text.join();
     o.order = {
-      stat_at: [o.deathday, stat_order],
-      stat_type: [stat_order, o.deathday],
+      stat_at: [-o.deathday, stat_order],
+      stat_type: [stat_order, -o.deathday],
       said_num: [said_num, pt_no, urge],
       pt: [pt_no, said_num, urge],
       urge: [urge, pt_no, said_num],
@@ -740,7 +744,7 @@ new Cache.Rule("potof").schema(function() {
       user_id: m("kbd", o.user_id),
       stat_at: stat_at,
       stat_type: stat_type,
-      said_num: "" + said_num + "回",
+      said_num: said_num ? "" + said_num + "回" : "",
       pt: pt,
       urge: String.fromCharCode(urge ? 9311 + urge : 3000),
       win: win,
@@ -1262,7 +1266,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
       return !(icon_menu.state() || layout.small_mode);
     };
     wide_attr = GUI.attrs({}, function() {
-      this.className("plane");
+      this.className("plane fine");
       this.click(function() {
         layout.small_mode = !layout.small_mode;
         if (!layout.small_mode) {
@@ -1890,23 +1894,28 @@ GUI.if_exist("#character_tag", function(dom) {
               "class": "edge"
             }, tag, {
               all: vdom("- 全体 -", Cache.faces.reduce().all.all.count),
+              giji: vdom(RAILS.tag.giji.name, Cache.faces.reduce().tag.giji.count),
               shoji: vdom(RAILS.tag.shoji.name, Cache.faces.reduce().tag.shoji.count),
               travel: vdom(RAILS.tag.travel.name, Cache.faces.reduce().tag.travel.count),
               stratos: vdom(RAILS.tag.stratos.name, Cache.faces.reduce().tag.stratos.count),
               myth: vdom(RAILS.tag.myth.name, Cache.faces.reduce().tag.myth.count),
               asia: vdom(RAILS.tag.asia.name, Cache.faces.reduce().tag.asia.count),
               marchen: vdom(RAILS.tag.marchen.name, Cache.faces.reduce().tag.marchen.count),
-              apartment: vdom(RAILS.tag.apartment.name, Cache.faces.reduce().tag.apartment.count),
-              elegant: vdom(RAILS.tag.elegant.name, Cache.faces.reduce().tag.elegant.count),
-              guild: vdom(RAILS.tag.guild.name, Cache.faces.reduce().tag.guild.count),
-              servant: vdom(RAILS.tag.servant.name, Cache.faces.reduce().tag.servant.count),
-              market: vdom(RAILS.tag.market.name, Cache.faces.reduce().tag.market.count),
-              immoral: vdom(RAILS.tag.immoral.name, Cache.faces.reduce().tag.immoral.count),
-              medical: vdom(RAILS.tag.medical.name, Cache.faces.reduce().tag.medical.count),
+              kid: vdom(RAILS.tag.kid.name, Cache.faces.reduce().tag.kid.count),
+              young: vdom(RAILS.tag.young.name, Cache.faces.reduce().tag.young.count),
+              middle: vdom(RAILS.tag.middle.name, Cache.faces.reduce().tag.middle.count),
+              elder: vdom(RAILS.tag.elder.name, Cache.faces.reduce().tag.elder.count),
               river: vdom(RAILS.tag.river.name, Cache.faces.reduce().tag.river.count),
               road: vdom(RAILS.tag.road.name, Cache.faces.reduce().tag.road.count),
-              farm: vdom(RAILS.tag.farm.name, Cache.faces.reduce().tag.farm.count),
+              immoral: vdom(RAILS.tag.immoral.name, Cache.faces.reduce().tag.immoral.count),
+              guild: vdom(RAILS.tag.guild.name, Cache.faces.reduce().tag.guild.count),
+              elegant: vdom(RAILS.tag.elegant.name, Cache.faces.reduce().tag.elegant.count),
               ecclesia: vdom(RAILS.tag.ecclesia.name, Cache.faces.reduce().tag.ecclesia.count),
+              medical: vdom(RAILS.tag.medical.name, Cache.faces.reduce().tag.medical.count),
+              market: vdom(RAILS.tag.market.name, Cache.faces.reduce().tag.market.count),
+              apartment: vdom(RAILS.tag.apartment.name, Cache.faces.reduce().tag.apartment.count),
+              servant: vdom(RAILS.tag.servant.name, Cache.faces.reduce().tag.servant.count),
+              farm: vdom(RAILS.tag.farm.name, Cache.faces.reduce().tag.farm.count),
               government: vdom(RAILS.tag.government.name, Cache.faces.reduce().tag.government.count),
               god: vdom(RAILS.tag.god.name, Cache.faces.reduce().tag.god.count)
             }));

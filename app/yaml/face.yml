@@ -5,691 +5,902 @@
     name: "ボリス"
     order: 1
     tags:
+      - giji
       - guild
+      - young
 -   _id: c38
     order: 2
     face_id: c38
     name: "コリーン"
     tags:
+      - giji
       - market
+      - young
 -   _id: c77
     order: 3
     face_id: c77
     name: "キャロライナ"
     tags:
+      - giji
       - servant
       - road
       - farm
+      - young
 -   _id: c35
     order: 4
     face_id: c35
     name: "ダン"
     tags:
+      - giji
       - guild
+      - middle
 -   _id: c53
     order: 5
     face_id: c53
     name: "ゼルダ"
     tags:
+      - giji
       - government
       - farm
       - elegant
+      - elder
 -   _id: c74
     order: 6
     face_id: c74
     name: "フランシスカ"
     tags:
+      - giji
       - market
+      - young
 -   _id: c50
     order: 8
     face_id: c50
     name: "ディーン"
     tags:
+      - giji
       - government
       - guild
+      - young
 -   _id: c36
     order: 8
     face_id: c36
     name: "ミッシェル"
     tags:
+      - giji
       - guild
       - servant
+      - young
 -   _id: c26
     order: 8
     face_id: c26
     name: "モニカ"
     tags:
+      - giji
       - guild
+      - young
 -   _id: c09
     order: 9
     face_id: c09
     name: "ヒロシ"
     tags:
+      - giji
       - immoral
       - travel
       - river
+      - middle
 -   _id: c55
     order: 10
     face_id: c55
     name: "パピヨン"
     tags:
+      - giji
       - apartment
       - elegant
+      - middle
 -   _id: c29
     order: 11
     face_id: c29
     name: "イアン"
     tags:
+      - giji
       - guild
+      - young
 -   _id: c12
     order: 12
     face_id: c12
     name: "バーナバス"
     tags:
+      - giji
       - servant
       - road
+      - middle
 -   _id: c16
     order: 127
     face_id: c16
     name: "マリアンヌ"
     tags:
+      - giji
       - apartment
       - market
       - medical
+      - young
 -   _id: c34
     order: 14
     face_id: c34
     name: "トニー"
     tags:
+      - giji
       - road
       - servant
+      - kid
 -   _id: c44
     order: 15
     face_id: c44
     name: "ドナルド"
     tags:
+      - giji
       - immoral
+      - young
 -   _id: c11
     order: 16
     face_id: c11
     name: "カルヴィン"
     tags:
+      - giji
       - elegant
       - apartment
+      - kid
 -   _id: c10
     order: 17
     face_id: c10
     name: "ゾーイ"
     tags:
-      - apartment
       - travel
+      - giji
+      - apartment
+      - kid
 -   _id: c70
     order: 18
     face_id: c70
     name: "パティ"
     tags:
+      - giji
       - servant
       - apartment
+      - young
 -   _id: c56
     order: 19
     face_id: c56
     name: "ゴドウィン"
     tags:
+      - giji
       - guild
+      - market
+      - middle
 -   _id: c07
     order: 20
     face_id: c07
     name: "ティモシー"
     tags:
+      - giji
       - guild
+      - elder
 -   _id: c41
     order: 21
     face_id: c41
     name: "ヤニク"
     tags:
+      - giji
       - immoral
       - river
+      - young
 -   _id: c58
     order: 22
     face_id: c58
     name: "ブルーノ"
     tags:
+      - giji
       - ecclesia
+      - middle
+      - elder
 -   _id: c17
     order: 23
     face_id: c17
     name: "ユリシーズ"
     tags:
+      - giji
       - market
-      - elegant
+      - middle
+#      - elegant
 -   _id: c39
     order: 24
     face_id: c39
     name: "シビル"
     tags:
+      - giji
       - servant
       - guild
+      - middle
 -   _id: c40
     order: 25
     face_id: c40
     name: "ハワード"
     tags:
+      - giji
       - servant
-      - elegant
+      - elder
+#      - elegant
 -   _id: c65
     order: 26
     face_id: c65
     name: "ズリエル"
     tags:
+      - giji
       - immoral
+      - middle
 -   _id: c59
     order: 27
     face_id: c59
     name: "ムパムピス"
     tags:
+      - giji
       - ecclesia
+      - young
 -   _id: c57
     order: 28
     face_id: c57
     name: "ツェツィーリヤ"
     tags:
+      - giji
       - ecclesia
+      - young
+      - middle
 -   _id: c04
     order: 29
     face_id: c04
     name: "ノーリーン"
     tags:
+      - giji
       - servant
-      - elegant
+      - middle
+#      - elegant
 -   _id: c46
     order: 30
     face_id: c46
     name: "ゲイル"
     tags:
+      - giji
       - apartment
       - medical
+      - young
+      - middle
 -   _id: c14
     order: 31
     face_id: c14
     name: "レティーシャ"
     tags:
+      - giji
       - ecclesia
+      - kid
 -   _id: c42
     order: 33
     face_id: c42
     name: "ラルフ"
     tags:
+      - giji
       - servant
+      - young
 -   _id: c37
     order: 34
     face_id: c37
     name: "セシル"
     tags:
-      - elegant
+      - giji
+#      - elegant
       - market
+      - young
 -   _id: c75
     order: 35
     face_id: c75
     name: "ビリー"
     tags:
-      - elegant
+      - giji
+#      - elegant
       - market
+      - middle
 -   _id: c32
     order: 36
     face_id: c32
     name: "オスカー"
     tags:
+      - giji
       - apartment
+      - kid
 -   _id: c33
     order: 37
     face_id: c33
     name: "ホリー"
     tags:
+      - giji
       - apartment
+      - kid
 -   _id: c02
     order: 38
     face_id: c02
     name: "アルフレッド"
     tags:
+      - giji
       - government
-      - elegant
+      - middle
+#      - elegant
 -   _id: c66
     order: 39
     face_id: c66
     name: "クリストファー"
     tags:
+      - giji
       - servant
       - guild
       - farm
+      - middle
 -   _id: c24
     order: 41
     face_id: c24
     name: "ナタリア"
     tags:
+      - giji
       - government
       - apartment
+      - elder
 -   _id: c79
     order: 42
     face_id: c79
     name: "マーゴ"
     tags:
-      - elegant
+      - giji
+#      - elegant
+      - government
       - apartment
+      - young
 -   _id: c61
     order: 43
     face_id: c61
     name: "ヌマタロウ"
     tags:
+      - giji
       - river
       - farm
+      - elder
 -   _id: c23
     order: 44
     face_id: c23
     name: "チャールズ"
     tags:
+      - giji
       - ecclesia
+      - middle
 -   _id: c28
     comment: ''
     face_id: c28
     name: "ケイト"
     order: 47
     tags:
+      - giji
       - apartment
+      - young
 -   _id: c68
     order: 48
     face_id: c68
     name: "ヨアヒム"
     tags:
+      - giji
       - market
       - immoral
       - elegant
+      - middle
+      - elder
 -   _id: c30
     order: 49
     face_id: c30
     name: "フィリップ"
     tags:
+      - giji
       - road
       - river
       - market
+      - young
 -   _id: c21
     order: 50
     face_id: c21
     name: "ニール"
     tags:
+      - giji
       - farm
       - guild
+      - young
+      - middle
 -   _id: c52
     order: 52
     face_id: c52
     name: "ギリアン"
     tags:
+      - giji
       - medical
       - ecclesia
+      - young
 -   _id: c51
     order: 53
     face_id: c51
     name: "ヨーランダ"
     tags:
+      - giji
       - medical
       - ecclesia
+      - young
 -   _id: c01
     comment: ''
     face_id: c01
     name: "メアリー"
     order: 55
     tags:
+      - giji
       - market
       - road
+      - young
 -   _id: c69
     order: 56
     face_id: c69
     name: "ギネス"
     tags:
+      - giji
       - guild
       - market
+      - middle
 -   _id: c63
     order: 57
     face_id: c63
     name: "ピッパ"
     tags:
+      - giji
       - guild
+      - young
 -   _id: c05
     order: 59
     face_id: c05
     name: "キャサリン"
     tags:
+      - giji
       - medical
+      - young
 -   _id: c22
     order: 60
     face_id: c22
     name: "ワット"
     tags:
+      - giji
       - farm
+      - middle
 -   _id: c62
     order: 61
     face_id: c62
     name: "ヴェラ"
     tags:
+      - giji
       - immoral
       - river
+      - middle
 -   _id: c13
     order: 62
     face_id: c13
     name: "ロミオ"
     tags:
+      - giji
       - medical
+      - elder
 -   _id: c18
     order: 63
     face_id: c18
     name: "エマ"
     tags:
+      - giji
       - medical
+      - elder
 -   _id: c27
     order: 65
     face_id: c27
     name: "リンダ"
     tags:
+      - giji
       - farm
+      - young
 -   _id: c08
     order: 66
     face_id: c08
     name: "ベネット"
     tags:
+      - giji
       - guild
+      - young
 -   _id: c19
     order: 67
     face_id: c19
     name: "タバサ"
     tags:
+      - giji
       - immoral
       - market
+      - young
 -   _id: c71
     order: 70
     face_id: c71
     name: "ノックス"
     tags:
+      - giji
       - road
       - farm
+      - young
 -   _id: c03
     order: 71
     face_id: c03
     name: "スティーブン"
     tags:
+      - giji
       - medical
+      - middle
 -   _id: c43
     order: 72
     face_id: c43
     name: "ガストン"
     tags:
+      - giji
       - farm
+      - middle
 -   _id: c15
     order: 73
     face_id: c15
     name: "ウェーズリー"
     tags:
+      - giji
       - government
       - road
+      - middle
 -   _id: c54
     order: 75
     face_id: c54
     name: "ザック"
     tags:
+      - giji
       - guild
       - medical
+      - young
 -   _id: c25
     order: 77
     face_id: c25
     name: "ルーカス"
     tags:
+      - giji
       - elegant
+      - young
 -   _id: c20
     order: 79
     face_id: c20
     name: "グロリア"
     tags:
+      - giji
       - elegant
+      - young
 -   _id: c72
     order: 81
     face_id: c72
     name: "ヴェスパタイン"
     tags:
+      - giji
       - guild
+      - young
 -   _id: c73
     order: 83
     face_id: c73
     name: "ローズマリー"
     tags:
+      - giji
       - immoral
       - market
+      - young
 -   _id: c47
     order: 85
     face_id: c47
     name: "ペラジー"
     tags:
+      - giji
       - ecclesia
       - river
+      - young
 -   _id: c80
     order: 87
     face_id: c80
     name: "テッド"
     tags:
+      - giji
       - road
       - apartment
+      - young
 -   _id: c96
     face_id: c96
     name: "レオナルド"
     comment: 2011/12/11
     order: 89
     tags:
+      - giji
       - government
       - ecclesia
+      - middle
 -   _id: c95
     face_id: c95
     name: "モリス"
     comment: 2011/12/11
     order: 91
     tags:
+      - giji
       - guild
       - road
+      - young
 -   _id: c97
     face_id: c97
     name: "ジェフ"
     comment: 2011/12/14 超常現象はあるんだ…
     order: 93
     tags:
+      - giji
       - government
       - river
+      - young
+      - middle
 -   _id: c98
     face_id: c98
     name: "オズワルド"
     comment: 2011/12/29 この髭はぜったいワックス使ってる。
     order: 95
     tags:
-      - elegant
+      - giji
+#      - elegant
+      - immoral
       - river
+      - middle
 -   _id: c100
     face_id: c100
     name: "グレッグ"
     comment: 2012/12/30 スポーツ系中学生くらいに見える
     order: 97
     tags:
+      - giji
       - guild
+      - young
 -   _id: c101
     face_id: c101
     name: "クラリッサ"
     comment: 2011/12/30 美人さん♪
     order: 99
     tags:
+      - giji
       - servant
       - apartment
+      - young
 -   _id: c90
     face_id: c90
     name: "ケヴィン"
     comment: 2011/12/06
     order: 125
     tags:
+      - giji
       - government
       - river
       - farm
+      - young
 -   _id: c88
     face_id: c88
     name: "ピエール"
     order: 126
     comment: 2011/12/05
     tags:
-      - elegant
+      - giji
+#      - elegant
       - servant
       - market
+      - middle
 -   _id: c89
     face_id: c89
     name: "カトリーナ"
     comment: 2011/12/06
     order: 128
     tags:
+      - giji
       - apartment
+      - young
 -   _id: c84
     face_id: c84
     name: "ブレンダ"
     order: 129
     comment: 2011/12/05
     tags:
+      - giji
       - apartment
+      - middle
 -   _id: c85
     face_id: c85
     name: "ハナ"
     order: 130
     comment: 2011/12/05
     tags:
+      - giji
       - road
       - servant
+      - kid
 -   _id: c91
     comment: 2011/12/06 姦しい奥様♪
     face_id: c91
     name: "ドロシー"
     order: 143
     tags:
+      - giji
       - river
       - servant
+      - middle
 -   _id: c92
     comment: 2011/12/06 姦し娘ーず♪
     face_id: c92
     name: "セレスト"
     order: 144
     tags:
+      - giji
       - river
       - servant
+      - young
 -   _id: c93
     comment: 2011/12/06 えー○○が許されるのは小学生までだよねー♪
     face_id: c93
     name: "ベッキー"
     order: 145
     tags:
+      - giji
       - river
       - servant
+      - young
 -   _id: c78
     order: 150
     face_id: c78
     name: "ネイサン"
     tags:
+      - giji
       - market
+      - middle
 -   _id: c82
     order: 148
     face_id: c82
     name: "ロビン"
     tags:
+      - giji
       - servant
-      - elegant
+      - kid
+#      - elegant
 -   _id: c94
     face_id: c94
     name: "ダーラ"
     comment: 2011/12/11
     order: 165
     tags:
+      - giji
       - elegant
       - immoral
       - market
+      - middle
 -   _id: c64
     order: 180
     face_id: c64
     name: "ヘクター"
     tags:
+      - giji
       - immoral
+      - middle
 -   _id: c81
     order: 190
     face_id: c81
     name: "サイラス"
     tags:
+      - giji
       - medical
       - guild
       - farm
+      - young
 -   _id: c67
     order: 200
     face_id: c67
     name: "ソフィア"
     tags:
+      - giji
       - guild
+      - young
 -   _id: c76
     order: 210
     face_id: c76
     name: "ジョージ"
     tags:
+      - giji
       - apartment
+      - kid
 -   _id: c60
     order: 213
     face_id: c60
     name: "ポーチュラカ"
     tags:
+      - giji
       - elegant
+      - kid
 -   _id: c87
     face_id: c87
     name: "エリアス"
     order: 217
     comment: 2011/12/05
     tags:
+      - giji
       - elegant
       - medical
+      - young
 -   _id: c45
     order: 220
     face_id: c45
     name: "プリシラ"
     tags:
+      - giji
       - immoral
+      - young
 -   _id: c48
     order: 225
     face_id: c48
     name: "ビアンカ"
     tags:
+      - giji
       - elegant
+      - middle
+      - elder
 -   _id: c86
     face_id: c86
     name: "ホレーショー"
     order: 230
     comment: 2011/12/05
     tags:
+      - giji
       - immoral
       - apartment
+      - middle
 -   _id: c83
     order: 240
     face_id: c83
     name: "アイリス"
     tags:
+      - marchen
+      - giji
       - road
       - medical
       - market
-      - marchen
+      - young
 -   _id: c31
     order: 250
     face_id: c31
     name: "ネル"
     tags:
+      - giji
       - guild
       - apartment
+      - young
 -   _id: c99
     order: 999
     face_id: c99
     name: "サイモン"
     tags:
+      - giji
       - apartment
+      - young
+      - middle
 -   order: 10001
     face_id: g01
     name: "露蝶"
@@ -1461,59 +1672,77 @@
     face_id: c105
     order: 82
     tags:
+      - giji
       - apartment
       - ecclesia
+      - young
 -   _id: c104
     comment: "年末カウントダウン♪"
     name: "ヒュー"
     face_id: c104
     order: 89
     tags:
+      - giji
       - medical
+      - young
 -   _id: c106
     comment: "年末カウントダウン♪"
     face_id: c106
     name: "ワンダ"
     order: 90
     tags:
+      - giji
       - river
       - guild
+      - middle
 -   _id: c108
     face_id: c108
     name: "ブローリン"
     comment: "年末カウントダウン♪"
     order: 91
     tags:
+      - giji
       - farm
+      - young
+      - middle
 -   _id: c109
     face_id: c109
     name: "ラディスラヴァ"
     comment: "年末カウントダウン♪"
     order: 185
     tags:
+      - giji
       - apartment
+      - young
 -   _id: c102
     comment: "年末カウントダウン♪"
     face_id: c102
     name: "ウォーレン"
     order: 155
     tags:
-      - elegant
+      - giji
+#      - elegant
       - market
+      - elder
 -   _id: c107
     face_id: c107
     name: "イヴォン"
     comment: "年末カウントダウン♪"
     order: 205
     tags:
+      - giji
       - elegant
+      - middle
+      - elder
 -   _id: c103
     comment: "年末カウントダウン♪"
     name: "ナンシー"
     face_id: c103
     order: 234
     tags:
+      - giji
       - apartment
+      - young
 
 #########################
 # 2013-06-14 update
@@ -1620,8 +1849,10 @@
     comment: ''
     order: 92
     tags:
+      - giji
       - immoral
       - apartment
+      - young
 
 -   _id: t19
     face_id: t19
@@ -1657,9 +1888,11 @@
     comment: "リニューアル記念！ 弟がいるという噂が…"
     order: 160
     tags:
+      - giji
       - apartment
       - elegant
       - immoral
+      - young
 
 -   _id: c113
     face_id: c113
@@ -1667,8 +1900,11 @@
     comment: "リニューアル記念！"
     order: 228
     tags:
+      - giji
       - apartment
       - immoral
+      - young
+      - middle
 
 #########################
 # 2014-08-22 update 
@@ -1679,7 +1915,9 @@
     comment: "！？"
     order: 128
     tags:
+      - giji
       - elegant
+      - young
 
 -   _id: m16
     face_id: m16
@@ -1714,8 +1952,10 @@
     comment: "８８件のご応募、ありがとう。そして、ありがとう。"
     order: 131
     tags:
+      - giji
       - government
       - immoral
+      - middle
 
 #########################
 # 2014-09-11 update 
@@ -1753,8 +1993,10 @@
     comment: "じつは、牧場育ちらしいよ。"
     order: 132
     tags:
+      - giji
       - guild
       - road
+      - kid
 
 -   _id: t21
     face_id: t21
@@ -1987,46 +2229,107 @@
     comment: ""
     order: 116
     tags:
+      - giji
       - medical
       - immoral
+      - young
 
+-   _id: c117
+    face_id: c117
+    name: "ルパート"
+    comment: ""
+    order: 135
+    tags:
+      - giji
+      - road
+      - guild
+      - elder
+
+-   _id: c118
+    face_id: c118
+    name: "ユージン"
+    comment: ""
+    order: 118
+    tags:
+      - giji
+      - river
+      - young
+      - middle
+
+-   _id: c119
+    face_id: c119
+    name: "オーレリア"
+    comment: ""
+    order: 119
+    tags:
+      - giji
+      - ecclesia
+      - young
+
+-   _id: c120
+    face_id: c120
+    name: "ノア"
+    comment: ""
+    order: 120
+    tags:
+      - giji
+      - servant
+      - young
+      - middle
+
+#########################
+# xxxx-xx-xx update
+
+-   _id: t35
+    face_id: t35
+    name: ""
+    comment: ""
+    order: 30035
+    tags:
+      - travel
 
 
 #########################
 # xxxx-xx-xx update
 
-# 新任教師（帰還者）
-# 金剛座、
-# 三論宗、法隆寺（いっぱいある）、文殊菩薩
-# 神々自身、永遠の終り、ぼくの地球を守って、のび太の恐竜、のび太の日本誕生、のび太の太陽王伝説
-# ムスリム同胞団
-# 歩き巫女 中条流 侘び茶 侘茶湯 板前
-# 労働者 駅長 車掌 客室乗務員
-# 写真家 〜診断士 洞窟探査 鉱泉分析
-# 三合派 八宅派 紫白九星派 玄空飛星派 玄空大卦派 八字派
-# 聖堂騎士
-# 黒後家蜘蛛 黒い兄弟
-# 官房秘密局 時間貯蓄銀行 保険機関 観光機関 麻薬委員
-# 魔法省 学園特警
-# シンボルマーク
-#  凸帽団 とんがり白帽 みつば詰草 不死の鸚哥 桜花会
-# 騎士団・魔術教団
+# 名前案
+#  リコリス、ハロウィン、クレナイ、あずき、ニータ、サラ、マナ、石動（イスルギ）
+# 大陸
+#  尹（ユン）
+#
+# 肩書案
+#  チーム○○、好事家、金剛座、英雄審査会、かくれんぼサークル、炭焼人、薬剤師
+#   新任教師（帰還者）、板前、侘茶湯
+#   〜診断士 
+# 温泉から
+#  洞窟探査、鉱泉分析、三助、湯もみ、湯治客（刀傷 刺青）、大旦那（サル顔）
+# 都市伝説、怪談
+#  クロ衆、天狗少年、渡難連邦
+# 結社、集会
+#  電気保安協会、HTB連合、農園政府、官房秘密局、時間貯蓄銀行、麻薬委員、魔法省
+#  硯友社、新漫画党、末方忍軍、旧車會、同胞団
 #  三百人委 啓明会 シオン修道会 テンプル騎士団
 #  十字＆王冠 黄金∴黎明
-# コミー
-#  人民の意志
-# 温泉から
-#  三助 湯もみ 湯治客（刀傷 刺青） 大旦那（サル顔）
-# 落語から
-# 阿片窟から
+#  聖堂騎士、黄金の夜明け団、頭蓋骨と骨、カルボナリ
+#  自由連盟、青蝙蝠団、（リー・マーヴィンの）息子達、猛犬党、
+#  黒後家蜘蛛会、黒い兄弟
+#  紅客連盟、平田篤胤、大壑、大角、玄琢、気吹乃舎、真菅乃屋
+#  河鍋機関、貯古齢党
+#  天剣党 昭和2年（1927年）に西田税ら陸軍関係者により結成された国家改造を目的とする秘密結社です。
+# 武林
+#  赤手空拳、三合派、八宅派、紫白九星派、玄空飛星派、玄空大卦派、八字派
+
+# 平和なやつ
+#  新聞部、不幸部、TTM団、
+#  †～～瀑布団†（かっこよくキメているつもりだが、おやすみ感があるやつ。）
+# 他キャラとのからみ（かぶらせる）
+#  法隆寺、猫集会、学園特警
+# トッカータ
+#  雨色の空想
 #  ドッツ イボテン ムッシモール ムスカゾン クベンシス
 #  リゼル ペヨーテ カーピ シポ オアスカ アミン
 
-# http://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1186714911
+# http://ichiranya.com/
 # http://cjjc.weblio.jp/
-# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%BC%AB%E7%94%BB%E4%BD%9C%E5%93%81
-# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E3%82%92%E9%A1%8C%E6%9D%90%E3%81%A8%E3%81%97%E3%81%9F%E6%98%A0%E7%94%BB%E4%BD%9C%E5%93%81
-# http://ja.wikipedia.org/wiki/Category:%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%88%E3%83%A9%E3%83%99%E3%83%AB%E5%B0%8F%E8%AA%AC
 # http://ja.wikipedia.org/wiki/十五少年漂流記
-# http://ichiranya.com/society_culture/087-gang.php
 #

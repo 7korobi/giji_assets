@@ -120,3 +120,6 @@ chr_job:
 
   - face_id: t34
     job: "大銃協会"
+
+  - face_id: t35
+    job: ""

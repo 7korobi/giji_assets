@@ -19,8 +19,7 @@
 }
 
 
-@mixin font($size-base, $family) {
-  $small: $size-base * 0.7;
+@mixin font($small, $size-base, $family) {
   $line-base: $size-base * 1.40;
 
   html &,
@@ -32,6 +31,14 @@
     font-family: $family;
     font-size:   $size-base;
     line-height: $line-base;
+  }
+
+  .fine {
+    font-size:   $small;
+    line-height: $size-base * 0.8;
+    kbd {
+      line-height: $small;
+    }
   }
 
   rt,

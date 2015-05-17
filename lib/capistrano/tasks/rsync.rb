@@ -42,6 +42,7 @@ namespace :rsync do
       options = "-t --links --recursive --exclude='.git' --exclude='.svn'"
       execute "rsync #{options} ~/Dropbox/web_work/images/ /www/giji_assets/public/images/"
       execute "rm /www/giji_assets/public/*/manifest-*.json"
+      execute "rm -rf tmp/cache/assets/development/sprockets/*"
     end
 
     remotes = Fog::Storage.new(FOG.storage).directories.find{|o|o.key == "giji-assets"}.files.select {|o| not o.key[/^stories/]}

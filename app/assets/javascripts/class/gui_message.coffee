@@ -146,15 +146,15 @@ GUI.message = (->
               else
                 ""
             m "tr", {className: filter_class},
-              m "th.calc", {}, o.view.job
-              m "th", {}, o.name
-              m "td.calc", {}, o.view.stat_at
-              m "td", {}, o.view.stat_type
-              m "td.calc", {}, o.view.said_num
-              m "td.calc", {}, o.view.pt
-              m "td.center", {}, o.view.urge
-              m "td.center", {}, o.view.user_id
-              m "td.center", {}, o.view.select
+              m "th.#{o.live}.calc", {}, o.view.job
+              m "th.#{o.live}", {}, o.name
+              m "td.#{o.live}.calc", {}, o.view.stat_at
+              m "td.#{o.live}", {}, o.view.stat_type
+              m "td.#{o.live}.calc", {}, o.view.said_num
+              m "td.#{o.live}.calc", {}, o.view.pt
+              m "td.#{o.live}.center", {}, o.view.urge
+              m "td.#{o.live}.center", {}, o.view.user_id
+              m "td.#{o.live}.center", {}, o.view.select
               m "td.WIN_#{o.view.win}.center", {}, o.view.win_result
               m "td.WIN_#{o.view.win}.calc", {}, o.view.win_side
               m "td.WIN_#{o.view.win}", {}, o.view.role

@@ -11,12 +11,24 @@ new Cache.Rule("face").schema ->
     chr_jobs: (chr_job_id)->
       all.where({chr_job_id})
 
+
+
+    name_head: ->
+      counts = []
+      for idx in ["ア".charCodeAt(0) .. "ン".charCodeAt(0)]
+        key = String.fromCharCode idx
+        names = all.where(name:///^#{key}///).list().map((o)-> o.name)
+        counts[names.length] ?= []
+        counts[names.length].push "<#{key}>#{names.join(" ")}"
+      counts
+
   item = 
     count: 1
   @map_reduce (o, emit)->
     emit "all", "all", item
     for tag in o.tags
       emit "tag", tag, item
+
 
 
 new Cache.Rule("chr_set").schema ->

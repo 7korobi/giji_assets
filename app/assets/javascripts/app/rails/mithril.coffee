@@ -399,7 +399,7 @@ if gon?.potofs?
       ! (icon_menu.state() || layout.small_mode)
 
     wide_attr = GUI.attrs {}, ->
-      @className "plane"
+      @className "plane fine"
       @click ->
         layout.small_mode = ! layout.small_mode
         unless layout.small_mode
