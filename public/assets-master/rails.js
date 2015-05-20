@@ -571,7 +571,11 @@ new Cache.Rule("potof").schema(function() {
     var chr_job, face, is_dead_lose, is_lone_lose, job, mask, name, pt, pt_no, role, role_side_order, role_text, roles, rolestate, said_num, say_type, select, stat_at, stat_order, stat_type, state, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie, _i, _len, _ref;
     o._id = "" + o.event_id + "-" + o.csid + "-" + o.face_id;
     o.user_id = o.sow_auth_id;
-    if (o.event_id.match(/-0$/)) {
+    if (o.event_id) {
+      if (o.event_id.match(/-0$/)) {
+        o.live = "leave";
+      }
+    } else {
       o.live = "leave";
     }
     face = Cache.faces.find(o.face_id);
@@ -1266,7 +1270,6 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
       return !(icon_menu.state() || layout.small_mode);
     };
     wide_attr = GUI.attrs({}, function() {
-      this.className("plane fine");
       this.click(function() {
         layout.small_mode = !layout.small_mode;
         if (!layout.small_mode) {
@@ -1294,7 +1297,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
         } else {
           potofs = GUI.message.potofs();
           subview = messages.anchor(Url.prop).list();
-          filter = m("section", wide_attr, m("h6", "参照ログ"), (function() {
+          filter = m("section.plane", wide_attr, m("h6", "参照ログ"), (function() {
             var _i, _len, _results;
             _results = [];
             for (_i = 0, _len = subview.length; _i < _len; _i++) {
@@ -1304,6 +1307,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
             return _results;
           })());
         }
+        potofs.children[0].children[1].attrs.className = "plane fine";
         for (key in wide_attr) {
           val = wide_attr[key];
           potofs.children[0].children[1].attrs[key] = val;
@@ -1860,9 +1864,11 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
           }), m("table", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", query.list(), function(o) {
             var header;
             header = m("div", m("a", {
-              href: o.link
+              href: "http://giji.check.jp" + o.link
+            }, m("code.icon-download")), m("a", {
+              href: "http://7korobi.gehirn.ne.jp/stories/" + o._id + ".html"
             }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
-              href: o.file
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/" + o._id
             }, m.trust(o.name)), m("kbd", o.view.rating));
             return m("tr", {
               key: o._id
@@ -1984,31 +1990,31 @@ GUI.if_exist("#head_navi", function(dom) {
         }, "crazy"), m("br"), "" + max_ciel + "村:", m("a", {
           href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
         }, "ciel")))) : void 0, "finish" === state() ? m("tbody", m("tr", m("td", m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=LOBBY"
         }, "lobby"), m("br"), m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=OFFPARTY"
         }, "offparty")), m("td", m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=MORPHE"
         }, "morphe"), m("br"), m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CABALA"
         }, "cafe")), m("td", m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=WOLF"
         }, "wolf"), m("br"), m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ULTIMATE"
         }, "ultimate"), m("br"), m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ALLSTAR"
         }, "allstar")), m("td", m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=RP"
         }, "role-play"), m("br"), m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PRETENSE"
         }, "advance"), m("br"), m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PERJURY"
         }, "perjury"), m("br"), m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=XEBEC"
         }, "xebec"), m("br"), m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CRAZY"
         }, "crazy"), m("br"), m("a", {
-          href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
+          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CIEL"
         }, "ciel")))) : void 0)
       ];
     }
@@ -2093,37 +2099,37 @@ GUI.if_exist("#headline", function(dom) {
       }, "ciel")))) : void 0, "finish" === state() ? m("tbody", m("tr", m("td", {
         key: "P"
       }, m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=LOBBY"
       }, "lobby"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=OFFPARTY"
       }, "offparty"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td", {
         key: "D"
       }, m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=MORPHE"
       }, "morphe"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CABALA"
       }, "cafe"), m("br"), m("br"), m("br"), m("br"), m("br")), m("td", {
         key: "C"
       }, m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=WOLF"
       }, "wolf"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ULTIMATE"
       }, "ultimate"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ALLSTAR"
       }, "allstar"), m("br"), m("br"), m("br"), m("br")), m("td", {
         key: "R"
       }, m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=RP"
       }, "role-play"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PRETENSE"
       }, "advance"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PERJURY"
       }, "perjury"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=XEBEC"
       }, "xebec"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CRAZY"
       }, "crazy"), m("br"), m("a", {
-        href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CIEL"
       }, "ciel")))) : void 0));
     }
   });

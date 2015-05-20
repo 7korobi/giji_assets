@@ -12,6 +12,9 @@ table.memo {
   td {
     vertical-align: bottom;
   }
+  td p {
+    margin: 0 6px 0 3px;
+  }
 }
 
 table.talk {
@@ -19,9 +22,14 @@ table.talk {
   th {
     vertical-align: top;
     text-align: left;
+    margin: 0 4px 6px 12px;
+    padding: 0 4px;
   }
   td {
     vertical-align: middle;
+  }
+  td .msg {
+    margin: 0 6px 6px 3px;
   }
 }
 
@@ -31,9 +39,7 @@ table.talk {
   text-overflow: ellipsis;
 }
 
-.text,
-table.talk td .msg p,
-table.memo td p {
+.text {
   overflow: visible;
   word-wrap: break-word;
   word-break: break-strict;
@@ -41,7 +47,6 @@ table.memo td p {
     word-break: break-all;
   }
 }
-
 
 .text,
 .head

@@ -96,58 +96,58 @@ GUI.if_exist "#head_navi", (dom)->
               m "tr",
                 m "td",
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=LOBBY"
                   , "lobby"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=OFFPARTY"
                   ,"offparty"
 
                 m "td",
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=MORPHE"
                   , "morphe"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CABALA"
                   , "cafe"
 
                 m "td",
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=WOLF"
                   , "wolf"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ULTIMATE"
                   , "ultimate"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ALLSTAR"
                   , "allstar"
 
                 m "td",
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=RP"
                   , "role-play"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PRETENSE"
                   , "advance"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PERJURY"
                   , "perjury"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=XEBEC"
                   , "xebec"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CRAZY"
                   , "crazy"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CIEL"
                   , "ciel"
       ]
 
@@ -277,11 +277,11 @@ GUI.if_exist "#headline", (dom)->
               m "tr",
                 m "td", {key: "P"},
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=LOBBY"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=LOBBY"
                   , "lobby"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=OFFPARTY"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=OFFPARTY"
                   ,"offparty"
                   m "br"
                   m "br"
@@ -290,11 +290,11 @@ GUI.if_exist "#headline", (dom)->
                   m "br"
                 m "td", {key: "D"},
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=MORPHE"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=MORPHE"
                   , "morphe"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CABALA"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CABALA"
                   , "cafe"
                   m "br"
                   m "br"
@@ -303,15 +303,15 @@ GUI.if_exist "#headline", (dom)->
                   m "br"
                 m "td", {key: "C"},
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=WOLF"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=WOLF"
                   , "wolf"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ULTIMATE"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ULTIMATE"
                   , "ultimate"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=ALLSTAR"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ALLSTAR"
                   , "allstar"
                   m "br"
                   m "br"
@@ -319,25 +319,25 @@ GUI.if_exist "#headline", (dom)->
                   m "br"
                 m "td", {key: "R"},
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=RP"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=RP"
                   , "role-play"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PRETENSE"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PRETENSE"
                   , "advance"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=PERJURY"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PERJURY"
                   , "perjury"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=XEBEC"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=XEBEC"
                   , "xebec"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CRAZY"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CRAZY"
                   , "crazy"
                   m "br"
                   m "a",
-                    href: "http://7korobi.gehirn.ne.jp/stories/all?folder=CIEL"
+                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CIEL"
                   , "ciel"

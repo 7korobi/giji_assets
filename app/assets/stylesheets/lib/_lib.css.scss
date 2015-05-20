@@ -165,6 +165,7 @@
   $width-list: 290px, 320px, 350px, 380px, 410px, 440px, 470px, 500px, 530px, 560px, 590px, 620px, 650px, 680px, 710px, 740px, 770px, 99999px;
   @for $idx from 1 through 17 {
     $content: nth($width-list, $idx);
+    $text: $content - 90px;
     $head: nth($head-list, $idx);
     $min: nth($width-list, $idx    ) + $base + ($idx + 0) * $step;
     $max: nth($width-list, $idx + 1) + $base + ($idx + 1) * $step - 1;
@@ -190,6 +191,11 @@
       .contentframe {
         width: $content;
       }
+
+      table.memo,
+      table.talk {
+        td { width: $text; }
+      }
     }
   }
 }
@@ -205,16 +211,11 @@
   }
   table.talk {
     th {
-      margin: 0 4px 6px 12px;
-      padding: 0 4px;
       width: $action-left + 11px;
       .chrblank,
       img {
         margin-left: $film-left;
       }
-    }
-    td .msg {
-      margin: 0 6px 6px 3px;
     }
   }
 
@@ -404,14 +405,11 @@
   .mes_date,
   .name b { color: mix($color, $background); }
 
-  @if white == $tone {
-    .text b { color: mix($color, blue); }
-  }
-  @if glass == $tone {
-    .text b { color: mix($color, mix($color, yellow)); }
-  }
-  @if black == $tone {
-    .text b { color: mix($color, $background); }
+  dt,
+  .text b {
+    @if white == $tone { color: mix($color, blue); }
+    @if glass == $tone { color: mix($color, mix($color, yellow)); }
+    @if black == $tone { color: mix($color, $background); }
   }
 }
 
@@ -427,6 +425,8 @@
   &.guide,
   &.action,
   .msg {
+    dt,
+    dd,
     li,
     p {
       text-align: left;
@@ -446,14 +446,11 @@
   .mes_date,
   .name b { color: mix($color, $background); }
 
-  @if white == $tone {
-    .text b { color: mix($color, blue); }
-  }
-  @if glass == $tone {
-    .text b { color: mix($color, mix($color, yellow)); }
-  }
-  @if black == $tone {
-    .text b { color: mix($color, $background); }
+  dt,
+  .text b {
+    @if white == $tone { color: mix($color, blue); }
+    @if glass == $tone { color: mix($color, mix($color, yellow)); }
+    @if black == $tone { color: mix($color, $background); }
   }
 }
 

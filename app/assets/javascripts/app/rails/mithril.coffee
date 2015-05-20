@@ -399,7 +399,6 @@ if gon?.potofs?
       ! (icon_menu.state() || layout.small_mode)
 
     wide_attr = GUI.attrs {}, ->
-      @className "plane fine"
       @click ->
         layout.small_mode = ! layout.small_mode
         unless layout.small_mode
@@ -430,13 +429,14 @@ if gon?.potofs?
           potofs = GUI.message.potofs()
           subview = messages.anchor(Url.prop).list()
           filter =
-            m "section", wide_attr,
+            m "section.plane", wide_attr,
               m "h6", "参照ログ"
               for o in subview
                 m ".line_text",
                   m ".#{o.mestype}.badge", "#{o.turn}:#{o.anchor}"
                   m.trust o.log.line_text
 
+        potofs.children[0].children[1].attrs.className = "plane fine"
         for key, val of wide_attr
           potofs.children[0].children[1].attrs[key] = val
 
@@ -857,12 +857,15 @@ if gon?.stories?
             scroll_spy.pager "tbody", query.list(), (o)->
               header = m "div",
                 m "a",
-                  href: o.link
+                  href: "http://giji.check.jp#{o.link}"
+                , m "code.icon-download"
+                m "a",
+                  href: "http://7korobi.gehirn.ne.jp/stories/#{o._id}.html"
                 , m "code.icon-download"
                 m "kbd.note", 
                   o._id
                 m "a",
-                  href: o.file
+                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{o._id}"
                 , m.trust o.name
                 m "kbd", 
                   o.view.rating

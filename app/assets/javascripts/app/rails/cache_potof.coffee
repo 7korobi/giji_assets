@@ -15,7 +15,10 @@ new Cache.Rule("potof").schema ->
     o._id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
     o.user_id = o.sow_auth_id
 
-    if o.event_id.match /-0$/
+    if o.event_id
+      if o.event_id.match /-0$/
+        o.live = "leave"
+    else
       o.live = "leave"
 
     face = Cache.faces.find(o.face_id)
