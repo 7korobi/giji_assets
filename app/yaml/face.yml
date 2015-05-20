@@ -2278,7 +2278,7 @@
       - middle
 
 #########################
-# xxxx-xx-xx update
+# 2015-05-19 update
 
 -   _id: t35
     face_id: t35
@@ -2287,6 +2287,15 @@
     order: 30020
     tags:
       - travel
+
+-   _id: c121
+    face_id: c121
+    name: ブッカ
+    comment: "ブッカ・ホワイト氏から。"
+    order: 121
+    tags:
+      - giji
+      - farm
 
 
 #########################

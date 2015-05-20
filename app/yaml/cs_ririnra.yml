@@ -426,3 +426,6 @@ chr_job:
 
   - face_id: c120
     job: "庭師"
+
+  - face_id: c121
+    job: "農薬売"
