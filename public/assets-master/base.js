@@ -2298,7 +2298,9 @@ GUI.ScrollSpy = (function() {
     _ref = ScrollSpy.list;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       spy = _ref[_i];
-      spy.tick(spy.center);
+      if (spy.center) {
+        spy.tick(spy.center);
+      }
     }
     return 1000;
   });

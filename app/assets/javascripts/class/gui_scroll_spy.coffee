@@ -15,7 +15,8 @@ class GUI.ScrollSpy
 
   GUI.do_tick (now)=>
     for spy in @list
-      spy.tick( spy.center )
+      if spy.center
+        spy.tick( spy.center )
     1000
 
 

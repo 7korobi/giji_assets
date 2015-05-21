@@ -412,11 +412,13 @@ if gon?.potofs?
 
     seeing_top = 100
     seeing_measure =
-      config: (elem)-> seeing_top = elem.offsetTop
+      config: (elem)->
+        seeing_top = elem.offsetTop
 
     line_text_height = 27
     line_text_height_measure =
-      config: (elem)-> line_text_height = elem.offsetHeight
+      config: (elem)->
+        line_text_height = elem.offsetHeight
 
     m.module dom,
       controller: ->
