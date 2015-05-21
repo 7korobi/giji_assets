@@ -301,7 +301,6 @@ var m=function a(b,c){function d(a){C=a.document,D=a.location,F=a.cancelAnimatio
 (function(){
   var set_scroll, scroll_end, win, out$ = typeof exports != 'undefined' && exports || this;
   set_scroll = function(win){
-    win.scrolling = true;
     win.left = window.pageXOffset || window.scrollX;
     return win.top = window.pageYOffset || window.scrollY;
   };
@@ -374,6 +373,10 @@ var m=function a(b,c){function d(a){C=a.document,D=a.location,F=a.cancelAnimatio
         set_scroll(win);
         win.right = win.left + win.width;
         win.bottom = win.top + win.height;
+        if (!win.scrolling) {
+          win.do_event_list(win.on.scroll_start);
+        }
+        win.scrolling = true;
         win.do_event_list(win.on.scroll, e);
         return win['do'].scroll_end();
       },
@@ -397,6 +400,7 @@ var m=function a(b,c){function d(a){C=a.document,D=a.location,F=a.cancelAnimatio
     on: {
       resize: [],
       scroll: [],
+      scroll_start: [],
       scroll_end: [],
       orientation: [],
       motion: [],
@@ -596,6 +600,12 @@ var m=function a(b,c){function d(a){C=a.document,D=a.location,F=a.cancelAnimatio
         return this;
       }
       return new Cache.Query(this.finder, this.filters, desc, sort_by);
+    };
+    prototype.clear = function(){
+      var ref$;
+      delete this._reduce;
+      delete this._list;
+      return ref$ = this._hash, delete this._hash, ref$;
     };
     prototype.reduce = function(){
       if (this._reduce == null) {
@@ -2283,6 +2293,16 @@ GUI.ScrollSpy = (function() {
     }
   };
 
+  GUI.do_tick(function(now) {
+    var spy, _i, _len, _ref;
+    _ref = ScrollSpy.list;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      spy = _ref[_i];
+      spy.tick(spy.center);
+    }
+    return 1000;
+  });
+
   win.on.scroll_end.push(function() {
     var id, spy, spy_id, _i, _j, _len, _len1, _ref, _ref1, _results;
     id = ScrollSpy.view();
@@ -2346,6 +2366,10 @@ GUI.ScrollSpy = (function() {
     this.head = this.tail = 0;
     this.avg_height = 150;
     return this.show_upper = true;
+  };
+
+  ScrollSpy.prototype.tick = function(center) {
+    return console.log(center);
   };
 
   ScrollSpy.prototype.view = function() {
@@ -2426,6 +2450,7 @@ GUI.ScrollSpy = (function() {
     if (!(3 > Math.abs(this.size - new_size))) {
       this.size = new_size;
     }
+    this.center = this.list[idx];
     this.tail = Math.min(btm, idx + this.size);
     this.head = Math.max(top, idx - this.size);
     pager_cb = (function(_this) {

@@ -344,6 +344,11 @@ new Cache.Rule("message").schema(function() {
   _ref = RAILS.message, visible = _ref.visible, bit = _ref.bit, mask = _ref.mask;
   this.scope(function(all) {
     return {
+      seeing: function() {
+        return all.where(function(o) {
+          return 0 < o.seeing;
+        }).sort("desk", "seeing");
+      },
       timeline: function(mode) {
         var enables;
         enables = visible.talk[mode];
@@ -795,6 +800,13 @@ Cache.potofs.has_faces = {
 };
 
 scroll_spy = GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
+
+scroll_spy.tick = function(center) {
+  if (center.subid === "S") {
+    center.seeing = (center.seeing || 0) + 1;
+    return Cache.messages.seeing().clear();
+  }
+};
 
 icon_mode_menu = new GUI.MenuTree;
 
@@ -1263,7 +1275,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
     event_winner: ((_ref4 = gon.event) != null ? _ref4.winner : void 0) || ((_ref5 = gon.events) != null ? (_ref6 = _ref5.last) != null ? _ref6.winner : void 0 : void 0)
   });
   GUI.if_exist("#sayfilter", function(dom) {
-    var layout, wide_attr;
+    var layout, line_text_height, line_text_height_measure, seeing_measure, seeing_top, wide_attr;
     layout = new GUI.Layout(dom, -1, 1, 100);
     layout.small_mode = true;
     layout.large_mode = function() {
@@ -1280,10 +1292,22 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
         return layout.translate();
       });
     });
+    seeing_top = 100;
+    seeing_measure = {
+      config: function(elem) {
+        return seeing_top = elem.offsetTop;
+      }
+    };
+    line_text_height = 27;
+    line_text_height_measure = {
+      config: function(elem) {
+        return line_text_height = elem.offsetHeight;
+      }
+    };
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var event, filter, key, o, potofs, subview, val;
+        var anchorview, day, event, filter, filter_size, go_click, key, o, potofs, seeingview, star, val;
         layout.width = Url.prop.right_width();
         if (layout.large_mode()) {
           layout.width += Url.prop.content_width();
@@ -1295,14 +1319,54 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           }, m("tr", m("th.calc", "…")))));
           filter = [];
         } else {
+          filter_size = Math.floor((win.height - seeing_top - 50) / line_text_height);
+          seeingview = Cache.messages.seeing().list().slice(0, +filter_size + 1 || 9e9);
+          anchorview = messages.anchor(Url.prop).list();
           potofs = GUI.message.potofs();
-          subview = messages.anchor(Url.prop).list();
-          filter = m("section.plane", wide_attr, m("h6", "参照ログ"), (function() {
+          go_click = function(o) {
+            return GUI.attrs({}, function() {
+              return this.click(function() {
+                Url.prop.talk_at(o._id);
+                Url.prop.pins({});
+                icon_menu.change("");
+                icon_mode_menu.change("talk");
+                return scroll_spy.rescroll(Url.prop.talk_at);
+              });
+            });
+          };
+          day = 24 * 60 * 60;
+          star = function(o) {
+            var attr;
+            if (o.seeing >= day) {
+              attr = GUI.attrs({}, function() {
+                return this.start(function(e) {
+                  return o.seeing = 0;
+                });
+              });
+              return m("span.btn.edge", attr, "★ ");
+            } else {
+              attr = GUI.attrs({}, function() {
+                return this.start(function(e) {
+                  return o.seeing = (o.seeing || 0) + day;
+                });
+              });
+              return m("span.btn.edge", attr, "☆ ");
+            }
+          };
+          filter = m("section.plane", m("h6", "参照ログ"), (function() {
             var _i, _len, _results;
             _results = [];
-            for (_i = 0, _len = subview.length; _i < _len; _i++) {
-              o = subview[_i];
-              _results.push(m(".line_text", m("." + o.mestype + ".badge", "" + o.turn + ":" + o.anchor), m.trust(o.log.line_text)));
+            for (_i = 0, _len = anchorview.length; _i < _len; _i++) {
+              o = anchorview[_i];
+              _results.push(m(".line_text", m("." + o.mestype + ".badge", go_click(o), "" + o.turn + ":" + o.anchor), m.trust(o.log.line_text)));
+            }
+            return _results;
+          })(), m("h6", seeing_measure, "よく見ていたログ"), (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = seeingview.length; _i < _len; _i++) {
+              o = seeingview[_i];
+              _results.push(m(".line_text", line_text_height_measure, star(o), m("." + o.mestype + ".badge", go_click(o), "" + o.turn + ":" + o.anchor), m.trust("" + o.name + " " + o.log.line_text)));
             }
             return _results;
           })());
@@ -1452,7 +1516,8 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
                 choice: function(id) {
                   Url.prop.talk_at(id);
                   icon_menu.change("search");
-                  return icon_mode_menu.change("talk");
+                  icon_mode_menu.change("talk");
+                  return scroll_spy.rescroll(Url.prop.talk_at);
                 }
               }), m("input.medium", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"));
             }

@@ -1,5 +1,4 @@
   set_scroll = (win)->
-    win.scrolling = true
     win.left = window.pageXOffset || window.scrollX
     win.top  = window.pageYOffset || window.scrollY
 
@@ -63,9 +62,14 @@
       scroll_end: _.debounce scroll_end, DELAY.presto
       scroll: (e)->
         docElem = document.documentElement
+
         set_scroll win
         win.right = win.left + win.width
         win.bottom = win.top + win.height
+
+        unless win.scrolling
+          win.do_event_list win.on.scroll_start
+        win.scrolling = true
 
         win.do_event_list win.on.scroll, e
         win.do.scroll_end()
@@ -89,6 +93,7 @@
     on:
       resize: []
       scroll: []
+      scroll_start: []
       scroll_end: []
       orientation: []
       motion: []

@@ -13,6 +13,12 @@ class GUI.ScrollSpy
 
       window.scrollBy(left_by, top_by)
 
+  GUI.do_tick (now)=>
+    for spy in @list
+      spy.tick( spy.center )
+    1000
+
+
   win.on.scroll_end.push =>
     id = @view()
     for spy in @list
@@ -52,6 +58,9 @@ class GUI.ScrollSpy
     @head = @tail = 0
     @avg_height = 150
     @show_upper = true
+
+  tick: (center)->
+    console.log center
 
   view: ()->
     pager_rect = @pager_elem.getBoundingClientRect()
@@ -106,6 +115,7 @@ class GUI.ScrollSpy
     new_size = size(3, @avg_height)
     @size = new_size unless 3 > Math.abs @size - new_size
 
+    @center = @list[idx]
     @tail = Math.min btm, idx + @size
     @head = Math.max top, idx - @size
 

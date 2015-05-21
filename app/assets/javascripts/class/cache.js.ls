@@ -89,6 +89,11 @@ class Cache.Query
     return @ if desc == @desc && sort_by == @sort_by
     new Cache.Query @finder, @filters, desc, sort_by
 
+  clear: ->
+    delete @_reduce
+    delete @_list
+    delete @_hash
+
   reduce: ->
     @finder.calculate(@) unless @_reduce?
     @_reduce

@@ -10,6 +10,11 @@ new Cache.Rule("message").schema ->
   {visible, bit, mask} = RAILS.message
 
   @scope (all)->
+    seeing: ->
+      all
+      .where (o)-> 0 < o.seeing
+      .sort "desk", "seeing"
+
     timeline: (mode)->
       enables = visible.talk[mode]
       all.where (o)-> o.mestype == "EVENT" || (o.show & enables)

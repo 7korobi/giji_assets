@@ -13,6 +13,10 @@ Cache.potofs.has_faces =
       face_id
 
 scroll_spy = GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll)
+scroll_spy.tick = (center)->
+  if center.subid == "S"
+    center.seeing = (center.seeing || 0) + 1
+    Cache.messages.seeing().clear()
 icon_mode_menu = new GUI.MenuTree
 icon_mode_menu.state = Url.prop.scope
 icon_menu = new GUI.MenuTree.Icon
@@ -406,6 +410,14 @@ if gon?.potofs?
       @actioned ->
         layout.translate()
 
+    seeing_top = 100
+    seeing_measure =
+      config: (elem)-> seeing_top = elem.offsetTop
+
+    line_text_height = 27
+    line_text_height_measure =
+      config: (elem)-> line_text_height = elem.offsetHeight
+
     m.module dom,
       controller: ->
       view: ->
@@ -426,15 +438,47 @@ if gon?.potofs?
                       m "th.calc", "…"
           filter = []
         else
+          filter_size = Math.floor((win.height - seeing_top - 50) / line_text_height)
+          seeingview = Cache.messages.seeing().list()[0..filter_size]
+          anchorview = messages.anchor(Url.prop).list()
           potofs = GUI.message.potofs()
-          subview = messages.anchor(Url.prop).list()
+
+          go_click = (o)->
+            GUI.attrs {}, ->
+              @click ->
+                Url.prop.talk_at o._id
+                Url.prop.pins {}
+                icon_menu.change ""
+                icon_mode_menu.change "talk"
+                scroll_spy.rescroll Url.prop.talk_at
+
+          day = 24 * 60 * 60
+          star = (o)->
+            if o.seeing >= day
+              attr = GUI.attrs {}, ->
+                @start (e)->
+                  o.seeing = 0
+              m "span.btn.edge", attr, "★ "
+
+            else
+              attr = GUI.attrs {}, ->
+                @start (e)->
+                  o.seeing = (o.seeing || 0) + day
+              m "span.btn.edge", attr, "☆ "
+
           filter =
-            m "section.plane", wide_attr,
+            m "section.plane",
               m "h6", "参照ログ"
-              for o in subview
-                m ".line_text",
-                  m ".#{o.mestype}.badge", "#{o.turn}:#{o.anchor}"
+              for o in anchorview
+                m ".line_text", 
+                  m ".#{o.mestype}.badge", go_click(o), "#{o.turn}:#{o.anchor}"
                   m.trust o.log.line_text
+              m "h6", seeing_measure, "よく見ていたログ"
+              for o in seeingview
+                m ".line_text", line_text_height_measure,
+                  star(o)
+                  m ".#{o.mestype}.badge", go_click(o), "#{o.turn}:#{o.anchor}"
+                  m.trust "#{o.name} #{o.log.line_text}"
 
         potofs.children[0].children[1].attrs.className = "plane fine"
         for key, val of wide_attr
@@ -447,7 +491,7 @@ if gon?.potofs?
           else
             m ".foot"
           m "aside",
-            potofs 
+            potofs
             filter
           m ".foot"
 
@@ -562,6 +606,7 @@ if gon?.events? && gon.event?
                     Url.prop.talk_at id
                     icon_menu.change "search"
                     icon_mode_menu.change "talk"
+                    scroll_spy.rescroll Url.prop.talk_at
 
                 m "input.medium", Txt.input Url.prop.search
                 m "span", "発言中の言葉を検索します。"
