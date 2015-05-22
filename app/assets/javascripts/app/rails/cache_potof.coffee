@@ -168,4 +168,7 @@ new Cache.Rule("potof").schema ->
   has_face = {}
   Cache.potofs.has_face = has_face
   @map_reduce (o, emit)->
-    has_face[o.face_id] = o
+    switch o.live
+      when "suddendead", "leave"
+      else
+        has_face[o.face_id] = o
