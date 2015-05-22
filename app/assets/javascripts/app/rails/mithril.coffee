@@ -17,7 +17,7 @@ scroll_spy.tick = (center)->
   if center.subid == "S"
     center.seeing = (center.seeing || 0) + 1
     Cache.messages.seeing().clear()
-    if 10 < center.seeing
+    if 11 == center.seeing
       m.redraw()
 icon_mode_menu = new GUI.MenuTree
 icon_mode_menu.state = Url.prop.scope
@@ -621,7 +621,7 @@ if gon?.events? && gon.event?
         ]
 
   GUI.if_exist "#messages", (dom)->
-    scroll_spy.avg_height = 150
+    scroll_spy.size = 30
 
     change_pin = (id)->
       target = icon_mode_menu.state()
@@ -818,13 +818,14 @@ if gon?.stories?
   GUI.if_exist "#stories", (dom)->
     icon_menu.icon "resize-full",
       open: ->
-        scroll_spy.avg_height = 120
+        scroll_spy.size = 30
         icon_mode_menu.change "full"
     icon_menu.icon "resize-normal",
       deploy: ->
+        scroll_spy.size = 120
         icon_mode_menu.change "normal"
       open: ->
-        scroll_spy.avg_height = 22
+        scroll_spy.size = 120
         icon_mode_menu.change "normal"
 
     m.module dom,

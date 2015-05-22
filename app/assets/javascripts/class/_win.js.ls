@@ -3,19 +3,24 @@
     win.top  = window.pageYOffset || window.scrollY
 
   scroll_end = !->
-    list = [{},{},{}]
-    chk = ->
-      list.0 = list.1
-      list.1 = list.2
-      list.2 = {}
-      set_scroll list.2
+    return if win.scrolling
+    check = {}
+    count = 0
 
-      list.0.top == list.1.top == list.2.top
-      &&
-      list.0.left == list.1.left == list.2.left
+    chk = ->
+      local = {}
+      set_scroll local
+
+      if check.top == local.top && check.left == local.left
+        10 < count++
+      else
+        check := local
+        count := 0
+        false
 
     scan = !->
       if chk()
+        console.log "scroll end."
         win.scrolling = false
         win.do_event_list win.on.scroll_end
         win.do.resize()
@@ -59,7 +64,8 @@
         #console.log ["resize", e]
         win.do_event_list win.on.resize, e
 
-      scroll_end: _.debounce scroll_end, DELAY.presto
+      scroll_end: scroll_end
+
       scroll: (e)->
         docElem = document.documentElement
 
@@ -69,10 +75,10 @@
 
         unless win.scrolling
           win.do_event_list win.on.scroll_start
+        win.do.scroll_end()
         win.scrolling = true
 
         win.do_event_list win.on.scroll, e
-        win.do.scroll_end()
 
       orientation: (e)->
         win.orientation = e

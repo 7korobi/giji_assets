@@ -305,18 +305,27 @@ var m=function a(b,c){function d(a){C=a.document,D=a.location,F=a.cancelAnimatio
     return win.top = window.pageYOffset || window.scrollY;
   };
   scroll_end = function(){
-    var list, chk, scan;
-    list = [{}, {}, {}];
+    var check, count, chk, scan;
+    if (win.scrolling) {
+      return;
+    }
+    check = {};
+    count = 0;
     chk = function(){
-      var ref$;
-      list[0] = list[1];
-      list[1] = list[2];
-      list[2] = {};
-      set_scroll(list[2]);
-      return (list[0].top === (ref$ = list[1].top) && ref$ === list[2].top) && (list[0].left === (ref$ = list[1].left) && ref$ === list[2].left);
+      var local;
+      local = {};
+      set_scroll(local);
+      if (check.top === local.top && check.left === local.left) {
+        return 10 < count++;
+      } else {
+        check = local;
+        count = 0;
+        return false;
+      }
     };
     scan = function(){
       if (chk()) {
+        console.log("scroll end.");
         win.scrolling = false;
         win.do_event_list(win.on.scroll_end);
         win['do'].resize();
@@ -366,7 +375,7 @@ var m=function a(b,c){function d(a){C=a.document,D=a.location,F=a.cancelAnimatio
         }
         return win.do_event_list(win.on.resize, e);
       },
-      scroll_end: _.debounce(scroll_end, DELAY.presto),
+      scroll_end: scroll_end,
       scroll: function(e){
         var docElem;
         docElem = document.documentElement;
@@ -376,9 +385,9 @@ var m=function a(b,c){function d(a){C=a.document,D=a.location,F=a.cancelAnimatio
         if (!win.scrolling) {
           win.do_event_list(win.on.scroll_start);
         }
+        win['do'].scroll_end();
         win.scrolling = true;
-        win.do_event_list(win.on.scroll, e);
-        return win['do'].scroll_end();
+        return win.do_event_list(win.on.scroll, e);
       },
       orientation: function(e){
         win.orientation = e;
@@ -2273,8 +2282,6 @@ GUI.message = (function() {
   };
 })();
 GUI.ScrollSpy = (function() {
-  var size;
-
   ScrollSpy.elems = {};
 
   ScrollSpy.list = [];
@@ -2289,7 +2296,9 @@ GUI.ScrollSpy = (function() {
       }
       top_by = rect.top - win.horizon + offset;
       left_by = 0;
-      return window.scrollBy(left_by, top_by);
+      if (left_by || top_by) {
+        return window.scrollBy(left_by, top_by);
+      }
     }
   };
 
@@ -2365,9 +2374,9 @@ GUI.ScrollSpy = (function() {
   };
 
   ScrollSpy.prototype.start = function() {
-    this.head = this.tail = 0;
-    this.avg_height = 150;
-    return this.show_upper = true;
+    this.show_upper = true;
+    this.size = 30;
+    return this.head = this.tail = 0;
   };
 
   ScrollSpy.prototype.tick = function(center) {
@@ -2397,12 +2406,8 @@ GUI.ScrollSpy = (function() {
     return (_ref2 = this.adjust) != null ? _ref2.id : void 0;
   };
 
-  size = function(page_size, avg) {
-    return 5 + Math.ceil(win.height * page_size / avg);
-  };
-
   ScrollSpy.prototype.pager = function(tag, list, cb) {
-    var attr, btm, idx, key, new_size, o, pager_cb, rect, show_bottom, show_under, show_upper, top, vdom, vdom_items, _ref;
+    var attr, btm, idx, key, o, pager_cb, rect, show_bottom, show_under, show_upper, top, vdom, vdom_items, _ref;
     this.list = list;
     if (!((_ref = this.list) != null ? _ref.length : void 0)) {
       return m(tag, {
@@ -2448,24 +2453,24 @@ GUI.ScrollSpy = (function() {
       }).call(this);
     }
     this.past_list = this.list;
-    new_size = size(3, this.avg_height);
-    if (!(3 > Math.abs(this.size - new_size))) {
-      this.size = new_size;
-    }
     this.center = this.list[idx];
     this.tail = Math.min(btm, idx + this.size);
     this.head = Math.max(top, idx - this.size);
     pager_cb = (function(_this) {
       return function(pager_elem, is_continue, context) {
-        var diff_bottom, elem_bottom;
+        var avg, diff_bottom, elem_bottom, size;
         _this.pager_elem = pager_elem;
         rect = _this.pager_elem.getBoundingClientRect();
         _this.show_under = rect.bottom < win.horizon;
         _this.show_upper = win.horizon < rect.top;
-        _this.avg_height = rect.height / (1 + _this.tail - _this.head);
+        avg = rect.height / (1 + _this.tail - _this.head);
+        size = 3 * win.height / avg;
+        if (_this.size < size) {
+          console.log("!alert! scroll spy size " + _this.size + " < " + size);
+        }
         elem_bottom = rect.bottom + win.top;
         diff_bottom = elem_bottom - _this.elem_bottom;
-        if (_this.show_under && !_this.prop() && win.bottom < document.height) {
+        if (_this.show_under && diff_bottom && !_this.prop() && win.bottom < document.height) {
           window.scrollBy(0, diff_bottom);
         }
         return _this.elem_bottom = elem_bottom;

@@ -10,8 +10,7 @@ class GUI.ScrollSpy
 
       top_by = rect.top - win.horizon + offset
       left_by = 0
-
-      window.scrollBy(left_by, top_by)
+      window.scrollBy(left_by, top_by) if left_by || top_by
 
   GUI.do_tick (now)=>
     for spy in @list
@@ -56,9 +55,9 @@ class GUI.ScrollSpy
       GUI.ScrollSpy.go prop()
 
   start: ->
-    @head = @tail = 0
-    @avg_height = 150
     @show_upper = true
+    @size = 30
+    @head = @tail = 0
 
   tick: (center)->
     console.log center
@@ -82,8 +81,6 @@ class GUI.ScrollSpy
 
     @adjust?.id
 
-  size = (page_size, avg)->
-    5 + Math.ceil(win.height * page_size / avg)
 
   pager: (tag, @list, cb)->
     unless @list?.length
@@ -113,9 +110,6 @@ class GUI.ScrollSpy
             else                 top
     @past_list = @list
 
-    new_size = size(3, @avg_height)
-    @size = new_size unless 3 > Math.abs @size - new_size
-
     @center = @list[idx]
     @tail = Math.min btm, idx + @size
     @head = Math.max top, idx - @size
@@ -125,11 +119,15 @@ class GUI.ScrollSpy
 
       @show_under  = rect.bottom < win.horizon
       @show_upper  = win.horizon < rect.top
-      @avg_height = rect.height / (1 + @tail - @head)
+
+      avg = rect.height / (1 + @tail - @head)
+      size = 3 * win.height / avg
+      if @size < size
+        console.log "!alert! scroll spy size #{@size} < #{size}"
 
       elem_bottom = rect.bottom + win.top
       diff_bottom = elem_bottom - @elem_bottom
-      if @show_under && ! @prop() && win.bottom < document.height
+      if @show_under && diff_bottom && ! @prop() && win.bottom < document.height
         window.scrollBy 0, diff_bottom
       @elem_bottom = elem_bottom
 

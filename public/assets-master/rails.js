@@ -811,7 +811,7 @@ scroll_spy.tick = function(center) {
   if (center.subid === "S") {
     center.seeing = (center.seeing || 0) + 1;
     Cache.messages.seeing().clear();
-    if (10 < center.seeing) {
+    if (11 === center.seeing) {
       return m.redraw();
     }
   }
@@ -1545,7 +1545,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
   });
   GUI.if_exist("#messages", function(dom) {
     var change_pin;
-    scroll_spy.avg_height = 150;
+    scroll_spy.size = 30;
     change_pin = function(id) {
       var target, target_at;
       target = icon_mode_menu.state();
@@ -1784,16 +1784,17 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
   GUI.if_exist("#stories", function(dom) {
     icon_menu.icon("resize-full", {
       open: function() {
-        scroll_spy.avg_height = 120;
+        scroll_spy.size = 30;
         return icon_mode_menu.change("full");
       }
     });
     icon_menu.icon("resize-normal", {
       deploy: function() {
+        scroll_spy.size = 120;
         return icon_mode_menu.change("normal");
       },
       open: function() {
-        scroll_spy.avg_height = 22;
+        scroll_spy.size = 120;
         return icon_mode_menu.change("normal");
       }
     });
