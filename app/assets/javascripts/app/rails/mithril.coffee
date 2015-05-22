@@ -17,6 +17,8 @@ scroll_spy.tick = (center)->
   if center.subid == "S"
     center.seeing = (center.seeing || 0) + 1
     Cache.messages.seeing().clear()
+    if 10 < center.seeing
+      m.redraw()
 icon_mode_menu = new GUI.MenuTree
 icon_mode_menu.state = Url.prop.scope
 icon_menu = new GUI.MenuTree.Icon
@@ -204,7 +206,7 @@ if gon?.face?
                 GUI.inline_item ->
                   @left 2.8 + folder.length * 0.65,
                     m "a",
-                      href: "http://7korobi.gehirn.ne.jp/stories/#{story_id[0]}.html"
+                      href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{story_id[0]}"
                     , story_id[0]
         ]
         m ".MAKER.guide", scroll_spy.mark("villages"), letters
@@ -258,7 +260,7 @@ GUI.if_exist "#buttons", (dom)->
         anime box
 
   layout = new GUI.Layout dom, 1, -1, 120
-  layout.width = 90
+  layout.width = 5
   layout.transition()
 
   m.module dom,
@@ -522,7 +524,7 @@ if gon?.events? && gon.event?
       Cache.messages.memo(memo(), false, potofs_hide(), search())
 
   security_modes = (prop)->
-    [
+    m "p",
       m "a", Btn.set({}, prop, "all"),   "すべて"
       m "a", Btn.set({}, prop, "think"), "独り言/内緒話"
       m "a", Btn.set({}, prop, "clan"),  "仲間の会話"
@@ -530,21 +532,21 @@ if gon?.events? && gon.event?
       m.trust "&nbsp;"
       m "a", Btn.bool({}, Url.prop.open),  "公開情報"
       m "a", Btn.bool({}, Url.prop.human), "/*中の人*/"
-    ]
+
+  potof_groups = ()->
+    m "p",
+      m "a", Btn.keys_reset({}, Url.prop.potofs_hide, []                             ), "全員表示"
+      m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.others()), "参加者表示"
+      m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.potofs()), "その他を表示"
+      m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.all()   ), "全員隠す"
 
   potofs_portrates = ()->
     potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
     hides = Url.prop.potofs_hide()
 
-    m ".chrlist",
+    m ".minilist",
       m "h6", "キャラクターフィルタ"
       m "hr.black"
-      m ".chrbox", {key: "other-Btns"},
-        m ".chrblank.line9",
-          m ".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, []                             ), "全員表示"
-          m ".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.others()), "参加者表示"
-          m ".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.potofs()), "その他を表示"
-          m ".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.all()   ), "全員隠す"
       for o in potofs
         attr = (o)->
           GUI.attrs {}, ->
@@ -558,8 +560,7 @@ if gon?.events? && gon.event?
 
         m ".chrbox", {key: o._id},
           GUI.portrate o.face_id, attr(o)
-          m ".chrblank.line1",
-            m "div", o.name
+          m ".bar.#{o.live}", 
       m "hr.black"
 
   GUI.if_exist "#story", (dom)->
@@ -678,9 +679,9 @@ if gon?.events? && gon.event?
         icon_mode_menu.change "memo"
       view: ->
         [ m ".paragraph.guide",
-            m "h6", "メモ"
+            m "h6", "貼り付けたメモを表示します。 - メモ"
             security_modes Url.prop.memo
-            m "p", "メモを表示します。"
+            potof_groups()
           potofs_portrates()
         ]
 
@@ -689,9 +690,9 @@ if gon?.events? && gon.event?
         icon_mode_menu.change "talk"
       view: ->
         [ m ".paragraph.guide",
-            m "h6", "発言"
+            m "h6", "村内の発言を表示します。 - 発言"
             security_modes Url.prop.talk
-            m "p", "村内の発言を表示します。"
+            potof_groups()
           potofs_portrates()
         ]
 
@@ -700,9 +701,9 @@ if gon?.events? && gon.event?
         icon_mode_menu.change "history"
       view: ->
         [ m ".paragraph.guide",
-            m "h6", "発言"
+            m "h6", "メモを履歴形式で表示します。 - メモ"
             security_modes Url.prop.memo
-            m "p", "メモ履歴を表示します。"
+            potof_groups()
           potofs_portrates()
         ]
 
@@ -777,9 +778,9 @@ if gon?.form?
     close: ->
     view: ->
       [ m ".paragraph.guide",
-          m "h6", "発言"
+          m "h6", "あなたが書き込む内容です。 - 記述"
           security_modes Url.prop.talk
-          m "p", "村内の発言を表示します。"
+          potof_groups()
         potofs_portrates()
       ]
 
