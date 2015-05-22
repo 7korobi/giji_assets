@@ -38,42 +38,25 @@
   padding: 4px;
 }
 
+.minilist,
 .chrlist {
   padding: 0px;
   background-color: #000;
 }
 
-.chrbox, .say img {
-  max-width:   90px;
-  width:       90px;
-  float: left;
-  margin: 0 auto;
+.minilist {
+  @include portrate(45px, 65px, 4px, 4px);
 }
+@include portrate(90px, 130px, 9px, 6px);
 
-.chrbox, .say {
-  img {
-    max-width:   90px;
-    width:       90px;
-    max-height: 130px;
-    height:     130px;
-  }
-  img + {
-    .chrblank,
-    .chrM,
-    .chrF {
-      margin-top: -3px;
-      margin-bottom: 3px;
-    }
-  }
-}
-
+.chrbox,
 .chrblank,
 .chrM,
-.chrF {
-  max-width: 88px;
-  width:     88px;
-  margin: 1px 1px 2px 1px;
-  border-radius: 9px;
+.chrF,
+.bar,
+.say img {
+  float: left;
+  margin: 0 auto;
   text-align: center;
 }
 

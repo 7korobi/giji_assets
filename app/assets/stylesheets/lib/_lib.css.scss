@@ -231,6 +231,45 @@
   }
 }
 
+@mixin portrate($width, $height, $radius, $line) {
+  img + {
+    .bar {
+      height: $line;
+    }
+
+    .bar,
+    .chrblank,
+    .chrM,
+    .chrF {
+      margin: -4px 1px 3px 1px;
+      padding: 0;
+    }
+  }
+
+  .bar,
+  .chrblank,
+  .chrM,
+  .chrF {
+    border-radius: $radius;
+    max-width:     $width - 2px;
+    width:         $width - 2px;
+  }
+
+  .chrbox,
+  .say img {
+    max-width:     $width;
+    width:         $width;
+  }
+
+  .chrbox,
+  .say {
+    img {
+      max-height: $height;
+      height:     $height;
+    }
+  }
+}
+
 @mixin memo-tone($tone, $color, $background){
   td,
   th {

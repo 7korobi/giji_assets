@@ -62,12 +62,15 @@
 }
 
 #buttons {
+  height: 420px;
+
   table {
-    height: 420px;
-  }
-  td {
-    text-align: center;
-    vertical-align: bottom;
+    position: absolute;
+    bottom: 0;    
+    td {
+      text-align: center;
+      vertical-align: bottom;
+    }
   }
 }
 
@@ -94,6 +97,7 @@
 
 hr,
 .chrlist,
+.minilist,
 .clearboth {
   clear: both;
 }

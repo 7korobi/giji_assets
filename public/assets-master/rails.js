@@ -346,7 +346,7 @@ new Cache.Rule("message").schema(function() {
     return {
       seeing: function() {
         return all.where(function(o) {
-          return 0 < o.seeing;
+          return 10 < o.seeing;
         }).sort("desk", "seeing");
       },
       timeline: function(mode) {
@@ -767,10 +767,16 @@ new Cache.Rule("potof").schema(function() {
   has_face = {};
   Cache.potofs.has_face = has_face;
   return this.map_reduce(function(o, emit) {
-    return has_face[o.face_id] = o;
+    switch (o.live) {
+      case "suddendead":
+      case "leave":
+        break;
+      default:
+        return has_face[o.face_id] = o;
+    }
   });
 });
-var face, icon_menu, icon_mode_menu, messages, potofs_portrates, scroll_spy, security_modes, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7,
+var face, icon_menu, icon_mode_menu, messages, potof_groups, potofs_portrates, scroll_spy, security_modes, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7,
   __slice = [].slice;
 
 Cache.potofs.has_faces = {
@@ -804,7 +810,10 @@ scroll_spy = GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
 scroll_spy.tick = function(center) {
   if (center.subid === "S") {
     center.seeing = (center.seeing || 0) + 1;
-    return Cache.messages.seeing().clear();
+    Cache.messages.seeing().clear();
+    if (10 < center.seeing) {
+      return m.redraw();
+    }
   }
 };
 
@@ -1011,7 +1020,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
                   story_id = _ref2[_j];
                   _results1.push(GUI.inline_item(function() {
                     return this.left(2.8 + folder.length * 0.65, m("a", {
-                      href: "http://7korobi.gehirn.ne.jp/stories/" + story_id[0] + ".html"
+                      href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/" + story_id[0]
                     }, story_id[0]));
                   }));
                 }
@@ -1094,7 +1103,7 @@ GUI.if_exist("#buttons", function(dom) {
     });
   }
   layout = new GUI.Layout(dom, 1, -1, 120);
-  layout.width = 90;
+  layout.width = 5;
   layout.transition();
   return m.module(dom, {
     controller: function() {},
@@ -1423,15 +1432,16 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     }
   };
   security_modes = function(prop) {
-    return [m("a", Btn.set({}, prop, "all"), "すべて"), m("a", Btn.set({}, prop, "think"), "独り言/内緒話"), m("a", Btn.set({}, prop, "clan"), "仲間の会話"), m("a", Btn.set({}, prop, "open"), "公開情報のみ"), m.trust("&nbsp;"), m("a", Btn.bool({}, Url.prop.open), "公開情報"), m("a", Btn.bool({}, Url.prop.human), "/*中の人*/")];
+    return m("p", m("a", Btn.set({}, prop, "all"), "すべて"), m("a", Btn.set({}, prop, "think"), "独り言/内緒話"), m("a", Btn.set({}, prop, "clan"), "仲間の会話"), m("a", Btn.set({}, prop, "open"), "公開情報のみ"), m.trust("&nbsp;"), m("a", Btn.bool({}, Url.prop.open), "公開情報"), m("a", Btn.bool({}, Url.prop.human), "/*中の人*/"));
+  };
+  potof_groups = function() {
+    return m("p", m("a", Btn.keys_reset({}, Url.prop.potofs_hide, []), "全員表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.others()), "参加者表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.potofs()), "その他を表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.all()), "全員隠す"));
   };
   potofs_portrates = function() {
     var attr, hides, o, potofs;
     potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
     hides = Url.prop.potofs_hide();
-    return m(".chrlist", m("h6", "キャラクターフィルタ"), m("hr.black"), m(".chrbox", {
-      key: "other-Btns"
-    }, m(".chrblank.line9", m(".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, []), "全員表示"), m(".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.others()), "参加者表示"), m(".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.potofs()), "その他を表示"), m(".btn[style='display:block']", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.all()), "全員隠す"))), (function() {
+    return m(".minilist", m("h6", "キャラクターフィルタ"), m("hr.black"), (function() {
       var _i, _len, _results;
       _results = [];
       for (_i = 0, _len = potofs.length; _i < _len; _i++) {
@@ -1452,7 +1462,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         };
         _results.push(m(".chrbox", {
           key: o._id
-        }, GUI.portrate(o.face_id, attr(o)), m(".chrblank.line1", m("div", o.name))));
+        }, GUI.portrate(o.face_id, attr(o)), m(".bar." + o.live)));
       }
       return _results;
     })(), m("hr.black"));
@@ -1609,7 +1619,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         return icon_mode_menu.change("memo");
       },
       view: function() {
-        return [m(".paragraph.guide", m("h6", "メモ"), security_modes(Url.prop.memo), m("p", "メモを表示します。")), potofs_portrates()];
+        return [m(".paragraph.guide", m("h6", "貼り付けたメモを表示します。 - メモ"), security_modes(Url.prop.memo), potof_groups()), potofs_portrates()];
       }
     });
     icon_menu.icon("chat-alt", {
@@ -1617,7 +1627,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         return icon_mode_menu.change("talk");
       },
       view: function() {
-        return [m(".paragraph.guide", m("h6", "発言"), security_modes(Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates()];
+        return [m(".paragraph.guide", m("h6", "村内の発言を表示します。 - 発言"), security_modes(Url.prop.talk), potof_groups()), potofs_portrates()];
       }
     });
     icon_menu.icon("clock", {
@@ -1625,7 +1635,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         return icon_mode_menu.change("history");
       },
       view: function() {
-        return [m(".paragraph.guide", m("h6", "発言"), security_modes(Url.prop.memo), m("p", "メモ履歴を表示します。")), potofs_portrates()];
+        return [m(".paragraph.guide", m("h6", "メモを履歴形式で表示します。 - メモ"), security_modes(Url.prop.memo), potof_groups()), potofs_portrates()];
       }
     });
     m.module(dom, {
@@ -1722,7 +1732,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.form : void 0) != null) {
     open: function() {},
     close: function() {},
     view: function() {
-      return [m(".paragraph.guide", m("h6", "発言"), security_modes(Url.prop.talk), m("p", "村内の発言を表示します。")), potofs_portrates()];
+      return [m(".paragraph.guide", m("h6", "あなたが書き込む内容です。 - 記述"), security_modes(Url.prop.talk), potof_groups()), potofs_portrates()];
     }
   });
 }
