@@ -12,7 +12,7 @@ new Cache.Rule("message").schema ->
   @scope (all)->
     seeing: ->
       all
-      .where (o)-> 0 < o.seeing
+      .where (o)-> 10 < o.seeing
       .sort "desk", "seeing"
 
     timeline: (mode)->
