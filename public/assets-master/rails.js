@@ -65,7 +65,7 @@ Url.routes = {
       unmatch: "?",
       change: function(params) {
         var folder, logid, scroll, turn, updated_at, vid, _ref1, _ref2;
-        scroll = GUI.ScrollSpy.global.prop();
+        scroll = win.scroll.prop();
         _ref1 = scroll.split("-"), folder = _ref1[0], vid = _ref1[1], turn = _ref1[2], logid = _ref1[3];
         if (logid != null) {
           updated_at = ((_ref2 = Cache.messages.find(scroll)) != null ? _ref2.updated_at : void 0) || 0;
@@ -77,31 +77,6 @@ Url.routes = {
     })
   }
 };
-
-win.on.resize.push(function() {
-  var width;
-  width = document.querySelector("#contentframe").offsetWidth;
-  Url.prop.content_width(width);
-  if (width <= 770) {
-    Url.prop.h1_width(770);
-  }
-  if (width <= 580) {
-    Url.prop.h1_width(580);
-  }
-  if (width <= 458) {
-    Url.prop.h1_width(458);
-  }
-  switch (Url.prop.layout()) {
-    case "right":
-      return Url.prop.right_width(0);
-    case "center":
-      return Url.prop.right_width((win.width - width - 4) / 2);
-    case "left":
-      return Url.prop.right_width(win.width - width - 4);
-  }
-});
-
-win["do"].resize();
 new Cache.Rule("map_face").schema(function() {
   var item;
   this.belongs_to("face", {
@@ -169,143 +144,18 @@ new Cache.Rule("map_face_story_log").schema(function() {
 new Cache.Rule("item").schema(function() {
   return this.deploy(function(o) {});
 });
-
 new Cache.Rule("event").schema(function() {
   var bit, mask, visible, _ref;
   this.order("_id");
   _ref = RAILS.message, visible = _ref.visible, bit = _ref.bit, mask = _ref.mask;
-  return this.deploy(function(o) {
+  this.scope(function(all) {
+    return {};
+  });
+  this.deploy(function(o) {
     o._id || (o._id = "" + o.story_id + "-" + o.turn);
     return o.event_id = o._id;
   });
-});
-
-new Cache.Rule("story").schema(function() {
-  var all_events, caption;
-  this.scope(function(all) {
-    return {
-      menu: function(folder, game, rating, event_type, role_type, say_limit, player_length, update_at, update_interval, search) {
-        return all.sort("desc", "order").search(search).where(function(o) {
-          var tf;
-          tf = true;
-          if (folder !== "all") {
-            tf && (tf = o.folder === folder);
-          }
-          if (rating !== "all") {
-            tf && (tf = o.rating === rating);
-          }
-          if (game !== "all") {
-            tf && (tf = o.type.game === game);
-          }
-          if (say_limit !== "all") {
-            tf && (tf = o.view.say_limit === say_limit);
-          }
-          if (update_at !== "all") {
-            tf && (tf = o.view.update_at === update_at);
-          }
-          if (player_length !== "all") {
-            tf && (tf = o.view.player_length === Number(player_length));
-          }
-          if (update_interval !== "all") {
-            tf && (tf = o.view.update_interval === update_interval);
-          }
-          if (role_type !== "all") {
-            tf && (tf = o.view.role_types.find(function(v) {
-              return v === role_type;
-            }));
-          }
-          if (event_type !== "all") {
-            tf && (tf = o.view.event_types.find(function(v) {
-              return v === event_type;
-            }));
-          }
-          return tf;
-        });
-      }
-    };
-  });
-  caption = function(field, key) {
-    var data;
-    data = field[key];
-    if (data) {
-      return data.CAPTION;
-    } else {
-      return null;
-    }
-  };
-  all_events = Object.keys(RAILS.events);
-  this.deploy(function(o) {
-    var _base, _base1, _ref, _ref1;
-    o.order = o.folder + GUI.field(o.vid, 4);
-    if (!o.rating) {
-      o.rating = "default";
-    }
-    o.user_id = o.sow_auth_id;
-    o.card.role = _.difference(o.card.config, all_events);
-    if ((_base = o.type).game == null) {
-      _base.game = "TABULA";
-    }
-    if ((_base1 = o.type).mob == null) {
-      _base1.mob = "visiter";
-    }
-    o.view = {
-      rating: m("img", {
-        src: GUI.img_head + ("/icon/cd_" + o.rating + ".png")
-      }),
-      update_at: Timer.hhmm(o.upd.hour, o.upd.minute),
-      update_interval: "" + (o.upd.interval * 24) + "時間",
-      player_length: o.vpl.last,
-      role_types: GUI.names.config(o.card.role, function(name, size) {
-        return name;
-      }),
-      event_types: GUI.names.config(o.card.event, function(name, size) {
-        return name;
-      }),
-      role_cards: GUI.names.config(o.card.role, function(name, size) {
-        if (size > 1) {
-          return m(".emboss", "" + name + "x" + size);
-        } else {
-          return m(".emboss", "" + name);
-        }
-      }),
-      event_cards: GUI.names.config(o.card.event, function(name, size) {
-        if (size > 1) {
-          return m(".emboss", "" + name + "x" + size);
-        } else {
-          return m(".emboss", "" + name);
-        }
-      }),
-      say_limit: ((_ref = RAILS.saycnt[o.type.say]) != null ? _ref.CAPTION : void 0) || "――",
-      game_rule: ((_ref1 = RAILS.game_rule[o.type.game]) != null ? _ref1.CAPTION : void 0) || "タブラの人狼"
-    };
-    return o.search_words = o.name;
-  });
-  return this.map_reduce(function(o, emit) {
-    var event_type, item, role_type, _i, _j, _len, _len1, _ref, _ref1, _results;
-    item = {
-      count: 1
-    };
-    emit("all", "all", item);
-    emit("folder", o.folder, item);
-    emit("game", o.type.game, item);
-    emit("rating", o.rating, item);
-    emit("say_limit", o.view.say_limit, item);
-    emit("update_at", o.view.update_at, item);
-    emit("update_interval", o.view.update_interval, item);
-    emit("player_length", o.view.player_length, item);
-    _ref = o.view.role_types;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      role_type = _ref[_i];
-      emit("role_type", role_type, item);
-    }
-    _ref1 = o.view.event_types;
-    _results = [];
-    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-      event_type = _ref1[_j];
-      _results.push(emit("event_type", event_type, item));
-    }
-    return _results;
-  });
+  return this.map_reduce(function(o, emit) {});
 });
 new Cache.Rule("target").schema(function() {
   this.scope(function(all) {
@@ -346,7 +196,7 @@ new Cache.Rule("message").schema(function() {
     return {
       seeing: function() {
         return all.where(function(o) {
-          return 10 < o.seeing;
+          return 15 < o.seeing;
         }).sort("desk", "seeing");
       },
       timeline: function(mode) {
@@ -544,8 +394,11 @@ new Cache.Rule("message").schema(function() {
     });
   });
 });
+var __slice = [].slice;
+
 new Cache.Rule("potof").schema(function() {
-  var has_face, maskstate_order, win_by_role;
+  var id_list, maskstate_order, win_by_role;
+  this.depend_on("message");
   maskstate_order = _.sortBy(_.keys(RAILS.maskstates), function(o) {
     return -o;
   });
@@ -563,8 +416,44 @@ new Cache.Rule("potof").schema(function() {
       return null;
     };
   })(this);
+  id_list = function(query) {
+    return query.list().map(function(o) {
+      return o.face_id;
+    }).sort();
+  };
   this.scope(function(all) {
     return {
+      full: function() {
+        delete Cache.messages.has_face.undefined;
+        delete Cache.messages.has_face["null"];
+        delete Cache.messages.has_face.admin;
+        delete Cache.messages.has_face.maker;
+        return Object.keys(Cache.messages.has_face).sort();
+      },
+      potofs: function() {
+        return _.without.apply(_, [all.full()].concat(__slice.call(all.others())));
+      },
+      not_lives: function(turn) {
+        return _.without.apply(_, [all.full()].concat(__slice.call(all.lives(turn))));
+      },
+      not_deads: function(turn) {
+        return _.without.apply(_, [all.full()].concat(__slice.call(all.deads(turn))));
+      },
+      lives: function(turn) {
+        return id_list(all.where(function(o) {
+          return o.hide.dead && turn < o.hide.dead;
+        }));
+      },
+      deads: function(turn) {
+        return id_list(all.where(function(o) {
+          return o.hide.dead && o.hide.dead <= turn;
+        }));
+      },
+      others: function() {
+        return id_list(all.where(function(o) {
+          return o.hide.other;
+        }));
+      },
       view: function(is_desc, order) {
         return all.sort(is_desc, function(o) {
           return o.order[order];
@@ -573,9 +462,10 @@ new Cache.Rule("potof").schema(function() {
     };
   });
   this.deploy(function(o) {
-    var chr_job, face, is_dead_lose, is_lone_lose, job, mask, name, pt, pt_no, role, role_side_order, role_text, roles, rolestate, said_num, say_type, select, stat_at, stat_order, stat_type, state, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie, _i, _len, _ref;
+    var chr_job, face, is_dead_lose, is_lone_lose, job, mask, name, pt, pt_no, role, role_side_order, role_text, roles, rolestate, said_num, say_type, select, stat_at, stat_order, stat_type, state, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie, _i, _len, _ref, _ref1;
     o._id = "" + o.event_id + "-" + o.csid + "-" + o.face_id;
     o.user_id = o.sow_auth_id;
+    o.hide = {};
     if (o.event_id) {
       if (o.event_id.match(/-0$/)) {
         o.live = "leave";
@@ -586,10 +476,35 @@ new Cache.Rule("potof").schema(function() {
     face = Cache.faces.find(o.face_id);
     name = face ? face.name : o.name;
     o.name = o.zapcount ? "" + RAILS.clearance[o.clearance] + name + "-" + o.zapcount : name;
-    stat_at = 0 < o.deathday ? "" + o.deathday + "日" : (o.deathday = -1, "");
+    stat_at = (0 < (_ref = o.deathday) && _ref < Infinity) ? "" + o.deathday + "日" : (o.deathday = Infinity, "");
     said_num = o.point.saidcount;
     urge = o.point.actaddpt;
-    pt_no = "live" === o.live ? o.say.say : o.say.gsay;
+    pt_no = o.say.gsay;
+    switch (o.live) {
+      case "live":
+        pt_no = o.say.say;
+        o.hide.dead = o.deathday;
+        break;
+      case "mob":
+        if ('juror' === o.story_type.mob) {
+          win_juror = 'HUMAN';
+        }
+        break;
+      case "suddendead":
+        win_juror = 'LEAVE';
+        o.hide.other = true;
+        o.hide.dead = o.deathday;
+        break;
+      case "leave":
+        win_juror = 'LEAVE';
+        o.hide.other = true;
+        pt = 0;
+        urge = 0;
+        said_num = 0;
+        break;
+      default:
+        o.hide.dead = o.deathday;
+    }
     if (o.story_epilogue) {
       pt = "∞";
     } else {
@@ -622,22 +537,7 @@ new Cache.Rule("potof").schema(function() {
       case "SECRET":
         is_dead_lose = 1;
     }
-    switch (o.live) {
-      case "mob":
-        if ('juror' === o.story_type.mob) {
-          win_juror = 'HUMAN';
-        }
-        break;
-      case "suddendead":
-        win_juror = 'LEAVE';
-        break;
-      case "leave":
-        win_juror = 'LEAVE';
-        pt = 0;
-        urge = 0;
-        said_num = 0;
-    }
-    win_love = (_ref = RAILS.loves[o.love]) != null ? _ref.win : void 0;
+    win_love = (_ref1 = RAILS.loves[o.love]) != null ? _ref1.win : void 0;
     win_role = win_by_role(o, RAILS.gifts) || win_by_role(o, RAILS.roles) || "NONE";
     win = win_juror || win_love || win_zombie || win_role;
     if (win === 'EVIL') {
@@ -693,11 +593,11 @@ new Cache.Rule("potof").schema(function() {
     win_side_order = RAILS.wins[win].order;
     role_side_order = RAILS.wins[win_role].order;
     roles = (function() {
-      var _i, _len, _ref1, _results;
-      _ref1 = o.role;
+      var _i, _len, _ref2, _results;
+      _ref2 = o.role;
       _results = [];
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        role = _ref1[_i];
+      for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+        role = _ref2[_i];
         _results.push(GUI.name.config(role));
       }
       return _results;
@@ -764,74 +664,337 @@ new Cache.Rule("potof").schema(function() {
       text: text_str
     };
   });
-  has_face = {};
-  Cache.potofs.has_face = has_face;
-  return this.map_reduce(function(o, emit) {
-    switch (o.live) {
-      case "suddendead":
-      case "leave":
-        break;
-      default:
-        return has_face[o.face_id] = o;
-    }
-  });
+  return this.map_reduce(function(o, emit) {});
 });
-var face, icon_menu, icon_mode_menu, messages, potof_groups, potofs_portrates, scroll_spy, security_modes, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7,
-  __slice = [].slice;
-
-Cache.potofs.has_faces = {
-  all: function() {
-    delete Cache.messages.has_face.undefined;
-    delete Cache.messages.has_face["null"];
-    delete Cache.messages.has_face.admin;
-    delete Cache.messages.has_face.maker;
-    return Object.keys(Cache.messages.has_face).sort();
-  },
-  potofs: function() {
-    return Object.keys(Cache.potofs.has_face).sort();
-  },
-  others: function() {
-    var face_id, _i, _len, _ref, _results;
-    _ref = Cache.potofs.has_faces.all();
-    _results = [];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      face_id = _ref[_i];
-      if (Cache.potofs.has_face[face_id]) {
-        continue;
+new Cache.Rule("story").schema(function() {
+  var all_events, caption;
+  this.scope(function(all) {
+    return {
+      menu: function(folder, game, rating, event_type, role_type, say_limit, player_length, update_at, update_interval, search) {
+        return all.sort("desc", "order").search(search).where(function(o) {
+          var tf;
+          tf = true;
+          if (folder !== "all") {
+            tf && (tf = o.folder === folder);
+          }
+          if (rating !== "all") {
+            tf && (tf = o.rating === rating);
+          }
+          if (game !== "all") {
+            tf && (tf = o.type.game === game);
+          }
+          if (say_limit !== "all") {
+            tf && (tf = o.view.say_limit === say_limit);
+          }
+          if (update_at !== "all") {
+            tf && (tf = o.view.update_at === update_at);
+          }
+          if (player_length !== "all") {
+            tf && (tf = o.view.player_length === Number(player_length));
+          }
+          if (update_interval !== "all") {
+            tf && (tf = o.view.update_interval === update_interval);
+          }
+          if (role_type !== "all") {
+            tf && (tf = o.view.role_types.find(function(v) {
+              return v === role_type;
+            }));
+          }
+          if (event_type !== "all") {
+            tf && (tf = o.view.event_types.find(function(v) {
+              return v === event_type;
+            }));
+          }
+          return tf;
+        });
       }
-      _results.push(face_id);
+    };
+  });
+  caption = function(field, key) {
+    var data;
+    data = field[key];
+    if (data) {
+      return data.CAPTION;
+    } else {
+      return null;
+    }
+  };
+  all_events = Object.keys(RAILS.events);
+  this.deploy(function(o) {
+    var _base, _base1, _ref, _ref1;
+    o.order = o.folder + GUI.field(o.vid, 4);
+    if (!o.rating) {
+      o.rating = "default";
+    }
+    o.user_id = o.sow_auth_id;
+    o.card.role = _.difference(o.card.config, all_events);
+    if ((_base = o.type).game == null) {
+      _base.game = "TABULA";
+    }
+    if ((_base1 = o.type).mob == null) {
+      _base1.mob = "visiter";
+    }
+    o.view = {
+      rating: m("img", {
+        src: GUI.img_head + ("/icon/cd_" + o.rating + ".png")
+      }),
+      update_at: Timer.hhmm(o.upd.hour, o.upd.minute),
+      update_interval: "" + (o.upd.interval * 24) + "時間",
+      player_length: o.vpl.last,
+      role_types: GUI.names.config(o.card.role, function(name, size) {
+        return name;
+      }),
+      event_types: GUI.names.config(o.card.event, function(name, size) {
+        return name;
+      }),
+      role_cards: GUI.names.config(o.card.role, function(name, size) {
+        if (size > 1) {
+          return m(".emboss", "" + name + "x" + size);
+        } else {
+          return m(".emboss", "" + name);
+        }
+      }),
+      event_cards: GUI.names.config(o.card.event, function(name, size) {
+        if (size > 1) {
+          return m(".emboss", "" + name + "x" + size);
+        } else {
+          return m(".emboss", "" + name);
+        }
+      }),
+      say_limit: ((_ref = RAILS.saycnt[o.type.say]) != null ? _ref.CAPTION : void 0) || "――",
+      game_rule: ((_ref1 = RAILS.game_rule[o.type.game]) != null ? _ref1.CAPTION : void 0) || "タブラの人狼"
+    };
+    return o.search_words = o.name;
+  });
+  return this.map_reduce(function(o, emit) {
+    var event_type, item, role_type, _i, _j, _len, _len1, _ref, _ref1, _results;
+    item = {
+      count: 1
+    };
+    emit("all", "all", item);
+    emit("folder", o.folder, item);
+    emit("game", o.type.game, item);
+    emit("rating", o.rating, item);
+    emit("say_limit", o.view.say_limit, item);
+    emit("update_at", o.view.update_at, item);
+    emit("update_interval", o.view.update_interval, item);
+    emit("player_length", o.view.player_length, item);
+    _ref = o.view.role_types;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      role_type = _ref[_i];
+      emit("role_type", role_type, item);
+    }
+    _ref1 = o.view.event_types;
+    _results = [];
+    for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+      event_type = _ref1[_j];
+      _results.push(emit("event_type", event_type, item));
     }
     return _results;
-  }
-};
-
-scroll_spy = GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll);
-
-scroll_spy.tick = function(center) {
-  if (center.subid === "S") {
-    center.seeing = (center.seeing || 0) + 1;
-    Cache.messages.seeing().clear();
-    if (11 === center.seeing) {
-      return m.redraw();
+  });
+});
+// Generated by LiveScript 1.3.1
+(function(){
+  var doc, menu, out$ = typeof exports != 'undefined' && exports || this;
+  out$.doc = doc = {
+    timeline: function(){
+      return GUI.timeline({
+        base: Cache.messages.timeline(Url.prop.talk()),
+        width: Url.prop.content_width(),
+        choice: function(id){
+          Url.prop.talk_at(id);
+          menu.icon.change("search");
+          menu.scope.change("talk");
+          return win.scroll.rescroll(Url.prop.talk_at);
+        }
+      });
+    },
+    potofs: function(){
+      var potofs, hides, turn, ref$, o, attr;
+      potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
+      hides = Url.prop.potofs_hide();
+      turn = ((ref$ = win.scroll.center) != null ? ref$.turn : void 8) || 0;
+      return m(".minilist", m("h6", "キャラクターフィルタ"), m("p", m("a", Btn.keys_reset({}, Url.prop.potofs_hide, []), "全員表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.others()), "参加者表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.potofs()), "その他を表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.full()), "全員隠す")), m("hr.black"), (function(){
+        var i$, ref$, len$, results$ = [];
+        for (i$ = 0, len$ = (ref$ = potofs).length; i$ < len$; ++i$) {
+          o = ref$[i$];
+          attr = fn$;
+          results$.push(m(".chrbox", {
+            key: o._id
+          }, GUI.portrate(o.face_id, attr(o)), m(".bar." + o.live)));
+        }
+        return results$;
+        function fn$(o){
+          return GUI.attrs({}, function(){
+            var elem;
+            this.className(hides[o.face_id] ? "filter-hide" : "");
+            elem = null;
+            this.config(function(_elem){
+              var elem;
+              return elem = _elem;
+            });
+            return this.click(function(){
+              hides[o.face_id] = !hides[o.face_id];
+              return Url.prop.potofs_hide(hides);
+            });
+          });
+        }
+      }()), m("hr.black"));
+    },
+    catch_gon: {
+      face: function(){
+        var face;
+        face = Cache.map_face_detail = gon.face;
+        Cache.rule.map_face_story_log.set(face.story_logs);
+        face.name = Cache.faces.find(face.face_id).name;
+        face.story_id_of_folders = _.groupBy(face.story_ids, function(arg$){
+          var k, count, ref$;
+          k = arg$[0], count = arg$[1];
+          return (ref$ = k.split("-")) != null ? ref$[0] : void 8;
+        });
+        return face.role_of_wins = _.groupBy(face.roles, function(arg$){
+          var k, count, role;
+          k = arg$[0], count = arg$[1];
+          role = RAILS.gifts[k] || RAILS.roles[k] || {
+            group: "OTHER"
+          };
+          return RAILS.wins[role.group].name;
+        });
+      },
+      map_reduce_faces: function(){
+        Cache.rule.chr_set.schema(function(){
+          return this.order(function(o){
+            return Cache.map_faces.reduce().chr_set[o._id].count;
+          });
+        });
+        return Cache.rule.map_face.set(gon.map_reduce.faces);
+      },
+      potofs: function(){
+        var ref$, ref1$, ref2$, ref3$, ref4$, ref5$;
+        return Cache.rule.potof.set(gon.potofs, {
+          story_folder: (ref$ = gon.story) != null ? ref$.folder : void 8,
+          story_type: (ref1$ = gon.story) != null ? ref1$.type : void 8,
+          story_epilogue: (ref2$ = gon.story) != null ? ref2$.is_epilogue : void 8,
+          event_winner: ((ref3$ = gon.event) != null ? ref3$.winner : void 8) || ((ref4$ = gon.events) != null ? (ref5$ = ref4$.last) != null ? ref5$.winner : void 8 : void 8)
+        });
+      },
+      story: function(){
+        if ((typeof gon != 'undefined' && gon !== null ? gon.story : void 8) != null) {
+          return Cache.rule.story.set([gon.story]);
+        }
+      },
+      events: function(){
+        var ref$;
+        return Cache.rule.event.merge(gon.events, {
+          story_id: (ref$ = gon.story) != null ? ref$._id : void 8
+        });
+      },
+      messages: function(){
+        var set_event_messages, set_event_without_messages, interval, turn, updated_at, i$, ref$, len$, event, results$ = [];
+        set_event_messages = function(event){
+          var first, last;
+          first = event.messages.first.date;
+          last = event.messages.last.date;
+          return set_event_without_messages(new Date(first) - 1, new Date(last) - -1, event.messages, event);
+        };
+        set_event_without_messages = function(first_date, last_date, messages, arg$){
+          var _id, turn, name;
+          _id = arg$._id, turn = arg$.turn, name = arg$.name;
+          messages.unshift({
+            name: name,
+            log: name,
+            logid: "EVENT-ASC",
+            mestype: "EVENT",
+            updated_at: first_date
+          });
+          messages.push({
+            name: name,
+            log: name,
+            logid: "EVENT-DESC",
+            mestype: "EVENT",
+            updated_at: last_date
+          });
+          return Cache.rule.message.merge(messages, {
+            event_id: _id,
+            turn: turn
+          });
+        };
+        interval = gon.story.upd.interval * 1000 * 3600 * 24;
+        if (gon.event.messages) {
+          set_event_messages(gon.event);
+          turn = gon.event.turn;
+          updated_at = gon.event.messages.last.updated_at;
+          for (i$ = 0, len$ = (ref$ = gon.events).length; i$ < len$; ++i$) {
+            event = ref$[i$];
+            if (event.turn > turn) {
+              set_event_without_messages(updated_at + 1, updated_at + interval, [], event);
+              updated_at += interval;
+            }
+          }
+          updated_at = gon.event.messages.first.updated_at;
+          for (i$ = (ref$ = gon.events).length - 1; i$ >= 0; --i$) {
+            event = ref$[i$];
+            if (event.turn < turn) {
+              set_event_without_messages(updated_at - interval, updated_at - 1, [], event);
+              updated_at -= interval;
+            }
+          }
+        }
+        for (i$ = 0, len$ = (ref$ = gon.events).length; i$ < len$; ++i$) {
+          event = ref$[i$];
+          if (event.messages) {
+            results$.push(set_event_messages(event));
+          }
+        }
+        return results$;
+      }
     }
-  }
-};
-
-icon_mode_menu = new GUI.MenuTree;
-
-icon_mode_menu.state = Url.prop.scope;
-
-icon_menu = new GUI.MenuTree.Icon;
-
-icon_menu.state = Url.prop.icon;
+  };
+  out$.menu = menu = {
+    icon: new GUI.MenuTree.Icon,
+    scope: new GUI.MenuTree
+  };
+  menu.icon.state = Url.prop.icon;
+  menu.scope.state = Url.prop.scope;
+  win.scroll = new GUI.ScrollSpy(Url.prop.scroll);
+  win.scroll.tick = function(center){
+    if (center.subid === "S") {
+      center.seeing = (center.seeing || 0) + 1;
+      Cache.messages.seeing().clear();
+      if (16 === center.seeing) {
+        return m.redraw();
+      }
+    }
+  };
+  win.on.resize.push(function(){
+    var width;
+    width = document.querySelector('#contentframe').offsetWidth;
+    Url.prop.content_width(width);
+    if (width <= 770) {
+      Url.prop.h1_width(770);
+    }
+    if (width <= 580) {
+      Url.prop.h1_width(580);
+    }
+    if (width <= 458) {
+      Url.prop.h1_width(458);
+    }
+    switch (Url.prop.layout()) {
+    case "right":
+      return Url.prop.right_width(0);
+    case "center":
+      return Url.prop.right_width((win.width - width - 4) / 2);
+    case "left":
+      return Url.prop.right_width(win.width - width - 4);
+    }
+  });
+  win['do'].resize();
+}).call(this);
+var messages, security_modes, _ref,
+  __slice = [].slice;
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
-  Cache.rule.chr_set.schema(function() {
-    return this.order(function(o) {
-      return Cache.map_faces.reduce().chr_set[o._id].count;
-    });
-  });
-  Cache.rule.map_face.set(gon.map_reduce.faces);
+  doc.catch_gon.map_reduce_faces();
   GUI.if_exist("#map_faces", function(dom) {
     return m.module(dom, {
       controller: function() {},
@@ -880,7 +1043,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return icon_menu.icon("th-large", {
+        return menu.icon.icon("th-large", {
           deploy: function(main_menu) {
             main_menu.drill("order", {
               caption: "並び順",
@@ -916,37 +1079,22 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
 }
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
-  face = Cache.map_face_detail = gon.face;
-  Cache.rule.map_face_story_log.set(face.story_logs);
-  face.name = Cache.faces.find(face.face_id).name;
-  face.story_id_of_folders = _.groupBy(face.story_ids, function(_arg) {
-    var count, k, _ref1;
-    k = _arg[0], count = _arg[1];
-    return (_ref1 = k.split("-")) != null ? _ref1[0] : void 0;
-  });
-  face.role_of_wins = _.groupBy(face.roles, function(_arg) {
-    var count, k, role;
-    k = _arg[0], count = _arg[1];
-    role = RAILS.gifts[k] || RAILS.roles[k] || {
-      group: "OTHER"
-    };
-    return RAILS.wins[role.group].name;
-  });
+  doc.catch_gon.face();
   GUI.if_exist("#summary", function(dom) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var letters, role, rolename, width, win;
+        var letters, role, rolename, width, win_side;
         letters = [
           GUI.letter("", face.name, "全部で", m("span.mark", face.role.all), "の役職になりました"), (function() {
             var _i, _len, _ref1, _results;
             _ref1 = face.win.keys;
             _results = [];
             for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-              win = _ref1[_i];
-              _results.push(GUI.letter("", "" + win + " x" + face.win.value[win] + "回", (function() {
+              win_side = _ref1[_i];
+              _results.push(GUI.letter("", "" + win_side + " x" + face.win.value[win_side] + "回", (function() {
                 var _j, _len1, _ref2, _results1;
-                _ref2 = face.role_of_wins[win];
+                _ref2 = face.role_of_wins[win_side];
                 _results1 = [];
                 for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
                   role = _ref2[_j];
@@ -969,7 +1117,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
             return _results;
           })()
         ];
-        return [m("h2", face.name + " の活躍"), face.says[0] != null ? m("h6", m("span.code", Timer.date_time_stamp(new Date(face.says[0].date.min))), m("span", m.trust("&nbsp;〜&nbsp;")), m("span.code", Timer.date_time_stamp(new Date(face.says[0].date.max)))) : void 0, m("table.SAY.talk", scroll_spy.mark("summary"), m("tr", m("th", GUI.portrate(face.face_id)), m("td", m(".msg", letters))))];
+        return [m("h2", face.name + " の活躍"), face.says[0] != null ? m("h6", m("span.code", Timer.date_time_stamp(new Date(face.says[0].date.min))), m("span", m.trust("&nbsp;〜&nbsp;")), m("span.code", Timer.date_time_stamp(new Date(face.says[0].date.max)))) : void 0, m("table.SAY.talk", win.scroll.mark("summary"), m("tr", m("th", GUI.portrate(face.face_id)), m("td", m(".msg", letters))))];
       }
     });
   });
@@ -996,7 +1144,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
           says_count_lines.push(says_count_line);
           says_calc_lines.push(says_calc_line);
         }
-        return [m("table.info", scroll_spy.mark("says_count"), says_count_lines), m("table.info", scroll_spy.mark("says_calc"), says_calc_lines)];
+        return [m("table.info", win.scroll.mark("says_count"), says_count_lines), m("table.info", win.scroll.mark("says_calc"), says_calc_lines)];
       }
     });
   });
@@ -1030,7 +1178,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
             return _results;
           })()
         ];
-        return m(".MAKER.guide", scroll_spy.mark("villages"), letters);
+        return m(".MAKER.guide", win.scroll.mark("villages"), letters);
       }
     });
   });
@@ -1064,7 +1212,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
             return _results;
           })()
         ];
-        return m(".ADMIN.guide", scroll_spy.mark("sow_users"), letters);
+        return m(".ADMIN.guide", win.scroll.mark("sow_users"), letters);
       }
     });
   });
@@ -1112,10 +1260,10 @@ GUI.if_exist("#buttons", function(dom) {
       vdoms = [];
       section = function(icon) {
         var vdom;
-        if (!icon_menu.nodes[icon]) {
+        if (!menu.icon.nodes[icon]) {
           return;
         }
-        vdom = m("section", icon_menu.start({
+        vdom = m("section", menu.icon.start({
           "class": "glass"
         }, icon), m(".bigicon", m(".icon-" + icon, " ")), badges[icon] ? m(".badge.pull-right", badges[icon]()) : void 0);
         return vdoms.push(vdom);
@@ -1176,7 +1324,7 @@ GUI.if_exist("#buttons", function(dom) {
           return Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list().length;
         }
       };
-      switch (icon_mode_menu.state()) {
+      switch (menu.scope.state()) {
         case "pins":
           section("pin");
           break;
@@ -1201,7 +1349,7 @@ GUI.if_exist("#buttons", function(dom) {
       }
       section("pencil");
       section("th-large");
-      if ("pins" !== icon_mode_menu.state()) {
+      if ("pins" !== menu.scope.state()) {
         section("search");
       }
       section("cog");
@@ -1216,13 +1364,13 @@ GUI.if_exist("#topviewer", function(dom) {
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      return icon_menu.view();
+      return menu.icon.view();
     }
   });
 });
 
 GUI.if_exist("#css_changer", function(dom) {
-  icon_menu.icon("cog", {
+  menu.icon.icon("cog", {
     view: function() {
       return m(".paragraph.guide", m("h6", "スタイル"), Btns.radio({}, Url.prop.theme, {
         cinema: "煉瓦",
@@ -1249,7 +1397,7 @@ GUI.if_exist("#css_changer", function(dom) {
   return m.module(dom, {
     controller: function() {},
     view: function() {
-      return m(".guide", m("a.menuicon.pull-right.icon-cog", icon_menu.start({}, "cog"), " "), Btns.radio({}, Url.prop.theme, {
+      return m(".guide", m("a.menuicon.pull-right.icon-cog", menu.icon.start({}, "cog"), " "), Btns.radio({}, Url.prop.theme, {
         cinema: "煉瓦",
         star: "蒼穹",
         night: "闇夜",
@@ -1277,24 +1425,19 @@ GUI.if_exist("title", function(dom) {
 });
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) {
-  Cache.rule.potof.set(gon.potofs, {
-    story_folder: (_ref1 = gon.story) != null ? _ref1.folder : void 0,
-    story_type: (_ref2 = gon.story) != null ? _ref2.type : void 0,
-    story_epilogue: (_ref3 = gon.story) != null ? _ref3.is_epilogue : void 0,
-    event_winner: ((_ref4 = gon.event) != null ? _ref4.winner : void 0) || ((_ref5 = gon.events) != null ? (_ref6 = _ref5.last) != null ? _ref6.winner : void 0 : void 0)
-  });
+  doc.catch_gon.potofs();
   GUI.if_exist("#sayfilter", function(dom) {
     var layout, line_text_height, line_text_height_measure, seeing_measure, seeing_top, wide_attr;
     layout = new GUI.Layout(dom, -1, 1, 100);
     layout.small_mode = true;
     layout.large_mode = function() {
-      return !(icon_menu.state() || layout.small_mode);
+      return !(menu.icon.state() || layout.small_mode);
     };
     wide_attr = GUI.attrs({}, function() {
       this.click(function() {
         layout.small_mode = !layout.small_mode;
         if (!layout.small_mode) {
-          return icon_menu.state("");
+          return menu.icon.state("");
         }
       });
       return this.actioned(function() {
@@ -1337,9 +1480,9 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
               return this.click(function() {
                 Url.prop.talk_at(o._id);
                 Url.prop.pins({});
-                icon_menu.change("");
-                icon_mode_menu.change("talk");
-                return scroll_spy.rescroll(Url.prop.talk_at);
+                menu.icon.change("");
+                menu.scope.change("talk");
+                return win.scroll.rescroll(Url.prop.talk_at);
               });
             });
           };
@@ -1393,12 +1536,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
 }
 
 if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && (gon.event != null)) {
-  if ((typeof gon !== "undefined" && gon !== null ? gon.story : void 0) != null) {
-    Cache.rule.story.set([gon.story]);
-  }
-  Cache.rule.event.merge(gon.events, {
-    story_id: (_ref7 = gon.story) != null ? _ref7._id : void 0
-  });
+  doc.catch_gon.story();
+  doc.catch_gon.events();
   messages = {
     pins: function(_arg) {
       var pins, story_id;
@@ -1408,7 +1547,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     anchor: function(_arg) {
       var talk;
       talk = _arg.talk;
-      return Cache.messages.anchor(talk(), scroll_spy.prop());
+      return Cache.messages.anchor(talk(), win.scroll.prop());
     },
     home: function(_arg) {
       var home;
@@ -1434,45 +1573,12 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
   security_modes = function(prop) {
     return m("p", m("a", Btn.set({}, prop, "all"), "すべて"), m("a", Btn.set({}, prop, "think"), "独り言/内緒話"), m("a", Btn.set({}, prop, "clan"), "仲間の会話"), m("a", Btn.set({}, prop, "open"), "公開情報のみ"), m.trust("&nbsp;"), m("a", Btn.bool({}, Url.prop.open), "公開情報"), m("a", Btn.bool({}, Url.prop.human), "/*中の人*/"));
   };
-  potof_groups = function() {
-    return m("p", m("a", Btn.keys_reset({}, Url.prop.potofs_hide, []), "全員表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.others()), "参加者表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.potofs()), "その他を表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.all()), "全員隠す"));
-  };
-  potofs_portrates = function() {
-    var attr, hides, o, potofs;
-    potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
-    hides = Url.prop.potofs_hide();
-    return m(".minilist", m("h6", "キャラクターフィルタ"), m("hr.black"), (function() {
-      var _i, _len, _results;
-      _results = [];
-      for (_i = 0, _len = potofs.length; _i < _len; _i++) {
-        o = potofs[_i];
-        attr = function(o) {
-          return GUI.attrs({}, function() {
-            var elem;
-            this.className(hides[o.face_id] ? "filter-hide" : "");
-            elem = null;
-            this.config(function(_elem) {
-              return elem = _elem;
-            });
-            return this.click(function() {
-              hides[o.face_id] = !hides[o.face_id];
-              return Url.prop.potofs_hide(hides);
-            });
-          });
-        };
-        _results.push(m(".chrbox", {
-          key: o._id
-        }, GUI.portrate(o.face_id, attr(o)), m(".bar." + o.live)));
-      }
-      return _results;
-    })(), m("hr.black"));
-  };
   GUI.if_exist("#story", function(dom) {
     var story;
     story = gon.story;
-    icon_menu.icon("home", {
+    menu.icon.icon("home", {
       open: function() {
-        return icon_mode_menu.change("home");
+        return menu.scope.change("home");
       },
       view: function() {
         var event, event_card, text, texts;
@@ -1518,22 +1624,9 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       controller: function() {},
       view: function() {
         return [
-          icon_menu.icon("search", {
-            view: function() {
-              return m(".paragraph.guide", GUI.timeline({
-                base: Cache.messages.timeline(Url.prop.talk()),
-                width: Url.prop.content_width(),
-                choice: function(id) {
-                  Url.prop.talk_at(id);
-                  icon_menu.change("search");
-                  icon_mode_menu.change("talk");
-                  return scroll_spy.rescroll(Url.prop.talk_at);
-                }
-              }), m("input.medium", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"));
-            }
-          }), (function() {
+          (function() {
             if (story != null) {
-              switch (icon_mode_menu.state()) {
+              switch (menu.scope.state()) {
                 case "home":
                   return GUI.message.story(story);
               }
@@ -1545,10 +1638,10 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
   });
   GUI.if_exist("#messages", function(dom) {
     var change_pin;
-    scroll_spy.size = 30;
+    win.scroll.size = 30;
     change_pin = function(id) {
       var target, target_at;
-      target = icon_mode_menu.state();
+      target = menu.scope.state();
       switch (target) {
         case "history":
           target_at = Url.prop["memo_at"];
@@ -1563,7 +1656,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         Url.prop.back(target);
       }
       Url.prop.scroll(id);
-      return icon_menu.change("pin");
+      return menu.icon.change("pin");
     };
     GUI.message.delegate.tap_anchor = function(o, turn, logid, id) {
       var pins;
@@ -1580,68 +1673,76 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       Url.prop.pins(pins);
       return change_pin(id);
     };
-    icon_mode_menu.node("history", {
+    menu.scope.node("history", {
       open: function() {
-        return scroll_spy.rescroll(Url.prop.memo_at);
+        return win.scroll.rescroll(Url.prop.memo_at);
       }
     });
-    icon_mode_menu.node("memo", {
+    menu.scope.node("memo", {
       open: function() {
-        return scroll_spy.rescroll(Url.prop.memo_at);
+        return win.scroll.rescroll(Url.prop.memo_at);
       }
     });
-    icon_mode_menu.node("talk", {
+    menu.scope.node("talk", {
       open: function() {
-        return scroll_spy.rescroll(Url.prop.talk_at);
+        return win.scroll.rescroll(Url.prop.talk_at);
       }
     });
-    icon_mode_menu.node("home", {
+    menu.scope.node("home", {
       open: function() {
-        return scroll_spy.rescroll(Url.prop.home_at);
+        return win.scroll.rescroll(Url.prop.home_at);
       }
     });
-    icon_mode_menu.node("pins", {
+    menu.scope.node("pins", {
       open: function() {
-        return scroll_spy.rescroll(Url.prop.scroll);
+        return win.scroll.rescroll(Url.prop.scroll);
       }
     });
-    icon_menu.icon("pin", {
+    menu.icon.icon("pin", {
       open: function() {
-        return icon_mode_menu.change("pins");
+        return menu.scope.change("pins");
       },
       close: function() {
         Url.prop.pins({});
-        return icon_mode_menu.change(Url.prop.back());
-      }
-    });
-    icon_menu.icon("mail", {
-      open: function() {
-        return icon_mode_menu.change("memo");
+        return menu.scope.change(Url.prop.back());
       },
       view: function() {
-        return [m(".paragraph.guide", m("h6", "貼り付けたメモを表示します。 - メモ"), security_modes(Url.prop.memo), potof_groups()), potofs_portrates()];
+        return [m(".paragraph.guide", doc.timeline()), doc.potofs()];
       }
     });
-    icon_menu.icon("chat-alt", {
+    menu.icon.icon("mail", {
       open: function() {
-        return icon_mode_menu.change("talk");
+        return menu.scope.change("memo");
       },
       view: function() {
-        return [m(".paragraph.guide", m("h6", "村内の発言を表示します。 - 発言"), security_modes(Url.prop.talk), potof_groups()), potofs_portrates()];
+        return [m(".paragraph.guide", doc.timeline(), m("h6", "貼り付けたメモを表示します。 - メモ"), security_modes(Url.prop.memo)), doc.potofs()];
       }
     });
-    icon_menu.icon("clock", {
+    menu.icon.icon("chat-alt", {
       open: function() {
-        return icon_mode_menu.change("history");
+        return menu.scope.change("talk");
       },
       view: function() {
-        return [m(".paragraph.guide", m("h6", "メモを履歴形式で表示します。 - メモ"), security_modes(Url.prop.memo), potof_groups()), potofs_portrates()];
+        return [m(".paragraph.guide", doc.timeline(), m("h6", "村内の発言を表示します。 - 発言"), security_modes(Url.prop.talk)), doc.potofs()];
+      }
+    });
+    menu.icon.icon("clock", {
+      open: function() {
+        return menu.scope.change("history");
+      },
+      view: function() {
+        return [m(".paragraph.guide", doc.timeline(), m("h6", "メモを履歴形式で表示します。 - メモ"), security_modes(Url.prop.memo)), doc.potofs()];
+      }
+    });
+    menu.icon.icon("search", {
+      view: function() {
+        return m(".paragraph.guide", doc.timeline(), m("input.medium", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"));
       }
     });
     m.module(dom, {
       controller: function() {},
       view: function() {
-        return scroll_spy.pager("div", messages[icon_mode_menu.state()](Url.prop).list(), function(o) {
+        return win.scroll.pager("div", messages[menu.scope.state()](Url.prop).list(), function(o) {
           var anchor_num;
           anchor_num = o.logid.slice(2) - 0 || 0;
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
@@ -1659,80 +1760,23 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     m.startComputation();
     return window.requestAnimationFrame(function() {
-      var back_state, event, interval, set_event_messages, set_event_without_messages, turn, updated_at, _i, _j, _k, _len, _len1, _ref10, _ref8, _ref9;
-      set_event_messages = function(event) {
-        var first, last;
-        first = event.messages.first.date;
-        last = event.messages.last.date;
-        return set_event_without_messages(new Date(first) - 1, new Date(last) - -1, event.messages, event);
-      };
-      set_event_without_messages = function(first_date, last_date, messages, _arg) {
-        var name, turn, _id;
-        _id = _arg._id, turn = _arg.turn, name = _arg.name;
-        messages.unshift({
-          name: name,
-          log: name,
-          logid: "EVENT-ASC",
-          mestype: "EVENT",
-          updated_at: first_date
-        });
-        messages.push({
-          name: name,
-          log: name,
-          logid: "EVENT-DESC",
-          mestype: "EVENT",
-          updated_at: last_date
-        });
-        return Cache.rule.message.merge(messages, {
-          event_id: _id,
-          turn: turn
-        });
-      };
-      interval = gon.story.upd.interval * 1000 * 3600 * 24;
-      if (gon.event.messages) {
-        set_event_messages(gon.event);
-        turn = gon.event.turn;
-        updated_at = gon.event.messages.last.updated_at;
-        _ref8 = gon.events;
-        for (_i = 0, _len = _ref8.length; _i < _len; _i += 1) {
-          event = _ref8[_i];
-          if (event.turn > turn) {
-            set_event_without_messages(updated_at + 1, updated_at + interval, [], event);
-            updated_at += interval;
-          }
-        }
-        updated_at = gon.event.messages.first.updated_at;
-        _ref9 = gon.events;
-        for (_j = _ref9.length - 1; _j >= 0; _j += -1) {
-          event = _ref9[_j];
-          if (event.turn < turn) {
-            set_event_without_messages(updated_at - interval, updated_at - 1, [], event);
-            updated_at -= interval;
-          }
-        }
-      }
-      _ref10 = gon.events;
-      for (_k = 0, _len1 = _ref10.length; _k < _len1; _k++) {
-        event = _ref10[_k];
-        if (event.messages) {
-          set_event_messages(event);
-        }
-      }
-      back_state = icon_mode_menu.state();
-      icon_mode_menu.change("");
-      icon_mode_menu.change("talk");
-      icon_mode_menu.change(back_state);
+      var back_state;
+      doc.catch_gon.messages();
+      back_state = menu.scope.state();
+      menu.scope.change("");
+      menu.scope.change("talk");
+      menu.scope.change(back_state);
       return m.endComputation();
     });
   });
 }
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.form : void 0) != null) {
-  icon_menu.icon("pencil", {
+  menu.icon.icon("pencil", {
     open: function() {},
     close: function() {},
     view: function() {
-      return [m(".paragraph.guide", m("h6", "あなたが書き込む内容です。 - 記述"), security_modes(Url.prop.talk), potof_groups()), potofs_portrates()];
+      return [m(".paragraph.guide", m("h6", "あなたが書き込む内容です。 - 記述"), security_modes(Url.prop.talk)), doc.potofs()];
     }
   });
 }
@@ -1743,7 +1787,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return scroll_spy.pager("div", Cache.items.list(), function(v) {
+        return win.scroll.pager("div", Cache.items.list(), function(v) {
           return GUI.message.action(v);
         });
       }
@@ -1757,7 +1801,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.byebyes : void 0) != null)
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return scroll_spy.pager("div", Cache.items.list(), function(v) {
+        return win.scroll.pager("div", Cache.items.list(), function(v) {
           return GUI.message.action(v);
         });
       }
@@ -1771,7 +1815,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        return scroll_spy.pager("div", Cache.items.list(), function(v) {
+        return win.scroll.pager("div", Cache.items.list(), function(v) {
           return GUI.message.history(v);
         });
       }
@@ -1782,35 +1826,35 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null)
 if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) {
   Cache.rule.story.set(gon.stories);
   GUI.if_exist("#stories", function(dom) {
-    icon_menu.icon("resize-full", {
+    menu.icon.icon("resize-full", {
       open: function() {
-        scroll_spy.size = 30;
-        return icon_mode_menu.change("full");
+        win.scroll.size = 30;
+        return menu.scope.change("full");
       }
     });
-    icon_menu.icon("resize-normal", {
+    menu.icon.icon("resize-normal", {
       deploy: function() {
-        scroll_spy.size = 120;
-        return icon_mode_menu.change("normal");
+        win.scroll.size = 120;
+        return menu.scope.change("normal");
       },
       open: function() {
-        scroll_spy.size = 120;
-        return icon_mode_menu.change("normal");
+        win.scroll.size = 120;
+        return menu.scope.change("normal");
       }
     });
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var query, _ref8;
-        query = (_ref8 = Cache.storys).menu.apply(_ref8, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values())));
+        var query, _ref1;
+        query = (_ref1 = Cache.storys).menu.apply(_ref1, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values())));
         return [
-          icon_menu.icon("search", {
+          menu.icon.icon("search", {
             deploy: function(main_menu) {
               main_menu.drill("rating", {
                 caption: "こだわり",
                 view: function(sub_menu) {
-                  var reduce, _ref9;
-                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                  var reduce, _ref2;
+                  reduce = (_ref2 = Cache.storys).menu.apply(_ref2, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
                     rating: "all"
                   })))).reduce();
                   return sub_menu.radio({
@@ -1825,8 +1869,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
               main_menu.drill("game", {
                 caption: "ルール",
                 view: function(sub_menu) {
-                  var reduce, _ref9;
-                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                  var reduce, _ref2;
+                  reduce = (_ref2 = Cache.storys).menu.apply(_ref2, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
                     game: "all"
                   })))).reduce();
                   return sub_menu.radio({
@@ -1839,21 +1883,21 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
               main_menu.drill("folder", {
                 caption: "州",
                 view: function(sub_menu) {
-                  var reduce, _ref9;
-                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, ["all"].concat(__slice.call(Url.routes.search.stories.values()))).reduce();
+                  var reduce, _ref2;
+                  reduce = (_ref2 = Cache.storys).menu.apply(_ref2, ["all"].concat(__slice.call(Url.routes.search.stories.values()))).reduce();
                   return sub_menu.radio({
                     "class": "folder"
                   }, Url.prop.folder, reduce, "folder", function(key, o) {
-                    var _ref10;
-                    return (_ref10 = GAME[key]) != null ? _ref10.nation : void 0;
+                    var _ref3;
+                    return (_ref3 = GAME[key]) != null ? _ref3.nation : void 0;
                   });
                 }
               });
               main_menu.drill("say_limit", {
                 caption: "発言制限",
                 view: function(sub_menu) {
-                  var reduce, _ref9;
-                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                  var reduce, _ref2;
+                  reduce = (_ref2 = Cache.storys).menu.apply(_ref2, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
                     say_limit: "all"
                   })))).reduce();
                   return sub_menu.radio({
@@ -1866,8 +1910,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
               main_menu.drill("update_at", {
                 caption: "更新時刻",
                 view: function(sub_menu) {
-                  var reduce, _ref9;
-                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                  var reduce, _ref2;
+                  reduce = (_ref2 = Cache.storys).menu.apply(_ref2, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
                     update_at: "all"
                   })))).reduce();
                   return sub_menu.radio({
@@ -1880,8 +1924,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
               main_menu.drill("update_interval", {
                 caption: "更新間隔",
                 view: function(sub_menu) {
-                  var reduce, _ref9;
-                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                  var reduce, _ref2;
+                  reduce = (_ref2 = Cache.storys).menu.apply(_ref2, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
                     update_interval: "all"
                   })))).reduce();
                   return sub_menu.radio({
@@ -1894,8 +1938,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
               main_menu.drill("event_type", {
                 caption: "事件",
                 view: function(sub_menu) {
-                  var reduce, _ref9;
-                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                  var reduce, _ref2;
+                  reduce = (_ref2 = Cache.storys).menu.apply(_ref2, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
                     event_type: "all"
                   })))).reduce();
                   return sub_menu.radio({
@@ -1908,8 +1952,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
               main_menu.drill("role_type", {
                 caption: "役職",
                 view: function(sub_menu) {
-                  var reduce, _ref9;
-                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                  var reduce, _ref2;
+                  reduce = (_ref2 = Cache.storys).menu.apply(_ref2, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
                     role_type: "all"
                   })))).reduce();
                   return sub_menu.radio({
@@ -1922,8 +1966,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
               return main_menu.drill("player_length", {
                 caption: "人数",
                 view: function(sub_menu) {
-                  var reduce, _ref9;
-                  reduce = (_ref9 = Cache.storys).menu.apply(_ref9, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
+                  var reduce, _ref2;
+                  reduce = (_ref2 = Cache.storys).menu.apply(_ref2, [Url.prop.folder()].concat(__slice.call(Url.routes.search.stories.values({
                     player_length: "all"
                   })))).reduce();
                   return sub_menu.radio({
@@ -1937,7 +1981,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
             view: function(main_menu) {
               return m(".paragraph.guide", m("h6", "検索する。"), m("input.mini", Txt.input(Url.prop.search)), main_menu.drills({}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"]));
             }
-          }), m("table", m("thead", m("tr", m("th"))), scroll_spy.pager("tbody", query.list(), function(o) {
+          }), m("table", m("thead", m("tr", m("th"))), win.scroll.pager("tbody", query.list(), function(o) {
             var header;
             header = m("div", m("a", {
               href: "http://giji.check.jp" + o.link
@@ -1948,7 +1992,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
             }, m.trust(o.name)), m("kbd", o.view.rating));
             return m("tr", {
               key: o._id
-            }, icon_menu.state() === "resize-full" ? m("td", header, m("table.detail", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m(".list", o.view.role_cards), m(".list", o.view.event_cards)) : m("td", header));
+            }, menu.icon.state() === "resize-full" ? m("td", header, m("table.detail", m("tbody", m("tr", m("th", "更新"), m("td", "" + o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", "" + o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m(".list", o.view.role_cards), m(".list", o.view.event_cards)) : m("td", header));
           }))
         ];
       }
@@ -1970,7 +2014,7 @@ GUI.if_exist("#character_tag", function(dom) {
       var attr, chr_job, chrs, job_name, o;
       chrs = Cache.faces.tag(tag()).list();
       return [
-        icon_menu.icon("th-large", {
+        menu.icon.icon("th-large", {
           view: function(main_menu) {
             return m(".paragraph.guide", m("h6", "タグを選んでみよう"), Btns.radio({
               "class": "edge"
