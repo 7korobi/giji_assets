@@ -1,35 +1,6 @@
-Cache.potofs.has_faces =
-  all:    ->
-    delete Cache.messages.has_face.undefined
-    delete Cache.messages.has_face.null
-    delete Cache.messages.has_face.admin
-    delete Cache.messages.has_face.maker
-    Object.keys(Cache.messages.has_face).sort()
-  potofs: ->
-    Object.keys(Cache.potofs.has_face).sort()
-  others: ->
-    for face_id in Cache.potofs.has_faces.all()
-      continue if Cache.potofs.has_face[face_id]
-      face_id
-
-scroll_spy = GUI.ScrollSpy.global = new GUI.ScrollSpy(Url.prop.scroll)
-scroll_spy.tick = (center)->
-  if center.subid == "S"
-    center.seeing = (center.seeing || 0) + 1
-    Cache.messages.seeing().clear()
-    if 11 == center.seeing
-      m.redraw()
-icon_mode_menu = new GUI.MenuTree
-icon_mode_menu.state = Url.prop.scope
-icon_menu = new GUI.MenuTree.Icon
-icon_menu.state = Url.prop.icon
 
 if gon?.map_reduce?.faces?
-  Cache.rule.chr_set.schema ->
-    @order (o)->
-      Cache.map_faces.reduce().chr_set[o._id].count
-
-  Cache.rule.map_face.set gon.map_reduce.faces
+  doc.catch_gon.map_reduce_faces()
 
   GUI.if_exist "#map_faces", (dom)->
     m.module dom,
@@ -75,7 +46,7 @@ if gon?.map_reduce?.faces?
     m.module dom,
       controller: ->
       view: ->
-        icon_menu.icon "th-large",
+        menu.icon.icon "th-large",
           deploy: (main_menu)->
             main_menu.drill "order",
               caption: "並び順"
@@ -99,16 +70,7 @@ if gon?.map_reduce?.faces?
 
 
 if gon?.face?
-  face = Cache.map_face_detail = gon.face
-  Cache.rule.map_face_story_log.set face.story_logs
-
-  face.name = Cache.faces.find(face.face_id).name
-  face.story_id_of_folders = _.groupBy face.story_ids, ([k,count])->
-    k.split("-")?[0]
-
-  face.role_of_wins = _.groupBy face.roles, ([k,count])->
-    role = RAILS.gifts[k] || RAILS.roles[k] || {group: "OTHER"}
-    RAILS.wins[role.group].name
+  doc.catch_gon.face()
 
   GUI.if_exist "#summary", (dom)->
     m.module dom,
@@ -120,10 +82,10 @@ if gon?.face?
             "全部で"
             m "span.mark", face.role.all
             "の役職になりました"
-          for win in face.win.keys
+          for win_side in face.win.keys
             GUI.letter "",
-              "#{win} x#{face.win.value[win]}回"
-              for role in face.role_of_wins[win]
+              "#{win_side} x#{face.win.value[win_side]}回"
+              for role in face.role_of_wins[win_side]
                 rolename = GUI.name.config role[0]
                 width =
                   switch
@@ -143,7 +105,7 @@ if gon?.face?
               m "span.code", Timer.date_time_stamp new Date face.says[0].date.min
               m "span", m.trust "&nbsp;〜&nbsp;"
               m "span.code", Timer.date_time_stamp new Date face.says[0].date.max
-          m "table.SAY.talk", scroll_spy.mark("summary"),
+          m "table.SAY.talk", win.scroll.mark("summary"),
               m "tr",
                 m "th",
                   GUI.portrate face.face_id
@@ -187,8 +149,8 @@ if gon?.face?
           says_count_lines.push says_count_line
           says_calc_lines.push says_calc_line
 
-        [ m "table.info", scroll_spy.mark("says_count"), says_count_lines
-          m "table.info", scroll_spy.mark("says_calc"), says_calc_lines
+        [ m "table.info", win.scroll.mark("says_count"), says_count_lines
+          m "table.info", win.scroll.mark("says_calc"), says_calc_lines
         ]
 
   GUI.if_exist "#village", (dom)->
@@ -209,7 +171,7 @@ if gon?.face?
                       href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{story_id[0]}"
                     , story_id[0]
         ]
-        m ".MAKER.guide", scroll_spy.mark("villages"), letters
+        m ".MAKER.guide", win.scroll.mark("villages"), letters
 
   GUI.if_exist "#sow_user", (dom)->
     m.module dom,
@@ -239,7 +201,7 @@ if gon?.face?
               @right 2.0, "x" + sow_auth_id[1]
             ]
         ]
-        m ".ADMIN.guide", scroll_spy.mark("sow_users"), letters
+        m ".ADMIN.guide", win.scroll.mark("sow_users"), letters
 
 GUI.if_exist "#contentframe", (dom)->
 
@@ -268,9 +230,9 @@ GUI.if_exist "#buttons", (dom)->
     view: ->
       vdoms = []
       section = (icon)->
-        return unless icon_menu.nodes[icon]
+        return unless menu.icon.nodes[icon]
         vdom =
-          m "section", icon_menu.start({class:"glass"}, icon),
+          m "section", menu.icon.start({class:"glass"}, icon),
             m ".bigicon",
               m ".icon-#{icon}", " "
             m ".badge.pull-right", badges[icon]() if badges[icon]
@@ -302,7 +264,7 @@ GUI.if_exist "#buttons", (dom)->
         "th-large": ->
           Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list().length
 
-      switch icon_mode_menu.state()
+      switch menu.scope.state()
         when "pins"
           section "pin"
 
@@ -324,7 +286,7 @@ GUI.if_exist "#buttons", (dom)->
 
       section "pencil"
       section "th-large"
-      section "search" unless "pins" == icon_mode_menu.state()
+      section "search" unless "pins" == menu.scope.state()
       section "cog"
 
       m "table", m "tr", m "td", vdoms
@@ -336,10 +298,10 @@ GUI.if_exist "#topviewer", (dom)->
   m.module dom,
     controller: ->
     view: ->
-      icon_menu.view()
+      menu.icon.view()
 
 GUI.if_exist "#css_changer", (dom)->
-  icon_menu.icon "cog",
+  menu.icon.icon "cog",
     view: ->
       m ".paragraph.guide",
         m "h6", "スタイル"
@@ -369,7 +331,7 @@ GUI.if_exist "#css_changer", (dom)->
     controller: ->
     view: ->
       m ".guide",
-        m "a.menuicon.pull-right.icon-cog", icon_menu.start({}, "cog"), " "
+        m "a.menuicon.pull-right.icon-cog", menu.icon.start({}, "cog"), " "
         Btns.radio {}, Url.prop.theme,
           cinema: "煉瓦"
           star:   "蒼穹"
@@ -392,23 +354,19 @@ GUI.if_exist "title", (dom)->
         "人狼議事"
 
 if gon?.potofs?
-  Cache.rule.potof.set gon.potofs,
-    story_folder: gon.story?.folder
-    story_type: gon.story?.type
-    story_epilogue: gon.story?.is_epilogue
-    event_winner: (gon.event?.winner || gon.events?.last?.winner)
+  doc.catch_gon.potofs()
 
   GUI.if_exist "#sayfilter", (dom)->
     layout = new GUI.Layout dom, -1, 1, 100
     layout.small_mode = true
     layout.large_mode = ->
-      ! (icon_menu.state() || layout.small_mode)
+      ! (menu.icon.state() || layout.small_mode)
 
     wide_attr = GUI.attrs {}, ->
       @click ->
         layout.small_mode = ! layout.small_mode
         unless layout.small_mode
-          icon_menu.state ""
+          menu.icon.state ""
       @actioned ->
         layout.translate()
 
@@ -452,9 +410,9 @@ if gon?.potofs?
               @click ->
                 Url.prop.talk_at o._id
                 Url.prop.pins {}
-                icon_menu.change ""
-                icon_mode_menu.change "talk"
-                scroll_spy.rescroll Url.prop.talk_at
+                menu.icon.change ""
+                menu.scope.change "talk"
+                win.scroll.rescroll Url.prop.talk_at
 
           day = 24 * 60 * 60
           star = (o)->
@@ -501,19 +459,14 @@ if gon?.potofs?
 
 
 if gon?.events? && gon.event?
-  if gon?.story?
-    Cache.rule.story.set [gon.story]
-
-  Cache.rule.event.merge gon.events,
-    story_id: gon.story?._id
-#  Cache.rule.event.merge [gon.event],
-#    story_id: gon.story?._id
+  doc.catch_gon.story()
+  doc.catch_gon.events()
 
   messages =
     pins: ({story_id,pins})->
       Cache.messages.pins(story_id(), pins())
     anchor: ({talk})->
-      Cache.messages.anchor(talk(), scroll_spy.prop())
+      Cache.messages.anchor(talk(), win.scroll.prop())
     home: ({home})->
       Cache.messages.home(home())
     talk: ({talk, open, potofs_hide, search})->
@@ -533,41 +486,11 @@ if gon?.events? && gon.event?
       m "a", Btn.bool({}, Url.prop.open),  "公開情報"
       m "a", Btn.bool({}, Url.prop.human), "/*中の人*/"
 
-  potof_groups = ()->
-    m "p",
-      m "a", Btn.keys_reset({}, Url.prop.potofs_hide, []                             ), "全員表示"
-      m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.others()), "参加者表示"
-      m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.potofs()), "その他を表示"
-      m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.has_faces.all()   ), "全員隠す"
-
-  potofs_portrates = ()->
-    potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
-    hides = Url.prop.potofs_hide()
-
-    m ".minilist",
-      m "h6", "キャラクターフィルタ"
-      m "hr.black"
-      for o in potofs
-        attr = (o)->
-          GUI.attrs {}, ->
-            @className(if hides[o.face_id] then "filter-hide" else "")
-
-            elem = null
-            @config (_elem)-> elem = _elem
-            @click ->
-              hides[o.face_id] = ! hides[o.face_id]
-              Url.prop.potofs_hide hides
-
-        m ".chrbox", {key: o._id},
-          GUI.portrate o.face_id, attr(o)
-          m ".bar.#{o.live}", 
-      m "hr.black"
-
   GUI.if_exist "#story", (dom)->
     story = gon.story
-    icon_menu.icon "home",
+    menu.icon.icon "home",
       open: ->
-        icon_mode_menu.change "home"
+        menu.scope.change "home"
       view: ->
         event = Cache.events.find Url.prop.event_id()
 
@@ -599,32 +522,17 @@ if gon?.events? && gon.event?
       controller: ->
       view: ->
         [
-          icon_menu.icon "search",
-            view: ->
-              m ".paragraph.guide",
-                GUI.timeline
-                  base: Cache.messages.timeline(Url.prop.talk())
-                  width: Url.prop.content_width()
-                  choice: (id)->
-                    Url.prop.talk_at id
-                    icon_menu.change "search"
-                    icon_mode_menu.change "talk"
-                    scroll_spy.rescroll Url.prop.talk_at
-
-                m "input.medium", Txt.input Url.prop.search
-                m "span", "発言中の言葉を検索します。"
-                m "hr.black"
           if story?
-            switch icon_mode_menu.state()
+            switch menu.scope.state()
               when "home"
                 GUI.message.story story
         ]
 
   GUI.if_exist "#messages", (dom)->
-    scroll_spy.size = 30
+    win.scroll.size = 30
 
     change_pin = (id)->
-      target = icon_mode_menu.state()
+      target = menu.scope.state()
       switch target
         when "history"
           target_at = Url.prop["memo_at"]
@@ -636,7 +544,7 @@ if gon?.events? && gon.event?
         Url.prop.back target
 
       Url.prop.scroll id
-      icon_menu.change "pin"
+      menu.icon.change "pin"
 
     GUI.message.delegate.tap_anchor = (o, turn, logid, id)->
       pins = Url.prop.pins()
@@ -651,66 +559,81 @@ if gon?.events? && gon.event?
       Url.prop.pins pins
       change_pin(id)
 
-    icon_mode_menu.node "history",
+    menu.scope.node "history",
       open: ->
-        scroll_spy.rescroll Url.prop.memo_at
-    icon_mode_menu.node "memo",
+        win.scroll.rescroll Url.prop.memo_at
+    menu.scope.node "memo",
       open: ->
-        scroll_spy.rescroll Url.prop.memo_at
-    icon_mode_menu.node "talk",
+        win.scroll.rescroll Url.prop.memo_at
+    menu.scope.node "talk",
       open: ->
-        scroll_spy.rescroll Url.prop.talk_at
-    icon_mode_menu.node "home",
+        win.scroll.rescroll Url.prop.talk_at
+    menu.scope.node "home",
       open: ->
-        scroll_spy.rescroll Url.prop.home_at
-    icon_mode_menu.node "pins",
+        win.scroll.rescroll Url.prop.home_at
+    menu.scope.node "pins",
       open: ->
-        scroll_spy.rescroll Url.prop.scroll
+        win.scroll.rescroll Url.prop.scroll
 
-    icon_menu.icon "pin",
+
+    menu.icon.icon "pin",
       open: ->
-        icon_mode_menu.change "pins"
+        menu.scope.change "pins"
       close: ->
         Url.prop.pins {}
-        icon_mode_menu.change Url.prop.back()
-
-    icon_menu.icon "mail",
-      open: ->
-        icon_mode_menu.change "memo"
+        menu.scope.change Url.prop.back()
       view: ->
         [ m ".paragraph.guide",
+            doc.timeline()
+          doc.potofs()
+        ]
+
+    menu.icon.icon "mail",
+      open: ->
+        menu.scope.change "memo"
+      view: ->
+        [ m ".paragraph.guide",
+            doc.timeline()
             m "h6", "貼り付けたメモを表示します。 - メモ"
             security_modes Url.prop.memo
-            potof_groups()
-          potofs_portrates()
+          doc.potofs()
         ]
 
-    icon_menu.icon "chat-alt",
+    menu.icon.icon "chat-alt",
       open: ->
-        icon_mode_menu.change "talk"
+        menu.scope.change "talk"
       view: ->
         [ m ".paragraph.guide",
+            doc.timeline()
             m "h6", "村内の発言を表示します。 - 発言"
             security_modes Url.prop.talk
-            potof_groups()
-          potofs_portrates()
+          doc.potofs()
         ]
 
-    icon_menu.icon "clock",
+    menu.icon.icon "clock",
       open: ->
-        icon_mode_menu.change "history"
+        menu.scope.change "history"
       view: ->
         [ m ".paragraph.guide",
+            doc.timeline()
             m "h6", "メモを履歴形式で表示します。 - メモ"
             security_modes Url.prop.memo
-            potof_groups()
-          potofs_portrates()
+          doc.potofs()
         ]
+
+    menu.icon.icon "search",
+      view: ->
+        m ".paragraph.guide",
+          doc.timeline()
+          m "input.medium", Txt.input Url.prop.search
+          m "span", "発言中の言葉を検索します。"
+          m "hr.black"
+
 
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager "div", messages[icon_mode_menu.state()](Url.prop).list(), (o)->
+        win.scroll.pager "div", messages[menu.scope.state()](Url.prop).list(), (o)->
           anchor_num  = o.logid[2..] - 0 || 0
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
           unless o.updated_at
@@ -723,65 +646,23 @@ if gon?.events? && gon.event?
 
     m.startComputation()
     window.requestAnimationFrame ->
-      set_event_messages = (event)->
-        first = event.messages.first.date
-        last  = event.messages.last.date
-        set_event_without_messages new Date(first) - 1, new Date(last) - -1, event.messages, event
+      doc.catch_gon.messages()
 
-      set_event_without_messages = (first_date, last_date, messages, {_id, turn, name})->
-        messages.unshift
-          name: name
-          log: name
-          logid: "EVENT-ASC"
-          mestype: "EVENT"
-          updated_at: first_date
-
-        messages.push
-          name: name
-          log: name
-          logid: "EVENT-DESC"
-          mestype: "EVENT"
-          updated_at: last_date
-
-        Cache.rule.message.merge messages, {event_id: _id, turn}
-
-      interval = gon.story.upd.interval * 1000 * 3600 * 24
-      if gon.event.messages
-        set_event_messages gon.event
-        turn = gon.event.turn
-
-        updated_at = gon.event.messages.last.updated_at
-        for event in gon.events by  1
-          if event.turn > turn
-            set_event_without_messages updated_at + 1, updated_at + interval, [], event
-            updated_at += interval
-
-        updated_at = gon.event.messages.first.updated_at
-        for event in gon.events by -1
-          if event.turn < turn
-            set_event_without_messages updated_at - interval, updated_at - 1, [], event
-            updated_at -= interval
-
-      for event in gon.events
-        if event.messages
-          set_event_messages event
-
-      back_state = icon_mode_menu.state()
-      icon_mode_menu.change ""
-      icon_mode_menu.change "talk"
-      icon_mode_menu.change back_state
+      back_state = menu.scope.state()
+      menu.scope.change ""
+      menu.scope.change "talk"
+      menu.scope.change back_state
       m.endComputation()
 
 if gon?.form?
-  icon_menu.icon "pencil",
+  menu.icon.icon "pencil",
     open: ->
     close: ->
     view: ->
       [ m ".paragraph.guide",
           m "h6", "あなたが書き込む内容です。 - 記述"
           security_modes Url.prop.talk
-          potof_groups()
-        potofs_portrates()
+        doc.potofs()
       ]
 
 
@@ -792,7 +673,7 @@ if gon?.villages?
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager "div", Cache.items.list(), (v)->
+        win.scroll.pager "div", Cache.items.list(), (v)->
           GUI.message.action(v)
 
 if gon?.byebyes?
@@ -801,7 +682,7 @@ if gon?.byebyes?
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager "div", Cache.items.list(), (v)->
+        win.scroll.pager "div", Cache.items.list(), (v)->
           GUI.message.action(v)
 
 if gon?.history?
@@ -810,30 +691,30 @@ if gon?.history?
     m.module dom,
       controller: ->
       view: ->
-        scroll_spy.pager "div", Cache.items.list(), (v)->
+        win.scroll.pager "div", Cache.items.list(), (v)->
           GUI.message.history(v)
 
 if gon?.stories?
   Cache.rule.story.set gon.stories
   GUI.if_exist "#stories", (dom)->
-    icon_menu.icon "resize-full",
+    menu.icon.icon "resize-full",
       open: ->
-        scroll_spy.size = 30
-        icon_mode_menu.change "full"
-    icon_menu.icon "resize-normal",
+        win.scroll.size = 30
+        menu.scope.change "full"
+    menu.icon.icon "resize-normal",
       deploy: ->
-        scroll_spy.size = 120
-        icon_mode_menu.change "normal"
+        win.scroll.size = 120
+        menu.scope.change "normal"
       open: ->
-        scroll_spy.size = 120
-        icon_mode_menu.change "normal"
+        win.scroll.size = 120
+        menu.scope.change "normal"
 
     m.module dom,
       controller: ->
       view: ->
         query = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
         [
-          icon_menu.icon "search",
+          menu.icon.icon "search",
             deploy: (main_menu)->
               main_menu.drill "rating",
                 caption: "こだわり"
@@ -903,7 +784,7 @@ if gon?.stories?
             m "thead",
               m "tr",
                 m "th"
-            scroll_spy.pager "tbody", query.list(), (o)->
+            win.scroll.pager "tbody", query.list(), (o)->
               header = m "div",
                 m "a",
                   href: "http://giji.check.jp#{o.link}"
@@ -920,7 +801,7 @@ if gon?.stories?
                   o.view.rating
 
               m "tr", {key: o._id },
-                if icon_menu.state() == "resize-full"
+                if menu.icon.state() == "resize-full"
                   m "td",
                     header
                     m "table.detail",
