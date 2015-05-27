@@ -12,7 +12,7 @@ new Cache.Rule("message").schema ->
   @scope (all)->
     seeing: ->
       all
-      .where (o)-> 10 < o.seeing
+      .where (o)-> 15 < o.seeing
       .sort "desk", "seeing"
 
     timeline: (mode)->
@@ -169,3 +169,4 @@ new Cache.Rule("message").schema ->
       max: o.updated_at
     emit "pen", o.pen,
       max: o.updated_at
+

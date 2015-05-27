@@ -1,4 +1,6 @@
 new Cache.Rule("potof").schema ->
+  @depend_on "message"
+
   maskstate_order = _.sortBy _.keys(RAILS.maskstates), (o)-> -o
   win_by_role = (o, list)=>
     for role in o.role
@@ -6,14 +8,36 @@ new Cache.Rule("potof").schema ->
       return win if win
     null
 
+  id_list = (query)->
+    query.list().map((o)-> o.face_id ).sort()
 
   @scope (all)->
+    full: ->
+      delete Cache.messages.has_face.undefined
+      delete Cache.messages.has_face.null
+      delete Cache.messages.has_face.admin
+      delete Cache.messages.has_face.maker
+      Object.keys(Cache.messages.has_face).sort()
+    potofs: ->
+      _.without all.full(), all.others()...
+    not_lives: (turn)->
+      _.without all.full(), all.lives(turn)...
+    not_deads: (turn)->
+      _.without all.full(), all.deads(turn)...
+    lives: (turn)->
+      id_list all.where((o)-> o.hide.dead && turn < o.hide.dead )
+    deads: (turn)->
+      id_list all.where((o)-> o.hide.dead && o.hide.dead <= turn )
+    others: ->
+      id_list all.where((o)-> o.hide.other)
+
     view: (is_desc, order)->
       all.sort is_desc, (o)-> o.order[order]
 
   @deploy (o)->
     o._id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
     o.user_id = o.sow_auth_id
+    o.hide = {}
 
     if o.event_id
       if o.event_id.match /-0$/
@@ -34,20 +58,38 @@ new Cache.Rule("potof").schema ->
         name
 
     stat_at =
-      if 0 < o.deathday
+      if 0 < o.deathday < Infinity
         "#{o.deathday}日"
       else
-        o.deathday = -1
+        o.deathday = Infinity
         ""
 
     said_num = o.point.saidcount
     urge     = o.point.actaddpt
+    pt_no    = o.say.gsay
 
-    pt_no =
-      if "live" == o.live
-        o.say.say
+    switch o.live
+      when "live"
+        pt_no = o.say.say
+        o.hide.dead = o.deathday
+
+      when "mob"
+        win_juror = 'HUMAN' if ('juror' == o.story_type.mob)
+
+      when "suddendead"
+        win_juror = 'LEAVE'
+        o.hide.other = true
+        o.hide.dead = o.deathday
+
+      when "leave"
+        win_juror = 'LEAVE'
+        o.hide.other = true
+        pt = 0
+        urge = 0
+        said_num = 0
       else
-        o.say.gsay
+        o.hide.dead = o.deathday
+
     if o.story_epilogue
       pt = "∞"
     else
@@ -72,16 +114,6 @@ new Cache.Rule("potof").schema ->
       when "LIVE_TABULA", "LIVE_MILLERHOLLOW", "SECRET"
         is_dead_lose = 1
 
-    switch o.live
-      when "mob"
-        win_juror = 'HUMAN' if ('juror' == o.story_type.mob)
-      when "suddendead"
-        win_juror = 'LEAVE'
-      when "leave"
-        win_juror = 'LEAVE'
-        pt = 0
-        urge = 0
-        said_num = 0
 
     win_love = RAILS.loves[o.love]?.win
 
@@ -165,10 +197,4 @@ new Cache.Rule("potof").schema ->
       select: if select then m "kbd", select else ""
       text: text_str
 
-  has_face = {}
-  Cache.potofs.has_face = has_face
   @map_reduce (o, emit)->
-    switch o.live
-      when "suddendead", "leave"
-      else
-        has_face[o.face_id] = o

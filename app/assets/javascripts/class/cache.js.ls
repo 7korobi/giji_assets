@@ -116,14 +116,14 @@ class Cache.Finder
     @scope = {all}
     @query = {all}
 
-  rehash: (rules)->
-    @query.all._list = null
-    @query.all._reduce = null
+  rehash: (rules, diff)->
+    delete @query.all._reduce
+    delete @query.all._list
     @query = 
       all: @query.all
-    return unless @diff.del || @diff.change
+
     for rule in rules
-      rule
+      rule.rehash diff
     return
 
   calculate_reduce: (query)->
@@ -238,8 +238,8 @@ class Cache.Rule
     @deploy = (o)~>
       o._id = o[@id] unless o._id
       o[@id] = o._id unless o[@id]
-
     @finder = new Cache.Finder (list)-> list
+    @finder.name = @list_name
 
     Cache.rule[field] = @
     Cache[@list_name] = @finder.query.all
@@ -253,6 +253,9 @@ class Cache.Rule
             finder.query["#{key}:#{JSON.stringify args}"] ?= query_call ...args
         for key, query_call of @finder.scope
           set_scope(key, @finder, query_call)
+
+      depend_on: (parent)~>
+        Cache.rule[parent].responses.push @ 
 
       belongs_to: (parent, option)~>
         parents = "#{parent}s"
@@ -283,6 +286,9 @@ class Cache.Rule
       map_reduce: (@map_reduce)~>
 
     cb.call(definer, @)
+
+  rehash: (diff)->
+    @finder.rehash @responses, diff
 
 
   set_base: (mode, from, parent)->
@@ -326,7 +332,7 @@ class Cache.Rule
             diff.del = true
             delete all[item._id]
 
-    finder.rehash @responses
+    @rehash(diff)
     return
 
   set: (list, parent)->
