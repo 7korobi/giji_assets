@@ -36,6 +36,9 @@ GUI.timeline = ({width, base, choice})->
   last_at = base.list().last?.updated_at / (1000 * 3600)
   first_at = base.list().first?.updated_at / (1000 * 3600)
   time_width = last_at - first_at
+
+  height = 130
+  graph_height = height - 50
   max_height = y = 0
 
   attr = GUI.attrs {}, ->
@@ -66,7 +69,7 @@ GUI.timeline = ({width, base, choice})->
           offsetY = (e.touches[0].pageY - rect.top)  * 2
 
       list =
-        if 100 < offsetY
+        if graph_height < offsetY
           Cache.messages.talk("open", false, {}).list()
         else
           {talk, open, potofs_hide} = Url.prop
@@ -88,7 +91,7 @@ GUI.timeline = ({width, base, choice})->
 
     @move point
 
-    @canvas width, 75,
+    @canvas width, height / 2,
       cache: -> base.reduce()
       draw: (ctx)->
         focus = Cache.messages.find(Url.prop.talk_at())
@@ -98,8 +101,8 @@ GUI.timeline = ({width, base, choice})->
         offset = focus.updated_at / (1000 * 3600) - first_at
         ctx.strokeStyle = colors.focus
         ctx.globalAlpha = 1
-        ctx.moveTo x * offset, 150
-        ctx.lineTo x * offset,   0
+        ctx.moveTo x * offset, height
+        ctx.lineTo x * offset,  0
         ctx.stroke()
 
       background: (ctx)->
@@ -107,25 +110,25 @@ GUI.timeline = ({width, base, choice})->
 
         for time_id, mask of base.reduce().mask
           max_height = mask.all.count if max_height < mask.all.count
-        y = 100 / max_height
+        y = graph_height / max_height
 
         ctx.clearRect 0, 0, width, height
         ctx.fillStyle = colors.back
         ctx.globalAlpha = 0.5
         ctx.fillRect 0, 0, x * time_width, y * max_height
 
-        width = 1
+        count_width = 1
         for time_id, mask of base.reduce().mask
           left = Serial.parser.Date(time_id) - first_at
           top = max_height
           for mestype in mestype_orders
             color = colors[mestype]
             if mask[mestype]
-              height = mask[mestype].count
-              top -= height
+              count_height = mask[mestype].count
+              top -= count_height
               ctx.fillStyle = color
               ctx.globalAlpha = 1
-              ctx.fillRect x * left, y * top, 1 + x * width, y * height
+              ctx.fillRect x * left, y * top, 1 + x * count_width, y * count_height
 
         left = 0
         ctx.beginPath()
@@ -133,11 +136,11 @@ GUI.timeline = ({width, base, choice})->
           right = reduce.max / (1000 * 3600) - first_at
           ctx.strokeStyle = colors.line
           ctx.globalAlpha = 1
-          ctx.moveTo x * right, 150
-          ctx.lineTo x * right,   0
+          ctx.moveTo x * right, height
+          ctx.lineTo x * right,  0
 
           ctx.fillStyle = colors.event
-          ctx.fillRect x * left, 100, x * right, 150
+          ctx.fillRect x * left, graph_height, x * right, height
 
           ctx.textAlign = "left"
           ctx.fillStyle = colors.text
@@ -145,7 +148,7 @@ GUI.timeline = ({width, base, choice})->
 
           max_width = x * (right - left) - 4
           if 0 < max_width
-            ctx.fillText Cache.events.find(event_id).name, x * left, 150 - 12, max_width
+            ctx.fillText Cache.events.find(event_id).name, x * left, height - 12, max_width
 
           left = right
         ctx.stroke()

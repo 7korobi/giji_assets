@@ -157,3 +157,4 @@ class GUI.ScrollSpy
         if ! is_continue
           if id == @prop()
             GUI.ScrollSpy.go id
+

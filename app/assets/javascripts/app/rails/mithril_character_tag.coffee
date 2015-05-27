@@ -13,7 +13,7 @@ GUI.if_exist "#character_tag", (dom)->
     view: ->
       chrs = Cache.faces.tag(tag()).list()
 
-      [ icon_menu.icon "th-large",
+      [ menu.icon.icon "th-large",
           view: (main_menu)->
             m ".paragraph.guide",
               m "h6", "タグを選んでみよう"
