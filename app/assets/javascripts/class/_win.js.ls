@@ -1,126 +1,127 @@
-  set_scroll = (win)->
-    win.left = window.pageXOffset || window.scrollX
-    win.top  = window.pageYOffset || window.scrollY
+set_scroll = (win)->
+  win.left = window.pageXOffset || window.scrollX
+  win.top  = window.pageYOffset || window.scrollY
 
-  scroll_end = !->
-    return if win.scrolling
-    check = {}
-    count = 0
+scroll_end = !->
+  return if win.scrolling
+  check = {}
+  count = 0
 
-    chk = ->
-      local = {}
-      set_scroll local
+  chk = ->
+    local = {}
+    set_scroll local
 
-      if check.top == local.top && check.left == local.left
-        10 < count++
+    if check.top == local.top && check.left == local.left
+      10 < count++
+    else
+      check := local
+      count := 0
+      false
+
+  scan = !->
+    if chk()
+      win.scrolling = false
+      win.do_event_list win.on.scroll_end
+      win.do.resize()
+    else
+      window.requestAnimationFrame scan
+
+  scan()
+
+
+export win =
+  do_event_list: (list, e)!->
+    return unless 0 < list.length
+    for cb in list
+      cb(e)
+
+  do:
+    resize: (e)->
+      docElem = document.documentElement
+      docBody = document.body
+
+      win.height = Math.max window.innerHeight, docElem.clientHeight
+      win.width  = Math.max window.innerWidth,  docElem.clientWidth
+
+      if win.width < 380 || win.height < 380
+        head.browser.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5"
+        document.querySelector("meta[name=viewport]")?.content = head.browser.viewport
+
+      win.horizon = win.height / 2
+      body_height = Math.max docBody.clientHeight , docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight
+      body_width  = Math.max docBody.clientWidth,   docBody.scrollWidth,  docElem.scrollWidth,  docElem.clientWidth
+      win.max =
+        top:  body_height - win.height
+        left: body_width  - win.width
+      if win.height > win.width
+        win.landscape = false
+        win.portlate = true
       else
-        check := local
-        count := 0
-        false
+        win.landscape = true
+        win.portlate = false
 
-    scan = !->
-      if chk()
-        console.log "scroll end."
-        win.scrolling = false
-        win.do_event_list win.on.scroll_end
-        win.do.resize()
-      else
-        window.requestAnimationFrame scan
+      #console.log ["resize", e]
+      win.do_event_list win.on.resize, e
 
-    scan()
+    scroll_end: scroll_end
 
+    scroll: (e)->
+      docElem = document.documentElement
 
-  export win =
-    do_event_list: (list, e)!->
-      return unless 0 < list.length
-      for cb in list
-        cb(e)
+      set_scroll win
+      win.right = win.left + win.width
+      win.bottom = win.top + win.height
 
-    do:
-      resize: (e)->
-        docElem = document.documentElement
-        docBody = document.body
+      unless win.scrolling
+        win.do_event_list win.on.scroll_start
+      win.do.scroll_end()
+      win.scrolling = true
 
-        win.height = Math.max window.innerHeight, docElem.clientHeight
-        win.width  = Math.max window.innerWidth,  docElem.clientWidth
+      win.do_event_list win.on.scroll, e
 
-        if win.width < 380 || win.height < 380
-          head.browser.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5"
-          document.querySelector("meta[name=viewport]")?.content = head.browser.viewport
+    orientation: (e)->
+      win.orientation = e
+      win.compass = e.webkitCompassHeading
+      win.do_event_list win.on.orientation, e
 
-        win.horizon = win.height / 2
-        body_height = Math.max docBody.clientHeight , docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight
-        body_width  = Math.max docBody.clientWidth,   docBody.scrollWidth,  docElem.scrollWidth,  docElem.clientWidth
-        win.max =
-          top:  body_height - win.height
-          left: body_width  - win.width
-        if win.height > win.width
-          win.landscape = false
-          win.portlate = true
-        else
-          win.landscape = true
-          win.portlate = false
+    motion: (e)->
+      win.accel   = e.acceleration
+      win.gravity = e.accelerationIncludingGravity
+      win.rotate  = e.rotationRate
+      win.do_event_list win.on.motion, e
 
-        #console.log ["resize", e]
-        win.do_event_list win.on.resize, e
+    load: (e)->
+      win.do_event_list win.on.load, e
+      win.do.resize()
+      win.do.scroll()
 
-      scroll_end: scroll_end
+  on:
+    resize: []
+    scroll: []
+    scroll_start: []
+    scroll_end: []
+    orientation: []
+    motion: []
+    load: []
 
-      scroll: (e)->
-        docElem = document.documentElement
+  top:     0
+  horizon: 0
+  bottom:  0
+  left:    0
+  right:   0
+  width:   0
+  height:  0
 
-        set_scroll win
-        win.right = win.left + win.width
-        win.bottom = win.top + win.height
+  scroll: null
 
-        unless win.scrolling
-          win.do_event_list win.on.scroll_start
-        win.do.scroll_end()
-        win.scrolling = true
+  accel: {}
+  rotate: {}
+  gravity: {}
+  orientation: {}
+  compass: 0
 
-        win.do_event_list win.on.scroll, e
+  is_tap: false
 
-      orientation: (e)->
-        win.orientation = e
-        win.compass = e.webkitCompassHeading
-        win.do_event_list win.on.orientation, e
-
-      motion: (e)->
-        win.accel   = e.acceleration
-        win.gravity = e.accelerationIncludingGravity
-        win.rotate  = e.rotationRate
-        win.do_event_list win.on.motion, e
-
-      load: (e)->
-        win.do_event_list win.on.load, e
-        win.do.resize()
-        win.do.scroll()
-
-    on:
-      resize: []
-      scroll: []
-      scroll_start: []
-      scroll_end: []
-      orientation: []
-      motion: []
-      load: []
-
-    top:     0
-    horizon: 0
-    bottom:  0
-    left:    0
-    right:   0
-    width:   0
-    height:  0
-
-    accel: {}
-    rotate: {}
-    gravity: {}
-    orientation: {}
-    compass: 0
-
-    is_tap: false
-
-    max:
-      top:  0
-      left: 0
+  max:
+    top:  0
+    left: 0
