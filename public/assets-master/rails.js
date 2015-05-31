@@ -146,14 +146,40 @@ new Cache.Rule("item").schema(function() {
 });
 new Cache.Rule("event").schema(function() {
   var bit, mask, visible, _ref;
-  this.order("_id");
+  this.belongs_to("story", {
+    dependent: true
+  });
+  this.order("updated_at");
   _ref = RAILS.message, visible = _ref.visible, bit = _ref.bit, mask = _ref.mask;
   this.scope(function(all) {
     return {};
   });
   this.deploy(function(o) {
     o._id || (o._id = "" + o.story_id + "-" + o.turn);
-    return o.event_id = o._id;
+    o.event_id = o._id;
+    return o.view = {
+      btn: function() {
+        var submit;
+        switch (false) {
+          case !o.is_full:
+            return null;
+          case !o.is_loading:
+            return m(".SSAY", "読み込み…");
+          default:
+            submit = function() {
+              o.is_loading = true;
+              return window.requestAnimationFrame(function() {
+                return Submit.get(o.link).then(function(gon) {
+                  catch_gon.messages();
+                  o.is_loading = false;
+                  return o.is_full = true;
+                });
+              });
+            };
+            return m(".SSAY", Btn.call({}, submit), "読み込み");
+        }
+      }
+    };
   });
   return this.map_reduce(function(o, emit) {});
 });
@@ -185,10 +211,11 @@ new Cache.Rule("command").schema(function() {
 });
 new Cache.Rule("message").schema(function() {
   var bit, has_face, mask, timespan, visible, _ref;
-  this.order("updated_at");
+  this.belongs_to("event", {
+    dependent: true
+  });
   this.belongs_to("face");
-  this.belongs_to("event");
-  this.belongs_to("sow_auth");
+  this.order("updated_at");
   timespan = 1000 * 3600;
   Cache.messages.has_face = has_face = {};
   _ref = RAILS.message, visible = _ref.visible, bit = _ref.bit, mask = _ref.mask;
@@ -203,7 +230,7 @@ new Cache.Rule("message").schema(function() {
         var enables;
         enables = visible.talk[mode];
         return all.where(function(o) {
-          return o.mestype === "EVENT" || (o.show & enables);
+          return o.show & enables;
         });
       },
       anchor: function(mode, scroll) {
@@ -223,22 +250,17 @@ new Cache.Rule("message").schema(function() {
         }
       },
       pins: function(story_id, pins) {
-        return all.where(function(o) {
-          return o.logid === "EVENT-DESC" || pins["" + o.turn + "-" + o.logid] && (o.story_id === story_id);
-        }).sort("desc", "updated_at");
-      },
-      in_event: function(event_id) {
         var enables;
-        enables = visible.talk.all;
-        return all.where(function(o) {
-          return (o.show & enables) && (event_id === o.event_id);
+        enables = RAILS.message.visible.appendex.event_desc;
+        return all.sort("desc", "updated_at").where(function(o) {
+          return (o.show & enables) || pins["" + o.event.turn + "-" + o.logid] && (o.story_id === story_id);
         });
       },
       home: function(mode) {
         var enables;
         enables = visible.home[mode];
         return all.where(function(o) {
-          return o.logid === "EVENT-ASC" || (o.show & enables);
+          return o.show & enables;
         });
       },
       talk: function(mode, open, hides, search) {
@@ -248,14 +270,14 @@ new Cache.Rule("message").schema(function() {
           enables &= mask.NOT_OPEN;
         }
         return all.where(function(o) {
-          return o.logid === "EVENT-ASC" || (o.show & enables) && !hides[o.face_id];
+          return (o.show & enables) && !hides[o.face_id];
         }).search(search);
       },
       memo: function(mode, uniq, hides, search) {
         var enables, query;
         enables = visible.memo[mode];
         query = all.sort("desc", "updated_at").where(function(o) {
-          return o.logid === "EVENT-DESC" || (o.show & enables) && !hides[o.face_id];
+          return (o.show & enables) && !hides[o.face_id];
         }).search(search);
         if (uniq) {
           query = query.distinct("pen", "max_is");
@@ -312,7 +334,6 @@ new Cache.Rule("message").schema(function() {
     o.potof_id = "" + o.event_id + "-" + o.csid + "-" + o.face_id;
     if (!o.updated_at) {
       o.updated_at = new Date(o.date) - 0;
-      delete o.date;
     }
     vdom = GUI.message.xxx;
     o.mask = (function() {
@@ -345,8 +366,10 @@ new Cache.Rule("message").schema(function() {
           vdom = GUI.message.info;
           o.anchor = "info";
           return bit.INFO;
-        default:
-          return bit.EVENT;
+        case o.logid !== "EVENT-ASC":
+          return bit.EVENT_ASC;
+        case o.logid !== "EVENT-DESC":
+          return bit.EVENT_DESC;
       }
     })();
     switch (o.mestype) {
@@ -363,7 +386,7 @@ new Cache.Rule("message").schema(function() {
       case "EVENT":
         vdom = GUI.message.event;
         o.pen = o.event_id;
-        o.mask = "ZERO";
+        o.mask = "ALL";
         o.anchor = "info";
     }
     o.show &= mask[o.mask];
@@ -795,7 +818,7 @@ new Cache.Rule("story").schema(function() {
 });
 // Generated by LiveScript 1.3.1
 (function(){
-  var doc, menu, out$ = typeof exports != 'undefined' && exports || this;
+  var doc, set_event_messages, set_event_without_messages, catch_gon, menu, out$ = typeof exports != 'undefined' && exports || this;
   out$.doc = doc = {
     timeline: function(){
       return GUI.timeline({
@@ -810,10 +833,10 @@ new Cache.Rule("story").schema(function() {
       });
     },
     potofs: function(){
-      var potofs, hides, turn, ref$, o, attr;
+      var potofs, hides, turn, ref$, ref1$, o, attr;
       potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
       hides = Url.prop.potofs_hide();
-      turn = ((ref$ = win.scroll.center) != null ? ref$.turn : void 8) || 0;
+      turn = ((ref$ = win.scroll.center) != null ? (ref1$ = ref$.event) != null ? ref1$.turn : void 8 : void 8) || 0;
       return m(".minilist", m("h6", "キャラクターフィルタ"), m("p", m("a", Btn.keys_reset({}, Url.prop.potofs_hide, []), "全員表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.others()), "参加者表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.potofs()), "その他を表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.full()), "全員隠す")), m("hr.black"), (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = potofs).length; i$ < len$; ++i$) {
@@ -840,114 +863,109 @@ new Cache.Rule("story").schema(function() {
           });
         }
       }()), m("hr.black"));
+    }
+  };
+  set_event_messages = function(event){
+    Cache.rule.message.merge(event.messages, {
+      event_id: event._id
+    });
+    return console.log(event.messages.length + " messages cache. (" + event._id + ")");
+  };
+  set_event_without_messages = function(arg$){
+    var _id, name, created_at, updated_at, messages;
+    _id = arg$._id, name = arg$.name, created_at = arg$.created_at, updated_at = arg$.updated_at;
+    if (!created_at) {
+      return;
+    }
+    if (!updated_at) {
+      return;
+    }
+    messages = [];
+    messages.push({
+      event_id: _id,
+      name: name,
+      log: name,
+      logid: "EVENT-ASC",
+      mestype: "EVENT",
+      updated_at: created_at - 1
+    });
+    messages.push({
+      event_id: _id,
+      name: name,
+      log: name,
+      logid: "EVENT-DESC",
+      mestype: "EVENT",
+      updated_at: updated_at - -1
+    });
+    return Cache.rule.message.merge(messages);
+  };
+  out$.catch_gon = catch_gon = {
+    face: function(){
+      var face;
+      face = Cache.map_face_detail = gon.face;
+      Cache.rule.map_face_story_log.set(face.story_logs);
+      face.name = Cache.faces.find(face.face_id).name;
+      face.story_id_of_folders = _.groupBy(face.story_ids, function(arg$){
+        var k, count, ref$;
+        k = arg$[0], count = arg$[1];
+        return (ref$ = k.split("-")) != null ? ref$[0] : void 8;
+      });
+      return face.role_of_wins = _.groupBy(face.roles, function(arg$){
+        var k, count, role;
+        k = arg$[0], count = arg$[1];
+        role = RAILS.gifts[k] || RAILS.roles[k] || {
+          group: "OTHER"
+        };
+        return RAILS.wins[role.group].name;
+      });
     },
-    catch_gon: {
-      face: function(){
-        var face;
-        face = Cache.map_face_detail = gon.face;
-        Cache.rule.map_face_story_log.set(face.story_logs);
-        face.name = Cache.faces.find(face.face_id).name;
-        face.story_id_of_folders = _.groupBy(face.story_ids, function(arg$){
-          var k, count, ref$;
-          k = arg$[0], count = arg$[1];
-          return (ref$ = k.split("-")) != null ? ref$[0] : void 8;
+    map_reduce_faces: function(){
+      Cache.rule.chr_set.schema(function(){
+        return this.order(function(o){
+          return Cache.map_faces.reduce().chr_set[o._id].count;
         });
-        return face.role_of_wins = _.groupBy(face.roles, function(arg$){
-          var k, count, role;
-          k = arg$[0], count = arg$[1];
-          role = RAILS.gifts[k] || RAILS.roles[k] || {
-            group: "OTHER"
-          };
-          return RAILS.wins[role.group].name;
-        });
-      },
-      map_reduce_faces: function(){
-        Cache.rule.chr_set.schema(function(){
-          return this.order(function(o){
-            return Cache.map_faces.reduce().chr_set[o._id].count;
-          });
-        });
-        return Cache.rule.map_face.set(gon.map_reduce.faces);
-      },
-      potofs: function(){
-        var ref$, ref1$, ref2$, ref3$, ref4$, ref5$;
-        return Cache.rule.potof.set(gon.potofs, {
-          story_folder: (ref$ = gon.story) != null ? ref$.folder : void 8,
-          story_type: (ref1$ = gon.story) != null ? ref1$.type : void 8,
-          story_epilogue: (ref2$ = gon.story) != null ? ref2$.is_epilogue : void 8,
-          event_winner: ((ref3$ = gon.event) != null ? ref3$.winner : void 8) || ((ref4$ = gon.events) != null ? (ref5$ = ref4$.last) != null ? ref5$.winner : void 8 : void 8)
-        });
-      },
-      story: function(){
-        if ((typeof gon != 'undefined' && gon !== null ? gon.story : void 8) != null) {
-          return Cache.rule.story.set([gon.story]);
-        }
-      },
-      events: function(){
-        var ref$;
-        return Cache.rule.event.merge(gon.events, {
-          story_id: (ref$ = gon.story) != null ? ref$._id : void 8
-        });
-      },
-      messages: function(){
-        var set_event_messages, set_event_without_messages, interval, turn, updated_at, i$, ref$, len$, event, results$ = [];
-        set_event_messages = function(event){
-          var first, last;
-          first = event.messages.first.date;
-          last = event.messages.last.date;
-          return set_event_without_messages(new Date(first) - 1, new Date(last) - -1, event.messages, event);
-        };
-        set_event_without_messages = function(first_date, last_date, messages, arg$){
-          var _id, turn, name;
-          _id = arg$._id, turn = arg$.turn, name = arg$.name;
-          messages.unshift({
-            name: name,
-            log: name,
-            logid: "EVENT-ASC",
-            mestype: "EVENT",
-            updated_at: first_date
-          });
-          messages.push({
-            name: name,
-            log: name,
-            logid: "EVENT-DESC",
-            mestype: "EVENT",
-            updated_at: last_date
-          });
-          return Cache.rule.message.merge(messages, {
-            event_id: _id,
-            turn: turn
-          });
-        };
-        interval = gon.story.upd.interval * 1000 * 3600 * 24;
-        if (gon.event.messages) {
-          set_event_messages(gon.event);
-          turn = gon.event.turn;
-          updated_at = gon.event.messages.last.updated_at;
-          for (i$ = 0, len$ = (ref$ = gon.events).length; i$ < len$; ++i$) {
-            event = ref$[i$];
-            if (event.turn > turn) {
-              set_event_without_messages(updated_at + 1, updated_at + interval, [], event);
-              updated_at += interval;
-            }
-          }
-          updated_at = gon.event.messages.first.updated_at;
-          for (i$ = (ref$ = gon.events).length - 1; i$ >= 0; --i$) {
-            event = ref$[i$];
-            if (event.turn < turn) {
-              set_event_without_messages(updated_at - interval, updated_at - 1, [], event);
-              updated_at -= interval;
-            }
-          }
-        }
-        for (i$ = 0, len$ = (ref$ = gon.events).length; i$ < len$; ++i$) {
-          event = ref$[i$];
-          if (event.messages) {
-            results$.push(set_event_messages(event));
-          }
-        }
-        return results$;
+      });
+      return Cache.rule.map_face.set(gon.map_reduce.faces);
+    },
+    potofs: function(){
+      var ref$, ref1$, ref2$, ref3$, ref4$, ref5$;
+      return Cache.rule.potof.set(gon.potofs, {
+        story_folder: (ref$ = gon.story) != null ? ref$.folder : void 8,
+        story_type: (ref1$ = gon.story) != null ? ref1$.type : void 8,
+        story_epilogue: (ref2$ = gon.story) != null ? ref2$.is_epilogue : void 8,
+        event_winner: ((ref3$ = gon.event) != null ? ref3$.winner : void 8) || ((ref4$ = gon.events) != null ? (ref5$ = ref4$.last) != null ? ref5$.winner : void 8 : void 8)
+      });
+    },
+    story: function(){
+      if ((typeof gon != 'undefined' && gon !== null ? gon.story : void 8) != null) {
+        Cache.rule.story.set([gon.story]);
+        return console.log("1 story cache.");
       }
+    },
+    events: function(){
+      var ref$;
+      Cache.rule.event.merge(gon.events);
+      return console.log(gon.events.length + " events cache. (" + ((ref$ = gon.story) != null ? ref$._id : void 8) + ")");
+    },
+    messages: function(){
+      var interval, turn, i$, ref$, len$, event, results$ = [];
+      interval = gon.story.upd.interval * 1000 * 3600 * 24;
+      if (gon.event.messages) {
+        turn = gon.event.turn;
+        set_event_messages(gon.event);
+        set_event_without_messages(gon.event);
+      }
+      for (i$ = 0, len$ = (ref$ = gon.events).length; i$ < len$; ++i$) {
+        event = ref$[i$];
+        console.log(event._id + ", " + event.name);
+        if (event.messages) {
+          set_event_messages(event);
+        }
+        if (turn !== event.turn) {
+          results$.push(set_event_without_messages(event));
+        }
+      }
+      return results$;
     }
   };
   out$.menu = menu = {
@@ -994,7 +1012,7 @@ var messages, security_modes, _ref,
   __slice = [].slice;
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
-  doc.catch_gon.map_reduce_faces();
+  catch_gon.map_reduce_faces();
   GUI.if_exist("#map_faces", function(dom) {
     return m.module(dom, {
       controller: function() {},
@@ -1079,7 +1097,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
 }
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
-  doc.catch_gon.face();
+  catch_gon.face();
   GUI.if_exist("#summary", function(dom) {
     return m.module(dom, {
       controller: function() {},
@@ -1425,7 +1443,7 @@ GUI.if_exist("title", function(dom) {
 });
 
 if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) {
-  doc.catch_gon.potofs();
+  catch_gon.potofs();
   GUI.if_exist("#sayfilter", function(dom) {
     var layout, line_text_height, line_text_height_measure, seeing_measure, seeing_top, wide_attr;
     layout = new GUI.Layout(dom, -1, 1, 100);
@@ -1510,7 +1528,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
             _results = [];
             for (_i = 0, _len = anchorview.length; _i < _len; _i++) {
               o = anchorview[_i];
-              _results.push(m(".line_text", m("." + o.mestype + ".badge", go_click(o), "" + o.turn + ":" + o.anchor), m.trust(o.log.line_text)));
+              _results.push(m(".line_text", m("." + o.mestype + ".badge", go_click(o), "" + o.event.turn + ":" + o.anchor), m.trust(o.log.line_text)));
             }
             return _results;
           })(), m("h6", seeing_measure, "よく見ていたログ"), (function() {
@@ -1518,7 +1536,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
             _results = [];
             for (_i = 0, _len = seeingview.length; _i < _len; _i++) {
               o = seeingview[_i];
-              _results.push(m(".line_text", line_text_height_measure, star(o), m("." + o.mestype + ".badge", go_click(o), "" + o.turn + ":" + o.anchor), m.trust("" + o.name + " " + o.log.line_text)));
+              _results.push(m(".line_text", line_text_height_measure, star(o), m("." + o.mestype + ".badge", go_click(o), "" + o.event.turn + ":" + o.anchor), m.trust("" + o.name + " " + o.log.line_text)));
             }
             return _results;
           })());
@@ -1536,8 +1554,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
 }
 
 if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && (gon.event != null)) {
-  doc.catch_gon.story();
-  doc.catch_gon.events();
+  catch_gon.story();
+  catch_gon.events();
   messages = {
     pins: function(_arg) {
       var pins, story_id;
@@ -1586,7 +1604,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         if (event) {
           event_card = RAILS.events[event.event];
           texts = [];
-          if ("WIN_NONE" !== event.winner) {
+          if (event.winner && "WIN_NONE" !== event.winner) {
             texts.push(RAILS.winner[event.winner] + "の勝利です。");
           }
           if (event_card) {
@@ -1661,7 +1679,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     GUI.message.delegate.tap_anchor = function(o, turn, logid, id) {
       var pins;
       pins = Url.prop.pins();
-      pins["" + o.turn + "-" + o.logid] = true;
+      pins["" + o.event.turn + "-" + o.logid] = true;
       pins["" + turn + "-" + logid] = true;
       Url.prop.pins(pins);
       return change_pin(o._id);
@@ -1707,7 +1725,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         return menu.scope.change(Url.prop.back());
       },
       view: function() {
-        return [m(".paragraph.guide", doc.timeline()), doc.potofs()];
+        return [m(".paragraph.guide", doc.timeline())];
       }
     });
     menu.icon.icon("mail", {
@@ -1761,7 +1779,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     m.startComputation();
     return window.requestAnimationFrame(function() {
       var back_state;
-      doc.catch_gon.messages();
+      catch_gon.messages();
       back_state = menu.scope.state();
       menu.scope.change("");
       menu.scope.change("talk");

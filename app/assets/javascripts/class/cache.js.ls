@@ -228,11 +228,13 @@ class Cache.Finder
     return
 
 class Cache.Rule
+  @responses = {}
+
   (field)->
     @id = "#{field}_id"
     @list_name = "#{field}s"
     @validates = []
-    @responses = []
+    @responses = Cache.Rule.responses[field] ?= []
     @map_reduce = ->
     @protect = ->
     @deploy = (o)~>
@@ -255,7 +257,8 @@ class Cache.Rule
           set_scope(key, @finder, query_call)
 
       depend_on: (parent)~>
-        Cache.rule[parent].responses.push @ 
+        Cache.Rule.responses[parent] ?= []
+        Cache.Rule.responses[parent].push @
 
       belongs_to: (parent, option)~>
         parents = "#{parent}s"
@@ -263,7 +266,8 @@ class Cache.Rule
 
         dependent = option?.dependent?
         if dependent
-          Cache.rule[parent].responses.push @ 
+          Cache.Rule.responses[parent] ?= []
+          Cache.Rule.responses[parent].push @
 
         @validates.push (o)->
           that = Cache[parents]?.find(o[parent_id])
@@ -304,9 +308,9 @@ class Cache.Rule
     switch mode
       when "merge"
         for item in from || []
-          continue unless validate_item item
           for key, val of parent
             item[key] = val
+          continue unless validate_item item
 
           @deploy item
           o = {item, emits: []}
@@ -341,7 +345,7 @@ class Cache.Rule
       @finder.query.all._hash = {}
       @finder.diff.del = true
       break
-    @set_base "merge", list, parent, "merge"
+    @set_base "merge", list, parent
 
   reject: (list)->
     @finder.diff = {}

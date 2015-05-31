@@ -6,10 +6,10 @@ Txt = (->
 )()
 
 Submit = (->
-  test: (object)->
+  get: (url)->
     query =
-      method: "POST"
-      url: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/test-form.html"
+      method: "GET"
+      url: url
       serialize: (data)->
         console.log data
         data
@@ -53,16 +53,12 @@ Btn = (->
 
   base: base
 
-  submit: (style, object)->
-    submit = (objecct)->
-      untap = -> true
-      Submit.test()
-
-    untap = -> false
-    base style, untap, submit, null, object
-
   bool: (style, prop)->
     base style, is_true, prop, prop, !prop()
+
+  call: (style, call)->
+    prop = -> null
+    base style, eq, call, prop, "call"
 
   set: (style, prop, val)->
     base style, eq, prop, prop, val

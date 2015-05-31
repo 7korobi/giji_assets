@@ -829,12 +829,15 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
   Cache.Rule = Rule = (function(){
     Rule.displayName = 'Rule';
     var prototype = Rule.prototype, constructor = Rule;
+    Rule.responses = {};
     function Rule(field){
-      var this$ = this;
+      var ref$, ref1$, this$ = this;
       this.id = field + "_id";
       this.list_name = field + "s";
       this.validates = [];
-      this.responses = [];
+      this.responses = (ref1$ = (ref$ = Cache.Rule.responses)[field]) != null
+        ? ref1$
+        : ref$[field] = [];
       this.map_reduce = function(){};
       this.protect = function(){};
       this.deploy = function(o){
@@ -874,15 +877,18 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
           return results$;
         },
         depend_on: function(parent){
-          return Cache.rule[parent].responses.push(this$);
+          var ref$;
+          (ref$ = Cache.Rule.responses)[parent] == null && (ref$[parent] = []);
+          return Cache.Rule.responses[parent].push(this$);
         },
         belongs_to: function(parent, option){
-          var parents, parent_id, dependent;
+          var parents, parent_id, dependent, ref$;
           parents = parent + "s";
           parent_id = parent + "_id";
           dependent = (option != null ? option.dependent : void 8) != null;
           if (dependent) {
-            Cache.rule[parent].responses.push(this$);
+            (ref$ = Cache.Rule.responses)[parent] == null && (ref$[parent] = []);
+            Cache.Rule.responses[parent].push(this$);
           }
           return this$.validates.push(function(o){
             var that, ref$;
@@ -943,12 +949,12 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
       case "merge":
         for (i$ = 0, len$ = (ref$ = from || []).length; i$ < len$; ++i$) {
           item = ref$[i$];
-          if (!validate_item(item)) {
-            continue;
-          }
           for (key in parent) {
             val = parent[key];
             item[key] = val;
+          }
+          if (!validate_item(item)) {
+            continue;
           }
           this.deploy(item);
           o = {
@@ -999,7 +1005,7 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
         this.finder.diff.del = true;
         break;
       }
-      return this.set_base("merge", list, parent, "merge");
+      return this.set_base("merge", list, parent);
     };
     prototype.reject = function(list){
       this.finder.diff = {};
@@ -1029,11 +1035,11 @@ Txt = (function() {
 
 Submit = (function() {
   return {
-    test: function(object) {
+    get: function(url) {
       var query;
       query = {
-        method: "POST",
-        url: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/test-form.html",
+        method: "GET",
+        url: url,
         serialize: function(data) {
           console.log(data);
           return data;
@@ -1107,22 +1113,15 @@ Btn = (function() {
   };
   return {
     base: base,
-    submit: function(style, object) {
-      var submit, untap;
-      submit = function(objecct) {
-        var untap;
-        untap = function() {
-          return true;
-        };
-        return Submit.test();
-      };
-      untap = function() {
-        return false;
-      };
-      return base(style, untap, submit, null, object);
-    },
     bool: function(style, prop) {
       return base(style, is_true, prop, prop, !prop());
+    },
+    call: function(style, call) {
+      var prop;
+      prop = function() {
+        return null;
+      };
+      return base(style, eq, call, prop, "call");
     },
     set: function(style, prop, val) {
       return base(style, eq, prop, prop, val);
@@ -2111,7 +2110,7 @@ GUI.message = (function() {
     var attr;
     return attr = GUI.attrs({}, function() {
       return this.start(function(e) {
-        return GUI.message.delegate.tap_identity(o, o.turn, o.logid, o._id);
+        return GUI.message.delegate.tap_identity(o, o.event.turn, o.logid, o._id);
       });
     });
   };
@@ -2185,7 +2184,7 @@ GUI.message = (function() {
       var rating, saycnt;
       rating = RAILS.rating[story.rating];
       saycnt = RAILS.saycnt[story.type.say] || {};
-      return m(".ADMIN.guide", {
+      return m(".MAKER.guide", {
         key: story._id
       }, [
         GUI.letter("head", story.name, m("div", m("code", "こだわり"), m("img.pull-left", {
@@ -2237,9 +2236,16 @@ GUI.message = (function() {
       }, ".U.C " + v._id);
     },
     event: function(v) {
-      return m("h3", {
+      var btn, list;
+      btn = v.event.view.btn();
+      list = [];
+      list.push(m("h3", m.trust(v.name)));
+      if (btn) {
+        list.push(btn);
+      }
+      return m("." + v.mestype, {
         key: v._id
-      }, m.trust(v.name));
+      }, list);
     },
     info: function(v) {
       return m("." + v.mestype + ".info", {
@@ -2531,7 +2537,7 @@ GUI.ScrollSpy = (function() {
 
 })();
 GUI.timeline = function(_arg) {
-  var attr, base, choice, colors, first_at, graph_height, height, last_at, max_height, mestype_orders, time_width, width, x, y, _ref, _ref1;
+  var attr, base, choice, colors, first_at, graph_height, height, last_at, max_height, mestype_orders, time_width, width, x, y;
   width = _arg.width, base = _arg.base, choice = _arg.choice;
   colors = {
     SAY: "#cb8",
@@ -2553,8 +2559,8 @@ GUI.timeline = function(_arg) {
     focus: "yellow"
   };
   mestype_orders = ["SAY", "MSAY", "VSAY", "SPSAY", "GSAY", "WSAY", "XSAY", "BSAY", "AIM", "TSAY", "MAKER", "ADMIN"];
-  last_at = ((_ref = base.list().last) != null ? _ref.updated_at : void 0) / (1000 * 3600);
-  first_at = ((_ref1 = base.list().first) != null ? _ref1.updated_at : void 0) / (1000 * 3600);
+  last_at = Cache.events.list().last.updated_at / (1000 * 3600);
+  first_at = Cache.events.list().first.created_at / (1000 * 3600);
   time_width = last_at - first_at;
   height = 130;
   graph_height = height - 50;
@@ -2572,7 +2578,7 @@ GUI.timeline = function(_arg) {
       return null;
     };
     point = function(e) {
-      var canvas, id, list, offsetX, offsetY, open, potofs_hide, rect, talk, _ref2, _ref3, _ref4;
+      var canvas, id, list, offsetX, offsetY, open, potofs_hide, rect, talk, _ref, _ref1, _ref2;
       if (!win.is_touch) {
         return;
       }
@@ -2592,12 +2598,12 @@ GUI.timeline = function(_arg) {
           offsetX = (e.pageX - rect.left) * 2;
           offsetY = (e.pageY - rect.top) * 2;
           break;
-        case !((_ref2 = e.touches) != null ? (_ref3 = _ref2[0]) != null ? _ref3.pageX : void 0 : void 0):
+        case !((_ref = e.touches) != null ? (_ref1 = _ref[0]) != null ? _ref1.pageX : void 0 : void 0):
           rect = canvas.getBoundingClientRect();
           offsetX = (e.touches[0].pageX - rect.left) * 2;
           offsetY = (e.touches[0].pageY - rect.top) * 2;
       }
-      list = graph_height < offsetY ? Cache.messages.talk("open", false, {}).list() : ((_ref4 = Url.prop, talk = _ref4.talk, open = _ref4.open, potofs_hide = _ref4.potofs_hide, _ref4), Cache.messages.talk(talk(), open(), potofs_hide()).list());
+      list = graph_height < offsetY ? Cache.messages.talk("open", false, {}).list() : ((_ref2 = Url.prop, talk = _ref2.talk, open = _ref2.open, potofs_hide = _ref2.potofs_hide, _ref2), Cache.messages.talk(talk(), open(), potofs_hide()).list());
       id = find_last(list, Math.ceil(1000 * 3600 * (first_at + offsetX / x)));
       if (!id) {
         return;
@@ -2636,13 +2642,13 @@ GUI.timeline = function(_arg) {
         return ctx.stroke();
       },
       background: function(ctx) {
-        var color, count_height, count_width, event_id, left, mask, max_width, mestype, reduce, right, time_id, top, _i, _len, _ref2, _ref3, _ref4;
+        var color, count_height, count_width, event, left, mask, max_width, mestype, right, time_id, top, _i, _j, _len, _len1, _ref, _ref1, _ref2;
         if (!base.reduce()) {
           return;
         }
-        _ref2 = base.reduce().mask;
-        for (time_id in _ref2) {
-          mask = _ref2[time_id];
+        _ref = base.reduce().mask;
+        for (time_id in _ref) {
+          mask = _ref[time_id];
           if (max_height < mask.all.count) {
             max_height = mask.all.count;
           }
@@ -2653,9 +2659,9 @@ GUI.timeline = function(_arg) {
         ctx.globalAlpha = 0.5;
         ctx.fillRect(0, 0, x * time_width, y * max_height);
         count_width = 1;
-        _ref3 = base.reduce().mask;
-        for (time_id in _ref3) {
-          mask = _ref3[time_id];
+        _ref1 = base.reduce().mask;
+        for (time_id in _ref1) {
+          mask = _ref1[time_id];
           left = Serial.parser.Date(time_id) - first_at;
           top = max_height;
           for (_i = 0, _len = mestype_orders.length; _i < _len; _i++) {
@@ -2670,26 +2676,28 @@ GUI.timeline = function(_arg) {
             }
           }
         }
-        left = 0;
         ctx.beginPath();
-        _ref4 = base.reduce().event;
-        for (event_id in _ref4) {
-          reduce = _ref4[event_id];
-          right = reduce.max / (1000 * 3600) - first_at;
+        _ref2 = Cache.events.list();
+        for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
+          event = _ref2[_j];
+          if (!event.created_at) {
+            continue;
+          }
+          right = event.updated_at / (1000 * 3600) - first_at;
+          left = event.created_at / (1000 * 3600) - first_at;
           ctx.strokeStyle = colors.line;
           ctx.globalAlpha = 1;
-          ctx.moveTo(x * right, height);
-          ctx.lineTo(x * right, 0);
+          ctx.moveTo(x * left, height);
+          ctx.lineTo(x * left, 0);
           ctx.fillStyle = colors.event;
-          ctx.fillRect(x * left, graph_height, x * right, height);
+          ctx.fillRect(x * left, graph_height, x * last_at, height);
           ctx.textAlign = "left";
           ctx.fillStyle = colors.text;
           ctx.font = "30px serif";
           max_width = x * (right - left) - 4;
           if (0 < max_width) {
-            ctx.fillText(Cache.events.find(event_id).name, x * left, height - 12, max_width);
+            ctx.fillText(event.name, x * left, height - 12, max_width);
           }
-          left = right;
         }
         return ctx.stroke();
       }

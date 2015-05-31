@@ -22,7 +22,7 @@ GUI.message = (->
   identity_action = (o)->
     attr = GUI.attrs {}, ->
       @start (e)->
-        GUI.message.delegate.tap_identity(o, o.turn, o.logid, o._id)
+        GUI.message.delegate.tap_identity(o, o.event.turn, o.logid, o._id)
 
   delegate:
     tap_identity: -> console.log arguments
@@ -82,7 +82,7 @@ GUI.message = (->
     rating = RAILS.rating[story.rating]
     saycnt = RAILS.saycnt[story.type.say] || {}
 
-    m ".ADMIN.guide", {key: story._id}, [
+    m ".MAKER.guide", {key: story._id}, [
       GUI.letter "head", story.name,
         m "div",
           m "code", "こだわり"
@@ -164,7 +164,12 @@ GUI.message = (->
     m "div", {key: v._id}, ".U.C #{v._id}"
 
   event: (v)->
-    m "h3", {key: v._id}, m.trust v.name
+    btn = v.event.view.btn()
+    list = []
+    list.push m "h3", m.trust v.name 
+    list.push btn if btn
+
+    m ".#{v.mestype}", {key: v._id}, list
 
   info: (v)->
     m ".#{v.mestype}.info", {key: v._id},

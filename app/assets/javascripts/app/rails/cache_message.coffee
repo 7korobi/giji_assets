@@ -1,9 +1,9 @@
 
 new Cache.Rule("message").schema ->
-  @order "updated_at"
+  @belongs_to "event", dependent: true
   @belongs_to "face"
-  @belongs_to "event"
-  @belongs_to "sow_auth"
+
+  @order "updated_at"
 
   timespan = 1000 * 3600
   Cache.messages.has_face = has_face = {}
@@ -16,8 +16,8 @@ new Cache.Rule("message").schema ->
       .sort "desk", "seeing"
 
     timeline: (mode)->
-      enables = visible.talk[mode]
-      all.where (o)-> o.mestype == "EVENT" || (o.show & enables)
+      enables =  visible.talk[mode]
+      all.where (o)-> (o.show & enables)
 
     anchor: (mode, scroll)->
       enables = RAILS.message.visible.talk[mode]
@@ -32,32 +32,28 @@ new Cache.Rule("message").schema ->
         .where (o)-> false
 
     pins: (story_id, pins)->
+      enables = RAILS.message.visible.appendex.event_desc
       all
-      .where (o)-> o.logid == "EVENT-DESC" || pins["#{o.turn}-#{o.logid}"] && (o.story_id == story_id)
       .sort "desc", "updated_at"
-
-    in_event: (event_id)->
-      enables = visible.talk.all
-      all
-      .where (o)-> (o.show & enables) && (event_id == o.event_id)
+      .where (o)-> (o.show & enables) || pins["#{o.event.turn}-#{o.logid}"] && (o.story_id == story_id)
 
     home: (mode)->
       enables = visible.home[mode]
       all
-      .where (o)-> o.logid == "EVENT-ASC" || (o.show & enables)
+      .where (o)-> (o.show & enables)
 
     talk: (mode, open, hides, search)->
       enables = visible.talk[mode]
       enables &= mask.NOT_OPEN unless open
       all
-      .where (o)-> o.logid == "EVENT-ASC" || (o.show & enables) && ! hides[o.face_id]
+      .where (o)-> (o.show & enables) && ! hides[o.face_id]
       .search search
 
     memo: (mode, uniq, hides, search)->
       enables = visible.memo[mode]
       query = all
       .sort("desc", "updated_at")
-      .where (o)-> o.logid == "EVENT-DESC" || (o.show & enables) && ! hides[o.face_id]
+      .where (o)-> (o.show & enables) && ! hides[o.face_id]
       .search search
 
       query = query.distinct("pen", "max_is") if uniq
@@ -101,7 +97,6 @@ new Cache.Rule("message").schema ->
 
     unless o.updated_at
       o.updated_at = new Date(o.date) - 0
-      delete o.date
 
     vdom = GUI.message.xxx
     o.mask =
@@ -133,8 +128,10 @@ new Cache.Rule("message").schema ->
           vdom = GUI.message.info
           o.anchor = "info"
           bit.INFO
-        else
-          bit.EVENT
+        when o.logid == "EVENT-ASC"
+          bit.EVENT_ASC
+        when o.logid == "EVENT-DESC"
+          bit.EVENT_DESC
 
     switch o.mestype
       when "MAKER", "ADMIN"
@@ -145,7 +142,7 @@ new Cache.Rule("message").schema ->
       when "EVENT"
         vdom = GUI.message.event
         o.pen = o.event_id
-        o.mask = "ZERO"
+        o.mask = "ALL"
         o.anchor = "info"
 
     o.show &= mask[o.mask]

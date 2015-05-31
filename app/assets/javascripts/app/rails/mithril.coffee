@@ -1,6 +1,6 @@
 
 if gon?.map_reduce?.faces?
-  doc.catch_gon.map_reduce_faces()
+  catch_gon.map_reduce_faces()
 
   GUI.if_exist "#map_faces", (dom)->
     m.module dom,
@@ -70,7 +70,7 @@ if gon?.map_reduce?.faces?
 
 
 if gon?.face?
-  doc.catch_gon.face()
+  catch_gon.face()
 
   GUI.if_exist "#summary", (dom)->
     m.module dom,
@@ -354,7 +354,7 @@ GUI.if_exist "title", (dom)->
         "人狼議事"
 
 if gon?.potofs?
-  doc.catch_gon.potofs()
+  catch_gon.potofs()
 
   GUI.if_exist "#sayfilter", (dom)->
     layout = new GUI.Layout dom, -1, 1, 100
@@ -433,13 +433,13 @@ if gon?.potofs?
               m "h6", "参照ログ"
               for o in anchorview
                 m ".line_text", 
-                  m ".#{o.mestype}.badge", go_click(o), "#{o.turn}:#{o.anchor}"
+                  m ".#{o.mestype}.badge", go_click(o), "#{o.event.turn}:#{o.anchor}"
                   m.trust o.log.line_text
               m "h6", seeing_measure, "よく見ていたログ"
               for o in seeingview
                 m ".line_text", line_text_height_measure,
                   star(o)
-                  m ".#{o.mestype}.badge", go_click(o), "#{o.turn}:#{o.anchor}"
+                  m ".#{o.mestype}.badge", go_click(o), "#{o.event.turn}:#{o.anchor}"
                   m.trust "#{o.name} #{o.log.line_text}"
 
         potofs.children[0].children[1].attrs.className = "plane fine"
@@ -459,8 +459,8 @@ if gon?.potofs?
 
 
 if gon?.events? && gon.event?
-  doc.catch_gon.story()
-  doc.catch_gon.events()
+  catch_gon.story()
+  catch_gon.events()
 
   messages =
     pins: ({story_id,pins})->
@@ -498,7 +498,7 @@ if gon?.events? && gon.event?
           event_card = RAILS.events[event.event]
 
           texts = []
-          texts.push RAILS.winner[event.winner] + "の勝利です。" if "WIN_NONE" != event.winner
+          texts.push RAILS.winner[event.winner] + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
           texts.push m "kbd", event_card if event_card
           texts.push RAILS.event_state.grudge    if event.turn == event.grudge
           texts.push RAILS.event_state.riot      if event.turn == event.riot
@@ -548,7 +548,7 @@ if gon?.events? && gon.event?
 
     GUI.message.delegate.tap_anchor = (o, turn, logid, id)->
       pins = Url.prop.pins()
-      pins["#{o.turn}-#{o.logid}"] = true
+      pins["#{o.event.turn}-#{o.logid}"] = true
       pins["#{turn}-#{logid}"] = true
       Url.prop.pins pins
       change_pin(o._id)
@@ -585,7 +585,6 @@ if gon?.events? && gon.event?
       view: ->
         [ m ".paragraph.guide",
             doc.timeline()
-          doc.potofs()
         ]
 
     menu.icon.icon "mail",
@@ -646,7 +645,7 @@ if gon?.events? && gon.event?
 
     m.startComputation()
     window.requestAnimationFrame ->
-      doc.catch_gon.messages()
+      catch_gon.messages()
 
       back_state = menu.scope.state()
       menu.scope.change ""

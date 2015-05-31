@@ -12,15 +12,15 @@ export doc =
   potofs: ->
     potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
     hides = Url.prop.potofs_hide()
-    turn = win.scroll.center?.turn || 0
+    turn = win.scroll.center?.event?.turn || 0
 
     m ".minilist",
       m "h6", "キャラクターフィルタ"
       m "p",
-        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, []                           ), "全員表示"
-        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.others()        ), "参加者表示"
-        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.potofs()        ), "その他を表示"
-        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.full()          ), "全員隠す"
+        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, []                    ), "全員表示"
+        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.others() ), "参加者表示"
+        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.potofs() ), "その他を表示"
+        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.full()   ), "全員隠す"
       m "hr.black"
       for o in potofs
         attr = (o)->
@@ -38,85 +38,84 @@ export doc =
           m ".bar.#{o.live}", 
       m "hr.black"
 
-  catch_gon:
-    face: ->
-      face = Cache.map_face_detail = gon.face
-      Cache.rule.map_face_story_log.set face.story_logs
-      face.name = Cache.faces.find(face.face_id).name
-      face.story_id_of_folders = _.groupBy face.story_ids, ([k,count])->
-        k.split("-")?[0]
 
-      face.role_of_wins = _.groupBy face.roles, ([k,count])->
-        role = RAILS.gifts[k] || RAILS.roles[k] || {group: "OTHER"}
-        RAILS.wins[role.group].name
+set_event_messages = (event)->
+  Cache.rule.message.merge event.messages, 
+    event_id: event._id
+  console.log "#{event.messages.length} messages cache. (#{event._id})"
 
-    map_reduce_faces: ->
-      Cache.rule.chr_set.schema ->
-        @order (o)->
-          Cache.map_faces.reduce().chr_set[o._id].count
+set_event_without_messages = ({_id, name, created_at, updated_at})->
+  return unless created_at
+  return unless updated_at
+  messages = []
+  messages.push do
+    event_id: _id
+    name: name
+    log: name
+    logid: "EVENT-ASC"
+    mestype: "EVENT"
+    updated_at: created_at - 1
 
-      Cache.rule.map_face.set gon.map_reduce.faces
+  messages.push do
+    event_id: _id
+    name: name
+    log: name
+    logid: "EVENT-DESC"
+    mestype: "EVENT"
+    updated_at: updated_at - -1
 
-    potofs: ->
-      Cache.rule.potof.set gon.potofs,
-        story_folder: gon.story?.folder
-        story_type: gon.story?.type
-        story_epilogue: gon.story?.is_epilogue
-        event_winner: (gon.event?.winner || gon.events?.last?.winner)
+  Cache.rule.message.merge messages
 
-    story: ->
-      if gon?.story?
-        Cache.rule.story.set [gon.story]
+export catch_gon =
+  face: ->
+    face = Cache.map_face_detail = gon.face
+    Cache.rule.map_face_story_log.set face.story_logs
+    face.name = Cache.faces.find(face.face_id).name
+    face.story_id_of_folders = _.groupBy face.story_ids, ([k,count])->
+      k.split("-")?[0]
 
-    events: ->
-      Cache.rule.event.merge gon.events,
-        story_id: gon.story?._id
-      #  Cache.rule.event.merge [gon.event],
-      #    story_id: gon.story?._id
+    face.role_of_wins = _.groupBy face.roles, ([k,count])->
+      role = RAILS.gifts[k] || RAILS.roles[k] || {group: "OTHER"}
+      RAILS.wins[role.group].name
 
-    messages: ->
-      set_event_messages = (event)->
-        first = event.messages.first.date
-        last  = event.messages.last.date
-        set_event_without_messages new Date(first) - 1, new Date(last) - -1, event.messages, event
+  map_reduce_faces: ->
+    Cache.rule.chr_set.schema ->
+      @order (o)->
+        Cache.map_faces.reduce().chr_set[o._id].count
 
-      set_event_without_messages = (first_date, last_date, messages, {_id, turn, name})->
-        messages.unshift do
-          name: name
-          log: name
-          logid: "EVENT-ASC"
-          mestype: "EVENT"
-          updated_at: first_date
+    Cache.rule.map_face.set gon.map_reduce.faces
 
-        messages.push do
-          name: name
-          log: name
-          logid: "EVENT-DESC"
-          mestype: "EVENT"
-          updated_at: last_date
+  potofs: ->
+    Cache.rule.potof.set gon.potofs,
+      story_folder: gon.story?.folder
+      story_type: gon.story?.type
+      story_epilogue: gon.story?.is_epilogue
+      event_winner: (gon.event?.winner || gon.events?.last?.winner)
 
-        Cache.rule.message.merge messages, {event_id: _id, turn}
+  story: ->
+    if gon?.story?
+      Cache.rule.story.set [gon.story]
+      console.log "1 story cache."
 
-      interval = gon.story.upd.interval * 1000 * 3600 * 24
-      if gon.event.messages
-        set_event_messages gon.event
-        turn = gon.event.turn
+  events: ->
+    Cache.rule.event.merge gon.events
+    console.log "#{gon.events.length} events cache. (#{gon.story?._id})"
+    #  Cache.rule.event.merge [gon.event],
+    #    story_id: gon.story?._id
 
-        updated_at = gon.event.messages.last.updated_at
-        for event in gon.events by  1
-          if event.turn > turn
-            set_event_without_messages updated_at + 1, updated_at + interval, [], event
-            updated_at += interval
+  messages: ->
+    interval = gon.story.upd.interval * 1000 * 3600 * 24
+    if gon.event.messages
+      turn = gon.event.turn
+      set_event_messages gon.event
+      set_event_without_messages gon.event
 
-        updated_at = gon.event.messages.first.updated_at
-        for event in gon.events by -1
-          if event.turn < turn
-            set_event_without_messages updated_at - interval, updated_at - 1, [], event
-            updated_at -= interval
-
-      for event in gon.events
-        if event.messages
-          set_event_messages event
+    for event in gon.events
+      console.log "#{event._id}, #{event.name}"
+      if event.messages
+        set_event_messages event
+      if turn != event.turn
+        set_event_without_messages event
 
 export menu =
   icon:  new GUI.MenuTree.Icon

@@ -33,8 +33,8 @@ GUI.timeline = ({width, base, choice})->
     "ADMIN"
   ]
 
-  last_at = base.list().last?.updated_at / (1000 * 3600)
-  first_at = base.list().first?.updated_at / (1000 * 3600)
+  last_at = Cache.events.list().last.updated_at / (1000 * 3600)
+  first_at = Cache.events.list().first.created_at / (1000 * 3600)
   time_width = last_at - first_at
 
   height = 130
@@ -130,17 +130,18 @@ GUI.timeline = ({width, base, choice})->
               ctx.globalAlpha = 1
               ctx.fillRect x * left, y * top, 1 + x * count_width, y * count_height
 
-        left = 0
         ctx.beginPath()
-        for event_id, reduce of base.reduce().event
-          right = reduce.max / (1000 * 3600) - first_at
+        for event in Cache.events.list()
+          continue unless event.created_at
+          right = event.updated_at / (1000 * 3600) - first_at
+          left = event.created_at / (1000 * 3600) - first_at
           ctx.strokeStyle = colors.line
           ctx.globalAlpha = 1
-          ctx.moveTo x * right, height
-          ctx.lineTo x * right,  0
+          ctx.moveTo x * left, height
+          ctx.lineTo x * left,  0
 
           ctx.fillStyle = colors.event
-          ctx.fillRect x * left, graph_height, x * right, height
+          ctx.fillRect x * left, graph_height, x * last_at, height
 
           ctx.textAlign = "left"
           ctx.fillStyle = colors.text
@@ -148,9 +149,8 @@ GUI.timeline = ({width, base, choice})->
 
           max_width = x * (right - left) - 4
           if 0 < max_width
-            ctx.fillText Cache.events.find(event_id).name, x * left, height - 12, max_width
+            ctx.fillText event.name, x * left, height - 12, max_width
 
-          left = right
         ctx.stroke()
 
   x = attr.width / time_width
