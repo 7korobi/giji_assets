@@ -127,6 +127,7 @@ table.talk {
   .QUE,       { @include color-tone(glass, #aaa, rgba(  0,  0,  0, 0.4)); .msg { border: none; } }
   .TSAY,      { @include color-tone(glass, #a96, rgba(  0,  0, 60, 0.4)); }
   .GSAY,      { @include color-tone(glass, #99f, rgba( 30, 30,  0, 0.4)); }
+  .VGSAY,     { @include color-tone(glass, #9af, rgba(  0,  0,  0, 0.4)); }
   .VSAY,      { @include color-tone(glass, #ffb, rgba(  0,  0,  0, 0.4)); }
   .WSAY,      { @include color-tone(glass, #f78, rgba(  0, 30, 30, 0.4)); }
   .AIM,
@@ -183,6 +184,7 @@ table.talk {
   .QUE,        { @include color-tone(white, #664, #cb8); * { border: none; } }
   .TSAY,       { @include color-tone(white, #000, #a98); }
   .GSAY,       { @include color-tone(white, #000, #bbd); }
+  .VGSAY,      { @include color-tone(white, #000, #a8a8e8); }
   .VSAY,       { @include color-tone(white, #000, #ca6); }
   .WSAY,       { @include color-tone(white, #000, #a55); }
   .AIM,

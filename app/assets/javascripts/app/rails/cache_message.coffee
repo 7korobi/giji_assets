@@ -6,7 +6,10 @@ new Cache.Rule("message").schema ->
   @order "updated_at"
 
   timespan = 1000 * 3600
-  Cache.messages.has_face = has_face = {}
+  Cache.messages.has = has =
+    face: {}
+    vsay: false
+    bug: false
   {visible, bit, mask} = RAILS.message
 
   @scope (all)->
@@ -14,10 +17,6 @@ new Cache.Rule("message").schema ->
       all
       .where (o)-> 15 < o.seeing
       .sort "desk", "seeing"
-
-    timeline: (mode)->
-      enables =  visible.talk[mode]
-      all.where (o)-> (o.show & enables)
 
     anchor: (mode, scroll)->
       enables = RAILS.message.visible.talk[mode]
@@ -70,6 +69,13 @@ new Cache.Rule("message").schema ->
     switch o.mestype
       when "QUEUE"
         o.mestype = "SAY"
+      when "VSAY"
+        story = o.event?.story
+        event = o.event
+        has.vsay = true
+        if story && event && "grave" == story.type.mob && ! event.name.match /プロローグ|エピローグ/
+          o.mestype = "VGSAY"
+
     switch logtype
       when "IS"
         o.logid = "II#{lognumber}"
@@ -82,7 +88,10 @@ new Cache.Rule("message").schema ->
       when "DS"
         o.mestype = "DELETED"
       when "TS"
-        o.mestype = "TSAY"
+        if o.to
+          o.mestype = "SPSAY"
+        else
+          o.mestype = "TSAY"
     # legacy support
 
     o._id = o.event_id + "-" + o.logid
@@ -108,8 +117,10 @@ new Cache.Rule("message").schema ->
         when o.logid.match /^[D]./
           o.anchor = "del"
           "DELETE"
+        when o.logid.match /^[VG]./
+          "GRAVE"
         else
-          "OPEN"
+          "MAIN"
 
     o.show =
       switch
@@ -152,7 +163,7 @@ new Cache.Rule("message").schema ->
     o.search_words = o.log
 
   @map_reduce (o, emit)->
-    has_face[o.face_id] = true
+    has.face[o.face_id] = true
 
     if o.vdom == GUI.message.talk || o.vdom == GUI.message.guide
       time_id = Serial.serializer.Date(o.updated_at / timespan)

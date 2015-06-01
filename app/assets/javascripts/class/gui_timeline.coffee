@@ -1,10 +1,11 @@
 GUI.timeline = ({width, base, choice})->
   colors =
+    VSAY:  "#ca6"
+    VGSAY: "#a8a8e8"
+    GSAY:  "#bbd"
     SAY:   "#cb8"
     MSAY:  "#cb8"
-    VSAY:  "#ca6"
     SPSAY: "#dcb"
-    GSAY:  "#bbd"
     WSAY:  "#a55"
     XSAY:  "#9a7"
     BSAY:  "#9a7"
@@ -13,7 +14,7 @@ GUI.timeline = ({width, base, choice})->
     MAKER: "#000"
     ADMIN: "#000"
     text:  "yellow"
-    back:  "#000"
+    back:  "#222"
     event: "#224"
     line:  "#44a"
     focus: "yellow"
@@ -22,8 +23,9 @@ GUI.timeline = ({width, base, choice})->
     "SAY"
     "MSAY"
     "VSAY"
-    "SPSAY"
+    "VGSAY"
     "GSAY"
+    "SPSAY"
     "WSAY"
     "XSAY"
     "BSAY"
@@ -72,8 +74,7 @@ GUI.timeline = ({width, base, choice})->
         if graph_height < offsetY
           Cache.messages.talk("open", false, {}).list()
         else
-          {talk, open, potofs_hide} = Url.prop
-          Cache.messages.talk(talk(), open(), potofs_hide()).list()
+          base.list()
 
       id = find_last list, Math.ceil(1000 * 3600 * (first_at + offsetX / x))
       return unless id

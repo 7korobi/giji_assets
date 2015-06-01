@@ -13,11 +13,11 @@ new Cache.Rule("potof").schema ->
 
   @scope (all)->
     full: ->
-      delete Cache.messages.has_face.undefined
-      delete Cache.messages.has_face.null
-      delete Cache.messages.has_face.admin
-      delete Cache.messages.has_face.maker
-      Object.keys(Cache.messages.has_face).sort()
+      delete Cache.messages.has.face.undefined
+      delete Cache.messages.has.face.null
+      delete Cache.messages.has.face.admin
+      delete Cache.messages.has.face.maker
+      Object.keys(Cache.messages.has.face).sort()
     potofs: ->
       _.without all.full(), all.others()...
     not_lives: (turn)->

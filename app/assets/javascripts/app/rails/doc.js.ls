@@ -1,13 +1,34 @@
 export doc =
   timeline: ->
+    {talk, open, potofs_hide, content_width, talk_at} = Url.prop
     GUI.timeline do
-      base: Cache.messages.timeline(Url.prop.talk())
-      width: Url.prop.content_width()
+      base: Cache.messages.talk(talk(), open(), potofs_hide())
+      width: content_width()
       choice: (id)->
-        Url.prop.talk_at id
+        talk_at id
         menu.icon.change "search"
         menu.scope.change "talk"
-        win.scroll.rescroll Url.prop.talk_at
+        win.scroll.rescroll talk_at
+
+  security_modes: (prop)->
+    story = Cache.storys.list().first
+    mob = RAILS.mob[story?.type.mob]
+    if mob.CAPTION && Cache.messages.has.vsay
+      grave_caption = "墓下/#{mob.CAPTION}"
+    else
+      grave_caption = "墓下のみ"
+
+    list = []
+    list.push m "a", Btn.set({}, prop, "all"),   "すべて"
+    list.push m "a", Btn.set({}, prop, "think"), "独り言/内緒話"
+    list.push m "a", Btn.set({}, prop, "clan"),  "仲間の会話"
+    list.push m "a", Btn.set({}, prop, "open"),  "公開情報のみ"
+    list.push m "a", Btn.set({}, prop, "main"),  "出席者のみ"
+    list.push m "a", Btn.set({}, prop, "grave"), grave_caption
+    list.push m.trust "&nbsp;"
+    list.push m "a", Btn.bool({}, Url.prop.open),  "公開情報"
+    list.push m "a", Btn.bool({}, Url.prop.human), "/*中の人*/"
+    m "p", list
 
   potofs: ->
     potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()

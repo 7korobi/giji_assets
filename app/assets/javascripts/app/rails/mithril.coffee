@@ -76,6 +76,7 @@ if gon?.face?
     m.module dom,
       controller: ->
       view: ->
+        face = Cache.map_face_detail
         letters = [
           GUI.letter "",
             face.name
@@ -117,6 +118,7 @@ if gon?.face?
     m.module dom,
       controller: ->
       view: ->
+        face = Cache.map_face_detail
         says_count_lines = [
           m "tr.caution",
             m "th.msg", {colspan: 2}, "総合値"
@@ -157,6 +159,7 @@ if gon?.face?
     m.module dom,
       controller: ->
       view: ->
+        face = Cache.map_face_detail
         letters = [
           GUI.letter "", face.name,
             "全部で"
@@ -177,6 +180,7 @@ if gon?.face?
     m.module dom,
       controller: ->
       view: ->
+        face = Cache.map_face_detail
         letters = [
           GUI.letter "",
             face.name
@@ -476,16 +480,6 @@ if gon?.events? && gon.event?
     history: ({memo, potofs_hide, search})->
       Cache.messages.memo(memo(), false, potofs_hide(), search())
 
-  security_modes = (prop)->
-    m "p",
-      m "a", Btn.set({}, prop, "all"),   "すべて"
-      m "a", Btn.set({}, prop, "think"), "独り言/内緒話"
-      m "a", Btn.set({}, prop, "clan"),  "仲間の会話"
-      m "a", Btn.set({}, prop, "open"),  "公開情報のみ"
-      m.trust "&nbsp;"
-      m "a", Btn.bool({}, Url.prop.open),  "公開情報"
-      m "a", Btn.bool({}, Url.prop.human), "/*中の人*/"
-
   GUI.if_exist "#story", (dom)->
     story = gon.story
     menu.icon.icon "home",
@@ -594,7 +588,7 @@ if gon?.events? && gon.event?
         [ m ".paragraph.guide",
             doc.timeline()
             m "h6", "貼り付けたメモを表示します。 - メモ"
-            security_modes Url.prop.memo
+            doc.security_modes Url.prop.memo
           doc.potofs()
         ]
 
@@ -605,7 +599,7 @@ if gon?.events? && gon.event?
         [ m ".paragraph.guide",
             doc.timeline()
             m "h6", "村内の発言を表示します。 - 発言"
-            security_modes Url.prop.talk
+            doc.security_modes Url.prop.talk
           doc.potofs()
         ]
 
@@ -616,7 +610,7 @@ if gon?.events? && gon.event?
         [ m ".paragraph.guide",
             doc.timeline()
             m "h6", "メモを履歴形式で表示します。 - メモ"
-            security_modes Url.prop.memo
+            doc.security_modes Url.prop.memo
           doc.potofs()
         ]
 
@@ -660,7 +654,7 @@ if gon?.form?
     view: ->
       [ m ".paragraph.guide",
           m "h6", "あなたが書き込む内容です。 - 記述"
-          security_modes Url.prop.talk
+          doc.security_modes Url.prop.talk
         doc.potofs()
       ]
 

@@ -2540,11 +2540,12 @@ GUI.timeline = function(_arg) {
   var attr, base, choice, colors, first_at, graph_height, height, last_at, max_height, mestype_orders, time_width, width, x, y;
   width = _arg.width, base = _arg.base, choice = _arg.choice;
   colors = {
+    VSAY: "#ca6",
+    VGSAY: "#a8a8e8",
+    GSAY: "#bbd",
     SAY: "#cb8",
     MSAY: "#cb8",
-    VSAY: "#ca6",
     SPSAY: "#dcb",
-    GSAY: "#bbd",
     WSAY: "#a55",
     XSAY: "#9a7",
     BSAY: "#9a7",
@@ -2553,12 +2554,12 @@ GUI.timeline = function(_arg) {
     MAKER: "#000",
     ADMIN: "#000",
     text: "yellow",
-    back: "#000",
+    back: "#222",
     event: "#224",
     line: "#44a",
     focus: "yellow"
   };
-  mestype_orders = ["SAY", "MSAY", "VSAY", "SPSAY", "GSAY", "WSAY", "XSAY", "BSAY", "AIM", "TSAY", "MAKER", "ADMIN"];
+  mestype_orders = ["SAY", "MSAY", "VSAY", "VGSAY", "GSAY", "SPSAY", "WSAY", "XSAY", "BSAY", "AIM", "TSAY", "MAKER", "ADMIN"];
   last_at = Cache.events.list().last.updated_at / (1000 * 3600);
   first_at = Cache.events.list().first.created_at / (1000 * 3600);
   time_width = last_at - first_at;
@@ -2578,7 +2579,7 @@ GUI.timeline = function(_arg) {
       return null;
     };
     point = function(e) {
-      var canvas, id, list, offsetX, offsetY, open, potofs_hide, rect, talk, _ref, _ref1, _ref2;
+      var canvas, id, list, offsetX, offsetY, rect, _ref, _ref1;
       if (!win.is_touch) {
         return;
       }
@@ -2603,7 +2604,7 @@ GUI.timeline = function(_arg) {
           offsetX = (e.touches[0].pageX - rect.left) * 2;
           offsetY = (e.touches[0].pageY - rect.top) * 2;
       }
-      list = graph_height < offsetY ? Cache.messages.talk("open", false, {}).list() : ((_ref2 = Url.prop, talk = _ref2.talk, open = _ref2.open, potofs_hide = _ref2.potofs_hide, _ref2), Cache.messages.talk(talk(), open(), potofs_hide()).list());
+      list = graph_height < offsetY ? Cache.messages.talk("open", false, {}).list() : base.list();
       id = find_last(list, Math.ceil(1000 * 3600 * (first_at + offsetX / x)));
       if (!id) {
         return;

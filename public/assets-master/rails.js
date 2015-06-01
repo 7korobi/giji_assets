@@ -210,14 +210,18 @@ new Cache.Rule("command").schema(function() {
   return this.deploy(function(o) {});
 });
 new Cache.Rule("message").schema(function() {
-  var bit, has_face, mask, timespan, visible, _ref;
+  var bit, has, mask, timespan, visible, _ref;
   this.belongs_to("event", {
     dependent: true
   });
   this.belongs_to("face");
   this.order("updated_at");
   timespan = 1000 * 3600;
-  Cache.messages.has_face = has_face = {};
+  Cache.messages.has = has = {
+    face: {},
+    vsay: false,
+    bug: false
+  };
   _ref = RAILS.message, visible = _ref.visible, bit = _ref.bit, mask = _ref.mask;
   this.scope(function(all) {
     return {
@@ -225,13 +229,6 @@ new Cache.Rule("message").schema(function() {
         return all.where(function(o) {
           return 15 < o.seeing;
         }).sort("desk", "seeing");
-      },
-      timeline: function(mode) {
-        var enables;
-        enables = visible.talk[mode];
-        return all.where(function(o) {
-          return o.show & enables;
-        });
       },
       anchor: function(mode, scroll) {
         var enables, folder, logid, message, regexp, turn, vid, _ref1;
@@ -294,12 +291,20 @@ new Cache.Rule("message").schema(function() {
     };
   });
   this.deploy(function(o) {
-    var anchor_num, lognumber, logtype, vdom;
+    var anchor_num, event, lognumber, logtype, story, vdom, _ref1;
     logtype = o.logid.slice(0, 2);
     lognumber = o.logid.slice(2);
     switch (o.mestype) {
       case "QUEUE":
         o.mestype = "SAY";
+        break;
+      case "VSAY":
+        story = (_ref1 = o.event) != null ? _ref1.story : void 0;
+        event = o.event;
+        has.vsay = true;
+        if (story && event && "grave" === story.type.mob && !event.name.match(/プロローグ|エピローグ/)) {
+          o.mestype = "VGSAY";
+        }
     }
     switch (logtype) {
       case "IS":
@@ -318,7 +323,11 @@ new Cache.Rule("message").schema(function() {
         o.mestype = "DELETED";
         break;
       case "TS":
-        o.mestype = "TSAY";
+        if (o.to) {
+          o.mestype = "SPSAY";
+        } else {
+          o.mestype = "TSAY";
+        }
     }
     o._id = o.event_id + "-" + o.logid;
     if (o.csid == null) {
@@ -345,8 +354,10 @@ new Cache.Rule("message").schema(function() {
         case !o.logid.match(/^[D]./):
           o.anchor = "del";
           return "DELETE";
+        case !o.logid.match(/^[VG]./):
+          return "GRAVE";
         default:
-          return "OPEN";
+          return "MAIN";
       }
     })();
     o.show = (function() {
@@ -398,7 +409,7 @@ new Cache.Rule("message").schema(function() {
   });
   return this.map_reduce(function(o, emit) {
     var item, time_id;
-    has_face[o.face_id] = true;
+    has.face[o.face_id] = true;
     if (o.vdom === GUI.message.talk || o.vdom === GUI.message.guide) {
       time_id = Serial.serializer.Date(o.updated_at / timespan);
       item = {
@@ -447,11 +458,11 @@ new Cache.Rule("potof").schema(function() {
   this.scope(function(all) {
     return {
       full: function() {
-        delete Cache.messages.has_face.undefined;
-        delete Cache.messages.has_face["null"];
-        delete Cache.messages.has_face.admin;
-        delete Cache.messages.has_face.maker;
-        return Object.keys(Cache.messages.has_face).sort();
+        delete Cache.messages.has.face.undefined;
+        delete Cache.messages.has.face["null"];
+        delete Cache.messages.has.face.admin;
+        delete Cache.messages.has.face.maker;
+        return Object.keys(Cache.messages.has.face).sort();
       },
       potofs: function() {
         return _.without.apply(_, [all.full()].concat(__slice.call(all.others())));
@@ -821,16 +832,39 @@ new Cache.Rule("story").schema(function() {
   var doc, set_event_messages, set_event_without_messages, catch_gon, menu, out$ = typeof exports != 'undefined' && exports || this;
   out$.doc = doc = {
     timeline: function(){
+      var ref$, talk, open, potofs_hide, content_width, talk_at;
+      ref$ = Url.prop, talk = ref$.talk, open = ref$.open, potofs_hide = ref$.potofs_hide, content_width = ref$.content_width, talk_at = ref$.talk_at;
       return GUI.timeline({
-        base: Cache.messages.timeline(Url.prop.talk()),
-        width: Url.prop.content_width(),
+        base: Cache.messages.talk(talk(), open(), potofs_hide()),
+        width: content_width(),
         choice: function(id){
-          Url.prop.talk_at(id);
+          talk_at(id);
           menu.icon.change("search");
           menu.scope.change("talk");
-          return win.scroll.rescroll(Url.prop.talk_at);
+          return win.scroll.rescroll(talk_at);
         }
       });
+    },
+    security_modes: function(prop){
+      var story, mob, grave_caption, list;
+      story = Cache.storys.list().first;
+      mob = RAILS.mob[story != null ? story.type.mob : void 8];
+      if (mob.CAPTION && Cache.messages.has.vsay) {
+        grave_caption = "墓下/" + mob.CAPTION;
+      } else {
+        grave_caption = "墓下のみ";
+      }
+      list = [];
+      list.push(m("a", Btn.set({}, prop, "all"), "すべて"));
+      list.push(m("a", Btn.set({}, prop, "think"), "独り言/内緒話"));
+      list.push(m("a", Btn.set({}, prop, "clan"), "仲間の会話"));
+      list.push(m("a", Btn.set({}, prop, "open"), "公開情報のみ"));
+      list.push(m("a", Btn.set({}, prop, "main"), "出席者のみ"));
+      list.push(m("a", Btn.set({}, prop, "grave"), grave_caption));
+      list.push(m.trust("&nbsp;"));
+      list.push(m("a", Btn.bool({}, Url.prop.open), "公開情報"));
+      list.push(m("a", Btn.bool({}, Url.prop.human), "/*中の人*/"));
+      return m("p", list);
     },
     potofs: function(){
       var potofs, hides, turn, ref$, ref1$, o, attr;
@@ -1008,7 +1042,7 @@ new Cache.Rule("story").schema(function() {
   });
   win['do'].resize();
 }).call(this);
-var messages, security_modes, _ref,
+var messages, _ref,
   __slice = [].slice;
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
@@ -1102,7 +1136,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var letters, role, rolename, width, win_side;
+        var face, letters, role, rolename, width, win_side;
+        face = Cache.map_face_detail;
         letters = [
           GUI.letter("", face.name, "全部で", m("span.mark", face.role.all), "の役職になりました"), (function() {
             var _i, _len, _ref1, _results;
@@ -1143,7 +1178,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var say, says_calc_line, says_calc_lines, says_count_line, says_count_lines, _i, _len, _ref1;
+        var face, say, says_calc_line, says_calc_lines, says_count_line, says_count_lines, _i, _len, _ref1;
+        face = Cache.map_face_detail;
         says_count_lines = [
           m("tr.caution", m("th.msg", {
             colspan: 2
@@ -1170,7 +1206,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var folder, letters, story_id;
+        var face, folder, letters, story_id;
+        face = Cache.map_face_detail;
         letters = [
           GUI.letter("", face.name, "全部で", m("span.mark", "" + face.folder.all + "回"), "登場しました。"), (function() {
             var _i, _len, _ref1, _results;
@@ -1204,7 +1241,8 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var length, letters, sow_auth_id, width;
+        var face, length, letters, sow_auth_id, width;
+        face = Cache.map_face_detail;
         letters = [
           GUI.letter("", face.name, "全部で", m("span.mark", "" + face.sow_auth_ids.length + "人"), "が、", m("span.mark", "" + face.sow_auth_id.all + "回"), "登場しました。"), (function() {
             var _i, _len, _ref1, _results;
@@ -1588,9 +1626,6 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       return Cache.messages.memo(memo(), false, potofs_hide(), search());
     }
   };
-  security_modes = function(prop) {
-    return m("p", m("a", Btn.set({}, prop, "all"), "すべて"), m("a", Btn.set({}, prop, "think"), "独り言/内緒話"), m("a", Btn.set({}, prop, "clan"), "仲間の会話"), m("a", Btn.set({}, prop, "open"), "公開情報のみ"), m.trust("&nbsp;"), m("a", Btn.bool({}, Url.prop.open), "公開情報"), m("a", Btn.bool({}, Url.prop.human), "/*中の人*/"));
-  };
   GUI.if_exist("#story", function(dom) {
     var story;
     story = gon.story;
@@ -1733,7 +1768,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         return menu.scope.change("memo");
       },
       view: function() {
-        return [m(".paragraph.guide", doc.timeline(), m("h6", "貼り付けたメモを表示します。 - メモ"), security_modes(Url.prop.memo)), doc.potofs()];
+        return [m(".paragraph.guide", doc.timeline(), m("h6", "貼り付けたメモを表示します。 - メモ"), doc.security_modes(Url.prop.memo)), doc.potofs()];
       }
     });
     menu.icon.icon("chat-alt", {
@@ -1741,7 +1776,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         return menu.scope.change("talk");
       },
       view: function() {
-        return [m(".paragraph.guide", doc.timeline(), m("h6", "村内の発言を表示します。 - 発言"), security_modes(Url.prop.talk)), doc.potofs()];
+        return [m(".paragraph.guide", doc.timeline(), m("h6", "村内の発言を表示します。 - 発言"), doc.security_modes(Url.prop.talk)), doc.potofs()];
       }
     });
     menu.icon.icon("clock", {
@@ -1749,7 +1784,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         return menu.scope.change("history");
       },
       view: function() {
-        return [m(".paragraph.guide", doc.timeline(), m("h6", "メモを履歴形式で表示します。 - メモ"), security_modes(Url.prop.memo)), doc.potofs()];
+        return [m(".paragraph.guide", doc.timeline(), m("h6", "メモを履歴形式で表示します。 - メモ"), doc.security_modes(Url.prop.memo)), doc.potofs()];
       }
     });
     menu.icon.icon("search", {
@@ -1794,7 +1829,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.form : void 0) != null) {
     open: function() {},
     close: function() {},
     view: function() {
-      return [m(".paragraph.guide", m("h6", "あなたが書き込む内容です。 - 記述"), security_modes(Url.prop.talk)), doc.potofs()];
+      return [m(".paragraph.guide", m("h6", "あなたが書き込む内容です。 - 記述"), doc.security_modes(Url.prop.talk)), doc.potofs()];
     }
   });
 }
