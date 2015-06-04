@@ -54,6 +54,15 @@ class PerlCgi < Thor
     end
   end
 
+  desc "apache", "push .htaccess files to all servers"
+  def apache
+    files = %w[.htaccess]
+    sync_to_servers(files) do |folder, files|
+      next if files['skip']
+      folder != "LOBBY"
+    end
+  end
+
   def sync_to_servers(files = [])
     require './config/environment'
     require './lib/rsync'

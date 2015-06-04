@@ -209,6 +209,125 @@ new Cache.Rule("command").schema(function() {
   });
   return this.deploy(function(o) {});
 });
+
+new Cache.Rule("writer").schema(function() {
+  this.belongs_to("chr_job");
+  this.scope(function(all) {
+    return {};
+  });
+  return this.deploy(function(o) {
+    o._id = o.cmd;
+    o.vdom = GUI.form[o.jst];
+    o.is_preview = m.prop(false);
+    o.style = m.prop("text");
+    o.log = function(log) {
+      if (log) {
+        o.hisoty = {
+          form: o,
+          text: log
+        };
+        Cache.rule.history.merge(o.history);
+        return log;
+      } else {
+        return o.history;
+      }
+    };
+    return o.submit = (function() {
+      switch (o.cmd) {
+        case "entry":
+          return (function(_this) {
+            return function(_arg) {
+              var csid_cid, entrypwd, mes, role, style, turn, vid;
+              turn = _arg.turn, vid = _arg.vid, mes = _arg.mes, style = _arg.style, csid_cid = _arg.csid_cid, role = _arg.role, entrypwd = _arg.entrypwd;
+              _arg = {
+                turn: turn,
+                vid: vid,
+                mes: mes,
+                style: style,
+                csid_cid: csid_cid,
+                role: role,
+                entrypwd: entrypwd
+              };
+              _arg.cmd = "entry";
+              _arg.target = -1;
+              return _arg;
+            };
+          })(this);
+        case "write":
+          return (function(_this) {
+            return function(_arg) {
+              var mes, style, target, turn, vid;
+              turn = _arg.turn, vid = _arg.vid, mes = _arg.mes, style = _arg.style, target = _arg.target;
+              _arg.cmd = "write";
+              return _arg;
+            };
+          })(this);
+        case "wrmemo":
+          return (function(_this) {
+            return function(_arg) {
+              var mes, style, target, turn, vid;
+              turn = _arg.turn, vid = _arg.vid, mes = _arg.mes, style = _arg.style, target = _arg.target;
+              _arg.cmd = "wrmemo";
+              return _arg;
+            };
+          })(this);
+        case "action":
+          return (function(_this) {
+            return function(_arg) {
+              var actionno, actiontext, style, target, turn, vid;
+              turn = _arg.turn, vid = _arg.vid, actiontext = _arg.actiontext, style = _arg.style, target = _arg.target, actionno = _arg.actionno;
+              _arg.cmd = "action";
+              return _arg;
+            };
+          })(this);
+        case "select":
+          return (function(_this) {
+            return function(_arg) {
+              var cmd, target1, target2, vid;
+              vid = _arg.vid, target1 = _arg.target1, target2 = _arg.target2, cmd = _arg.cmd;
+              if ('vote' === cmd) {
+                _arg.entrust = '';
+              }
+              if ('entrust' === cmd) {
+                _arg.entrust = 'entrust';
+              }
+              return _arg;
+            };
+          })(this);
+        case "select_commit":
+          return (function(_this) {
+            return function(_arg) {
+              var commit, vid;
+              vid = _arg.vid, commit = _arg.commit;
+              _arg.cmd = "commit";
+              return _arg;
+            };
+          })(this);
+      }
+    }).call(this);
+  });
+});
+
+new Cache.Rule("history").schema(function() {
+  var point;
+  point = function(size) {
+    var pt;
+    pt = 20;
+    if (50 < size) {
+      pt += (size - 50) / 14;
+    }
+    return Math.floor(pt);
+  };
+  return this.deploy(function(o) {
+    o.text = o.text.replace(/\n$/g, '\n ');
+    o._id = JSON.stringify([o.form._id, o.text]);
+    o.compact = o.text.replace(/\s/g, '');
+    o.compact_size = o.compact.sjis_length;
+    o.lines = o.text.split("\n").length;
+    o.size = o.text.sjis_length;
+    return o.point = point(o.size);
+  });
+});
 new Cache.Rule("message").schema(function() {
   var bit, has, mask, timespan, visible, _ref;
   this.belongs_to("event", {
@@ -250,7 +369,7 @@ new Cache.Rule("message").schema(function() {
         var enables;
         enables = RAILS.message.visible.appendex.event_desc;
         return all.sort("desc", "updated_at").where(function(o) {
-          return (o.show & enables) || pins["" + o.event.turn + "-" + o.logid] && (o.story_id === story_id);
+          return (o.show & enables) || pins["" + o.event.turn + "-" + o.logid] && (o.event.story._id === story_id);
         });
       },
       home: function(mode) {
@@ -324,6 +443,7 @@ new Cache.Rule("message").schema(function() {
         break;
       case "TS":
         if (o.to) {
+          has.to = true;
           o.mestype = "SPSAY";
         } else {
           o.mestype = "TSAY";
@@ -345,21 +465,6 @@ new Cache.Rule("message").schema(function() {
       o.updated_at = new Date(o.date) - 0;
     }
     vdom = GUI.message.xxx;
-    o.mask = (function() {
-      switch (false) {
-        case !o.logid.match(/^[\-WPX]./):
-          return "CLAN";
-        case !o.logid.match(/^[Ti]./):
-          return "THINK";
-        case !o.logid.match(/^[D]./):
-          o.anchor = "del";
-          return "DELETE";
-        case !o.logid.match(/^[VG]./):
-          return "GRAVE";
-        default:
-          return "MAIN";
-      }
-    })();
     o.show = (function() {
       switch (false) {
         case !o.logid.match(/^.[SX]/):
@@ -372,15 +477,37 @@ new Cache.Rule("message").schema(function() {
         case !o.logid.match(/^.[M]/):
           vdom = GUI.message.memo;
           o.anchor = "memo";
+          o.logid = o.mestype.slice(0, 1) + o.logid.slice(1);
           return bit.MEMO;
         case !o.logid.match(/^.I/):
           vdom = GUI.message.info;
           o.anchor = "info";
           return bit.INFO;
+        case !o.logid.match(/^STORY/):
+          o.anchor = "info";
+          return bit.STORY;
         case o.logid !== "EVENT-ASC":
           return bit.EVENT_ASC;
         case o.logid !== "EVENT-DESC":
           return bit.EVENT_DESC;
+      }
+    })();
+    o.mask = (function() {
+      switch (false) {
+        case !o.logid.match(/^[\-WPX]./):
+          has.clan = true;
+          return "CLAN";
+        case !o.logid.match(/^[Ti]./):
+          has.think = true;
+          return "THINK";
+        case !o.logid.match(/^[VG]./):
+          has.grave = true;
+          return "GRAVE";
+        case !o.logid.match(/^[D]./):
+          o.anchor = "del";
+          return "DELETE";
+        default:
+          return "MAIN";
       }
     })();
     switch (o.mestype) {
@@ -393,6 +520,21 @@ new Cache.Rule("message").schema(function() {
         break;
       case "CAST":
         vdom = GUI.message.potofs;
+        break;
+      case "STORY":
+        o.pen = o.event_id;
+        o.mask = "ALL";
+        o.anchor = "info";
+        switch (o.logid) {
+          case "STORY-TEXT":
+            vdom = GUI.message.story_text;
+            break;
+          case "STORY-RULE":
+            vdom = GUI.message.story_rule;
+            break;
+          case "STORY-GAME":
+            vdom = GUI.message.story_game;
+        }
         break;
       case "EVENT":
         vdom = GUI.message.event;
@@ -831,6 +973,41 @@ new Cache.Rule("story").schema(function() {
 (function(){
   var doc, set_event_messages, set_event_without_messages, catch_gon, menu, out$ = typeof exports != 'undefined' && exports || this;
   out$.doc = doc = {
+    messages: {
+      seeing: function(){
+        return Cache.messages.seeing();
+      },
+      pins: function(arg$){
+        var story_id, pins;
+        story_id = arg$.story_id, pins = arg$.pins;
+        return Cache.messages.pins(story_id(), pins());
+      },
+      anchor: function(arg$){
+        var talk;
+        talk = arg$.talk;
+        return Cache.messages.anchor(talk(), win.scroll.prop());
+      },
+      home: function(arg$){
+        var home;
+        home = arg$.home;
+        return Cache.messages.home(home());
+      },
+      talk: function(arg$){
+        var talk, open, potofs_hide, search;
+        talk = arg$.talk, open = arg$.open, potofs_hide = arg$.potofs_hide, search = arg$.search;
+        return Cache.messages.talk(talk(), open(), potofs_hide(), search());
+      },
+      memo: function(arg$){
+        var memo, potofs_hide, search;
+        memo = arg$.memo, potofs_hide = arg$.potofs_hide, search = arg$.search;
+        return Cache.messages.memo(memo(), true, potofs_hide(), search());
+      },
+      history: function(arg$){
+        var memo, potofs_hide, search;
+        memo = arg$.memo, potofs_hide = arg$.potofs_hide, search = arg$.search;
+        return Cache.messages.memo(memo(), false, potofs_hide(), search());
+      }
+    },
     timeline: function(){
       var ref$, talk, open, potofs_hide, content_width, talk_at;
       ref$ = Url.prop, talk = ref$.talk, open = ref$.open, potofs_hide = ref$.potofs_hide, content_width = ref$.content_width, talk_at = ref$.talk_at;
@@ -846,21 +1023,36 @@ new Cache.Rule("story").schema(function() {
       });
     },
     security_modes: function(prop){
-      var story, mob, grave_caption, list;
+      var story, mob, grave_caption, think_caption, list;
       story = Cache.storys.list().first;
       mob = RAILS.mob[story != null ? story.type.mob : void 8];
-      if (mob.CAPTION && Cache.messages.has.vsay) {
-        grave_caption = "墓下/" + mob.CAPTION;
-      } else {
-        grave_caption = "墓下のみ";
+      grave_caption = [];
+      if (Cache.messages.has.grave) {
+        grave_caption.push("墓下");
+      }
+      if (Cache.messages.has.vsay && mob.CAPTION) {
+        grave_caption.push(mob.CAPTION);
+      }
+      think_caption = [];
+      if (Cache.messages.has.think) {
+        think_caption.push("独り言");
+      }
+      if (Cache.messages.has.to) {
+        think_caption.push("内緒話");
       }
       list = [];
       list.push(m("a", Btn.set({}, prop, "all"), "すべて"));
-      list.push(m("a", Btn.set({}, prop, "think"), "独り言/内緒話"));
-      list.push(m("a", Btn.set({}, prop, "clan"), "仲間の会話"));
+      if (think_caption.length > 0) {
+        list.push(m("a", Btn.set({}, prop, "think"), think_caption.join("/") + "つき"));
+      }
+      if (Cache.messages.has.clan) {
+        list.push(m("a", Btn.set({}, prop, "clan"), "仲間つき"));
+      }
       list.push(m("a", Btn.set({}, prop, "open"), "公開情報のみ"));
       list.push(m("a", Btn.set({}, prop, "main"), "出席者のみ"));
-      list.push(m("a", Btn.set({}, prop, "grave"), grave_caption));
+      if (grave_caption.length > 0) {
+        list.push(m("a", Btn.set({}, prop, "grave"), grave_caption.join("/") + "のみ"));
+      }
       list.push(m.trust("&nbsp;"));
       list.push(m("a", Btn.bool({}, Url.prop.open), "公開情報"));
       list.push(m("a", Btn.bool({}, Url.prop.human), "/*中の人*/"));
@@ -897,6 +1089,19 @@ new Cache.Rule("story").schema(function() {
           });
         }
       }()), m("hr.black"));
+    },
+    writer: function(){
+      var i$, ref$, len$, o, props, results$ = [];
+      for (i$ = 0, len$ = (ref$ = Cache.writers.list()).length; i$ < len$; ++i$) {
+        o = ref$[i$];
+        props = {
+          form: o,
+          log: ""
+        };
+        Cache.rule.history.merge(props);
+        results$.push(o.vdom(o, props));
+      }
+      return results$;
     }
   };
   set_event_messages = function(event){
@@ -915,13 +1120,39 @@ new Cache.Rule("story").schema(function() {
       return;
     }
     messages = [];
+    if ("プロローグ" === name) {
+      messages.push({
+        event_id: _id,
+        name: name,
+        log: name,
+        logid: "STORY-TEXT",
+        mestype: "STORY",
+        updated_at: created_at - 4
+      });
+      messages.push({
+        event_id: _id,
+        name: name,
+        log: name,
+        logid: "STORY-RULE",
+        mestype: "STORY",
+        updated_at: created_at - 3
+      });
+      messages.push({
+        event_id: _id,
+        name: name,
+        log: name,
+        logid: "STORY-GAME",
+        mestype: "STORY",
+        updated_at: created_at - 2
+      });
+    }
     messages.push({
       event_id: _id,
       name: name,
       log: name,
       logid: "EVENT-ASC",
       mestype: "EVENT",
-      updated_at: created_at - 1
+      updated_at: created_at - 5
     });
     messages.push({
       event_id: _id,
@@ -953,6 +1184,16 @@ new Cache.Rule("story").schema(function() {
         return RAILS.wins[role.group].name;
       });
     },
+    form: function(){
+      var i$, ref$, len$, o;
+      for (i$ = 0, len$ = (ref$ = gon.form.texts).length; i$ < len$; ++i$) {
+        o = ref$[i$];
+        if (o.csid_cid) {
+          o.chr_job_id = o.csid_cid.replace("/", "_").toLowerCase();
+        }
+      }
+      return Cache.rule.writer.set(gon.form.texts);
+    },
     map_reduce_faces: function(){
       Cache.rule.chr_set.schema(function(){
         return this.order(function(o){
@@ -982,7 +1223,7 @@ new Cache.Rule("story").schema(function() {
       return console.log(gon.events.length + " events cache. (" + ((ref$ = gon.story) != null ? ref$._id : void 8) + ")");
     },
     messages: function(){
-      var interval, turn, i$, ref$, len$, event, results$ = [];
+      var interval, turn, i$, ref$, len$, event;
       interval = gon.story.upd.interval * 1000 * 3600 * 24;
       if (gon.event.messages) {
         turn = gon.event.turn;
@@ -996,10 +1237,18 @@ new Cache.Rule("story").schema(function() {
           set_event_messages(event);
         }
         if (turn !== event.turn) {
-          results$.push(set_event_without_messages(event));
+          set_event_without_messages(event);
         }
       }
-      return results$;
+      if (!Url.prop.talk_at()) {
+        Url.prop.talk_at(doc.messages.talk(Url.prop).list().first._id);
+      }
+      if (!Url.prop.memo_at()) {
+        Url.prop.memo_at(doc.messages.memo(Url.prop).list().first._id);
+      }
+      if (!Url.prop.home_at()) {
+        return Url.prop.home_at(doc.messages.home(Url.prop).list().first._id);
+      }
     }
   };
   out$.menu = menu = {
@@ -1042,7 +1291,7 @@ new Cache.Rule("story").schema(function() {
   });
   win['do'].resize();
 }).call(this);
-var messages, _ref,
+var _ref,
   __slice = [].slice;
 
 if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != null ? _ref.faces : void 0 : void 0) != null) {
@@ -1326,7 +1575,7 @@ GUI.if_exist("#buttons", function(dom) {
       };
       badges = {
         "pin": function() {
-          return messages.pins(Url.prop).list().length - Cache.events.list().length;
+          return doc.messages.pins(Url.prop).list().length - Cache.events.list().length;
         },
         "home": function() {
           return Cache.messages.home("announce").list().length - Cache.events.list().length;
@@ -1344,7 +1593,7 @@ GUI.if_exist("#buttons", function(dom) {
               return "";
             }
           });
-          return messages.memo(prop).list().length - Cache.events.list().length;
+          return doc.messages.memo(prop).list().length - Cache.events.list().length;
         },
         "clock": function() {
           var prop;
@@ -1359,7 +1608,7 @@ GUI.if_exist("#buttons", function(dom) {
               return "";
             }
           });
-          return messages.history(prop).list().length - Cache.events.list().length;
+          return doc.messages.history(prop).list().length - Cache.events.list().length;
         },
         "chat-alt": function() {
           var prop;
@@ -1374,7 +1623,7 @@ GUI.if_exist("#buttons", function(dom) {
               return "";
             }
           });
-          return messages.talk(prop).list().length - Cache.events.list().length;
+          return doc.messages.talk(prop).list().length - Cache.events.list().length;
         },
         "th-large": function() {
           return Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list().length;
@@ -1515,7 +1764,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
     return m.module(dom, {
       controller: function() {},
       view: function() {
-        var anchorview, day, event, filter, filter_size, go_click, key, o, potofs, seeingview, star, val;
+        var anchorview, center_id, day, event, filter, filter_size, go_click, key, o, potofs, seeingview, star, tag, val;
         layout.width = Url.prop.right_width();
         if (layout.large_mode()) {
           layout.width += Url.prop.content_width();
@@ -1528,9 +1777,10 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           filter = [];
         } else {
           filter_size = Math.floor((win.height - seeing_top - 50) / line_text_height);
-          seeingview = Cache.messages.seeing().list().slice(0, +filter_size + 1 || 9e9);
-          anchorview = messages.anchor(Url.prop).list();
+          seeingview = doc.messages.seeing(Url.prop).list().slice(0, +filter_size + 1 || 9e9);
+          anchorview = doc.messages.anchor(Url.prop).list();
           potofs = GUI.message.potofs();
+          center_id = win.scroll.prop();
           go_click = function(o) {
             return GUI.attrs({}, function() {
               return this.click(function() {
@@ -1574,7 +1824,12 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
             _results = [];
             for (_i = 0, _len = seeingview.length; _i < _len; _i++) {
               o = seeingview[_i];
-              _results.push(m(".line_text", line_text_height_measure, star(o), m("." + o.mestype + ".badge", go_click(o), "" + o.event.turn + ":" + o.anchor), m.trust("" + o.name + " " + o.log.line_text)));
+              if (o._id === center_id) {
+                tag = ".line_text.attention";
+              } else {
+                tag = ".line_text";
+              }
+              _results.push(m(tag, line_text_height_measure, star(o), m("." + o.mestype + ".badge", go_click(o), "" + o.event.turn + ":" + o.anchor), m.trust("" + o.name + " " + o.log.line_text)));
             }
             return _results;
           })());
@@ -1594,101 +1849,6 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
 if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && (gon.event != null)) {
   catch_gon.story();
   catch_gon.events();
-  messages = {
-    pins: function(_arg) {
-      var pins, story_id;
-      story_id = _arg.story_id, pins = _arg.pins;
-      return Cache.messages.pins(story_id(), pins());
-    },
-    anchor: function(_arg) {
-      var talk;
-      talk = _arg.talk;
-      return Cache.messages.anchor(talk(), win.scroll.prop());
-    },
-    home: function(_arg) {
-      var home;
-      home = _arg.home;
-      return Cache.messages.home(home());
-    },
-    talk: function(_arg) {
-      var open, potofs_hide, search, talk;
-      talk = _arg.talk, open = _arg.open, potofs_hide = _arg.potofs_hide, search = _arg.search;
-      return Cache.messages.talk(talk(), open(), potofs_hide(), search());
-    },
-    memo: function(_arg) {
-      var memo, potofs_hide, search;
-      memo = _arg.memo, potofs_hide = _arg.potofs_hide, search = _arg.search;
-      return Cache.messages.memo(memo(), true, potofs_hide(), search());
-    },
-    history: function(_arg) {
-      var memo, potofs_hide, search;
-      memo = _arg.memo, potofs_hide = _arg.potofs_hide, search = _arg.search;
-      return Cache.messages.memo(memo(), false, potofs_hide(), search());
-    }
-  };
-  GUI.if_exist("#story", function(dom) {
-    var story;
-    story = gon.story;
-    menu.icon.icon("home", {
-      open: function() {
-        return menu.scope.change("home");
-      },
-      view: function() {
-        var event, event_card, text, texts;
-        event = Cache.events.find(Url.prop.event_id());
-        if (event) {
-          event_card = RAILS.events[event.event];
-          texts = [];
-          if (event.winner && "WIN_NONE" !== event.winner) {
-            texts.push(RAILS.winner[event.winner] + "の勝利です。");
-          }
-          if (event_card) {
-            texts.push(m("kbd", event_card));
-          }
-          if (event.turn === event.grudge) {
-            texts.push(RAILS.event_state.grudge);
-          }
-          if (event.turn === event.riot) {
-            texts.push(RAILS.event_state.riot);
-          }
-          if (event.turn === event.scapegoat) {
-            texts.push(RAILS.event_state.scapegoat);
-          }
-          if (_.find(event.eclipse, event.turn)) {
-            texts.push(RAILS.event_state.eclipse);
-          }
-          return [
-            m("." + event.winner + ".guide", m("h6", "" + event.name + " 村の情報"), (function() {
-              var _i, _len, _results;
-              _results = [];
-              for (_i = 0, _len = texts.length; _i < _len; _i++) {
-                text = texts[_i];
-                _results.push(m("p.text", text));
-              }
-              return _results;
-            })(), GUI.message.game(story, event))
-          ];
-        } else {
-          return [m(".WIN_NONE.guide", m("h6", "村の情報"), GUI.message.game(story))];
-        }
-      }
-    });
-    return m.module(dom, {
-      controller: function() {},
-      view: function() {
-        return [
-          (function() {
-            if (story != null) {
-              switch (menu.scope.state()) {
-                case "home":
-                  return GUI.message.story(story);
-              }
-            }
-          })()
-        ];
-      }
-    });
-  });
   GUI.if_exist("#messages", function(dom) {
     var change_pin;
     win.scroll.size = 30;
@@ -1711,15 +1871,18 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       Url.prop.scroll(id);
       return menu.icon.change("pin");
     };
-    GUI.message.delegate.tap_anchor = function(o, turn, logid, id) {
-      var pins;
+    GUI.message.delegate.tap_anchor = function(turn, logid, id, by_id) {
+      var log, pins;
+      log = Cache.messages.find(by_id);
       pins = Url.prop.pins();
-      pins["" + o.event.turn + "-" + o.logid] = true;
+      if (log) {
+        pins["" + log.event.turn + "-" + log.logid] = true;
+      }
       pins["" + turn + "-" + logid] = true;
       Url.prop.pins(pins);
-      return change_pin(o._id);
+      return change_pin(by_id);
     };
-    GUI.message.delegate.tap_identity = function(o, turn, logid, id) {
+    GUI.message.delegate.tap_identity = function(turn, logid, id) {
       var pins;
       pins = Url.prop.pins();
       pins["" + turn + "-" + logid] = true;
@@ -1763,6 +1926,14 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
         return [m(".paragraph.guide", doc.timeline())];
       }
     });
+    menu.icon.icon("home", {
+      open: function() {
+        return menu.scope.change("home");
+      },
+      view: function() {
+        return [doc.timeline()];
+      }
+    });
     menu.icon.icon("mail", {
       open: function() {
         return menu.scope.change("memo");
@@ -1795,7 +1966,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     m.module(dom, {
       controller: function() {},
       view: function() {
-        return win.scroll.pager("div", messages[menu.scope.state()](Url.prop).list(), function(o) {
+        return win.scroll.pager("div", doc.messages[menu.scope.state()](Url.prop).list(), function(o) {
           var anchor_num;
           anchor_num = o.logid.slice(2) - 0 || 0;
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
@@ -1821,16 +1992,6 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       menu.scope.change(back_state);
       return m.endComputation();
     });
-  });
-}
-
-if ((typeof gon !== "undefined" && gon !== null ? gon.form : void 0) != null) {
-  menu.icon.icon("pencil", {
-    open: function() {},
-    close: function() {},
-    view: function() {
-      return [m(".paragraph.guide", m("h6", "あなたが書き込む内容です。 - 記述"), doc.security_modes(Url.prop.talk)), doc.potofs()];
-    }
   });
 }
 
@@ -2050,6 +2211,17 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null)
         ];
       }
     });
+  });
+}
+
+if ((typeof gon !== "undefined" && gon !== null ? gon.form : void 0) != null) {
+  catch_gon.form();
+  menu.icon.icon("pencil", {
+    open: function() {},
+    close: function() {},
+    view: function() {
+      return [m(".paragraph.guide", doc.timeline(), m("h6", "あなたが書き込む内容です。 - 記述"), doc.writer())];
+    }
   });
 }
 

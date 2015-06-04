@@ -35,6 +35,7 @@ GUI.timeline = ({width, base, choice})->
     "ADMIN"
   ]
 
+  return unless Cache.events.list().length
   last_at = Cache.events.list().last.updated_at / (1000 * 3600)
   first_at = Cache.events.list().first.created_at / (1000 * 3600)
   time_width = last_at - first_at
@@ -113,7 +114,7 @@ GUI.timeline = ({width, base, choice})->
           max_height = mask.all.count if max_height < mask.all.count
         y = graph_height / max_height
 
-        ctx.clearRect 0, 0, width, height
+        ctx.clearRect 0, 0, width * 2, height
         ctx.fillStyle = colors.back
         ctx.globalAlpha = 0.5
         ctx.fillRect 0, 0, x * time_width, y * max_height

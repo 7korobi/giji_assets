@@ -1,4 +1,20 @@
 export doc =
+  messages:
+    seeing: ->
+      Cache.messages.seeing()
+    pins: ({story_id,pins})->
+      Cache.messages.pins(story_id(), pins())
+    anchor: ({talk})->
+      Cache.messages.anchor(talk(), win.scroll.prop())
+    home: ({home})->
+      Cache.messages.home(home())
+    talk: ({talk, open, potofs_hide, search})->
+      Cache.messages.talk(talk(), open(), potofs_hide(), search())
+    memo: ({memo, potofs_hide, search})->
+      Cache.messages.memo(memo(), true, potofs_hide(), search())
+    history: ({memo, potofs_hide, search})->
+      Cache.messages.memo(memo(), false, potofs_hide(), search())
+
   timeline: ->
     {talk, open, potofs_hide, content_width, talk_at} = Url.prop
     GUI.timeline do
@@ -13,18 +29,22 @@ export doc =
   security_modes: (prop)->
     story = Cache.storys.list().first
     mob = RAILS.mob[story?.type.mob]
-    if mob.CAPTION && Cache.messages.has.vsay
-      grave_caption = "墓下/#{mob.CAPTION}"
-    else
-      grave_caption = "墓下のみ"
+
+    grave_caption = []
+    grave_caption.push "墓下" if Cache.messages.has.grave
+    grave_caption.push mob.CAPTION if Cache.messages.has.vsay && mob.CAPTION
+
+    think_caption = []
+    think_caption.push "独り言" if Cache.messages.has.think
+    think_caption.push "内緒話" if Cache.messages.has.to
 
     list = []
     list.push m "a", Btn.set({}, prop, "all"),   "すべて"
-    list.push m "a", Btn.set({}, prop, "think"), "独り言/内緒話"
-    list.push m "a", Btn.set({}, prop, "clan"),  "仲間の会話"
+    list.push m "a", Btn.set({}, prop, "think"), think_caption.join("/") + "つき" if think_caption.length > 0
+    list.push m "a", Btn.set({}, prop, "clan"),  "仲間つき" if Cache.messages.has.clan
     list.push m "a", Btn.set({}, prop, "open"),  "公開情報のみ"
     list.push m "a", Btn.set({}, prop, "main"),  "出席者のみ"
-    list.push m "a", Btn.set({}, prop, "grave"), grave_caption
+    list.push m "a", Btn.set({}, prop, "grave"), grave_caption.join("/") + "のみ" if grave_caption.length > 0
     list.push m.trust "&nbsp;"
     list.push m "a", Btn.bool({}, Url.prop.open),  "公開情報"
     list.push m "a", Btn.bool({}, Url.prop.human), "/*中の人*/"
@@ -59,6 +79,12 @@ export doc =
           m ".bar.#{o.live}", 
       m "hr.black"
 
+  writer: ->
+    for o in Cache.writers.list()
+      props = {form: o, log: ""}
+      Cache.rule.history.merge props
+      o.vdom(o, props)
+
 
 set_event_messages = (event)->
   Cache.rule.message.merge event.messages, 
@@ -69,13 +95,39 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
   return unless created_at
   return unless updated_at
   messages = []
+
+  if "プロローグ" == name
+    messages.push do
+      event_id: _id
+      name: name
+      log: name
+      logid: "STORY-TEXT"
+      mestype: "STORY"
+      updated_at: created_at - 4
+
+    messages.push do
+      event_id: _id
+      name: name
+      log: name
+      logid: "STORY-RULE"
+      mestype: "STORY"
+      updated_at: created_at - 3
+
+    messages.push do
+      event_id: _id
+      name: name
+      log: name
+      logid: "STORY-GAME"
+      mestype: "STORY"
+      updated_at: created_at - 2
+
   messages.push do
     event_id: _id
     name: name
     log: name
     logid: "EVENT-ASC"
     mestype: "EVENT"
-    updated_at: created_at - 1
+    updated_at: created_at - 5
 
   messages.push do
     event_id: _id
@@ -98,6 +150,13 @@ export catch_gon =
     face.role_of_wins = _.groupBy face.roles, ([k,count])->
       role = RAILS.gifts[k] || RAILS.roles[k] || {group: "OTHER"}
       RAILS.wins[role.group].name
+
+  form: ->
+    for o in gon.form.texts
+      if o.csid_cid
+        o.chr_job_id = o.csid_cid.replace("/","_").toLowerCase()
+
+    Cache.rule.writer.set gon.form.texts
 
   map_reduce_faces: ->
     Cache.rule.chr_set.schema ->
@@ -137,6 +196,10 @@ export catch_gon =
         set_event_messages event
       if turn != event.turn
         set_event_without_messages event
+
+    Url.prop.talk_at doc.messages.talk(Url.prop).list().first._id unless Url.prop.talk_at()
+    Url.prop.memo_at doc.messages.memo(Url.prop).list().first._id unless Url.prop.memo_at()
+    Url.prop.home_at doc.messages.home(Url.prop).list().first._id unless Url.prop.home_at()
 
 export menu =
   icon:  new GUI.MenuTree.Icon

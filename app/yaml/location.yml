@@ -55,9 +55,9 @@ props:
     current: {}
 
   scope:
-    current: talk
+    current: home
   home:
-    current: village
+    current: announce
   home_at:
     type: Text
     current: ""

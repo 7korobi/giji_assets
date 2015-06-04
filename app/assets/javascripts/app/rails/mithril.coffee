@@ -244,7 +244,7 @@ GUI.if_exist "#buttons", (dom)->
 
       badges =
         "pin": ->
-          messages.pins(Url.prop).list().length - Cache.events.list().length
+          doc.messages.pins(Url.prop).list().length - Cache.events.list().length
         "home": ->
           Cache.messages.home("announce").list().length - Cache.events.list().length
         "mail": ->
@@ -252,19 +252,19 @@ GUI.if_exist "#buttons", (dom)->
             memo: -> "all"
             uniq: -> true
             search: -> ""
-          messages.memo(prop).list().length - Cache.events.list().length
+          doc.messages.memo(prop).list().length - Cache.events.list().length
         "clock": ->
           prop = _.merge {}, Url.prop,
             talk: -> "all"
             open: -> true
             search: -> ""
-          messages.history(prop).list().length - Cache.events.list().length
+          doc.messages.history(prop).list().length - Cache.events.list().length
         "chat-alt": ->
           prop = _.merge {}, Url.prop,
             talk: -> "all"
             open: -> true
             search: -> ""
-          messages.talk(prop).list().length - Cache.events.list().length
+          doc.messages.talk(prop).list().length - Cache.events.list().length
         "th-large": ->
           Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list().length
 
@@ -405,9 +405,10 @@ if gon?.potofs?
           filter = []
         else
           filter_size = Math.floor((win.height - seeing_top - 50) / line_text_height)
-          seeingview = Cache.messages.seeing().list()[0..filter_size]
-          anchorview = messages.anchor(Url.prop).list()
+          seeingview = doc.messages.seeing(Url.prop).list()[0..filter_size]
+          anchorview = doc.messages.anchor(Url.prop).list()
           potofs = GUI.message.potofs()
+          center_id = win.scroll.prop()
 
           go_click = (o)->
             GUI.attrs {}, ->
@@ -441,7 +442,11 @@ if gon?.potofs?
                   m.trust o.log.line_text
               m "h6", seeing_measure, "よく見ていたログ"
               for o in seeingview
-                m ".line_text", line_text_height_measure,
+                if o._id == center_id
+                  tag = ".line_text.attention"
+                else
+                  tag = ".line_text"
+                m tag, line_text_height_measure,
                   star(o)
                   m ".#{o.mestype}.badge", go_click(o), "#{o.event.turn}:#{o.anchor}"
                   m.trust "#{o.name} #{o.log.line_text}"
@@ -466,62 +471,6 @@ if gon?.events? && gon.event?
   catch_gon.story()
   catch_gon.events()
 
-  messages =
-    pins: ({story_id,pins})->
-      Cache.messages.pins(story_id(), pins())
-    anchor: ({talk})->
-      Cache.messages.anchor(talk(), win.scroll.prop())
-    home: ({home})->
-      Cache.messages.home(home())
-    talk: ({talk, open, potofs_hide, search})->
-      Cache.messages.talk(talk(), open(), potofs_hide(), search())
-    memo: ({memo, potofs_hide, search})->
-      Cache.messages.memo(memo(), true, potofs_hide(), search())
-    history: ({memo, potofs_hide, search})->
-      Cache.messages.memo(memo(), false, potofs_hide(), search())
-
-  GUI.if_exist "#story", (dom)->
-    story = gon.story
-    menu.icon.icon "home",
-      open: ->
-        menu.scope.change "home"
-      view: ->
-        event = Cache.events.find Url.prop.event_id()
-
-        if event
-          event_card = RAILS.events[event.event]
-
-          texts = []
-          texts.push RAILS.winner[event.winner] + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
-          texts.push m "kbd", event_card if event_card
-          texts.push RAILS.event_state.grudge    if event.turn == event.grudge
-          texts.push RAILS.event_state.riot      if event.turn == event.riot
-          texts.push RAILS.event_state.scapegoat if event.turn == event.scapegoat
-          texts.push RAILS.event_state.eclipse   if _.find event.eclipse, event.turn
-
-          [ m ".#{event.winner}.guide",
-              m "h6", "#{event.name} 村の情報"
-              for text in texts
-                m "p.text", text
-              GUI.message.game story, event
-          ]
-
-        else
-          [ m ".WIN_NONE.guide",
-              m "h6", "村の情報"
-              GUI.message.game story
-          ]
-
-    m.module dom,
-      controller: ->
-      view: ->
-        [
-          if story?
-            switch menu.scope.state()
-              when "home"
-                GUI.message.story story
-        ]
-
   GUI.if_exist "#messages", (dom)->
     win.scroll.size = 30
 
@@ -540,14 +489,15 @@ if gon?.events? && gon.event?
       Url.prop.scroll id
       menu.icon.change "pin"
 
-    GUI.message.delegate.tap_anchor = (o, turn, logid, id)->
+    GUI.message.delegate.tap_anchor = (turn, logid, id, by_id)->
+      log = Cache.messages.find(by_id)
       pins = Url.prop.pins()
-      pins["#{o.event.turn}-#{o.logid}"] = true
+      pins["#{log.event.turn}-#{log.logid}"] = true if log
       pins["#{turn}-#{logid}"] = true
       Url.prop.pins pins
-      change_pin(o._id)
+      change_pin(by_id)
 
-    GUI.message.delegate.tap_identity = (o, turn, logid, id)->
+    GUI.message.delegate.tap_identity = (turn, logid, id)->
       pins = Url.prop.pins()
       pins["#{turn}-#{logid}"] = true
       Url.prop.pins pins
@@ -569,7 +519,6 @@ if gon?.events? && gon.event?
       open: ->
         win.scroll.rescroll Url.prop.scroll
 
-
     menu.icon.icon "pin",
       open: ->
         menu.scope.change "pins"
@@ -579,6 +528,13 @@ if gon?.events? && gon.event?
       view: ->
         [ m ".paragraph.guide",
             doc.timeline()
+        ]
+
+    menu.icon.icon "home",
+      open: ->
+        menu.scope.change "home"
+      view: ->
+        [ doc.timeline()
         ]
 
     menu.icon.icon "mail",
@@ -626,7 +582,7 @@ if gon?.events? && gon.event?
     m.module dom,
       controller: ->
       view: ->
-        win.scroll.pager "div", messages[menu.scope.state()](Url.prop).list(), (o)->
+        win.scroll.pager "div", doc.messages[menu.scope.state()](Url.prop).list(), (o)->
           anchor_num  = o.logid[2..] - 0 || 0
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
           unless o.updated_at
@@ -646,19 +602,6 @@ if gon?.events? && gon.event?
       menu.scope.change "talk"
       menu.scope.change back_state
       m.endComputation()
-
-if gon?.form?
-  menu.icon.icon "pencil",
-    open: ->
-    close: ->
-    view: ->
-      [ m ".paragraph.guide",
-          m "h6", "あなたが書き込む内容です。 - 記述"
-          doc.security_modes Url.prop.talk
-        doc.potofs()
-      ]
-
-
 
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
@@ -815,5 +758,18 @@ if gon?.stories?
                   m "td",
                     header
         ]
+
+if gon?.form?
+  catch_gon.form()
+  menu.icon.icon "pencil",
+    open: ->
+    close: ->
+    view: ->
+      [ m ".paragraph.guide",
+          doc.timeline()
+          m "h6", "あなたが書き込む内容です。 - 記述"
+          doc.writer()
+      ]
+
 
 m.endComputation()

@@ -1020,7 +1020,7 @@ ul.inline li {
 
 /* line 76, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/tag.css.scss */
 hr.black {
-  border-color: black;
+  border-color: rgba(0, 0, 0, 0);
   margin: 2px;
 }
 
@@ -8517,7 +8517,12 @@ textarea.huge:last-child,
   margin-right: 0;
 }
 
-/* line 79, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+/* line 68, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+.attention {
+  font-weight: bold;
+}
+
+/* line 82, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
 input[type='submit'],
 input[type='button'],
 input[type='image'],
@@ -8538,7 +8543,7 @@ kbd,
   text-decoration: none;
 }
 
-/* line 91, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+/* line 94, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
 .chrblank,
 .chrM,
 .chrF {
@@ -8547,7 +8552,7 @@ kbd,
   min-height: 50.75px;
   height: 50.75px;
 }
-/* line 101, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+/* line 104, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
 .chrblank button,
 .chrblank .emboss,
 .chrblank .badge,
@@ -8565,35 +8570,35 @@ kbd,
 .chrF .btn {
   line-height: 15px;
 }
-/* line 105, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+/* line 108, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
 .chrblank.line1,
 .chrM.line1,
 .chrF.line1 {
   min-height: 18.25px;
   height: 18.25px;
 }
-/* line 109, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+/* line 112, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
 .chrblank.line2,
 .chrM.line2,
 .chrF.line2 {
   min-height: 34.5px;
   height: 34.5px;
 }
-/* line 113, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+/* line 116, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
 .chrblank.line3,
 .chrM.line3,
 .chrF.line3 {
   min-height: 50.75px;
   height: 50.75px;
 }
-/* line 117, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+/* line 120, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
 .chrblank.line4,
 .chrM.line4,
 .chrF.line4 {
   min-height: 67px;
   height: 67px;
 }
-/* line 121, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
+/* line 124, /Users/7korobi/Dropbox/www/giji_assets/app/assets/stylesheets/lib/font.css.scss */
 .chrblank.line9,
 .chrM.line9,
 .chrF.line9 {

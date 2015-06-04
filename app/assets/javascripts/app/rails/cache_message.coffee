@@ -34,7 +34,7 @@ new Cache.Rule("message").schema ->
       enables = RAILS.message.visible.appendex.event_desc
       all
       .sort "desc", "updated_at"
-      .where (o)-> (o.show & enables) || pins["#{o.event.turn}-#{o.logid}"] && (o.story_id == story_id)
+      .where (o)-> (o.show & enables) || pins["#{o.event.turn}-#{o.logid}"] && (o.event.story._id == story_id)
 
     home: (mode)->
       enables = visible.home[mode]
@@ -89,6 +89,7 @@ new Cache.Rule("message").schema ->
         o.mestype = "DELETED"
       when "TS"
         if o.to
+          has.to = true
           o.mestype = "SPSAY"
         else
           o.mestype = "TSAY"
@@ -108,20 +109,6 @@ new Cache.Rule("message").schema ->
       o.updated_at = new Date(o.date) - 0
 
     vdom = GUI.message.xxx
-    o.mask =
-      switch
-        when o.logid.match /^[\-WPX]./
-          "CLAN"
-        when o.logid.match /^[Ti]./
-          "THINK"
-        when o.logid.match /^[D]./
-          o.anchor = "del"
-          "DELETE"
-        when o.logid.match /^[VG]./
-          "GRAVE"
-        else
-          "MAIN"
-
     o.show =
       switch
         when o.logid.match /^.[SX]/
@@ -134,15 +121,36 @@ new Cache.Rule("message").schema ->
         when o.logid.match /^.[M]/
           vdom = GUI.message.memo
           o.anchor = "memo"
+          o.logid = o.mestype[0..0] + o.logid[1..-1]
           bit.MEMO
         when o.logid.match /^.I/
           vdom = GUI.message.info
           o.anchor = "info"
           bit.INFO
+        when o.logid.match /^STORY/
+          o.anchor = "info"
+          bit.STORY
         when o.logid == "EVENT-ASC"
           bit.EVENT_ASC
         when o.logid == "EVENT-DESC"
           bit.EVENT_DESC
+
+    o.mask =
+      switch 
+        when o.logid.match /^[\-WPX]./
+          has.clan = true
+          "CLAN"
+        when o.logid.match /^[Ti]./
+          has.think = true
+          "THINK"
+        when o.logid.match /^[VG]./
+          has.grave = true
+          "GRAVE"
+        when o.logid.match /^[D]./
+          o.anchor = "del"
+          "DELETE"
+        else
+          "MAIN"
 
     switch o.mestype
       when "MAKER", "ADMIN"
@@ -150,6 +158,17 @@ new Cache.Rule("message").schema ->
         o.mask = "ANNOUNCE"
       when "CAST"
         vdom = GUI.message.potofs
+      when "STORY"
+        o.pen = o.event_id
+        o.mask = "ALL"
+        o.anchor = "info"
+        switch o.logid
+          when "STORY-TEXT"
+            vdom = GUI.message.story_text
+          when "STORY-RULE"
+            vdom = GUI.message.story_rule
+          when "STORY-GAME"
+            vdom = GUI.message.story_game
       when "EVENT"
         vdom = GUI.message.event
         o.pen = o.event_id
