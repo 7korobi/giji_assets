@@ -19,12 +19,7 @@ new Cache.Rule("event").schema ->
             m ".SSAY", "読み込み…"
           else
             submit = ->
-              o.is_loading = true
-              window.requestAnimationFrame ->
-                Submit.get(o.link).then (gon)->
-                  catch_gon.events()
-                  catch_gon.messages()
-                  o.is_loading = false
+              doc.load.event false, o, ->
             m ".SSAY", Btn.call({}, submit), "読み込み"
 
 
