@@ -70,6 +70,9 @@ Url.routes = {
         if (logid != null) {
           updated_at = ((_ref2 = Cache.messages.find(scroll)) != null ? _ref2.updated_at : void 0) || 0;
           Url.prop.updated_at(updated_at, true);
+          Url.prop.folder(folder, true);
+          Url.prop.turn(turn, true);
+          Url.prop.story_id("" + folder + "-" + vid, true);
           Url.prop.event_id("" + folder + "-" + vid + "-" + turn, true);
           Url.prop.message_id("" + folder + "-" + vid + "-" + turn + "-" + logid, true);
         }
@@ -170,9 +173,9 @@ new Cache.Rule("event").schema(function() {
               o.is_loading = true;
               return window.requestAnimationFrame(function() {
                 return Submit.get(o.link).then(function(gon) {
+                  catch_gon.events();
                   catch_gon.messages();
-                  o.is_loading = false;
-                  return o.is_full = true;
+                  return o.is_loading = false;
                 });
               });
             };
@@ -444,7 +447,6 @@ new Cache.Rule("message").schema(function() {
       case "TS":
         if (o.to) {
           has.to = true;
-          o.mestype = "SPSAY";
         } else {
           o.mestype = "TSAY";
         }
@@ -459,51 +461,52 @@ new Cache.Rule("message").schema(function() {
     o.user_id = o.sow_auth_id;
     anchor_num = o.logid.slice(2) - 0 || 0;
     o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
-    o.pen = "" + o.logid.slice(0, 2) + "-" + o.face_id;
+    o.pen = "" + o.mestype + "-" + o.face_id;
     o.potof_id = "" + o.event_id + "-" + o.csid + "-" + o.face_id;
     if (!o.updated_at) {
       o.updated_at = new Date(o.date) - 0;
     }
     vdom = GUI.message.xxx;
-    o.show = (function() {
-      switch (false) {
-        case !o.logid.match(/^.[SX]/):
-          vdom = GUI.message.talk;
-          return bit.TALK;
-        case !o.logid.match(/^.[AB]/):
-          vdom = GUI.message.action;
-          o.anchor = "act";
-          return bit.ACTION;
-        case !o.logid.match(/^.[M]/):
-          vdom = GUI.message.memo;
-          o.anchor = "memo";
-          o.logid = o.mestype.slice(0, 1) + o.logid.slice(1);
-          return bit.MEMO;
-        case !o.logid.match(/^.I/):
-          vdom = GUI.message.info;
-          o.anchor = "info";
-          return bit.INFO;
-        case !o.logid.match(/^STORY/):
-          o.anchor = "info";
-          return bit.STORY;
-        case o.logid !== "EVENT-ASC":
-          return bit.EVENT_ASC;
-        case o.logid !== "EVENT-DESC":
-          return bit.EVENT_DESC;
-      }
-    })();
+    switch (o.logid[1]) {
+      case "S":
+      case "X":
+        vdom = GUI.message.talk;
+        o.show = bit.TALK;
+        break;
+      case "A":
+      case "B":
+        vdom = GUI.message.action;
+        o.anchor = "act";
+        o.show = bit.ACTION;
+        break;
+      case "M":
+        o.logid = o.mestype.slice(0, 1) + o.logid.slice(1);
+        vdom = GUI.message.memo;
+        o.anchor = "memo";
+        o.show = bit.MEMO;
+        break;
+      case "I":
+        vdom = GUI.message.info;
+        o.anchor = "info";
+        o.show = bit.INFO;
+    }
     o.mask = (function() {
-      switch (false) {
-        case !o.logid.match(/^[\-WPX]./):
+      switch (o.logid[0]) {
+        case "-":
+        case "W":
+        case "P":
+        case "X":
           has.clan = true;
           return "CLAN";
-        case !o.logid.match(/^[Ti]./):
+        case "T":
+        case "i":
           has.think = true;
           return "THINK";
-        case !o.logid.match(/^[VG]./):
+        case "V":
+        case "G":
           has.grave = true;
           return "GRAVE";
-        case !o.logid.match(/^[D]./):
+        case "D":
           o.anchor = "del";
           return "DELETE";
         default:
@@ -524,7 +527,6 @@ new Cache.Rule("message").schema(function() {
       case "STORY":
         o.pen = o.event_id;
         o.mask = "ALL";
-        o.anchor = "info";
         switch (o.logid) {
           case "STORY-TEXT":
             vdom = GUI.message.story_text;
@@ -540,7 +542,6 @@ new Cache.Rule("message").schema(function() {
         vdom = GUI.message.event;
         o.pen = o.event_id;
         o.mask = "ALL";
-        o.anchor = "info";
     }
     o.show &= mask[o.mask];
     o.vdom = vdom;
@@ -810,7 +811,7 @@ new Cache.Rule("potof").schema(function() {
     }
     text_str = text.join();
     o.order = {
-      stat_at: [-o.deathday, stat_order],
+      stat_at: [-o.deathday, -stat_order],
       stat_type: [stat_order, -o.deathday],
       said_num: [said_num, pt_no, urge],
       pt: [pt_no, said_num, urge],
@@ -1123,43 +1124,53 @@ new Cache.Rule("story").schema(function() {
     if ("プロローグ" === name) {
       messages.push({
         event_id: _id,
-        name: name,
-        log: name,
         logid: "STORY-TEXT",
         mestype: "STORY",
+        anchor: "info",
+        show: RAILS.message.bit.STORY,
+        name: name,
+        log: name,
         updated_at: created_at - 4
       });
       messages.push({
         event_id: _id,
-        name: name,
-        log: name,
         logid: "STORY-RULE",
         mestype: "STORY",
+        anchor: "info",
+        show: RAILS.message.bit.STORY,
+        name: name,
+        log: name,
         updated_at: created_at - 3
       });
       messages.push({
         event_id: _id,
-        name: name,
-        log: name,
         logid: "STORY-GAME",
         mestype: "STORY",
+        anchor: "info",
+        show: RAILS.message.bit.STORY,
+        name: name,
+        log: name,
         updated_at: created_at - 2
       });
     }
     messages.push({
       event_id: _id,
-      name: name,
-      log: name,
       logid: "EVENT-ASC",
       mestype: "EVENT",
+      anchor: "info",
+      show: RAILS.message.bit.EVENT_ASC,
+      name: name,
+      log: name,
       updated_at: created_at - 5
     });
     messages.push({
       event_id: _id,
-      name: name,
-      log: name,
       logid: "EVENT-DESC",
       mestype: "EVENT",
+      anchor: "info",
+      show: RAILS.message.bit.EVENT_DESC,
+      name: name,
+      log: name,
       updated_at: updated_at - -1
     });
     return Cache.rule.message.merge(messages);
@@ -1218,7 +1229,11 @@ new Cache.Rule("story").schema(function() {
       }
     },
     events: function(){
-      var ref$;
+      var i$, ref$, len$, event, ref1$;
+      for (i$ = 0, len$ = (ref$ = gon.events).length; i$ < len$; ++i$) {
+        event = ref$[i$];
+        event.is_full || (event.is_full = (ref1$ = Cache.events.find(event._id)) != null ? ref1$.is_full : void 8);
+      }
       Cache.rule.event.merge(gon.events);
       return console.log(gon.events.length + " events cache. (" + ((ref$ = gon.story) != null ? ref$._id : void 8) + ")");
     },
@@ -1872,15 +1887,27 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       return menu.icon.change("pin");
     };
     GUI.message.delegate.tap_anchor = function(turn, logid, id, by_id) {
-      var log, pins;
-      log = Cache.messages.find(by_id);
-      pins = Url.prop.pins();
-      if (log) {
-        pins["" + log.event.turn + "-" + log.logid] = true;
+      var by_logid, by_turn, cb, event, folder, tap, vid, _ref1;
+      _ref1 = by_id.split("-"), folder = _ref1[0], vid = _ref1[1], by_turn = _ref1[2], by_logid = _ref1[3];
+      cb = function() {
+        var pins;
+        pins = Url.prop.pins();
+        pins["" + by_turn + "-" + by_logid] = true;
+        pins["" + turn + "-" + logid] = true;
+        Url.prop.pins(pins);
+        return change_pin(by_id);
+      };
+      tap = Cache.messages.find("" + folder + "-" + vid + "-" + turn + "-" + logid);
+      if (tap) {
+        return cb();
+      } else {
+        event = Cache.events.find("" + folder + "-" + vid + "-" + turn);
+        return Submit.get(event.link).then(function(gon) {
+          catch_gon.events();
+          catch_gon.messages();
+          return cb();
+        });
       }
-      pins["" + turn + "-" + logid] = true;
-      Url.prop.pins(pins);
-      return change_pin(by_id);
     };
     GUI.message.delegate.tap_identity = function(turn, logid, id) {
       var pins;
@@ -1985,6 +2012,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     m.startComputation();
     return window.requestAnimationFrame(function() {
       var back_state;
+      catch_gon.events();
       catch_gon.messages();
       back_state = menu.scope.state();
       menu.scope.change("");

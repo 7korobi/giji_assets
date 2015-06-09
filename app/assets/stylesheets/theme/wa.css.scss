@@ -72,8 +72,7 @@
 
   .MSAY,
   .SSAY,
-  .SAY,
-  .QUEUE { @include color-tone(white, #000, #cb8);}
+  .SAY { @include color-tone(white, #000, #cb8);}
 
   .MAKER.guide,
   .ADMIN.guide,

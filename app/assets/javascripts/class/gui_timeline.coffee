@@ -6,6 +6,7 @@ GUI.timeline = ({width, base, choice})->
     SAY:   "#cb8"
     MSAY:  "#cb8"
     SPSAY: "#dcb"
+    AIM:   "#dcb"
     WSAY:  "#a55"
     XSAY:  "#9a7"
     BSAY:  "#9a7"

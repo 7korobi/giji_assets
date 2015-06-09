@@ -124,6 +124,7 @@ table.talk {
 
   .DELETEDADMIN,
   .DELETED,   { @include color-tone(glass, #444, rgba( 40, 40, 40, 0.4)); }
+  .QUEUE,
   .QUE,       { @include color-tone(glass, #aaa, rgba(  0,  0,  0, 0.4)); .msg { border: none; } }
   .TSAY,      { @include color-tone(glass, #a96, rgba(  0,  0, 60, 0.4)); }
   .GSAY,      { @include color-tone(glass, #99f, rgba( 30, 30,  0, 0.4)); }
@@ -181,6 +182,7 @@ table.talk {
 
   .DELETEDADMIN,
   .DELETED,    { @include color-tone(white, #aaa, #666); }
+  .QUEUE,
   .QUE,        { @include color-tone(white, #664, #cb8); * { border: none; } }
   .TSAY,       { @include color-tone(white, #000, #a98); }
   .GSAY,       { @include color-tone(white, #000, #bbd); }

@@ -99,42 +99,52 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
   if "プロローグ" == name
     messages.push do
       event_id: _id
-      name: name
-      log: name
       logid: "STORY-TEXT"
       mestype: "STORY"
+      anchor: "info"
+      show: RAILS.message.bit.STORY
+      name: name
+      log: name
       updated_at: created_at - 4
 
     messages.push do
       event_id: _id
-      name: name
-      log: name
       logid: "STORY-RULE"
       mestype: "STORY"
+      anchor: "info"
+      show: RAILS.message.bit.STORY
+      name: name
+      log: name
       updated_at: created_at - 3
 
     messages.push do
       event_id: _id
-      name: name
-      log: name
       logid: "STORY-GAME"
       mestype: "STORY"
+      anchor: "info"
+      show: RAILS.message.bit.STORY
+      name: name
+      log: name
       updated_at: created_at - 2
 
   messages.push do
     event_id: _id
-    name: name
-    log: name
     logid: "EVENT-ASC"
     mestype: "EVENT"
+    anchor: "info"
+    show: RAILS.message.bit.EVENT_ASC
+    name: name
+    log: name
     updated_at: created_at - 5
 
   messages.push do
     event_id: _id
-    name: name
-    log: name
     logid: "EVENT-DESC"
     mestype: "EVENT"
+    anchor: "info"
+    show: RAILS.message.bit.EVENT_DESC
+    name: name
+    log: name
     updated_at: updated_at - -1
 
   Cache.rule.message.merge messages
@@ -178,6 +188,9 @@ export catch_gon =
       console.log "1 story cache."
 
   events: ->
+    for event in gon.events
+      event.is_full ||= Cache.events.find(event._id)?.is_full
+
     Cache.rule.event.merge gon.events
     console.log "#{gon.events.length} events cache. (#{gon.story?._id})"
     #  Cache.rule.event.merge [gon.event],

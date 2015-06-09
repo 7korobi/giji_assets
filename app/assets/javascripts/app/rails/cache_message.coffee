@@ -68,7 +68,7 @@ new Cache.Rule("message").schema ->
     lognumber = o.logid[2..-1]
     switch o.mestype
       when "QUEUE"
-        o.mestype = "SAY"
+        o.mestype = "SAY" # data cleaned
       when "VSAY"
         story = o.event?.story
         event = o.event
@@ -78,21 +78,20 @@ new Cache.Rule("message").schema ->
 
     switch logtype
       when "IS"
-        o.logid = "II#{lognumber}"
+        o.logid = "II#{lognumber}" # data cleaned
       when "iS"
-        o.logid = "iI#{lognumber}"
+        o.logid = "iI#{lognumber}" # data cleaned
       when "CS"
-        o.logid = "cI#{lognumber}"
+        o.logid = "cI#{lognumber}" # data cleaned
       when "AS"
-        o.mestype = "ADMIN"
+        o.mestype = "ADMIN"        # data cleaned
       when "DS"
-        o.mestype = "DELETED"
+        o.mestype = "DELETED"      # data cleaned
       when "TS"
         if o.to
           has.to = true
-          o.mestype = "SPSAY"
         else
-          o.mestype = "TSAY"
+          o.mestype = "TSAY"       # data cleaned
     # legacy support
 
     o._id = o.event_id + "-" + o.logid
@@ -102,51 +101,43 @@ new Cache.Rule("message").schema ->
 
     anchor_num = o.logid[2..-1] - 0 || 0
     o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
-    o.pen = "#{o.logid[0..1]}-#{o.face_id}"
+    o.pen = "#{o.mestype}-#{o.face_id}"
     o.potof_id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
 
     unless o.updated_at
       o.updated_at = new Date(o.date) - 0
 
     vdom = GUI.message.xxx
-    o.show =
-      switch
-        when o.logid.match /^.[SX]/
-          vdom = GUI.message.talk
-          bit.TALK
-        when o.logid.match /^.[AB]/
-          vdom = GUI.message.action
-          o.anchor = "act"
-          bit.ACTION
-        when o.logid.match /^.[M]/
-          vdom = GUI.message.memo
-          o.anchor = "memo"
-          o.logid = o.mestype[0..0] + o.logid[1..-1]
-          bit.MEMO
-        when o.logid.match /^.I/
-          vdom = GUI.message.info
-          o.anchor = "info"
-          bit.INFO
-        when o.logid.match /^STORY/
-          o.anchor = "info"
-          bit.STORY
-        when o.logid == "EVENT-ASC"
-          bit.EVENT_ASC
-        when o.logid == "EVENT-DESC"
-          bit.EVENT_DESC
+    switch o.logid[1]
+      when "S", "X"
+        vdom = GUI.message.talk
+        o.show = bit.TALK
+      when "A", "B"
+        vdom = GUI.message.action
+        o.anchor = "act"
+        o.show = bit.ACTION
+      when "M"
+        o.logid = o.mestype[0..0] + o.logid[1..-1]  # data cleaned
+        vdom = GUI.message.memo
+        o.anchor = "memo"
+        o.show = bit.MEMO
+      when "I"
+        vdom = GUI.message.info
+        o.anchor = "info"
+        o.show = bit.INFO
 
     o.mask =
-      switch 
-        when o.logid.match /^[\-WPX]./
+      switch o.logid[0]
+        when "-", "W", "P", "X"
           has.clan = true
           "CLAN"
-        when o.logid.match /^[Ti]./
+        when "T", "i"
           has.think = true
           "THINK"
-        when o.logid.match /^[VG]./
+        when "V", "G"
           has.grave = true
           "GRAVE"
-        when o.logid.match /^[D]./
+        when "D"
           o.anchor = "del"
           "DELETE"
         else
@@ -161,7 +152,6 @@ new Cache.Rule("message").schema ->
       when "STORY"
         o.pen = o.event_id
         o.mask = "ALL"
-        o.anchor = "info"
         switch o.logid
           when "STORY-TEXT"
             vdom = GUI.message.story_text
@@ -173,7 +163,6 @@ new Cache.Rule("message").schema ->
         vdom = GUI.message.event
         o.pen = o.event_id
         o.mask = "ALL"
-        o.anchor = "info"
 
     o.show &= mask[o.mask]
     o.vdom = vdom
