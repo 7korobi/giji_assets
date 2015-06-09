@@ -168,7 +168,7 @@ new Cache.Rule("potof").schema ->
     text_str = text.join()
 
     o.order =
-      stat_at:   [- o.deathday, stat_order]
+      stat_at:   [- o.deathday, - stat_order]
       stat_type: [stat_order, - o.deathday]
       said_num: [said_num, pt_no, urge]
       pt:       [pt_no, said_num, urge]
