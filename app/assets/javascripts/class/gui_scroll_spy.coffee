@@ -6,7 +6,7 @@ class GUI.ScrollSpy
     elem = @elems[id]
     if elem
       rect = elem.getBoundingClientRect()
-      offset ?= -2 + Math.min win.horizon, rect.height
+      offset ?= Math.min(win.horizon, rect.height) * 0.5
 
       top_by = rect.top - win.horizon + offset
       left_by = 0
@@ -156,5 +156,6 @@ class GUI.ScrollSpy
       else
         if ! is_continue
           if id == @prop()
-            GUI.ScrollSpy.go id
+            window.requestAnimationFrame ->
+              GUI.ScrollSpy.go id
 
