@@ -490,12 +490,23 @@ if gon?.events? && gon.event?
       menu.icon.change "pin"
 
     GUI.message.delegate.tap_anchor = (turn, logid, id, by_id)->
-      log = Cache.messages.find(by_id)
-      pins = Url.prop.pins()
-      pins["#{log.event.turn}-#{log.logid}"] = true if log
-      pins["#{turn}-#{logid}"] = true
-      Url.prop.pins pins
-      change_pin(by_id)
+      [folder, vid, by_turn, by_logid] = by_id.split("-")
+      cb = ->
+        pins = Url.prop.pins()
+        pins["#{by_turn}-#{by_logid}"] = true
+        pins["#{turn}-#{logid}"] = true
+        Url.prop.pins pins
+        change_pin(by_id)
+      tap = Cache.messages.find("#{folder}-#{vid}-#{turn}-#{logid}")
+      if tap
+        cb()
+      else
+        event = Cache.events.find("#{folder}-#{vid}-#{turn}")
+
+        Submit.get(event.link).then (gon)->
+          catch_gon.events()
+          catch_gon.messages()
+          cb()
 
     GUI.message.delegate.tap_identity = (turn, logid, id)->
       pins = Url.prop.pins()
@@ -595,6 +606,7 @@ if gon?.events? && gon.event?
 
     m.startComputation()
     window.requestAnimationFrame ->
+      catch_gon.events()
       catch_gon.messages()
 
       back_state = menu.scope.state()

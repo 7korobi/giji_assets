@@ -22,9 +22,9 @@ new Cache.Rule("event").schema ->
               o.is_loading = true
               window.requestAnimationFrame ->
                 Submit.get(o.link).then (gon)->
+                  catch_gon.events()
                   catch_gon.messages()
                   o.is_loading = false
-                  o.is_full = true
             m ".SSAY", Btn.call({}, submit), "読み込み"
 
 
