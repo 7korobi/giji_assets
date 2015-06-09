@@ -53,7 +53,10 @@ Url.routes =
         if logid?
           updated_at = Cache.messages.find(scroll)?.updated_at || 0
           Url.prop.updated_at updated_at, true
-          Url.prop.event_id  "#{folder}-#{vid}-#{turn}", true
+          Url.prop.folder     folder, true
+          Url.prop.turn       turn, true
+          Url.prop.story_id   "#{folder}-#{vid}", true
+          Url.prop.event_id   "#{folder}-#{vid}-#{turn}", true
           Url.prop.message_id "#{folder}-#{vid}-#{turn}-#{logid}", true
         return
 
