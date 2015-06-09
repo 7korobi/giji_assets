@@ -1,4 +1,17 @@
 export doc =
+  load: 
+    event: (shortcut, event, cb)->
+      event.is_loading = true
+      if shortcut
+        cb()
+      else
+        window.requestAnimationFrame ->
+          Submit.get(event.link).then (gon)->
+            catch_gon.events()
+            catch_gon.messages()
+            event.is_loading = false
+            cb()
+
   messages:
     seeing: ->
       Cache.messages.seeing()
@@ -24,6 +37,7 @@ export doc =
         talk_at id
         menu.icon.change "search"
         menu.scope.change "talk"
+        Url.prop.scroll ""
         win.scroll.rescroll talk_at
 
   security_modes: (prop)->

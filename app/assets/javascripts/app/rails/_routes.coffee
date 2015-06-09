@@ -45,7 +45,7 @@ Url.routes =
     messages: new Url "log=:home~:talk~:memo~:open~:human~:search",
       unmatch: gon?.events? && "?"
 
-    scrolls: new Url "scr=:scroll~:home_at~:talk_at~:memo_at",
+    scrolls: new Url "scr=:scroll~:talk_at~:memo_at",
       unmatch: "?"
       change: (params)->
         scroll = win.scroll.prop()

@@ -13,6 +13,9 @@ class GUI.MenuTree
         @nodes[old].close( @nodes[old].menu ) if @nodes[old]
 
   # open / close event.
+  open: (node = @nodes[@state()])->
+    node.open( node.menu ) if node
+
   start: (style, mark)->
     style.key = "start-#{mark}"
     Btn.menu style, @change, mark

@@ -1923,6 +1923,15 @@ GUI.MenuTree = (function() {
     })(this);
   }
 
+  MenuTree.prototype.open = function(node) {
+    if (node == null) {
+      node = this.nodes[this.state()];
+    }
+    if (node) {
+      return node.open(node.menu);
+    }
+  };
+
   MenuTree.prototype.start = function(style, mark) {
     style.key = "start-" + mark;
     return Btn.menu(style, this.change, mark);
@@ -2351,7 +2360,7 @@ GUI.ScrollSpy = (function() {
     if (elem) {
       rect = elem.getBoundingClientRect();
       if (offset == null) {
-        offset = -2 + Math.min(win.horizon, rect.height);
+        offset = Math.min(win.horizon, rect.height) * 0.5;
       }
       top_by = rect.top - win.horizon + offset;
       left_by = 0;
@@ -2574,7 +2583,9 @@ GUI.ScrollSpy = (function() {
           } else {
             if (!is_continue) {
               if (id === _this.prop()) {
-                return GUI.ScrollSpy.go(id);
+                return window.requestAnimationFrame(function() {
+                  return GUI.ScrollSpy.go(id);
+                });
               }
             }
           }

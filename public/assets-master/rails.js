@@ -61,7 +61,7 @@ Url.routes = {
     messages: new Url("log=:home~:talk~:memo~:open~:human~:search", {
       unmatch: ((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && "?"
     }),
-    scrolls: new Url("scr=:scroll~:home_at~:talk_at~:memo_at", {
+    scrolls: new Url("scr=:scroll~:talk_at~:memo_at", {
       unmatch: "?",
       change: function(params) {
         var folder, logid, scroll, turn, updated_at, vid, _ref1, _ref2;
@@ -170,14 +170,7 @@ new Cache.Rule("event").schema(function() {
             return m(".SSAY", "読み込み…");
           default:
             submit = function() {
-              o.is_loading = true;
-              return window.requestAnimationFrame(function() {
-                return Submit.get(o.link).then(function(gon) {
-                  catch_gon.events();
-                  catch_gon.messages();
-                  return o.is_loading = false;
-                });
-              });
+              return doc.load.event(false, o, function() {});
             };
             return m(".SSAY", Btn.call({}, submit), "読み込み");
         }
@@ -974,6 +967,23 @@ new Cache.Rule("story").schema(function() {
 (function(){
   var doc, set_event_messages, set_event_without_messages, catch_gon, menu, out$ = typeof exports != 'undefined' && exports || this;
   out$.doc = doc = {
+    load: {
+      event: function(shortcut, event, cb){
+        event.is_loading = true;
+        if (shortcut) {
+          return cb();
+        } else {
+          return window.requestAnimationFrame(function(){
+            return Submit.get(event.link).then(function(gon){
+              catch_gon.events();
+              catch_gon.messages();
+              event.is_loading = false;
+              return cb();
+            });
+          });
+        }
+      }
+    },
     messages: {
       seeing: function(){
         return Cache.messages.seeing();
@@ -1019,6 +1029,7 @@ new Cache.Rule("story").schema(function() {
           talk_at(id);
           menu.icon.change("search");
           menu.scope.change("talk");
+          Url.prop.scroll("");
           return win.scroll.rescroll(talk_at);
         }
       });
@@ -1798,6 +1809,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
                 Url.prop.pins({});
                 menu.icon.change("");
                 menu.scope.change("talk");
+                Url.prop.scroll("");
                 return win.scroll.rescroll(Url.prop.talk_at);
               });
             });
@@ -1867,7 +1879,7 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       target = menu.scope.state();
       switch (target) {
         case "history":
-          target_at = Url.prop["memo_at"];
+          target_at = Url.prop.memo_at;
           break;
         case "memo":
         case "talk":
@@ -1882,27 +1894,18 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
       return menu.icon.change("pin");
     };
     GUI.message.delegate.tap_anchor = function(turn, logid, id, by_id) {
-      var by_logid, by_turn, cb, event, folder, tap, vid, _ref1;
+      var by_logid, by_turn, event, folder, has_tap, vid, _ref1;
       _ref1 = by_id.split("-"), folder = _ref1[0], vid = _ref1[1], by_turn = _ref1[2], by_logid = _ref1[3];
-      cb = function() {
+      has_tap = Cache.messages.find("" + folder + "-" + vid + "-" + turn + "-" + logid) != null;
+      event = Cache.events.find("" + folder + "-" + vid + "-" + turn);
+      return doc.load.event(has_tap, event, function() {
         var pins;
         pins = Url.prop.pins();
         pins["" + by_turn + "-" + by_logid] = true;
         pins["" + turn + "-" + logid] = true;
         Url.prop.pins(pins);
         return change_pin(by_id);
-      };
-      tap = Cache.messages.find("" + folder + "-" + vid + "-" + turn + "-" + logid);
-      if (tap) {
-        return cb();
-      } else {
-        event = Cache.events.find("" + folder + "-" + vid + "-" + turn);
-        return Submit.get(event.link).then(function(gon) {
-          catch_gon.events();
-          catch_gon.messages();
-          return cb();
-        });
-      }
+      });
     };
     GUI.message.delegate.tap_identity = function(turn, logid, id) {
       var pins;
@@ -1913,21 +1916,25 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     };
     menu.scope.node("history", {
       open: function() {
+        Url.prop.scroll("");
         return win.scroll.rescroll(Url.prop.memo_at);
       }
     });
     menu.scope.node("memo", {
       open: function() {
+        Url.prop.scroll("");
         return win.scroll.rescroll(Url.prop.memo_at);
       }
     });
     menu.scope.node("talk", {
       open: function() {
+        Url.prop.scroll("");
         return win.scroll.rescroll(Url.prop.talk_at);
       }
     });
     menu.scope.node("home", {
       open: function() {
+        Url.prop.scroll("");
         return win.scroll.rescroll(Url.prop.home_at);
       }
     });
@@ -2006,13 +2013,9 @@ if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null)
     });
     m.startComputation();
     return window.requestAnimationFrame(function() {
-      var back_state;
       catch_gon.events();
       catch_gon.messages();
-      back_state = menu.scope.state();
-      menu.scope.change("");
-      menu.scope.change("talk");
-      menu.scope.change(back_state);
+      menu.scope.open();
       return m.endComputation();
     });
   });

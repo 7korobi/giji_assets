@@ -417,6 +417,7 @@ if gon?.potofs?
                 Url.prop.pins {}
                 menu.icon.change ""
                 menu.scope.change "talk"
+                Url.prop.scroll ""
                 win.scroll.rescroll Url.prop.talk_at
 
           day = 24 * 60 * 60
@@ -478,7 +479,7 @@ if gon?.events? && gon.event?
       target = menu.scope.state()
       switch target
         when "history"
-          target_at = Url.prop["memo_at"]
+          target_at = Url.prop.memo_at
         when "memo", "talk", "home"
           target_at = Url.prop["#{target}_at"]
 
@@ -491,22 +492,14 @@ if gon?.events? && gon.event?
 
     GUI.message.delegate.tap_anchor = (turn, logid, id, by_id)->
       [folder, vid, by_turn, by_logid] = by_id.split("-")
-      cb = ->
+      has_tap = Cache.messages.find("#{folder}-#{vid}-#{turn}-#{logid}")?
+      event = Cache.events.find("#{folder}-#{vid}-#{turn}")
+      doc.load.event has_tap, event, ->
         pins = Url.prop.pins()
         pins["#{by_turn}-#{by_logid}"] = true
         pins["#{turn}-#{logid}"] = true
         Url.prop.pins pins
         change_pin(by_id)
-      tap = Cache.messages.find("#{folder}-#{vid}-#{turn}-#{logid}")
-      if tap
-        cb()
-      else
-        event = Cache.events.find("#{folder}-#{vid}-#{turn}")
-
-        Submit.get(event.link).then (gon)->
-          catch_gon.events()
-          catch_gon.messages()
-          cb()
 
     GUI.message.delegate.tap_identity = (turn, logid, id)->
       pins = Url.prop.pins()
@@ -516,15 +509,19 @@ if gon?.events? && gon.event?
 
     menu.scope.node "history",
       open: ->
+        Url.prop.scroll ""
         win.scroll.rescroll Url.prop.memo_at
     menu.scope.node "memo",
       open: ->
+        Url.prop.scroll ""
         win.scroll.rescroll Url.prop.memo_at
     menu.scope.node "talk",
       open: ->
+        Url.prop.scroll ""
         win.scroll.rescroll Url.prop.talk_at
     menu.scope.node "home",
       open: ->
+        Url.prop.scroll ""
         win.scroll.rescroll Url.prop.home_at
     menu.scope.node "pins",
       open: ->
@@ -609,10 +606,7 @@ if gon?.events? && gon.event?
       catch_gon.events()
       catch_gon.messages()
 
-      back_state = menu.scope.state()
-      menu.scope.change ""
-      menu.scope.change "talk"
-      menu.scope.change back_state
+      menu.scope.open()
       m.endComputation()
 
 if gon?.villages?
