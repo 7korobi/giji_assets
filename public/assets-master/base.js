@@ -584,7 +584,7 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
       }
       regexp = new RegExp(list.join("|"), "ig");
       return this.where(function(o){
-        return regexp.test(o.search_words);
+        return !o.search_words || regexp.test(o.search_words);
       });
     };
     prototype.sort = function(desc, order){

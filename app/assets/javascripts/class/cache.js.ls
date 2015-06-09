@@ -74,7 +74,7 @@ class Cache.Query
         "(#{item})"
     return @ unless list.length
     regexp = (new RegExp list.join("|"), "ig")
-    @where (o)-> regexp.test o.search_words
+    @where (o)-> (! o.search_words) || regexp.test o.search_words
 
   sort: (desc, order = @sort_by)->
     sort_by = 

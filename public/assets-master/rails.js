@@ -1129,7 +1129,6 @@ new Cache.Rule("story").schema(function() {
         anchor: "info",
         show: RAILS.message.bit.STORY,
         name: name,
-        log: name,
         updated_at: created_at - 4
       });
       messages.push({
@@ -1139,7 +1138,6 @@ new Cache.Rule("story").schema(function() {
         anchor: "info",
         show: RAILS.message.bit.STORY,
         name: name,
-        log: name,
         updated_at: created_at - 3
       });
       messages.push({
@@ -1149,7 +1147,6 @@ new Cache.Rule("story").schema(function() {
         anchor: "info",
         show: RAILS.message.bit.STORY,
         name: name,
-        log: name,
         updated_at: created_at - 2
       });
     }
@@ -1160,7 +1157,6 @@ new Cache.Rule("story").schema(function() {
       anchor: "info",
       show: RAILS.message.bit.EVENT_ASC,
       name: name,
-      log: name,
       updated_at: created_at - 5
     });
     messages.push({
@@ -1170,7 +1166,6 @@ new Cache.Rule("story").schema(function() {
       anchor: "info",
       show: RAILS.message.bit.EVENT_DESC,
       name: name,
-      log: name,
       updated_at: updated_at - -1
     });
     return Cache.rule.message.merge(messages);

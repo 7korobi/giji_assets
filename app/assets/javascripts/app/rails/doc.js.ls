@@ -104,7 +104,6 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
       anchor: "info"
       show: RAILS.message.bit.STORY
       name: name
-      log: name
       updated_at: created_at - 4
 
     messages.push do
@@ -114,7 +113,6 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
       anchor: "info"
       show: RAILS.message.bit.STORY
       name: name
-      log: name
       updated_at: created_at - 3
 
     messages.push do
@@ -124,7 +122,6 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
       anchor: "info"
       show: RAILS.message.bit.STORY
       name: name
-      log: name
       updated_at: created_at - 2
 
   messages.push do
@@ -134,7 +131,6 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
     anchor: "info"
     show: RAILS.message.bit.EVENT_ASC
     name: name
-    log: name
     updated_at: created_at - 5
 
   messages.push do
@@ -144,7 +140,6 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
     anchor: "info"
     show: RAILS.message.bit.EVENT_DESC
     name: name
-    log: name
     updated_at: updated_at - -1
 
   Cache.rule.message.merge messages
