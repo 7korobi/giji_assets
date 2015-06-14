@@ -2379,7 +2379,7 @@ GUI.ScrollSpy = (function() {
         spy.tick(spy.center);
       }
     }
-    return 1000;
+    return 5000;
   });
 
   win.on.scroll_end.push(function() {

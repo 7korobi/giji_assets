@@ -16,7 +16,7 @@ class GUI.ScrollSpy
     for spy in @list
       if spy.center
         spy.tick( spy.center )
-    1000
+    5000
 
 
   win.on.scroll_end.push =>

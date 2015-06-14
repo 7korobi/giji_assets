@@ -13,8 +13,13 @@ export doc =
             cb()
 
   messages:
-    seeing: ->
-      Cache.messages.seeing()
+    seeing: (filter_size, center)->
+      list = Cache.messages.seeing().list()[0 to filter_size]
+      if center
+        list = _.reject(list, _id:center._id)
+        list.unshift center
+      list
+
     pins: ({story_id,pins})->
       Cache.messages.pins(story_id(), pins())
     anchor: ({talk})->
@@ -233,9 +238,9 @@ menu.scope.state = Url.prop.scope
 win.scroll = new GUI.ScrollSpy(Url.prop.scroll)
 win.scroll.tick = (center)->
   if center.subid == "S"
-    center.seeing = (center.seeing || 0) + 1
+    center.seeing = (center.seeing || 0) + 5
     Cache.messages.seeing().clear()
-    if 16 == center.seeing
+    if 25 == center.seeing
       m.redraw()
 
 

@@ -404,11 +404,12 @@ if gon?.potofs?
                       m "th.calc", "…"
           filter = []
         else
-          filter_size = Math.floor((win.height - seeing_top - 50) / line_text_height)
-          seeingview = doc.messages.seeing(Url.prop).list()[0..filter_size]
-          anchorview = doc.messages.anchor(Url.prop).list()
-          potofs = GUI.message.potofs()
+          filter_size = Math.floor((win.height - seeing_top) / line_text_height) - 3
           center_id = win.scroll.prop()
+          potofs = GUI.message.potofs()
+
+          anchorview = doc.messages.anchor(Url.prop).list()
+          seeingview = doc.messages.seeing(filter_size, win.scroll.center)
 
           go_click = (o)->
             GUI.attrs {}, ->

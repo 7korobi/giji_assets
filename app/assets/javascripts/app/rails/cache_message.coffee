@@ -15,7 +15,7 @@ new Cache.Rule("message").schema ->
   @scope (all)->
     seeing: ->
       all
-      .where (o)-> 15 < o.seeing
+      .where (o)-> 25 < o.seeing
       .sort "desk", "seeing"
 
     anchor: (mode, scroll)->
