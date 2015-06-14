@@ -134,10 +134,10 @@ class Crs < Thor
       @orders = faces.sort_by(&:order)
       @lists  = faces.sort_by(&:face_id)
       @tag_names = {
-        all: RAILS.tag.all.name
+        "all" => RAILS.tag.all.name
       }
       @chr_orders = {
-        all: @orders.map(&:face_id)
+        "all" => @orders.map(&:face_id)
       }
       @orders.each do |face|
         face.tags.each do |tag|
@@ -147,6 +147,7 @@ class Crs < Thor
         end
       end
       @tag_order = RAILS.tag.keys.select {|tag| @chr_orders[tag] }
+      @tag_order.shift if @csid != "all"
 
       @rhtml_content = "./app/views/sow/crs.pl.erb"
       result = to_s

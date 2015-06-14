@@ -13,10 +13,17 @@ maskstates:
   0b0000000000000000_0000_000_00001: <s>蘇生薬</s>
 
 tag:
+  all:
+    name: すべて
+    long: 「人狼議事 ちゃんぷる」のキャラクター
+    chr_set_ids:
+      - all
+
   giji:
     name: 人狼議事
     long: 「人狼議事」のキャラクター
     chr_set_ids:
+      - all
       - animal
       - school
       - ririnra
@@ -213,12 +220,6 @@ tag:
   god:
     name: -かみさま-
     long: かみさま
-    chr_set_ids:
-      - all
-
-  all:
-    name: すべて
-    long: 「人狼議事 ちゃんぷる」のキャラクター
     chr_set_ids:
       - all
 
