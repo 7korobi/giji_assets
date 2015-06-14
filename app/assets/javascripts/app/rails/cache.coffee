@@ -17,10 +17,12 @@ new Cache.Rule("map_face").schema ->
     else
       search_words = o.chr_set_ids = []
 
-    search_words.push o.face.name
-    for sow_auth_id of o.sow_auth_id.value
-      search_words.push sow_auth_id
-    o.search_words = search_words.join("\t")
+    face = o.face()
+    if face
+      search_words.push face.name
+      for sow_auth_id of o.sow_auth_id.value
+        search_words.push sow_auth_id
+      o.search_words = search_words.join("\t")
 
   item =
     count: 1

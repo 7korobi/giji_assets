@@ -81,7 +81,7 @@ unhtml = (log)->
 Number.MAX_INT32 = 0x7fffffff
 
 Array ::=
-  last:~ -> @[@length - 1]
+  last:~ -> @[* - 1]
   first:~ -> @[0]
 
 String ::=

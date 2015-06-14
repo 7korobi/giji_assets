@@ -1,6 +1,7 @@
 
 new Cache.Rule("message").schema ->
   @belongs_to "event", dependent: true
+  @belongs_to "story", dependent: true
   @belongs_to "face"
 
   @order "updated_at"
@@ -13,11 +14,6 @@ new Cache.Rule("message").schema ->
   {visible, bit, mask} = RAILS.message
 
   @scope (all)->
-    seeing: ->
-      all
-      .where (o)-> 25 < o.seeing
-      .sort "desk", "seeing"
-
     anchor: (mode, scroll)->
       enables = RAILS.message.visible.talk[mode]
       message = Cache.messages.find scroll
@@ -34,7 +30,8 @@ new Cache.Rule("message").schema ->
       enables = RAILS.message.visible.appendex.event_desc
       all
       .sort "desc", "updated_at"
-      .where (o)-> (o.show & enables) || pins["#{o.event.turn}-#{o.logid}"] && (o.event.story._id == story_id)
+      .where (o)->
+        (o.show & enables) || pins["#{o.turn}-#{o.logid}"] && (o.story_id == story_id)
 
     home: (mode)->
       enables = visible.home[mode]
@@ -70,8 +67,8 @@ new Cache.Rule("message").schema ->
       when "QUEUE"
         o.mestype = "SAY" # data cleaned
       when "VSAY"
-        story = o.event?.story
-        event = o.event
+        story = o.story()
+        event = o.event()
         has.vsay = true
         if story && event && "grave" == story.type.mob && ! event.name.match /プロローグ|エピローグ/
           o.mestype = "VGSAY"
@@ -93,6 +90,11 @@ new Cache.Rule("message").schema ->
         else
           o.mestype = "TSAY"       # data cleaned
     # legacy support
+
+    [folder, vid, turn] = o.event_id.split("-")
+    o.folder ||= folder
+    o.vid ||= vid
+    o.turn ||= turn
 
     o._id = o.event_id + "-" + o.logid
     o.csid ?= null

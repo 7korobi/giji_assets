@@ -12,11 +12,12 @@ class GUI.ScrollSpy
       left_by = 0
       window.scrollBy(left_by, top_by) if left_by || top_by
 
+  interval = 5000
   GUI.do_tick (now)=>
     for spy in @list
       if spy.center
-        spy.tick( spy.center )
-    5000
+        spy.tick( spy.center , interval / 1000)
+    interval
 
 
   win.on.scroll_end.push =>

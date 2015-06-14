@@ -1,4 +1,8 @@
 export doc =
+  seeing: {}
+  seeing_add: (id, sec)->
+    doc.seeing[id] = (doc.seeing[id] || 0) + sec
+
   load: 
     event: (shortcut, event, cb)->
       event.is_loading = true
@@ -8,16 +12,22 @@ export doc =
         window.requestAnimationFrame ->
           Submit.get(event.link).then (gon)->
             catch_gon.events()
+            catch_gon.potofs()
             catch_gon.messages()
             event.is_loading = false
             cb()
 
   messages:
     seeing: (filter_size, center)->
-      list = Cache.messages.seeing().list()[0 to filter_size]
-      if center
-        list = _.reject(list, _id:center._id)
+      ids = Object.keys doc.seeing
+      ids = _.sortBy(ids, (id)-> - doc.seeing[id] )[0 to filter_size]
+      if center?.subid == "S"
+        ids = _.select(ids, (id)-> 25 < doc.seeing[id] && id != center._id)
+        list = Cache.messages.finds(ids)
         list.unshift center
+      else
+        ids = _.select(ids, (id)-> 25 < doc.seeing[id])
+        list = Cache.messages.finds(ids)
       list
 
     pins: ({story_id,pins})->
@@ -72,7 +82,7 @@ export doc =
   potofs: ->
     potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
     hides = Url.prop.potofs_hide()
-    turn = win.scroll.center?.event?.turn || 0
+    turn = win.scroll.center?.event()?.turn || 0
 
     m ".minilist",
       m "h6", "キャラクターフィルタ"
@@ -110,7 +120,7 @@ set_event_messages = (event)->
     event_id: event._id
   console.log "#{event.messages.length} messages cache. (#{event._id})"
 
-set_event_without_messages = ({_id, name, created_at, updated_at})->
+set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
   return unless created_at
   return unless updated_at
   messages = []
@@ -118,6 +128,7 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
   if "プロローグ" == name
     messages.push do
       event_id: _id
+      story_id: story_id
       logid: "STORY-TEXT"
       mestype: "STORY"
       anchor: "info"
@@ -127,6 +138,7 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
 
     messages.push do
       event_id: _id
+      story_id: story_id
       logid: "STORY-RULE"
       mestype: "STORY"
       anchor: "info"
@@ -136,6 +148,7 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
 
     messages.push do
       event_id: _id
+      story_id: story_id
       logid: "STORY-GAME"
       mestype: "STORY"
       anchor: "info"
@@ -145,6 +158,7 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
 
   messages.push do
     event_id: _id
+    story_id: story_id
     logid: "EVENT-ASC"
     mestype: "EVENT"
     anchor: "info"
@@ -154,6 +168,7 @@ set_event_without_messages = ({_id, name, created_at, updated_at})->
 
   messages.push do
     event_id: _id
+    story_id: story_id
     logid: "EVENT-DESC"
     mestype: "EVENT"
     anchor: "info"
@@ -191,10 +206,7 @@ export catch_gon =
 
   potofs: ->
     Cache.rule.potof.set gon.potofs,
-      story_folder: gon.story?.folder
-      story_type: gon.story?.type
-      story_epilogue: gon.story?.is_epilogue
-      event_winner: (gon.event?.winner || gon.events?.last?.winner)
+      story: gon.story
 
   story: ->
     if gon?.story?
@@ -203,7 +215,8 @@ export catch_gon =
 
   events: ->
     for event in gon.events
-      event.is_full ||= Cache.events.find(event._id)?.is_full
+      id = "#{event.story_id}-#{event.turn}"
+      event.is_full ||= Cache.events.find(id)?.is_full
 
     Cache.rule.event.merge gon.events
     console.log "#{gon.events.length} events cache. (#{gon.story?._id})"
@@ -235,12 +248,12 @@ export menu =
 menu.icon.state  = Url.prop.icon
 menu.scope.state = Url.prop.scope
 
+
 win.scroll = new GUI.ScrollSpy(Url.prop.scroll)
-win.scroll.tick = (center)->
+win.scroll.tick = (center, sec)->
   if center.subid == "S"
-    center.seeing = (center.seeing || 0) + 5
-    Cache.messages.seeing().clear()
-    if 25 == center.seeing
+    doc.seeing_add center._id, sec
+    if 25 == doc.seeing[center._id]
       m.redraw()
 
 

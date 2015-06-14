@@ -38,7 +38,7 @@ new Cache.Rule("chr_set").schema ->
 new Cache.Rule("chr_npc").schema ->
   @belongs_to "chr_set", dependent: true
   @belongs_to "face", dependent: true
-
+  @deploy (o)->
 
 new Cache.Rule("chr_job").schema ->
   @order (o)-> o.face.order

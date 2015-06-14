@@ -99,7 +99,7 @@ new Cache.Rule("map_face").schema(function() {
     };
   });
   this.deploy(function(o) {
-    var list, search_words, sow_auth_id;
+    var face, list, search_words, sow_auth_id;
     o._id = o.face_id;
     o.win.value.合計 = o.win.all;
     list = Cache.chr_jobs.face(o.face_id).list();
@@ -113,11 +113,14 @@ new Cache.Rule("map_face").schema(function() {
     } else {
       search_words = o.chr_set_ids = [];
     }
-    search_words.push(o.face.name);
-    for (sow_auth_id in o.sow_auth_id.value) {
-      search_words.push(sow_auth_id);
+    face = o.face();
+    if (face) {
+      search_words.push(face.name);
+      for (sow_auth_id in o.sow_auth_id.value) {
+        search_words.push(sow_auth_id);
+      }
+      return o.search_words = search_words.join("\t");
     }
-    return o.search_words = search_words.join("\t");
   });
   item = {
     count: 1
@@ -329,6 +332,9 @@ new Cache.Rule("message").schema(function() {
   this.belongs_to("event", {
     dependent: true
   });
+  this.belongs_to("story", {
+    dependent: true
+  });
   this.belongs_to("face");
   this.order("updated_at");
   timespan = 1000 * 3600;
@@ -340,11 +346,6 @@ new Cache.Rule("message").schema(function() {
   _ref = RAILS.message, visible = _ref.visible, bit = _ref.bit, mask = _ref.mask;
   this.scope(function(all) {
     return {
-      seeing: function() {
-        return all.where(function(o) {
-          return 25 < o.seeing;
-        }).sort("desk", "seeing");
-      },
       anchor: function(mode, scroll) {
         var enables, folder, logid, message, regexp, turn, vid, _ref1;
         enables = RAILS.message.visible.talk[mode];
@@ -365,7 +366,7 @@ new Cache.Rule("message").schema(function() {
         var enables;
         enables = RAILS.message.visible.appendex.event_desc;
         return all.sort("desc", "updated_at").where(function(o) {
-          return (o.show & enables) || pins["" + o.event.turn + "-" + o.logid] && (o.event.story._id === story_id);
+          return (o.show & enables) || pins["" + o.turn + "-" + o.logid] && (o.story_id === story_id);
         });
       },
       home: function(mode) {
@@ -406,7 +407,7 @@ new Cache.Rule("message").schema(function() {
     };
   });
   this.deploy(function(o) {
-    var anchor_num, event, lognumber, logtype, story, vdom, _ref1;
+    var anchor_num, event, folder, lognumber, logtype, story, turn, vdom, vid, _ref1;
     logtype = o.logid.slice(0, 2);
     lognumber = o.logid.slice(2);
     switch (o.mestype) {
@@ -414,8 +415,8 @@ new Cache.Rule("message").schema(function() {
         o.mestype = "SAY";
         break;
       case "VSAY":
-        story = (_ref1 = o.event) != null ? _ref1.story : void 0;
-        event = o.event;
+        story = o.story();
+        event = o.event();
         has.vsay = true;
         if (story && event && "grave" === story.type.mob && !event.name.match(/プロローグ|エピローグ/)) {
           o.mestype = "VGSAY";
@@ -444,6 +445,10 @@ new Cache.Rule("message").schema(function() {
           o.mestype = "TSAY";
         }
     }
+    _ref1 = o.event_id.split("-"), folder = _ref1[0], vid = _ref1[1], turn = _ref1[2];
+    o.folder || (o.folder = folder);
+    o.vid || (o.vid = vid);
+    o.turn || (o.turn = turn);
     o._id = o.event_id + "-" + o.logid;
     if (o.csid == null) {
       o.csid = null;
@@ -568,6 +573,8 @@ var __slice = [].slice;
 
 new Cache.Rule("potof").schema(function() {
   var id_list, maskstate_order, win_by_role;
+  this.belongs_to("event");
+  this.belongs_to("face");
   this.depend_on("message");
   maskstate_order = _.sortBy(_.keys(RAILS.maskstates), function(o) {
     return -o;
@@ -643,7 +650,7 @@ new Cache.Rule("potof").schema(function() {
     } else {
       o.live = "leave";
     }
-    face = Cache.faces.find(o.face_id);
+    face = o.face();
     name = face ? face.name : o.name;
     o.name = o.zapcount ? "" + RAILS.clearance[o.clearance] + name + "-" + o.zapcount : name;
     stat_at = (0 < (_ref = o.deathday) && _ref < Infinity) ? "" + o.deathday + "日" : (o.deathday = Infinity, "");
@@ -656,7 +663,7 @@ new Cache.Rule("potof").schema(function() {
         o.hide.dead = o.deathday;
         break;
       case "mob":
-        if ('juror' === o.story_type.mob) {
+        if ('juror' === o.story.type.mob) {
           win_juror = 'HUMAN';
         }
         break;
@@ -675,10 +682,10 @@ new Cache.Rule("potof").schema(function() {
       default:
         o.hide.dead = o.deathday;
     }
-    if (o.story_epilogue) {
+    if (o.story.is_epilogue) {
       pt = "∞";
     } else {
-      say_type = RAILS.saycnt[o.story_type.say];
+      say_type = RAILS.saycnt[o.story.type.say];
       pt = (function() {
         switch (say_type.COST_SAY) {
           case "point":
@@ -693,7 +700,7 @@ new Cache.Rule("potof").schema(function() {
     select = GUI.name.config(o.select);
     win_result = "参加";
     zombie = 0x040;
-    switch (o.story_type.game) {
+    switch (o.story.type.game) {
       case "TROUBLE":
         if (0 === (o.rolestate & zombie)) {
           win_zombie = 'WOLF';
@@ -711,7 +718,7 @@ new Cache.Rule("potof").schema(function() {
     win_role = win_by_role(o, RAILS.gifts) || win_by_role(o, RAILS.roles) || "NONE";
     win = win_juror || win_love || win_zombie || win_role;
     if (win === 'EVIL') {
-      win = RAILS.folders[o.story_folder].evil;
+      win = RAILS.folders[o.story.folder].evil;
     }
     switch (win) {
       case "LONEWOLF":
@@ -727,14 +734,14 @@ new Cache.Rule("potof").schema(function() {
           is_lone_lose = 1;
         }
     }
-    if (o.story_epilogue) {
+    if (o.story.is_epilogue) {
       switch (o.live) {
         case "suddendead":
         case "leave":
           win_result = "―";
           break;
         default:
-          winner = o.event_winner;
+          winner = o.event.winner;
           win_result = "敗北";
           if (winner === "WIN_" + win) {
             win_result = "勝利";
@@ -967,6 +974,10 @@ new Cache.Rule("story").schema(function() {
 (function(){
   var doc, set_event_messages, set_event_without_messages, catch_gon, menu, out$ = typeof exports != 'undefined' && exports || this, slice$ = [].slice;
   out$.doc = doc = {
+    seeing: {},
+    seeing_add: function(id, sec){
+      return doc.seeing[id] = (doc.seeing[id] || 0) + sec;
+    },
     load: {
       event: function(shortcut, event, cb){
         event.is_loading = true;
@@ -976,6 +987,7 @@ new Cache.Rule("story").schema(function() {
           return window.requestAnimationFrame(function(){
             return Submit.get(event.link).then(function(gon){
               catch_gon.events();
+              catch_gon.potofs();
               catch_gon.messages();
               event.is_loading = false;
               return cb();
@@ -986,13 +998,22 @@ new Cache.Rule("story").schema(function() {
     },
     messages: {
       seeing: function(filter_size, center){
-        var list;
-        list = slice$.call(Cache.messages.seeing().list(), 0, filter_size + 1 || 9e9);
-        if (center) {
-          list = _.reject(list, {
-            _id: center._id
+        var ids, list;
+        ids = Object.keys(doc.seeing);
+        ids = slice$.call(_.sortBy(ids, function(id){
+          return -doc.seeing[id];
+        }), 0, filter_size + 1 || 9e9);
+        if ((center != null ? center.subid : void 8) === "S") {
+          ids = _.select(ids, function(id){
+            return 25 < doc.seeing[id] && id !== center._id;
           });
+          list = Cache.messages.finds(ids);
           list.unshift(center);
+        } else {
+          ids = _.select(ids, function(id){
+            return 25 < doc.seeing[id];
+          });
+          list = Cache.messages.finds(ids);
         }
         return list;
       },
@@ -1082,7 +1103,7 @@ new Cache.Rule("story").schema(function() {
       var potofs, hides, turn, ref$, ref1$, o, attr;
       potofs = Cache.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list();
       hides = Url.prop.potofs_hide();
-      turn = ((ref$ = win.scroll.center) != null ? (ref1$ = ref$.event) != null ? ref1$.turn : void 8 : void 8) || 0;
+      turn = ((ref$ = win.scroll.center) != null ? (ref1$ = ref$.event()) != null ? ref1$.turn : void 8 : void 8) || 0;
       return m(".minilist", m("h6", "キャラクターフィルタ"), m("p", m("a", Btn.keys_reset({}, Url.prop.potofs_hide, []), "全員表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.others()), "参加者表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.potofs()), "その他を表示"), m("a", Btn.keys_reset({}, Url.prop.potofs_hide, Cache.potofs.full()), "全員隠す")), m("hr.black"), (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = potofs).length; i$ < len$; ++i$) {
@@ -1131,8 +1152,8 @@ new Cache.Rule("story").schema(function() {
     return console.log(event.messages.length + " messages cache. (" + event._id + ")");
   };
   set_event_without_messages = function(arg$){
-    var _id, name, created_at, updated_at, messages;
-    _id = arg$._id, name = arg$.name, created_at = arg$.created_at, updated_at = arg$.updated_at;
+    var _id, story_id, name, created_at, updated_at, messages;
+    _id = arg$._id, story_id = arg$.story_id, name = arg$.name, created_at = arg$.created_at, updated_at = arg$.updated_at;
     if (!created_at) {
       return;
     }
@@ -1143,6 +1164,7 @@ new Cache.Rule("story").schema(function() {
     if ("プロローグ" === name) {
       messages.push({
         event_id: _id,
+        story_id: story_id,
         logid: "STORY-TEXT",
         mestype: "STORY",
         anchor: "info",
@@ -1152,6 +1174,7 @@ new Cache.Rule("story").schema(function() {
       });
       messages.push({
         event_id: _id,
+        story_id: story_id,
         logid: "STORY-RULE",
         mestype: "STORY",
         anchor: "info",
@@ -1161,6 +1184,7 @@ new Cache.Rule("story").schema(function() {
       });
       messages.push({
         event_id: _id,
+        story_id: story_id,
         logid: "STORY-GAME",
         mestype: "STORY",
         anchor: "info",
@@ -1171,6 +1195,7 @@ new Cache.Rule("story").schema(function() {
     }
     messages.push({
       event_id: _id,
+      story_id: story_id,
       logid: "EVENT-ASC",
       mestype: "EVENT",
       anchor: "info",
@@ -1180,6 +1205,7 @@ new Cache.Rule("story").schema(function() {
     });
     messages.push({
       event_id: _id,
+      story_id: story_id,
       logid: "EVENT-DESC",
       mestype: "EVENT",
       anchor: "info",
@@ -1228,12 +1254,8 @@ new Cache.Rule("story").schema(function() {
       return Cache.rule.map_face.set(gon.map_reduce.faces);
     },
     potofs: function(){
-      var ref$, ref1$, ref2$, ref3$, ref4$, ref5$;
       return Cache.rule.potof.set(gon.potofs, {
-        story_folder: (ref$ = gon.story) != null ? ref$.folder : void 8,
-        story_type: (ref1$ = gon.story) != null ? ref1$.type : void 8,
-        story_epilogue: (ref2$ = gon.story) != null ? ref2$.is_epilogue : void 8,
-        event_winner: ((ref3$ = gon.event) != null ? ref3$.winner : void 8) || ((ref4$ = gon.events) != null ? (ref5$ = ref4$.last) != null ? ref5$.winner : void 8 : void 8)
+        story: gon.story
       });
     },
     story: function(){
@@ -1243,10 +1265,11 @@ new Cache.Rule("story").schema(function() {
       }
     },
     events: function(){
-      var i$, ref$, len$, event, ref1$;
+      var i$, ref$, len$, event, id, ref1$;
       for (i$ = 0, len$ = (ref$ = gon.events).length; i$ < len$; ++i$) {
         event = ref$[i$];
-        event.is_full || (event.is_full = (ref1$ = Cache.events.find(event._id)) != null ? ref1$.is_full : void 8);
+        id = event.story_id + "-" + event.turn;
+        event.is_full || (event.is_full = (ref1$ = Cache.events.find(id)) != null ? ref1$.is_full : void 8);
       }
       Cache.rule.event.merge(gon.events);
       return console.log(gon.events.length + " events cache. (" + ((ref$ = gon.story) != null ? ref$._id : void 8) + ")");
@@ -1287,11 +1310,10 @@ new Cache.Rule("story").schema(function() {
   menu.icon.state = Url.prop.icon;
   menu.scope.state = Url.prop.scope;
   win.scroll = new GUI.ScrollSpy(Url.prop.scroll);
-  win.scroll.tick = function(center){
+  win.scroll.tick = function(center, sec){
     if (center.subid === "S") {
-      center.seeing = (center.seeing || 0) + 5;
-      Cache.messages.seeing().clear();
-      if (25 === center.seeing) {
+      doc.seeing_add(center._id, sec);
+      if (25 === doc.seeing[center._id]) {
         return m.redraw();
       }
     }
@@ -1342,7 +1364,7 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
             _results = [];
             for (_i = 0, _len = chrs.length; _i < _len; _i++) {
               o = chrs[_i];
-              chr_job = Cache.chr_jobs.find("" + (Url.prop.chr_set()) + "_" + o.face._id);
+              chr_job = Cache.chr_jobs.find("" + (Url.prop.chr_set()) + "_" + o.face_id);
               job_name = chr_job.job;
               attr = GUI.attrs({}, function() {
                 var elem;
@@ -1359,8 +1381,8 @@ if ((typeof gon !== "undefined" && gon !== null ? (_ref = gon.map_reduce) != nul
               });
               _results.push(m(".chrbox", {
                 key: o._id
-              }, GUI.portrate(o.face._id, attr), m(".chrblank.line4", m("div", job_name), m("div", o.face.name), m("div", m("a.mark", {
-                href: "/map_reduce/faces/" + o.face._id
+              }, GUI.portrate(o.face_id, attr), m(".chrblank.line4", m("div", job_name), m("div", o.face().name), m("div", m("a.mark", {
+                href: "/map_reduce/faces/" + o.face_id
               }, "" + map_order_set.caption + " " + o.win.value[map_order_set.order] + "回")), m("div", "♥" + o.sow_auth_id.max_is))));
             }
             return _results;
@@ -1825,17 +1847,17 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
           day = 24 * 60 * 60;
           star = function(o) {
             var attr;
-            if (o.seeing >= day) {
+            if (doc.seeing[o._id] >= day) {
               attr = GUI.attrs({}, function() {
                 return this.start(function(e) {
-                  return o.seeing = 0;
+                  return delete doc.seeing[o._id];
                 });
               });
               return m("span.btn.edge", attr, "★ ");
             } else {
               attr = GUI.attrs({}, function() {
                 return this.start(function(e) {
-                  return o.seeing = (o.seeing || 0) + day;
+                  return doc.seeing_add(o._id, day);
                 });
               });
               return m("span.btn.edge", attr, "☆ ");
@@ -1846,7 +1868,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
             _results = [];
             for (_i = 0, _len = anchorview.length; _i < _len; _i++) {
               o = anchorview[_i];
-              _results.push(m(".line_text", m("." + o.mestype + ".badge", go_click(o), "" + o.event.turn + ":" + o.anchor), m.trust(o.log.line_text)));
+              _results.push(m(".line_text", m("." + o.mestype + ".badge", go_click(o), "" + o.turn + ":" + o.anchor), m.trust(o.log.line_text)));
             }
             return _results;
           })(), m("h6", seeing_measure, "よく見ていたログ"), (function() {
@@ -1859,7 +1881,7 @@ if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) 
               } else {
                 tag = ".line_text";
               }
-              _results.push(m(tag, line_text_height_measure, star(o), m("." + o.mestype + ".badge", go_click(o), "" + o.event.turn + ":" + o.anchor), m.trust("" + o.name + " " + o.log.line_text)));
+              _results.push(m(tag, line_text_height_measure, star(o), m("." + o.mestype + ".badge", go_click(o), "" + o.turn + ":" + o.anchor), m.trust("" + o.name + " " + o.log.line_text)));
             }
             return _results;
           })());

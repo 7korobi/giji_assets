@@ -20,7 +20,7 @@ if gon?.map_reduce?.faces?
         [ m "div", headline
           m "hr.black"
           for o in chrs
-            chr_job = Cache.chr_jobs.find("#{Url.prop.chr_set()}_#{o.face._id}")
+            chr_job = Cache.chr_jobs.find("#{Url.prop.chr_set()}_#{o.face_id}")
             job_name = chr_job.job
 
             attr = GUI.attrs {}, ->
@@ -30,13 +30,13 @@ if gon?.map_reduce?.faces?
               @config (_elem)-> elem = _elem
 
             m ".chrbox", {key: o._id},
-              GUI.portrate o.face._id, attr
+              GUI.portrate o.face_id, attr
               m ".chrblank.line4",
                 m "div", job_name
-                m "div", o.face.name
+                m "div", o.face().name
                 m "div",
                   m "a.mark",
-                    href: "/map_reduce/faces/#{o.face._id}"
+                    href: "/map_reduce/faces/#{o.face_id}"
                   , "#{map_order_set.caption} #{o.win.value[map_order_set.order]}回"
                 m "div", "♥#{o.sow_auth_id.max_is}"
           m "hr.black"
@@ -423,16 +423,16 @@ if gon?.potofs?
 
           day = 24 * 60 * 60
           star = (o)->
-            if o.seeing >= day
+            if doc.seeing[o._id] >= day
               attr = GUI.attrs {}, ->
                 @start (e)->
-                  o.seeing = 0
+                  delete doc.seeing[o._id]
               m "span.btn.edge", attr, "★ "
 
             else
               attr = GUI.attrs {}, ->
                 @start (e)->
-                  o.seeing = (o.seeing || 0) + day
+                  doc.seeing_add o._id, day
               m "span.btn.edge", attr, "☆ "
 
           filter =
@@ -440,7 +440,7 @@ if gon?.potofs?
               m "h6", "参照ログ"
               for o in anchorview
                 m ".line_text", 
-                  m ".#{o.mestype}.badge", go_click(o), "#{o.event.turn}:#{o.anchor}"
+                  m ".#{o.mestype}.badge", go_click(o), "#{o.turn}:#{o.anchor}"
                   m.trust o.log.line_text
               m "h6", seeing_measure, "よく見ていたログ"
               for o in seeingview
@@ -450,7 +450,7 @@ if gon?.potofs?
                   tag = ".line_text"
                 m tag, line_text_height_measure,
                   star(o)
-                  m ".#{o.mestype}.badge", go_click(o), "#{o.event.turn}:#{o.anchor}"
+                  m ".#{o.mestype}.badge", go_click(o), "#{o.turn}:#{o.anchor}"
                   m.trust "#{o.name} #{o.log.line_text}"
 
         potofs.children[0].children[1].attrs.className = "plane fine"

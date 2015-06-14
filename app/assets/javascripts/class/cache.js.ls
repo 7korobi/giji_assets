@@ -109,6 +109,12 @@ class Cache.Query
   find: (id)->
     @hash()[id]?.item
 
+  finds: (ids)->
+    for id in ids
+      o = @hash()[id]
+      continue unless o
+      o?.item
+
 class Cache.Finder
   (@sort_by)->
     all = new Cache.Query @, [], false, @sort_by
@@ -233,6 +239,7 @@ class Cache.Rule
   (field)->
     @id = "#{field}_id"
     @list_name = "#{field}s"
+    @base_obj = {}
     @validates = []
     @responses = Cache.Rule.responses[field] ?= []
     @map_reduce = ->
@@ -263,18 +270,14 @@ class Cache.Rule
       belongs_to: (parent, option)~>
         parents = "#{parent}s"
         parent_id = "#{parent}_id"
+        @base_obj[parent] = ->
+          Cache[parents].find @[parent_id]
 
         dependent = option?.dependent?
         if dependent
           Cache.Rule.responses[parent] ?= []
           Cache.Rule.responses[parent].push @
-
-        @validates.push (o)->
-          that = Cache[parents]?.find(o[parent_id])
-          if that?
-            o[parent] = that 
-          else
-            ! dependent
+          @validates.push (o)-> o[parent]()?
 
       order: (order)~>
         query = @finder.query.all.sort false, order
@@ -300,6 +303,16 @@ class Cache.Rule
     diff = finder.diff
     all = finder.query.all._hash
  
+    deployer =
+      if head.browser.ie || head.browser.safari
+        (o)~>
+          o <<< @base_obj
+          @deploy o
+      else
+        (o)~>
+          o.__proto__ = @base_obj
+          @deploy o
+
     validate_item = (item)~>
       for validate in @validates
         return false unless validate item
@@ -310,9 +323,10 @@ class Cache.Rule
         for item in from || []
           for key, val of parent
             item[key] = val
+
+          deployer item
           continue unless validate_item item
 
-          @deploy item
           o = {item, emits: []}
           old = all[item._id]
           if old?
@@ -329,7 +343,7 @@ class Cache.Rule
 
       else
         for item in from || []
-          @deploy item
+          deployer item
           o = {item, emits: []}
           old = all[item._id]
           if old?

@@ -637,6 +637,18 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
       var ref$;
       return (ref$ = this.hash()[id]) != null ? ref$.item : void 8;
     };
+    prototype.finds = function(ids){
+      var i$, len$, id, o, results$ = [];
+      for (i$ = 0, len$ = ids.length; i$ < len$; ++i$) {
+        id = ids[i$];
+        o = this.hash()[id];
+        if (!o) {
+          continue;
+        }
+        results$.push(o != null ? o.item : void 8);
+      }
+      return results$;
+    };
     return Query;
   }());
   Cache.Finder = Finder = (function(){
@@ -834,6 +846,7 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
       var ref$, ref1$, this$ = this;
       this.id = field + "_id";
       this.list_name = field + "s";
+      this.base_obj = {};
       this.validates = [];
       this.responses = (ref1$ = (ref$ = Cache.Rule.responses)[field]) != null
         ? ref1$
@@ -885,20 +898,17 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
           var parents, parent_id, dependent, ref$;
           parents = parent + "s";
           parent_id = parent + "_id";
+          this$.base_obj[parent] = function(){
+            return Cache[parents].find(this[parent_id]);
+          };
           dependent = (option != null ? option.dependent : void 8) != null;
           if (dependent) {
             (ref$ = Cache.Rule.responses)[parent] == null && (ref$[parent] = []);
             Cache.Rule.responses[parent].push(this$);
+            return this$.validates.push(function(o){
+              return o[parent]() != null;
+            });
           }
-          return this$.validates.push(function(o){
-            var that, ref$;
-            that = (ref$ = Cache[parents]) != null ? ref$.find(o[parent_id]) : void 8;
-            if (that != null) {
-              return o[parent] = that;
-            } else {
-              return !dependent;
-            }
-          });
         },
         order: function(order){
           var query;
@@ -931,10 +941,19 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
       return this.finder.rehash(this.responses, diff);
     };
     prototype.set_base = function(mode, from, parent){
-      var finder, diff, all, validate_item, i$, ref$, len$, item, key, val, o, old, emit, this$ = this;
+      var finder, diff, all, deployer, validate_item, i$, ref$, len$, item, key, val, o, old, emit, this$ = this;
       finder = this.finder;
       diff = finder.diff;
       all = finder.query.all._hash;
+      deployer = head.browser.ie || head.browser.safari
+        ? function(o){
+          import$(o, this$.base_obj);
+          return this$.deploy(o);
+        }
+        : function(o){
+          o.__proto__ = this$.base_obj;
+          return this$.deploy(o);
+        };
       validate_item = function(item){
         var i$, ref$, len$, validate;
         for (i$ = 0, len$ = (ref$ = this$.validates).length; i$ < len$; ++i$) {
@@ -953,10 +972,10 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
             val = parent[key];
             item[key] = val;
           }
+          deployer(item);
           if (!validate_item(item)) {
             continue;
           }
-          this.deploy(item);
           o = {
             item: item,
             emits: []
@@ -976,7 +995,7 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
       default:
         for (i$ = 0, len$ = (ref$ = from || []).length; i$ < len$; ++i$) {
           item = ref$[i$];
-          this.deploy(item);
+          deployer(item);
           o = {
             item: item,
             emits: []
@@ -1017,6 +1036,11 @@ var m=function a(b,c){function d(a){D=a.document,E=a.location,G=a.cancelAnimatio
     };
     return Rule;
   }());
+  function import$(obj, src){
+    var own = {}.hasOwnProperty;
+    for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+    return obj;
+  }
 }).call(this);
 var Btn, Btns, Submit, Txt,
   __slice = [].slice;
@@ -2119,7 +2143,7 @@ GUI.message = (function() {
     var attr;
     return attr = GUI.attrs({}, function() {
       return this.start(function(e) {
-        return GUI.message.delegate.tap_identity(o.event.turn, o.logid, o._id);
+        return GUI.message.delegate.tap_identity(o.turn, o.logid, o._id);
       });
     });
   };
@@ -2178,8 +2202,8 @@ GUI.message = (function() {
      */
     story_game: function(o) {
       var event, event_card, mob, option, option_id, roletable, story, text, texts;
-      event = o.event;
-      story = o.event.story;
+      event = o.event();
+      story = o.story();
       if (!(event && story)) {
         return [];
       }
@@ -2234,8 +2258,8 @@ GUI.message = (function() {
     },
     story_rule: function(o) {
       var event, rating, saycnt, story;
-      event = o.event;
-      story = o.event.story;
+      event = o.event();
+      story = o.story();
       if (!(event && story)) {
         return [];
       }
@@ -2249,14 +2273,14 @@ GUI.message = (function() {
     },
     story_text: function(o) {
       var story;
-      story = o.event.story;
+      story = o.story();
       return m(".MAKER.guide", {
         key: "STORY-TEXT"
       }, GUI.letter("head", story.name, m.trust(story.comment)), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black"));
     },
     event: function(o) {
       var btn, list;
-      btn = o.event.view.btn();
+      btn = o.event().view.btn();
       list = [];
       list.push(m("h3", m.trust(o.name)));
       if (btn) {
@@ -2350,6 +2374,8 @@ GUI.message = (function() {
   };
 })();
 GUI.ScrollSpy = (function() {
+  var interval;
+
   ScrollSpy.elems = {};
 
   ScrollSpy.list = [];
@@ -2370,16 +2396,18 @@ GUI.ScrollSpy = (function() {
     }
   };
 
+  interval = 5000;
+
   GUI.do_tick(function(now) {
     var spy, _i, _len, _ref;
     _ref = ScrollSpy.list;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       spy = _ref[_i];
       if (spy.center) {
-        spy.tick(spy.center);
+        spy.tick(spy.center, interval / 1000);
       }
     }
-    return 5000;
+    return interval;
   });
 
   win.on.scroll_end.push(function() {

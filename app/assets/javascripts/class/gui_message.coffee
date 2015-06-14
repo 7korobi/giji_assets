@@ -22,7 +22,7 @@ GUI.message = (->
   identity_action = (o)->
     attr = GUI.attrs {}, ->
       @start (e)->
-        GUI.message.delegate.tap_identity(o.event.turn, o.logid, o._id)
+        GUI.message.delegate.tap_identity(o.turn, o.logid, o._id)
 
   delegate:
     tap_identity: -> console.log arguments
@@ -58,8 +58,8 @@ GUI.message = (->
   "turn":0,
   ###
   story_game: (o)->
-    event = o.event
-    story = o.event.story
+    event = o.event()
+    story = o.story()
     return [] unless event && story
 
     roletable = RAILS.roletable[story.type.roletable]
@@ -106,8 +106,8 @@ GUI.message = (->
       ]
 
   story_rule: (o)->
-    event = o.event
-    story = o.event.story
+    event = o.event()
+    story = o.story()
     return [] unless event && story
 
     rating = RAILS.rating[story.rating]
@@ -134,7 +134,7 @@ GUI.message = (->
 
 
   story_text: (o)->
-    story = o.event.story
+    story = o.story()
 
     m ".MAKER.guide", {key: "STORY-TEXT"},
       GUI.letter "head", story.name,
@@ -146,7 +146,7 @@ GUI.message = (->
 
 
   event: (o)->
-    btn = o.event.view.btn()
+    btn = o.event().view.btn()
     list = []
     list.push m "h3", m.trust o.name 
     list.push btn if btn
