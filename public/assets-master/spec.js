@@ -8615,7 +8615,32 @@ var giji;
 
 giji = {
   gon: function() {
-    return _.merge({}, OPTION.gon);
+    var styles;
+    styles = [];
+    styles.push({
+      name: "(通常)",
+      val: ""
+    });
+    styles.push({
+      name: "等幅",
+      val: "mono"
+    });
+    styles.push({
+      name: "見出し",
+      val: "head"
+    });
+    return _.merge({}, {
+      errors: {},
+      cautions: [],
+      form: {
+        side: [],
+        links: [],
+        texts: [],
+        secrets: [],
+        commands: {},
+        styles: styles
+      }
+    });
   },
   log: {
     mesicon: function(mestype) {
