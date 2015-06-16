@@ -3,7 +3,7 @@ GUI.form = (->
   submit = (props, f)->
     GUI.attrs {}, ()->
       @start (e)->
-        GUI.message.delegate.submit(props, f)
+        GUI.form.delegate.submit(props, f)
 
   delegate:
     submit: -> console.log arguments
@@ -11,17 +11,13 @@ GUI.form = (->
   action: (f, props)->
     m "form[name=action_form]",
       m ".#{f.mestype}.action", {key: f._id},
-        m "p.text.#{f.style}", deco_action(f),
-          m "b", m.trust f.name
-          "は、"
-          m "span",
-            m.trust props.log().deco_preview
+        GUI.message.action_text null, f.name, f.style, f.log().deco_preview
         m "h6", "#{f.count} #{f.title}"
         m ".mark", f.errors
         m ".formpl_content",
           m "select.mini", Txt.input(props.target), f.targets
           m "select.mini", Txt.input(props.action), f.actions
-        m "input[type=text]", Txt.input(props.log)
+        m "input[type=text]", Txt.input(f.log)
       m "p",
         m "a.btn", submit(props, f), "アクション"
       m "p",
@@ -32,7 +28,7 @@ GUI.form = (->
       m "table.#{f.mestype}.talk", {key: f._id},
         m "tr",
           m "th",
-            GUI.portrate f.face_id
+            GUI.portrate f.chr_job.face_id
 
           m "td",
             m ".msg",
@@ -46,18 +42,17 @@ GUI.form = (->
                 m "label.medium[for=entry_role]", "希望する役職"
                 m "select#entry_role", Txt.input(props.role), f.roles
               m "div", 
-                if is_preview()
-                  m "h3.mesname",
-                    m "a", "#{f.face.job} #{f.face.name}"
-                  m "p.text.#{props.style()}", m.trust props.log().deco_preview
+                if f.is_preview()
+                  GUI.message.talk_name null, "#{f.chr_job.job} #{f.chr_job.face.name}"
+                  GUI.message.talk_text null, props.style(), f.log().deco_preview
                   m "h6", "参加する時のセリフ"
                 else
-                  m "textarea[cols=30][rows=#{f.lines}]", Txt.input(props.log)
+                  m "textarea[cols=30][rows=#{f.lines}]", Txt.input(f.log)
                   m "h6", "参加する時のセリフ"
                   m ".mark", f.errors
 
               m "p", 
-                if is_preview()
+                if f.is_preview()
                   m "a.btn", Btn.bool(f.is_preview), "戻る"
                   m "a.btn", submit(props, f), f.title
                   f.count
@@ -69,29 +64,28 @@ GUI.form = (->
               m "p",
                 f.caption
                 m "span.#{f.error}", f.valid_text
-                unless is_preview()
+                unless f.is_preview()
                   m "span", f.diary
 
-  memo: (f)->
-
+  memo: (f, props)->
     m "form[name=memo_form]",
       m "table.#{f.mestype}.memo", {key: f._id},
         m "tr",
           m "th",
-            GUI.portrate f.face.id
-            m "div", m "b", "#{f.face.job} #{f.face.name}"
+            GUI.portrate f.chr_job.face_id
+            m "div", m "b", "#{f.chr_job.job} #{f.chr_job.face.name}"
 
           m "td",
-            if is_preview()
-              m "p.text.#{props.style()}", m.trust props.log().deco_preview
+            if f.is_preview()
+              GUI.message.talk_text props.style(), f.log().deco_preview
               m "h6", "参加する時のセリフ"
             else
-              m "textarea[cols=30][rows=#{f.lines}]", Txt.input(props.log)
+              m "textarea[cols=30][rows=#{f.lines}]", Txt.input(f.log)
               m "h6", "参加する時のセリフ"
               m ".mark", f.errors
 
             m "p", 
-              if is_preview()
+              if f.is_preview()
                 m "a.btn", Btn.bool(f.is_preview), "戻る"
                 m "a.btn", submit(props, f), f.title
                 f.count
@@ -103,13 +97,13 @@ GUI.form = (->
             m "p",
               f.caption
               m "span.#{f.error}", f.valid_text
-              unless is_preview()
+              unless f.is_preview()
                 m "span", f.diary
 
-  open: (f)->
-  secret: (f)->
-  silent: (f)->
-  version: (f)->
-  votes: (f)->
-  story: (f)->
+  open: (f, props)->
+  secret: (f, props)->
+  silent: (f, props)->
+  version: (f, props)->
+  votes: (f, props)->
+  story: (f, props)->
 )()

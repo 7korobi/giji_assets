@@ -29,26 +29,6 @@ Cache.rule.check.merge [
 ]
 
 
-new Cache.Rule("history").schema ->
-  point = (size)->
-    point = 20
-    point += (size - 50)/14 if 50 < size
-    Math.floor point
-
-  @deploy (o, form)->
-    o.text = o.text.replace(/\n$/g, '\n ')
-    o.form = form
-    o._id = JSON.stringify [form, text]
-
-    o.compact = o.text.replace(/\s/g, '')
-    o.compact_size = o.compact.sjis_length
-
-    o.lines = o.text.split("\n").length
-    o.size = o.text.sjis_length
-
-    o.point = point o.size
-
-
 class InputBase
   change: (text = "")->
     message = @bad[@validate.type]()

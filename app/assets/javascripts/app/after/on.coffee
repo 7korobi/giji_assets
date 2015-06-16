@@ -47,3 +47,6 @@ if "onstorage" of window
 
 if "onload" of window
   window.addEventListener "load", win.do.load
+
+win.do.resize()
+m.endComputation()
