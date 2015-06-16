@@ -114,14 +114,6 @@ export doc =
       Cache.rule.history.merge props
       o.vdom(o, props)
 
-export menu =
-  icon:  new GUI.MenuTree.Icon
-  scope: new GUI.MenuTree
-
-menu.icon.state  = Url.prop.icon
-menu.scope.state = Url.prop.scope
-
-
 win.scroll = new GUI.ScrollSpy(Url.prop.scroll)
 win.scroll.tick = (center, sec)->
   if center.subid == "S"
