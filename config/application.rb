@@ -30,6 +30,7 @@ module GijiAssets
       rails.js
       sow.js
       spec.js
+      spec_helper.js
       spec.css
     )
 
