@@ -20,6 +20,7 @@ new Cache.Rule("writer").schema ->
 
   @scope (all)->
     {}
+
   @deploy (o)->
     o._id = o.cmd
     o.vdom = GUI.form[o.jst]
@@ -35,7 +36,7 @@ new Cache.Rule("writer").schema ->
       else
         o.history
 
-    o.submit = 
+    o.submit =
       switch o.cmd
         when "entry"
           ({turn, vid, mes, style, csid_cid, role, entrypwd})=>

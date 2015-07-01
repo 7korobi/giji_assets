@@ -9,13 +9,15 @@ new Cache.Rule("message").schema ->
   timespan = 1000 * 3600
   {visible, bit, mask} = RAILS.message
 
-  Cache.messages.has = has =
+  ids = {}
+  has =
     face: {}
     vsay: false
     bug: false
-  Cache.messages.ids = {}
 
   @scope (all)->
+    ids: ids
+    has: has
     anker_id: (folder, vid, turn, logid)->
       id = "#{folder}-#{vid}-#{turn}-#{logid}"
       id = all.ids[id] || id
@@ -70,6 +72,11 @@ new Cache.Rule("message").schema ->
       all
       .where (o)-> (o.show & enables) && ! hides[o.face_id]
 
+  @default ->
+    log: ""
+    csid: null
+    face_id: null
+
   @deploy (o)->
     logtype = o.logid[0..1]
     lognumber = o.logid[2..-1]
@@ -107,8 +114,6 @@ new Cache.Rule("message").schema ->
     o.turn ||= turn
 
     o._id = o.event_id + "-" + o.logid
-    o.csid ?= null
-    o.face_id ?= null
     o.user_id = o.sow_auth_id
 
     anchor_num = o.logid[2..-1] - 0 || 0
@@ -132,7 +137,7 @@ new Cache.Rule("message").schema ->
         tail = o.logid[1..-1]
         anker_id = o.event_id + "-M" + tail
         o.logid = o.mestype[0..0] + tail  # data cleaned
-        Cache.messages.ids[anker_id] = o._id
+        ids[anker_id] = o._id
         vdom = GUI.message.memo
         o.anchor = "memo"
         o.show = bit.MEMO
@@ -182,7 +187,6 @@ new Cache.Rule("message").schema ->
     o.show &= mask[o.mask]
     o.vdom = vdom
 
-    o.log ?= ""
     o.search_words = o.log
 
   @map_reduce (o, emit)->
@@ -200,4 +204,3 @@ new Cache.Rule("message").schema ->
       max: o.updated_at
     emit "pen", o.pen,
       max: o.updated_at
-

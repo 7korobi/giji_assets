@@ -23,7 +23,7 @@ class Cache.Query
     @_filters query, (target, req)->
       switch typeof! req
         when \Array
-          (o)-> 
+          (o)->
             for key in req
               for val in o[target]
                 return true if val == key
@@ -34,7 +34,7 @@ class Cache.Query
               return true if req.test val
             false
         when \Null, \Boolean, \String, \Number
-          (o)-> 
+          (o)->
             for val in o[target]
               return true if val == req
             false
@@ -51,7 +51,7 @@ class Cache.Query
     @_filters query, (target, req)->
       switch typeof! req
         when \Array
-          (o)-> 
+          (o)->
             for key in req
               return true if o[target] == key
             false
@@ -67,7 +67,7 @@ class Cache.Query
 
   search: (text)->
     return @ unless text
-    list = 
+    list =
       for item in text.split(/\s+/)
         item = item.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')
         continue unless item.length
@@ -77,7 +77,7 @@ class Cache.Query
     @where (o)-> (! o.search_words) || regexp.test o.search_words
 
   sort: (desc, order = @sort_by)->
-    sort_by = 
+    sort_by =
       switch typeof! order
         when \Function
           order
@@ -125,7 +125,7 @@ class Cache.Finder
   rehash: (rules, diff)->
     delete @query.all._reduce
     delete @query.all._list
-    @query = 
+    @query =
       all: @query.all
 
     for rule in rules
@@ -145,7 +145,7 @@ class Cache.Finder
         o.max = map.max
       unless o.min <= map.min
         o.min_is = item
-        o.min = map.min 
+        o.min = map.min
       o.count += map.count if map.count
       o.all += map.all if map.all
 
@@ -171,7 +171,7 @@ class Cache.Finder
     list = query._list
 
     [lt, gt] =
-      if query.desc 
+      if query.desc
         [1, -1]
       else
         [-1, 1]
@@ -227,9 +227,9 @@ class Cache.Finder
   calculate: (query)->
     @calculate_list query, @query.all._hash
     if query._list.length && @map_reduce?
-      @calculate_reduce query 
+      @calculate_reduce query
       if query._distinct?
-        @calculate_group query 
+        @calculate_group query
     @calculate_sort query
     return
 
@@ -258,10 +258,17 @@ class Cache.Rule
       scope: (cb)~>
         @finder.scope = cb @finder.query.all
         set_scope = (key, finder, query_call)->
-          finder.query.all[key] = (...args)->
-            finder.query["#{key}:#{JSON.stringify args}"] ?= query_call ...args
+          switch typeof! query_call
+            when \Function
+              finder.query.all[key] = (...args)->
+                finder.query["#{key}:#{JSON.stringify args}"] ?= query_call ...args
+            else
+              finder.query.all[key] = query_call
         for key, query_call of @finder.scope
           set_scope(key, @finder, query_call)
+
+      default: (cb)~>
+        @base_obj <<< cb()
 
       depend_on: (parent)~>
         Cache.Rule.responses[parent] ?= []
@@ -275,8 +282,7 @@ class Cache.Rule
 
         dependent = option?.dependent?
         if dependent
-          Cache.Rule.responses[parent] ?= []
-          Cache.Rule.responses[parent].push @
+          definer.depend_on parent
           @validates.push (o)-> o[parent]()?
 
       order: (order)~>
@@ -302,11 +308,11 @@ class Cache.Rule
     finder = @finder
     diff = finder.diff
     all = finder.query.all._hash
- 
+
     deployer =
       if head.browser.ie || head.browser.safari
         (o)~>
-          o <<< @base_obj
+          _.defaults o, @base_obj
           @deploy o
       else
         (o)~>
@@ -331,7 +337,7 @@ class Cache.Rule
           old = all[item._id]
           if old?
             @protect item, old.item
-            diff.change = true 
+            diff.change = true
           else
             diff.add = true
           all[item._id] = o
@@ -355,7 +361,7 @@ class Cache.Rule
 
   set: (list, parent)->
     @finder.diff = {}
-    for key, val of @finder.query.all._hash 
+    for key, val of @finder.query.all._hash
       @finder.query.all._hash = {}
       @finder.diff.del = true
       break
