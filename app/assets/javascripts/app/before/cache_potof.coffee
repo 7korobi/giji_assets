@@ -1,8 +1,10 @@
 new Cache.Rule("potof").schema ->
+  @belongs_to "story"
   @belongs_to "event"
   @belongs_to "face"
   @depend_on "message"
 
+  urges = "　①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿"
   maskstate_order = _.sortBy _.keys(RAILS.maskstates), (o)-> -o
   win_by_role = (o, list)=>
     for role in o.role
@@ -70,13 +72,16 @@ new Cache.Rule("potof").schema ->
     urge     = o.point.actaddpt
     pt_no    = o.say.gsay
 
+    story = o.story()
+    event = o.event()
+
     switch o.live
       when "live"
         pt_no = o.say.say
         o.hide.dead = o.deathday
 
       when "mob"
-        win_juror = 'HUMAN' if ('juror' == o.story.type.mob)
+        win_juror = 'HUMAN' if ('juror' == story.type.mob)
 
       when "suddendead"
         win_juror = 'LEAVE'
@@ -92,10 +97,10 @@ new Cache.Rule("potof").schema ->
       else
         o.hide.dead = o.deathday
 
-    if o.story.is_epilogue
+    if story.is_epilogue
       pt = "∞"
     else
-      say_type = RAILS.saycnt[o.story.type.say]
+      say_type = RAILS.saycnt[story.type.say]
       pt =
         switch say_type.COST_SAY
           when "point"
@@ -109,7 +114,7 @@ new Cache.Rule("potof").schema ->
     win_result = "参加"
     zombie = 0x040
 
-    switch o.story.type.game
+    switch story.type.game
       when "TROUBLE"
         win_zombie = 'WOLF' if 0 == (o.rolestate & zombie)
         is_dead_lose = 1    if "HUMAN" == win
@@ -121,7 +126,7 @@ new Cache.Rule("potof").schema ->
 
     win_role = win_by_role(o, RAILS.gifts) || win_by_role(o, RAILS.roles) || "NONE"
     win = win_juror || win_love || win_zombie || win_role
-    win = RAILS.folders[o.story.folder].evil if win == 'EVIL'
+    win = RAILS.folders[story.folder].evil if win == 'EVIL'
     switch win
       when "LONEWOLF"
         is_dead_lose = 1
@@ -130,12 +135,12 @@ new Cache.Rule("potof").schema ->
       when "LOVER"
         is_lone_lose = 1 if ! _.include o.role, "LOVEANGEL"
 
-    if o.story.is_epilogue
+    if story.is_epilogue
       switch o.live
         when "suddendead", "leave"
           win_result = "―"
         else
-          winner = o.event.winner
+          winner = event.winner
           win_result = "敗北"
           win_result = "勝利" if winner == "WIN_" + win
           win_result = "勝利" if winner != "WIN_HUMAN"  && winner != "WIN_LOVER" && "EVIL" == win
@@ -191,7 +196,7 @@ new Cache.Rule("potof").schema ->
       stat_type: stat_type
       said_num: if said_num then "#{said_num}回" else ""
       pt: pt
-      urge: String.fromCharCode(if urge then 9311 + urge else 3000)
+      urge: urges[urge] || "∞"
       win: win
       win_result: win_result
       win_side:   RAILS.wins[win].name
