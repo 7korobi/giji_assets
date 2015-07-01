@@ -20,7 +20,7 @@ GUI.if_exist "#buttons", (dom)->
   layout.width = 5
   layout.transition()
 
-  m.module dom,
+  m.mount dom,
     controller: ->
     view: ->
       vdoms = []
@@ -90,14 +90,14 @@ GUI.if_exist "#buttons", (dom)->
 GUI.if_exist "#topviewer", (dom)->
   layout = new GUI.Layout dom, 0, 1, 110, head.browser.ios, 0
 
-  m.module dom,
+  m.mount dom,
     controller: ->
     view: ->
       menu.icon.view()
 
 
 GUI.if_exist "title", (dom)->
-  m.module dom,
+  m.mount dom,
     controller: ->
     view: ->
       story = Cache.storys.find Url.prop.story_id()
@@ -107,9 +107,10 @@ GUI.if_exist "title", (dom)->
       else
         "人狼議事"
 
-if gon?.potofs?
-  catch_gon.potofs()
+if gon?.potofs? && gon?.events? && gon.event?
+  catch_gon.villages()
 
+if gon?.potofs?
   GUI.if_exist "#sayfilter", (dom)->
     layout = new GUI.Layout dom, -1, 1, 100
     layout.small_mode = true
@@ -134,7 +135,7 @@ if gon?.potofs?
       config: (elem)->
         line_text_height = elem.offsetHeight
 
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         layout.width  = Url.prop.right_width()
@@ -220,9 +221,6 @@ if gon?.potofs?
 
 
 if gon?.events? && gon.event?
-  catch_gon.story()
-  catch_gon.events()
-
   GUI.if_exist "#messages", (dom)->
     win.scroll.size = 30
 
@@ -243,13 +241,15 @@ if gon?.events? && gon.event?
 
     GUI.message.delegate.tap_anchor = (turn, logid, id, by_id)->
       [folder, vid, by_turn, by_logid] = by_id.split("-")
-      has_tap = Cache.messages.find("#{folder}-#{vid}-#{turn}-#{logid}")?
+      anker_id = Cache.messages.anker_id(folder, vid, turn, logid)
+      [__, __, __, logid] = anker_id.split("-")
+
+      has_tap = Cache.messages.find(anker_id)
       event = Cache.events.find("#{folder}-#{vid}-#{turn}")
       doc.load.event has_tap, event, ->
         pins = Url.prop.pins()
         pins["#{by_turn}-#{by_logid}"] = true
         pins["#{turn}-#{logid}"] = true
-        Url.prop.pins pins
         change_pin(by_id)
 
     GUI.message.delegate.tap_identity = (turn, logid, id)->
@@ -338,7 +338,7 @@ if gon?.events? && gon.event?
           m "hr.black"
 
 
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         win.scroll.pager "div", doc.messages[menu.scope.state()](Url.prop).list(), (o)->
@@ -354,7 +354,6 @@ if gon?.events? && gon.event?
 
     m.startComputation()
     window.requestAnimationFrame ->
-      catch_gon.events()
       catch_gon.messages()
 
       menu.scope.open()
@@ -375,7 +374,7 @@ if gon?.stories?
         win.scroll.size = 120
         menu.scope.change "normal"
 
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         query = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
