@@ -43,26 +43,41 @@ textarea,
 .btn {
   margin: 1px;
   box-sizing: border-box;
+}
 
-  &.tiny {
-    @include span-columns(1);
+#sow_auth {
+  text-align: center;
+  label {
+    input,
+    .mark {
+      width: 20%;
+    }
   }
-  &.mini {
-    @include span-columns(2);
+  span.btn {
+    width: 10%;
   }
-  &.small {
-    @include span-columns(3);
-  }
-  &.medium {
-    @include span-columns(4);
-  }
-  &.large {
-    @include span-columns(6);
-  }
-  &.full,
-  &.huge {
-    @include span-columns(12);
-  }
+}
+
+.tiny {
+  @include span-columns(1);
+}
+.mini {
+  @include span-columns(2);
+}
+.quarter,
+.small {
+  @include span-columns(3);
+}
+.medium {
+  @include span-columns(4);
+}
+.half,
+.large {
+  @include span-columns(6);
+}
+.full,
+.huge {
+  @include span-columns(12);
 }
 
 .attention {

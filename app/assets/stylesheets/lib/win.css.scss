@@ -1,28 +1,22 @@
 #{$glass-msg-theme} {
-  .mob {
-    @include win-tone(glass, #ffb, rgba(  0,  0,  0, 0.4));
-  }
-  .suddendead,
-  .leave {
-    @include win-tone(glass, #444, rgba( 40, 40, 40, 0.4));
-  }
   .executed {
     @include win-tone(glass, #99f, rgba( 30, 30,  0, 0.4));    
   }
-  .victim,
-  .cursed,
-  .droop,
-  .suicide,
-  .feared {
-    @include win-tone(glass, #f45, rgba(  0, 30, 30, 0.4));
+
+  .live {
+    @include win-tone(glass, #ddf, rgba(0,0,0, 0.4));
   }
 
+  .suddendead,
+  .leave,
   .WIN_LEAVE       {
     @include win-tone(glass, #444, rgba( 40, 40, 40, 0.4));    
   }
+  .mob,
   .WIN_NONE        {
     @include win-tone(glass, #ffb, rgba(  0,  0,  0, 0.4));
   }
+
   .WIN_HUMAN       ,
   .WIN_DISH        {
     @include win-tone(glass, #997, rgba(  0,  0,  0, 0.4));
@@ -42,6 +36,11 @@
     @include win-tone(glass, #dcb, rgba( 20, 40, 50, 0.4));
   }
 
+  .victim,
+  .cursed,
+  .droop,
+  .suicide,
+  .feared,
   .WIN_WOLF {
     @include win-tone(glass, #f45, rgba(  0, 30, 30, 0.4));
   }
@@ -54,30 +53,25 @@
 .chrlist,
 .minilist,
 #{$white-msg-theme} {
-  .mob {
-    @include win-tone(white, #000, #ca6);
-  }
-  .suddendead,
-  .leave {
-    @include win-tone(white, #aaa, #666);
-  }
   .executed {
     @include win-tone(white, #000, #bbd);
   }
-  .victim,
-  .cursed,
-  .droop,
-  .suicide,
-  .feared {
-    @include win-tone(white, #600, #a55);
+
+  .live {
+    @include win-tone(white, #000, #cb8);
   }
 
+  .suddendead,
+  .leave,
   .WIN_LEAVE       {
     @include win-tone(white, #aaa, #666);
   }
+
+  .mob,
   .WIN_NONE        {
     @include win-tone(white, #000, #ca6);
   }
+
   .WIN_HUMAN       ,
   .WIN_DISH        {
     @include win-tone(white, #330, #a97);
@@ -97,6 +91,11 @@
     @include win-tone(white, #654, #dcb);
   }
 
+  .victim,
+  .cursed,
+  .droop,
+  .suicide,
+  .feared,
   .WIN_WOLF {
     @include win-tone(white, #600, #a55);
   }

@@ -165,7 +165,8 @@
   $width-list: 290px, 320px, 350px, 380px, 410px, 440px, 470px, 500px, 530px, 560px, 590px, 620px, 650px, 680px, 710px, 740px, 770px, 99999px;
   @for $idx from 1 through 17 {
     $content: nth($width-list, $idx);
-    $text: $content - 90px;
+    $td:   $content - 118px; // see film style.
+    $text: $content - 133px; // see film style.
     $head: nth($head-list, $idx);
     $min: nth($width-list, $idx    ) + $base + ($idx + 0) * $step;
     $max: nth($width-list, $idx + 1) + $base + ($idx + 1) * $step - 1;
@@ -194,7 +195,10 @@
 
       table.memo,
       table.talk {
-        td { width: $text; }
+        td { width: $td; }
+      }
+      table.talk td div.msg{
+        width: $text;
       }
     }
   }
