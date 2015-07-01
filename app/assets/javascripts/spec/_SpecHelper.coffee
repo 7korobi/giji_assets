@@ -7,7 +7,7 @@ win.on.orientation.push ->
 win.on.motion.push ->
   test.motion += 1
   m.redraw()
-m.module document.querySelector("#win"),
+m.mount document.querySelector("#win"),
   controller: ->
   view: ->
     format = (n, p)->

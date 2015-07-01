@@ -88,24 +88,20 @@ export catch_gon =
 
     Cache.rule.map_face.set gon.map_reduce.faces
 
-  potofs: ->
-    Cache.rule.potof.set gon.potofs,
-      story: gon.story
-
-  story: ->
+  villages: ->
     if gon?.story?
       Cache.rule.story.set [gon.story]
       console.log "1 story cache."
 
-  events: ->
     for event in gon.events
       id = "#{event.story_id}-#{event.turn}"
       event.is_full ||= Cache.events.find(id)?.is_full
 
     Cache.rule.event.merge gon.events
     console.log "#{gon.events.length} events cache. (#{gon.story?._id})"
-    #  Cache.rule.event.merge [gon.event],
-    #    story_id: gon.story?._id
+
+    Cache.rule.potof.set gon.potofs,
+      event_id: gon.events.last._id
 
   messages: ->
     interval = gon.story.upd.interval * 1000 * 3600 * 24
@@ -134,3 +130,4 @@ export catch_gon =
     if gon?.sow_auth?
       deploy(gon.sow_auth)
       sow.auth = gon.sow_auth
+      sow.url  = gon.url

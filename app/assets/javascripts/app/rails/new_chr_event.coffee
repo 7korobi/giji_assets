@@ -19,7 +19,7 @@ if gon?.new_chr_faces? && gon?.new_chr_jobs?
         m "div", m.trust o.face.name
 
   GUI.if_exist "#map_faces", (dom)->
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         [

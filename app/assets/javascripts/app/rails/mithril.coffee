@@ -1,5 +1,5 @@
 GUI.if_exist "#css_changer", (dom)->
-  m.module dom,
+  m.mount dom,
     controller: ->
     view: ->
       m ".guide",
@@ -16,7 +16,7 @@ if gon?.map_reduce?.faces?
   catch_gon.map_reduce_faces()
 
   GUI.if_exist "#map_faces", (dom)->
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         map_order_set = RAILS.map_faces_orders[Url.prop.order()]
@@ -56,7 +56,7 @@ if gon?.map_reduce?.faces?
         ]
 
   GUI.if_exist "#chr_sets", (dom)->
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         menu.icon.icon "th-large",
@@ -86,7 +86,7 @@ if gon?.face?
   catch_gon.face()
 
   GUI.if_exist "#summary", (dom)->
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         face = Cache.map_face_detail
@@ -128,7 +128,7 @@ if gon?.face?
         ]
 
   GUI.if_exist "#calc", (dom)->
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         face = Cache.map_face_detail
@@ -169,7 +169,7 @@ if gon?.face?
         ]
 
   GUI.if_exist "#village", (dom)->
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         face = Cache.map_face_detail
@@ -190,7 +190,7 @@ if gon?.face?
         m ".MAKER.guide", win.scroll.mark("villages"), letters
 
   GUI.if_exist "#sow_user", (dom)->
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         face = Cache.map_face_detail
@@ -224,7 +224,7 @@ if gon?.face?
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
     Cache.rule.item.set gon.villages
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         win.scroll.pager "div", Cache.items.list(), (v)->
@@ -233,7 +233,7 @@ if gon?.villages?
 if gon?.byebyes?
   GUI.if_exist "#byebyes", (dom)->
     Cache.rule.item.set gon.byebyes
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         win.scroll.pager "div", Cache.items.list(), (v)->
@@ -242,7 +242,7 @@ if gon?.byebyes?
 if gon?.history?
   GUI.if_exist "#history", (dom)->
     Cache.rule.item.set gon.history
-    m.module dom,
+    m.mount dom,
       controller: ->
       view: ->
         win.scroll.pager "div", Cache.items.list(), (v)->

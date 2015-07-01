@@ -1,10 +1,10 @@
 GUI.if_exist "#css_changer", (dom)->
-  m.module dom,
+  m.mount dom,
     controller: ->
     view: ->
       m ".guide",
         m "a.menuicon.pull-right.icon-cog", menu.icon.start({}, "cog"), " "
-        if sow.auth.is_login
+        if false #sow.auth.is_login
           m "a.btn.edge[href=#{gon.url}?ua=mb&cmd=vindex&uid=#{sow.auth.uid()}&pwd=#{sow.auth.pwd()}]", "携帯"
         else
           m "a.btn.edge[href=#{gon.url}?ua=mb]", "携帯"
@@ -17,27 +17,38 @@ GUI.if_exist "#css_changer", (dom)->
         m "hr.black"
 
 if gon?.sow_auth?
-  GUI.if_exist "#buttons", (dom)->
+  GUI.if_exist "#sow_auth", (dom)->
     catch_gon.sow_auth()
-    menu.icon.icon "pin",
-      open: ->
-      close: ->
+    m.mount dom,
+      controller: ->
       view: ->
-        [ m "label",
-            m "span.mark.pull-left", "user id : "
-            m "input.mini", Txt.input sow.auth.uid
-          m "label",
-            m "span.mark.pull-left", "password : "
-            m "input.mini[type=password]", Txt.input sow.auth.pwd
-          m "hr.black"
-        ]
+        menu.icon.icon "pin",
+          open: ->
+          close: ->
+          view: ->
+            if sow.auth.is_login
+              [ unless sow.auth.is_loading
+                  m "span.TSAY", Btn.call({}, doc.sow_auth_logout), "#{sow.auth.uid()} がログアウト" 
+                m "hr.black"
+              ]
+            else
+              [ m "label",
+                  m ".mark", "user id : "
+                  m "input", Txt.input sow.auth.uid
+                m "label",
+                  m ".mark", "password : "
+                  m "input[type=password]", Txt.input sow.auth.pwd
+                unless sow.auth.is_loading
+                  m "span.TSAY", Btn.call({}, doc.sow_auth_login), "ログイン" 
+                m "hr.black"
+              ]
 
 if gon?.items?
   Cache.rule.item.set gon.items
   items_module = (type)->
     GUI.if_exist "#" + type, (dom)-> 
       query = Cache.items.where({type})
-      m.module dom,
+      m.mount dom,
         controller: ->
         view: ->
           query.list().map (v)->

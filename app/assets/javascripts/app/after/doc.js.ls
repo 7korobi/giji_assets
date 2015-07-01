@@ -3,16 +3,29 @@ export doc =
   seeing_add: (id, sec)->
     doc.seeing[id] = (doc.seeing[id] || 0) + sec
 
+  sow_auth_logout: ->
+    sow.auth.is_loading = true
+    window.requestAnimationFrame ->
+      Submit.get("#{sow.url}?cmd=logout").then (gon)->
+        catch_gon.sow_auth()
+        sow.auth.is_loading = false
+
+  sow_auth_login: ->
+    sow.auth.is_loading = true
+    window.requestAnimationFrame ->
+      Submit.get("#{sow.url}?cmd=login&uid=#{sow.auth.uid()}&pwd=#{sow.auth.pwd()}").then (gon)->
+        catch_gon.sow_auth()
+        sow.auth.is_loading = false
+
   load: 
     event: (shortcut, event, cb)->
-      event.is_loading = true
       if shortcut
         cb()
       else
+        event.is_loading = true
         window.requestAnimationFrame ->
           Submit.get(event.link).then (gon)->
-            catch_gon.events()
-            catch_gon.potofs()
+            catch_gon.villages()
             catch_gon.messages()
             event.is_loading = false
             cb()

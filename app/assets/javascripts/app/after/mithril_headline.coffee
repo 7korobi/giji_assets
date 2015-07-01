@@ -147,7 +147,7 @@ head_menu = (state)->
 
 GUI.if_exist "#head_navi", (dom)->
   state = m.prop "finish"
-  m.module dom,
+  m.mount dom,
     controller: ->
     view: ->
       [ m ".left_image"
@@ -157,7 +157,7 @@ GUI.if_exist "#head_navi", (dom)->
 
 GUI.if_exist "#headline", (dom)->
   state = m.prop "finish"
-  m.module dom,
+  m.mount dom,
     controller: ->
     view: ->
       m ".choice",
@@ -166,7 +166,7 @@ GUI.if_exist "#headline", (dom)->
 
 GUI.if_exist "#to_root", (dom)->
   day_or_night = m.prop()
-  m.module dom,
+  m.mount dom,
     controller: ->
       hour = 1000 * 60 * 60
 
