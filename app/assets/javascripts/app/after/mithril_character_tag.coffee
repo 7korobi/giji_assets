@@ -8,10 +8,11 @@ GUI.if_exist "#character_tag", (dom)->
       m "span.emboss.pull-right", val
     ]
 
-  m.module dom,
+  m.mount dom,
     controller: ->
     view: ->
       chrs = Cache.faces.tag(tag()).list()
+      set = RAILS.tag[tag()]
 
       [ menu.icon.icon "th-large",
           view: (main_menu)->
@@ -53,13 +54,13 @@ GUI.if_exist "#character_tag", (dom)->
         m ".chrlist",
           m "div",
             m "h6", 
-              RAILS.tag[tag()].long
+              set.long
             m ".GSAY.badge",
-              RAILS.tag[tag()].name
+              set.name
             "の#{chrs.length}人を表示しています。"
           m "hr.black"
           for o in chrs
-            chr_job = Cache.chr_jobs.find("all_#{o._id}")
+            chr_job = Cache.chr_jobs.find("#{set.chr_set_ids.last}_#{o._id}") || Cache.chr_jobs.find("all_#{o._id}")
             job_name = chr_job.job
 
             attr = GUI.attrs {}, ->
