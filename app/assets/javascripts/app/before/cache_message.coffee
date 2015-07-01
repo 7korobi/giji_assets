@@ -7,16 +7,26 @@ new Cache.Rule("message").schema ->
   @order "updated_at"
 
   timespan = 1000 * 3600
+  {visible, bit, mask} = RAILS.message
+
   Cache.messages.has = has =
     face: {}
     vsay: false
     bug: false
-  {visible, bit, mask} = RAILS.message
+  Cache.messages.ids = {}
 
   @scope (all)->
+    anker_id: (folder, vid, turn, logid)->
+      id = "#{folder}-#{vid}-#{turn}-#{logid}"
+      id = all.ids[id] || id
+      if all.find(id)
+        id
+      else
+        all.anker_id(folder, vid, turn - 1, logid)
+
     anchor: (mode, scroll)->
       enables = RAILS.message.visible.talk[mode]
-      message = Cache.messages.find scroll
+      message = all.find scroll
       if message
         [folder, vid, turn, logid] = scroll.split("-")
         regexp = ///<mw\ #{logid},#{turn},///
@@ -119,7 +129,10 @@ new Cache.Rule("message").schema ->
         o.anchor = "act"
         o.show = bit.ACTION
       when "M"
-        o.logid = o.mestype[0..0] + o.logid[1..-1]  # data cleaned
+        tail = o.logid[1..-1]
+        anker_id = o.event_id + "-M" + tail
+        o.logid = o.mestype[0..0] + tail  # data cleaned
+        Cache.messages.ids[anker_id] = o._id
         vdom = GUI.message.memo
         o.anchor = "memo"
         o.show = bit.MEMO
