@@ -13,7 +13,6 @@ config/omni_auth.yml
 config/deploy
 config/yaml
 config/initializers/secret.rb
-config/initializers/resque.rb
 public/assets-master
 public/images/15girls
 public/images/TMMI
@@ -29,4 +28,3 @@ public/images/portrate_sf++
 public/images/sow
 test/
 vendor/cache
-

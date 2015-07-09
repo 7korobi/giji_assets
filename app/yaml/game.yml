@@ -511,7 +511,7 @@ PERJURY:
   livelog:  /sow.cgi?cmd=rss
   folder: PERJURY
   info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:Cp"
+  nation: "人狼議事RP:Bp"
   epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
   vid_code: Bp
   config:
@@ -523,16 +523,16 @@ PERJURY:
       - infinity
     cfg:
       <<: *cfg_braid
-      BASEDIR_CGIERR: http://perjury.rulez.jp//
       URL_SW:         http://perjury.rulez.jp
-      TYPE:           CHEAT
+      BASEDIR_CGIERR: http://perjury.rulez.jp//
+#      TYPE:           CHEAT
       RULE:           PERJURY
       MAX_VILLAGES:   2
-      NAME_HOME:      人狼議事 perjury rulez<br>- Role Play Cheat -
+      NAME_HOME:      人狼議事 perjury rulez<br>- Role Play braid -
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/vage/config.pl
-    is_angular: show-fix
+#    is_angular: show-fix
 
 XEBEC:
   server: xebec.x0.to
@@ -612,7 +612,7 @@ CABALA:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
-    is_angular: show-fix
+#    is_angular: show-fix
 
 
 ALLSTAR:
