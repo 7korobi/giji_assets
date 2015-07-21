@@ -7,7 +7,7 @@ GUI = (->
         hash[key] += 1
 
       order = Object.keys(hash).sort (a,b)-> hash[b] - hash[a]
-      for key in order 
+      for key in order
         cb name(key), hash[key]
 
   name_config = (o)->
@@ -162,7 +162,7 @@ GUI = (->
     attr =
       config: (elem, is_continue, context)->
         at = Timer.fetch o.updated_at
-        context.onunload = -> 
+        context.onunload = ->
           delete context.update
         context.update = (text)->
           child = text
@@ -212,6 +212,39 @@ GUI = (->
 
   names:
     config: names_base(name_config)
+
+  items_module: (dir, type)->
+    GUI.if_exist "##{dir}-#{type}", (dom)->
+      query = Cache.items.where({type})
+      m.mount dom,
+        controller: ->
+        view: ->
+          m "div",
+            query.list().map (v)->
+              GUI.message[v.template](v)
+
+  accordion: (mark, list)->
+    cancel = GUI.attrs {}, ->
+      @end (e)->
+        list.tap = null
+
+    items = []
+    items.push m "dt", cancel, m "span.mark", m.trust "&#x2718"
+
+    cb = ({head, text}, idx)->
+      tap = GUI.attrs {}, ->
+        @end (e)->
+          list.tap = idx
+      items.push m "dt", tap,
+        m "strong", m.trust head
+        m ".guide", "↨"
+      if list.tap == idx
+        items.push m "dd", m.trust text
+
+    for o, i in list
+      cb o, i
+
+    m "dl.accordion", win.scroll.mark(mark), items
 
   letter: (style, head, vdom...)->
     [ m "p.name",

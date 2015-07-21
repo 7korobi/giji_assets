@@ -2,7 +2,7 @@ GUI.form = (->
 
   submit = (props, f)->
     GUI.attrs {}, ()->
-      @start (e)->
+      @end (e)->
         GUI.form.delegate.submit(props, f)
 
   delegate:
@@ -41,7 +41,7 @@ GUI.form = (->
               m "p",
                 m "label.medium[for=entry_role]", "希望する役職"
                 m "select#entry_role", Txt.input(props.role), f.roles
-              m "div", 
+              m "div",
                 if f.is_preview()
                   GUI.message.talk_name null, "#{f.chr_job.job} #{f.chr_job.face.name}"
                   GUI.message.talk_text null, props.style(), f.log().deco_preview
@@ -51,7 +51,7 @@ GUI.form = (->
                   m "h6", "参加する時のセリフ"
                   m ".mark", f.errors
 
-              m "p", 
+              m "p",
                 if f.is_preview()
                   m "a.btn", Btn.bool(f.is_preview), "戻る"
                   m "a.btn", submit(props, f), f.title
@@ -84,7 +84,7 @@ GUI.form = (->
               m "h6", "参加する時のセリフ"
               m ".mark", f.errors
 
-            m "p", 
+            m "p",
               if f.is_preview()
                 m "a.btn", Btn.bool(f.is_preview), "戻る"
                 m "a.btn", submit(props, f), f.title

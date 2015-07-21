@@ -2,26 +2,26 @@ GUI.message = (->
   deco_action = (by_id)->
     config: (parent, is_continue, context)->
       GUI.attrs_to parent, "span[anchor]", {}, (a, turn, id)->
-        @start (e)->
+        @end (e)->
           m.startComputation()
           GUI.message.delegate.tap_anchor(turn, a, id, by_id)
           m.endComputation()
 
       GUI.attrs_to parent, "span[random]", {}, (cmd, val)->
-        @start (e)->
+        @end (e)->
           m.startComputation()
           GUI.message.delegate.tap_random(cmd, val, by_turn, by_id)
           m.endComputation()
 
       GUI.attrs_to parent, "span[external]", {}, (id, uri, protocol, host, path)->
-        @start (e)->
+        @end (e)->
           m.startComputation()
           GUI.message.delegate.tap_external(id, uri, protocol, host, path, by_id)
           m.endComputation()
 
   identity_action = (o)->
     attr = GUI.attrs {}, ->
-      @start (e)->
+      @end (e)->
         GUI.message.delegate.tap_identity(o.turn, o.logid, o._id)
 
   delegate:
@@ -40,7 +40,7 @@ GUI.message = (->
         { value: "?", selected: true }
         "- 選択してください -"
     )
-    
+
     buttons = for button in Cache.commands.target().list()
       m "option",
         button.title
@@ -148,7 +148,7 @@ GUI.message = (->
   event: (o)->
     btn = o.event().view.btn()
     list = []
-    list.push m "h3", m.trust o.name 
+    list.push m "h3", m.trust o.name
     list.push btn if btn
 
     m ".#{o.mestype}", {key: o._id}, list
@@ -163,7 +163,7 @@ GUI.message = (->
       else
         Btn.set {}, prop, value
     hides = Url.prop.potofs_hide()
-    m "section.table-swipe", 
+    m "section.table-swipe",
       m "table",
         m "tfoot",
           m "tr.center",
@@ -209,10 +209,10 @@ GUI.message = (->
       GUI.message.talk_text v._id, "", v.log.deco_text
 
   guide: (v)->
-    m ".#{v.mestype}.guide", {key: v._id}, 
+    m ".#{v.mestype}.guide", {key: v._id},
       GUI.message.talk_name v.user_id, v.name, v.to
       GUI.message.talk_text v._id, v.style, v.log.deco_text
-      m "p.mes_date", 
+      m "p.mes_date",
         m "span.mark", identity_action(v), v.anchor
         GUI.timer "span", v
 
@@ -228,9 +228,9 @@ GUI.message = (->
         m "th",
           GUI.portrate v.face_id
           m "div", m "b", v.name
-        m "td", 
+        m "td",
           GUI.message.talk_text v._id, v.style, v.log.deco_text
-          m "p.mes_date", 
+          m "p.mes_date",
             GUI.timer "span", v
 
   talk: (v)->

@@ -66,7 +66,7 @@
 
   table {
     position: absolute;
-    bottom: 0;    
+    bottom: 0;
     td {
       text-align: center;
       vertical-align: bottom;
@@ -160,7 +160,7 @@ table .talk td .msg,
   -webkit-box-sizing: content-box;
 }
 
-.left-layout {  
+.left-layout {
   &.std-width  { @include width( 0px, 30px, 2) };
   &.wide-width { @include width( 0px, 10px, 2) };
   &.full-width { @include width( 0px,  0px, 2) };

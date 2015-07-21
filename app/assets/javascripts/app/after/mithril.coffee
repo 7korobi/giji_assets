@@ -145,7 +145,7 @@ if gon?.potofs?
         if layout.width < 90
           layout.width = 90
           potofs =
-            m "section.table-swipe", 
+            m "section.table-swipe",
               m "table",
                 m "tfoot",
                   m "tr.center",
@@ -176,13 +176,13 @@ if gon?.potofs?
           star = (o)->
             if doc.seeing[o._id] >= day
               attr = GUI.attrs {}, ->
-                @start (e)->
+                @end (e)->
                   delete doc.seeing[o._id]
               m "span.btn.edge", attr, "★ "
 
             else
               attr = GUI.attrs {}, ->
-                @start (e)->
+                @end (e)->
                   doc.seeing_add o._id, day
               m "span.btn.edge", attr, "☆ "
 
@@ -190,7 +190,7 @@ if gon?.potofs?
             m "section.plane",
               m "h6", "参照ログ"
               for o in anchorview
-                m ".line_text", 
+                m ".line_text",
                   m ".#{o.mestype}.badge", go_click(o), "#{o.turn}:#{o.anchor}"
                   m.trust o.log.line_text
               m "h6", seeing_measure, "よく見ていたログ"
@@ -457,12 +457,12 @@ if gon?.stories?
                 m "a",
                   href: "http://7korobi.gehirn.ne.jp/stories/#{o._id}.html"
                 , m "code.icon-download"
-                m "kbd.note", 
+                m "kbd.note",
                   o._id
                 m "a",
                   href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{o._id}"
                 , m.trust o.name
-                m "kbd", 
+                m "kbd",
                   o.view.rating
 
               m "tr", {key: o._id },

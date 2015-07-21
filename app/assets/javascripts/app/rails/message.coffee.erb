@@ -1,0 +1,20 @@
+
+Cache.rule.item.set <%= JSON.generate MESSAGE["rails"]["ruleguide"] %>
+GUI.items_module "ruleguide", "welcome"
+GUI.items_module "ruleguide", "violation"
+GUI.items_module "ruleguide", "suddendeath"
+GUI.items_module "ruleguide", "recovery"
+GUI.items_module "ruleguide", "create"
+
+
+rule_accordion = (type)->
+  GUI.if_exist "#rule-#{type}", (dom)->
+    m.mount dom,
+      controller: ->
+      view: ->
+        GUI.accordion type, RULE[type].list
+
+rule_accordion "nation"
+rule_accordion "village"
+rule_accordion "maker"
+rule_accordion "player"

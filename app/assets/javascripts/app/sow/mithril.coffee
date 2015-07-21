@@ -28,7 +28,7 @@ if gon?.sow_auth?
           view: ->
             if sow.auth.is_login
               [ unless sow.auth.is_loading
-                  m "span.TSAY", Btn.call({}, doc.sow_auth_logout), "#{sow.auth.uid()} がログアウト" 
+                  m "span.TSAY", Btn.call({}, doc.sow_auth_logout), "#{sow.auth.uid()} がログアウト"
                 m "hr.black"
               ]
             else
@@ -39,23 +39,6 @@ if gon?.sow_auth?
                   m ".mark", "password : "
                   m "input[type=password]", Txt.input sow.auth.pwd
                 unless sow.auth.is_loading
-                  m "span.TSAY", Btn.call({}, doc.sow_auth_login), "ログイン" 
+                  m "span.TSAY", Btn.call({}, doc.sow_auth_login), "ログイン"
                 m "hr.black"
               ]
-
-if gon?.items?
-  Cache.rule.item.set gon.items
-  items_module = (type)->
-    GUI.if_exist "#" + type, (dom)-> 
-      query = Cache.items.where({type})
-      m.mount dom,
-        controller: ->
-        view: ->
-          query.list().map (v)->
-            GUI.message[v.template](v)
-
-  items_module "oldlog"
-  items_module "guide"
-  items_module "rule"
-  items_module "setting"
-  items_module "browsers"

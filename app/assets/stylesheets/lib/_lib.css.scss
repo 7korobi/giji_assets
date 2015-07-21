@@ -207,7 +207,6 @@
 @mixin film($film-left, $action-left, $action-border) {
   .accordion dd,
   .CAST code,
-
   table.memo {
     th {
       width: $action-left + 11px;

@@ -1,0 +1,10 @@
+
+Cache.rule.item.set <%= JSON.generate MESSAGE["sow"]["index"] %>
+if gon?.items?
+  Cache.rule.item.merge gon.items
+
+GUI.items_module "index", "oldlog"
+GUI.items_module "index", "guide"
+GUI.items_module "index", "rule"
+GUI.items_module "index", "setting"
+GUI.items_module "index", "browsers"

@@ -41,6 +41,8 @@ new Cache.Rule("map_face_story_log").schema ->
 
 new Cache.Rule("item").schema ->
   @deploy (o)->
-
-
-
+    [type, template, mestype] = o._id.split('-')
+    o.csid ||= "all" if o.face_id
+    o.type ||= type
+    o.mestype ||= mestype
+    o.template ||= template
