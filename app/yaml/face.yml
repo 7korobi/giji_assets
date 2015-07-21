@@ -1209,56 +1209,56 @@
 -   order: 80012
     face_id: sf12
     name: "†ルシフェル†"
-    comment: 
+    comment:
     _id: sf12
     tags:
       - stratos
 -   order: 80013
     face_id: sf13
     name: "トルドヴィン"
-    comment: 
+    comment:
     _id: sf13
     tags:
       - stratos
 -   order: 80014
     face_id: sf18
     name: "玖休"
-    comment: 
+    comment:
     _id: sf18
     tags:
       - stratos
 -   order: 80015
     face_id: sf19
     name: "参休"
-    comment: 
+    comment:
     _id: sf19
     tags:
       - stratos
 -   order: 80016
     face_id: sf14
     name: "クリスマス"
-    comment: 
+    comment:
     _id: sf14
     tags:
       - stratos
 -   order: 80017
     face_id: sf15
     name: "ジェームス"
-    comment: 
+    comment:
     _id: sf15
     tags:
       - stratos
 -   order: 80018
     face_id: sf16
     name: "ライジ"
-    comment: 
+    comment:
     _id: sf16
     tags:
       - stratos
 -   order: 80019
     face_id: sf17
     name: "ジャック"
-    comment: 
+    comment:
     _id: sf17
     tags:
       - stratos
@@ -1907,7 +1907,7 @@
       - middle
 
 #########################
-# 2014-08-22 update 
+# 2014-08-22 update
 
 -   _id: c112
     face_id: c112
@@ -1936,7 +1936,7 @@
       - travel
 
 #########################
-# 2014-08-23 update 
+# 2014-08-23 update
 
 -   _id: g08
     face_id: g08
@@ -1958,7 +1958,7 @@
       - middle
 
 #########################
-# 2014-09-11 update 
+# 2014-09-11 update
 
 -   _id: m18
     face_id: m18
@@ -1985,7 +1985,7 @@
       - myth
 
 #########################
-# 2014-12-11 update 
+# 2014-12-11 update
 
 -   _id: c115
     face_id: c115
@@ -2023,7 +2023,7 @@
       - shoji
 
 #########################
-# 2015-01-01 update 
+# 2015-01-01 update
 
 -   _id: sf021
     face_id: sf021
@@ -2297,6 +2297,34 @@
       - giji
       - farm
 
+#########################
+# 2015-07-14 update
+
+-   _id: mad09
+    face_id: mad09
+    name: "カナビス"
+    comment: "ウパニシャッドの精神で"
+    order: 20009
+    tags:
+      - marchen
+
+-   _id: mad10
+    face_id: mad10
+    name: "ルグレ"
+    comment: "後悔あとをたたず"
+    order: 20010
+    tags:
+      - marchen
+
+-   _id: mad11
+    face_id: mad11
+    name: "オルギア"
+    comment: "ええじゃないかええじゃないかー！"
+    order: 20011
+    tags:
+      - marchen
+
+
 
 #########################
 # xxxx-xx-xx update
@@ -2309,7 +2337,7 @@
 # 肩書案
 #  チーム○○、好事家、金剛座、英雄審査会、かくれんぼサークル、炭焼人、薬剤師
 #   新任教師（帰還者）、板前、侘茶湯
-#   〜診断士 
+#   〜診断士
 # 温泉から
 #  洞窟探査、鉱泉分析、三助、湯もみ、湯治客（刀傷 刺青）、大旦那（サル顔）
 # 都市伝説、怪談
