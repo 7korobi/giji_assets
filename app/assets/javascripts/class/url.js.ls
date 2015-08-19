@@ -1,7 +1,27 @@
 
+getter_setter =
+  callee: (store, current, parse, serial, key)->
+    prop = ->
+      if arguments.length
+        store := parse(arguments[0]) || current
+        Url.bind[key](store)
+        Url.replacestate()
+        store
+      else
+        store
+
+    prop.toJSON = -> serial(store)
+    prop
+
+do_define = (key, option)->
+  {parse, serial, current} = option
+  Url.bind[key] ?= ->
+  Url.prop[key] = getter_setter.callee(current, current, parse, serial, key)
+
+
 class Url
   @routes = {}
-  @cookie = {}
+  @cookies = {}
   @prop = {}
 
   @location = ->
@@ -12,59 +32,38 @@ class Url
     search:   location.search
     hash:     location.hash
 
-  @define = (bind_table...)->
-    do_define = (key, option)->
-      {type, current} = option
-      bind_base = Url.bind[key]
-      parser = Serial.parser[type]
-      prop = m.prop()
-      bind =
-        if bind_base
-          switch typeof bind_base
-            when "object"
-              binder = {}
-              for bind in bind_base
-                binder[bind[key]] = bind
-              (val)->
-                for subkey, subval of binder[val]
-                  console.log [subkey, subval, binder[val]] unless Url.prop[subkey]
-                  Url.prop[subkey](subval, true) if key != subkey
-                return
-            when "function"
-              bind_base
-        else
-          ->
-      Url.prop[key] = (val, is_replace)=>
-        if arguments.length
-          val = parser(val)
-
-          prop val
-          bind(val)
-
-          Url.replacestate()
-          #if is_replace
-          #  Url.replacestate()
-          #else
-          #  Url.pushstate()
-
-        else
-          value = prop()
-          if value?
-            value
-          else
-            current
-
-    props = bind_table[0]
-    bind_table[0] = {}
-    Url.bind = _.merge(bind_table...)
+  @define = (props)->
     Url.options = props
-    for key, prop_option of props
-      props[key] = prop_option = {} unless prop_option
-      prop_option.type ?= "String"
-      do_define key, prop_option
+    for key, o of props
+      props[key] = o = {} unless o
+      o.type ?= "String"
+      o.url = Serial.url[o.type]
+      o.parse = Serial.parser[o.type]
+      o.serial = Serial.serializer[o.type]
+      o.current ?= o.parse("")
+
+      do_define key, o
+
+  @binds = (binds)->
+    for key, list of binds
+      Url.bind key, list
+
+  @bind = (key, list)->
+      switch typeof! list
+        when \Function
+          Url.bind[key] = list
+        when \Array
+          binder = {}
+          for subs in list
+            binder[subs[key]] = subs
+          Url.bind[key] = (val)!->
+            for subkey, subval of binder[val]
+              console.log [subkey, subval, binder[val]] unless Url.prop[subkey]
+              Url.prop[subkey](subval) if key != subkey
+            return
 
   @each = (cb)->
-    Url.routes.cookie = Url.cookie
+    Url.routes.cookie = Url.cookies
     targets = Url.location()
     for target, data of targets
       for url_key, route of Url.routes[target]
@@ -97,22 +96,23 @@ class Url
 
     link.protocol + "//" + link.host + link.pathname + link.search + link.hash
 
-  constructor: (@format, @options = {})->
+
+  @cookie = (format, options)->
+    url = new Url(format)
+    url.cookie = options
+    url
+
+  (@format, @options = {})->
     @keys_in_url = []
 
     if @options.cookie
-      Url.cookie[ID.now()] = @
+      Url.cookies[ID.now()] = @
 
-    @scanner = new RegExp @format.replace(/[.]/ig,(key)-> "\\#{key}" ).replace /:([a-z_]+)/ig, (_, key)=>
-      type = Url.options[key]?.type
+    @scanner = new RegExp @format.replace(/[.]/gi, (key)-> "\\#{key}" ).replace /:([a-z_]+)/gi, (_, key)~>
       @keys_in_url.push key
 
-      Serial.url[type]
+      Url.options[key]?.url
     , "i"
-
-  values: (diff = {})->
-    for key in @keys_in_url
-      diff[key] || Url.prop[key]()
 
   popstate: (path, target)->
     data = {}
@@ -136,19 +136,19 @@ class Url
 
     if @options.unmatch
       path +=
-      if path.length
-        "&"
-      else
-        @options.unmatch
+        if path.length
+          "&"
+        else
+          @options.unmatch
       path += @serialize()
     path
 
   serialize: ->
     path = @format
     for key in @keys_in_url
-      type = Url.options[key]?.type
+      serial = Url.options[key]?.serial
       val = Url.prop[key]()
-      path = path.replace ///:#{key}///ig, Serial.serializer[type](val)
+      path = path.replace //:#{key}//gi, serial(val)
     path
 
   set_cookie: (value)->
@@ -165,3 +165,11 @@ class Url
     if secure
       ary.push "secure"
     document.cookie = ary.join("; ")
+
+  # obsolete
+  values: (diff = {})->
+    for key in @keys_in_url
+      diff[key] || Url.prop[key]()
+
+
+export Url

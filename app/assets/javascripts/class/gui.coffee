@@ -221,7 +221,10 @@ GUI = (->
         view: ->
           m "div",
             query.list().map (v)->
-              GUI.message[v.template](v)
+              vdom = GUI.message[v.template](v)
+              vdom.attrs.config = win.scroll.mark(v._id).config
+              vdom
+
 
   accordion: (mark, list)->
     cancel = GUI.attrs {}, ->

@@ -15,30 +15,3 @@ GUI.if_exist "#css_changer", (dom)->
           moon:   "月夜"
           wa:     "和の国"
         m "hr.black"
-
-if gon?.sow_auth?
-  GUI.if_exist "#sow_auth", (dom)->
-    catch_gon.sow_auth()
-    m.mount dom,
-      controller: ->
-      view: ->
-        menu.icon.icon "pin",
-          open: ->
-          close: ->
-          view: ->
-            if sow.auth.is_login
-              [ unless sow.auth.is_loading
-                  m "span.TSAY", Btn.call({}, doc.sow_auth_logout), "#{sow.auth.uid()} がログアウト"
-                m "hr.black"
-              ]
-            else
-              [ m "label",
-                  m ".mark", "user id : "
-                  m "input", Txt.input sow.auth.uid
-                m "label",
-                  m ".mark", "password : "
-                  m "input[type=password]", Txt.input sow.auth.pwd
-                unless sow.auth.is_loading
-                  m "span.TSAY", Btn.call({}, doc.sow_auth_login), "ログイン"
-                m "hr.black"
-              ]

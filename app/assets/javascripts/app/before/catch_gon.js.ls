@@ -57,7 +57,7 @@ set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
   Cache.rule.message.merge messages
 
 set_event_messages = (event)->
-  Cache.rule.message.merge event.messages, 
+  Cache.rule.message.merge event.messages,
     event_id: event._id
   console.log "#{event.messages.length} messages cache. (#{event._id})"
 
@@ -120,14 +120,3 @@ export catch_gon =
     Url.prop.talk_at doc.messages.talk(Url.prop).list().first._id unless Url.prop.talk_at()
     Url.prop.memo_at doc.messages.memo(Url.prop).list().first._id unless Url.prop.memo_at()
     Url.prop.home_at doc.messages.home(Url.prop).list().first._id unless Url.prop.home_at()
-
-  sow_auth: ->
-    deploy = (o)->
-      o.uid = m.prop o.uid
-      o.pwd = m.prop()
-      o.is_login = o.is_login > 0
-      o.is_admin = o.is_admin > 0
-    if gon?.sow_auth?
-      deploy(gon.sow_auth)
-      sow.auth = gon.sow_auth
-      sow.url  = gon.url

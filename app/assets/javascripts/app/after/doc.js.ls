@@ -3,32 +3,17 @@ export doc =
   seeing_add: (id, sec)->
     doc.seeing[id] = (doc.seeing[id] || 0) + sec
 
-  sow_auth_logout: ->
-    sow.auth.is_loading = true
-    window.requestAnimationFrame ->
-      Submit.get("#{sow.url}?cmd=logout").then (gon)->
-        catch_gon.sow_auth()
-        sow.auth.is_loading = false
-
-  sow_auth_login: ->
-    sow.auth.is_loading = true
-    window.requestAnimationFrame ->
-      Submit.get("#{sow.url}?cmd=login&uid=#{sow.auth.uid()}&pwd=#{sow.auth.pwd()}").then (gon)->
-        catch_gon.sow_auth()
-        sow.auth.is_loading = false
-
-  load: 
+  load:
     event: (shortcut, event, cb)->
       if shortcut
         cb()
       else
         event.is_loading = true
-        window.requestAnimationFrame ->
-          Submit.get(event.link).then (gon)->
-            catch_gon.villages()
-            catch_gon.messages()
-            event.is_loading = false
-            cb()
+        Submit.get(event.link).then (gon)->
+          catch_gon.villages()
+          catch_gon.messages()
+          event.is_loading = false
+          cb()
 
   messages:
     seeing: (filter_size, center)->
@@ -118,7 +103,7 @@ export doc =
 
         m ".chrbox", {key: o._id},
           GUI.portrate o.face_id, attr(o)
-          m ".bar.#{o.live}", 
+          m ".bar.#{o.live}",
       m "hr.black"
 
   writer: ->
@@ -153,5 +138,3 @@ win.on.resize.push ->
       Url.prop.right_width (win.width - width - 4) / 2
     when "left"
       Url.prop.right_width (win.width - width - 4)
-
-

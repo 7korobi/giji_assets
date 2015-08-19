@@ -32,12 +32,52 @@ sow:
         <li>Android : 2.2.1 以降
         </ul>
 
+    - _id: program-talk-SAY-97
+      face_id: sf02
+      name: 哲学者 エスペラント
+      updated_at: 1437461000000
+      style:
+      log: |-
+        <ul>
+        <li><a class="btn edge" href="https://github.com/7korobi/sow-giji/tree/angular">最新版　人狼議事サイト プログラム</a>
+        <li><a class="btn edge" href="https://github.com/7korobi/sow-giji/releases">ダウンロード ページ</a>
+        <li><a class="btn edge" href="https://github.com/7korobi/giji_rails/tree/renewal">人狼議事 総合トップ、javascript、stylesheet</a>
+        <li>ライセンスは<a class="btn edge" href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
+        </ul>
+
+    - _id: thanks-talk-SAY-96
+      face_id: m05
+      name: ななころび
+      updated_at: 1437461000000
+      style: head
+      log: |-
+        作成にあたり、こちらのサイトを参考にさせていただきました。
+        <br>
+        ありがとうございます。
+        <ul>
+          <li>人狼審問 - Neighbour Wolves - (終了)
+          <li>The Village of Headless Knight (一時休止中)
+          <li>おとぎの国の人狼（欧州 おしまい）
+          <li>人狼の悪夢 (閉鎖)
+          <li>汝は人狼なりや？Shadow Gallery Ver 2.0（終了）
+          <li>MAD PEOPLE（終了）
+          <li><a class="btn edge" href="http://ninjinix.com/">人狼BBS</a>
+          <li><a class="btn edge" href="http://wolfbbs.jp/">人狼BBS まとめサイト</a>
+          <li><a class="btn edge" href="http://mshe.skr.jp/">人狼BBQ 四国</a>
+          <li><a class="btn edge" href="http://melon-cirrus.sakura.ne.jp/sow/">人狼物語 瓜科国</a>
+          <li><a class="btn edge" href="http://www3.marimo.or.jp/~fgmaster/cabala/sow.cgi">人狼物語 ぐたるてぃめっと</a>
+          <li><a class="btn edge" href="http://o8o8.o0o0.jp/wolf/sow.cgi">人狼物語暗黒編</a>
+          <li><a class="btn edge" href="http://tkido.com/m_jinro/index.html">メビウス人狼</a>
+          <li><a class="btn edge" href="http://trpg.scenecritique.com/Paranoia_O/">PARANOIA O</a>
+          <li><a class="btn edge" href="http://scpjapan.wiki.fc2.com">The SCP Foundation</a>
+        </ul>
+
 rails:
   ruleguide:
     - _id: welcome-talk-GSAY-1
       face_id: c96
       name: 学者 レオナルド
-      updated_at: 1370662886000
+      updated_at: 1370662886001
       log: |-
         ようこそ。ここにはこのサイトを楽しむためのルールや心構えを綴ってある。
         暖炉のそばが開いているから、腰を下ろして熟読しよう。楽しいゲームは全員が対等で、全員が読んで理解しているルールがあって成り立つんだ。
@@ -55,7 +95,7 @@ rails:
     - _id: violation-talk-GSAY-2
       face_id: c96
       name: 学者 レオナルド
-      updated_at: 1370662886001
+      updated_at: 1370662886002
       log: |-
         もし、ルールに違反してしまったとしたら？とても残念なことだけれど、まだ絶望しなくていい。
         <br>
@@ -69,7 +109,7 @@ rails:
     - _id: violation-talk-GSAY-3
       face_id: c96
       name: 学者 レオナルド
-      updated_at: 1370662886002
+      updated_at: 1370662886003
       log: |-
         エピローグでは全員が一同に介し、墓下と地上にわかれることなく、勝つための嘘もなく、より率直な話ができる。この特性から、人狼議事ではエピローグでの話し合いを推奨しているよ。
         <br>
@@ -82,7 +122,7 @@ rails:
     - _id: suddendeath-talk-GSAY-4
       face_id: t07
       name: 勧善懲悪委 アカリ
-      updated_at: 1370662886003
+      updated_at: 1370662886004
       style: head
       log: |-
         突然死は悪！そうですよね先生！
@@ -93,6 +133,7 @@ rails:
     - _id: suddendeath-talk-GSAY-5
       face_id: c96
       name: 学者 レオナルド
+      updated_at: 1370662886005
       log: |-
         正解、国のルールだね。
         <br>
@@ -111,7 +152,7 @@ rails:
     - _id: recovery-talk-GSAY-6
       face_id: c96
       name: 学者 レオナルド
-      updated_at: 1370662886004
+      updated_at: 1370662886006
       log: |-
         ここでは、ルール違反についてとるべき対応を話そう。
         <br>
@@ -130,7 +171,7 @@ rails:
     - _id: recovery-talk-GSAY-7
       face_id: g02
       name: 白鶴拳 志偉
-      updated_at: 1370662886005
+      updated_at: 1370662886007
       log: |-
         うちの道場じゃ、気の抜けた奴は師範代が叩き出してるぜ！リアルがヤバそうだったり、難しくてわかんないなら控えとけよってことよ。
         <br>
@@ -140,7 +181,7 @@ rails:
     - _id: recovery-talk-GSAY-8
       face_id: t01
       name: 友愛組合 チアキ
-      updated_at: 1370662886006
+      updated_at: 1370662886008
       log: |-
         道場みたいな処だと窮屈だな。僕は自分で、別の村を建てるよ。僕の村は忙しい人もフォローするし、ルール違反（突然死とか）があっても、厳しく責め立てたくはないんだ。
         <br>
@@ -152,7 +193,7 @@ rails:
     - _id: recovery-talk-GSAY-9
       face_id: c24
       name: 長老 ナタリア
-      updated_at: 1370662886007
+      updated_at: 1370662886009
       log: |-
         あたしは難しいことを考えるのが苦手でねえ。あんまり上手に勝とうとできていなくても、厳しくしてほしくないねえ。
         <br>
@@ -162,7 +203,7 @@ rails:
     - _id: create-talk-GSAY-10
       face_id: t10
       name: 営利政府 トレイル
-      updated_at: 1370662886008
+      updated_at: 1370662886010
       log: |-
         村建てフォームには、村のルールが既に記入してあります。
         <br>

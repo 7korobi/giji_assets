@@ -5,18 +5,6 @@ Txt = (->
     value: prop()
 )()
 
-Submit = (->
-  get: (url)->
-    query =
-      method: "GET"
-      url: url
-      serialize: (data)->
-        console.log data
-        data
-      deserialize: Serial.parser.HtmlGon
-    m.request(query)
-)()
-
 Btns = (->
   base = (btn, style, prop, options, order = Object.keys options)->
     for key in order
