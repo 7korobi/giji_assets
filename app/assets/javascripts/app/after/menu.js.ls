@@ -4,7 +4,7 @@ export menu =
 
 menu.icon.icon "cog",
   view: ->
-    m ".paragraph.guide",
+    m ".paragraph",
       m "h6", "スタイル"
       Btns.radio {}, Url.prop.theme,
         cinema: "煉瓦"
@@ -16,7 +16,7 @@ menu.icon.icon "cog",
       Btns.radio {}, Url.prop.width,
         full: "最大"
         wide: "広域"
-        std:  "普通"
+        std:  "狭域"
       m "h6", "位置"
       Btns.radio {}, Url.prop.layout,
         left:   "左詰"

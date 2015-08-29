@@ -2,7 +2,7 @@ GUI.if_exist "#css_changer", (dom)->
   m.mount dom,
     controller: ->
     view: ->
-      m ".guide",
+      m ".paragraph",
         m "a.menuicon.pull-right.icon-cog", menu.icon.start({}, "cog"), " "
         Btns.radio {}, Url.prop.theme,
           cinema: "煉瓦"
@@ -19,12 +19,14 @@ if gon?.map_reduce?.faces?
     m.mount dom,
       controller: ->
       view: ->
-        map_order_set = RAILS.map_faces_orders[Url.prop.order()]
-        chrs = Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list()
+        {order, chr_set, search} = Url.prop
+        map_order_set = RAILS.map_faces_orders[order()]
+        chrs = Cache.map_faces.active(order(), chr_set(), search()).list()
         headline = ""
+
         if chrs?.length
           headline = [
-            m ".GSAY.badge", Cache.chr_sets.find(Url.prop.chr_set()).caption
+            m ".GSAY.badge", Cache.chr_sets.find(chr_set()).caption
             "の#{chrs.length}人を、"
             m ".GSAY.badge", map_order_set.headline
             "回数で並べています"
@@ -33,18 +35,27 @@ if gon?.map_reduce?.faces?
         [ m "div", headline
           m "hr.black"
           for o in chrs
-            chr_job = Cache.chr_jobs.find("#{Url.prop.chr_set()}_#{o.face_id}")
+            chr_job = Cache.chr_jobs.find("#{chr_set()}_#{o.face_id}")
             job_name = chr_job.job
 
-            attr = GUI.attrs {}, ->
+
+            attr = null
+            attr_main = GUI.attrs {}, ->
               elem = null
-              @over -> GUI.Animate.jelly.up elem
-              @out ->  GUI.Animate.jelly.down elem
-              @config (_elem)-> elem = _elem
+              config = (_elem)-> elem = _elem
+              over = -> GUI.Animate.jelly.up elem
+              out = -> GUI.Animate.jelly.down elem
+              @config config
+              @over over
+              @out out
+
+              attr = GUI.attrs {}, ->
+                @over over
+                @out out
 
             m ".chrbox", {key: o._id},
-              GUI.portrate o.face_id, attr
-              m ".chrblank.line4",
+              GUI.portrate o.face_id, attr_main
+              m ".chrblank.line4", attr,
                 m "div", job_name
                 m "div", o.face().name
                 m "div",
@@ -74,7 +85,7 @@ if gon?.map_reduce?.faces?
                   Cache.chr_sets.find(key).caption
 
           view: (main_menu)->
-            m ".paragraph.guide",
+            m ".paragraph",
               m "h6", "詳しく検索してみよう"
               m "input.small", Txt.input(Url.prop.search)
               m "span", "検索条件：キャラクター名 / 肩書き / プレイヤー "
@@ -91,14 +102,16 @@ if gon?.face?
       view: ->
         face = Cache.map_face_detail
         letters = [
-          GUI.letter "",
-            face.name
+          m "p.name",
+            m "b", face.name
+          m "p.text",
             "全部で"
             m "span.mark", face.role.all
             "の役職になりました"
           for win_side in face.win.keys
-            GUI.letter "",
-              "#{win_side} x#{face.win.value[win_side]}回"
+            m "p.name",
+              m "b", "#{win_side} x#{face.win.value[win_side]}回"
+            m "p.text",
               for role in face.role_of_wins[win_side]
                 rolename = GUI.name.config role[0]
                 width =
@@ -174,12 +187,16 @@ if gon?.face?
       view: ->
         face = Cache.map_face_detail
         letters = [
-          GUI.letter "", face.name,
+          m "p.name",
+            m "b", face.name
+          m "p.text",
             "全部で"
             m "span.mark", "#{face.folder.all}回"
             "登場しました。"
           for folder in face.folder.keys
-            GUI.letter "", "#{folder} x#{face.folder.value[folder]}回",
+            m "p.name",
+              m "b", "#{folder} x#{face.folder.value[folder]}回"
+            m "p.text",
               for story_id in face.story_id_of_folders[folder]
                 GUI.inline_item ->
                   @left 2.8 + folder.length * 0.65,
@@ -195,8 +212,9 @@ if gon?.face?
       view: ->
         face = Cache.map_face_detail
         letters = [
-          GUI.letter "",
-            face.name
+          m "p.name",
+            m "b", face.name
+          m "p.text",
             "全部で"
             m "span.mark", "#{face.sow_auth_ids.length}人"
             "が、"

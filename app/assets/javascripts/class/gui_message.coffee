@@ -77,7 +77,10 @@ GUI.message = (->
       for text in texts
         m "p.text", text
 
-      [ GUI.letter "", story.view.game_rule,
+      [
+        m "p.name",
+          m "b", story.view.game_rule
+        m "p.text",
           m "ul.note",
             m.trust RAILS.game_rule[story.type.game].HELP
           m "ul.note",
@@ -86,7 +89,9 @@ GUI.message = (->
               continue unless option
               m "li", option.help
 
-        GUI.letter "", "#{roletable} / #{story.view.player_length}人",
+        m "p.name",
+          m "b", "#{roletable} / #{story.view.player_length}人"
+        m "p.text",
           m "div",
             m "code", "事件"
             story.view.event_cards
@@ -114,7 +119,9 @@ GUI.message = (->
     saycnt = RAILS.saycnt[story.type.say] || {}
 
     m ".MAKER.#{event.winner}.guide", {key: "STORY-RULE"},
-      GUI.letter "", "設定",
+      m "p.name",
+        m "b", "設定"
+      m "p.text",
         m "div",
           m "code", "こだわり"
           m "img",
@@ -137,8 +144,9 @@ GUI.message = (->
     story = o.story()
 
     m ".MAKER.guide", {key: "STORY-TEXT"},
-      GUI.letter "head", story.name,
-        m.trust story.comment
+      m "p.name", m "b", story.name
+      GUI.message.talk_text o._id, "head", story.comment
+
       m "span.mes_date.pull-right",
         "managed by "
         m ".emboss", story.user_id
@@ -206,19 +214,19 @@ GUI.message = (->
 
   info: (v)->
     m ".#{v.mestype}.info", {key: v._id},
-      GUI.message.talk_text v._id, "", v.log.deco_text
+      GUI.message.talk_text v._id, "", v.log
 
   guide: (v)->
     m ".#{v.mestype}.guide", {key: v._id},
       GUI.message.talk_name v.user_id, v.name, v.to
-      GUI.message.talk_text v._id, v.style, v.log.deco_text
+      GUI.message.talk_text v._id, v.style, v.log
       m "p.mes_date",
         m "span.mark", identity_action(v), v.anchor
         GUI.timer "span", v
 
   action: (v)->
     m ".#{v.mestype}.action", {key: v._id},
-      GUI.message.action_text v._id, v.name, v.style, v.log.deco_text
+      GUI.message.action_text v._id, v.name, v.style, v.log
       m "p.mes_date",
         GUI.timer "span", v
 
@@ -229,7 +237,7 @@ GUI.message = (->
           GUI.portrate v.face_id
           m "div", m "b", v.name
         m "td",
-          GUI.message.talk_text v._id, v.style, v.log.deco_text
+          GUI.message.talk_text v._id, v.style, v.log
           m "p.mes_date",
             GUI.timer "span", v
 
@@ -251,7 +259,7 @@ GUI.message = (->
         m "td",
           m ".msg",
             GUI.message.talk_name v.user_id, v.name, v.to
-            GUI.message.talk_text v._id, v.style, v.log.deco_text
+            GUI.message.talk_text v._id, v.style, v.log
             m "p.mes_date", timer
 
   action_text: (by_id, name, style, text)->
@@ -259,7 +267,7 @@ GUI.message = (->
       m "b", m.trust name
       "は、"
       m "span",
-        m.trust text
+        m.trust text.deco_text
 
   talk_name: (user_id, name, to)->
     if to
@@ -274,6 +282,6 @@ GUI.message = (->
 
   talk_text: (by_id, style, text)->
     m "p.text.#{style}", deco_action(by_id),
-      m.trust text
+      m.trust text.deco_text
 
 )()

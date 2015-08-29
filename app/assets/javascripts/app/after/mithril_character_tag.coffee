@@ -16,7 +16,7 @@ GUI.if_exist "#character_tag", (dom)->
 
       [ menu.icon.icon "th-large",
           view: (main_menu)->
-            m ".paragraph.guide",
+            m ".paragraph",
               m "h6", "タグを選んでみよう"
               Btns.radio {class: "edge"}, tag,
                 all:       vdom "- 全体 -",               Cache.faces.reduce().all.all.count
@@ -53,7 +53,7 @@ GUI.if_exist "#character_tag", (dom)->
 
         m ".chrlist",
           m "div",
-            m "h6", 
+            m "h6",
               set.long
             m ".GSAY.badge",
               set.name

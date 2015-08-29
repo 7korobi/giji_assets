@@ -178,13 +178,13 @@ if gon?.potofs?
               attr = GUI.attrs {}, ->
                 @end (e)->
                   delete doc.seeing[o._id]
-              m "span.btn.edge", attr, "★ "
+              m "span.#{o.mestype}.btn.edge", attr, "★ "
 
             else
               attr = GUI.attrs {}, ->
                 @end (e)->
                   doc.seeing_add o._id, day
-              m "span.btn.edge", attr, "☆ "
+              m "span.#{o.mestype}.btn.edge", attr, "☆ "
 
           filter =
             m "section.plane",
@@ -285,7 +285,7 @@ if gon?.events? && gon.event?
         Url.prop.pins {}
         menu.scope.change Url.prop.back()
       view: ->
-        [ m ".paragraph.guide",
+        [ m ".paragraph",
             doc.timeline()
         ]
 
@@ -300,7 +300,7 @@ if gon?.events? && gon.event?
       open: ->
         menu.scope.change "memo"
       view: ->
-        [ m ".paragraph.guide",
+        [ m ".paragraph",
             doc.timeline()
             m "h6", "貼り付けたメモを表示します。 - メモ"
             doc.security_modes Url.prop.memo
@@ -311,7 +311,7 @@ if gon?.events? && gon.event?
       open: ->
         menu.scope.change "talk"
       view: ->
-        [ m ".paragraph.guide",
+        [ m ".paragraph",
             doc.timeline()
             m "h6", "村内の発言を表示します。 - 発言"
             doc.security_modes Url.prop.talk
@@ -322,7 +322,7 @@ if gon?.events? && gon.event?
       open: ->
         menu.scope.change "history"
       view: ->
-        [ m ".paragraph.guide",
+        [ m ".paragraph",
             doc.timeline()
             m "h6", "メモを履歴形式で表示します。 - メモ"
             doc.security_modes Url.prop.memo
@@ -331,7 +331,7 @@ if gon?.events? && gon.event?
 
     menu.icon.icon "search",
       view: ->
-        m ".paragraph.guide",
+        m ".paragraph",
           doc.timeline()
           m "input.medium", Txt.input Url.prop.search
           m "span", "発言中の言葉を検索します。"
@@ -378,74 +378,83 @@ if gon?.stories?
       controller: ->
       view: ->
         query = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
-        [
+        m ".paragraph",
           menu.icon.icon "search",
             deploy: (main_menu)->
               main_menu.drill "rating",
                 caption: "こだわり"
                 view: (sub_menu)->
                   reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(rating: "all")...).reduce()
-                  sub_menu.radio {class:"rating"}, Url.prop.rating, reduce, "rating", (key, o)->
-                    m "span",
-                      m "img.pull-left",
-                        src: GUI.img_head + "/icon/cd_#{o.min_is.rating}.png"
-                      RAILS.rating[key].caption
+                  m ".paragraph",
+                    sub_menu.radio {class:"edge rating"}, Url.prop.rating, reduce, "rating", (key, o)->
+                      m "span",
+                        m "img.pull-left",
+                          src: GUI.img_head + "/icon/cd_#{o.min_is.rating}.png"
+                        RAILS.rating[key].caption
               main_menu.drill "game",
                 caption: "ルール"
                 view: (sub_menu)->
                   reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(game: "all")...).reduce()
-                  sub_menu.radio {class:"game"}, Url.prop.game, reduce, "game", (key, o)->
-                    o.min_is.view.game_rule
+                  m ".paragraph",
+                    sub_menu.radio {class:"edge game"}, Url.prop.game, reduce, "game", (key, o)->
+                      o.min_is.view.game_rule
               main_menu.drill "folder",
                 caption: "州"
                 view: (sub_menu)->
                   reduce = Cache.storys.menu("all", Url.routes.search.stories.values()...).reduce()
-                  sub_menu.radio {class:"folder"}, Url.prop.folder, reduce, "folder", (key, o)->
-                    GAME[key]?.nation
+                  m ".paragraph",
+                    sub_menu.radio {class:"edge folder"}, Url.prop.folder, reduce, "folder", (key, o)->
+                      GAME[key]?.nation
               main_menu.drill "say_limit",
                 caption: "発言制限"
                 view: (sub_menu)->
                   reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(say_limit: "all")...).reduce()
-                  sub_menu.radio {class:"say_limit"}, Url.prop.say_limit, reduce, "say_limit", (key, o)->
-                    o.min_is.view.say_limit
+                  m ".paragraph",
+                    sub_menu.radio {class:"edge say_limit"}, Url.prop.say_limit, reduce, "say_limit", (key, o)->
+                      o.min_is.view.say_limit
               main_menu.drill "update_at",
                 caption: "更新時刻"
                 view: (sub_menu)->
                   reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(update_at: "all")...).reduce()
-                  sub_menu.radio {class:"update_at"}, Url.prop.update_at, reduce, "update_at", (key, o)->
-                    o.min_is.view.update_at
+                  m ".paragraph",
+                    sub_menu.radio {class:"edge update_at"}, Url.prop.update_at, reduce, "update_at", (key, o)->
+                      o.min_is.view.update_at
               main_menu.drill "update_interval",
                 caption: "更新間隔"
                 view: (sub_menu)->
                   reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(update_interval: "all")...).reduce()
-                  sub_menu.radio {class:"update_interval"}, Url.prop.update_interval, reduce, "update_interval", (key, o)->
-                    o.min_is.view.update_interval
+                  m ".paragraph",
+                    sub_menu.radio {class:"edge update_interval"}, Url.prop.update_interval, reduce, "update_interval", (key, o)->
+                      o.min_is.view.update_interval
               main_menu.drill "event_type",
                 caption: "事件"
                 view: (sub_menu)->
                   reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(event_type: "all")...).reduce()
-                  sub_menu.radio {class:"event_type"}, Url.prop.event_type, reduce, "event_type", (key, o)->
-                    key
+                  m ".paragraph",
+                    sub_menu.radio {class:"edge event_type"}, Url.prop.event_type, reduce, "event_type", (key, o)->
+                      key
               main_menu.drill "role_type",
                 caption: "役職"
                 view: (sub_menu)->
                   reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(role_type: "all")...).reduce()
-                  sub_menu.radio {class:"role_type"}, Url.prop.role_type, reduce, "role_type", (key, o)->
-                    key
+                  m ".paragraph",
+                    sub_menu.radio {class:"edge role_type"}, Url.prop.role_type, reduce, "role_type", (key, o)->
+                      key
               main_menu.drill "player_length",
                 caption: "人数"
                 view: (sub_menu)->
                   reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(player_length: "all")...).reduce()
-                  sub_menu.radio {class:"player_length"}, Url.prop.role_type, reduce, "player_length", (key, o)->
-                    o.min_is.view.player_length + "人"
+                  m ".paragraph",
+                    sub_menu.radio {class:"edge player_length"}, Url.prop.role_type, reduce, "player_length", (key, o)->
+                      o.min_is.view.player_length + "人"
 
             view: (main_menu)->
-              m ".paragraph.guide",
+              m ".paragraph",
                 m "h6", "検索する。"
                 m "input.mini", Txt.input(Url.prop.search)
                 main_menu.drills {}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"]
 
-          m "table",
+          m "table.vindex",
             m "thead",
               m "tr",
                 m "th"
@@ -486,7 +495,6 @@ if gon?.stories?
                 else
                   m "td",
                     header
-        ]
 
 if gon?.form?
   catch_gon.form()
@@ -494,7 +502,7 @@ if gon?.form?
     open: ->
     close: ->
     view: ->
-      [ m ".paragraph.guide",
+      [ m ".SAY.paragraph",
           doc.timeline()
           m "h6", "あなたが書き込む内容です。 - 記述"
           doc.writer()

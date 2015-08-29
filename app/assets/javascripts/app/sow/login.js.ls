@@ -3,10 +3,12 @@ GUI.if_exist \#sow_auth, (dom)->
     controller: (arg)!->
       @url = gon.url
       @errors = []
+      @infos = []
 
       refresh = (gon)!~>
         if e = gon.errors
           @errors = e.login || e[""]
+        else
         deploy gon
         @is_loading = false
 
@@ -15,50 +17,92 @@ GUI.if_exist \#sow_auth, (dom)->
         return unless o
         @is_login = o.is_login > 0
         @is_admin = o.is_admin > 0
+
+        if @is_login
+          @infos = ["OK."]
+        else
+          @infos = ["IDとパスワードを入力してください。"]
         Url.popstate() # read from cookie
 
       deploy gon
 
+
+
       @logout = ~>
         @is_loading = true
         @errors = []
+        @infos = []
 
         Submit.get(@url, cmd: "logout")
         .then refresh
 
       @login = ~>
-        if 1 < Url.prop.uid()?.length < 21 && 2 < Url.prop.pwd()?.length < 21
+        {uid, pwd} = Url.prop
+        if 1 < uid()?.length < 21 && 2 < pwd()?.length < 21
           @is_loading = true
           @errors = []
+          @infos = []
 
-          Submit.iframe(@url, cmd: "login", uid: Url.prop.uid(), pwd: Url.prop.pwd())
+          Submit.iframe(@url, cmd: "login", uid: uid(), pwd: pwd())
           .then refresh
         else
           @errors = ["IDとパスワードを入力してください。( 3〜20 byte)"]
+          @infos = []
 
 
     view: (c, args)->
-      if c.is_login
-        [
-          m "form", { onsubmit: c.logout },
-            unless c.is_loading
-              m "a.TSAY", Btn.call({}, c.logout), "#{Url.prop.uid()} がログアウト"
-            for error in c.errors
-              m ".emboss", error
-          m "hr.black"
-        ]
+      {uid, pwd} = Url.prop
+
+      messages = ->
+        m ".paragraph",
+          for msg in c.errors
+            m ".WSAY", m ".emboss", msg
+          for msg in c.infos
+            m ".TSAY", m ".emboss", msg
+
+      if c.is_loading
+        form = (call)->
+          onsubmit: -> false
+        btn = (label)->
+          className: "btn edge active"
+          value: label
+          type: "submit"
+        input = (prop)->
+          set = m.withAttr("value", prop)
+          disabled: true
+          onblur:   set
+          onchange: set
+          value: prop()
       else
-        [
-          m "form", { onsubmit: c.login },
-            m "label",
-              m ".mark", "user id : "
-              m "input", Txt.input Url.prop.uid
-            m "label",
-              m ".mark", "password : "
-              m "input[type=password]", Txt.input Url.prop.pwd
+        form = (call)->
+          onsubmit: ->
+            call()
+            false
+        btn = (label)->
+          className: "btn edge"
+          value: label
+          type: "submit"
+        input = (prop)->
+          set = m.withAttr("value", prop)
+          onblur:   set
+          onchange: set
+          value: prop()
+
+      if c.is_login
+        m "form", form(c.logout),
+          m ".paragraph",
             unless c.is_loading
-              m "a.TSAY", Btn.call({}, c.login), "ログイン"
-            for error in c.errors
-              m ".emboss", error
-          m "hr.black"
-        ]
+              m "input", btn "#{uid()} がログアウト"
+          messages()
+      else
+        m "form", form(c.login),
+          m ".paragraph",
+            m "label",
+              m "span.mark", "user id : "
+              m "input", input uid
+            m "label",
+              m "span.mark", "password : "
+              m "input[type=password]", input pwd
+            unless c.is_loading
+              m "input", btn "ログイン"
+          messages()

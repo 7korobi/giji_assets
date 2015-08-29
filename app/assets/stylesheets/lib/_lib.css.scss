@@ -25,6 +25,7 @@
   html &,
   body,
   input,
+  select,
   button,
   textarea,
   .btn {
@@ -74,6 +75,7 @@
   kbd,
   code,
   input,
+  select,
   button,
   textarea,
   .btn.edge,
@@ -93,6 +95,7 @@
   kbd,
   code,
   input,
+  select,
   button,
   textarea,
   .btn,
@@ -104,12 +107,14 @@
   input[type='button'],
   input[type='image'],
   input[type='reset']
+  select,
   button,
   .menuicon,
   .btn {
     $picnic-dark-overlay:      rgba(0, 0, 0, .3) !default;
     $picnic-soft-dark-overlay: rgba(0, 0, 0, .1) !default;
     &.glass {
+      background-color: transparent;
       box-shadow:   inset 0 0 0  $size-base *  100 $picnic-soft-dark-overlay;
 
       &:hover,
@@ -143,20 +148,6 @@
   }
 
   #{$all-button-inputs} {
-    @include button(flat, lighten(#a9a9a9, 5));
-    bottom: $size-base * 0.3;
-    left: auto;
-    outline: none;
-    padding: 0 9px;
-    position: absolute;
-    right: $size-base * 0.3;
-    top:   $size-base * 0.3;
-
-    img {
-      height: 12px;
-      opacity: 0.7;
-      padding: 1px;
-    }
   }
 }
 
@@ -273,239 +264,6 @@
   }
 }
 
-@mixin memo-tone($tone, $color, $background){
-  td,
-  th {
-    color: $color;
-    background-color: $background;
-  }
-}
-
-@mixin stripe-tone($tone, $color, $header, $background) {
-  color: $color;
-  background-color: $background;
-
-  thead,
-  tfoot {
-    @include form-tone($tone, $color, $header);
-    background-color: $header;
-  }
-  tbody {
-    tr:nth-child(odd) {
-      @include form-tone($tone, $color, lighten($background, 5%));
-      background-color: lighten($background, 5%);
-    }
-    tr:nth-child(even) {
-      @include form-tone($tone, $color, $background);
-      background-color: $background;
-    }
-  }
-}
-
-@mixin header-tone($border, $h2, $h3) {
-  h2 {
-    background: $h2;
-    &:before, &:after {
-      border-color: transparent $border;
-    }
-  }
-  h3 {
-    background: $h3;
-  }
-}
-
-@mixin border-tone($tone, $color, $line-style, $border, $background) {
-  $middle:  mix($background, $border);
-  $darker:  mix($background, $middle);
-
-  .paragraph,
-  #stories,
-  #chr_sets,
-  #headline,
-  #topviewer,
-  #css_changer {
-    @include form-tone($tone, $color, $background);
-    background-color: $background;
-  }
-
-  #stories {
-    @include win-tone($tone, $color, $background);
-    .list,
-    .detail tr {
-      border: 1px solid $border;
-    }
-    .detail th {
-      background: $darker;
-    }
-  }
-
-  .paragraph,
-  #topviewer,
-  #headline,
-  #css_changer {
-    th {
-      background-color: $darker;
-    }
-    thead,
-    tfoot,
-    tbody {
-      border: $line-style $border;
-    }
-    td {
-      border: 1px solid $border;
-    }
-  }
-  &.left-layout .outframe {
-    border-right: $line-style $border;
-  }
-  &.center-layout .outframe {
-    border-right: $line-style $border;
-    border-left : $line-style $border;
-  }
-
-  &.right-layout .outframe {
-    border-left : $line-style $border;
-  }
-}
-
-@mixin markers($color, $background){
-  input[type='submit'],
-  input[type='button'],
-  input[type='image'],
-  input[type='reset'],
-  button,
-  .btn,
-  .mark,
-  .badge,
-  .menuicon {
-    color: $color;
-    background-color: $background;
-  }
-
-  [data-tooltip] {
-    &:hover:after,
-    &:focus:after {
-      padding: 5px;
-    }
-    &:after {
-      color: $color;
-      background: $background;
-    }
-  }
-  .tooltip-top:before { border-top-color: $background; }
-  .tooltip-bottom:before { border-bottom-color: $background; }
-  .tooltip-left:before { border-left-color: $background; }
-  .tooltip-right:before { border-right-color: $background; }
-}
-
-@mixin form-tone($tone, $color, $background){
-  $middle:  mix($background, $color);
-
-  color: $color;
-  label.label a,
-  a {
-    color: lighten($color, 10%);
-  }
-  @if white == $tone {
-    @include markers($color, lighten($background, 10%));
-  }
-  @if glass == $tone {
-    @include markers($color, lighten($background, 60%));
-  }
-  @if black == $tone {
-    @include markers($color, lighten($background, 20%));
-  }
-
-  .emboss {
-    @if white == $tone {
-      color: $background;
-      background-color: darken($background, 20%);
-    }
-    @if glass == $tone {
-      color: darken($middle, 10%);
-      background-color: darken($middle, 50%);
-    }
-    @if black == $tone {
-      color: lighten($middle, 20%);
-      background-color: darken($middle, 20%);
-    }
-  }
-}
-
-@mixin win-tone($tone, $color, $background){
-  $middle:  mix($background, $color);
-
-  @include form-tone($tone, $color, $background);
-
-  color: $color;
-  background-color: $background;
-
-  @if glass == $tone {
-    border-color: mix($color, $background)
-  }
-
-  .mes_date,
-  .name b { color: mix($color, $background); }
-
-  dt,
-  .text b {
-    @if white == $tone { color: mix($color, blue); }
-    @if glass == $tone { color: mix($color, mix($color, yellow)); }
-    @if black == $tone { color: mix($color, $background); }
-  }
-}
-
-@mixin msg-tone($tone, $color, $background){
-  $middle:  mix($background, $color);
-
-  @include form-tone($tone, $color, $background);
-
-  &.btn,
-  &.mark,
-  &.badge,
-  &.info,
-  &.guide,
-  &.action,
-  .msg {
-    dt,
-    dd,
-    li,
-    p {
-      text-align: left;
-    }
-    .mes_date {
-      text-align: right
-    }
-    color: $color;
-    background-color: $background;
-  }
-
-  @if glass == $tone {
-    &.action { border-color: mix($color, $background) }
-    .msg { border-color: mix($color, $background) }
-  }
-
-  .mes_date,
-  .name b { color: mix($color, $background); }
-
-  dt,
-  .text b {
-    @if white == $tone { color: mix($color, blue); }
-    @if glass == $tone { color: mix($color, mix($color, yellow)); }
-    @if black == $tone { color: mix($color, $background); }
-  }
-}
-
-@mixin color-tone($tone, $color, $background){
-  @include msg-tone($tone, $color, $background);
-  &.memo {
-    @include memo-tone($tone, $color, $background);
-  }
-  &.line {
-    color: $color;
-    background-color: $background;
-  }
-}
 
 /*
   .potofs {

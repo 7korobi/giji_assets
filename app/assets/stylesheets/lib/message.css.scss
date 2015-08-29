@@ -6,30 +6,50 @@
 
 table.memo {
   width: 100%;
-  th {
-    vertical-align: top;
-  }
-  td {
-    vertical-align: bottom;
-  }
-  td p {
-    margin: 0 6px 0 3px;
+  border-width: 0;
+  border-collapse: separate;
+  > tr {
+    > th {
+      vertical-align: top;
+      border-style: none dashed solid none;
+      border-width: 0 1px 1px 0;
+      border-collapse: collapse; /* CSS2? */
+      padding: 1px;
+    }
+    > td {
+      vertical-align: bottom;
+      border-style: none none solid none;
+      border-width: 0 0 1px 0;
+      border-collapse: collapse; /* CSS2? */
+      padding: 1px;
+      > p {
+        margin: 0 6px 0 3px;
+      }
+    }
   }
 }
 
+
+
 table.talk {
   width: 100%;
-  th {
-    vertical-align: top;
-    text-align: left;
-    margin: 0 4px 6px 12px;
-    padding: 0 4px;
-  }
-  td {
-    vertical-align: middle;
-  }
-  td .msg {
-    margin: 0 6px 6px 3px;
+  > tr {
+    > th {
+      background-color: transparent !important;
+      border: 0px !important;
+      vertical-align: top;
+      text-align: left;
+      margin: 0 4px 6px 12px;
+      padding: 0 4px;
+    }
+    > td {
+      background-color: transparent !important;
+      border: 0px !important;
+      vertical-align: middle;
+      > .msg {
+        margin: 0 6px 6px 6px;
+      }
+    }
   }
 }
 
@@ -115,7 +135,12 @@ table.talk {
     border-style: solid none solid solid ;
   }
 
-  .caution,       {  @include color-tone(glass, #666, rgba( 30, 30, 30, 0.6)); }
+  .caution, {
+    @include color-tone(glass, #666, rgba( 30, 30, 30, 0.6));
+    border-width: 3px 0;
+    border-style: double none;
+    border-color: #ccc;
+  }
 
   .TSAY .action,
   .INFONOM,       {  @include color-tone(glass, #997, rgba(  0,  0,  0, 0.6)); }
@@ -124,6 +149,7 @@ table.talk {
 
   .DELETEDADMIN,
   .DELETED,   { @include color-tone(glass, #444, rgba( 40, 40, 40, 0.4)); }
+  .GLASS,
   .QUEUE,
   .QUE,       { @include color-tone(glass, #aaa, rgba(  0,  0,  0, 0.4)); .msg { border: none; } }
   .TSAY,      { @include color-tone(glass, #a96, rgba(  0,  0, 60, 0.4)); }
@@ -167,7 +193,12 @@ table.talk {
     @include line-bottom();
   }
 
-  .caution,       {  @include color-tone(white, #000, #666); }
+  .caution, {
+    @include color-tone(white, #000, #666);
+    border-width: 2px 0;
+    border-style: dashed none;
+    border-color: #ccc;
+  }
 
   .TSAY .action,
   .INFONOM,       {  @include color-tone(white, #000, #a97); }

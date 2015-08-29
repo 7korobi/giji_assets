@@ -1,6 +1,6 @@
 .large-font {
   @include font(15px, 21px, serif);
-  #headline {
+  #head_navi #headline {
     width: 420px;
   }
 }
@@ -47,14 +47,8 @@ textarea,
 
 #sow_auth {
   text-align: center;
-  label {
-    input,
-    .mark {
-      width: 20%;
-    }
-  }
-  span.btn {
-    width: 10%;
+  input {
+    width: 20%;
   }
 }
 

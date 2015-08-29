@@ -1,0 +1,208 @@
+@mixin stripe-tone($tone, $color, $header, $background) {
+  color: $color;
+  background-color: $background;
+
+  thead,
+  tfoot {
+    @include form-tone($tone, $color, $header);
+    background-color: $header;
+  }
+  tbody {
+    tr:nth-child(odd) {
+      @include form-tone($tone, $color, lighten($background, 5%));
+      background-color: lighten($background, 5%);
+    }
+    tr:nth-child(even) {
+      @include form-tone($tone, $color, $background);
+      background-color: $background;
+    }
+  }
+}
+
+@mixin header-tone($border, $h2, $h3) {
+  h2 {
+    background: $h2;
+    &:before, &:after {
+      border-color: transparent $border;
+    }
+  }
+  h3 {
+    background: $h3;
+  }
+}
+
+@mixin markers($color, $background){
+  &.btn,
+  &.mark,
+  &.badge,
+  &.menuicon,
+  input[type='submit'],
+  input[type='button'],
+  input[type='image'],
+  input[type='reset'],
+  button,
+  .btn,
+  .mark,
+  .badge,
+  .menuicon {
+    color: $color;
+    background-color: $background;
+  }
+
+  [data-tooltip] {
+    &:hover:after,
+    &:focus:after {
+      padding: 5px;
+    }
+    &:after {
+      color: $color;
+      background: $background;
+    }
+  }
+  .tooltip-top:before { border-top-color: $background; }
+  .tooltip-bottom:before { border-bottom-color: $background; }
+  .tooltip-left:before { border-left-color: $background; }
+  .tooltip-right:before { border-right-color: $background; }
+}
+
+@mixin table-tone($line-style, $border, $darker){
+  th {
+    background-color: $darker;
+  }
+  thead,
+  tfoot,
+  tbody {
+    border: $line_style $border;
+  }
+  td {
+    border: 1px solid $border;
+  }
+}
+
+@mixin form-tone($tone, $color, $background){
+  $middle:  mix($background, $color);
+
+  color: $color;
+  .mes_date,
+  .name b { color: mix($color, $background); }
+
+  dt,
+  .text b {
+    @if white == $tone { color: mix($color, blue); }
+    @if glass == $tone { color: mix($color, mix($color, yellow)); }
+    @if black == $tone { color: mix($color, $background); }
+  }
+
+  a {
+    color: lighten($color, 10%);
+  }
+  @if white == $tone {
+    @include markers($color, lighten($background, 10%));
+  }
+  @if glass == $tone {
+    @include markers($color, lighten($background, 60%));
+  }
+  @if black == $tone {
+    @include markers($color, lighten($background, 20%));
+  }
+  &.emboss,
+  .emboss {
+    @if white == $tone {
+      color: $background;
+      background-color: darken($background, 20%);
+    }
+    @if glass == $tone {
+      color: darken($middle, 10%);
+      background-color: darken($middle, 50%);
+    }
+    @if black == $tone {
+      color: lighten($middle, 20%);
+      background-color: darken($middle, 20%);
+    }
+  }
+}
+
+@mixin win-tone($tone, $color, $background){
+  @include form-tone($tone, $color, $background);
+
+  color: $color;
+  background-color: $background;
+
+  @if glass == $tone {
+    border-color: mix($color, $background)
+  }
+}
+
+@mixin color-tone($tone, $color, $background){
+  $middle:  mix($background, $color);
+  $darker:  mix($background, $middle);
+
+  @include form-tone($tone, $color, $background);
+  @include table-tone( 1px solid, $middle, $darker);
+
+  // msg settings
+  &.info,
+  &.guide,
+  &.action,
+  .msg {
+    color: $color;
+    background-color: $background;
+  }
+
+  @if glass == $tone {
+    &.action { border-color: mix($color, $background) }
+    .msg { border-color: mix($color, $background) }
+  }
+
+  // memo settings
+  &.memo {
+    td,
+    th {
+      color: $color;
+      background-color: $background;
+    }
+  }
+  &.line {
+    color: $color;
+    background-color: $background;
+  }
+}
+
+
+@mixin border-tone($tone, $color, $line-style, $border, $background) {
+  $middle:  mix($background, $border);
+  $darker:  mix($background, $middle);
+
+  @include form-tone($tone, $color, $background);
+
+  .vindex,
+  .choice,
+  .paragraph {
+    color: $color;
+    background-color: $background;
+    a {
+      color: $color;
+    }
+    @include table-tone( 1px solid, $border, $darker);
+  }
+
+  .board {
+    thead,
+    tfoot,
+    tbody {
+      border: $line-style $border;
+    }
+  }
+
+  &.left-layout .outframe {
+    border-right: $line-style $border;
+  }
+  &.center-layout .outframe {
+    border-right: $line-style $border;
+    border-left : $line-style $border;
+  }
+
+  &.right-layout .outframe {
+    border-left : $line-style $border;
+  }
+}

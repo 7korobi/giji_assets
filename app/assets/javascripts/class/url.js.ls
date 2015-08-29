@@ -3,19 +3,19 @@ getter_setter =
   callee: (store, current, parse, serial, key)->
     prop = ->
       if arguments.length
-        store := parse(arguments[0]) || current
-        Url.bind[key](store)
-        Url.replacestate()
-        store
-      else
-        store
+        newval = parse(arguments[0]) || current
+        if store != newval
+          store := newval
+          Url.options[key].bind(store)
+          Url.replacestate()
+      store
 
     prop.toJSON = -> serial(store)
     prop
 
 do_define = (key, option)->
   {parse, serial, current} = option
-  Url.bind[key] ?= ->
+  Url.options[key].bind ?= ->
   Url.prop[key] = getter_setter.callee(current, current, parse, serial, key)
 
 
@@ -48,19 +48,20 @@ class Url
     for key, list of binds
       Url.bind key, list
 
-  @bind = (key, list)->
+  @bind = (key, list)!->
+    Url.options[key].bind =
       switch typeof! list
         when \Function
-          Url.bind[key] = list
+          list
         when \Array
-          binder = {}
+          binder = Url.options[key].binder = {}
           for subs in list
             binder[subs[key]] = subs
-          Url.bind[key] = (val)!->
+          (val)!->
             for subkey, subval of binder[val]
               console.log [subkey, subval, binder[val]] unless Url.prop[subkey]
               Url.prop[subkey](subval) if key != subkey
-            return
+
 
   @each = (cb)->
     Url.routes.cookie = Url.cookies
@@ -77,9 +78,19 @@ class Url
     Url.mode = "replaceState"
 
   @state = _.debounce ->
+    is_change = false
+    old_cookie = document.cookie
+
     new_href = Url.href()
+
+    if old_cookie != document.cookie
+      is_change = true
+
     if decodeURI(location.href) != decodeURI(new_href)
       history[Url.mode] "pushstate", null, new_href if history?
+      is_change = true
+
+    if is_change
       Url.popstate()
   , DELAY.presto
 
@@ -92,14 +103,14 @@ class Url
 
   @href = ->
     link = Url.each (route, data, target, targets)->
-      targets[target] = route.pushstate data, target
+      targets[target] = route.replace data, target
 
     link.protocol + "//" + link.host + link.pathname + link.search + link.hash
 
 
   @cookie = (format, options)->
     url = new Url(format)
-    url.cookie = options
+    url.options.cookie = options
     url
 
   (@format, @options = {})->
@@ -122,13 +133,13 @@ class Url
       for key, i in @keys_in_url
         val = decodeURI @match[i]
         data[key] = val
-        Url.prop[key](val, true)
+        Url.prop[key](val)
 
       @options.change?(data)
     Url.replacestate()
 
-  pushstate: (path, target)->
-    if target == "cookie" && @options.cookie
+  replace: (path, target)->
+    if target == "cookie" && \Object == typeof! @options.cookie
       return @set_cookie @serialize()
 
     if @scanner.exec(path)

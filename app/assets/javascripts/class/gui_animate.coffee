@@ -19,10 +19,16 @@ class GUI.Animate
     easing: "bounce"
     bounces: 6
     stiffness: 1
+  jelly_up.translate
+    from: {x: 0, y:   0}
+    to:   {x: 0, y: -30}
+    easing: "bounce"
+    bounces: 8
+    stiffness: 1
   jelly_up.define("jelly-up")
 
   jelly_down = new Bounce
-  jelly_down.scale 
+  jelly_down.scale
     from: {x: 1, y: 2}
     to:   {x: 1, y: 1}
     easing: "bounce"
@@ -34,17 +40,26 @@ class GUI.Animate
     easing: "bounce"
     bounces: 6
     stiffness: 1
+  jelly_down.translate
+    from: {x: 0, y: -30}
+    to:   {x: 0, y:   0}
+    easing: "bounce"
+    bounces: 8
+    stiffness: 1
   jelly_down.define("jelly-down")
+
 
   apply = (duration, sequence, {begin, finish})->
     (dom)->
-      style = "#{sequence} #{duration}ms linear both"
-      begin?(dom)
-      dom.style.animation = style
-      dom.style.webkitAnimation = style
-      setTimeout ->
-        finish?(dom)
-      , duration
+      if dom.bounce_style != sequence
+        dom.bounce_style = sequence
+        style = "#{sequence} #{duration}ms linear both"
+        begin?(dom)
+        dom.style.animation = style
+        dom.style.webkitAnimation = style
+        setTimeout ->
+          finish?(dom)
+        , duration
 
   zIndex = (z)->
     (dom)-> dom.style.zIndex = z
@@ -54,9 +69,8 @@ class GUI.Animate
 
   @jelly:
     up: apply DELAY.andante, "jelly-up",
-      begin: zIndex 2
+      begin: zIndex 3
 
     down: apply DELAY.andante, "jelly-down",
-      begin: zIndex 1
-      finish: zIndex 0
-      
+      begin: zIndex 2
+      finish: zIndex 1

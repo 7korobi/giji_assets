@@ -8,21 +8,6 @@ Url.routes =
     story:  new Url "/stories/:story_id"
 
   hash:
-    css: new Url "css=:theme~:width~:layout~:font",
-      cookie:
-        time: 12
-        path: "/"
-      unmatch: "#"
-      change: (params)->
-        list =
-          for key in ["theme", "width", "layout", "font", "w", "item", "color"]
-            "#{Url.prop[key]()}-#{key}"
-        list.push "no-player" unless Url.prop.human()
-        GUI.header list
-
-        window.requestAnimationFrame ->
-          GUI.Layout.resize()
-
     mode: new Url "mode=:scope~:icon",
       unmatch: "#"
 
@@ -60,3 +45,15 @@ Url.routes =
           Url.prop.message_id "#{folder}-#{vid}-#{turn}-#{logid}", true
         return
 
+Url.cookies =
+  css: Url.cookie "css=:theme~:width~:layout~:font", time: 12, path: "/"
+
+Url.cookies.css.options.change = (params)->
+  list =
+    for key in ["theme", "width", "layout", "font", "w", "item", "color"]
+      "#{Url.prop[key]()}-#{key}"
+  list.push "no-player" unless Url.prop.human()
+  GUI.header list
+
+  window.requestAnimationFrame ->
+    GUI.Layout.resize()

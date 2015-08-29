@@ -15,7 +15,7 @@ props:
   updated_at: { type: Date }
 
   uid:
-  pwd:
+  pwd: { type: Text }
   item:
   color:
   title:
@@ -25,7 +25,7 @@ props:
   story_id:
   mode_id:  { current: talk }
 
-  width:    { current: std }
+  width:    { current: wide }
   layout:   { current: center }
   font:     { current: std }
   theme:    { current: cinema }

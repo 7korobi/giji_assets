@@ -8,6 +8,9 @@
   th,
   td,
   h1,h2,h3,h4,h5,h6,
+  .paragraph,
+  .vindex,
+  .choice,
   .msg,
   .btn,
   .mark,
@@ -15,7 +18,7 @@
   .board,
   .menuicon {
     transition-delay:      0ms;
-    transition-duration: 800ms;
+    transition-duration: 400ms;
     transition-timing-function: ease-in-out;
     transition-property: color, background, border;
   }

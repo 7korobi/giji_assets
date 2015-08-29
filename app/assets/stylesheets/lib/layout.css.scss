@@ -5,7 +5,7 @@
   margin: 0 auto;
 }
 
-#stories {
+.vindex {
   .detail,
   .list {
     margin: 0 5%;
@@ -74,6 +74,25 @@
   }
 }
 
+
+.btn,
+.mark,
+.badge,
+.info,
+.guide,
+.action,
+.msg {
+  dt,
+  dd,
+  li,
+  p {
+    text-align: left;
+  }
+  .mes_date {
+    text-align: right
+  }
+}
+
 .guide,
 .plane,
 .paragraph {
@@ -132,12 +151,12 @@ hr,
   .INFOWOLF,
   .MAKER.guide,
   .ADMIN.guide,
+  .caution.guide,
   .info,
   .infosp,
   .infowolf,
   .mes_maker,
   .mes_admin,
-  .caution,
   .turnnavi,
   .row_all,
   .secret {

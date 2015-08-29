@@ -38,12 +38,17 @@ sow:
       updated_at: 1437461000000
       style:
       log: |-
-        <ul>
-        <li><a class="btn edge" href="https://github.com/7korobi/sow-giji/tree/angular">最新版　人狼議事サイト プログラム</a>
-        <li><a class="btn edge" href="https://github.com/7korobi/sow-giji/releases">ダウンロード ページ</a>
-        <li><a class="btn edge" href="https://github.com/7korobi/giji_rails/tree/renewal">人狼議事 総合トップ、javascript、stylesheet</a>
-        <li>ライセンスは<a class="btn edge" href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
-        </ul>
+        <dt>
+        <a class="btn edge" href="https://github.com/7korobi/giji_rails/commits/show-fix">総合トップ</a>
+        <a class="btn edge" href="https://github.com/7korobi/giji_assets/commits/master">デザイン</a>
+        <a class="btn edge" href="https://github.com/7korobi/sow-giji/commits/cabala">ゲーム</a>
+        <a class="btn edge" href="https://github.com/7korobi/sow-giji/commits/show-fix">ゲーム（新）</a>
+        </dt>
+        <dd>人狼議事を構成するプログラムの、更新履歴はこちら。</dd>
+
+        <dt>
+        <a class="btn edge" href="https://github.com/7korobi/sow-giji/releases">安定版ダウンロード</a>
+        </dt>
 
     - _id: thanks-talk-SAY-96
       face_id: m05

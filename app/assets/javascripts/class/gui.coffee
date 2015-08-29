@@ -248,10 +248,4 @@ GUI = (->
       cb o, i
 
     m "dl.accordion", win.scroll.mark(mark), items
-
-  letter: (style, head, vdom...)->
-    [ m "p.name",
-        m "b", head
-      m "p.text.#{style}", vdom
-    ]
 )()
