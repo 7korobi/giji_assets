@@ -1,6 +1,12 @@
+/*
+Cache v0.0.1
+http://github.com/7korobi/---
+(c) 7korobi
+License: MIT
+*/
+
 export class Cache
   @rule = {}
-
 
 class Cache.Query
   (@finder, @filters, @desc, @sort_by)->
@@ -317,6 +323,16 @@ class Cache.Rule
         (o, base)->
           o.__proto__ = base
 
+    deployer =
+      if head.browser.ie || head.browser.safari
+        (o)~>
+          _.defaults o, @base_obj
+          @deploy o
+      else
+        (o)~>
+          o.__proto__ = @base_obj
+          @deploy o
+
     validate_item = (item)~>
       for validate in @validates
         return false unless validate item
@@ -324,14 +340,11 @@ class Cache.Rule
 
     switch mode
       when "merge"
-        if parent
-          deployer parent, @base_obj
-        else
-          parent = @base_obj
         for item in from || []
-          deployer item, parent if parent
-          @deploy item
+          for key, val of parent
+            item[key] = val
 
+          deployer item
           continue unless validate_item item
 
           o = {item, emits: []}
