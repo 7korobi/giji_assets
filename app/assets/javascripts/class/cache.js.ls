@@ -311,13 +311,11 @@ class Cache.Rule
 
     deployer =
       if head.browser.ie || head.browser.safari
-        (o)~>
-          _.defaults o, @base_obj
-          @deploy o
+        (o, base)->
+          _.defaults o, base
       else
-        (o)~>
-          o.__proto__ = @base_obj
-          @deploy o
+        (o, base)->
+          o.__proto__ = base
 
     validate_item = (item)~>
       for validate in @validates
@@ -326,11 +324,14 @@ class Cache.Rule
 
     switch mode
       when "merge"
+        if parent
+          deployer parent, @base_obj
+        else
+          parent = @base_obj
         for item in from || []
-          for key, val of parent
-            item[key] = val
+          deployer item, parent if parent
+          @deploy item
 
-          deployer item
           continue unless validate_item item
 
           o = {item, emits: []}
@@ -349,7 +350,6 @@ class Cache.Rule
 
       else
         for item in from || []
-          deployer item
           o = {item, emits: []}
           old = all[item._id]
           if old?

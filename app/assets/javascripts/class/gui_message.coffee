@@ -50,6 +50,21 @@ GUI.message = (->
       m "select", buttons
       Btn.submit {}, {}
 
+  paragraph: (o)->
+    console.log o
+    m ".paragraph", {key: o._id}, m.trust o.log.deco_text
+
+  head: (o)->
+    m o.mestype, m.trust o.log.deco_text
+
+  event: (o)->
+    btn = o.event().view.btn()
+    list = []
+    list.push m "h3", m.trust o.name
+    list.push btn if btn
+
+    m ".#{o.mestype}", {key: o._id}, list
+
   ###
   "epilogue":0,
   "event":null,
@@ -151,15 +166,6 @@ GUI.message = (->
         "managed by "
         m ".emboss", story.user_id
       m "hr.black"
-
-
-  event: (o)->
-    btn = o.event().view.btn()
-    list = []
-    list.push m "h3", m.trust o.name
-    list.push btn if btn
-
-    m ".#{o.mestype}", {key: o._id}, list
 
   potofs: (v)->
     {potofs_order, potofs_desc} = Url.prop

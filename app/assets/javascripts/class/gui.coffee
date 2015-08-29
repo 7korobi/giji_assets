@@ -213,8 +213,8 @@ GUI = (->
   names:
     config: names_base(name_config)
 
-  items_module: (dir, type)->
-    GUI.if_exist "##{dir}-#{type}", (dom)->
+  items_module: (type)->
+    GUI.if_exist "#item-#{type}", (dom)->
       query = Cache.items.where({type})
       m.mount dom,
         controller: ->
