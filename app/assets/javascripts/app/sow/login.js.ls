@@ -19,9 +19,11 @@ GUI.if_exist \#sow_auth, (dom)->
         @is_admin = o.is_admin > 0
 
         if @is_login
-          @infos = ["OK."]
+          @infos =
+            * "OK."
         else
-          @infos = ["IDとパスワードを入力してください。"]
+          @infos =
+            * "IDとパスワードを入力してください。"
         Url.popstate() # read from cookie
 
       deploy gon
@@ -46,7 +48,8 @@ GUI.if_exist \#sow_auth, (dom)->
           Submit.iframe(@url, cmd: "login", uid: uid(), pwd: pwd())
           .then refresh
         else
-          @errors = ["IDとパスワードを入力してください。( 3〜20 byte)"]
+          @errors =
+            * "IDとパスワードを入力してください。( 3〜20 byte)"
           @infos = []
 
 

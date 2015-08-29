@@ -27,7 +27,7 @@ m.mount document.querySelector("#win"),
           redraw: test
       m "pre",
         JSON.stringify
-          accel: 
+          accel:
             x: format win.accel.x, 100
             y: format win.accel.y, 100
             z: format win.accel.z, 100
@@ -57,9 +57,3 @@ if "ondeviceorientation" of window
   window.addEventListener 'deviceorientation', win.do.orientation
 if "ondevicemotion" of window
   window.addEventListener 'devicemotion', win.do.motion
-
-beforeEach ->
-  jasmine.addMatchers toBePlaying: ->
-    compare: (actual, expected)->
-      player = actual
-      pass: player.currentlyPlayingSong is expected and player.isPlaying
