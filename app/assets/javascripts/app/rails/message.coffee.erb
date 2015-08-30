@@ -1,8 +1,11 @@
-Cache.rule.item.set  <%= JSON.generate MESSAGE["rails"] %>
-GUI.items_module "about"
-GUI.items_module "ruleguide"
-GUI.items_module "violation"
-GUI.items_module "maker"
+Cache.rule.item.set <%= JSON.generate MESSAGE.rails %>
+if gon?.items?
+  Cache.rule.item.merge gon.items
+
+<% MESSAGE.module.rails.each do |name| %>
+GUI.items_module "<%= name %>"
+<% end %>
+
 
 rule_accordion = (type)->
   GUI.if_exist "#rule-#{type}", (dom)->

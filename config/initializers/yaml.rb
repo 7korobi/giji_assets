@@ -16,8 +16,19 @@ Dir.glob('*/yaml/*.yml').uniq.each do |path|
   Kernel.const_set( const, env )
 end
 
+Kernel.constants.grep(/^MSG_/).each do |const|
+  data = Kernel.const_get( const )
+  if data.rails
+    MESSAGE.rails += data.rails
+    MESSAGE.module.rails.push data.module
+  end
+  if data.sow
+    MESSAGE.sow += data.sow
+    MESSAGE.module.sow.push data.module
+  end
+end
 
-%i[CS_ALL CS_ANIMAL CS_CHANGED CS_GER CS_MAD CS_RIRINRA CS_SCHOOL CS_SF CS_TIME CS_WA].each do |const|
+Kernel.constants.grep(/^CS_/).each do |const|
   data = Kernel.const_get( const )
   id = data.chr_set._id
 

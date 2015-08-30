@@ -1,0 +1,29 @@
+module: howto
+sow:
+  - _id: howto-head-h2-1
+    log: 遊び方
+
+  - _id: howto-paragraph--2
+    log: |-
+      <ul>
+      <li><a href="#regist">ユーザー登録とログイン</a>
+      <li><a href="#entry">村への参加</a>
+      <li><a href="#exit">村から出る</a>
+      <li><a href="#muster">点呼をとる</a>
+      <li><a href="#rolerule">能力者</a>
+      <ul>
+      <li><b><a href="sow.cgi?cmd=roleaspect&$docid">能力、恩恵ごとの、細かい特徴</a></b>
+      <li><b><a href="sow.cgi?cmd=rolelist&$docid">役職とインターフェース</a></b>
+      </ul>
+      <li><a href="#role">村側の能力者（役職）</a>
+      <li><a href="#rolewolf">人狼側の能力者（役職）</a>
+      <li><a href="#rolepixi">妖精の能力者（役職）</a>
+      <li><a href="#roleother">その他の能力者（役職）</a>
+      <li><a href="#rolegift">能力者以外の要素（恩恵）</a>
+      <li><a href="#rolerule">能力とルールの細かいところ</a>
+      <li><a href="#event">村を翻弄する運命（事件）</a>
+      <li><a href="#start">村が始まったら</a>
+      <li><a href="#die">死亡</a>
+      <li><a href="#suddendeath">突然死</a>
+      <li><a href="#ending">勝敗の決定</a>
+      </ul>

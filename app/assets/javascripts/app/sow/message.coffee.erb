@@ -1,9 +1,7 @@
-Cache.rule.item.set <%= JSON.generate MESSAGE["sow"] %>
+Cache.rule.item.set <%= JSON.generate MESSAGE.sow %>
 if gon?.items?
   Cache.rule.item.merge gon.items
 
-
-GUI.items_module "title"
-GUI.items_module "play"
-GUI.items_module "create"
-GUI.items_module "tech"
+<% MESSAGE.module.sow.each do |name| %>
+GUI.items_module "<%= name %>"
+<% end %>

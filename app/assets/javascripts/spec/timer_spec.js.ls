@@ -44,10 +44,6 @@ describe "Timer" (...)!->
       GUI.do_tick = (cb)->
         action = ->
           tick = cb(clock.now)
-          log =
-            clock: clock.now
-            tick: tick
-          console.log JSON.stringify log
           if tick
             clock.setTimeout ->
               action()

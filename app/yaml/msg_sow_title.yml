@@ -1,0 +1,34 @@
+module: title
+sow:
+  # title-1 CGI
+
+  - _id: title-head-h6-2
+    log: 終了した村
+
+  # title-3 CGI
+
+  - _id: title-head-h6-4
+    log: プレイガイド
+
+  - _id: title-action-SAY-5
+    name: ティモシー
+    updated_at: 1437461000000
+    log: |-
+      （↓）をそっと畳み、営業を再開した。<br><a href="http://crazy-crazy.sakura.ne.jp/giji/"><img src="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/banner/guide.png"></a>
+
+  - _id: title-talk-SAY-6
+    face_id: c07
+    name: 雑貨屋 ティモシー
+    updated_at: 1437461000000
+    style:
+    log: |-
+      いらっしゃい。人狼議事のことを知りたいんだね。それなら、人狼議事公式ガイドブックを開いてごらん。
+      <br>
+      あるいは、ほかのリンク先をお求めかな。
+      <br>
+      <br>
+      <a class="btn edge" href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/about.html">ご紹介</a>
+      <a class="btn edge" href="sow.cgi?cmd=howto">遊び方</a>
+      <a class="btn edge" href="http://crazy-crazy.sakura.ne.jp/giji/?(Knowledge)Operation">操作方法</a>
+
+  # title-7 CGI
