@@ -81,7 +81,7 @@ GUI.message = (->
     mob = RAILS.mob[story.type.mob]
     event_card = RAILS.events[event.event]
     texts = []
-    texts.push RAILS.winner[event.winner] + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
+    texts.push RAILS.winner[event.winner].CAPTION + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
     texts.push m "kbd", event_card if event_card
     texts.push RAILS.event_state.grudge    if event.turn == event.grudge
     texts.push RAILS.event_state.riot      if event.turn == event.riot
