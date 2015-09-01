@@ -47,14 +47,15 @@ describe "Timer" (...)!->
       timer = new Timer(10800000)
       timer.start attr
 
-      clock.tick(   7200000) && expect(timer.text).to.eq "1時間後"
-      clock.tick(     60000) && expect(timer.text).to.eq "59分後"
-      clock.tick(58 * 60000) && expect(timer.text).to.eq "1分後"
-      clock.tick(         1) && expect(timer.text).to.eq "1分以内"
-      clock.tick(     35000) && expect(timer.text).to.eq "25秒以内"
-      clock.tick(     49998) && expect(timer.text).to.eq "25秒以内"
-      clock.tick(     35000) && expect(timer.text).to.eq "1分以内"
-      clock.tick(         1) && expect(timer.text).to.eq "1分前"
-      clock.tick(58 * 60000) && expect(timer.text).to.eq "59分前"
-      clock.tick(     60000) && expect(timer.text).to.eq "1時間前"
+      clock.tick(   7200000) && timer.tick(clock.now) && expect(timer.text).to.eq "1時間後"
+      clock.tick(     60000) && timer.tick(clock.now) && expect(timer.text).to.eq "59分後"
+      clock.tick(58 * 60000) && timer.tick(clock.now) && expect(timer.text).to.eq "1分後"
+      clock.tick(         1) && timer.tick(clock.now) && expect(timer.text).to.eq "1分以内"
+      clock.tick(     35000) && timer.tick(clock.now) && expect(timer.text).to.eq "25秒以内"
+      clock.tick(     49998) && timer.tick(clock.now) && expect(timer.text).to.eq "25秒以内"
+      clock.tick(     35000) && timer.tick(clock.now) && expect(timer.text).to.eq "1分以内"
+      clock.tick(         1) && timer.tick(clock.now) && expect(timer.text).to.eq "1分前"
+      clock.tick(58 * 60000) && timer.tick(clock.now) && expect(timer.text).to.eq "59分前"
+      clock.tick(     60000) && timer.tick(clock.now) && expect(timer.text).to.eq "1時間前"
+
       clock.restore()

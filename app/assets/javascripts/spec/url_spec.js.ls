@@ -1,6 +1,6 @@
 url_bind =
   fname:
-    * fname: "jasmine"
+    * fname: "test_mocha"
       title: "基本"
     * fname: "other"
       title: "変更"
@@ -32,21 +32,25 @@ Url.routes =
 
 describe "Url", (...)!->
   describe "should capture file name", (...)!->
-    it "file", !->
+    it "file", (done)!->
       Url.popstate()
-      requestAnimationFrame ->
+      setTimeout ->
         expect(Url.prop.fname()).to.eq "test_mocha"
         expect(Url.prop.ext()).to.eq "html"
+        done()
+      , 10
 
   describe "popstate url", (...)!->
-    it "param", !->
+    it "param", (done)!->
       Url.popstate()
-      requestAnimationFrame ->
+      setTimeout ->
         expect(Url.prop.aaa()).to.eq  1
         expect(Url.prop.bbb()).to.eq "B"
         expect(Url.prop.ccc()).to.eq "C"
         expect(Url.prop.ddd()).to.eq 1400000000000
         expect(Url.location().search).to.eq "?param=1~B~C~KfmhEBZ"
+        done()
+      , 10
 
   describe "bind variable", (...)!->
 
@@ -55,5 +59,5 @@ describe "Url", (...)!->
       expect(Url.prop.title()).to.eq "変更"
 
     it "location basic", !->
-      Url.prop.fname "jasmine"
+      Url.prop.fname "test_mocha"
       expect(Url.prop.title()).to.eq "基本"

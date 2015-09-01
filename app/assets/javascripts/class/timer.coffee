@@ -52,7 +52,7 @@ class Timer
   constructor: (@at)->
 
   start: (bind)->
-    GUI.do_tick (now)=>
+    @tick = (now)=>
       @msec = (now - @at)
       @next @msec / 1000, (@text, sec_span = Number.NaN)=>
         return 0 unless bind.update
@@ -64,6 +64,7 @@ class Timer
           msec_span - diff
         else
           1 - diff
+    GUI.do_tick @tick
 
   next: (second, tick)->
     if 0 < second
@@ -94,7 +95,7 @@ log.updated = new Timer log.updated_at,
     log.elm = $("." + log._id)
     log.elm.find("[time]").html text
 
-log.cancel_btn = 
+log.cancel_btn =
   if log.logid? && "q" == log.logid[0]
     new Timer log.updated_at,
       next: (second, tick)->
@@ -106,4 +107,3 @@ log.cancel_btn =
   else
     text: ""
 ###
-

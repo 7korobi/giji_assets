@@ -159,4 +159,3 @@ class GUI.ScrollSpy
           if id == @prop()
             window.requestAnimationFrame ->
               GUI.ScrollSpy.go id
-
