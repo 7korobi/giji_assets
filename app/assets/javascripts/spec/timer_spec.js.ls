@@ -1,5 +1,3 @@
-expect = chai.expect
-
 describe "Timer" (...)!->
   describe "module" (...)!->
     it "time_stamp" ->
@@ -40,20 +38,13 @@ describe "Timer" (...)!->
 
     it "show lax time by tick" !->
       clock = sinon.useFakeTimers(0)
-
-      GUI.do_tick = (cb)->
-        action = ->
-          tick = cb(clock.now)
-          if tick
-            clock.setTimeout ->
-              action()
-            , tick
-        action()
-
+      window.setTimeout = clock._setTimeout
+      _.now = ->
+        new Date - 0
       attr =
         onunload: ->
         update: (text)->
-      timer = new Timer(clock.now + 10800000)
+      timer = new Timer(10800000)
       timer.start attr
 
       clock.tick(   7200000) && expect(timer.text).to.eq "1時間後"

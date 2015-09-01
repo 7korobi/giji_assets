@@ -213,19 +213,6 @@ GUI = (->
   names:
     config: names_base(name_config)
 
-  items_module: (type)->
-    GUI.if_exist "#item-#{type}", (dom)->
-      query = Cache.items.where({type})
-      m.mount dom,
-        controller: ->
-        view: ->
-          m "div",
-            query.list().map (v)->
-              vdom = GUI.message[v.template](v)
-              vdom.attrs.config = win.scroll.mark(v._id).config
-              vdom
-
-
   accordion: (mark, list)->
     cancel = GUI.attrs {}, ->
       @end (e)->

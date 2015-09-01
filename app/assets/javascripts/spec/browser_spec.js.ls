@@ -1,5 +1,3 @@
-expect = chai.expect
-
 describe "(browser css)" (...)!->
   beforeEach (done)!->
     requestAnimationFrame !->

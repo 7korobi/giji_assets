@@ -1,5 +1,3 @@
-expect = chai.expect
-
 new Cache.Rule("site").schema !->
 new Cache.Rule("story").schema !->
   @belongs_to "site"

@@ -57,3 +57,5 @@ if "ondeviceorientation" of window
   window.addEventListener 'deviceorientation', win.do.orientation
 if "ondevicemotion" of window
   window.addEventListener 'devicemotion', win.do.motion
+
+expect = chai.expect

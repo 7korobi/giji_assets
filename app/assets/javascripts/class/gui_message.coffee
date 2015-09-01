@@ -50,12 +50,16 @@ GUI.message = (->
       m "select", buttons
       Btn.submit {}, {}
 
+  toc: (o)->
+
   paragraph: (o)->
     console.log o
     m ".paragraph", {key: o._id}, m.trust o.log.deco_text
 
   head: (o)->
-    m o.mestype, m.trust o.log.deco_text
+    m o.mestype, {key: o._id},
+      m 'a', {name: o._id}
+      m.trust o.log.deco_text
 
   event: (o)->
     btn = o.event().view.btn()
