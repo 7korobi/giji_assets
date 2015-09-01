@@ -38,15 +38,11 @@ describe "Timer" (...)!->
 
     it "show lax time by tick" !->
       clock = sinon.useFakeTimers(0)
-      window.setTimeout = clock._setTimeout
-      _.now = ->
-        new Date - 0
       attr =
         onunload: ->
         update: (text)->
       timer = new Timer(10800000)
       timer.start attr
-
       clock.tick(   7200000) && timer.tick(clock.now) && expect(timer.text).to.eq "1時間後"
       clock.tick(     60000) && timer.tick(clock.now) && expect(timer.text).to.eq "59分後"
       clock.tick(58 * 60000) && timer.tick(clock.now) && expect(timer.text).to.eq "1分後"
