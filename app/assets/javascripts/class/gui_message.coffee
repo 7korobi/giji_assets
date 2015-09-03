@@ -83,7 +83,7 @@ GUI.message = (->
 
     roletable = RAILS.roletable[story.type.roletable]
     mob = RAILS.mob[story.type.mob]
-    event_card = RAILS.events[event.event]
+    event_card = SET_EVENTS[event.event]
     texts = []
     texts.push RAILS.winner[event.winner].CAPTION + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
     texts.push m "kbd", event_card if event_card

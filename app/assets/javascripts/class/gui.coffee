@@ -11,7 +11,7 @@ GUI = (->
         cb name(key), hash[key]
 
   name_config = (o)->
-      RAILS.roles[o]?.name || RAILS.gifts[o]?.name || RAILS.events[o]?.name || o || ""
+      SET_ROLES[o]?.name || SET_EVENTS[o]?.name || o || ""
 
   img_head: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images"
   portrate: (face_id, attr = {})->

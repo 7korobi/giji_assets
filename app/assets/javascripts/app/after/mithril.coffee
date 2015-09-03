@@ -445,7 +445,7 @@ if gon?.stories?
                 view: (sub_menu)->
                   reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(player_length: "all")...).reduce()
                   m ".paragraph",
-                    sub_menu.radio {class:"edge player_length"}, Url.prop.role_type, reduce, "player_length", (key, o)->
+                    sub_menu.radio {class:"edge player_length"}, Url.prop.player_length, reduce, "player_length", (key, o)->
                       o.min_is.view.player_length + "人"
 
             view: (main_menu)->

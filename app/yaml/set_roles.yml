@@ -1,0 +1,715 @@
+none:
+  name: ""
+  win:
+  group:
+
+bind:
+  name: ---
+  win:
+  group:
+
+hide:
+  name: ""
+  win:
+  group:
+  able: 外出
+  options: []
+  explain: |-
+    あなたは正体不明です。
+    <br>
+    特殊な能力があるかどうか自覚していません。夜は積極的に外出して、様子をさぐりましょう。
+
+mob:
+  name: 見物人
+  win: MOB
+  group: OTHER
+  options: []
+  explain: |-
+
+lost:
+  name: 喪失
+  win:
+  group: OTHER
+  options: []
+  explain: |-
+    あなたは贈り物を<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_LOST" TARGET="_blank">喪失</A>しました。
+    <br>
+    もう二度と手にすることはないでしょう。もしまたあなたの手に贈り物があっても、消え去ってしまいます。そして、あなたがそれに気付くことはないでしょう。
+
+
+shield:
+  name: 光の輪
+  win:
+  group: OTHER
+  options:
+    - circular
+    - guard
+  explain: |-
+    あなたを<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_SHIELD" TARGET="_blank">光の輪</A>が取り巻きます。
+    <br>
+    あなたはもし昨夜、襲撃されていたとしても守られました。
+    <br>
+    光の輪はひとりを一度しか守りません。
+
+glass:
+  name: 魔鏡
+  win:
+  group: OTHER
+  options:
+    - circular
+    - see
+  explain: |-
+    あなたを<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_GLASS" TARGET="_blank">魔鏡</A>が照らします。
+    <br>
+    あなたは、魔鏡を渡す相手を占います。
+    魔鏡はひとりを一度しか照らしません。
+
+ogre:
+  name: 悪鬼
+  win: WOLF
+  group: WOLF
+  options:
+    - wolf
+    - hunt
+    - wsay
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_OGRE" TARGET="_blank">悪鬼</A>です。
+    <br>
+    表向きは他の役目を帯びていますが、あなたは人を襲う悪い鬼なのです。
+
+fairy:
+  name: 妖精の子
+  win: PIXI
+  group: PIXI
+  options:
+    - pixi
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_FAIRY" TARGET="_blank">妖精から生まれた子</A>です。
+    <br>
+    表向きは他の役目を帯びていますが、あなたは人ならぬ存在なのです。
+    占い師、霊能者にどう判別されるかは、もともとの役職によります。
+
+fink:
+  name: 半端者
+  win: EVIL
+  group: EVIL
+  options:
+    - evil
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_FINK" TARGET="_blank">半端者</A>です。
+    <br>
+    表向きは他の役目を帯びていますが、あなたは人ともつかぬ、人狼ともつかぬ、半端な正体を隠しています。
+
+decide:
+  name: 決定者
+  win:
+  group: OTHER
+  able: 投票
+  options:
+    - vote
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_DECIDE" TARGET="_blank">決定者</A>です。
+    <br>
+    あなたは追加票を投じる権利を持ちつづけます。行使することで、健在を示すこともできるでしょう。
+
+seeronce:
+  name: 夢占師
+  win:
+  group: OTHER
+  able: 占う
+  options:
+    - once
+    - see
+    - spy_wolf
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_SEERONCE" TARGET="_blank">夢占師</A>です。
+
+dipsy:
+  name: 酔払い
+  win:
+  group: OTHER
+  options: []
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_DIPSY" TARGET="_blank">酔払い</A>です。
+    <br>
+    あなたが人外もしくは村人に相対するものであれば、自分の役割を見失うことはありません。
+    <br>
+    また、光の輪や魔鏡といった贈り物を受け取った場合、酔いが醒めることでしょう。
+
+lover:
+  name: 弟子
+  win:
+  group: OTHER
+  able: 入門
+  options:
+    - aura
+    - bond
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_LOVER" TARGET="_blank">弟子</A>です。
+    <br>
+    好きな人物を師匠として選び、弟子入りします。次の朝、あなたは頭角をあらわし、絆の師匠と同じ役職になっています。
+
+robber:
+  name: 盗賊
+  win:
+  group: OTHER
+  options:
+    - aura
+    - rob
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ROBBER" TARGET="_blank">盗賊</A>です。
+    <br>
+
+tangle:
+  name: 怨念
+  win:
+  group: OTHER
+  options:
+    - aura
+    - revenge
+    - tangle
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_TANGLE" TARGET="_blank">怨念</A>です。
+
+villager:
+  name: 村人
+  win: HUMAN
+  group: HUMAN
+  options:
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_VILLAGER" TARGET="_blank">村人</A>です。
+    <br>
+    特殊な能力はもっていません。
+
+stigma:
+  name: 聖痕者
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - stigma
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_STIGMA" TARGET="_blank">_ROLESUBID_聖痕者</A>です。
+
+fm:
+  name: 結社員
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - fm
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FM" TARGET="_blank">結社員</A>です。
+    <br>
+    独自の人脈を持つ秘密結社の一員です。
+
+sympathy:
+  name: 共鳴者
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - fm
+    - vote
+    - entrust
+    - spsay
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SYMPATHY" TARGET="_blank">共鳴者</A>です。
+
+seer:
+  name: 占い師
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - see
+    - spy_wolf
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEER" TARGET="_blank">占い師</A>です。
+
+seerwin:
+  name: 信仰占師
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - see
+    - spy_win
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEERWIN" TARGET="_blank">信仰占師</A>です。
+
+aura:
+  name: 気占師
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - see
+    - spy_aura
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_AURA" TARGET="_blank">気（オーラ）占い師</A>です。
+oura: *aura
+
+seerrole:
+  name: 賢者
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - see
+    - spy_role
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEERROLE" TARGET="_blank">賢者</A>です。
+
+guard:
+  name: 守護者
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - guard
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_GUARD" TARGET="_blank">守護者</A>です。
+
+medium:
+  name: 霊能者
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - medium
+    - spy_wolf
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MEDIUM" TARGET="_blank">霊能者</A>です。
+
+mediumwin:
+  name: 信仰霊能者
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - medium
+    - spy_win
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MEDIUMWIN" TARGET="_blank">信仰霊能者</A>です。
+
+mediumrole:
+  name: 導師
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - medium
+    - spy_role
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MEDIUMROLE" TARGET="_blank">導師</A>です。
+
+necromancer:
+  name: 降霊者
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - medium
+    - spy_wolf
+    - vote
+    - entrust
+    - gsay
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_NECROMANCER" TARGET="_blank">降霊者</A>です。
+    顔や名前はわかりませんが、あなたの耳には死者の声が届いちゃうことでしょう。
+
+follow:
+  name: 追従者
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FOLLOW" TARGET="_blank">追従者</A>です。
+    <br>
+    だれかを信じ、委ねましょう。
+
+fan:
+  name: 煽動者
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - revenge
+    - fan
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FAN" TARGET="_blank">煽動者</A>です。
+
+hunter:
+  name: 賞金稼
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - revenge
+    - aim
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_HUNTER" TARGET="_blank">賞金稼</A>です。
+    <br>
+    毎夜、一人を付け狙います。
+
+weredog:
+  name: 人犬
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - tafness
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WEREDOG" TARGET="_blank">人犬</A>です。
+
+prince:
+  name: 王子様
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - august
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_PRINCE" TARGET="_blank">王子様</A>です。
+
+rightwolf:
+  name: 狼血族
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - blind
+    - wolf
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_VILLAGER" TARGET="_blank">村人</A>です。
+    <br>
+    特殊な能力はもっていません。
+
+doctor:
+  name: 医師
+  win: HUMAN
+  group: HUMAN
+  able: 診察
+  options:
+    - aura
+    - cure
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DOCTOR" TARGET="_blank">医師</A>です。
+
+curse:
+  name: 呪人
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - curse
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CURSE" TARGET="_blank">呪人</A>です。
+
+dying:
+  name: 預言者
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - droop
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DYING" TARGET="_blank">預言者</A>です。
+
+invalid:
+  name: 病人
+  win: HUMAN
+  group: HUMAN
+  options:
+    - aura
+    - revenge
+    - seal
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_INVALID" TARGET="_blank">病人</A>です。
+    <br>
+    あなたが命を落としたとき、ひとりの犯人が特定できるのであれば、犯人は病気に感染し、いっさいの能力を行使できなくなります。
+
+alchemist:
+  name: 錬金術師
+  win: HUMAN
+  group: HUMAN
+  able: 薬を飲む
+  options:
+    - aura
+    - once
+    - revenge
+    - kill
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ALCHEMIST" TARGET="_blank">錬金術師</A>です。
+    あなたは一度だけ、薬を飲むことが出来ます。もし薬を飲んだ日に処刑以外の要因で命を落とした場合、その犯人を道連れにします。人狼の襲撃の場合、襲撃実行者が対象となります。
+
+witch:
+  name: 魔女
+  win: HUMAN
+  group: HUMAN
+  able: 投薬
+
+girl:
+  name: 少女
+  win: HUMAN
+  group: HUMAN
+  able: 夜遊び
+
+scapegoat:
+  name: 生贄
+  win: HUMAN
+  group: HUMAN
+  able: 疑う
+
+elder:
+  name: 長老
+  win: HUMAN
+  group: HUMAN
+
+jammer:
+  name: 邪魔之民
+  win: EVIL
+  group: EVIL
+  able: 隠す
+
+snatch:
+  name: 宿借之民
+  win: EVIL
+  group: EVIL
+  able: 換る
+
+bat:
+  name: 念波之民
+  win: EVIL
+  group: EVIL
+
+possess:
+  name: 狂人
+  win: EVIL
+  group: EVIL
+
+fanatic:
+  name: 狂信者
+  win: EVIL
+  group: EVIL
+
+muppeting:
+  name: 人形使い
+  win: EVIL
+  group: EVIL
+  say: MSAY
+
+wisper: &wisper
+  name: 囁き狂人
+  win: EVIL
+  group: EVIL
+  say: WSAY
+cpossess: *wisper
+
+semiwolf:
+  name: 半狼
+  win: EVIL
+  group: EVIL
+
+dyingpossess:
+  name: ---
+  win: EVIL
+  group: EVIL
+
+oracle:
+  name: 魔神官
+  win: EVIL
+  group: EVIL
+
+sorcerer:
+  name: 魔術師
+  win: EVIL
+  group: EVIL
+  able: 占う
+
+walpurgis:
+  name: 魔法少年
+  win:  EVIL
+  group: EVIL
+  able: 投薬する
+
+headless:
+  name: 首無騎士
+  win: WOLF
+  group: WOLF
+  able: 襲う
+
+wolf:
+  name: 人狼
+  win: WOLF
+  group: WOLF
+  able: 襲う
+
+aurawolf:
+  name: ---
+  win: WOLF
+  group: WOLF
+  able: 襲う
+
+intwolf:
+  name: 智狼
+  win: WOLF
+  group: WOLF
+  able: 襲う
+
+cwolf:
+  name: 呪狼
+  win: WOLF
+  group: WOLF
+  able: 襲う
+
+cursewolf:
+  name: 呪狼
+  win: WOLF
+  group: WOLF
+  able: 襲う
+
+whitewolf:
+  name: 白狼
+  win: WOLF
+  group: WOLF
+  able: 襲う
+
+childwolf:
+  name: 仔狼
+  win: WOLF
+  group: WOLF
+  able: 襲う
+
+dyingwolf:
+  name: 衰狼
+  win: WOLF
+  group: WOLF
+  able: 襲う
+
+silentwolf:
+  name: 黙狼
+  win: WOLF
+  group: WOLF
+  able: 襲う
+
+hamster:
+  name: 栗鼠妖精
+  win: PIXI
+  group: PIXI
+
+werebat:
+  name: 蝙蝠人間
+  win: PIXI
+  group: PIXI
+  able: XSAY
+
+mimicry:
+  name: 擬狼妖精
+  win: PIXI
+  group: PIXI
+  able: WSAY
+
+dyingpixi:
+  name: 風花妖精
+  win: PIXI
+  group: PIXI
+
+trickster:
+  name: 悪戯妖精
+  win: PIXI
+  group: PIXI
+  able: 結ぶ
+
+hatedevil:
+  name: 邪気悪魔
+  win: HATER
+  group: OTHER
+  able: 結ぶ
+
+loveangel:
+  name: 恋愛天使
+  win: LOVER
+  group: OTHER
+  able: 結ぶ
+
+passion:
+  name: 片思い
+  win: LOVER
+  group: OTHER
+  able: 結ぶ
+
+lonewolf:
+  name: 一匹狼
+  win: LONEWOLF
+  group: WOLF
+  able: 襲う
+
+guru:
+  name: 笛吹き
+  win: GURU
+  group: OTHER
+  able: 誘う
+
+dish:
+  name: 鱗魚人
+  win: DISH
+  group: OTHER
+  able: 跳ねる
+
+bitch:
+  name: 遊び人
+  win: LOVER
+  group: OTHER
+  able: 遊ぶ

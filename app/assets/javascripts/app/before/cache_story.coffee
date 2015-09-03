@@ -10,8 +10,8 @@ new Cache.Rule("story").schema ->
         tf &&= o.view.update_at == update_at if update_at != "all"
         tf &&= o.view.player_length == Number(player_length) if player_length != "all"
         tf &&= o.view.update_interval == update_interval if update_interval != "all"
-        tf &&= o.view.role_types.find((v)-> v == role_type) if role_type != "all"
-        tf &&= o.view.event_types.find((v)-> v == event_type) if event_type != "all"
+        tf &&= _.find(o.view.role_types, (v)-> v == role_type) if role_type != "all"
+        tf &&= _.find(o.view.event_types, (v)-> v == event_type) if event_type != "all"
         tf
 
   caption = (field, key)->
@@ -21,7 +21,7 @@ new Cache.Rule("story").schema ->
     else
       null
 
-  all_events = Object.keys RAILS.events
+  all_events = Object.keys SET_EVENTS
 
   @deploy (o)->
     o.order = o.folder + GUI.field(o.vid, 4)

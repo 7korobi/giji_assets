@@ -9,9 +9,9 @@ sow:
     updated_at: 1437461000000
     style: head
     log: |-
-      <a href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~" class="btn edge">ルール</a>
+      <a class="btn edge" href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~">ルール</a>
       と
-      <a href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~" class="btn edge">心構え</a>
+      <a class="btn edge" href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~">心構え</a>
       を守って、楽しく、強く遊ぼう。
       <br>
       ここでは、みんなに守ってほしいルールや、吟味してほしい心構えを紹介するよ。
@@ -22,7 +22,9 @@ sow:
     log: キャラクター画像一覧
 
   - _id: play-paragraph--4
-    log: キャラクターを選ぶ参考に、<a class="btn edge" href="http://giji.check.jp/map_reduce/faces">人気度集計</a>をチェックしてもいいかもね。
+    log: |-
+      <a class="btn edge" href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/character_tag.html">キャラクター画像はこちら</a>
+      キャラクターを選ぶ参考に、<a class="btn edge" href="http://giji.check.jp/map_reduce/faces">人気度集計</a>をチェックしてもいいかもね。
 
   - _id: play-head-h6-10
     log: この州の設定

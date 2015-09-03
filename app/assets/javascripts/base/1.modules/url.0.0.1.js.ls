@@ -31,6 +31,7 @@ class Url
   @prop = {}
 
   @location = ->
+#    storage:  window.localStorage
     cookie:   document.cookie
     protocol: location.protocol
     host:     location.host
