@@ -556,17 +556,42 @@ jammer:
   win: EVIL
   group: EVIL
   able: 隠す
+  options:
+    - aura
+    - jammer
+    - xsay
+    - evil
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_JAMMER" TARGET="_blank">邪魔之民</A>です。
 
 snatch:
   name: 宿借之民
   win: EVIL
   group: EVIL
-  able: 換る
+  options:
+    - aura
+    - snatch
+    - xsay
+    - evil
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SNATCH" TARGET="_blank">宿借之民</A>です。
 
 bat:
   name: 念波之民
   win: EVIL
   group: EVIL
+  options:
+    - aura
+    - xsay
+    - evil
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BAT" TARGET="_blank">念波之民</A>です。
 
 possess:
   name: 狂人
