@@ -20,7 +20,7 @@ Url.routes =
     messages: new Url "log=:home~:talk~:memo~:open~:human~:search",
       unmatch: gon?.events? && "?"
 
-    scrolls: new Url "scr=:scroll~:talk_at~:memo_at",
+    scroll: new Url "scr=:scroll",
       unmatch: "?"
       change: (params)->
         scroll = win.scroll.prop()
@@ -38,6 +38,7 @@ Url.routes =
 Url.cookies =
   uid: Url.cookie "uid=:uid; pwd=:pwd;", "readonly"
   css: Url.cookie "css=:theme~:width~:layout~:font", time: 12, path: "/"
+  back: Url.cookie "back=:talk_at~:memo_at", time: 24 * 365
 
 Url.cookies.css.options.change = (params)->
   list =
