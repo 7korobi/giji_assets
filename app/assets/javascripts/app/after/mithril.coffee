@@ -1,3 +1,19 @@
+change_pin = (id)->
+  target = menu.scope.state()
+  switch target
+    when "history"
+      target_at = Url.prop.memo_at
+    when "memo", "talk", "home"
+      target_at = Url.prop["#{target}_at"]
+
+  if target_at
+    target_at id
+    Url.prop.back target
+
+  Url.prop.scroll id
+  menu.icon.change "pin"
+
+
 GUI.if_exist "#contentframe", (dom)->
 
 GUI.if_exist "#buttons", (dom)->
@@ -172,6 +188,15 @@ if gon?.potofs?
                 Url.prop.scroll ""
                 win.scroll.rescroll Url.prop.talk_at
 
+          pin_click = (list)->
+            GUI.attrs {}, ->
+              @click ->
+                pins = {}
+                for o in list
+                  pins["#{o.turn}-#{o.logid}"] = true
+                change_pin(center_id)
+                Url.prop.pins(pins)
+
           day = 24 * 60 * 60
           star = (o)->
             if doc.seeing[o._id] >= day
@@ -188,12 +213,16 @@ if gon?.potofs?
 
           filter =
             m "section.plane",
-              m "h6", "参照ログ"
+              m "h6",
+                "参照ログ"
+                m "span.btn.edge.icon-pin", pin_click(anchorview)
               for o in anchorview
                 m ".line_text",
                   m ".#{o.mestype}.badge", go_click(o), "#{o.turn}:#{o.anchor}"
                   m.trust o.log.line_text
-              m "h6", seeing_measure, "よく見ていたログ"
+              m "h6", seeing_measure,
+                "よく見ていたログ"
+                m "span.btn.edge.icon-pin", pin_click(seeingview)
               for o in seeingview
                 if o._id == center_id
                   tag = ".line_text.attention"
@@ -219,25 +248,9 @@ if gon?.potofs?
             filter
           m ".foot"
 
-
 if gon?.events? && gon.event?
   GUI.if_exist "#messages", (dom)->
     win.scroll.size = 30
-
-    change_pin = (id)->
-      target = menu.scope.state()
-      switch target
-        when "history"
-          target_at = Url.prop.memo_at
-        when "memo", "talk", "home"
-          target_at = Url.prop["#{target}_at"]
-
-      if target_at
-        target_at id
-        Url.prop.back target
-
-      Url.prop.scroll id
-      menu.icon.change "pin"
 
     GUI.message.delegate.tap_anchor = (turn, logid, id, by_id)->
       [folder, vid, by_turn, by_logid] = by_id.split("-")
@@ -253,6 +266,7 @@ if gon?.events? && gon.event?
         change_pin(by_id)
 
     GUI.message.delegate.tap_identity = (turn, logid, id)->
+      return
       pins = Url.prop.pins()
       pins["#{turn}-#{logid}"] = true
       Url.prop.pins pins
