@@ -254,7 +254,7 @@ seerwin:
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEERWIN" TARGET="_blank">信仰占師</A>です。
 
-aura:
+aura: &aura
   name: 気占師
   win: HUMAN
   group: HUMAN
