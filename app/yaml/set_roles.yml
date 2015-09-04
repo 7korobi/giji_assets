@@ -426,6 +426,9 @@ rightwolf:
     <br>
     特殊な能力はもっていません。
 
+    狼血族のあなたは、占い師、霊能者に人狼と判定されます。ですが、あなたは村人で、勝利条件も変わりません。
+    勝利を目指して頑張りましょう。占われると、正体を自覚し表示が増えます。
+
 doctor:
   name: 医師
   win: HUMAN
@@ -476,46 +479,77 @@ invalid:
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_INVALID" TARGET="_blank">病人</A>です。
     <br>
-    あなたが命を落としたとき、ひとりの犯人が特定できるのであれば、犯人は病気に感染し、いっさいの能力を行使できなくなります。
+    あなたが命を落としたとき、犯人は病気に感染します。
 
 alchemist:
   name: 錬金術師
   win: HUMAN
   group: HUMAN
-  able: 薬を飲む
   options:
     - aura
     - once
     - revenge
-    - kill
+    - cling
     - vote
     - entrust
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ALCHEMIST" TARGET="_blank">錬金術師</A>です。
-    あなたは一度だけ、薬を飲むことが出来ます。もし薬を飲んだ日に処刑以外の要因で命を落とした場合、その犯人を道連れにします。人狼の襲撃の場合、襲撃実行者が対象となります。
+    あなたは一度だけ、薬を飲むことが出来ます。
 
 witch:
   name: 魔女
   win: HUMAN
   group: HUMAN
-  able: 投薬
+  options:
+    - aura
+    - witch
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WITCH" TARGET="_blank">魔女</A>です。
+    <br>
+    あなたは二日目に、毒薬と蘇生薬をひとつずつ完成させます。
 
 girl:
   name: 少女
   win: HUMAN
   group: HUMAN
-  able: 夜遊び
+  options:
+    - aura
+    - night
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_GIRL" TARGET="_blank">少女</A>です。
 
 scapegoat:
   name: 生贄
   win: HUMAN
   group: HUMAN
   able: 疑う
+  options:
+    - aura
+    - scapegoat
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SCAPEGOAT" TARGET="_blank">生贄</A>です。
 
 elder:
   name: 長老
   win: HUMAN
   group: HUMAN
+  options:
+    - aura
+    - revenge
+    - seal
+    - twolife
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ELDER" TARGET="_blank">長老</A>です。
+    <br>
+    もしも命を落としたら、あなたの恨みは犯人を襲います。
 
 jammer:
   name: 邪魔之民
