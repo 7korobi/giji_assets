@@ -504,7 +504,7 @@ if gon?.stories?
                           m "th", "ルール"
                           m "td", "#{o.view.game_rule}"
                     m ".list", o.view.role_cards
-                    m ".list", o.view.event_cards
+                    m ".list", o.view.trap_cards
 
                 else
                   m "td",

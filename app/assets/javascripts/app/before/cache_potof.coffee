@@ -124,7 +124,7 @@ new Cache.Rule("potof").schema ->
 
     win_love = RAILS.loves[o.love]?.win
 
-    win_role = win_by_role(o, SET_ROLES) || "NONE"
+    win_role = win_by_role(o, Cache.roles.hash()) || "NONE"
     win = win_juror || win_love || win_zombie || win_role
     win = RAILS.folders[story.folder].evil if win == 'EVIL'
     switch win

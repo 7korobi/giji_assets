@@ -21,13 +21,13 @@ new Cache.Rule("story").schema ->
     else
       null
 
-  all_events = Object.keys SET_EVENTS
+  all_traps = Object.keys Cache.traps.hash()
 
   @deploy (o)->
     o.order = o.folder + GUI.field(o.vid, 4)
     o.rating = "default" unless o.rating
     o.user_id = o.sow_auth_id
-    o.card.role = _.difference o.card.config, all_events
+    o.card.role = _.difference o.card.config, all_traps
 
     o.type.game ?= "TABULA"
     o.type.mob  ?= "visiter"
@@ -51,7 +51,7 @@ new Cache.Rule("story").schema ->
             m ".emboss", "#{name}x#{size}"
           else
             m ".emboss", "#{name}"
-      event_cards:
+      trap_cards:
         GUI.names.config o.card.event, (name, size)->
           if size > 1
             m ".emboss", "#{name}x#{size}"

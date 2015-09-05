@@ -53,7 +53,6 @@ GUI.message = (->
   toc: (o)->
 
   paragraph: (o)->
-    console.log o
     m ".paragraph", {key: o._id}, m.trust o.log.deco_text
 
   head: (o)->
@@ -83,10 +82,10 @@ GUI.message = (->
 
     roletable = RAILS.roletable[story.type.roletable]
     mob = RAILS.mob[story.type.mob]
-    event_card = SET_EVENTS[event.event]
+    trap_card = Cache.traps.find(event.event)
     texts = []
     texts.push RAILS.winner[event.winner].CAPTION + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
-    texts.push m "kbd", event_card if event_card
+    texts.push m "kbd", trap_card if trap_card
     texts.push RAILS.event_state.grudge    if event.turn == event.grudge
     texts.push RAILS.event_state.riot      if event.turn == event.riot
     texts.push RAILS.event_state.scapegoat if event.turn == event.scapegoat
@@ -113,7 +112,7 @@ GUI.message = (->
         m "p.text",
           m "div",
             m "code", "事件"
-            story.view.event_cards
+            story.view.trap_cards
 
           m "div",
             m "code", "役職"

@@ -2,13 +2,13 @@ if head.browser?
   b = head.browser
   b.viewport = "width=device-width, maximum-scale=4.0, minimum-scale=1.0, initial-scale=1.0"
 
-  if navigator.userAgent.toLowerCase().indexOf('windows') != -1
+  if 'windows' in navigator.userAgent.toLowerCase()
     b.win = true
 
-  if navigator.userAgent.toLowerCase().indexOf('macintosh') != -1
+  if 'macintosh' in navigator.userAgent.toLowerCase()
     b.mac = true
 
-  if navigator.userAgent.toLowerCase().indexOf('android') != -1
+  if 'android' in navigator.userAgent.toLowerCase()
     b.android = true
 
 head.useragent = navigator.userAgent

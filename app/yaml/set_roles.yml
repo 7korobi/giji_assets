@@ -2,35 +2,39 @@ none:
   name: ""
   win:
   group:
+  ables: []
+  explain: |-
 
 bind:
   name: ---
   win:
   group:
+  ables: []
+  explain: |-
 
 hide:
   name: ""
   win:
   group:
-  able: 外出
-  options: []
+  ables:
+    - hike
+    - vote
+    - entrust
   explain: |-
     あなたは正体不明です。
-    <br>
-    特殊な能力があるかどうか自覚していません。夜は積極的に外出して、様子をさぐりましょう。
 
 mob:
   name: 見物人
   win: MOB
   group: OTHER
-  options: []
+  ables: []
   explain: |-
 
 lost:
   name: 喪失
   win:
   group: OTHER
-  options: []
+  ables: []
   explain: |-
     あなたは贈り物を<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_LOST" TARGET="_blank">喪失</A>しました。
     <br>
@@ -41,7 +45,7 @@ shield:
   name: 光の輪
   win:
   group: OTHER
-  options:
+  ables:
     - circular
     - guard
   explain: |-
@@ -55,7 +59,7 @@ glass:
   name: 魔鏡
   win:
   group: OTHER
-  options:
+  ables:
     - circular
     - see
   explain: |-
@@ -68,10 +72,11 @@ ogre:
   name: 悪鬼
   win: WOLF
   group: WOLF
-  options:
+  ables:
     - wolf
     - hunt
-    - wsay
+    - friend
+    - WSAY
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_OGRE" TARGET="_blank">悪鬼</A>です。
     <br>
@@ -81,7 +86,7 @@ fairy:
   name: 妖精の子
   win: PIXI
   group: PIXI
-  options:
+  ables:
     - pixi
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_FAIRY" TARGET="_blank">妖精から生まれた子</A>です。
@@ -93,7 +98,7 @@ fink:
   name: 半端者
   win: EVIL
   group: EVIL
-  options:
+  ables:
     - evil
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_FINK" TARGET="_blank">半端者</A>です。
@@ -105,7 +110,7 @@ decide:
   win:
   group: OTHER
   able: 投票
-  options:
+  ables:
     - vote
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_DECIDE" TARGET="_blank">決定者</A>です。
@@ -117,7 +122,7 @@ seeronce:
   win:
   group: OTHER
   able: 占う
-  options:
+  ables:
     - once
     - see
     - spy_wolf
@@ -128,7 +133,7 @@ dipsy:
   name: 酔払い
   win:
   group: OTHER
-  options: []
+  ables: []
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_DIPSY" TARGET="_blank">酔払い</A>です。
     <br>
@@ -141,7 +146,7 @@ lover:
   win:
   group: OTHER
   able: 入門
-  options:
+  ables:
     - aura
     - bond
     - vote
@@ -155,7 +160,7 @@ robber:
   name: 盗賊
   win:
   group: OTHER
-  options:
+  ables:
     - aura
     - rob
     - vote
@@ -168,7 +173,7 @@ tangle:
   name: 怨念
   win:
   group: OTHER
-  options:
+  ables:
     - aura
     - revenge
     - tangle
@@ -181,7 +186,8 @@ villager:
   name: 村人
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
+    - human
     - vote
     - entrust
   explain: |-
@@ -193,9 +199,10 @@ stigma:
   name: 聖痕者
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - stigma
+    - human
     - vote
     - entrust
   explain: |-
@@ -205,9 +212,10 @@ fm:
   name: 結社員
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - fm
+    - human
     - vote
     - entrust
   explain: |-
@@ -219,12 +227,13 @@ sympathy:
   name: 共鳴者
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - fm
+    - human
     - vote
     - entrust
-    - spsay
+    - SPSAY
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SYMPATHY" TARGET="_blank">共鳴者</A>です。
 
@@ -232,10 +241,11 @@ seer:
   name: 占い師
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - see
     - spy_wolf
+    - human
     - vote
     - entrust
   explain: |-
@@ -245,10 +255,11 @@ seerwin:
   name: 信仰占師
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - see
     - spy_win
+    - human
     - vote
     - entrust
   explain: |-
@@ -258,10 +269,11 @@ aura: &aura
   name: 気占師
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - see
     - spy_aura
+    - human
     - vote
     - entrust
   explain: |-
@@ -272,10 +284,11 @@ seerrole:
   name: 賢者
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - see
     - spy_role
+    - human
     - vote
     - entrust
   explain: |-
@@ -285,9 +298,10 @@ guard:
   name: 守護者
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - guard
+    - human
     - vote
     - entrust
   explain: |-
@@ -297,10 +311,11 @@ medium:
   name: 霊能者
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - medium
     - spy_wolf
+    - human
     - vote
     - entrust
   explain: |-
@@ -310,10 +325,11 @@ mediumwin:
   name: 信仰霊能者
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - medium
     - spy_win
+    - human
     - vote
     - entrust
   explain: |-
@@ -323,10 +339,11 @@ mediumrole:
   name: 導師
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - medium
     - spy_role
+    - human
     - vote
     - entrust
   explain: |-
@@ -336,23 +353,25 @@ necromancer:
   name: 降霊者
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
+    - chkGSAY
     - medium
     - spy_wolf
+    - human
     - vote
     - entrust
-    - gsay
+    - GSAY
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_NECROMANCER" TARGET="_blank">降霊者</A>です。
-    顔や名前はわかりませんが、あなたの耳には死者の声が届いちゃうことでしょう。
 
 follow:
   name: 追従者
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
+    - human
     - entrust
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FOLLOW" TARGET="_blank">追従者</A>です。
@@ -363,10 +382,11 @@ fan:
   name: 煽動者
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - revenge
-    - fan
+    - riot
+    - human
     - vote
     - entrust
   explain: |-
@@ -376,10 +396,11 @@ hunter:
   name: 賞金稼
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - revenge
     - aim
+    - human
     - vote
     - entrust
   explain: |-
@@ -391,9 +412,10 @@ weredog:
   name: 人犬
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - tafness
+    - human
     - vote
     - entrust
   explain: |-
@@ -403,9 +425,10 @@ prince:
   name: 王子様
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - august
+    - human
     - vote
     - entrust
   explain: |-
@@ -415,10 +438,11 @@ rightwolf:
   name: 狼血族
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - blind
     - wolf
+    - human
     - vote
     - entrust
   explain: |-
@@ -434,9 +458,10 @@ doctor:
   win: HUMAN
   group: HUMAN
   able: 診察
-  options:
+  ables:
     - aura
     - cure
+    - human
     - vote
     - entrust
   explain: |-
@@ -446,9 +471,10 @@ curse:
   name: 呪人
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - curse
+    - human
     - vote
     - entrust
   explain: |-
@@ -458,9 +484,10 @@ dying:
   name: 預言者
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - droop
+    - human
     - vote
     - entrust
   explain: |-
@@ -470,10 +497,11 @@ invalid:
   name: 病人
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - revenge
     - seal
+    - human
     - vote
     - entrust
   explain: |-
@@ -485,11 +513,12 @@ alchemist:
   name: 錬金術師
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - once
     - revenge
     - cling
+    - human
     - vote
     - entrust
   explain: |-
@@ -500,9 +529,10 @@ witch:
   name: 魔女
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - witch
+    - human
     - vote
     - entrust
   explain: |-
@@ -514,9 +544,10 @@ girl:
   name: 少女
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - night
+    - human
     - vote
     - entrust
   explain: |-
@@ -527,9 +558,10 @@ scapegoat:
   win: HUMAN
   group: HUMAN
   able: 疑う
-  options:
+  ables:
     - aura
     - scapegoat
+    - human
     - vote
     - entrust
   explain: |-
@@ -539,11 +571,12 @@ elder:
   name: 長老
   win: HUMAN
   group: HUMAN
-  options:
+  ables:
     - aura
     - revenge
     - seal
     - twolife
+    - human
     - vote
     - entrust
   explain: |-
@@ -556,13 +589,14 @@ jammer:
   win: EVIL
   group: EVIL
   able: 隠す
-  options:
+  ables:
     - aura
     - jammer
-    - xsay
+    - human
     - evil
     - vote
     - entrust
+    - XSAY
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_JAMMER" TARGET="_blank">邪魔之民</A>です。
 
@@ -570,13 +604,14 @@ snatch:
   name: 宿借之民
   win: EVIL
   group: EVIL
-  options:
+  ables:
     - aura
     - snatch
-    - xsay
+    - human
     - evil
     - vote
     - entrust
+    - XSAY
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SNATCH" TARGET="_blank">宿借之民</A>です。
 
@@ -584,12 +619,13 @@ bat:
   name: 念波之民
   win: EVIL
   group: EVIL
-  options:
+  ables:
     - aura
-    - xsay
+    - human
     - evil
     - vote
     - entrust
+    - XSAY
   explain: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BAT" TARGET="_blank">念波之民</A>です。
 
@@ -597,178 +633,468 @@ possess:
   name: 狂人
   win: EVIL
   group: EVIL
+  ables:
+    - aura
+    - human
+    - evil
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_POSSESS" TARGET="_blank">狂人</A>です。
 
 fanatic:
   name: 狂信者
   win: EVIL
   group: EVIL
+  ables:
+    - aura
+    - fanatic
+    - human
+    - evil
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FANATIC" TARGET="_blank">狂信者</A>です。
 
 muppeting:
   name: 人形使い
   win: EVIL
   group: EVIL
-  say: MSAY
+  ables:
+    - aura
+    - human
+    - evil
+    - vote
+    - entrust
+    - MSAY
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MUPPETER" TARGET="_blank">人形使い</A>です。
+    <br>
+    あなたは<b>_NPC_</b>の口を借り、好きな言葉を伝えることができます。
 
 wisper: &wisper
   name: 囁き狂人
   win: EVIL
   group: EVIL
-  say: WSAY
+  ables:
+    - aura
+    - human
+    - evil
+    - vote
+    - entrust
+    - WSAY
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WISPER" TARGET="_blank">囁き狂人</A>です。
+    <br>
+    少人数になると勝敗が確定する状況もあります、ですがこの場合も自動で終了することはありません。
 cpossess: *wisper
 
 semiwolf:
   name: 半狼
   win: EVIL
   group: EVIL
+  ables:
+    - aura
+    - wolfify
+    - human
+    - evil
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEMIWOLF" TARGET="_blank">半狼</A>です。
 
 dyingpossess:
   name: ---
   win: EVIL
   group: EVIL
+  ables:
+    - aura
+    - human
+    - evil
+    - vote
+    - entrust
+  explain: |-
 
 oracle:
   name: 魔神官
   win: EVIL
   group: EVIL
+  ables:
+    - aura
+    - medium
+    - spy_role
+    - human
+    - evil
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ORACLE" TARGET="_blank">魔神官</A>です。
 
 sorcerer:
   name: 魔術師
   win: EVIL
   group: EVIL
-  able: 占う
+  ables:
+    - aura
+    - see
+    - spy_role
+    - human
+    - evil
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SORCERER" TARGET="_blank">魔術師</A>です。
 
 walpurgis:
   name: 魔法少年
   win:  EVIL
   group: EVIL
-  able: 投薬する
+  ables:
+    - aura
+    - grave
+    - witch
+    - human
+    - evil
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WALPURGIS" TARGET="_blank">魔法少年</A>です。
+    <br>
+    やがて命を落とすと魔女になると宿命付けられています。
 
 headless:
   name: 首無騎士
   win: WOLF
   group: WOLF
-  able: 襲う
+  ables:
+    - aura
+    - wolf
+    - hunt
+    - vote
+    - entrust
+    - WSAY
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_HEADLESS" TARGET="_blank">首のない騎士</A>です。
+    <br>
+    あなたは人狼仲間を斬り捨てることも厭いません。
 
 wolf:
   name: 人狼
   win: WOLF
   group: WOLF
-  able: 襲う
+  ables:
+    - aura
+    - wolf
+    - hunt
+    - friend
+    - vote
+    - entrust
+    - WSAY
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WOLF" TARGET="_blank">人狼</A>です。
 
 aurawolf:
   name: ---
   win: WOLF
   group: WOLF
-  able: 襲う
+  ables:
+    - aura
+    - wolf
+    - hunt
+    - friend
+    - spy_aura
+    - vote
+    - entrust
+    - WSAY
+  explain: |-
 
 intwolf:
   name: 智狼
   win: WOLF
   group: WOLF
-  able: 襲う
+  ables:
+    - aura
+    - wolf
+    - hunt
+    - friend
+    - spy_role
+    - vote
+    - entrust
+    - WSAY
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_INTWOLF" TARGET="_blank">智狼</A>です。特殊な能力を持つ人狼です。
 
 cwolf:
   name: 呪狼
   win: WOLF
   group: WOLF
-  able: 襲う
+  ables:
+    - aura
+    - wolf
+    - curse
+    - hunt
+    - friend
+    - vote
+    - entrust
+    - WSAY
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CURSEWOLF" TARGET="_blank">呪狼</A>です。特殊な能力を持つ人狼です。
+    <br>
 
 cursewolf:
   name: 呪狼
   win: WOLF
   group: WOLF
-  able: 襲う
+  ables:
+    - aura
+    - wolf
+    - curse
+    - hunt
+    - friend
+    - vote
+    - entrust
+    - WSAY
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CURSEWOLF" TARGET="_blank">呪狼</A>です。特殊な能力を持つ人狼です。
+    <br>
 
 whitewolf:
   name: 白狼
   win: WOLF
   group: WOLF
   able: 襲う
+  ables:
+    - hunt
+    - friend
+    - vote
+    - entrust
+    - WSAY
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WHITEWOLF" TARGET="_blank">白狼</A>です。特殊な能力を持つ人狼です。
+    <br>
+    あなたを占った占い師は、あなたを人間とみなします。あなたは能力者特有のオーラを発しません。
 
 childwolf:
   name: 仔狼
   win: WOLF
   group: WOLF
-  able: 襲う
+  ables:
+    - aura
+    - wolf
+    - revenge
+    - grudge
+    - hunt
+    - friend
+    - vote
+    - entrust
+    - WSAY
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CHILDWOLF" TARGET="_blank">仔狼</A>です。特殊な能力を持つ人狼です。
 
 dyingwolf:
   name: 衰狼
   win: WOLF
   group: WOLF
-  able: 襲う
+  ables:
+    - aura
+    - wolf
+    - droop
+    - hunt
+    - vote
+    - entrust
+    - WSAY
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DYINGWOLF" TARGET="_blank">衰狼</A>です。特殊な能力を持つ人狼です。
 
 silentwolf:
   name: 黙狼
   win: WOLF
   group: WOLF
-  able: 襲う
+  ables:
+    - aura
+    - wolf
+    - hunt
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SILENTWOLF" TARGET="_blank">黙狼</A>です。
+    <br>
+    人狼の襲撃対象となることはありませんが、人狼（と囁き狂人、擬狼妖精）同士にしか聞こえない会話は、あなたには聞こえません。
 
 hamster:
   name: 栗鼠妖精
   win: PIXI
   group: PIXI
+  ables:
+    - aura
+    - pixi
+    - armor
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_PIXI" TARGET="_blank">栗鼠妖精</A>です。
 
 werebat:
-  name: 蝙蝠人間
+  name: 蝙蝠妖精
   win: PIXI
   group: PIXI
-  able: XSAY
+  ables:
+    - aura
+    - pixi
+    - armor
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BAT" TARGET="_blank">蝙蝠妖精</A>です。
+    <br>
+    あなたは他の妖精が誰であるか知っていますし、新たに生まれた妖精を知ることもできます。ただし、姿を換えてしまった宿借妖精の行方はわかりません。
+    <br>
+    また、蝙蝠妖精同士にしか聞こえない会話が可能です。
 
 mimicry:
   name: 擬狼妖精
   win: PIXI
   group: PIXI
-  able: WSAY
+  ables:
+    - aura
+    - pixi
+    - armor
+    - vote
+    - entrust
+    - WSAY
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MIMICRY" TARGET="_blank">擬狼妖精</A>です。
 
 dyingpixi:
   name: 風花妖精
   win: PIXI
   group: PIXI
+  ables:
+    - aura
+    - pixi
+    - armor
+    - droop
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DYINGPIXI" TARGET="_blank">風花妖精</A>です。
 
 trickster:
   name: 悪戯妖精
   win: PIXI
   group: PIXI
-  able: 結ぶ
+  ables:
+    - aura
+    - pixi
+    - armor
+    - bonds
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_TRICKSTER" TARGET="_blank">悪戯妖精</A>です。
+    <br>
+    結ばれた人たちにとっては、単なるはた迷惑な悪戯にすぎません。
 
 hatedevil:
   name: 邪気悪魔
   win: HATER
   group: OTHER
-  able: 結ぶ
+  ables:
+    - aura
+    - bonds
+    - hate
+    - human
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_HATEDEVIL" TARGET="_blank">邪気悪魔</A>です。
+    <br>
+    結びつけた二人のうち、どちらか片方だけが生き延びれば、あなたの勝利となります。あなたにその絆が結ばれていない限り、あなた自身の死は勝敗には直接関係しません。
 
 loveangel:
   name: 恋愛天使
   win: LOVER
   group: OTHER
-  able: 結ぶ
+  ables:
+    - aura
+    - bonds
+    - love
+    - human
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_LOVEANGEL" TARGET="_blank">恋愛天使</A>です。
+    <br>
+    結びつけた二人が生き延びれば、あなたの勝利となります。あなたにその絆が結ばれていない限り、あなた自身の死は勝敗には直接関係しません。
 
 passion:
   name: 片思い
   win: LOVER
   group: OTHER
-  able: 結ぶ
+  ables:
+    - aura
+    - bond
+    - love
+    - human
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_PASSION" TARGET="_blank">片想い</A>です。
+    <br>
+    選んだ人が生き延び、あなたが生き延びれば、あなたの勝利となります。
 
 lonewolf:
   name: 一匹狼
   win: LONEWOLF
   group: WOLF
-  able: 襲う
+  ables:
+    - aura
+    - wolf
+    - armor
+    - kill
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_LONEWOLF" TARGET="_blank">一匹狼</A>です。
+    <br>
+    襲撃先はあなた以外であれば誰でもかまいません。
 
 guru:
   name: 笛吹き
   win: GURU
   group: OTHER
-  able: 誘う
+  ables:
+    - aura
+    - human
+    - guru
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_GURU" TARGET="_blank">笛吹き</A>です。
 
 dish:
   name: 鱗魚人
   win: DISH
   group: OTHER
-  able: 跳ねる
+  ables:
+    - aura
+    - human
+    - dish
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DISH" TARGET="_blank">鱗魚人</A>です。新鮮なふぃーっしゅ。です。
 
 bitch:
   name: 遊び人
   win: LOVER
   group: OTHER
-  able: 遊ぶ
+  ables:
+    - aura
+    - human
+    - bitch
+    - vote
+    - entrust
+  explain: |-
+    あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BITCH" TARGET="_blank">遊び人</A>です。
+    本命とあなたが生き延びれば、あなたの勝利です。

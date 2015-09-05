@@ -9,7 +9,8 @@ getter_setter =
   callee: (store, current, parse, serial, key)->
     prop = ->
       if arguments.length
-        newval = parse(arguments[0]) || current
+        newval = parse(arguments[0])
+        newval ?= current
         if store != newval
           store := newval
           Url.options[key].bind(store)

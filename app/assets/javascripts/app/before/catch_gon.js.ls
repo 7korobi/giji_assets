@@ -71,7 +71,7 @@ export catch_gon =
       k.split("-")?[0]
 
     face.role_of_wins = _.groupBy face.roles, ([k,count])->
-      role = SET_ROLES[k] || {group: "OTHER"}
+      role = Cache.roles.find(k) || {group: "OTHER"}
       RAILS.wins[role.group].name
 
   form: ->

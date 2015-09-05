@@ -213,13 +213,13 @@ class Cache.Finder
         o[target]
 
   calculate_list: (query, all)->
-    unless query._hash == all
+    if query._hash == all
+      deploy = (id, o)->
+        o.item
+    else
       query._hash = {}
       deploy = (id, o)->
         query._hash[id] = o
-        o.item
-    else
-      deploy = (id, o)->
         o.item
 
     query._list =
@@ -338,14 +338,24 @@ class Cache.Rule
         return false unless validate item
       true
 
+    each = (process)!->
+      switch typeof! from
+        when \Array
+          for item in from || []
+            process(item)
+        when \Object
+          for id, item of from || {}
+            item._id ||= id
+            process(item)
+
     switch mode
-      when "merge"
-        for item in from || []
+      case "merge"
+        each (item)!~>
           for key, val of parent
             item[key] = val
 
           deployer item
-          continue unless validate_item item
+          return unless validate_item item
 
           o = {item, emits: []}
           old = all[item._id]
@@ -362,8 +372,7 @@ class Cache.Rule
           @map_reduce o.item, emit
 
       else
-        for item in from || []
-          o = {item, emits: []}
+        each (item)!~>
           old = all[item._id]
           if old?
             diff.del = true
