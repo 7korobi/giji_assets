@@ -6,11 +6,11 @@ new Cache.Rule("potof").schema ->
 
   urges = "　①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿"
   maskstate_order = _.sortBy _.keys(RAILS.maskstates), (o)-> -o
-  win_by_role = (o, list)=>
+  win_by_role = (o, query)=>
     for role in o.role
-      win = list[role]?.win
+      win = query.find(role)?.win
       return win if win
-    null
+    "NONE"
 
   id_list = (query)->
     query.list().map((o)-> o.face_id ).sort()
@@ -124,7 +124,7 @@ new Cache.Rule("potof").schema ->
 
     win_love = RAILS.loves[o.love]?.win
 
-    win_role = win_by_role(o, Cache.roles.hash()) || "NONE"
+    win_role = win_by_role(o, Cache.roles)
     win = win_juror || win_love || win_zombie || win_role
     win = RAILS.folders[story.folder].evil if win == 'EVIL'
     switch win

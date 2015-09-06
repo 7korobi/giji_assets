@@ -1,0 +1,94 @@
+WIN_MOB:
+  name: 見物人
+  HELP: |-
+    あなたは<b>_ROLE_の<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MOB" TARGET="_blank">見物人</A></b>です。いかなる陣営の人数にも含まれません。
+
+WIN_NONE:
+  name: '―'
+  HELP: ""
+
+WIN_LEAVE:
+  name: '―'
+  HELP: "あなたは村を去りました。勝利したり、敗北したりといったことは、もうありません。"
+
+WIN_DISH:
+  name: 据え膳
+  HELP: |-
+    <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_DISH" TARGET="_blank">据え膳</A></b>
+    <br>
+    すべてに決着がついたとき、あなたが狼の襲撃、もしくは賞金稼の道連れにより死亡していれば、勝利者の一員に加わります。
+
+WIN_LOVER:
+  name: 恋人陣営
+  HELP: |-
+    <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_LOVER" TARGET="_blank">恋人陣営</A></b>
+    <br>
+    恋人達だけが生き残る、もしくはいずこかの陣営が勝利を手にしたとき、絆の恋人達が生存していれば勝利です。
+    <br>
+    ただし、ひとりだけ蘇生したなどの不幸で、恋を成就できない恋人は、勝利しません。
+
+WIN_HATER:
+  name: 邪気陣営
+  HELP: |-
+    <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_HATER" TARGET="_blank">邪気陣営</A></b>
+    <br>
+    いずこかの陣営が勝利を手にしたとき、運命に決着をつけていれば勝利します。決着とは、絆の天敵をすべて倒し、一人だけが生き残っていることです。
+    殺し合いの絆を断ち切りましょう。絆の相手が死んでも、後を追うことはありません。
+    <br>
+    絆の天敵とは、たとえあなた自身には関係のなくとも、あらゆる絆を結んでいるもの全てを指します。
+
+WIN_LONEWOLF:
+  name: 一匹狼
+  HELP: |-
+    <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_LONEWOLF" TARGET="_blank">一匹狼陣営</A></b>
+    <br>
+    ルール「タブラの人狼」「死んだら負け」「Trouble☆Aliens」では人間(妖精や人外の者を除く)の数を一匹狼と同数以下まで減らせば、ルール「ミラーズホロウ」「深い霧の夜」では役職「村人」を全滅させ、かつ、人狼陣営の狼が生きていなければ勝利です。
+    <br>
+    ただし、最後まで妖精、もしくは恋人が生き残っていると敗北になり、他にも勝利を掻っ攫うもの達が存在します。
+
+WIN_HUMAN:
+  name: 村人陣営
+  HELP: |-
+    <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_HUMAN" TARGET="_blank">村人陣営</A></b>
+    <br>
+    人間(妖精や人外の者を除く)の数が人狼以下になるまでに人狼と妖精が全滅すれば勝利です。
+    <br>
+    ただし、狼を全滅させた時点で妖精、もしくは恋人が生き残っていると敗北になり、他にも横から勝利を掻っ攫うもの達が存在します。
+
+WIN_WOLF:
+  name: 人狼陣営
+  name_human: 人狼陣営の人間
+  HELP: |-
+    <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_WOLF" TARGET="_blank">人狼陣営</A></b>
+    <br>
+    ルール「タブラの人狼」「死んだら負け」「Trouble☆Aliens」では人間(妖精や人外の者を除く)の数を人狼と同数以下まで減らせば、ルール「ミラーズホロウ」「深い霧の夜」では役職「村人」を全滅させれば勝利です。
+    <br>
+    ただし、最後まで妖精、もしくは恋人が生き残っていると敗北になり、他にも横から勝利を掻っ攫うもの達が存在します。
+
+WIN_PIXI:
+  name: 妖精
+  HELP: |-
+    <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_PIXI" TARGET="_blank">妖精陣営</A></b>
+    <br>
+    人狼が全滅するか、人間(妖精や人外の者を除く)の数が人狼と同数以下まで減るまで「生き残れば」勝利です。
+    <br>
+    ただし、恋人が生き残っていると敗北になり、他にも横から勝利を掻っ攫うもの達が存在します。
+
+WIN_GURU:
+  name: 笛吹き
+  HELP: |-
+    <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_GURU" TARGET="_blank">笛吹き</A></b>
+    <br>
+    笛吹き以外の生存者が勧誘された者だけになれば勝利となります。笛吹き自身は、最終的に生き残っていなくとも構いません。
+    <br>
+    ただし、横から勝利を掻っ攫うもの達が存在します。
+
+WIN_EVIL:
+  name: 裏切りの陣営
+  name_human: 裏切りの陣営
+  HELP: |-
+    <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_EVIL" TARGET="_blank">裏切りの陣営</A></b>
+    <br>
+    村人・恋人が敗北すれば勝利者の一員に加わります。
+    <br>
+    あなたは破滅を望んでいるのです。人狼や妖精やそれ以外の勝利、または、誰もいなくなることを目指しましょう。

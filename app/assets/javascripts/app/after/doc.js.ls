@@ -55,7 +55,7 @@ export doc =
 
   security_modes: (prop)->
     story = Cache.storys.list().first
-    mob = RAILS.mob[story?.type.mob]
+    mob = Cache.roles.find(story?.type.mob)
 
     grave_caption = []
     grave_caption.push "墓下" if Cache.messages.has.grave

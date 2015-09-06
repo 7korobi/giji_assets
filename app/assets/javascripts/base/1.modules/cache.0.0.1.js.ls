@@ -112,6 +112,10 @@ class Cache.Query
     @finder.calculate(@) unless @_hash?
     @_hash
 
+  ids: ->
+    @finder.calculate(@) unless @_hash?
+    Object.keys @_hash
+
   find: (id)->
     @hash()[id]?.item
 

@@ -1,0 +1,13 @@
+new Cache.Rule("winner").schema ->
+  @scope (all)->
+    shows: ->
+      all.where (o)->
+        o.name != '―'
+
+  @default ->
+
+  @deploy (o)->
+
+  @map_reduce (o)->
+
+Cache.rule.winner.set <%= JSON.generate SET_WIN %>

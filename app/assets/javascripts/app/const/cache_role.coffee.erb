@@ -1,0 +1,56 @@
+new Cache.Rule("role").schema ->
+  id_index = SOW_RECORD.roles.concat SOW_RECORD.gifts
+
+  @order "order"
+
+  @scope (all)->
+    is: (side)->
+      all.where (o)->
+        o.side == side && -1 < o.order
+
+    hide: ->
+      all.where (o)->
+        o.order < 0
+
+  @default ->
+
+  @deploy (o)->
+    o.ables ||= []
+    o.HELP ||= ""
+
+    o.order = id_index.indexOf o._id
+
+    o.side = o.group.toLowerCase() if o.group? && o.group != "OTHER"
+    o.side = "gift"  if ("gift"  in o.ables)
+    if o.group == "MOB"
+      o.side = "mob"
+      o.order = 0
+    o.side = "other" unless o.side
+
+  @map_reduce (o)->
+
+
+new Cache.Rule("trap").schema ->
+  @scope (all)->
+
+  @default ->
+
+  @deploy (o)->
+
+  @map_reduce (o)->
+
+
+new Cache.Rule("able").schema ->
+  @scope (all)->
+
+  @default ->
+
+  @deploy (o)->
+
+  @map_reduce (o)->
+
+
+
+Cache.rule.able.set <%= JSON.generate SET_ABLES %>
+Cache.rule.trap.set <%= JSON.generate SET_TRAPS %>
+Cache.rule.role.set <%= JSON.generate SET_ROLES %>

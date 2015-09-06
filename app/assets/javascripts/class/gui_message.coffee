@@ -52,6 +52,30 @@ GUI.message = (->
 
   toc: (o)->
 
+  helps: (t)->
+    m ".paragraph.#{t.mestype}", {key: t._id},
+      m "ul",
+        for o in t.list() || []
+          m "li",
+            m "code", m.trust o.name
+            m "kbd", m.trust o.HELP
+
+  table: (t)->
+    m ".paragraph.#{t.mestype}", {key: t._id},
+      m "table",
+        if t.heads
+          m "thead",
+            m "tr",
+              for header in t.heads
+                m "th", m.trust header
+        if t.cols
+          m "tbody",
+            for o in t.list() || []
+              m "tr",
+                for key in t.cols
+                  m "td",
+                    m "p", m.trust o[key]
+
   paragraph: (o)->
     m ".paragraph", {key: o._id}, m.trust o.log.deco_text
 
@@ -81,10 +105,10 @@ GUI.message = (->
     return [] unless event && story
 
     roletable = RAILS.roletable[story.type.roletable]
-    mob = RAILS.mob[story.type.mob]
+    mob = Cache.roles.find(story.type.mob)
     trap_card = Cache.traps.find(event.event)
     texts = []
-    texts.push RAILS.winner[event.winner].CAPTION + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
+    texts.push Cache.winners.find(event.winner).name + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
     texts.push m "kbd", trap_card if trap_card
     texts.push RAILS.event_state.grudge    if event.turn == event.grudge
     texts.push RAILS.event_state.riot      if event.turn == event.riot

@@ -14,6 +14,7 @@ for item in Cache.items.where(log:"<%= key %>").list()
 <% end %>
 
 
+
 rule_accordion = (type)->
   GUI.if_exist "#rule-#{type}", (dom)->
     m.mount dom,

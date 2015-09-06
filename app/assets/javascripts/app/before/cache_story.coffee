@@ -21,7 +21,7 @@ new Cache.Rule("story").schema ->
     else
       null
 
-  all_traps = Object.keys Cache.traps.hash()
+  all_traps = Cache.traps.ids()
 
   @deploy (o)->
     o.order = o.folder + GUI.field(o.vid, 4)

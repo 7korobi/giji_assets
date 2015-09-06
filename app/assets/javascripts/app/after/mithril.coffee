@@ -188,10 +188,12 @@ if gon?.potofs?
                 Url.prop.scroll ""
                 win.scroll.rescroll Url.prop.talk_at
 
-          pin_click = (list)->
+          pin_click = (list, append)->
             GUI.attrs {}, ->
               @click ->
-                pins = {}
+                pins = Url.prop.pins()
+                for o in append
+                  pins["#{o.turn}-#{o.logid}"] = true
                 for o in list
                   pins["#{o.turn}-#{o.logid}"] = true
                 change_pin(center_id)
@@ -215,14 +217,14 @@ if gon?.potofs?
             m "section.plane",
               m "h6",
                 "参照ログ"
-                m "span.btn.edge.icon-pin", pin_click(anchorview)
+                m "span.btn.edge.icon-pin", pin_click(anchorview, [win.scroll.center])
               for o in anchorview
                 m ".line_text",
                   m ".#{o.mestype}.badge", go_click(o), "#{o.turn}:#{o.anchor}"
                   m.trust o.log.line_text
               m "h6", seeing_measure,
                 "よく見ていたログ"
-                m "span.btn.edge.icon-pin", pin_click(seeingview)
+                m "span.btn.edge.icon-pin", pin_click(seeingview, [])
               for o in seeingview
                 if o._id == center_id
                   tag = ".line_text.attention"

@@ -1,11 +1,11 @@
 nothing:
   name: 普通の日
-  explain: |-
+  HELP: |-
     今日は、特別なことのない一日のようだ。さあ普段通り、誰かを処刑台にかけよう。
 
 aprilfool:
   name: 四月馬鹿
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_APRIL_FOOL" TARGET="_blank">四月馬鹿</A></b>
     <br>
     大変、大変、大変なことになった。きみの役職は変化しているかもしれない。もしも誰かと絆を結んでいるなら、急に相手が憎くなってしまい、絆の相手だけにしか投票できない。
@@ -31,7 +31,7 @@ aprilfool:
 
 turnfink:
   name: 二重スパイ
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_TURN_FINK" TARGET="_blank">二重スパイ</A></b>
     <br>
     なんということだろう！一人が村側を裏切り、狼に与する半端者になってしまった。明日以降も、彼は村人を裏切り続けるだろう……。
@@ -40,7 +40,7 @@ turnfink:
 
 turnfairy:
   name: 妖精の輪
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_TURN_FAIRY" TARGET="_blank">妖精の輪</A></b>
     <br>
     なんということだろう！一人が森に立ち入り、妖精の養子になってしまった。明日以降も、彼は村人を裏切り続けるだろう……。
@@ -49,14 +49,14 @@ turnfairy:
 
 eclipse:
   name: 日蝕
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_ECLIPSE" TARGET="_blank">日蝕</A></b>
     <br>
     暗い日蝕が村中を覆い、お互い顔も名前も解らない。この闇夜は丸一日続くだろう。他人になりすまし、議論を混乱させることもできてしまうかもしれない。
 
 cointoss:
   name: Sir Cointoss
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_COINTOSS" TARGET="_blank">Sir Cointoss</A></b>
     <br>
     お控えなさい。お控えなさい。コイントス卿はこの村の投票結果に意見があるようでございます。
@@ -65,14 +65,14 @@ cointoss:
 
 force:
   name: 影響力
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_FORCE" TARGET="_blank">影響力</A></b>
     <br>
     今日の投票箱は無色透明だ。だれかが投票した瞬間にその内容はハッキリと見えるから、投票をセットするときは気を付けて！
 
 miracle:
   name: 奇跡
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_MIRACLE" TARGET="_blank">奇跡</A></b>
     <br>
     帰ってきた！黄泉の国から、今日の襲撃で死んだ犠牲者がかえってきた！能力を失ったかもしれないけれど、それは些細なことだよ！ね！
@@ -81,7 +81,7 @@ miracle:
 
 prophecy:
   name: 聖者のお告げ
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_PROPHECY" TARGET="_blank">聖者のお告げ</A></b>
     <br>
     聖者は民の夢枕に告げられました。今の任より、<b>決定者</b>にふさわしい人物がいると。
@@ -89,7 +89,7 @@ prophecy:
 
 clamor:
   name: 不満
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_CLAMOR" TARGET="_blank">不満</A></b>
     <br>
     村には不満が鬱屈している。今夜の投票でまた人間を処刑してしまったら……悪夢が始まる。
@@ -97,7 +97,7 @@ clamor:
 
 fire:
   name: 熱意
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_FIRE" TARGET="_blank">熱意</A></b>
     <br>
     村には期待に満ちた熱意が渦巻いている。今夜の投票がひとならぬものを処刑できたなら……悪夢が始まるのだ。
@@ -105,7 +105,7 @@ fire:
 
 nightmare:
   name: 悪夢
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_NIGHTMARE" TARGET="_blank">悪夢</A></b>
     <br>
     恐ろしい一日が始まる。今日は投票だけができる。発言も、能力も使えない。そして、突然死は発生しない。
@@ -114,7 +114,7 @@ nightmare:
 
 ghost:
   name: 亡霊
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_GHOST" TARGET="_blank">亡霊</A></b>
     <br>
     今夜、人狼に殺された人は人狼になる。また、襲撃を実行した人狼は命を落としてしまうだろう。人狼となった者は報復行動を行わない。ただし、命拾いをしたならば人狼にはならない。
@@ -123,7 +123,7 @@ ghost:
 
 escape:
   name: 逃亡
-  explain: |-
+  HELP: |-
     <b>逃亡</b>
     <br>
     せめて一人だけでも、なんとかして逃がそう。今夜の投票で逃亡者を一人決め、夜中の処刑のかわりに密かに逃がすのだ。
@@ -133,7 +133,7 @@ escape:
 
 seance:
   name: 降霊会
-  explain: |-
+  HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_SEANSE" TARGET="_blank">降霊会</A></b>
     <br>
     こっくりさん、こっくりさん……<br>秘密の儀式で、墓場の霊魂がかえってきた。今日に限り、生者も姿の見えぬ死者も屋根を共にし、議論するだろう。

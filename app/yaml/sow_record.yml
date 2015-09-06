@@ -51,7 +51,7 @@ roles:
   - muppeting
   - wisper
   - semiwolf
-  - dyingpossess
+  - __dyingpossess
   - oracle
   - sorcerer
   - walpurgis
@@ -67,7 +67,7 @@ roles:
   - 59
   - 60
   - wolf
-  - aurawolf
+  - __aurawolf
   - intwolf
   - cursewolf
   - whitewolf
@@ -115,13 +115,12 @@ roles:
   - 107
   - 108
   - 109
-  -
 
 gifts:
   -
   -
   - lost
-  - bind
+  - __bind
   - 4
   - shield
   - glass

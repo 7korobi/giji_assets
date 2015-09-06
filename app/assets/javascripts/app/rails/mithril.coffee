@@ -109,21 +109,22 @@ if gon?.face?
             m "span.mark", face.role.all
             "の役職になりました"
           for win_side in face.win.keys
-            m "p.name",
-              m "b", "#{win_side} x#{face.win.value[win_side]}回"
-            m "p.text",
-              for role in face.role_of_wins[win_side]
-                rolename = GUI.name.config role[0]
-                width =
-                  switch
-                    when  4 < rolename.length
-                      10.35 # 3.75 * 2 + 0.35
-                    else
-                       3.75
-                GUI.inline_item -> [
-                  @center width, rolename
-                  @right  2.5, "x" + role[1]
-                ]
+            [ m "p.name",
+                m "b", "#{win_side} x#{face.win.value[win_side]}回"
+              m "p.text",
+                for role in face.role_of_wins[win_side]
+                  rolename = GUI.name.config role[0]
+                  width =
+                    switch
+                      when  4 < rolename.length
+                        10.35 # 3.75 * 2 + 0.35
+                      else
+                         3.75
+                  GUI.inline_item -> [
+                    @center width, rolename
+                    @right  2.5, "x" + role[1]
+                  ]
+            ]
         ]
 
         [ m "h2", face.name + " の活躍"
@@ -194,15 +195,16 @@ if gon?.face?
             m "span.mark", "#{face.folder.all}回"
             "登場しました。"
           for folder in face.folder.keys
-            m "p.name",
-              m "b", "#{folder} x#{face.folder.value[folder]}回"
-            m "p.text",
-              for story_id in face.story_id_of_folders[folder]
-                GUI.inline_item ->
-                  @left 2.8 + folder.length * 0.65,
-                    m "a",
-                      href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{story_id[0]}"
-                    , story_id[0]
+            [ m "p.name",
+                m "b", "#{folder} x#{face.folder.value[folder]}回"
+              m "p.text",
+                for story_id in face.story_id_of_folders[folder]
+                  GUI.inline_item ->
+                    @left 2.8 + folder.length * 0.65,
+                      m "a",
+                        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{story_id[0]}"
+                      , story_id[0]
+            ]
         ]
         m ".MAKER.guide", win.scroll.mark("villages"), letters
 

@@ -1,8 +1,9 @@
 #{$glass-msg-theme} {
   .executed {
-    @include win-tone(glass, #99f, rgba( 30, 30,  0, 0.4));    
+    @include win-tone(glass, #99f, rgba( 30, 30,  0, 0.4));
   }
 
+  .gift,
   .live {
     @include win-tone(glass, #ddf, rgba(0,0,0, 0.4));
   }
@@ -10,7 +11,7 @@
   .suddendead,
   .leave,
   .WIN_LEAVE       {
-    @include win-tone(glass, #444, rgba( 40, 40, 40, 0.4));    
+    @include win-tone(glass, #444, rgba( 40, 40, 40, 0.4));
   }
   .mob,
   .WIN_NONE        {
@@ -57,6 +58,7 @@
     @include win-tone(white, #000, #bbd);
   }
 
+  .gift,
   .live {
     @include win-tone(white, #000, #cb8);
   }

@@ -78,8 +78,8 @@ sow:
       村ごとに見物人の立場が設定してあり、会話できる範囲が異なります。
       <br>
 
-  - _id: howto-paragraph--7
-    log: RAILS.mob
+  - _id: howto-helps-help-7
+    query: roles is mob
 
   - _id: howto-paragraph--8
     log: |-
@@ -127,62 +127,107 @@ sow:
   # howto-20
 
   - _id: howto-head-h3-21
-    log: 村側の能力者（役職）
+    log: 村側の能力者
 
   - _id: howto-paragraph--22
     log: |-
       力を合わせて、悪者達を撃退しましょう。彼らは特別なことがない限り、村人陣営として活躍します。
 
   - _id: howto-paragraph--23
-    log: RAILS.winner.WIN_HUMAN.HELP
+    object: winners find WIN_HUMAN HELP
 
-  # howto-29 filter_role
+
+  - _id: howto-table-WIN_HUMAN-24
+    query: roles is human
+    heads:
+      - 役職
+      - 解説
+    cols:
+      - name
+      - HELP
+
   # howto-31
   # howto-32
   # howto-33
-  # howto-39 filter_roleenemy
+
+  - _id: howto-table-WIN_EVIL-39
+    query: roles is evil
+    heads:
+      - 役職
+      - 解説
+    cols:
+      - name
+      - HELP
 
   - _id: howto-head-h3-41
-    log: 人狼側の能力者（役職）
+    log: 人狼側の能力者
 
   - _id: howto-paragraph--42
     log: |-
       村には善良な村人達の他に、彼らになりすまして村人を襲う人狼や、人間でありながら人狼に協力する裏切り者達もいます。夜はあなたたちの時間です。
 
   - _id: howto-paragraph--43
-    log: RAILS.winner.WIN_WOLF.HELP
+    object: winners find WIN_WOLF HELP
 
-  # howto-49 filter_rolewolf
+  - _id: howto-table-WIN_WOLF-49
+    query: roles is wolf
+    heads:
+      - 役職
+      - 解説
+    cols:
+      - name
+      - HELP
 
   - _id: howto-head-h3-51
-    log: 第三勢力の能力者（役職）
+    log: 第三勢力の能力者
 
   - _id: howto-paragraph--52
     log: |-
       村には村側にも人狼側にも属さない者達がいます。村人側か人狼側が勝利する条件を満たした時、彼らは横から勝利を浚っていきます。
 
   - _id: howto-paragraph--53
-    log: RAILS.winner.WIN_PIXI.HELP
+    object: winners find WIN_PIXI HELP
 
-  # howto-59 filter_rolepixi
+  - _id: howto-table-WIN_PIXI-59
+    query: roles is pixi
+    heads:
+      - 役職
+      - 解説
+    cols:
+      - name
+      - HELP
 
   - _id: howto-head-h3-61
-    log: それ以外の能力者（役職）
+    log: それ以外の能力者
 
   - _id: howto-paragraph--62
     log: |-
       上記にあてはまらない、特殊な能力の持ち主です。どうしたら勝利するか、どのような性質の役職か、まちまちなのでよく確認しましょう。
 
-  # howto-69 filter_roleother
+  - _id: howto-table-WIN_NONE-69
+    query: roles is other
+    heads:
+      - 役職
+      - 解説
+    cols:
+      - name
+      - HELP
 
   - _id: howto-head-h3-71
-    log: 役職以外の能力（恩恵）
+    log: 役職以外の能力
 
   - _id: howto-paragraph--72
     log: |-
       能力とは独立して、特別なルールが加わることもあります。どうしたら勝利するか、どのような性質の役職か、まちまちなのでよく確認しましょう。
 
-  # howto-79 filter_rolegift
+  - _id: howto-table-gift-79
+    query: roles is gift
+    heads:
+      - 恩恵
+      - 解説
+    cols:
+      - name
+      - HELP
 
   - _id: howto-head-h3-81
     log: 村が始まったら
@@ -212,7 +257,14 @@ sow:
     log: |-
       特殊な事情が発生する日があります。その日、村は提示されたルールに従うでしょう。
 
-  # howto-89 filter_event
+  - _id: howto-table-INFONOM-79
+    query: traps
+    heads:
+      - 事件
+      - 解説
+    cols:
+      - name
+      - HELP
 
   - _id: howto-head-h3-91
     log: 死亡
@@ -269,7 +321,14 @@ sow:
       結果によって勝利宣言がなされ、全員のIDと割り当てられた能力が公開されます。
       また、独り言や囁きなど、勝負の最中には他人に見えないようになっていた発言も公開されます。
 
-  # howto-99 filter_win
+  - _id: howto-table--97
+    query: winners shows
+    heads:
+      - 勝利
+      - 勝利条件
+    cols:
+      - name
+      - HELP
 
   - _id: howto-paragraph--101
     log: |-
