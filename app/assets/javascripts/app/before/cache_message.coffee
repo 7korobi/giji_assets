@@ -193,13 +193,14 @@ new Cache.Rule("message").schema ->
     has.face[o.face_id] = true
 
     if o.vdom == GUI.message.talk || o.vdom == GUI.message.guide
-      time_id = Serial.serializer.Date(o.updated_at / timespan)
-      item =
-        count: o.log.length
-        min: o.updated_at
-        max: o.updated_at
-      emit "mask", time_id, o.mestype, item
-      emit "mask", time_id, "all", item
+      if o.log
+        time_id = Serial.serializer.Date(o.updated_at / timespan)
+        item =
+          count: o.log.length
+          min: o.updated_at
+          max: o.updated_at
+        emit "mask", time_id, o.mestype, item
+        emit "mask", time_id, "all", item
     emit "event", o.event_id,
       max: o.updated_at
     emit "pen", o.pen,

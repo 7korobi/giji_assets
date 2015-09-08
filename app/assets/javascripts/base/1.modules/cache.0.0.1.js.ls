@@ -125,6 +125,19 @@ class Cache.Query
       continue unless o
       o?.item
 
+  pluck: (...keys)->
+    @list().map do
+      switch keys.length
+        case 0
+          -> null
+        case 1
+          (o)->
+            o[keys[0]]
+        else
+          (o)->
+            for key in keys
+              o[key]
+
 class Cache.Finder
   (@sort_by)->
     all = new Cache.Query @, [], false, @sort_by

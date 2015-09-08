@@ -1,3 +1,85 @@
+
+live:
+  name: 生存者
+  win:
+  group:
+  ables:
+    - SAY
+    - TSAY
+    - AIM
+    - commit
+  HELP: |-
+
+executed:
+  name: 処刑
+  win:
+  group:
+  ables:
+    - GSAY
+    - TSAY
+  HELP: |-
+
+victim:
+  name: 襲撃
+  win:
+  group:
+  ables:
+    - GSAY
+    - TSAY
+  HELP: |-
+
+cursed:
+  name: 呪詛
+  win:
+  group:
+  ables:
+    - GSAY
+    - TSAY
+  HELP: |-
+
+droop:
+  name: 衰退
+  win:
+  group:
+  ables:
+    - GSAY
+    - TSAY
+  HELP: |-
+
+suicide:
+  name: 後追
+  win:
+  group:
+  ables:
+    - GSAY
+    - TSAY
+  HELP: |-
+
+feared:
+  name: 恐怖
+  win:
+  group:
+  ables:
+    - GSAY
+    - TSAY
+  HELP: |-
+
+suddendead:
+  name: 突然死
+  win:
+  group:
+  ables:
+    - GSAY
+    - TSAY
+  HELP: |-
+
+leave:
+  name: ―
+  win:
+  group:
+  ables: []
+  HELP: |-
+
 none:
   name: ""
   win:
@@ -6,7 +88,7 @@ none:
   HELP: |-
 
 bind:
-  name: ---
+  name: ―
   win:
   group:
   ables: []
@@ -451,7 +533,7 @@ hunter:
   ables:
     - aura
     - revenge
-    - aim
+    - sneak
     - human
     - vote
     - entrust
@@ -583,7 +665,8 @@ witch:
   group: HUMAN
   ables:
     - aura
-    - witch
+    - analeptic
+    - poison
     - human
     - vote
     - entrust
@@ -721,8 +804,6 @@ muppeting:
     - MSAY
   HELP: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MUPPETER" TARGET="_blank">人形使い</A>です。
-    <br>
-    あなたは<b>_NPC_</b>の口を借り、好きな言葉を伝えることができます。
 
 wisper: &wisper
   name: 囁き狂人

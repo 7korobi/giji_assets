@@ -511,15 +511,3 @@ if gon?.stories?
                 else
                   m "td",
                     header
-
-if gon?.form?
-  catch_gon.form()
-  menu.icon.icon "pencil",
-    open: ->
-    close: ->
-    view: ->
-      [ m ".SAY.paragraph",
-          doc.timeline()
-          m "h6", "あなたが書き込む内容です。 - 記述"
-          doc.writer()
-      ]

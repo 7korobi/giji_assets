@@ -1,7 +1,15 @@
+commit:
+  sw: 時間を進める
+  at: progress
+  HELP: |-
+    全員が「時間を進める」を選ぶと前倒しで更新されます。
+    <br>
+    最低一発言して確定しないと、時間を進める事ができません。
+
 night:
-  sw: 夜遊び
+  sw: 夜遊びする
   change: 夜遊びをして、深夜の囁きを聞いてしまうかどうか、選択してください。
-  start: 2
+  at: main
   HELP: |-
     あなたは二日目以降、夜に出歩くことができます。
     人狼の囁き、民の念話、共鳴者の共鳴を誰のものとも判別せず聞いちゃうので、朝になって昨日を振り返ると思い出せることでしょう。
@@ -13,21 +21,22 @@ night:
 dish:
   sw: 跳ねる
   change: 跳ねるアピールをするかどうか、選択してください。
-  start: 1
+  at: progress
   HELP: |-
     美味しく食べて貰うことを悦びとし、活き活きと跳ねることができます。わたしをたべて、わたしをたべて、とアピールしましょう。
 
 cling:
   sw: 飲薬する
   change: あなたが殺害されたとしたら、犯人を道連れにするかどうか、選択してください。
-  start: 2
+  at: main
   HELP: |-
     薬を服用した夜、もし処刑以外の要因で命を落とした場合、その犯人を道連れにします。人狼の襲撃の場合、襲撃実行者が対象となります。
 
 guru:
   targets: 誘う
   change: 誘い込む犠牲者を選択してください。
-  start: 1
+  for: live
+  at: progress
   HELP: |-
     毎晩ふたりずつ、好きな人物をひそかに誘い込むことができます。自分自身を誘うことはできません。
     <br>
@@ -36,7 +45,8 @@ guru:
 bitch:
   targets: 遊ぶ
   change: 絆を結ぶ相手と、弄ぶ遊び相手を選択してください。
-  only: 1
+  for: live
+  at: start
   HELP: |-
     一日目、一人目に選択した人物を本命の恋人として“運命の絆”を結びつけ、二人目は絆を結ぶふりをして手玉にとります。
     “運命の絆”を結んだ二人は、片方が死亡すると後を追って死亡します。もう一人はどうでもよいのですが、そう思わせないこまめなケアが大切です。
@@ -44,21 +54,24 @@ bitch:
 bonds:
   targets: 結ぶ
   change: 絆で結ぶ二人を選択してください。
-  only: 1
+  for: live
+  at: start
   HELP: |-
     一日目、好きな二人に“運命の絆”を結びつける事ができます。“運命の絆”を結んだ二人は、片方が死亡すると後を追って死亡します。
 
 bond:
   target: 結ぶ
   change: あなたとの絆を結ぶ相手を選択してください。
-  only: 1
+  for: live
+  at: start
   HELP: |-
     一日目、あなたから好きな人に“運命の絆”を結びつける事ができます。“運命の絆”を結んだ相手が死亡すると、あなたは後を追って死亡します。
 
 guard:
   target: 守る
   change: 守護する対象を選択してください。
-  start: 2
+  for: live
+  at: main
   HELP: |-
     一人を狼の襲撃、もしくは付け狙う賞金稼の手から守ることが出来ます。
     <br>
@@ -67,14 +80,16 @@ guard:
 see:
   target: 占う
   change: 正体を知りたい相手を選択してください。
-  start: 1
+  for: live
+  at: progress
   HELP: |-
     ひとりを占い対象に指定します。
 
-aim:
+sneak:
   target: 狙う
   change: 付け狙う相手を選択してください。
-  start: 1
+  for: live
+  at: progress
   HELP: |-
     殺害します。
     ただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。
@@ -83,7 +98,8 @@ aim:
 hunt:
   target: 襲う
   change: 殺害する相手を選択してください。
-  start: 1
+  for: live
+  at: progress
   HELP: |-
     人狼全員で多数決をし、一人だけ殺害します。
     ただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。
@@ -92,7 +108,8 @@ hunt:
 kill:
   target: 襲う
   change: 殺害する相手を選択してください。
-  start: 1
+  for: live
+  at: progress
   HELP: |-
     殺害します。
     ただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。
@@ -101,32 +118,46 @@ kill:
 cure:
   target: 診察
   change: 診察する相手を選択してください。
-  start: 3
+  for: live
+  at: main
   HELP: |-
     ひとりを診察し、人狼の牙に感染しているかを確認します。その場合は治療します。治療した人は生存者として数えますが、能力は取り戻しません。
 
 tangle:
   target: 憑依
   change: 付け狙う相手を選択してください。
-  start: 1
+  for: dead
+  at: progress
   HELP: |-
     死者の埋葬地をうろつきまわっています。
     指定した故人の役職と勝利条件を写しとり、対象を蘇生させます。
     このため、あなたは死亡しなくては、勝利がありません。
 
-witch:
+analeptic:
   target: 投薬
   change: 薬を投与する相手を選択してください。
-  start: 1
+  for: dead
+  require: role1
+  at: progress
   HELP: |-
-    生きている者に投薬して毒殺するか、死者に投薬して蘇生させます。
-    ただし、毒殺（生者を選ぶ）、蘇生（死者を選ぶ）、はそれぞれ一度ずつだけおこなうことができ、それっきり薬は失われます。
-    使う薬は日中に選ぶので、もしも投薬する夜に対象が死亡/蘇生したなら、薬は無駄に失われるでしょう。
+    死者に投薬して蘇生させます。
+    蘇生は一度だけおこなうことができ、それっきり薬は失われます。
+
+poison:
+  target: 投薬
+  change: 薬を投与する相手を選択してください。
+  for: live
+  require: role2
+  at: progress
+  HELP: |-
+    生きている者に投薬して毒殺します。
+    毒殺は一度ずつだけおこなうことができ、それっきり薬は失われます。
 
 scapegoat:
   target: 疑う
   change: あなたが最後になったとしたら、指差す相手を選択してください。
-  start: 2
+  for: live
+  at: main
   HELP: |-
     もし投票数が同数になり処刑する相手が定まらないと、混乱した村人達に処刑されてしまいます。
     あなたが最後に指差した人は、後悔する村人達に翌日、処刑されるでしょう。皆、そうするより他にないのです。
@@ -134,28 +165,32 @@ scapegoat:
 hike:
   target: 外出する
   change: 会いに行く相手を選択してください。
-  start: 1
+  for: cast
+  at: progress
   HELP: |-
     特殊な能力があるかどうか自覚していません。夜は積極的に外出して、様子をさぐりましょう。
 
 vote:
   target: 投票
   change: 処刑する相手を選択してください。
-  start: 2
+  for: live
+  at: main
   HELP: |-
     全員で多数決をし、一人だけ処刑します。
 
 entrust:
   target: 委任
   change: 処刑を棄権し、一票を委ねる相手を選択してください。
-  start: 2
+  for: live
+  at: main
   HELP: |-
     投票は棄権し、他人の投票と同じとすることができます。
 
 jammer:
   target: 邪魔
   change: 占いから保護する相手を選択してください。
-  start: 1
+  for: live
+  at: progress
   HELP: |-
     毎夜、一人をあらゆる占いから包み隠すことができます。
     <br>
@@ -164,7 +199,8 @@ jammer:
 snatch:
   target: 換わる
   change: 顔と名前を簒奪する相手を選択してください。
-  start: 1
+  for: live
+  at: progress
   HELP: |-
     好きな人物の顔と名前を奪い、自身のそれと入れ替えることができます。この能力は非常に露顕しやすいので、行使には注意が必要です。
     <br>
@@ -285,6 +321,79 @@ tafness:
   HELP: |-
     あなたは狼の襲撃を受ける、もしくは賞金稼に道連れにされると傷を負うものの、一日だけ生き長らえます。
 
+hurt:
+  name: 負傷
+  HELP: |-
+
+sheep:
+  HELP: |-
+    踊り狂ったおぼろげな記憶がある。
+
+infected:
+  name: 感染
+  HELP: |-
+
+hide_for_vote:
+  name: 投票対象外
+  hide:
+    - vote
+  HELP: |-
+
+hide_for_role:
+  name: 能力対象外
+  hide:
+    - role
+  HELP: |-
+
+hide_for_gift:
+  name: 恩恵対象外
+  hide:
+    - gift
+  HELP: |-
+
+disable_vote:
+  name: <s>投票</s>
+  disable:
+    - vote
+  HELP: |-
+
+disable_special:
+  name: <s>全能力</s>
+  disable:
+    - gift
+    - role
+  HELP: |-
+    あなたはもう特殊能力を使うことができません。
+
+disable_gift:
+  name: <s>恩恵</s>
+  disable:
+    - gift
+  HELP: |-
+    あなたはもう恩恵能力を使うことができません。
+
+disable_role:
+  name: <s>能力</s>
+  disable:
+    - role
+  HELP: |-
+    あなたはもう役職能力を使うことができません。
+
+disable_poison:
+  name: <s>毒薬</s>
+  disable:
+    - poison
+  HELP: |-
+    あなたはもう毒薬を使うことができません。
+
+disable_analeptic:
+  name: <s>蘇生薬</s>
+  disable:
+    - analeptic
+  HELP: |-
+    あなたはもう蘇生薬を使うことができません。
+
+
 twolife:
   HELP: |-
     あなたは狼の襲撃を受ける、もしくは賞金稼に道連れにされても、一度だけは命が助かります。
@@ -314,24 +423,53 @@ wolfify:
     あなたは狼の襲撃を受ける、もしくは賞金稼に道連れにされると、あなたは人狼になります。
 
 gift:
-  HELP: 
+  HELP:
 
 chkGSAY:
   HELP: |-
     顔や名前はわかりませんが、あなたの耳には死者の声が届いちゃうことでしょう。
 
 SPSAY:
+  text: SPSAY
   HELP: |-
     あなたは、共鳴者同士にしか聞こえない会話が可能です。
 
 WSAY:
+  text: WSAY
   HELP: |-
     あなたは、人狼（と囁き狂人、擬狼妖精）同士にしか聞こえない会話が可能です。
 
 XSAY:
+  text: XSAY
   HELP: |-
     あなたは、念波星でしか聞こえない会話が可能です。
 
 GSAY:
+  text: GSAY
   HELP: |-
     あなたは、死者にしか聞こえない会話が可能です。
+
+MSAY:
+  HELP: |-
+    あなたは<b>_NPC_</b>の口を借り、好きな言葉を伝えることができます。
+
+AIM:
+  text: AIM
+  for: near
+  HELP:
+
+TSAY:
+  text: TSAY
+  HELP:
+
+SAY:
+  text: SAY
+  HELP:
+
+VSAY:
+  text: VSAY
+  HELP:
+
+VGSAY:
+  text: VGSAY
+  HELP:

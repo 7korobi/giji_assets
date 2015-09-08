@@ -5,9 +5,8 @@ new Cache.Rule("potof").schema ->
   @depend_on "message"
 
   urges = "　①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿"
-  maskstate_order = _.sortBy _.keys(RAILS.maskstates), (o)-> -o
   win_by_role = (o, query)=>
-    for role in o.role
+    for role in o.role by -1
       win = query.find(role)?.win
       return win if win
     "NONE"
@@ -159,14 +158,7 @@ new Cache.Rule("potof").schema ->
         GUI.name.config role
     role_text = roles.join("、")
 
-    text = []
-    if o.rolestate?
-      rolestate = o.rolestate
-      for mask in maskstate_order
-        if 0 == (rolestate & mask)
-          state = RAILS.maskstates[mask]
-          text.push "#{state} " if state
-          rolestate |= mask
+    text = Cache.ables.by_rolestate(o.rolestate).pluck("name")
     text.push "☑" if 'pixi' == o.sheep
     text.push "♥" if 'love' == o.love
     text.push "☠" if 'hate' == o.love

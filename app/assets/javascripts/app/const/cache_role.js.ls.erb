@@ -21,7 +21,7 @@ new Cache.Rule("role").schema ->
     o.order = id_index.indexOf o._id
 
     o.side = o.group.toLowerCase() if o.group? && o.group != "OTHER"
-    o.side = "gift"  if ("gift"  in o.ables)
+    o.side = "gift"  if ("gift" in o.ables)
     if o.group == "MOB"
       o.side = "mob"
       o.order = 0
@@ -42,15 +42,35 @@ new Cache.Rule("trap").schema ->
 
 new Cache.Rule("able").schema ->
   @scope (all)->
+    by_rolestate: (bits)->
+      q = all.where(->)
+      q._hash = hash = {}
+      q._list = list = []
+      if bits?
+        for mask in all.masks
+          if 0 == (bits .&. mask)
+            id = SOW_RECORD.maskstates[mask]
+            o = all.find(id)
+            if o
+              hash[id] = o
+              list.push o
+            bits .|.= mask
+      q
 
   @default ->
 
   @deploy (o)->
+    o.at = switch o.at
+         | "main"     => {         +main }
+         | "start"    => { +start        }
+         | "progress" => { +start, +main }
+         | _          => {               }
 
   @map_reduce (o)->
 
 
-
 Cache.rule.able.set <%= JSON.generate SET_ABLES %>
+Cache.ables.masks = _.sortBy Object.keys(SOW_RECORD.maskstates), (i)-> -i
+
 Cache.rule.trap.set <%= JSON.generate SET_TRAPS %>
 Cache.rule.role.set <%= JSON.generate SET_ROLES %>
