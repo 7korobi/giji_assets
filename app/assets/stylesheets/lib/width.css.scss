@@ -33,7 +33,7 @@
 
 // $width-list: 280px, 340px, 400px, 458px, 520px, 580px, 640px, 705px, 770px, 99999px;
 
-@include film(12px, 107px, 18px);
+@include film();
 table.talk td .msg {
   margin: 0 7px 6px 6px;
   padding: 0 4px;

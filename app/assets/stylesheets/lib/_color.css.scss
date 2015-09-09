@@ -44,7 +44,8 @@
   .btn,
   .mark,
   .badge,
-  .menuicon {
+  .menuicon,
+  label.control-label {
     color: $color;
     background-color: $background;
   }
@@ -106,7 +107,9 @@
     @include markers($color, lighten($background, 20%));
   }
   &.emboss,
-  .emboss {
+  .emboss,
+  abbr,
+  span.help-block {
     @if white == $tone {
       color: $background;
       background-color: darken($background, 20%);

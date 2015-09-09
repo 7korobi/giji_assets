@@ -134,28 +134,72 @@ img {
   border-style: none;
 }
 
+span.form-label label.control-label {
+  width: 30%;
+  display: inline-block;
+}
+
+span.form-wrapper input {
+  width: 68%;
+  display: inline-block;
+}
+
+.text.input span.form-label label.control-label,
+span.help-block {
+  width: auto;
+  display: block;
+  margin: 0 6px 0 0;
+}
+
+
+input[type=number],
+input[type=text],
+input[type=search],
+input[type=tel],
+input[type=url],
+input[type=email],
+input[type=password],
+input[type=datetime],
+input[type=datetime-local],
+input[type=date],
+input[type=month],
+input[type=week],
+input[type=time],
 input,
-textarea {
-  border: #aaa;
-}
-
-input:focus, textarea:focus,
-input[type=file]:hover,
-input[type=color]:hover,
-input:invalid:focus,
-.select select:focus,
-.select select:hover {
-  border-color: #7FDBFF;
-  box-shadow: 3px 3px 0 rgba(0,0,0, 0.3);
-}
-
-input:invalid, textarea:invalid {
-  border-color: #FF851B;
+select,
+textarea,
+fieldset {
+  border: solid 1px #aaa;
   box-shadow: none;
+  &:invalid {
+    border-color: #FF851B;
+    box-shadow: none;
+  }
+  &:focus:invalid {
+    border-color:  #FF4136;
+    box-shadow: none;
+  }
 }
 
-input:focus:invalid, textarea:focus:invalid {
-  border-color:  #FF4136;
+input[type=range],
+input[type=image],
+input[type=file],
+input[type=color],
+input[type=checkbox],
+input[type=radio],
+input[type=submit],
+input[type=reset],
+input[type=button] {
+  border: none 0px;
+  &:focus,
+  &:hover {
+    box-shadow: 3px 3px 0 rgba(0,0,0, 0.3);
+  }
+}
+
+textarea {
+  margin: 0;
+  padding: 0;
 }
 
 input[type="number"],
@@ -167,12 +211,4 @@ address * {
 input[type=file],
 input[type=color] {
   cursor: pointer;
-}
-
-/* Reset the style for those that we actually know */
-input[type=radio]:focus,
-input[type=checkbox]:focus,
-input[type=range]:focus {
-  box-shadow: none;
-  border-color: initial;
 }

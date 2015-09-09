@@ -156,6 +156,7 @@ table.talk {
   .GSAY,      { @include color-tone(glass, #99f, rgba( 30, 30,  0, 0.4)); }
   .VGSAY,     { @include color-tone(glass, #9af, rgba(  0,  0,  0, 0.4)); }
   .VSAY,      { @include color-tone(glass, #ffb, rgba(  0,  0,  0, 0.4)); }
+  .error,
   .WSAY,      { @include color-tone(glass, #f78, rgba(  0, 30, 30, 0.4)); }
   .AIM,
   .SPSAY,     { @include color-tone(glass, #fca, rgba( 20, 40, 50, 0.4)); }
@@ -219,6 +220,7 @@ table.talk {
   .GSAY,       { @include color-tone(white, #000, #bbd); }
   .VGSAY,      { @include color-tone(white, #000, #a8a8e8); }
   .VSAY,       { @include color-tone(white, #000, #ca6); }
+  .error,
   .WSAY,       { @include color-tone(white, #000, #a55); }
   .AIM,
   .SPSAY,      { @include color-tone(white, #000, #dcb); }
