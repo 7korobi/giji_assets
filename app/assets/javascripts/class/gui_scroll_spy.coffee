@@ -1,6 +1,5 @@
 class GUI.ScrollSpy
   @elems = {}
-  @list = []
 
   @go: (id, offset)=>
     elem = @elems[id]
@@ -13,23 +12,20 @@ class GUI.ScrollSpy
       window.scrollBy(left_by, top_by) if left_by || top_by
 
   interval = 5000
-  GUI.do_tick (now)=>
-    for spy in @list
-      if spy.center
-        spy.tick( spy.center , interval / 1000)
-    interval
-
+  window.setInterval ->
+    if win.scroll.center
+        win.scroll.tick( win.scroll.center , interval / 1000)
+  , interval
 
   win.on.scroll_end.push =>
     id = @view()
-    for spy in @list
-      if spy.list?
-        spy_id = spy.view()
-      id ||= spy_id
+    spy = win.scroll
+    if spy.list?
+      spy_id = spy.view()
+    id ||= spy_id
 
-    for spy in @list
-      if id != spy.prop()
-        spy.prop id, true
+    if id != spy.prop()
+      spy.prop id
 
   @view: =>
     result = null
@@ -48,7 +44,6 @@ class GUI.ScrollSpy
     result
 
   constructor: (@prop)->
-    GUI.ScrollSpy.list.push @
     @start()
 
   rescroll: (@prop)->

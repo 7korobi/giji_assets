@@ -254,7 +254,7 @@ GUI.message = (->
       GUI.message.talk_name v.user_id, v.name, v.to
       GUI.message.talk_text v._id, v.style, v.log
       m "p.mes_date",
-        m "span.mark", identity_action(v), v.anchor
+        m "span.emboss", identity_action(v), v.anchor
         GUI.timer "span", v
 
   action: (v)->
@@ -276,7 +276,7 @@ GUI.message = (->
 
   talk: (v)->
     GUI.message.say_base v,
-      m "span.mark", identity_action(v), v.anchor
+      m "span.emboss", identity_action(v), v.anchor
       GUI.timer "span", v
 
   history: (v)->

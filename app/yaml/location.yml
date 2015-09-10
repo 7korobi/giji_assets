@@ -25,6 +25,8 @@ props:
   story_id:
   mode_id:  { current: talk }
 
+  tag:      { current: all }
+
   width:    { current: wide }
   layout:   { current: center }
   font:     { current: std }

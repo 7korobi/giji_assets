@@ -1,12 +1,4 @@
-<%
-%i[DELAY].each do |const|
-  if Kernel.constants.member?(const)
- %>
-window.<%= const %> = <%= JSON.generate Kernel.const_get( const ) %>
-<%
-  end
-end
-%>
+DELAY = <%= JSON.generate DELAY %>
 
 head_conf =
   screens: [

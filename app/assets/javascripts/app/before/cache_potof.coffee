@@ -42,6 +42,9 @@ new Cache.Rule("potof").schema ->
     o.user_id = o.sow_auth_id
     o.hide = {}
 
+    if null == o.role[0] && "mob" != o.live
+      o.live = "leave"
+
     if o.event_id
       if o.event_id.match /-0$/
         o.live = "leave"

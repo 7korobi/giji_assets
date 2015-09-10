@@ -180,9 +180,9 @@ table .talk td .msg,
 }
 
 .left-layout {
-  &.std-width  { @include width( 0px, 30px, 2) };
-  &.wide-width { @include width( 0px, 10px, 2) };
-  &.full-width { @include width( 0px,  0px, 2) };
+  &.std-width  { @include width(  0px, 30px, 2) };
+  &.wide-width { @include width( 10px, 10px, 2) };
+  &.full-width { @include width(  0px,  0px, 2) };
   .outframe {
     margin: 0 auto 0 0;
     padding: 0px;
@@ -190,9 +190,9 @@ table .talk td .msg,
 }
 
 .center-layout {
-  &.std-width  { @include width( 0px, 60px, 2) };
-  &.wide-width { @include width( 0px, 20px, 2) };
-  &.full-width { @include width( 0px,  0px, 2) };
+  &.std-width  { @include width(  0px, 60px, 2) };
+  &.wide-width { @include width( 20px, 20px, 2) };
+  &.full-width { @include width(  0px,  0px, 2) };
   .outframe {
     margin: 0 auto;
     padding: 0px;
@@ -200,9 +200,9 @@ table .talk td .msg,
 }
 
 .right-layout {
-  &.std-width  { @include width( 0px, 30px, 1) };
-  &.wide-width { @include width( 0px, 10px, 1) };
-  &.full-width { @include width( 0px,  0px, 1) };
+  &.std-width  { @include width(  0px, 30px, 1) };
+  &.wide-width { @include width( 10px, 10px, 1) };
+  &.full-width { @include width(  0px,  0px, 1) };
   .outframe {
     margin: 0 0 0 auto;
     padding: 0px;

@@ -1,8 +1,5 @@
 
 GUI.if_exist "#character_tag", (dom)->
-  tag = m.prop()
-  tag "all"
-
   vdom = (name, val)->
     [ m "span", name
       m "span.emboss.pull-right", val
@@ -11,6 +8,7 @@ GUI.if_exist "#character_tag", (dom)->
   m.mount dom,
     controller: ->
     view: ->
+      {tag} = Url.prop
       chrs = Cache.faces.tag(tag()).list()
       set = RAILS.tag[tag()]
 
@@ -18,7 +16,7 @@ GUI.if_exist "#character_tag", (dom)->
           view: (main_menu)->
             m ".paragraph",
               m "h6", "タグを選んでみよう"
-              Btns.radio {class: "edge"}, tag,
+              Btns.radio {class: "edge"}, tag(),
                 all:       vdom "- 全体 -",               Cache.faces.reduce().all.all.count
                 giji:      vdom RAILS.tag.giji.name,      Cache.faces.reduce().tag.giji.count
                 shoji:     vdom RAILS.tag.shoji.name,     Cache.faces.reduce().tag.shoji.count

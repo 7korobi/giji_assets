@@ -134,38 +134,26 @@ img {
   border-style: none;
 }
 
-span.form-label label.control-label {
-  width: 30%;
-  display: inline-block;
-}
-
+span.form-label label.control-label,
 span.form-wrapper input {
-  width: 68%;
+  text-align: right;
   display: inline-block;
 }
 
 .text.input span.form-label label.control-label,
 span.help-block {
+  text-align: left;
   width: auto;
   display: block;
   margin: 0 6px 0 0;
 }
 
+#{$all-text-inputs-focus},
+#{$all-text-inputs-hover} {
+}
 
-input[type=number],
-input[type=text],
-input[type=search],
-input[type=tel],
-input[type=url],
-input[type=email],
-input[type=password],
-input[type=datetime],
-input[type=datetime-local],
-input[type=date],
-input[type=month],
-input[type=week],
-input[type=time],
-input,
+#{$all-text-inputs},
+input:not([type]),
 select,
 textarea,
 fieldset {
@@ -181,15 +169,13 @@ fieldset {
   }
 }
 
+#{$all-button-inputs},
 input[type=range],
 input[type=image],
 input[type=file],
 input[type=color],
 input[type=checkbox],
-input[type=radio],
-input[type=submit],
-input[type=reset],
-input[type=button] {
+input[type=radio] {
   border: none 0px;
   &:focus,
   &:hover {
@@ -206,6 +192,9 @@ input[type="number"],
 address,
 address * {
   text-align: right;
+}
+input[type="number"] {
+  width: 6ex;
 }
 
 input[type=file],
