@@ -1,5 +1,5 @@
 
-new Cache.Rule("message").schema ->
+new Mem.Rule("message").schema ->
   @belongs_to "event", dependent: true
   @belongs_to "story", dependent: true
   @belongs_to "face"

@@ -31,7 +31,7 @@ GUI.message = (->
     tap_external: -> console.log arguments
 
   cmd_target: ->
-    targets = for target in Cache.targets.command(o.cmd).list()
+    targets = for target in Mem.targets.command(o.cmd).list()
       m "option",
         { value: target.val }
         target.name
@@ -41,7 +41,7 @@ GUI.message = (->
         "- 選択してください -"
     )
 
-    buttons = for button in Cache.commands.target().list()
+    buttons = for button in Mem.commands.target().list()
       m "option",
         button.title
 
@@ -105,10 +105,10 @@ GUI.message = (->
     return [] unless event && story
 
     roletable = RAILS.roletable[story.type.roletable]
-    mob = Cache.roles.find(story.type.mob)
-    trap_card = Cache.traps.find(event.event)
+    mob = Mem.roles.find(story.type.mob)
+    trap_card = Mem.traps.find(event.event)
     texts = []
-    texts.push Cache.winners.find(event.winner).name + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
+    texts.push Mem.winners.find(event.winner).name + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
     texts.push m "kbd", trap_card if trap_card
     texts.push RAILS.event_state.grudge    if event.turn == event.grudge
     texts.push RAILS.event_state.riot      if event.turn == event.riot
@@ -221,7 +221,7 @@ GUI.message = (->
             m "th", m "a", toggle_desc(potofs_order, "role"),       "役割"
             m "th", m "a", toggle_desc(potofs_order, "text"),       "補足"
         m "tbody.plane", {test:"test"},
-          for o in Cache.potofs.view(potofs_desc(), potofs_order()).list()
+          for o in Mem.potofs.view(potofs_desc(), potofs_order()).list()
             filter_class =
               if hides[o.face_id]
                 "filter-hide"

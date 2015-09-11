@@ -1,4 +1,4 @@
-new Cache.Rule("target").schema ->
+new Mem.Rule("target").schema ->
   @scope (all)->
     command: (type)->
       all
@@ -7,7 +7,7 @@ new Cache.Rule("target").schema ->
   @deploy (o)->
 
 
-new Cache.Rule("command").schema ->
+new Mem.Rule("command").schema ->
   @scope (all)->
     target: ->
       all.where(jst: "target")
@@ -15,7 +15,7 @@ new Cache.Rule("command").schema ->
   @deploy (o)->
 
 
-new Cache.Rule("writer").schema ->
+new Mem.Rule("writer").schema ->
   @belongs_to "chr_job"
 
   @scope (all)->
@@ -31,7 +31,7 @@ new Cache.Rule("writer").schema ->
         o.hisoty =
           form: o
           text: log
-        Cache.rule.history.merge o.history
+        Mem.rule.history.merge o.history
         log
       else
         o.history
@@ -72,7 +72,7 @@ new Cache.Rule("writer").schema ->
             _arg
 
 
-new Cache.Rule("history").schema ->
+new Mem.Rule("history").schema ->
   point = (size)->
     pt = 20
     pt += (size - 50)/14 if 50 < size

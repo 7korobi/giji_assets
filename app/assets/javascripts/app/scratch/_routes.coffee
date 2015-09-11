@@ -19,10 +19,10 @@ Url.routes =
     css: new Url "css=:theme~:width~:layout~:font",
       unmatch: "?"
       change: (params)->
-        list = 
+        list =
           for key in ["theme", "width", "layout", "font", "w", "item", "color"]
             "#{Url.prop[key]()}-#{key}"
         list.push "no-player" unless Url.prop.human()
         GUI.header list
         window.requestAnimationFrame ->
-          GUI.Layout.resize()
+          GUI.Layout.move()

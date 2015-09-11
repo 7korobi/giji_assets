@@ -1,4 +1,4 @@
-new Cache.Rule("story").schema ->
+new Mem.Rule("story").schema ->
   @scope (all)->
     menu: (folder, game, rating, event_type, role_type, say_limit, player_length, update_at, update_interval, search)->
       all.sort("desc", "order").search(search).where (o)->
@@ -21,7 +21,7 @@ new Cache.Rule("story").schema ->
     else
       null
 
-  all_traps = Cache.traps.ids()
+  all_traps = Mem.traps.ids()
 
   @deploy (o)->
     o.order = o.folder + GUI.field(o.vid, 4)

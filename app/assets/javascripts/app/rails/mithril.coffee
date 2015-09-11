@@ -21,12 +21,12 @@ if gon?.map_reduce?.faces?
       view: ->
         {order, chr_set, search} = Url.prop
         map_order_set = RAILS.map_faces_orders[order()]
-        chrs = Cache.map_faces.active(order(), chr_set(), search()).list()
+        chrs = Mem.map_faces.active(order(), chr_set(), search()).list()
         headline = ""
 
         if chrs?.length
           headline = [
-            m ".GSAY.badge", Cache.chr_sets.find(chr_set()).caption
+            m ".GSAY.badge", Mem.chr_sets.find(chr_set()).caption
             "の#{chrs.length}人を、"
             m ".GSAY.badge", map_order_set.headline
             "回数で並べています"
@@ -35,7 +35,7 @@ if gon?.map_reduce?.faces?
         [ m "div", headline
           m "hr.black"
           for o in chrs
-            chr_job = Cache.chr_jobs.find("#{chr_set()}_#{o.face_id}")
+            chr_job = Mem.chr_jobs.find("#{chr_set()}_#{o.face_id}")
             job_name = chr_job.job
 
 
@@ -81,8 +81,8 @@ if gon?.map_reduce?.faces?
             main_menu.drill "chr_set",
               caption: "キャラセット"
               view: (sub_menu)->
-                sub_menu.radio {class: "chr_set"}, Url.prop.chr_set, Cache.map_faces.reduce(), "chr_set", (key)->
-                  Cache.chr_sets.find(key).caption
+                sub_menu.radio {class: "chr_set"}, Url.prop.chr_set, Mem.map_faces.reduce(), "chr_set", (key)->
+                  Mem.chr_sets.find(key).caption
 
           view: (main_menu)->
             m ".paragraph",
@@ -100,7 +100,7 @@ if gon?.face?
     m.mount dom,
       controller: ->
       view: ->
-        face = Cache.map_face_detail
+        face = Mem.map_face_detail
         letters = [
           m "p.name",
             m "b", face.name
@@ -145,7 +145,7 @@ if gon?.face?
     m.mount dom,
       controller: ->
       view: ->
-        face = Cache.map_face_detail
+        face = Mem.map_face_detail
         says_count_lines = [
           m "tr.caution",
             m "th.msg", {colspan: 2}, "総合値"
@@ -186,7 +186,7 @@ if gon?.face?
     m.mount dom,
       controller: ->
       view: ->
-        face = Cache.map_face_detail
+        face = Mem.map_face_detail
         letters = [
           m "p.name",
             m "b", face.name
@@ -212,7 +212,7 @@ if gon?.face?
     m.mount dom,
       controller: ->
       view: ->
-        face = Cache.map_face_detail
+        face = Mem.map_face_detail
         letters = [
           m "p.name",
             m "b", face.name
@@ -243,27 +243,27 @@ if gon?.face?
 
 if gon?.villages?
   GUI.if_exist "#villages", (dom)->
-    Cache.rule.item.set gon.villages
+    Mem.rule.item.set gon.villages
     m.mount dom,
       controller: ->
       view: ->
-        win.scroll.pager "div", Cache.items.list(), (v)->
+        win.scroll.pager "div", Mem.items.list(), (v)->
           GUI.message.action(v)
 
 if gon?.byebyes?
   GUI.if_exist "#byebyes", (dom)->
-    Cache.rule.item.set gon.byebyes
+    Mem.rule.item.set gon.byebyes
     m.mount dom,
       controller: ->
       view: ->
-        win.scroll.pager "div", Cache.items.list(), (v)->
+        win.scroll.pager "div", Mem.items.list(), (v)->
           GUI.message.action(v)
 
 if gon?.history?
   GUI.if_exist "#history", (dom)->
-    Cache.rule.item.set gon.history
+    Mem.rule.item.set gon.history
     m.mount dom,
       controller: ->
       view: ->
-        win.scroll.pager "div", Cache.items.list(), (v)->
+        win.scroll.pager "div", Mem.items.list(), (v)->
           GUI.message.history(v)

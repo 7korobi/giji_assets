@@ -1,4 +1,4 @@
-new Cache.Rule("map_face").schema ->
+new Mem.Rule("map_face").schema ->
   @belongs_to "face", dependent: true
   @scope (all)->
     active: (order, chr_set, search)->
@@ -10,7 +10,7 @@ new Cache.Rule("map_face").schema ->
     o._id = o.face_id
     o.win.value.合計 = o.win.all
 
-    list = Cache.chr_jobs.face(o.face_id).list()
+    list = Mem.chr_jobs.face(o.face_id).list()
     if list
       search_words = list.map (o)-> o.job
       o.chr_set_ids = list.map (o)-> o.chr_set_id
@@ -31,7 +31,7 @@ new Cache.Rule("map_face").schema ->
       emit "chr_set", id, item
 
 
-new Cache.Rule("map_face_story_log").schema ->
+new Mem.Rule("map_face_story_log").schema ->
   @order (o)-> o.date.max
 
   @deploy (o)->

@@ -11,7 +11,7 @@ GUI = (->
         cb name(key), hash[key]
 
   name_config = (o)->
-      Cache.roles.find(o)?.name || Cache.traps.find(o)?.name || o || ""
+      Mem.roles.find(o)?.name || Mem.traps.find(o)?.name || o || ""
 
   img_head: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images"
   portrate: (face_id, attr = {})->

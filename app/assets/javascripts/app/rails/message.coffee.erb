@@ -1,6 +1,6 @@
-Cache.rule.item.set <%= JSON.generate MESSAGE.rails %>
+Mem.rule.item.set <%= JSON.generate MESSAGE.rails %>
 if gon?.items?
-  Cache.rule.item.merge gon.items
+  Mem.rule.item.merge gon.items
 
 <% MESSAGE.module.rails.each do |name| %>
 GUI.items_module "<%= name %>"
@@ -9,7 +9,7 @@ GUI.items_module "<%= name %>"
 
 <%
 {}.each do |key, log| %>
-for item in Cache.items.where(log:"<%= key %>").list()
+for item in Mem.items.where(log:"<%= key %>").list()
   item.log = <%= log.to_json %>
 <% end %>
 

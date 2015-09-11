@@ -26,7 +26,7 @@ Url.routes =
         scroll = win.scroll.prop()
         [folder, vid, turn, logid] = scroll.split("-")
         if logid?
-          updated_at = Cache.messages.find(scroll)?.updated_at || 0
+          updated_at = Mem.messages.find(scroll)?.updated_at || 0
           Url.prop.updated_at updated_at
           Url.prop.folder     folder
           Url.prop.turn       turn
@@ -47,4 +47,4 @@ Url.cookies.css.options.change = (params)->
   GUI.header list
 
   window.requestAnimationFrame ->
-    GUI.Layout.resize()
+    GUI.Layout.move()

@@ -1,12 +1,12 @@
 
-describe "Cache.face" (...)!->
+describe "Mem.face" (...)!->
   it "bye jelemy" ->
-    expect( Cache.faces.find("c06") ).to.eq undefined
+    expect( Mem.faces.find("c06") ).to.eq undefined
 
 
-describe "Cache.chr_job" (...)!->
+describe "Mem.chr_job" (...)!->
   it "zoy" !->
-    chr = Cache.chr_jobs.face("c10").list()
+    chr = Mem.chr_jobs.face("c10").list()
     expect( chr[0].job ).to.eq "小娘"
     expect( chr[0].chr_set_id ).to.eq "ririnra"
     expect( chr[0].chr_job_id ).to.eq "ririnra_c10"
@@ -20,7 +20,7 @@ describe "Cache.chr_job" (...)!->
     expect( chr[1].face().face_id ).to.eq "c10"
 
   it "iris" !->
-    chr = Cache.chr_jobs.face("c83").list()
+    chr = Mem.chr_jobs.face("c83").list()
     expect( chr[0].job ).to.eq "受付"
     expect( chr[0].chr_set_id ).to.eq "ririnra"
     expect( chr[0].chr_job_id ).to.eq "ririnra_c83"

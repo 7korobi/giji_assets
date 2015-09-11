@@ -1,4 +1,4 @@
-new Cache.Rule("potof").schema ->
+new Mem.Rule("potof").schema ->
   @belongs_to "story"
   @belongs_to "event"
   @belongs_to "face"
@@ -16,11 +16,11 @@ new Cache.Rule("potof").schema ->
 
   @scope (all)->
     full: ->
-      delete Cache.messages.has.face.undefined
-      delete Cache.messages.has.face.null
-      delete Cache.messages.has.face.admin
-      delete Cache.messages.has.face.maker
-      Object.keys(Cache.messages.has.face).sort()
+      delete Mem.messages.has.face.undefined
+      delete Mem.messages.has.face.null
+      delete Mem.messages.has.face.admin
+      delete Mem.messages.has.face.maker
+      Object.keys(Mem.messages.has.face).sort()
     potofs: ->
       _.without all.full(), all.others()...
     not_lives: (turn)->
@@ -126,7 +126,7 @@ new Cache.Rule("potof").schema ->
 
     win_love = RAILS.loves[o.love]?.win
 
-    win_role = win_by_role(o, Cache.roles)
+    win_role = win_by_role(o, Mem.roles)
     win = win_juror || win_love || win_zombie || win_role
     win = RAILS.folders[story.folder].evil if win == 'EVIL'
     switch win
@@ -161,7 +161,7 @@ new Cache.Rule("potof").schema ->
         GUI.name.config role
     role_text = roles.join("、")
 
-    text = Cache.ables.by_rolestate(o.rolestate).pluck("name")
+    text = Mem.ables.by_rolestate(o.rolestate).pluck("name")
     text.push "☑" if 'pixi' == o.sheep
     text.push "♥" if 'love' == o.love
     text.push "☠" if 'hate' == o.love
@@ -181,7 +181,7 @@ new Cache.Rule("potof").schema ->
       select: [select, role_side_order, role_text, win_side_order, text_str]
       text:   [text_str, win_side_order, role_side_order, role_text, select]
 
-    chr_job = Cache.chr_jobs.find("#{o.csid.toLowerCase()}_#{o.face_id}")
+    chr_job = Mem.chr_jobs.find("#{o.csid.toLowerCase()}_#{o.face_id}")
     job = if chr_job then chr_job.job else "***"
     o.view =
       portrate: GUI.portrate o.face_id

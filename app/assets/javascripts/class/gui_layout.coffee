@@ -1,9 +1,10 @@
 class GUI.Layout
   @list: {}
-  @resize: ->
+  @move: ->
     for key, o of GUI.Layout.list
       o.translate()
-  win.on.resize.push @resize
+  win.on.resize.push @move
+  win.on.scroll_end.push @move
 
   constructor: (@box, @dx, @dy, dz, @absolute = false, @duration = DELAY.animato)->
     return unless @box
@@ -31,7 +32,7 @@ class GUI.Layout
     if @dy
       y = @dy
 
-    cb x, y, w, h, 
+    cb x, y, w, h,
       top: win.top
       left: win.left
       width: win.width
@@ -46,11 +47,11 @@ class GUI.Layout
   hide: ->
     move.call @, (x, y, w, h, win)->
       x = - x +
-        switch 
+        switch
           when 0 < x then - w
           when x < 0 then win.width
       y = - y +
-        switch 
+        switch
           when 0 < y then - h
           when y < 0 then win.height
       {x, y, w, h, win}
@@ -82,7 +83,7 @@ class GUI.Layout
 
 
   transition: ()->
-    transition = 
+    transition =
       if @duration && ! @absolute
         "all #{@duration}ms ease-in-out 0"
       else
@@ -102,7 +103,3 @@ class GUI.Layout
       @from = to
       @translate()
     , @duration
-
-
-
-

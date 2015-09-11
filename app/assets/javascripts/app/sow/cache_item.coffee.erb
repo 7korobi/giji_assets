@@ -1,6 +1,6 @@
-Cache.rule.item.set <%= JSON.generate MESSAGE.sow %>
+Mem.rule.item.set <%= JSON.generate MESSAGE.sow %>
 if gon?.items?
-  Cache.rule.item.merge gon.items
+  Mem.rule.item.merge gon.items
 
 <% MESSAGE.module.sow.each do |name| %>
 GUI.items_module "<%= name %>"

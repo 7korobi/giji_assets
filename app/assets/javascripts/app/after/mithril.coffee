@@ -51,29 +51,29 @@ GUI.if_exist "#buttons", (dom)->
 
       badges =
         "pin": ->
-          doc.messages.pins(Url.prop).list().length - Cache.events.list().length
+          doc.messages.pins(Url.prop).list().length - Mem.events.list().length
         "home": ->
-          Cache.messages.home("announce").list().length - Cache.events.list().length
+          Mem.messages.home("announce").list().length - Mem.events.list().length
         "mail": ->
           prop = _.merge {}, Url.prop,
             memo: -> "all"
             uniq: -> true
             search: -> ""
-          doc.messages.memo(prop).list().length - Cache.events.list().length
+          doc.messages.memo(prop).list().length - Mem.events.list().length
         "clock": ->
           prop = _.merge {}, Url.prop,
             talk: -> "all"
             open: -> true
             search: -> ""
-          doc.messages.history(prop).list().length - Cache.events.list().length
+          doc.messages.history(prop).list().length - Mem.events.list().length
         "chat-alt": ->
           prop = _.merge {}, Url.prop,
             talk: -> "all"
             open: -> true
             search: -> ""
-          doc.messages.talk(prop).list().length - Cache.events.list().length
+          doc.messages.talk(prop).list().length - Mem.events.list().length
         "th-large": ->
-          Cache.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list().length
+          Mem.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list().length
 
       switch menu.scope.state()
         when "pins"
@@ -116,8 +116,8 @@ GUI.if_exist "title", (dom)->
   m.mount dom,
     controller: ->
     view: ->
-      story = Cache.storys.find Url.prop.story_id()
-      event = Cache.events.find Url.prop.event_id()
+      story = Mem.storys.find Url.prop.story_id()
+      event = Mem.events.find Url.prop.event_id()
       if story? && event?
         "#{story.name} #{event.name}"
       else
@@ -239,7 +239,7 @@ if gon?.potofs?
         for key, val of wide_attr
           potofs.children[0].children[1].attrs[key] = val
 
-        event = Cache.events.find Url.prop.event_id()
+        event = Mem.events.find Url.prop.event_id()
         m "div",
           if event?
             m ".head", event.name
@@ -256,11 +256,11 @@ if gon?.events? && gon.event?
 
     GUI.message.delegate.tap_anchor = (turn, logid, id, by_id)->
       [folder, vid, by_turn, by_logid] = by_id.split("-")
-      anker_id = Cache.messages.anker_id(folder, vid, turn, logid)
+      anker_id = Mem.messages.anker_id(folder, vid, turn, logid)
       [__, __, __, logid] = anker_id.split("-")
 
-      has_tap = Cache.messages.find(anker_id)
-      event = Cache.events.find("#{folder}-#{vid}-#{turn}")
+      has_tap = Mem.messages.find(anker_id)
+      event = Mem.events.find("#{folder}-#{vid}-#{turn}")
       doc.load.event has_tap, event, ->
         pins = Url.prop.pins()
         pins["#{by_turn}-#{by_logid}"] = true
@@ -376,7 +376,7 @@ if gon?.events? && gon.event?
       m.endComputation()
 
 if gon?.stories?
-  Cache.rule.story.set gon.stories
+  Mem.rule.story.set gon.stories
   GUI.if_exist "#stories", (dom)->
     menu.icon.icon "resize-full",
       open: ->
@@ -393,14 +393,14 @@ if gon?.stories?
     m.mount dom,
       controller: ->
       view: ->
-        query = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
+        query = Mem.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)
         m ".paragraph",
           menu.icon.icon "search",
             deploy: (main_menu)->
               main_menu.drill "rating",
                 caption: "こだわり"
                 view: (sub_menu)->
-                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(rating: "all")...).reduce()
+                  reduce = Mem.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(rating: "all")...).reduce()
                   m ".paragraph",
                     sub_menu.radio {class:"edge rating"}, Url.prop.rating, reduce, "rating", (key, o)->
                       m "span",
@@ -410,56 +410,56 @@ if gon?.stories?
               main_menu.drill "game",
                 caption: "ルール"
                 view: (sub_menu)->
-                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(game: "all")...).reduce()
+                  reduce = Mem.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(game: "all")...).reduce()
                   m ".paragraph",
                     sub_menu.radio {class:"edge game"}, Url.prop.game, reduce, "game", (key, o)->
                       o.min_is.view.game_rule
               main_menu.drill "folder",
                 caption: "州"
                 view: (sub_menu)->
-                  reduce = Cache.storys.menu("all", Url.routes.search.stories.values()...).reduce()
+                  reduce = Mem.storys.menu("all", Url.routes.search.stories.values()...).reduce()
                   m ".paragraph",
                     sub_menu.radio {class:"edge folder"}, Url.prop.folder, reduce, "folder", (key, o)->
                       GAME[key]?.nation
               main_menu.drill "say_limit",
                 caption: "発言制限"
                 view: (sub_menu)->
-                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(say_limit: "all")...).reduce()
+                  reduce = Mem.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(say_limit: "all")...).reduce()
                   m ".paragraph",
                     sub_menu.radio {class:"edge say_limit"}, Url.prop.say_limit, reduce, "say_limit", (key, o)->
                       o.min_is.view.say_limit
               main_menu.drill "update_at",
                 caption: "更新時刻"
                 view: (sub_menu)->
-                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(update_at: "all")...).reduce()
+                  reduce = Mem.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(update_at: "all")...).reduce()
                   m ".paragraph",
                     sub_menu.radio {class:"edge update_at"}, Url.prop.update_at, reduce, "update_at", (key, o)->
                       o.min_is.view.update_at
               main_menu.drill "update_interval",
                 caption: "更新間隔"
                 view: (sub_menu)->
-                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(update_interval: "all")...).reduce()
+                  reduce = Mem.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(update_interval: "all")...).reduce()
                   m ".paragraph",
                     sub_menu.radio {class:"edge update_interval"}, Url.prop.update_interval, reduce, "update_interval", (key, o)->
                       o.min_is.view.update_interval
               main_menu.drill "event_type",
                 caption: "事件"
                 view: (sub_menu)->
-                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(event_type: "all")...).reduce()
+                  reduce = Mem.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(event_type: "all")...).reduce()
                   m ".paragraph",
                     sub_menu.radio {class:"edge event_type"}, Url.prop.event_type, reduce, "event_type", (key, o)->
                       key
               main_menu.drill "role_type",
                 caption: "役職"
                 view: (sub_menu)->
-                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(role_type: "all")...).reduce()
+                  reduce = Mem.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(role_type: "all")...).reduce()
                   m ".paragraph",
                     sub_menu.radio {class:"edge role_type"}, Url.prop.role_type, reduce, "role_type", (key, o)->
                       key
               main_menu.drill "player_length",
                 caption: "人数"
                 view: (sub_menu)->
-                  reduce = Cache.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(player_length: "all")...).reduce()
+                  reduce = Mem.storys.menu(Url.prop.folder(), Url.routes.search.stories.values(player_length: "all")...).reduce()
                   m ".paragraph",
                     sub_menu.radio {class:"edge player_length"}, Url.prop.player_length, reduce, "player_length", (key, o)->
                       o.min_is.view.player_length + "人"

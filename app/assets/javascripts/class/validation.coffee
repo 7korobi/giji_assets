@@ -1,4 +1,4 @@
-new Cache.Rule("check").schema ->
+new Mem.Rule("check").schema ->
   @scope (all)->
     error: (mode, text)->
       max =
@@ -22,7 +22,7 @@ new Cache.Rule("check").schema ->
 
 player_talk = /(^|\/\*)(.*)(\*\/|$)/ig
 
-Cache.rule.check.merge [
+Mem.rule.check.merge [
   { type: "error", chk: (o)-> ! o.text? }
   { type: "error", chk: (o)-> o.compact_size < 4 }
   { type: "warn", msg: "/*中の人の発言があります*/", chk: (o)-> player_talk.exec }

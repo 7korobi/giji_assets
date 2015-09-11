@@ -1,6 +1,12 @@
-require "fog"
+require "aws-sdk"
 require "hashie"
+require 'mime/types'
+
 FOG = Hashie::Mash.new(yaml: YAML.load_file('config/yaml/fog.yml')).yaml
+Aws.config.update({
+  region: FOG.storage.region,
+  credentials: Aws::Credentials.new(FOG.storage.aws_access_key_id, FOG.storage.aws_secret_access_key ),
+})
 
 set :rsync_script, -> { "/utage/#{fetch(:application)}.rsync.sh" }
 
@@ -31,6 +37,7 @@ namespace :build do
   task :asset do
     run_locally do
       execute "rake assets:precompile"
+      execute "rm /www/giji_assets/public/*/manifest-*.json"
     end
   end
 end
@@ -41,18 +48,29 @@ namespace :rsync do
     run_locally do
       options = "-t --links --recursive --exclude='.git' --exclude='.svn'"
       execute "rsync #{options} ~/Dropbox/web_work/images/ /www/giji_assets/public/images/"
-      execute "rm /www/giji_assets/public/*/manifest-*.json"
       execute "rm -rf tmp/cache/assets/development/sprockets/*"
     end
 
-    remotes = Fog::Storage.new(FOG.storage).directories.find{|o|o.key == "giji-assets"}.files.select {|o| not o.key[/^stories/]}
-    remote_hash = remotes.group_by(&:key)
-    locals = Dir.glob("public/**/*", File::FNM_DOTMATCH).uniq
-    appends = locals.select do |path|
+    s3 = Aws::S3::Resource.new
+    bucket = s3.bucket('giji-assets')
+    amazons = {}
+    bucket.objects.each do |o|
+      amazons[o.key] = o
+    end
+
+    caches = amazons.keys.select {|key| key[/^stories/] }
+    remote_hash = amazons.select {|key, timer| not key[/^stories/]}
+    remotes = remote_hash.keys.map {|key| "public/" + key }
+    locals = Dir.glob("public/**/*", File::FNM_DOTMATCH).uniq.select do |path|
       next unless File.file? path
+      next if path[/\.gz$/]
+      true
+    end
+
+    appends = locals.select do |path|
       key = path.match(/public\/(.*)/)[1]
       if remote_hash[key]
-        remote_modify = remote_hash[key][0].last_modified
+        remote_modify = remote_hash[key].last_modified
         local_modify = File.mtime(path)
 
         remote_modify < local_modify
@@ -60,22 +78,40 @@ namespace :rsync do
         true
       end
     end
-    deletes = remotes.map {|o| "public/" + o.key } - locals
+    manifest = "public/giji.appcache"
+    appends |= [manifest]
+    File.open(manifest, "w") do |f|
+      f.puts(<<-_TEXT_)
+CACHE MANIFEST
+# timer #{Time.now}
+      _TEXT_
+      f.puts locals.map {|path| path.gsub(/^public\//, "") } - %w[giji.appcache]
+    end
+
+    deletes = remotes - locals
     deletes.each_with_index do |path, index|
       print "(delete #{index}/#{deletes.size})\r"
 
       key = path.match(/public\/(.*)/)[1]
-      remote_hash[key][0].destroy
+      amazons[key].delete
     end
+
     appends.each_with_index do |path, index|
       print "(append #{index}/#{appends.size})\r"
 
-      key = path.match(/public\/(.*)/)[1]
-      remotes.create(
-        key: key,
-        body: File.open(path),
-        public: true
-      )
+      gz = path + ".gz"
+      meta = {
+        key: path.match(/public\/(.*)/)[1],
+        acl: "public-read",
+        content_type: MIME::Types.type_for(path)[0].content_type
+      }
+      if File.file? gz
+        path = gz
+        meta[:content_encoding] = 'gzip'
+      end
+      meta[:body] = File.open(path)
+
+      bucket.put_object(meta)
     end
     puts "---------- transfer complete -----------"
     puts appends

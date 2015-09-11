@@ -1,4 +1,4 @@
-new Cache.Rule("role").schema ->
+new Mem.Rule("role").schema ->
   id_index = SOW_RECORD.roles.concat SOW_RECORD.gifts
 
   @order "order"
@@ -30,7 +30,7 @@ new Cache.Rule("role").schema ->
   @map_reduce (o)->
 
 
-new Cache.Rule("trap").schema ->
+new Mem.Rule("trap").schema ->
   @scope (all)->
 
   @default ->
@@ -40,7 +40,7 @@ new Cache.Rule("trap").schema ->
   @map_reduce (o)->
 
 
-new Cache.Rule("able").schema ->
+new Mem.Rule("able").schema ->
   @scope (all)->
     by_rolestate: (bits)->
       q = all.where(->)
@@ -69,8 +69,8 @@ new Cache.Rule("able").schema ->
   @map_reduce (o)->
 
 
-Cache.rule.able.set <%= JSON.generate SET_ABLES %>
-Cache.ables.masks = _.sortBy Object.keys(SOW_RECORD.maskstates), (i)-> -i
+Mem.rule.able.set <%= JSON.generate SET_ABLES %>
+Mem.ables.masks = _.sortBy Object.keys(SOW_RECORD.maskstates), (i)-> -i
 
-Cache.rule.trap.set <%= JSON.generate SET_TRAPS %>
-Cache.rule.role.set <%= JSON.generate SET_ROLES %>
+Mem.rule.trap.set <%= JSON.generate SET_TRAPS %>
+Mem.rule.role.set <%= JSON.generate SET_ROLES %>

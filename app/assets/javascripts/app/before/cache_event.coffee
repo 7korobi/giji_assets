@@ -1,4 +1,4 @@
-new Cache.Rule("event").schema ->
+new Mem.Rule("event").schema ->
   @belongs_to "story", dependent: true
   @order "updated_at"
 

@@ -1,6 +1,6 @@
-new Cache.Rule("item").schema !->
+new Mem.Rule("item").schema !->
   data = (rule, ary)->
-    q = Cache[rule]
+    q = Mem[rule]
     if ary.length > 0
       scope = ary.shift()
       q = q[scope](...ary)
@@ -33,7 +33,7 @@ new Cache.Rule("item").schema !->
 
 GUI.items_module = (type)->
   GUI.if_exist "\#item-#{type}", (dom)->
-    query = Cache.items.where({type})
+    query = Mem.items.where({type})
     m.mount dom,
       controller: ->
       view: ->

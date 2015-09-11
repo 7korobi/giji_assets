@@ -1,14 +1,14 @@
 /*
-Cache v0.0.1
+Mem v0.0.1
 http://github.com/7korobi/---
 (c) 7korobi
 License: MIT
 */
 
-export class Cache
+export class Mem
   @rule = {}
 
-class Cache.Query
+class Mem.Query
   (@finder, @filters, @desc, @sort_by)->
 
   _filters: (query, cb)->
@@ -23,7 +23,7 @@ class Cache.Query
       else
         console.log [typeof! query, query]
         ...
-    new Cache.Query @finder, filters, @desc, @sort_by
+    new Mem.Query @finder, filters, @desc, @sort_by
 
   in: (query)->
     @_filters query, (target, req)->
@@ -49,7 +49,7 @@ class Cache.Query
           ...
 
   distinct: (reduce, target)->
-    query = new Cache.Query @finder, @filters, @desc, @sort_by
+    query = new Mem.Query @finder, @filters, @desc, @sort_by
     query._distinct = {reduce, target}
     query
 
@@ -93,7 +93,7 @@ class Cache.Query
           console.log [typeof! req, req]
           ...
     return @ if desc == @desc && sort_by == @sort_by
-    new Cache.Query @finder, @filters, desc, sort_by
+    new Mem.Query @finder, @filters, desc, sort_by
 
   clear: ->
     delete @_reduce
@@ -138,9 +138,9 @@ class Cache.Query
             for key in keys
               o[key]
 
-class Cache.Finder
+class Mem.Finder
   (@sort_by)->
-    all = new Cache.Query @, [], false, @sort_by
+    all = new Mem.Query @, [], false, @sort_by
     all._hash = {}
     @scope = {all}
     @query = {all}
@@ -256,7 +256,7 @@ class Cache.Finder
     @calculate_sort query
     return
 
-class Cache.Rule
+class Mem.Rule
   @responses = {}
 
   (field)->
@@ -264,17 +264,17 @@ class Cache.Rule
     @list_name = "#{field}s"
     @base_obj = {}
     @validates = []
-    @responses = Cache.Rule.responses[field] ?= []
+    @responses = Mem.Rule.responses[field] ?= []
     @map_reduce = ->
     @protect = ->
     @deploy = (o)~>
       o._id = o[@id] unless o._id
       o[@id] = o._id unless o[@id]
-    @finder = new Cache.Finder (list)-> list
+    @finder = new Mem.Finder (list)-> list
     @finder.name = @list_name
 
-    Cache.rule[field] = @
-    Cache[@list_name] = @finder.query.all
+    Mem.rule[field] = @
+    Mem[@list_name] = @finder.query.all
 
   schema: (cb)->
     definer =
@@ -294,14 +294,14 @@ class Cache.Rule
         @base_obj <<< cb()
 
       depend_on: (parent)~>
-        Cache.Rule.responses[parent] ?= []
-        Cache.Rule.responses[parent].push @
+        Mem.Rule.responses[parent] ?= []
+        Mem.Rule.responses[parent].push @
 
       belongs_to: (parent, option)~>
         parents = "#{parent}s"
         parent_id = "#{parent}_id"
         @base_obj[parent] = ->
-          Cache[parents].find @[parent_id]
+          Mem[parents].find @[parent_id]
 
         dependent = option?.dependent?
         if dependent
@@ -311,7 +311,7 @@ class Cache.Rule
       order: (order)~>
         query = @finder.query.all.sort false, order
         query._hash = @finder.query.all._hash
-        Cache[@list_name] = @finder.query.all = query
+        Mem[@list_name] = @finder.query.all = query
 
       protect: (...keys)~>
         @protect = (o, old)->
