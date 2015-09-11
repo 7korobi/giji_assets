@@ -13,19 +13,19 @@ class GUI.ScrollSpy
 
   interval = 5000
   window.setInterval ->
-    if win.scroll.center
+    if win.scroll?.center
         win.scroll.tick( win.scroll.center , interval / 1000)
   , interval
 
   win.on.scroll_end.push =>
-    id = @view()
-    spy = win.scroll
-    if spy.list?
-      spy_id = spy.view()
-    id ||= spy_id
+    full_id = @view()
 
-    if id != spy.prop()
-      spy.prop id
+    spy = win.scroll
+    if spy?
+      if spy.list?
+        id = spy.view()
+        if id != spy.prop()
+          spy.prop(id)
 
   @view: =>
     result = null
@@ -38,22 +38,20 @@ class GUI.ScrollSpy
 
       if elem.vision.id == key && rect.height && rect.width
         if !result && vision.top < win.horizon < vision.btm
+#          console.log "@view #{id} #{vision.top} < #{win.horizon} < #{vision.btm}"
           result = id
       else
         delete @elems[key]
     result
 
   constructor: (@prop)->
-    @start()
+    @show_upper = true
+    @size = 30
+    @head = @tail = 0
 
   rescroll: (@prop)->
     window.requestAnimationFrame ->
       GUI.ScrollSpy.go prop()
-
-  start: ->
-    @show_upper = true
-    @size = 30
-    @head = @tail = 0
 
   tick: (center)->
     console.log center
@@ -69,6 +67,7 @@ class GUI.ScrollSpy
 
         if !@adjust && @pager_top < win.horizon < vision.btm
           vision.offset = Math.max 1, win.horizon - vision.top
+#          console.log "view #{id} #{@pager_top} < #{win.horizon} < #{vision.btm}"
           @adjust = vision
 
     m.startComputation()
@@ -107,8 +106,8 @@ class GUI.ScrollSpy
     @past_list = @list
 
     @center = @list[idx]
-    @tail = Math.min btm, idx + @size
-    @head = Math.max top, idx - @size
+    @tail = Math.min btm, _.ceil( idx + @size, -1)
+    @head = Math.max top, _.floor(idx - @size, -1)
 
     pager_cb = (@pager_elem, is_continue, context)=>
       rect = @pager_elem.getBoundingClientRect()

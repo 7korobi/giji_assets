@@ -36,9 +36,9 @@ GUI.timeline = ({width, base, choice})->
     "ADMIN"
   ]
 
-  return unless Cache.events.list().length
-  last_at = Cache.events.list().last.updated_at / (1000 * 3600)
-  first_at = Cache.events.list().first.created_at / (1000 * 3600)
+  return unless Mem.events.list().length
+  last_at = Mem.events.list().last.updated_at / (1000 * 3600)
+  first_at = Mem.events.list().first.created_at / (1000 * 3600)
   time_width = last_at - first_at
 
   height = 130
@@ -52,33 +52,17 @@ GUI.timeline = ({width, base, choice})->
       return null
 
     point = (e)->
-      return unless win.is_touch
+      offset = win.calc.offset e, document.querySelector("canvas")
+      return unless offset?
+
       Url.prop.search ""
-
-      canvas = document.querySelector("canvas")
-      switch
-        when e.offsetX
-          offsetX = e.offsetX * 2
-          offsetY = e.offsetY * 2
-        when e.layerX
-          offsetX = e.layerX * 2
-          offsetY = e.layerY * 2
-        when e.pageX
-          rect = canvas.getBoundingClientRect()
-          offsetX = (e.pageX - rect.left) * 2
-          offsetY = (e.pageY - rect.top)  * 2
-        when e.touches?[0]?.pageX
-          rect = canvas.getBoundingClientRect()
-          offsetX = (e.touches[0].pageX - rect.left) * 2
-          offsetY = (e.touches[0].pageY - rect.top)  * 2
-
       list =
-        if graph_height < offsetY
-          Cache.messages.talk("open", false, {}).list()
+        if graph_height < offset.y * 2
+          Mem.messages.talk("open", false, {}).list()
         else
           base.list()
 
-      id = find_last list, Math.ceil(1000 * 3600 * (first_at + offsetX / x))
+      id = find_last list, Math.ceil(1000 * 3600 * (first_at + offset.x * 2 / x))
       return unless id
       choice(id)
 
@@ -97,7 +81,7 @@ GUI.timeline = ({width, base, choice})->
     @canvas width, height / 2,
       cache: -> base.reduce()
       draw: (ctx)->
-        focus = Cache.messages.find(Url.prop.talk_at())
+        focus = Mem.messages.find(Url.prop.talk_at())
         return unless focus
 
         ctx.beginPath()
@@ -134,7 +118,7 @@ GUI.timeline = ({width, base, choice})->
               ctx.fillRect x * left, y * top, 1 + x * count_width, y * count_height
 
         ctx.beginPath()
-        for event in Cache.events.list()
+        for event in Mem.events.list()
           continue unless event.created_at
           right = event.updated_at / (1000 * 3600) - first_at
           left = event.created_at / (1000 * 3600) - first_at

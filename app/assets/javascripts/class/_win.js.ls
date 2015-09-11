@@ -1,6 +1,6 @@
 set_scroll = (win)->
-  win.left = window.pageXOffset || window.scrollX
-  win.top  = window.pageYOffset || window.scrollY
+  win.left = window.scrollX
+  win.top  = window.scrollY
 
 scroll_end = !->
   return if win.scrolling
@@ -29,6 +29,26 @@ scroll_end = !->
   scan()
 
 
+calc_touch =
+  if head.browser.ios
+      ({pageX, pageY}, {left, top})->
+        x = pageX - left
+        y = pageY - top
+        {x, y}
+  else
+    if head.browser.ff || head.browser.chrome && head.browser.version < 40
+      ({pageX, pageY}, {left, top})->
+        x = pageX - left - window.scrollX
+        y = pageY - top  - window.scrollY
+        {x, y}
+    else
+      ({pageX, pageY}, {left, top})->
+        x = pageX - left
+        y = pageY - top  - window.scrollY
+        {x, y}
+
+
+
 export win =
   do_event_list: (list, e)!->
     return unless 0 < list.length
@@ -38,22 +58,14 @@ export win =
   do:
     resize: (e)->
       docElem = document.documentElement
-      docBody = document.body
+      short = Math.min docElem.clientWidth, docElem.clientHeight
+      win.width = docElem.clientWidth
 
-      win.height = Math.max window.innerHeight, docElem.clientHeight
-      win.width  = Math.max window.innerWidth,  docElem.clientWidth
-
-      if win.width < 380 || win.height < 380
+      if short < 380
         head.browser.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5"
         document.querySelector("meta[name=viewport]")?.content = head.browser.viewport
 
-      win.horizon = win.height / 2
-      body_height = Math.max docBody.clientHeight , docBody.scrollHeight, docElem.scrollHeight, docElem.clientHeight
-      body_width  = Math.max docBody.clientWidth,   docBody.scrollWidth,  docElem.scrollWidth,  docElem.clientWidth
-      win.max =
-        top:  body_height - win.height
-        left: body_width  - win.width
-      if win.height > win.width
+      if window.innerHeight > window.innerWidth
         win.landscape = false
         win.portlate = true
       else
@@ -66,11 +78,11 @@ export win =
     scroll_end: scroll_end
 
     scroll: (e)->
-      docElem = document.documentElement
-
       set_scroll win
-      win.right = win.left + win.width
+      win.height = window.innerHeight
+      win.right = win.left + window.innerWidth
       win.bottom = win.top + win.height
+      win.horizon = win.height / 2
 
       unless win.scrolling
         win.do_event_list win.on.scroll_start
@@ -111,6 +123,20 @@ export win =
   right:   0
   width:   0
   height:  0
+  calc:
+    offset: (e, elem)->
+      return unless e? && elem? && win.is_touch
+
+      touch = e.touches?[0]
+      rect = elem.getBoundingClientRect()
+      if touch? && rect?
+        calc_touch(touch, rect) # touch device
+      else
+        x = e.offsetX || e.layerX # PC || firefox
+        y = e.offsetY || e.layerY # PC || firefox
+        if x && y # mouse interface.
+          {x, y}
+
 
   scroll: null
 
