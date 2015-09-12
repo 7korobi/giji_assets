@@ -6,6 +6,38 @@ roop = ->
     roop()
 roop()
 
+data_store = {}
+present_canvas = ({size: [width, height], layout: [dx, dy, dz]})->
+  arc = (ctx, x, y, size, color)->
+    ctx.beginPath()
+    ctx.arc(x * 2, y * 2, size, 0, 2 * Math.PI, true);
+    ctx.fillStyle = color
+    ctx.fill();
+    ctx.lineWidth = 2.0
+    ctx.strokeStyle = color
+    ctx.stroke()
+
+  config: (canvas, is_continue, context)->
+    return if is_continue
+    new GUI.Layout canvas, dx, dy, dz
+
+  data: ->
+    data_store
+
+  background: ({ctx})->
+    ctx.clearRect(0, 0, width, height)
+
+  draw: ({state, ctx, offsets, is_touch, event: {clientX, clientY, screenX, screenY, touches}})->
+    if is_touch
+      for offset in offsets
+        arc ctx, offset.x, offset.y, offsets.length * 10 + 50, "rgba(200,200,200,0.2)"
+
+      if screenX? && screenY?
+        arc ctx, screenX, screenY, 4, "rgba(0,0,0,0.2)"
+      if clientX? && clientY?
+        arc ctx, clientX, clientY, 4, "rgba(0,0,0,0.2)"
+
+
 m.mount document.querySelector("#win"),
   controller: ->
     @test = test =
@@ -15,81 +47,6 @@ m.mount document.querySelector("#win"),
       test.orientation += 1
     win.on.motion.push ->
       test.motion += 1
-    win.on.scroll.push =>
-      if @elem?
-        @rect = @elem.getBoundingClientRect()
-
-    arc = (x, y, size, color)=>
-      @ctx.beginPath()
-      @ctx.arc(x * 2, y * 2, size, 0, 2 * Math.PI, true);
-      @ctx.fillStyle = color
-      @ctx.fill();
-      @ctx.lineWidth = 2.0
-      @ctx.strokeStyle = color
-      @ctx.stroke()
-
-    start = (event)=>
-      win.is_touch = true
-      move()
-    cancel = (event)=>
-      win.is_touch = false
-      move()
-    end = (event)=>
-      win.is_touch = false
-      move()
-
-    move = (event)=>
-      @ctx.clearRect(0, 0, @canvas.width, @canvas.height)
-
-      return unless event?
-      event.preventDefault()
-
-      @rect = @elem.getBoundingClientRect()
-      if @rect
-        arc @rect.left, @rect.top, 20, "rgba(255,0,0,0.2)"
-        arc @rect.left, @rect.top, 50, "rgba(255,0,0,0.2)"
-
-      { clientX, clientY, screenX, screenY, touches } = event
-
-      offsets = win.calc.offsets(event, @elem)
-      if offsets?
-        for offset in offsets
-          arc offset.x, offset.y, 50, "rgba(200,200,200,0.2)"
-
-      if win.is_touch
-        if screenX? && screenY?
-          arc screenX, screenY, 4, "rgba(0,0,0,0.2)"
-        if clientX? && clientY?
-          arc clientX, clientY, 4, "rgba(0,0,0,0.2)"
-
-      if touches
-        for {pageX, pageY} in touches # touch device
-          if @rect
-            x = pageX - @rect.left - win.offsetX
-            y = pageY - @rect.top  - win.offsetY
-            arc x, y, 40, "rgba(0,200,200,0.2)"
-
-    config = (canvas, is_continue, context)=>
-      unless @ctx
-        new GUI.Layout(canvas, -10, 10, 100)
-        @elem = canvas
-        @ctx = canvas.getContext "2d"
-        @ctx.clearRect(0, 0, @canvas.width, @canvas.height)
-
-    @canvas =
-      width:  1200
-      height: 600
-      style: "width: 600px; height: 300px;"
-      ontouchend: end
-      ontouchmove: move
-      ontouchstart: start
-      ontouchcancel: cancel
-      onmouseup:   end
-      onmousemove: move
-      onmousedown: start
-      onmouseout:  cancel
-      onmouseover: cancel
-      config: config
 
 #    requestAnimationFrame =>
 #      move()
@@ -130,7 +87,8 @@ m.mount document.querySelector("#win"),
           compass: _.round win.compass, 1
           is_tap:  win.is_tap
           max:     win.max
-      m "ul", m "li", m "canvas", c.canvas
+      m.component Canvas, "#head", present_canvas, size: [800, 600], layout: [-10,  10, 100]
+      m.component Canvas, "#tail", present_canvas, size: [600, 400], layout: [ 10, -10, 100]
       m "table",
         m "thead",
           m "tr",
@@ -286,42 +244,6 @@ m.mount document.querySelector("#win"),
               m "td"
               m "td", _.round document.body.scrollTop
               m "td"
-              m "td"
-        if c.elem?
-          m "tbody",
-            m "tr",
-              m "td", "canvas.offset"
-              m "td", _.round c.elem.offsetWidth
-              m "td", _.round c.elem.offsetHeight
-              m "td"
-              m "td", _.round c.elem.offsetLeft
-              m "td"
-              m "td", _.round c.elem.offsetTop
-              m "td"
-              m "td"
-        if c.elem?
-          m "tbody",
-            m "tr",
-              m "td", "canvas.scroll"
-              m "td", _.round c.elem.scrollWidth
-              m "td", _.round c.elem.scrollHeight
-              m "td"
-              m "td", _.round c.elem.scrollLeft
-              m "td"
-              m "td", _.round c.elem.scrollTop
-              m "td"
-              m "td"
-        if c.rect?
-          m "tbody",
-            m "tr",
-              m "td", "canvas.getBoundingClientRect()"
-              m "td", _.round c.rect.width
-              m "td", _.round c.rect.height
-              m "td"
-              m "td", _.round c.rect.left
-              m "td", _.round c.rect.right
-              m "td", _.round c.rect.top
-              m "td", _.round c.rect.bottom
               m "td"
 
 if "onorientationchange" of window

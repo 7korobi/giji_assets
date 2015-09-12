@@ -11,6 +11,8 @@ if head.browser?
   if -1 < navigator.userAgent.toLowerCase().indexOf 'android'
     b.android = true
 
+  if b.chrome && b.version < 40
+    b.old = true
 
 head.useragent = navigator.userAgent
 

@@ -35,9 +35,9 @@ scroll_end = !->
 
   scan()
 
-calc_mouse = (e)->
-  x = e.offsetX || e.layerX # PC || firefox
-  y = e.offsetY || e.layerY # PC || firefox
+calc_mouse = (event)->
+  x = event.offsetX || event.layerX # PC || firefox
+  y = event.offsetY || event.layerY # PC || firefox
   if x && y # mouse interface.
     {x, y}
 
@@ -48,7 +48,7 @@ calc_touch =
         y = pageY - top
         {x, y}
   else
-    if head.browser.ff || head.browser.chrome && head.browser.version < 40
+    if head.browser.ff || head.browser.old && head.browser.chrome
       ({pageX, pageY}, {left, top})->
         x = pageX - left - window.scrollX
         y = pageY - top  - window.scrollY
@@ -139,6 +139,7 @@ export win =
     offsets: (e, elem)->
       return unless e? && elem? && win.is_touch
 
+      console.log e.touches
       if e.touches?
         rect = elem.getBoundingClientRect()
         for touch in e.touches

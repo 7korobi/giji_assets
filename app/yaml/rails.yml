@@ -992,8 +992,27 @@ saycnt:
     <<: *INFINITY
     CAPTION: むげん
 
-
 log:
+  colors:
+    VSAY:  "#ca6"
+    VGSAY: "#a8a8e8"
+    GSAY:  "#bbd"
+    SAY:   "#cb8"
+    MSAY:  "#cb8"
+    SPSAY: "#dcb"
+    AIM:   "#dcb"
+    WSAY:  "#a55"
+    XSAY:  "#9a7"
+    BSAY:  "#9a7"
+    TSAY:  "#a98"
+    MAKER: "#000"
+    ADMIN: "#000"
+    text:  "yellow"
+    back:  "#222"
+    event: "#224"
+    line:  "#44a"
+    focus: "yellow"
+
   anchor:
     m: '#'       # MESTYPE_MAKER
     a: '%'       # MESTYPE_ADMIN

@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# timer 2015-09-12 11:25:38 +0900
+# timer 2015-09-12 22:27:39 +0900
 .htaccess
 2015april.html
 2015new_year.html
@@ -22,6 +22,7 @@ assets-master/test_mocha.html
 assets-master/test_role_commit.html
 assets-master/test_role_gui.html
 assets-master/test_rule.html
+assets-master/test_story.html
 assets-master/test_timer.html
 assets-master/test_write.html
 assets-show-fix/application.css
@@ -1062,4 +1063,5 @@ stylesheets/theme/star.css
 stylesheets/theme/wa.css
 stylesheets/wa480.css
 stylesheets/wa800.css
+test_story.html
 testing.html

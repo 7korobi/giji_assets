@@ -1,3 +1,125 @@
+
+mestype_orders = <[
+  SAY
+  MSAY
+  VSAY
+  VGSAY
+  GSAY
+  SPSAY
+  WSAY
+  XSAY
+  BSAY
+  AIM
+  TSAY
+  MAKER
+  ADMIN
+]>
+
+
+timeline_present = ({size: [width, height]})->
+  {talk, open, potofs_hide, talk_at, search} = Url.prop
+  return unless Mem.events.list().length
+
+  last_at = Mem.events.list().last.updated_at / (1000 * 3600)
+  first_at = Mem.events.list().first.created_at / (1000 * 3600)
+  time_width = last_at - first_at
+  graph_height = height - 50
+
+  x = width / time_width
+  y = max_height = 0
+
+  base = Mem.messages.talk(talk(), open(), potofs_hide())
+
+  find_last = (list, time)->
+    for o in list by -1
+      return o._id if time > o.updated_at
+    return null
+
+  choice = (id)->
+    talk_at id
+    menu.icon.change "search"
+    menu.scope.change "talk"
+    Url.prop.scroll ""
+    win.scroll.rescroll talk_at
+
+
+  data: ->
+    base.reduce()
+
+  draw: ({ctx})->
+    focus = Mem.messages.find talk_at()
+    return unless focus
+
+    ctx.beginPath()
+    offset = focus.updated_at / (1000 * 3600) - first_at
+    ctx.strokeStyle = RAILS.log.colors.focus
+    ctx.globalAlpha = 1
+    ctx.moveTo x * offset, height
+    ctx.lineTo x * offset,  0
+    ctx.stroke()
+
+  onmove: ({state, is_touch, offset})->
+    return unless is_touch && offset?
+    search ""
+    list =
+      if graph_height < offset.y
+        Mem.messages.talk("open", false, {}).list()
+      else
+        base.list()
+
+    id = find_last list, Math.ceil(1000 * 3600 * (first_at + offset.x / x))
+    return unless id
+    choice(id)
+
+  background: ({ctx})->
+    return unless base.reduce()
+
+    for time_id, mask of base.reduce().mask
+      max_height := mask.all.count if max_height < mask.all.count
+    y := graph_height / max_height
+
+    ctx.clearRect 0, 0, width, height
+    ctx.fillStyle = RAILS.log.colors.back
+    ctx.globalAlpha = 0.5
+    ctx.fillRect 0, 0, x * time_width, y * max_height
+
+    count_width = 1
+    for time_id, mask of base.reduce().mask
+      left = Serial.parser.Date(time_id) - first_at
+      top = max_height
+      for mestype in mestype_orders
+        color = RAILS.log.colors[mestype]
+        if mask[mestype]
+          count_height = mask[mestype].count
+          top -= count_height
+          ctx.fillStyle = color
+          ctx.globalAlpha = 1
+          ctx.fillRect x * left, y * top, 1 + x * count_width, y * count_height
+
+    ctx.beginPath()
+    for event in Mem.events.list()
+      continue unless event.created_at
+      right = event.updated_at / (1000 * 3600) - first_at
+      left = event.created_at / (1000 * 3600) - first_at
+      ctx.strokeStyle = RAILS.log.colors.line
+      ctx.globalAlpha = 1
+      ctx.moveTo x * left, height
+      ctx.lineTo x * left,  0
+
+      ctx.fillStyle = RAILS.log.colors.event
+      ctx.fillRect x * left, graph_height, x * last_at, height
+
+      ctx.textAlign = "left"
+      ctx.fillStyle = RAILS.log.colors.text
+      ctx.font = "30px serif"
+
+      max_width = x * (right - left) - 4
+      if 0 < max_width
+        ctx.fillText event.name, x * left, height - 12, max_width
+
+    ctx.stroke()
+
+
 export doc =
   seeing: {}
   seeing_add: (id, sec)->
@@ -42,16 +164,8 @@ export doc =
       Mem.messages.memo(memo(), false, potofs_hide(), search())
 
   timeline: ->
-    {talk, open, potofs_hide, content_width, talk_at} = Url.prop
-    GUI.timeline do
-      base: Mem.messages.talk(talk(), open(), potofs_hide())
-      width: content_width()
-      choice: (id)->
-        talk_at id
-        menu.icon.change "search"
-        menu.scope.change "talk"
-        Url.prop.scroll ""
-        win.scroll.rescroll talk_at
+    {content_width} = Url.prop
+    m.component Canvas, \#timeline, timeline_present, size: [2 * content_width(), 150]
 
   security_modes: (prop)->
     story = Mem.storys.list().first
