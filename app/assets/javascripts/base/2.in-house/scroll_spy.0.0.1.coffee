@@ -24,7 +24,7 @@ class ScrollSpy
         win.scroll.tick( win.scroll.center , interval / 1000)
   , interval
 
-  win.on.scroll_end.push =>
+  @capture: =>
     full_id = @view()
 
     spy = win.scroll
