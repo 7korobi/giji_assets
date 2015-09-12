@@ -1,4 +1,11 @@
-class GUI.ScrollSpy
+///
+ScrollSpy v0.0.1
+http://github.com/7korobi/---
+(c) 7korobi
+License: MIT
+///
+
+class ScrollSpy
   @elems = {}
 
   @go: (id, offset)=>
@@ -51,7 +58,7 @@ class GUI.ScrollSpy
 
   rescroll: (@prop)->
     window.requestAnimationFrame ->
-      GUI.ScrollSpy.go prop()
+      ScrollSpy.go prop()
 
   tick: (center)->
     console.log center
@@ -62,7 +69,7 @@ class GUI.ScrollSpy
 
     for o, idx in @list
       id = o._id
-      if elem = GUI.ScrollSpy.elems[id]
+      if elem = ScrollSpy.elems[id]
         vision = elem.vision
 
         if !@adjust && @pager_top < win.horizon < vision.btm
@@ -139,7 +146,7 @@ class GUI.ScrollSpy
 
   mark: (id)->
     config: (elem, is_continue, context)=>
-      GUI.ScrollSpy.elems[id] = elem
+      ScrollSpy.elems[id] = elem
       elem.vision =
         id: id
 
@@ -147,9 +154,9 @@ class GUI.ScrollSpy
         if id == @adjust.id
           offset = @adjust.offset
           @adjust = null
-          GUI.ScrollSpy.go id, offset
+          ScrollSpy.go id, offset
       else
         if ! is_continue
           if id == @prop()
             window.requestAnimationFrame ->
-              GUI.ScrollSpy.go id
+              ScrollSpy.go id

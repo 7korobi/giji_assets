@@ -226,7 +226,7 @@ export doc =
       Mem.rule.history.merge props
       o.vdom(o, props)
 
-win.scroll = new GUI.ScrollSpy(Url.prop.scroll)
+win.scroll = new ScrollSpy(Url.prop.scroll)
 win.scroll.tick = (center, sec)->
   if center.subid == "S"
     doc.seeing_add center._id, sec
