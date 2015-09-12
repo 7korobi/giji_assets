@@ -28,6 +28,11 @@ scroll_end = !->
 
   scan()
 
+calc_mouse = (e)->
+  x = e.offsetX || e.layerX # PC || firefox
+  y = e.offsetY || e.layerY # PC || firefox
+  if x && y # mouse interface.
+    {x, y}
 
 calc_touch =
   if head.browser.ios
@@ -124,19 +129,27 @@ export win =
   width:   0
   height:  0
   calc:
+    offsets: (e, elem)->
+      return unless e? && elem? && win.is_touch
+
+      if e.touches?
+        rect = elem.getBoundingClientRect()
+        for touch in e.touches
+          calc_touch(touch, rect)
+      else
+        result = []
+        mouse = calc_mouse(e)
+        result.push mouse if mouse
+        result
+
     offset: (e, elem)->
       return unless e? && elem? && win.is_touch
 
-      touch = e.touches?[0]
-      rect = elem.getBoundingClientRect()
-      if touch? && rect?
-        calc_touch(touch, rect) # touch device
+      if e.touches?
+        rect = elem.getBoundingClientRect()
+        calc_touch(e.touches[0], rect) # touch device
       else
-        x = e.offsetX || e.layerX # PC || firefox
-        y = e.offsetY || e.layerY # PC || firefox
-        if x && y # mouse interface.
-          {x, y}
-
+        calc_mouse(e)
 
   scroll: null
 

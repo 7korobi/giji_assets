@@ -49,11 +49,12 @@ m.mount document.querySelector("#win"),
         arc @rect.left, @rect.top, 20, "rgba(255,0,0,0.2)"
         arc @rect.left, @rect.top, 50, "rgba(255,0,0,0.2)"
 
-      { clientX, clientY, screenX, screenY, touches} = event
+      { clientX, clientY, screenX, screenY, touches } = event
 
-      offset = win.calc.offset(event, @elem)
-      if offset?
-        arc offset.x, offset.y, 50, "rgba(200,200,200,0.2)"
+      offsets = win.calc.offsets(event, @elem)
+      if offsets?
+        for offset in offsets
+          arc offset.x, offset.y, 50, "rgba(200,200,200,0.2)"
 
       if win.is_touch
         if screenX? && screenY?
@@ -111,7 +112,8 @@ m.mount document.querySelector("#win"),
       m "style[type='text/css']", "table th, table td { text-align: right; width: 9ex; } canvas { border: 1px solid red; } .bad { color: gray; }"
       m "pre",
         JSON.stringify
-          redraw: c.test,
+          test: win.test
+          redraw: c.test
       m "pre",
         JSON.stringify
           browser: head.browser
@@ -321,11 +323,6 @@ m.mount document.querySelector("#win"),
               m "td", _.round c.rect.top
               m "td", _.round c.rect.bottom
               m "td"
-
-if "ondeviceorientation" of window
-  window.addEventListener 'deviceorientation', win.do.orientation
-if "ondevicemotion" of window
-  window.addEventListener 'devicemotion', win.do.motion
 
 if "onorientationchange" of window
   window.addEventListener 'orientationchange', win.do.scroll
