@@ -1,3 +1,10 @@
+/*
+Win v0.0.1
+http://github.com/7korobi/---
+(c) 7korobi
+License: MIT
+*/
+
 set_scroll = (win)->
   win.left = window.scrollX
   win.top  = window.scrollY
@@ -213,4 +220,3 @@ export win =
 
     if "onload" of window
       window.addEventListener "load", win.do.load
-    
