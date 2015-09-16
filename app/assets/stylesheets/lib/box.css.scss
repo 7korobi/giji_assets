@@ -2,15 +2,10 @@
 .box {
   .MAKER,
   .ACTION,
-  .INFONOM,
-  .INFOSP,
-  .INFOWOLF,
   .TSAY .action,
   .mes_maker ,
   .mes_admin ,
   .info      ,
-  .infosp    ,
-  .infowolf  ,
   .caution   ,
   .mes_think .action,
   .action_bm {
@@ -26,7 +21,7 @@
     padding: 0 4px 0 0;
   }
 
-  /* 発言入力欄（共通） ---*/ 
+  /* 発言入力欄（共通） ---*/
   .formpl_common {
     margin: 0px 8px 16px 8px;
     padding: 4px;

@@ -57,12 +57,8 @@
   .SSAY,
   .SAY { @include color-tone(glass, #ddf, rgba(0,0,0, 0.4));}
 
-  .caution.guide,
-  .MAKER.guide,
-  .ADMIN.guide,
-  .INFONOM,
-  .INFOSP,
-  .INFOWOLF {
+  .guide,
+  .info {
     border-width: 2px 0;
     border-style: dashed none;
     border-color: #468;

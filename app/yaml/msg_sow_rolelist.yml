@@ -1,0 +1,69 @@
+module: rolelist
+sow:
+  - _id: rolelist-head-h2-1
+    log: 役職を選んでみよう。
+
+  - _id: rolelist-form-SAY-2
+    mob: visiter
+    enemy: evil
+    turn: prologue
+    face_id: c117
+
+    win: HUMAN
+    live: live
+    role: []
+    rolestate: 0x76f
+    sheep: pixi
+    love: "hate"
+
+  - _id: rolelist-form-SAY-3
+    mob: visiter
+    enemy: evil
+    turn: epilogue
+    face_id: c117
+
+    win: HUMAN
+    live: live
+    role: []
+    rolestate: 0x76f
+    sheep: pixi
+    love: "hate"
+
+  - _id: rolelist-form-VSAY-4
+    mob: visiter
+    enemy: evil
+    turn: main
+    face_id: c115
+
+    win: MOB
+    live: mob
+    role: [mob]
+    rolestate: 0x76f
+    sheep: pixi
+    love: love
+
+  - _id: rolelist-form-SAY-5
+    mob: visiter
+    enemy: evil
+    turn: main
+    face_id: c117
+
+    win: HUMAN
+    live: live
+    role: [hide]
+    rolestate: 0x76f
+    sheep: pixi
+    love: "hate"
+
+  - _id: rolelist-form-GSAY-6
+    mob: visiter
+    enemy: evil
+    turn: main
+    face_id: c116
+
+    win: HUMAN
+    live: victim
+    role: [villager]
+    rolestate: 0x76f
+    sheep: pixi
+    love: love

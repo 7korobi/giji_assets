@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# timer 2015-09-12 22:56:07 +0900
+# timer 2015-09-16 11:42:21 +0900
 .htaccess
 2015april.html
 2015new_year.html
@@ -10,6 +10,7 @@ assets-master/character_tag.html
 assets-master/const.js
 assets-master/h1_catalog.html
 assets-master/rails.js
+assets-master/rolelist.html
 assets-master/rule.html
 assets-master/scratch.js
 assets-master/sow.js
@@ -21,6 +22,7 @@ assets-master/test_chr_name.html
 assets-master/test_mocha.html
 assets-master/test_role_commit.html
 assets-master/test_role_gui.html
+assets-master/test_rolelist.html
 assets-master/test_rule.html
 assets-master/test_story.html
 assets-master/test_timer.html

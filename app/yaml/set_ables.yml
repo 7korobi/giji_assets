@@ -430,46 +430,57 @@ chkGSAY:
     顔や名前はわかりませんが、あなたの耳には死者の声が届いちゃうことでしょう。
 
 SPSAY:
+  name: 共鳴
   text: SPSAY
   HELP: |-
     あなたは、共鳴者同士にしか聞こえない会話が可能です。
 
 WSAY:
+  name: 囁き
   text: WSAY
   HELP: |-
     あなたは、人狼（と囁き狂人、擬狼妖精）同士にしか聞こえない会話が可能です。
 
 XSAY:
+  name: 念話
   text: XSAY
   HELP: |-
     あなたは、念波星でしか聞こえない会話が可能です。
 
 GSAY:
+  name: 発言
   text: GSAY
   HELP: |-
     あなたは、死者にしか聞こえない会話が可能です。
 
 MSAY:
+  name: 口借り
+  text: MSAY
   HELP: |-
     あなたは<b>_NPC_</b>の口を借り、好きな言葉を伝えることができます。
 
 AIM:
+  name: 内緒話
   text: AIM
   for: near
   HELP:
 
 TSAY:
+  name: 独り言
   text: TSAY
   HELP:
 
 SAY:
+  name: 発言
   text: SAY
   HELP:
 
 VSAY:
+  name: 発言
   text: VSAY
   HELP:
 
 VGSAY:
+  name: 発言
   text: VGSAY
   HELP:

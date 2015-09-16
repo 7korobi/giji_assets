@@ -95,7 +95,7 @@ bind:
   HELP: |-
 
 hide:
-  name: ""
+  name: ？？？
   win:
   group:
   ables:
@@ -116,7 +116,8 @@ visiter:
   name: 客席
   win: MOB
   group: MOB
-  ables: []
+  ables:
+    - VSAY
   HELP: |-
     進行中会話は客席同士のみ
 
@@ -124,7 +125,8 @@ grave:
   name: 裏方
   win: MOB
   group: MOB
-  ables: []
+  ables:
+    - VSAY
   HELP: |-
     進行中会話は墓下と
 
@@ -132,7 +134,8 @@ alive:
   name: 舞台
   win: MOB
   group: MOB
-  ables: []
+  ables:
+    - VSAY
   HELP: |-
     進行中会話は地上、墓下、両方と
 
@@ -141,6 +144,7 @@ juror:
   win: HUMAN
   group: MOB
   ables:
+    - VSAY
     - vote
     - entrust
   HELP: |-
@@ -150,7 +154,8 @@ gamemaster:
   name: 黒幕
   win: MOB
   group: MOB
-  ables: []
+  ables:
+    - VSAY
   HELP: |-
     進行中会話は地上、墓下、両方と。場を支配する特権をもつ。
 
@@ -495,7 +500,6 @@ necromancer:
     - human
     - vote
     - entrust
-    - GSAY
   HELP: |-
     あなたは<A href="http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_NECROMANCER" TARGET="_blank">降霊者</A>です。
 
@@ -885,7 +889,8 @@ walpurgis:
   ables:
     - aura
     - grave
-    - witch
+    - analeptic
+    - poison
     - human
     - evil
     - vote

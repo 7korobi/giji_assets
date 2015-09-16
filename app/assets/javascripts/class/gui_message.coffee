@@ -242,6 +242,70 @@ GUI.message = (->
               m "td.WIN_#{o.view.win}", {}, o.view.role
               m "td.WIN_#{o.view.win}", {}, m.trust o.view.text
 
+
+  form: (v)->
+    text = (able, attr)->
+      m "span.btn.edge", attr.attr.choice(), able.name
+
+    select = (able, attr)->
+      vdoms = []
+      if able.targets
+        vdoms.push m "p.text",
+          m "select", attr.attr.target()
+          "と"
+          m "select", attr.attr.target()
+          m "span.btn.edge", able.targets
+      if able.target
+        vdoms.push m "p.text",
+          m "select", attr.attr.target()
+          m "span.btn.edge", able.target
+      if able.sw
+        vdoms.push m "p.text",
+          m "select", attr.attr.target()
+          m "span.btn.edge", able.sw
+      vdoms
+
+    m "div", {key: v._id},
+      m "h6", v.name
+      if v.mestype?
+        m "table.#{v.mestype}.talk",
+          m "tr",
+            m "th",
+              GUI.portrate v.face_id
+
+            m "td",
+              m ".msg",
+                GUI.message.talk_name v.name, v.face().name, v.to
+                m "textarea[rows=5]", v.form[v.mestype].attr.text()
+                for {able, attr} in v.texts
+                  text able, attr
+                m "p.mes_date"
+
+      if v.acttype?
+        m ".#{v.acttype}.action",
+          m "p.text",
+            m "b", v.face().name
+            "は、"
+            v.form.act.target()
+            "に、"
+            v.form.act.text()
+          m "p.text",
+            m "select", v.form.act.attr.target()
+            m "input[type=text]", v.form.act.attr.text()
+          m "p.mes_date"
+
+      m ".WIN_#{v.win}.info",
+        m ".emboss.pull-right", v.name
+        for {able, attr} in v.selects
+          select able, attr
+        m "p.text",
+          m.trust v.role_help
+      m ".caution.info",
+        m "p.text",
+          m.trust v.able_help
+      m "hr.black"
+
+
   xxx: (v)->
     m "div", {key: v._id}, ".U.C #{v._id}"
 

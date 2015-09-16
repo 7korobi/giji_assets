@@ -79,6 +79,7 @@ unhtml = (log)->
      .replace /\//g, "&\#x2f;"
 
 Number.MAX_INT32 = 0x7fffffff
+Number.MAX_BITS  = 0xffffffff
 
 Array ::=
   last:~ -> @[* - 1]

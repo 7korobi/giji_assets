@@ -1,13 +1,4 @@
 
-test =
-  enemy: "evil"
-  turn: "main"
-  win: "WOLF"
-  live: "live"
-  role: <[aura decide]>
-  rolestate: 0x76f
-  sheep: "pixi"
-  love: "hate"
 
 sw =
   controller: (f)->

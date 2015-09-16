@@ -227,7 +227,7 @@ GUI = (->
           list.tap = idx
       items.push m "dt", tap,
         m "strong", m.trust head
-        m ".guide", "↨"
+        m ".allow", "↨"
       if list.tap == idx
         items.push m "dd", m.trust text
 

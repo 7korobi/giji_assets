@@ -7,13 +7,6 @@ GUI.items_module "<%= name %>"
 <% end %>
 
 
-<%
-{}.each do |key, log| %>
-for item in Mem.items.where(log:"<%= key %>").list()
-  item.log = <%= log.to_json %>
-<% end %>
-
-
 
 rule_accordion = (type)->
   GUI.if_exist "#rule-#{type}", (dom)->
