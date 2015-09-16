@@ -12,7 +12,7 @@ describe "(sow) Mem.forms" (...)!->
                   enemy: enemy
                   turn: turn
                   live: live
-                  face_id: "c99"
+                  chr_job_id: "all_c99"
                   _id: "SAY-1"
                   win: role.win || "NONE"
                   mob: "visiter"

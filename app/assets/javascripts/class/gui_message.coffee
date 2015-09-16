@@ -143,7 +143,7 @@ GUI.message = (->
             story.view.role_cards
 
           m "div",
-            m "code", mob.CAPTION
+            m "code", mob.name
             m "kbd", "#{mob.HELP}"
 
         m "span.mes_date.pull-right",
