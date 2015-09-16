@@ -262,20 +262,23 @@ GUI.message = (->
       if able.action
         vdoms.push m "p.text",
           m "select", input.attr.target(), options
+          m "input[type=text]", input.attr.text()
+          m "input.btn.edge[type=button][value=#{ able.action }]"
+
       if able.targets
         vdoms.push m "p.text",
           m "select", input.attr.target(), options
           "と"
-          m "span.btn.edge", able.targets
           m "select", input.attr.target(), options
+          m "input.btn.edge[type=button][value=#{ able.targets }]"
       if able.target
         vdoms.push m "p.text",
-          m "span.btn.edge", able.target
           m "select", input.attr.target(), options
+          m "input.btn.edge[type=button][value=#{ able.target }]"
       if able.sw
         vdoms.push m "p.text",
-          m "span.btn.edge", able.sw
           m "select", input.attr.target(), options
+          m "input.btn.edge[type=button][value=#{ able.sw }]"
 
       for msg in input.errors
         vdoms.push m ".WSAY", m ".emboss", msg
@@ -314,9 +317,7 @@ GUI.message = (->
             v.form.act.target()
             "に、"
             v.form.act.text()
-          m "p.text",
-            m "select", v.form.act.attr.target()
-            m "input[type=text]", v.form.act.attr.text()
+          select v.form.act, action: "ACT"
           m "p.mes_date"
 
       m ".WIN_#{v.win}.info",
