@@ -10,7 +10,7 @@ data_store = {}
 present_canvas = ({size: [width, height], layout: [dx, dy, dz]})->
   arc = (ctx, x, y, size, color)->
     ctx.beginPath()
-    ctx.arc(x * 2, y * 2, size, 0, 2 * Math.PI, true);
+    ctx.arc(x, y, size, 0, 2 * Math.PI, true);
     ctx.fillStyle = color
     ctx.fill();
     ctx.lineWidth = 2.0

@@ -1,2 +1,0 @@
-export sow =
-  auth: {}

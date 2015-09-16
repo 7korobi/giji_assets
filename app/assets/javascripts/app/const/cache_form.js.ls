@@ -1,5 +1,5 @@
 new Mem.Rule("form").schema ->
-  @belongs_to "face"
+  @belongs_to "chr_job"
 
   @order (o)-> o.index
 
@@ -9,11 +9,13 @@ new Mem.Rule("form").schema ->
 
   @deploy (o)->
     text = (mestype)->
+      infos  = []
+      errors = []
       text = m.prop("")
       text_on = m.withAttr "value", text
       target = m.prop(-1)
       target_on = m.withAttr "value", target
-      if mestype in ["SAY", "GSAY", "VSAY"]
+      if mestype in <[SAY GSAY VSAY TSAY]>
         choice_on = ->
           o.mestype = mestype
           o.acttype = mestype
@@ -22,30 +24,36 @@ new Mem.Rule("form").schema ->
           o.mestype = mestype
           o.acttype = null
 
-      text:  text
-      target: target
-      attr:
+      attr =
         choice: ->
           onmouseup: choice_on
           ontouchend: choice_on
         text: ->
           value:   text()
+          onkeyup:  text_on
           onchange: text_on
         target: ->
           value:    target()
-          onkeyup:  target_on
           onchange: target_on
 
-    input = ->
-      target = m.prop(-1)
-      target_on = m.withAttr "value", target
+      {mestype, infos, errors, target, text, attr}
 
-      target: target
-      attr:
+    input = (cmd, able)->
+      infos  = []
+      errors = []
+      target = m.prop(-1)
+      target_changed = (value)->
+        target(value)
+        infos.length = 0
+        infos.push able.change
+
+      target_on = m.withAttr "value", target_changed
+      attr =
         target: ->
           value:    target()
-          onkeyup:  target_on
           onchange: target_on
+
+      {cmd, infos, errors, target, attr}
 
     role_scan = (roleid, can_use)->
       role = Mem.roles.find roleid
@@ -60,28 +68,40 @@ new Mem.Rule("form").schema ->
               | 'vote', 'entrust' => "vote"
               | 'commit'          => "commit"
               | _                 => if "gift" in role.ables then "gift" else "role"
-          able_scan o.form[cmd], Mem.ables.find ableid
+          able_scan cmd, Mem.ables.find ableid
 
-    able_scan = (attr, able)->
+    able_scan = (cmd, able)->
       able_helps.push able.HELP
 
       if able.text?
-        attr = o.form[able.text] ?= text(able.text)
-        o.texts.push able: able, attr: attr
+        if able.text in <[SAY GSAY VSAY]>
+          o.form.act = text(able.text)
+          o.mestype = able.text
+          o.acttype = able.text
+        attr = o.form[able.text] ?=
+          able: able
+          memo: text(able.text)
+          talk: text(able.text)
+        o.texts.push attr
 
       if able.at?
         if able.at[o.turn]
-          o.selects.push able: able, attr: attr
+          attr =
+            able: able
+            input: input(cmd, able)
+          o.selects.push attr
+
+    o.format = "talk"
+    o.format_on = (format)->
+      choice_on = ->
+        o.format = format
+      onmouseup: choice_on
+      ontouchend: choice_on
 
     names = []
     role_helps = []
     able_helps = []
-    o.form =
-      act: text()
-      role: input()
-      gift: input()
-      vote: input()
-      commit: input()
+    o.form = {}
 
     o.texts = []
     o.selects = []
@@ -100,7 +120,5 @@ new Mem.Rule("form").schema ->
     o.name = m.trust names.join("、")
     o.role_help = (_.uniq _.compact role_helps).join("\n<br>\n")
     o.able_help = (_.uniq _.compact able_helps).join("\n<br>\n")
-
-    o.form[o.mestype].attr.choice().ontouchend()
 
   @map_reduce (o)->

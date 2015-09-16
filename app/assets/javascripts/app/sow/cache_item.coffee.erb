@@ -7,68 +7,95 @@ GUI.items_module "<%= name %>"
 <% end %>
 
 
+deploy_samples = ->
+  deploy = (role, call)->
+    chr_job_id = "all_c"
+    chr_job_id = "all_c0" if faceno in [1..10]
+    chr_job_id += faceno
 
-faceno = 1
-index = 10
-for rolename in SOW_RECORD.roles
-  role = Mem.roles.find(rolename)
-  continue unless role
+    turns = ["start", "main"]
+    is_main = false
+    for able in role.ables
+      continue if able in ["vote", "entrust"]
+      is_main ||= Mem.ables.find(able).at.main
 
-  face_id = "c"
-  face_id = "c0" if faceno in [1..10]
-  face_id += faceno
+    turns = ["main"] if is_main
 
-  turns = ["start", "main"]
-  is_main = false
-  for able in role.ables
-    continue if able in ["vote", "entrust"]
-    is_main ||= Mem.ables.find(able).at.main
+    for turn in turns
+      data = call(turn, chr_job_id, index)
+      Mem.rule.item.merge [data] if data?
+      index += 1
+    faceno += 1
+    faceno += 1 if faceno ==  6
+    faceno += 1 if faceno == 10
 
-  turns = ["main"] if is_main
+  faceno = 1
+  index = 10
 
-  for turn in turns
-    data =
+  for role in Mem.roles.where(group: "MOB").list()
+    deploy role, (turn, chr_job_id, index)->
+      return if "start" == turn
+      mob: role._id
+      enemy: "evil"
+      turn: turn
+      chr_job_id: chr_job_id
+      _id: "rolelist-form--#{index}"
+      win: "NONE"
+      live: "mob"
+      role: ["mob"]
+      rolestate: 0x76f
+      sheep: []
+      love: null
+
+  for role in Mem.roles.where(group: "LIVE").list()
+    deploy role, (turn, chr_job_id, index)->
+      return if "start" == turn
       mob: "visiter"
       enemy: "evil"
       turn: turn
-      face_id: face_id
-      _id: "rolelist-form-SAY-#{index}"
-      win: role.win || "NONE"
-      live: "live"
-      role: [rolename]
+      chr_job_id: chr_job_id
+      _id: "rolelist-form--#{index}"
+      win: "HUMAN"
+      live: role._id
+      role: ["villager"]
       rolestate: 0x76f
       sheep: []
       love: null
-    Mem.rule.item.merge [data]
-    index += 1
-  faceno += 1
-  faceno += 1 if faceno ==  6
-  faceno += 1 if faceno == 10
 
-for rolename in SOW_RECORD.gifts
-  role = Mem.roles.find(rolename)
-  continue unless role
-
-  for subrole in ["lonewolf"]
-    face_id = "c"
-    face_id = "c0" if faceno in [1..10]
-    face_id += faceno
-
-    villager = Mem.roles.find(subrole)
-    data =
+  for rolename in SOW_RECORD.roles
+    role = Mem.roles.find(rolename)
+    continue unless role
+    deploy role, (turn, chr_job_id, index)->
       mob: "visiter"
       enemy: "evil"
-      turn: "main"
-      face_id: face_id
-      _id: "rolelist-form-SAY-#{index}"
-      win: role.win || villager.win || "NONE"
+      turn: turn
+      chr_job_id: chr_job_id
+      _id: "rolelist-form--#{index}"
+      win: role.win || "NONE"
       live: "live"
-      role: [subrole, rolename]
+      role: [role._id]
       rolestate: 0x76f
       sheep: []
       love: null
-    Mem.rule.item.merge [data]
-    index += 1
-    faceno += 1
 
-Mem.rule.form.merge Mem.items.where(template: "form").list()
+  for rolename in SOW_RECORD.gifts
+    role = Mem.roles.find(rolename)
+    continue unless role
+    for subrolename in ["lonewolf"]
+      subrole = Mem.roles.find(subrolename)
+      deploy role, (turn, chr_job_id, index)->
+        mob: "visiter"
+        enemy: "evil"
+        turn: "main"
+        chr_job_id: chr_job_id
+        _id: "rolelist-form--#{index}"
+        win: role.win || subrole.win || "NONE"
+        live: "live"
+        role: [subrolename, rolename]
+        rolestate: 0x76f
+        sheep: []
+        love: null
+
+  Mem.rule.form.merge Mem.items.where(template: "form").list()
+
+deploy_samples()

@@ -22,4 +22,4 @@ describe "(browser css)" (...)!->
 
   it "api test", (done)!->
     done()
-    expect( document.querySelectorAll("li.pass")[0].tagName ).toEqual("LI")
+    expect( document.querySelectorAll("li.pass")[0].tagName ).to.eq("LI")

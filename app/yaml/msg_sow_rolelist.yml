@@ -7,7 +7,7 @@ sow:
     mob: visiter
     enemy: evil
     turn: prologue
-    face_id: c117
+    chr_job_id: all_c118
 
     win: HUMAN
     live: live
@@ -20,7 +20,7 @@ sow:
     mob: visiter
     enemy: evil
     turn: epilogue
-    face_id: c117
+    chr_job_id: all_c117
 
     win: HUMAN
     live: live
@@ -29,24 +29,11 @@ sow:
     sheep: pixi
     love: "hate"
 
-  - _id: rolelist-form-VSAY-4
-    mob: visiter
-    enemy: evil
-    turn: main
-    face_id: c115
-
-    win: MOB
-    live: mob
-    role: [mob]
-    rolestate: 0x76f
-    sheep: pixi
-    love: love
-
   - _id: rolelist-form-SAY-5
     mob: visiter
     enemy: evil
     turn: main
-    face_id: c117
+    chr_job_id: all_c116
 
     win: HUMAN
     live: live
@@ -54,16 +41,3 @@ sow:
     rolestate: 0x76f
     sheep: pixi
     love: "hate"
-
-  - _id: rolelist-form-GSAY-6
-    mob: visiter
-    enemy: evil
-    turn: main
-    face_id: c116
-
-    win: HUMAN
-    live: victim
-    role: [villager]
-    rolestate: 0x76f
-    sheep: pixi
-    love: love

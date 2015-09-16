@@ -2,7 +2,7 @@
 live:
   name: 生存者
   win:
-  group:
+  group: LIVE
   ables:
     - SAY
     - TSAY
@@ -13,7 +13,7 @@ live:
 executed:
   name: 処刑
   win:
-  group:
+  group: LIVE
   ables:
     - GSAY
     - TSAY
@@ -22,7 +22,7 @@ executed:
 victim:
   name: 襲撃
   win:
-  group:
+  group: LIVE
   ables:
     - GSAY
     - TSAY
@@ -31,7 +31,7 @@ victim:
 cursed:
   name: 呪詛
   win:
-  group:
+  group: LIVE
   ables:
     - GSAY
     - TSAY
@@ -40,7 +40,7 @@ cursed:
 droop:
   name: 衰退
   win:
-  group:
+  group: LIVE
   ables:
     - GSAY
     - TSAY
@@ -49,7 +49,7 @@ droop:
 suicide:
   name: 後追
   win:
-  group:
+  group: LIVE
   ables:
     - GSAY
     - TSAY
@@ -58,7 +58,7 @@ suicide:
 feared:
   name: 恐怖
   win:
-  group:
+  group: LIVE
   ables:
     - GSAY
     - TSAY
@@ -67,7 +67,7 @@ feared:
 suddendead:
   name: 突然死
   win:
-  group:
+  group: LIVE
   ables:
     - GSAY
     - TSAY
@@ -105,19 +105,13 @@ hide:
   HELP: |-
     あなたは正体不明です。
 
-mob:
-  name: 見物人
-  win: MOB
-  group: OTHER
-  ables: []
-  HELP: |-
-
 visiter:
   name: 客席
   win: MOB
   group: MOB
   ables:
     - VSAY
+    - TSAY
   HELP: |-
     進行中会話は客席同士のみ
 
@@ -127,6 +121,7 @@ grave:
   group: MOB
   ables:
     - VSAY
+    - TSAY
   HELP: |-
     進行中会話は墓下と
 
@@ -136,6 +131,7 @@ alive:
   group: MOB
   ables:
     - VSAY
+    - TSAY
   HELP: |-
     進行中会話は地上、墓下、両方と
 
@@ -145,6 +141,7 @@ juror:
   group: MOB
   ables:
     - VSAY
+    - TSAY
     - vote
     - entrust
   HELP: |-
@@ -156,6 +153,7 @@ gamemaster:
   group: MOB
   ables:
     - VSAY
+    - TSAY
   HELP: |-
     進行中会話は地上、墓下、両方と。場を支配する特権をもつ。
 

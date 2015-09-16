@@ -244,47 +244,72 @@ GUI.message = (->
 
 
   form: (v)->
-    text = (able, attr)->
+    formats =
+      talk: "発言"
+      memo: "メモ"
+    format_btn = (format, text)->
+      m "span.btn.edge", v.format_on(format), text
+
+    text_btn = (able, attr)->
       m "span.btn.edge", attr.attr.choice(), able.name
 
-    select = (able, attr)->
+    select = (input, able)->
+      options = m "optgroup[label=選択肢]",
+        m "option[value=-1]", "（パス）"
+        m "option[value=0]", "ゼロ"
+        m "option[value=1]", "イチ"
       vdoms = []
+      if able.action
+        vdoms.push m "p.text",
+          m "select", input.attr.target(), options
       if able.targets
         vdoms.push m "p.text",
-          m "select", attr.attr.target()
+          m "select", input.attr.target(), options
           "と"
-          m "select", attr.attr.target()
           m "span.btn.edge", able.targets
+          m "select", input.attr.target(), options
       if able.target
         vdoms.push m "p.text",
-          m "select", attr.attr.target()
           m "span.btn.edge", able.target
+          m "select", input.attr.target(), options
       if able.sw
         vdoms.push m "p.text",
-          m "select", attr.attr.target()
           m "span.btn.edge", able.sw
+          m "select", input.attr.target(), options
+
+      for msg in input.errors
+        vdoms.push m ".WSAY", m ".emboss", msg
+      for msg in input.infos
+        vdoms.push m ".TSAY", m ".emboss", msg
+
       vdoms
+
+    chr_job = Mem.chr_jobs.find(v.chr_job_id)
+    face = chr_job.face()
 
     m "div", {key: v._id},
       m "h6", v.name
       if v.mestype?
-        m "table.#{v.mestype}.talk",
+        m "table.#{v.mestype}.#{v.format}",
           m "tr",
             m "th",
-              GUI.portrate v.face_id
+              GUI.portrate face._id
 
             m "td",
               m ".msg",
-                GUI.message.talk_name v.name, v.face().name, v.to
-                m "textarea[rows=5]", v.form[v.mestype].attr.text()
-                for {able, attr} in v.texts
-                  text able, attr
+                GUI.message.talk_name v.name, "#{chr_job.job} #{face.name}", v.to
+                m "textarea[rows=5]", v.form[v.mestype][v.format].attr.text()
+                for format, text of formats
+                  format_btn format, text
+                for o in v.texts
+                  text_btn o.able, o[v.format]
                 m "p.mes_date"
 
-      if v.acttype?
+
+      if v.acttype? && "talk" == v.format
         m ".#{v.acttype}.action",
           m "p.text",
-            m "b", v.face().name
+            m "b", face.name
             "は、"
             v.form.act.target()
             "に、"
@@ -296,8 +321,8 @@ GUI.message = (->
 
       m ".WIN_#{v.win}.info",
         m ".emboss.pull-right", v.name
-        for {able, attr} in v.selects
-          select able, attr
+        for {able, input} in v.selects
+          select input, able
         m "p.text",
           m.trust v.role_help
       m ".caution.info",
