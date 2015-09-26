@@ -1,7 +1,7 @@
 new Mem.Rule("potof").schema ->
   @belongs_to "story"
   @belongs_to "event"
-  @belongs_to "face"
+  @belongs_to "chr_job"
   @depend_on "message"
 
   urges = "　①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿"
@@ -39,7 +39,9 @@ new Mem.Rule("potof").schema ->
 
   @deploy (o)->
     o._id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
-    o.user_id = o.sow_auth_id
+    o.user_id ?= o.sow_auth_id
+    o.chr_job_id ?= "#{o.csid.toLowerCase()}_#{o.face_id}"
+
     o.hide = {}
 
     if o.event_id
@@ -48,7 +50,9 @@ new Mem.Rule("potof").schema ->
     else
       o.live = "leave"
 
-    face = o.face()
+    chr_job = o.chr_job()
+    face = chr_job.face()
+    job = if chr_job then chr_job.job else "***"
     name =
       if face
         face.name
@@ -178,8 +182,6 @@ new Mem.Rule("potof").schema ->
       select: [select, role_side_order, role_text, win_side_order, text_str]
       text:   [text_str, win_side_order, role_side_order, role_text, select]
 
-    chr_job = Mem.chr_jobs.find("#{o.csid.toLowerCase()}_#{o.face_id}")
-    job = if chr_job then chr_job.job else "***"
     o.view =
       portrate: GUI.portrate o.face_id
       job: job

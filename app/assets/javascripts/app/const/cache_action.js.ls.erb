@@ -1,0 +1,17 @@
+new Mem.Rule("action").schema ->
+
+  @order "index"
+
+  @scope (all)->
+
+  @default ->
+
+  index = 0
+  @deploy (o)->
+    unless o.index
+      o.index = index += 1
+    o._id = o.index
+
+  @map_reduce (o)->
+
+Mem.rule.action.set <%= JSON.generate SET_ACTIONS %>

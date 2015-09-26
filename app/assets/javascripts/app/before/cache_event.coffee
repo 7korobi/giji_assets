@@ -8,7 +8,7 @@ new Mem.Rule("event").schema ->
     {}
 
   @deploy (o)->
-    o._id ||= "#{o.story_id}-#{o.turn}"
+    o._id ?= "#{o.story_id}-#{o.turn}"
     o.event_id = o._id
     o.view =
       btn: ->

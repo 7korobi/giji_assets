@@ -35,6 +35,10 @@
   width: 2.5ex;
 }
 
+.roster option[value="-1"] {
+  background-color: #aaa;
+}
+
 .btn.click {
   padding: 4px;
 }

@@ -37,6 +37,9 @@ GUI.items_module = (type)->
     query = Mem.items.where({type})
     m.mount dom,
       controller: ->
+        switch type
+          case 'rolelist'
+            win.scroll.size = 10
       view: ->
         win.scroll.pager "div", query.list(), (v)->
           GUI.message[v.template](v)

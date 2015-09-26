@@ -192,10 +192,12 @@ $action-border: 18px;
   textarea,
   fieldset {
     width: $width;
+    .label,
     span.form-label label.control-label,
     label {
       width: $label;
     }
+    .input,
     span.form-wrapper input {
       width: $form;
     }

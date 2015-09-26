@@ -61,12 +61,16 @@ new Mem.Rule("able").schema ->
 
   @deploy (o)->
     o.at = switch o.at
-         | "main"     => {         +main }
-         | "start"    => { +start        }
-         | "progress" => { +start, +main }
-         | _          => {               }
+         | "main"     => {         +main                       }
+         | "start"    => { +start                              }
+         | "progress" => { +start, +main                       }
+         | "prologue" => {                +prologue            }
+         | "around"   => {                +prologue, +epilogue }
+         | "all"      => { +start, +main, +prologue, +epilogue }
+         | _          => {                                     }
 
   @map_reduce (o)->
+
 
 
 

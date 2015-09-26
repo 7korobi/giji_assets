@@ -1,7 +1,47 @@
+
+editvilform:
+  btn: 村を編集する
+  change: 村の編集フォームを確認、修正します。
+  at: around
+  cmd: editvilform
+  HELP: |-
+
+muster:
+  btn: 点呼！
+  change: 全員を未発言状態にします。未発言者は１日そのまま発言がないと、自動退出します。
+  at: prologue
+  cmd: muster
+  HELP: |-
+
+update:
+  btn: 更新！
+  change: ただちに更新し、次の日を迎えます。お覚悟はよろしいですか？
+  at: all
+  cmd: update
+  HELP: |-
+
+scrapvil:
+  btn: 廃村！
+  change: ただちに村を廃村にします。廃村になった村はエピローグになります。
+  at: all
+  cmd: scrapvil
+  HELP: |-
+
+exit:
+  btn: 退出…
+  change: 村を立ち去ります。
+  at: prologue
+  cmd: exit
+  HELP: |-
+
+
+
 commit:
   sw: 時間を進める
+  pass: （時間を進めない）
   change: 時間を進めるかどうか、選択してください。
   at: progress
+  cmd: commit
   HELP: |-
     全員が「時間を進める」を選ぶと前倒しで更新されます。
     <br>
@@ -9,6 +49,7 @@ commit:
 
 night:
   sw: 夜遊びする
+  pass: （夜遊びしない）
   change: 夜遊びをして、深夜の囁きを聞いてしまうかどうか、選択してください。
   at: main
   HELP: |-
@@ -21,6 +62,7 @@ night:
 
 dish:
   sw: 跳ねる
+  pass: （跳ねない）
   change: 跳ねるアピールをするかどうか、選択してください。
   at: progress
   HELP: |-
@@ -28,13 +70,16 @@ dish:
 
 cling:
   sw: 飲薬する
+  pass: （飲薬しない）
   change: あなたが殺害されたとしたら、犯人を道連れにするかどうか、選択してください。
   at: main
   HELP: |-
     薬を服用した夜、もし処刑以外の要因で命を落とした場合、その犯人を道連れにします。人狼の襲撃の場合、襲撃実行者が対象となります。
 
+
 guru:
   targets: 誘う
+  pass: （パス）
   change: 誘い込む犠牲者を選択してください。
   for: live
   at: progress
@@ -60,6 +105,7 @@ bonds:
   HELP: |-
     一日目、好きな二人に“運命の絆”を結びつける事ができます。“運命の絆”を結んだ二人は、片方が死亡すると後を追って死亡します。
 
+
 bond:
   target: 結ぶ
   change: あなたとの絆を結ぶ相手を選択してください。
@@ -70,6 +116,7 @@ bond:
 
 guard:
   target: 守る
+  pass: （パス）
   change: 守護する対象を選択してください。
   for: live
   at: main
@@ -80,6 +127,7 @@ guard:
 
 see:
   target: 占う
+  pass: （パス）
   change: 正体を知りたい相手を選択してください。
   for: live
   at: progress
@@ -88,6 +136,7 @@ see:
 
 sneak:
   target: 狙う
+  pass: （パス）
   change: 付け狙う相手を選択してください。
   for: live
   at: progress
@@ -98,6 +147,7 @@ sneak:
 
 hunt:
   target: 襲う
+  pass: （パス）
   change: 殺害する相手を選択してください。
   for: live
   at: progress
@@ -108,6 +158,7 @@ hunt:
 
 kill:
   target: 襲う
+  pass: （パス）
   change: 殺害する相手を選択してください。
   for: live
   at: progress
@@ -118,6 +169,7 @@ kill:
 
 cure:
   target: 診察
+  pass: （パス）
   change: 診察する相手を選択してください。
   for: live
   at: main
@@ -126,6 +178,7 @@ cure:
 
 tangle:
   target: 憑依
+  pass: （パス）
   change: 付け狙う相手を選択してください。
   for: dead
   at: progress
@@ -136,6 +189,7 @@ tangle:
 
 analeptic:
   target: 投薬
+  pass: （パス）
   change: 薬を投与する相手を選択してください。
   for: dead
   require: role1
@@ -146,6 +200,7 @@ analeptic:
 
 poison:
   target: 投薬
+  pass: （パス）
   change: 薬を投与する相手を選択してください。
   for: live
   require: role2
@@ -156,6 +211,7 @@ poison:
 
 scapegoat:
   target: 疑う
+  pass: （パス）
   change: あなたが最後になったとしたら、指差す相手を選択してください。
   for: live
   at: main
@@ -165,6 +221,7 @@ scapegoat:
 
 hike:
   target: 外出する
+  pass: （パス）
   change: 会いに行く相手を選択してください。
   for: cast
   at: progress
@@ -173,22 +230,35 @@ hike:
 
 vote:
   target: 投票
+  pass: （委任する）
+  change: 処刑する相手を選択してください。
+  for: live
+  at: main
+  cmd: vote
+  HELP: |-
+    全員で多数決をし、一人だけ処刑します。
+
+vote_role:
+  target: 投票
+  pass: （パス）
   change: 処刑する相手を選択してください。
   for: live
   at: main
   HELP: |-
-    全員で多数決をし、一人だけ処刑します。
 
 entrust:
   target: 委任
+  pass: （投票する）
   change: 処刑を棄権し、一票を委ねる相手を選択してください。
   for: live
   at: main
+  cmd: vote
   HELP: |-
     投票は棄権し、他人の投票と同じとすることができます。
 
 jammer:
   target: 邪魔
+  pass: （パス）
   change: 占いから保護する相手を選択してください。
   for: live
   at: progress
@@ -199,6 +269,7 @@ jammer:
 
 snatch:
   target: 換わる
+  pass: （パス）
   change: 顔と名前を簒奪する相手を選択してください。
   for: live
   at: progress
@@ -208,6 +279,62 @@ snatch:
     もしも夜の間に屍体になった人を対象に選んだなら、旧いあなたは命を落とし、あなたとなったその屍体は息を吹き返すでしょう。
     また、結ばれた絆や、笛吹きに誘われたことは姿とともにあり、姿を移し替えたときに引き継ぐことがあります。
     一度移し替えた姿は、永遠にあなたのものです。二度と元には戻りません。
+
+
+
+gm_droop:
+  target: 参加者として死なせる
+  pass: ―――
+  change: 参加者として死なせる相手を選択してください。
+  for: gm_live
+  at: all
+  cmd: gamemaster
+  HELP: |-
+
+gm_live:
+  target: 参加者として生かす
+  pass: ―――
+  change: 参加者として蘇生させる相手を選択してください。
+  for: gm_dead
+  at: all
+  cmd: gamemaster
+  HELP: |-
+
+gm_disable_vote:
+  target: 投票から保護する
+  pass: ―――
+  change: 投票対象に選ぶことを認めない相手を選択してください。
+  for: live
+  at: all
+  cmd: gamemaster
+  HELP: |-
+
+gm_enable_vote:
+  target: 投票を認可する
+  pass: ―――
+  change: 投票対象に選ぶこと許可する相手を選択してください。
+  for: live
+  at: all
+  cmd: gamemaster
+  HELP: |-
+
+maker:
+  target: 村を任せる
+  pass: ―――
+  change: 村の管理を任せる相手を選択してください。
+  for: all
+  at: all
+  cmd: maker
+  HELP: |-
+
+kick:
+  target: 退去！
+  pass: ―――
+  change: 退去いただこう、かな…、と思った相手を選択してください。
+  for: all
+  at: prologue
+  cmd: kick
+  HELP: |-
 
 blind:
   HELP: |-
@@ -423,40 +550,64 @@ wolfify:
   HELP: |-
     あなたは狼の襲撃を受ける、もしくは賞金稼に道連れにされると、あなたは人狼になります。
 
-gift:
-  HELP:
-
 chkGSAY:
   HELP: |-
     顔や名前はわかりませんが、あなたの耳には死者の声が届いちゃうことでしょう。
 
+
+ENTRY:
+  name: 導入
+  text: ENTRY
+  cmd: entry
+  HELP: |-
+    キャラクターを選択し、エントリーしましょう。
+
+MAKER:
+  name: 村立て話
+  text: MAKER
+  cmd: write
+  HELP: |-
+    あなたは村立て人です。
+
+ADMIN:
+  name: 管理者話
+  text: ADMIN
+  cmd: write
+  HELP: |-
+    あなたは管理人です。
+
 SPSAY:
   name: 共鳴
   text: SPSAY
+  cmd: write
   HELP: |-
     あなたは、共鳴者同士にしか聞こえない会話が可能です。
 
 WSAY:
   name: 囁き
   text: WSAY
+  cmd: write
   HELP: |-
     あなたは、人狼（と囁き狂人、擬狼妖精）同士にしか聞こえない会話が可能です。
 
 XSAY:
   name: 念話
   text: XSAY
+  cmd: write
   HELP: |-
     あなたは、念波星でしか聞こえない会話が可能です。
 
 GSAY:
-  name: 発言
+  name: 会話
   text: GSAY
+  cmd: write
   HELP: |-
     あなたは、死者にしか聞こえない会話が可能です。
 
 MSAY:
   name: 口借り
   text: MSAY
+  cmd: write
   HELP: |-
     あなたは<b>_NPC_</b>の口を借り、好きな言葉を伝えることができます。
 
@@ -464,24 +615,29 @@ AIM:
   name: 内緒話
   text: AIM
   for: near
+  cmd: write
   HELP:
 
 TSAY:
   name: 独り言
   text: TSAY
+  cmd: write
   HELP:
 
 SAY:
-  name: 発言
+  name: 会話
   text: SAY
+  cmd: write
   HELP:
 
 VSAY:
-  name: 発言
+  name: 会話
   text: VSAY
+  cmd: write
   HELP:
 
 VGSAY:
-  name: 発言
+  name: 会話
   text: VGSAY
+  cmd: write
   HELP:

@@ -30,26 +30,6 @@ GUI.message = (->
     tap_random:   -> console.log arguments
     tap_external: -> console.log arguments
 
-  cmd_target: ->
-    targets = for target in Mem.targets.command(o.cmd).list()
-      m "option",
-        { value: target.val }
-        target.name
-    targets.unshift(
-      m "option",
-        { value: "?", selected: true }
-        "- 選択してください -"
-    )
-
-    buttons = for button in Mem.commands.target().list()
-      m "option",
-        button.title
-
-    m "p.commitbutton",
-      m "select", targets
-      m "select", buttons
-      Btn.submit {}, {}
-
   toc: (o)->
 
   helps: (t)->
@@ -254,31 +234,54 @@ GUI.message = (->
       m "span.btn.edge", attr.attr.choice(), able.name
 
     select = (input, able)->
-      options = m "optgroup[label=選択肢]",
-        m "option[value=-1]", "（パス）"
-        m "option[value=0]", "ゼロ"
-        m "option[value=1]", "イチ"
+      selected = (prop, val)->
+        if val == prop()
+          "[selected]"
+        else
+          ""
+
+      if input.targets
+        options =
+          m "optgroup[label=選択肢]",
+            for {pno, job, name} in input.targets
+              selected = ""
+              selected = "[selected]" if input.target() == pno
+              m "option[value=#{pno}]#{selected}", "#{job} #{name}"
+
       vdoms = []
       if able.action
-        vdoms.push m "p.text",
-          m "select", input.attr.target(), options
-          m "input[type=text]", input.attr.text()
+        act_attrs =
+          onchange: m.withAttr "value", (index)->
+            input.text Mem.actions.find(index).text
+        vdoms.push m "fieldset.text",
+          m "select.label", input.attr.target(), options
+          m "select.input", act_attrs,
+            for act in Mem.actions.list()
+              m "option[value=#{act.index}]", "#{act.text}"
+          m "input.input[type=text]", input.attr.text()
           m "input.btn.edge[type=button][value=#{ able.action }]"
 
       if able.targets
         vdoms.push m "p.text",
-          m "select", input.attr.target(), options
+          m "select.roster", input.attr.target(), options
           "と"
-          m "select", input.attr.target(), options
+          m "select.roster", input.attr.target(), options
           m "input.btn.edge[type=button][value=#{ able.targets }]"
+
       if able.target
         vdoms.push m "p.text",
-          m "select", input.attr.target(), options
+          m "select.roster", input.attr.target(), options
           m "input.btn.edge[type=button][value=#{ able.target }]"
+
       if able.sw
         vdoms.push m "p.text",
-          m "select", input.attr.target(), options
-          m "input.btn.edge[type=button][value=#{ able.sw }]"
+          m "select.roster", input.attr.target(), options
+          m "input.btn.edge[type=button][value=#{ able.sw }？]"
+
+      if able.btn
+        vdoms.push m "p.text",
+          m "input.btn.edge[type=button][value=#{ able.btn }]"
+          m "span.TSAY.emboss", able.change
 
       for msg in input.errors
         vdoms.push m ".WSAY", m ".emboss", msg
@@ -287,11 +290,22 @@ GUI.message = (->
 
       vdoms
 
+    act = (acttype, o)->
+      target = o.target_at o.target()
+      m ".#{acttype}.action",
+        m "p.text",
+          m "b", face.name
+          "は、"
+          target.name
+          o.text()
+        m "p.text"
+          select o, action: "ACT"
+
     chr_job = Mem.chr_jobs.find(v.chr_job_id)
     face = chr_job.face()
 
     m "div", {key: v._id},
-      m "h6", v.name
+      m "h6", m.trust v.role_name
       if v.mestype?
         m "table.#{v.mestype}.#{v.format}",
           m "tr",
@@ -310,22 +324,16 @@ GUI.message = (->
 
 
       if v.acttype? && "talk" == v.format
-        m ".#{v.acttype}.action",
-          m "p.text",
-            m "b", face.name
-            "は、"
-            v.form.act.target()
-            "に、"
-            v.form.act.text()
-          select v.form.act, action: "ACT"
-          m "p.mes_date"
+        act v.acttype, v.form.act
 
       m ".WIN_#{v.win}.info",
-        m ".emboss.pull-right", v.name
+        m ".emboss.pull-right", m.trust v.role_name
         for {able, input} in v.selects
           select input, able
         m "p.text",
           m.trust v.role_help
+        m "p.text",
+          m.trust v.history
       m ".caution.info",
         m "p.text",
           m.trust v.able_help

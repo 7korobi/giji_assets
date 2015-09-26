@@ -114,7 +114,7 @@ class ScrollSpy
 
     @center = @list[idx]
     @tail = Math.min btm, _.ceil( idx + @size, -1)
-    @head = Math.max top, _.floor(idx - @size, -1)
+    @head = Math.max top,         idx - @size
 
     pager_cb = (@pager_elem, is_continue, context)=>
       rect = @pager_elem.getBoundingClientRect()
