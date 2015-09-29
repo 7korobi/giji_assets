@@ -61,7 +61,7 @@ new Mem.Rule("form").schema ->
       targets = listup("near")
       target_hash = {}
       if mestype in <[SAY GSAY VSAY TSAY]>
-        targets.push job: "", name: "", pno: -1
+        targets.push job: "―――", name: "", pno: -1
         choice_on = ->
           o.mestype = mestype
           o.acttype = mestype

@@ -97,7 +97,7 @@ export win =
       win.horizon = win.height / 2
 
       unless win.scrolling
-        win.do_event_list win.on.scroll_start
+        win.do_event_list win.on.scroll_start, e
       win.do.scroll_end()
       win.scrolling = true
 

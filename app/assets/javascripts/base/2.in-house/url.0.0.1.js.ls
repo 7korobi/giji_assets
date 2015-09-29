@@ -46,8 +46,8 @@ class Url
       props[key] = o = {} unless o
       o.type ?= "String"
       o.url = Serial.url[o.type]
-      o.parse = Serial.parser[o.type]
-      o.serial = Serial.serializer[o.type]
+      o.parse = unpack[o.type]
+      o.serial = pack[o.type]
       o.current ?= o.parse("")
 
       do_define key, o

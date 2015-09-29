@@ -10,7 +10,7 @@ export Submit =
     query =
       method: "GET"
       url: url + encodeURI(query_string)
-      deserialize: Serial.parser.HtmlGon
+      deserialize: unpack.HtmlGon
     m.request(query)
 
   iframe: (url, params)->
@@ -35,7 +35,7 @@ export Submit =
         iframe.onload = ->
           try
             clearTimeout timer
-            deferred.resolve Serial.parser.HtmlGon iframe.contentDocument.body.innerHTML
+            deferred.resolve unpack.HtmlGon iframe.contentDocument.body.innerHTML
           catch e
             deferred.reject e
           finally

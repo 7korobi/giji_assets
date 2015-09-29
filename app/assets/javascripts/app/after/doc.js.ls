@@ -85,7 +85,7 @@ timeline_present = ({size: [width, height]})->
 
     count_width = 1
     for time_id, mask of base.reduce().mask
-      left = Serial.parser.Date(time_id) - first_at
+      left = unpack.Date(time_id) - first_at
       top = max_height
       for mestype in mestype_orders
         color = RAILS.log.colors[mestype]

@@ -194,7 +194,7 @@ new Mem.Rule("message").schema ->
 
     if o.vdom == GUI.message.talk || o.vdom == GUI.message.guide
       if o.log
-        time_id = Serial.serializer.Date(o.updated_at / timespan)
+        time_id = pack.Date(o.updated_at / timespan)
         item =
           count: o.log.length
           min: o.updated_at

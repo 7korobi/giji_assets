@@ -36,7 +36,7 @@ Btn = (->
   include = (load, key)->
     load()[key]
   keys_eq = (load, keys)->
-    to_s = Serial.serializer.Keys
+    to_s = pack.Keys
     to_s(load()) == to_s(keys)
 
   base: base
@@ -54,7 +54,7 @@ Btn = (->
   keys_reset: (style, prop, val)->
     setter = (key)->
       unless keys_eq(prop, val)
-        prop Serial.parser.Keys val
+        prop unpack.Keys val
     base style, keys_eq, setter, prop, val
 
   keys: (style, prop, val)->

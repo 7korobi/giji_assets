@@ -1,77 +1,77 @@
 describe "Serial" (...)!->
   describe "parser" (...)!->
     it "Keys" !->
-      expect( Serial.parser.Keys("a,b,c") ).to.eql a:true, b:true, c:true
-      expect( Serial.parser.Keys(a:1, b:1) ).to.eql a:true, b:true
+      expect( unpack.Keys("a,b,c") ).to.eql a:true, b:true, c:true
+      expect( unpack.Keys(a:1, b:1) ).to.eql a:true, b:true
 
     it "Array" !->
-      expect( Serial.parser.Array("1,2,3") ).to.eql ["1","2","3"]
-      expect( Serial.parser.Array(",z,") ).to.eql ["","z",""]
+      expect( unpack.Array("1,2,3") ).to.eql ["1","2","3"]
+      expect( unpack.Array(",z,") ).to.eql ["","z",""]
 
     it "Date" !->
-      expect( Serial.parser.Date("KfmhEBZ") ).to.eq 1400000000000
-      expect( Serial.parser.Date("@@@") ).to.not.eq             0
+      expect( unpack.Date("KfmhEBZ") ).to.eq 1400000000000
+      expect( unpack.Date("@@@") ).to.not.eq             0
 
     it "Number" !->
-      expect( Serial.parser.Number("100") ).to.eq   100
-      expect( Serial.parser.Number("-100") ).to.eq -100
-      expect( Serial.parser.Number("1.5") ).to.eq   1.5
-      expect( Serial.parser.Number("0") ).to.eq       0
-      expect( Serial.parser.Number("aaa") ).to.not.eq 0
+      expect( unpack.Number("100") ).to.eq   100
+      expect( unpack.Number("-100") ).to.eq -100
+      expect( unpack.Number("1.5") ).to.eq   1.5
+      expect( unpack.Number("0") ).to.eq       0
+      expect( unpack.Number("aaa") ).to.not.eq 0
 
     it "Text" !->
-      expect(Serial.parser.Text(null)).to.eq ""
-      expect(Serial.parser.Text(undefined)).to.eq ""
-      expect(Serial.parser.Text("aaa")).to.eq "aaa"
+      expect(unpack.Text(null)).to.eq ""
+      expect(unpack.Text(undefined)).to.eq ""
+      expect(unpack.Text("aaa")).to.eq "aaa"
 
     it "String" !->
-      expect(Serial.parser.String(null)).to.eq ""
-      expect(Serial.parser.String(undefined)).to.eq ""
-      expect(Serial.parser.String("aaa")).to.eq "aaa"
+      expect(unpack.String(null)).to.eq ""
+      expect(unpack.String(undefined)).to.eq ""
+      expect(unpack.String("aaa")).to.eq "aaa"
 
     it "Bool" !->
-      expect( Serial.parser.Bool("T") ).to.eq true
-      expect( Serial.parser.Bool("F") ).to.eq false
+      expect( unpack.Bool("T") ).to.eq true
+      expect( unpack.Bool("F") ).to.eq false
 
     it "(null)" !->
-      expect(Serial.parser[null]("aaa")).to.eq "aaa"
+      expect(unpack[null]("aaa")).to.eq "aaa"
 
 
   describe "serializer" (...)!->
     it "Keys" !->
-      expect( Serial.serializer.Keys(a:true, b:true, c:true) ).to.eq "a,b,c"
-      expect( Serial.serializer.Keys(a:1, b:1) ).to.eq "a,b"
+      expect( pack.Keys(a:true, b:true, c:true) ).to.eq "a,b,c"
+      expect( pack.Keys(a:1, b:1) ).to.eq "a,b"
 
     it "Array" !->
-      expect( Serial.serializer.Array([1,2,3]) ).to.eq "1,2,3"
-      expect( Serial.serializer.Array(["","z",""]) ).to.eq ",z,"
+      expect( pack.Array([1,2,3]) ).to.eq "1,2,3"
+      expect( pack.Array(["","z",""]) ).to.eq ",z,"
 
     it "Date" !->
-      expect( Serial.serializer.Date(1400000000000) ).to.eq "KfmhEBZ"
+      expect( pack.Date(1400000000000) ).to.eq "KfmhEBZ"
 
     it "Number" !->
-      expect( Serial.serializer.Number(100) ).to.eq   "100"
-      expect( Serial.serializer.Number(-100) ).to.eq "-100"
-      expect( Serial.serializer.Number(1.5) ).to.eq   "1%2e5"
-      expect( Serial.serializer.Number(0) ).to.eq       "0"
-      expect( Serial.serializer.Number(Number.NaN) ).to.eq "NaN"
+      expect( pack.Number(100) ).to.eq   "100"
+      expect( pack.Number(-100) ).to.eq "-100"
+      expect( pack.Number(1.5) ).to.eq   "1%2e5"
+      expect( pack.Number(0) ).to.eq       "0"
+      expect( pack.Number(Number.NaN) ).to.eq "NaN"
 
     it "Text" !->
-      expect(Serial.serializer.Text(null)).to.eq ""
-      expect(Serial.serializer.Text(undefined)).to.eq ""
-      expect(Serial.serializer.Text("aaa")).to.eq "aaa"
+      expect(pack.Text(null)).to.eq ""
+      expect(pack.Text(undefined)).to.eq ""
+      expect(pack.Text("aaa")).to.eq "aaa"
 
     it "String" !->
-      expect(Serial.serializer.String(null)).to.eq ""
-      expect(Serial.serializer.String(undefined)).to.eq ""
-      expect(Serial.serializer.String("aaa")).to.eq "aaa"
+      expect(pack.String(null)).to.eq ""
+      expect(pack.String(undefined)).to.eq ""
+      expect(pack.String("aaa")).to.eq "aaa"
 
     it "Bool" !->
-      expect( Serial.serializer.Bool(true) ).to.eq "T"
-      expect( Serial.serializer.Bool(false) ).to.eq "F"
+      expect( pack.Bool(true) ).to.eq "T"
+      expect( pack.Bool(false) ).to.eq "F"
 
     it "(null)" !->
-      expect(Serial.serializer[null]("aaa")).to.eq "aaa"
+      expect(pack[null]("aaa")).to.eq "aaa"
 
 
   describe "url" (...)!->

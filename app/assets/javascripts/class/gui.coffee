@@ -37,7 +37,7 @@ GUI = (->
       ->
         cb.apply @, data
     for elem in parent.querySelectorAll query
-      data = attr && Serial.parser.Array elem.attributes[attr]?.value
+      data = attr && unpack.Array elem.attributes[attr]?.value
       for key, func of GUI.attrs base_attrs, attr_cb(elem, data, cb)
         elem[key] = func
 

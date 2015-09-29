@@ -6,4 +6,4 @@ class ID
 
   @at = (date, count)->
     count ?= Math.random() * @patch_size
-    Serial.serializer.Date(date * @patch_size + count)
+    pack.Date(date * @patch_size + count)
