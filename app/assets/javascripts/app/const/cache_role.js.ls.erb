@@ -43,19 +43,11 @@ new Mem.Rule("trap").schema ->
 new Mem.Rule("able").schema ->
   @scope (all)->
     by_rolestate: (bits)->
-      q = all.where(->)
-      q._hash = hash = {}
-      q._list = list = []
-      if bits?
-        for mask in all.masks
-          if 0 == (bits .&. mask)
-            id = SOW_RECORD.maskstates[mask]
-            o = all.find(id)
-            if o
-              hash[id] = o
-              list.push o
-            bits .|.= mask
-      q
+      masks =
+        for mask in all.masks when 0 == bits .&. mask
+          bits .|.= mask
+          mask
+      all.where(mask:masks)
 
   @default ->
 
@@ -75,6 +67,8 @@ new Mem.Rule("able").schema ->
 
 
 Mem.rule.able.set <%= JSON.generate SET_ABLES %>
+for mask, id of SOW_RECORD.maskstates when o = Mem.ables.find(id)
+  o.mask = mask
 Mem.ables.masks = _.sortBy Object.keys(SOW_RECORD.maskstates), (i)-> -i
 
 Mem.rule.trap.set <%= JSON.generate SET_TRAPS %>

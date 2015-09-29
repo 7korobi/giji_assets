@@ -15,8 +15,7 @@ deploy_samples = ->
 
     turns = ["start", "main"]
     is_main = false
-    for able in role.ables
-      continue if able in ["vote", "entrust"]
+    for able in role.ables when able not in ["vote", "entrust"]
       is_main ||= Mem.ables.find(able).at.main
 
     turns = ["main"] if is_main
@@ -63,9 +62,7 @@ deploy_samples = ->
       sheep: []
       love: null
 
-  for rolename in SOW_RECORD.roles
-    role = Mem.roles.find(rolename)
-    continue unless role
+  for rolename in SOW_RECORD.roles when role = Mem.roles.find(rolename)
     deploy role, (turn, chr_job_id, index)->
       mob: "visiter"
       enemy: "evil"
@@ -79,9 +76,7 @@ deploy_samples = ->
       sheep: []
       love: null
 
-  for rolename in SOW_RECORD.gifts
-    role = Mem.roles.find(rolename)
-    continue unless role
+  for rolename in SOW_RECORD.gifts when role = Mem.roles.find(rolename)
     for subrolename in ["lonewolf"]
       subrole = Mem.roles.find(subrolename)
       deploy role, (turn, chr_job_id, index)->

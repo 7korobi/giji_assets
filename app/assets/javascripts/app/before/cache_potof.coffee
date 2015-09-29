@@ -12,7 +12,7 @@ new Mem.Rule("potof").schema ->
     "NONE"
 
   id_list = (query)->
-    query.list().map((o)-> o.face_id ).sort()
+    query.pluck("face_id").sort()
 
   @scope (all)->
     full: ->
@@ -36,6 +36,7 @@ new Mem.Rule("potof").schema ->
 
     view: (is_desc, order)->
       all.sort is_desc, (o)-> o.order[order]
+
 
   @deploy (o)->
     o._id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
@@ -163,7 +164,7 @@ new Mem.Rule("potof").schema ->
     role_text = roles.join("、")
 
     text = Mem.ables.by_rolestate(o.rolestate).pluck("name")
-    text.push "☑" if 'pixi' == o.sheep
+    text.push "誘" if 'pixi' == o.sheep
     text.push "♥" if 'love' == o.love
     text.push "☠" if 'hate' == o.love
     text.push "<s>♥</s>" if 'love' == o.pseudolove
@@ -197,5 +198,9 @@ new Mem.Rule("potof").schema ->
       role: role_text
       select: if select then m "kbd", select else ""
       text: text_str
+
+    o.form =
+      _id: o.pno
+
 
   @map_reduce (o, emit)->

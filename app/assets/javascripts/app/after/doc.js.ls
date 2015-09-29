@@ -97,8 +97,7 @@ timeline_present = ({size: [width, height]})->
           ctx.fillRect x * left, y * top, 1 + x * count_width, y * count_height
 
     ctx.beginPath()
-    for event in Mem.events.list()
-      continue unless event.created_at
+    for event in Mem.events.list() when event.created_at
       right = event.updated_at / (1000 * 3600) - first_at
       left = event.created_at / (1000 * 3600) - first_at
       ctx.strokeStyle = RAILS.log.colors.line

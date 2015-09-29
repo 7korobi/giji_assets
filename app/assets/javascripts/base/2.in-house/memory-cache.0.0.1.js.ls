@@ -31,8 +31,7 @@ class Mem.Query
         when \Array
           (o)->
             for key in req
-              for val in o[target]
-                return true if val == key
+              return true if key in o[target]
             false
         when \RegExp
           (o)->
@@ -41,9 +40,7 @@ class Mem.Query
             false
         when \Null, \Boolean, \String, \Number
           (o)->
-            for val in o[target]
-              return true if val == req
-            false
+            req in o[target]
         else
           console.log [typeof! req, req]
           ...
@@ -58,9 +55,7 @@ class Mem.Query
       switch typeof! req
         when \Array
           (o)->
-            for key in req
-              return true if o[target] == key
-            false
+            o[target] in req
         when \RegExp
           (o)-> req.test o[target]
         when \Function
@@ -120,10 +115,8 @@ class Mem.Query
     @hash()[id]?.item
 
   finds: (ids)->
-    for id in ids
-      o = @hash()[id]
-      continue unless o
-      o?.item
+    for id in ids when o = @hash()[id]
+      o.item
 
   pluck: (...keys)->
     @list().map do
