@@ -333,21 +333,21 @@ class Mem.Rule
     all = finder.query.all._hash
 
     deployer =
-      if head.browser.ie || head.browser.safari
-        (o, base)->
-          _.defaults o, base
-      else
+      if @__proto__?
         (o, base)->
           o.__proto__ = base
+      else
+        (o, base)->
+          _.defaults o, base
 
     deployer =
-      if head.browser.ie || head.browser.safari
+      if @__proto__?
         (o)~>
-          _.defaults o, @base_obj
+          o.__proto__ = @base_obj
           @deploy o
       else
         (o)~>
-          o.__proto__ = @base_obj
+          _.defaults o, @base_obj
           @deploy o
 
     validate_item = (item)~>
