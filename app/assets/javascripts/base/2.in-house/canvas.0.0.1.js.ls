@@ -115,8 +115,7 @@ export Canvas =
 
       ctrl.config canvas, is_continue, context
       ctrl.onmove args
-      unless is_continue
-        draw()
+      draw()
 
 
     @canvas_attr =
