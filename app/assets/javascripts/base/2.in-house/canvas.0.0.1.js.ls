@@ -7,22 +7,16 @@ License: MIT
 
 calc =
   touch:
-    if head.browser.ios
-        ({pageX, pageY}, {left, top})->
-          x = 2 * (pageX - left - window.scrollX)
-          y = 2 * (pageY - top  - window.scrollY)
-          {x, y}
+    if head.browser.ios || head.browser.ff || head.browser.old && head.browser.chrome
+      ({pageX, pageY}, {left, top})->
+        x = 2 * (pageX - left - window.scrollX)
+        y = 2 * (pageY - top  - window.scrollY)
+        {x, y}
     else
-      if head.browser.ios || head.browser.ff || head.browser.old && head.browser.chrome
-        ({pageX, pageY}, {left, top})->
-          x = 2 * (pageX - left - window.scrollX)
-          y = 2 * (pageY - top  - window.scrollY)
-          {x, y}
-      else
-        ({pageX, pageY}, {left, top})->
-          x = 2 * (pageX - left)
-          y = 2 * (pageY - top  - window.scrollY)
-          {x, y}
+      ({pageX, pageY}, {left, top})->
+        x = 2 * (pageX - left)
+        y = 2 * (pageY - top  - window.scrollY)
+        {x, y}
 
   mouse: (event)->
     x = event.offsetX || event.layerX # PC || firefox
