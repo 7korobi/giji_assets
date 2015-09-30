@@ -104,7 +104,7 @@ GUI.if_exist "#buttons", (dom)->
 
 
 GUI.if_exist "#topviewer", (dom)->
-  layout = new GUI.Layout dom, 0, 1, 110, head.browser.ios, 0
+  layout = new GUI.Layout dom, 0, 1, 110, false, 0
 
   m.mount dom,
     controller: ->

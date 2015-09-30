@@ -9,11 +9,11 @@ calc =
   touch:
     if head.browser.ios
         ({pageX, pageY}, {left, top})->
-          x = 2 * (pageX - left)
-          y = 2 * (pageY - top)
+          x = 2 * (pageX - left - window.scrollX)
+          y = 2 * (pageY - top  - window.scrollY)
           {x, y}
     else
-      if head.browser.ff || head.browser.old && head.browser.chrome
+      if head.browser.ios || head.browser.ff || head.browser.old && head.browser.chrome
         ({pageX, pageY}, {left, top})->
           x = 2 * (pageX - left - window.scrollX)
           y = 2 * (pageY - top  - window.scrollY)
