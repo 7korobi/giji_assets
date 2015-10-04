@@ -68,17 +68,18 @@ export doc =
     m "p", list
 
   potofs: ->
-    potofs = Mem.potofs.view(Url.prop.potofs_desc(), Url.prop.potofs_order()).list()
-    hides = Url.prop.potofs_hide()
+    {potofs_desc, potofs_order, potofs_hide} = Url.prop
+    potofs = Mem.potofs.view(potofs_desc(), potofs_order()).list()
+    hides = potofs_hide()
     turn = win.scroll.center?.event()?.turn || 0
 
     m ".minilist",
       m "h6", "キャラクターフィルタ"
       m "p",
-        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, []                    ), "全員表示"
-        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Mem.potofs.others() ), "参加者表示"
-        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Mem.potofs.potofs() ), "その他を表示"
-        m "a", Btn.keys_reset({}, Url.prop.potofs_hide, Mem.potofs.full()   ), "全員隠す"
+        m "a", Btn.keys_reset({}, potofs_hide, []                  ), "全員表示"
+        m "a", Btn.keys_reset({}, potofs_hide, Mem.potofs.others() ), "参加者表示"
+        m "a", Btn.keys_reset({}, potofs_hide, Mem.potofs.potofs() ), "その他を表示"
+        m "a", Btn.keys_reset({}, potofs_hide, Mem.potofs.full()   ), "全員隠す"
       m "hr.black"
       for o in potofs
         attr = (o)->
@@ -89,7 +90,7 @@ export doc =
             @config (_elem)-> elem = _elem
             @click ->
               hides[o.face_id] = ! hides[o.face_id]
-              Url.prop.potofs_hide hides
+              potofs_hide hides
 
         m ".chrbox", {key: o._id},
           GUI.portrate o.face_id, attr(o)
