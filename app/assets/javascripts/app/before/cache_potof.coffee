@@ -43,6 +43,20 @@ new Mem.Rule("potof").schema ->
     o.user_id ?= o.sow_auth_id
     o.chr_job_id ?= "#{o.csid.toLowerCase()}_#{o.face_id}"
 
+    chr_job = o.chr_job()
+    if chr_job?
+      name = chr_job.face()?.name
+      job = chr_job.job
+    else
+      job = "***"
+    name ?= o.name
+    o.name =
+      if o.zapcount
+        "#{RAILS.clearance[o.clearance]}#{name}-#{o.zapcount}"
+      else
+        name
+
+
     o.hide = {}
 
     if o.event_id
@@ -50,20 +64,6 @@ new Mem.Rule("potof").schema ->
         o.live = "leave"
     else
       o.live = "leave"
-
-    chr_job = o.chr_job()
-    face = chr_job.face()
-    job = if chr_job then chr_job.job else "***"
-    name =
-      if face
-        face.name
-      else
-        o.name
-    o.name =
-      if o.zapcount
-        "#{RAILS.clearance[o.clearance]}#{name}-#{o.zapcount}"
-      else
-        name
 
     stat_at =
       if 0 < o.deathday < Infinity
