@@ -4,6 +4,8 @@ GUI.if_exist "#character_tag", (dom)->
     [ m "span", name
       m "span.emboss.pull-right", val
     ]
+  tag_dom = (type)->
+    vdom RAILS.tag[type].name, Mem.faces.reduce().tag[type].count
 
   m.mount dom,
     controller: ->
@@ -17,37 +19,37 @@ GUI.if_exist "#character_tag", (dom)->
             m ".paragraph",
               m "h6", "タグを選んでみよう"
               Btns.radio {class: "edge"}, tag,
-                all:       vdom "- 全体 -",               Mem.faces.reduce().all.all.count
-                giji:      vdom RAILS.tag.giji.name,      Mem.faces.reduce().tag.giji.count
-                shoji:     vdom RAILS.tag.shoji.name,     Mem.faces.reduce().tag.shoji.count
-                travel:    vdom RAILS.tag.travel.name,    Mem.faces.reduce().tag.travel.count
-                stratos:   vdom RAILS.tag.stratos.name,   Mem.faces.reduce().tag.stratos.count
-                myth:      vdom RAILS.tag.myth.name,      Mem.faces.reduce().tag.myth.count
-                asia:      vdom RAILS.tag.asia.name,      Mem.faces.reduce().tag.asia.count
-                marchen:   vdom RAILS.tag.marchen.name,   Mem.faces.reduce().tag.marchen.count
+                all:       vdom "- 全体 -", Mem.faces.reduce().all.all.count
+                giji:      tag_dom "giji"
+                shoji:     tag_dom "shoji"
+                travel:    tag_dom "travel"
+                stratos:   tag_dom "stratos"
+                myth:      tag_dom "myth"
+                asia:      tag_dom "asia"
+                marchen:   tag_dom "marchen"
 
-                kid:       vdom RAILS.tag.kid.name,       Mem.faces.reduce().tag.kid.count
-                young:     vdom RAILS.tag.young.name,     Mem.faces.reduce().tag.young.count
-                middle:    vdom RAILS.tag.middle.name,    Mem.faces.reduce().tag.middle.count
-                elder:     vdom RAILS.tag.elder.name,     Mem.faces.reduce().tag.elder.count
+                kid:       tag_dom "kid"
+                young:     tag_dom "young"
+                middle:    tag_dom "middle"
+                elder:     tag_dom "elder"
 
-                river:     vdom RAILS.tag.river.name,     Mem.faces.reduce().tag.river.count
-                road:      vdom RAILS.tag.road.name,      Mem.faces.reduce().tag.road.count
-                immoral:   vdom RAILS.tag.immoral.name,   Mem.faces.reduce().tag.immoral.count
+                river:     tag_dom "river"
+                road:      tag_dom "road"
+                immoral:   tag_dom "immoral"
 
-                guild:     vdom RAILS.tag.guild.name,     Mem.faces.reduce().tag.guild.count
-                elegant:   vdom RAILS.tag.elegant.name,   Mem.faces.reduce().tag.elegant.count
-                ecclesia:  vdom RAILS.tag.ecclesia.name,  Mem.faces.reduce().tag.ecclesia.count
+                guild:     tag_dom "guild"
+                elegant:   tag_dom "elegant"
+                ecclesia:  tag_dom "ecclesia"
 
-                medical:   vdom RAILS.tag.medical.name,   Mem.faces.reduce().tag.medical.count
-                market:    vdom RAILS.tag.market.name,    Mem.faces.reduce().tag.market.count
+                medical:   tag_dom "medical"
+                market:    tag_dom "market"
 
-                apartment: vdom RAILS.tag.apartment.name, Mem.faces.reduce().tag.apartment.count
-                servant:   vdom RAILS.tag.servant.name,   Mem.faces.reduce().tag.servant.count
-                farm:      vdom RAILS.tag.farm.name,      Mem.faces.reduce().tag.farm.count
-                government:vdom RAILS.tag.government.name,Mem.faces.reduce().tag.government.count
+                apartment: tag_dom "apartment"
+                servant:   tag_dom "servant"
+                farm:      tag_dom "farm"
+                government:tag_dom "government"
 
-                god:       vdom RAILS.tag.god.name,       Mem.faces.reduce().tag.god.count
+                god:       tag_dom "god"
 
         m ".chrlist",
           m "div",
