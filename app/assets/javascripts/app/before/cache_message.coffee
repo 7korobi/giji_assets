@@ -14,6 +14,7 @@ new Mem.Rule("message").schema ->
     face: {}
     vsay: false
     bug: false
+  ats = {}
 
   @scope (all)->
     ids: ids
@@ -123,6 +124,10 @@ new Mem.Rule("message").schema ->
 
     unless o.updated_at
       o.updated_at = new Date(o.date) - 0
+    if ats[o.updated_at]
+      o.updated_at += ats[o.updated_at]++
+    else
+      ats[o.updated_at] = 0
 
     vdom = GUI.message.xxx
     switch o.logid[1]
