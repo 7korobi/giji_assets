@@ -20,12 +20,30 @@ GUI.if_exist "#buttons", (dom)->
 
   m.mount dom,
     controller: ->
-    view: ->
+      helps:
+        "cog": "画面表示を調整します。"
+        "home":     "村の設定、アナウンスを表示します。"
+        "clock":    "メモの履歴を表示します。"
+        "mail":     "最新のメモを表示します。"
+        "chat-alt": "発言を表示します。"
+        "search":   "検索機能をつかいます。"
+        "resize-normal": "簡略な表記にします。"
+        "resize-full":   "詳細な表記にします。"
+        "th-large":      "条件で絞り込みます。"
+        "pencil":        "書き込み機能"
+
+    view: (c)->
       vdoms = []
       section = (icon)->
         return unless menu.icon.nodes[icon]
+
+        help = c.helps[icon]
+        if help?
+          tag = """section.tooltip-right[data-tooltip="#{help}"]"""
+        else
+          tag = """section"""
         vdom =
-          m "section", menu.icon.start({class:"glass"}, icon),
+          m tag, menu.icon.start({class:"glass"}, icon),
             m ".bigicon",
               m ".icon-#{icon}", " "
             m ".badge.pull-right", badges[icon]() if badges[icon]
