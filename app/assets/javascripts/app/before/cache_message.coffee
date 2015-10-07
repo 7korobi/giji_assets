@@ -141,7 +141,7 @@ new Mem.Rule("message").schema ->
       when "M"
         tail = o.logid[1..-1]
         anker_id = o.event_id + "-M" + tail
-        o.logid = o.mestype[0..0] + tail  # data cleaned
+        # o.logid = o.mestype[0..0] + tail  # data cleaned
         ids[anker_id] = o._id
         vdom = GUI.message.memo
         o.anchor = "memo"
