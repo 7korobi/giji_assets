@@ -88,22 +88,3 @@ class Timer
 
     return tick Timer.date_time_stamp(@at), 3600 if          second < -limit
     return tick Timer.date_time_stamp(@at)       if  limit < second
-
-###
-log.updated = new Timer log.updated_at,
-  draw: (text)->
-    log.elm = $("." + log._id)
-    log.elm.find("[time]").html text
-
-log.cancel_btn =
-  if log.logid? && "q" == log.logid[0]
-    new Timer log.updated_at,
-      next: (second, tick)->
-        return tick """<span cancel_btn>なら削除できます。<a hogan-click='cancel_say("#{@logid}")()' class="btn btn-danger click glyphicon glyphicon-trash"></a></span>""", 25 if -25 < second < 25
-        return tick ""
-      draw: (text)->
-        log.elm = $("." + log._id)
-        log.elm.find("[cancel_btn]").html text
-  else
-    text: ""
-###
