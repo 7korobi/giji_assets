@@ -10,15 +10,16 @@
     opacity: 0;
     border-width: 0;
     height: 0;
-    padding: 0;
     overflow: visible;
   }
 
   &:after {
     // Content
     content: attr(data-tooltip);
-    white-space: nowrap;
+    text-align: left;
+    white-space: pre;
     border-radius: 8px;
+    padding: 5px;
   }
 
   &:before {
@@ -29,7 +30,14 @@
     border-style: solid;
     border-color: transparent;
   }
+}
 
+.tooltip-bottom,
+.tooltip-right,
+.tooltip-left,
+.tooltip-top {
+  &.tap:after,
+  &.tap:before,
   &:hover:after,
   &:focus:after,
   &:hover:before,
@@ -37,8 +45,7 @@
     opacity: 1;
     border-width: 6px;
     height: auto;
-    }
-
+  }
 }
 
 .tooltip-bottom {

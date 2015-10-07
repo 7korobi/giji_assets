@@ -1,20 +1,20 @@
 GUI.message = (->
   deco_action = (by_id)->
     config: (parent, is_continue, context)->
-      GUI.attrs_to parent, "span[anchor]", {}, (a, turn, id)->
-        @end (e)->
+      GUI.dom parent, "span[anchor]", (a, turn, id)->
+        @onmouseup = @ontouchend = (e)->
           m.startComputation()
           GUI.message.delegate.tap_anchor(turn, a, id, by_id)
           m.endComputation()
 
-      GUI.attrs_to parent, "span[random]", {}, (cmd, val)->
-        @end (e)->
+      GUI.dom parent, "span[random]", (cmd, val)->
+        @onmouseup = @ontouchend = (e)->
           m.startComputation()
           GUI.message.delegate.tap_random(cmd, val, by_turn, by_id)
           m.endComputation()
 
-      GUI.attrs_to parent, "span[external]", {}, (id, uri, protocol, host, path)->
-        @end (e)->
+      GUI.dom parent, "span[external]", (id, uri, protocol, host, path)->
+        @onmouseup = @ontouchend = (e)->
           m.startComputation()
           GUI.message.delegate.tap_external(id, uri, protocol, host, path, by_id)
           m.endComputation()

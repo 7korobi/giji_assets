@@ -43,7 +43,11 @@ id_num = 0
 uri_to_link = _.memoize (uri)->
   id_num++
   [uri, protocol, host, path] = uri.match link_regexp
-  """<span external="link_#{id_num},#{uri},#{protocol},#{host},#{path}" class="emboss">LINK - #{protocol}</span>"""
+  """<span data-tooltip="
+  #{host}
+  #{path}
+
+" external="link_#{id_num},#{uri},#{protocol},#{host},#{path}" class="emboss tooltip-top">LINK - #{protocol}</span>"""
 
 link = (log)->
   return log unless log

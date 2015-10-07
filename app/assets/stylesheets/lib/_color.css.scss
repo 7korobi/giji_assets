@@ -51,10 +51,6 @@
   }
 
   [data-tooltip] {
-    &:hover:after,
-    &:focus:after {
-      padding: 5px;
-    }
     &:after {
       color: $color;
       background: $background;

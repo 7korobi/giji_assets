@@ -18,6 +18,17 @@ if gon?.events? && gon.event?
   GUI.if_exist "#messages", (dom)->
     win.scroll.size = 30
 
+    GUI.message.delegate.tap_external = (id, uri, protocol, host, path)->
+      message = """
+  #{protocol}://#{host}
+  #{path}
+
+このURLを開きますか？
+"""
+      if window.confirm message
+        window.open uri, "_giji"
+
+
     GUI.message.delegate.tap_anchor = (turn, logid, id, by_id)->
       [folder, vid, by_turn, by_logid] = by_id.split("-")
       anker_id = Mem.messages.anker_id(folder, vid, turn, logid)

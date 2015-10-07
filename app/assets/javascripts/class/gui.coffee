@@ -29,6 +29,17 @@ GUI = (->
     html.className = html.className.replace GUI.header_style_p, style
     GUI.header_style_p = style
 
+
+  dom: (parent, query, cb)->
+    vdom = m query
+    tag = vdom.tag
+    attr = Object.keys(vdom.attrs)[0]
+
+    for elem in parent.querySelectorAll query
+      data = attr && unpack.Array elem.attributes[attr]?.value
+      cb.apply(elem, data)
+
+
   attrs_to: (parent, query, base_attrs, cb)->
     vdom = m query
     tag = vdom.tag
