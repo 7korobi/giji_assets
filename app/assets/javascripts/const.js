@@ -1,1 +1,1 @@
-//= require_tree ./app/const
+//= require_tree ./models

@@ -1,3 +1,3 @@
-//= require_tree ./mocha
+//= require_tree ./jspec
 
 mocha.setup('bdd');
