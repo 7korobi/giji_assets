@@ -116,12 +116,9 @@ win.on.resize.push ->
   width = document.querySelector(\#contentframe).offsetWidth
 
   Url.prop.content_width width
-  if width <= 770
-    Url.prop.h1_width 770
-  if width <= 580
-    Url.prop.h1_width 580
-  if width <= 458
-    Url.prop.h1_width 458
+  Url.prop.h1_width 770
+  Url.prop.h1_width 580 if width <= 580
+  Url.prop.h1_width 458 if width <= 458
 
   switch Url.prop.layout()
     when "right"

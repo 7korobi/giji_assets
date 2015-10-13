@@ -145,6 +145,7 @@ if gon?.events? && gon.event?
 
     m.startComputation()
     window.requestAnimationFrame ->
+      catch_gon.villages()
       catch_gon.messages()
 
       menu.scope.open()

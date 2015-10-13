@@ -162,21 +162,21 @@ GUI.if_exist "#headline", (dom)->
 
 
 GUI.if_exist "#to_root", (dom)->
-  day_or_night = m.prop()
   m.mount dom,
     controller: ->
       hour = 1000 * 60 * 60
 
-      GUI.do_tick (now)->
+      GUI.do_tick (now)=>
         zone = now + 3*hour # means - 6hours base. (GMT is - 9 hours)
-        day_or_night Math.floor(zone / (12*hour)) % 2
+        @day_or_night = Math.floor(zone / (12*hour)) % 2
 
         m.redraw()
         12*hour - zone % (12*hour)
+      return
 
-    view: ->
+    view: (c)->
       width = Url.prop.h1_width?()
       width?= 458
       m "a",
         href: "//giji.check.jp/"
-        GUI.title width, Url.prop.theme(), day_or_night()
+        GUI.title width, Url.prop.theme(), c.day_or_night
