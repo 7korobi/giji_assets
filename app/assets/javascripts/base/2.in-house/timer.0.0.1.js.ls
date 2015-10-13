@@ -1,4 +1,11 @@
-class Timer
+/*
+timer v0.0.1
+http://github.com/7korobi/---
+(c) 7korobi
+License: MIT
+*/
+
+export class Timer
   @week = ["日","月","火","水","木","金","土"]
   @dow = (dow)->
     Timer.week[dow]
@@ -49,12 +56,24 @@ class Timer
   @fetch = (at)->
     Timer.cache[at] ?= new Timer at
 
-  constructor: (@at)->
+  @tick = (cb)->
+    action = ->
+#      m.startComputation()
+      tick = cb(_.now())
+      if tick
+        setTimeout ->
+          action()
+        , tick
+#      m.endComputation()
+    action()
+
+
+  (@at)->
 
   start: (bind)->
-    @tick = (now)=>
+    @tick = (now)~>
       @msec = (now - @at)
-      @next @msec / 1000, (@text, sec_span = Number.NaN)=>
+      @next @msec / 1000, (@text, sec_span = Number.NaN)~>
         return 0 unless bind.update
         bind.update @text
 
@@ -64,7 +83,7 @@ class Timer
           msec_span - diff
         else
           1 - diff
-    GUI.do_tick @tick
+    Timer.tick @tick
 
   next: (second, tick)->
     if 0 < second

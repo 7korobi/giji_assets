@@ -196,17 +196,6 @@ GUI = (->
 
     m "ul.inline.mark", cb.call(list_cmds)
 
-  do_tick: (cb)->
-    action = ->
-#      m.startComputation()
-      tick = cb(_.now())
-      if tick
-        setTimeout ->
-          action()
-        , tick
-#      m.endComputation()
-    action()
-
   if_exist: (query, cb)->
     win.on.load.push ->
       dom = document.querySelector(query)

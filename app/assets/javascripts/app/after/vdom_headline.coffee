@@ -166,7 +166,7 @@ GUI.if_exist "#to_root", (dom)->
     controller: ->
       hour = 1000 * 60 * 60
 
-      GUI.do_tick (now)=>
+      Timer.tick (now)=>
         zone = now + 3*hour # means - 6hours base. (GMT is - 9 hours)
         @day_or_night = Math.floor(zone / (12*hour)) % 2
 
