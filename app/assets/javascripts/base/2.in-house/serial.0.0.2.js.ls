@@ -144,3 +144,14 @@ for key, func of unpack
         "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]*)"
       else
         "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]+)"
+
+
+export ID =
+  patch_size: Serial.map.size * Serial.map.size * Serial.map.size
+
+  now: ->
+    ID.at _.now()
+
+  at: (date, count)->
+    count ?= Math.random() * ID.patch_size
+    pack.Date(date * ID.patch_size + count)
