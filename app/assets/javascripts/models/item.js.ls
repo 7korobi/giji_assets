@@ -42,4 +42,4 @@ GUI.items_module = (type)->
             win.scroll.size = 10
       view: ->
         win.scroll.pager "div", query.list(), (v)->
-          GUI.message[v.template](v)
+          doc.message[v.template](v)

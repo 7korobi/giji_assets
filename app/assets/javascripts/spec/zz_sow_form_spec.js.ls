@@ -26,8 +26,5 @@ describe "(sow) Mem.forms" (...)!->
 
   describe "can input text" (...)!->
     for_all_forms (form)->
-      expect ->
-        GUI.message.form form
-      .to.not.throw()
       expect(form.form).to.contain.all.keys "TSAY"
       expect(form.form).to.contain.any.keys "SAY", "GSAY"

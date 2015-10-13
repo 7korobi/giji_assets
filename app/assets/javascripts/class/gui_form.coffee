@@ -11,7 +11,7 @@ GUI.form = (->
   action: (f, props)->
     m "form[name=action_form]",
       m ".#{f.mestype}.action", {key: f._id},
-        GUI.message.action_text null, f.name, f.style, f.log().deco_preview
+        doc.message.action_text null, f.name, f.style, f.log().deco_preview
         m "h6", "#{f.count} #{f.title}"
         m ".mark", f.errors
         m ".formpl_content",
@@ -43,8 +43,8 @@ GUI.form = (->
                 m "select#entry_role", Txt.input(props.role), f.roles
               m "div",
                 if f.is_preview()
-                  GUI.message.talk_name null, "#{f.chr_job.job} #{f.chr_job.face.name}"
-                  GUI.message.talk_text null, props.style(), f.log().deco_preview
+                  doc.message.talk_name null, "#{f.chr_job.job} #{f.chr_job.face.name}"
+                  doc.message.talk_text null, props.style(), f.log().deco_preview
                   m "h6", "参加する時のセリフ"
                 else
                   m "textarea[cols=30][rows=#{f.lines}]", Txt.input(f.log)
@@ -77,7 +77,7 @@ GUI.form = (->
 
           m "td",
             if f.is_preview()
-              GUI.message.talk_text props.style(), f.log().deco_preview
+              doc.message.talk_text props.style(), f.log().deco_preview
               m "h6", "参加する時のセリフ"
             else
               m "textarea[cols=30][rows=#{f.lines}]", Txt.input(f.log)

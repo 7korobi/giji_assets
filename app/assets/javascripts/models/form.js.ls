@@ -72,8 +72,8 @@ new Mem.Rule("form").schema ->
 
       target_at = (value)->
         target_hash[value]
-      for o in targets
-        target_hash[o.pno] = o
+      for target in targets
+        target_hash[target.pno] = target
       target = m.prop targets.last.pno
 
       attr =

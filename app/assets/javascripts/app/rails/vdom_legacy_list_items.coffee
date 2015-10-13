@@ -6,7 +6,7 @@ if gon?.villages?
       controller: ->
       view: ->
         win.scroll.pager "div", Mem.items.list(), (v)->
-          GUI.message.action(v)
+          doc.message.action(v)
 
 if gon?.byebyes?
   GUI.if_exist "#byebyes", (dom)->
@@ -15,7 +15,7 @@ if gon?.byebyes?
       controller: ->
       view: ->
         win.scroll.pager "div", Mem.items.list(), (v)->
-          GUI.message.action(v)
+          doc.message.action(v)
 
 if gon?.history?
   GUI.if_exist "#history", (dom)->
@@ -24,4 +24,4 @@ if gon?.history?
       controller: ->
       view: ->
         win.scroll.pager "div", Mem.items.list(), (v)->
-          GUI.message.history(v)
+          doc.message.history(v)

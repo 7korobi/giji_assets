@@ -18,7 +18,7 @@ if gon?.events? && gon.event?
   GUI.if_exist "#messages", (dom)->
     win.scroll.size = 30
 
-    GUI.message.delegate.tap_external = (id, uri, protocol, host, path)->
+    doc.delegate.tap_external = (id, uri, protocol, host, path)->
       message = """
   #{protocol}://#{host}
   #{path}
@@ -29,7 +29,7 @@ if gon?.events? && gon.event?
         window.open uri, "_giji"
 
 
-    GUI.message.delegate.tap_anchor = (turn, logid, id, by_id)->
+    doc.delegate.tap_anchor = (turn, logid, id, by_id)->
       [folder, vid, by_turn, by_logid] = by_id.split("-")
       anker_id = Mem.messages.anker_id(folder, vid, turn, logid)
       [__, __, __, logid] = anker_id.split("-")
@@ -42,7 +42,7 @@ if gon?.events? && gon.event?
         pins["#{turn}-#{logid}"] = true
         change_pin(by_id)
 
-    GUI.message.delegate.tap_identity = (turn, logid, id)->
+    doc.delegate.tap_identity = (turn, logid, id)->
       return
       pins = Url.prop.pins()
       pins["#{turn}-#{logid}"] = true

@@ -45,7 +45,7 @@ if gon?.potofs?
         else
           filter_size = Math.floor((win.height - seeing_top) / line_text_height) - 3
           center_id = win.scroll.prop()
-          potofs = GUI.message.potofs()
+          potofs = doc.message.potofs()
 
           anchorview = doc.messages.anchor(Url.prop).list()
           seeingview = doc.messages.seeing(filter_size, win.scroll.center)
