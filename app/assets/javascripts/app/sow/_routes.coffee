@@ -47,4 +47,4 @@ Url.cookies.css.options.change = (params)->
   GUI.header list
 
   window.requestAnimationFrame ->
-    GUI.Layout.move()
+    Layout.move()

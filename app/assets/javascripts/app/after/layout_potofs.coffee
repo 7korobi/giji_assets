@@ -1,6 +1,6 @@
 if gon?.potofs?
   GUI.if_exist "#sayfilter", (dom)->
-    layout = new GUI.Layout dom, -1, 1, 100
+    layout = new Layout dom, -1, 1, 100
     layout.small_mode = true
     layout.large_mode = ->
       ! (menu.icon.state() || layout.small_mode)

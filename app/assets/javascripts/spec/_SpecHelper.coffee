@@ -19,7 +19,7 @@ present_canvas = ({size: [width, height], layout: [dx, dy, dz]})->
 
   config: (canvas, is_continue, context)->
     return if is_continue
-    new GUI.Layout canvas, dx, dy, dz
+    new Layout canvas, dx, dy, dz
 
   data: ->
     data_store
@@ -246,35 +246,8 @@ m.mount document.querySelector("#win"),
               m "td"
               m "td"
 
-if "onorientationchange" of window
-  window.addEventListener 'orientationchange', win.do.scroll
-else
-  window.addEventListener 'resize', win.do.scroll
-
-window.addEventListener 'scroll', win.do.scroll
-
-if "ondeviceorientation" of window
-  window.addEventListener 'deviceorientation', win.do.orientation
-if "ondevicemotion" of window
-  window.addEventListener 'devicemotion', win.do.motion
-
-if "onmessage" of window
-  window.addEventListener "message", (event)->
-    console.log "on message"
-
-if "onoffline" of window
-  window.addEventListener "offline", (event)->
-    console.log "on offline  onLine:#{navigator.onLine}"
-
-if "ononline" of window
-  window.addEventListener "online", (event)->
-    console.log "on online  onLine:#{navigator.onLine}"
-
-if "onstorage" of window
-  window.addEventListener "storage", (event)->
-    console.log "on storage"
-
-if "onload" of window
-  window.addEventListener "load", win.do.load
+win.on.scroll_end.push Layout.move
+win.on.resize.push Layout.move
+win.deploy()
 
 expect = chai.expect

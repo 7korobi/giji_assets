@@ -1,6 +1,6 @@
 
 GUI.if_exist "#topviewer", (dom)->
-  layout = new GUI.Layout dom, 0, 1, 110, false, 0
+  layout = new Layout dom, 0, 1, 110, false, 0
 
   m.mount dom,
     controller: ->

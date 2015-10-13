@@ -14,7 +14,7 @@ GUI.if_exist "#buttons", (dom)->
       for box in document.querySelectorAll(".icon-cog")
         anime box
 
-  layout = new GUI.Layout dom, 1, -1, 120
+  layout = new Layout dom, 1, -1, 120
   layout.width = 5
   layout.transition()
 

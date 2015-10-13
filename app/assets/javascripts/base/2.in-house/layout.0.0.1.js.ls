@@ -1,23 +1,15 @@
-class GUI.Layout
-  @list: {}
-  @move: ->
-    for key, o of GUI.Layout.list
+/*
+layout v0.0.1
+http://github.com/7korobi/---
+(c) 7korobi
+License: MIT
+*/
+
+export class Layout
+  @list = {}
+  @move = ->
+    for key, o of Layout.list
       o.translate()
-  win.on.resize.push @move
-  win.on.scroll_end.push @move
-
-  constructor: (@box, @dx, @dy, dz, @absolute = false, @duration = DELAY.animato)->
-    return unless @box
-
-    @duration /= 4 if @absolute
-
-    GUI.Layout.list[@box.id] = @
-    @box.style.zIndex = dz
-    @mode = "show"
-
-    @from = @hide()
-    @transform @from
-    @transition()
 
   move = (cb)->
     w = @width  || @box.offsetWidth
@@ -37,6 +29,20 @@ class GUI.Layout
       left: win.left
       width: win.width
       height: win.height
+
+  (@box, @dx, @dy, dz, @absolute = false, @duration = DELAY.animato)->
+    return unless @box
+
+    @duration /= 4 if @absolute
+
+    Layout.list[@box.id] = @
+    @box.style.zIndex = dz
+    @mode = "show"
+
+    @from = @hide()
+    @transform @from
+    @transition()
+
 
   show: ->
     move.call @, (x, y, w, h, win)->
@@ -81,17 +87,17 @@ class GUI.Layout
       @box.style.oTransform = transform if head.browser.opera
       @box.style.transform = transform
 
-
-  transition: ()->
-    transition =
+  transition: ->
+    trans =
       if @duration && ! @absolute
         "all #{@duration}ms ease-in-out 0"
       else
         ""
-    @box.style.mozTransition = transition if head.browser.ff
-    @box.style.msTransition = transition if head.browser.ie
-    @box.style.oTransition = transition if head.browser.opera
-    @box.style.transition = transition
+
+    @box.style.mozTransition = trans if head.browser.ff
+    @box.style.msTransition = trans if head.browser.ie
+    @box.style.oTransition = trans if head.browser.opera
+    @box.style.transition = trans
 
   translate: ->
     to = @[@mode]()
@@ -99,7 +105,7 @@ class GUI.Layout
 
     @transform(to)
 
-    setTimeout =>
+    setTimeout ~>
       @from = to
       @translate()
     , @duration
