@@ -1,3 +1,10 @@
+/*
+submit v0.0.1
+http://github.com/7korobi/---
+(c) 7korobi
+License: MIT
+*/
+
 iframe_handler = document.createElement("div")
 document.body.appendChild iframe_handler
 iframe_handler.style.display = "none"
