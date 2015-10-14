@@ -125,7 +125,7 @@ class Url
     @keys_in_url = []
 
     if @options.cookie
-      Url.cookies[ID.now()] = @
+      Url.cookies[Serial.ID.now()] = @
 
     @scanner = new RegExp @format.replace(/[.]/gi, (key)-> "\\#{key}" ).replace /:([a-z_]+)/gi, (_, key)~>
       @keys_in_url.push key

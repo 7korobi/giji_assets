@@ -5,6 +5,15 @@ http://github.com/7korobi/---
 License: MIT
 */
 
+serial =
+  to_s: "0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+  to_i: {}
+for c, n in serial.to_s
+  serial.to_i[c] = n
+serial.size = serial.to_s.length
+patch_size = serial.size * serial.size * serial.size
+
+
 string_parser = (val)->
   switch val
     when "", null, undefined
@@ -50,17 +59,17 @@ export pack =
     time = Math.floor val
     result = ""
     while time >= 1
-      result += Serial.map.to_s[time % Serial.map.size]
-      time = Math.floor time / Serial.map.size
+      result += serial.to_s[time % serial.size]
+      time = Math.floor time / serial.size
     result
 
   Bool: (bool)->
     if bool then "T" else "F"
 
-  Number: string_serializer
-  Text: string_serializer
-  String: string_serializer
-  null:    string_serializer
+  Number:    string_serializer
+  Text:      string_serializer
+  String:    string_serializer
+  null:      string_serializer
   undefined: string_serializer
 
 
@@ -97,11 +106,11 @@ export unpack =
     base = 1
     result = 0
     for c in code
-      n = Serial.map.to_i[c]
+      n = serial.to_i[c]
       unless n?
         return Number.NaN
       result += n * base
-      base *= Serial.map.size
+      base *= serial.size
     result
 
   Bool: (val)->
@@ -114,22 +123,19 @@ export unpack =
         Number.NaN
 
   Number: Number
-  Text: string_parser
-  String: string_parser
-  null:    string_parser
+  Text:      string_parser
+  String:    string_parser
+  null:      string_parser
   undefined: string_parser
 
-
-
 export Serial =
-  map:
-    to_s: "0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
-    to_i: {}
   url: {}
-
-for c, n in Serial.map.to_s
-  Serial.map.to_i[c] = n
-Serial.map.size = Serial.map.to_s.length
+  ID:
+    now: ->
+      Serial.ID.at _.now()
+    at: (date, count)->
+      count ?= Math.random() * patch_size
+      pack.Date(date * patch_size + count)
 
 for key, func of unpack
   Serial.url[key] =
@@ -144,14 +150,3 @@ for key, func of unpack
         "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]*)"
       else
         "([^\\~\\/\\=\\.\\&\\[\\]\\(\\)\\\"\\'\\`\\;]+)"
-
-
-export ID =
-  patch_size: Serial.map.size * Serial.map.size * Serial.map.size
-
-  now: ->
-    ID.at _.now()
-
-  at: (date, count)->
-    count ?= Math.random() * ID.patch_size
-    pack.Date(date * ID.patch_size + count)

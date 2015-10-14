@@ -91,3 +91,8 @@ describe "Serial" (...)!->
 
     it "(null)" !->
       expect("a,b^c~d").to.match new RegExp Serial.url[null]
+
+  describe "id" (...)!->
+    it "now" !->
+      expect(Serial.ID.now()).to.not.eq Serial.ID.now()
+      expect(Serial.ID.now().slice(3,9)).to.eq Serial.ID.now().slice(3,9)

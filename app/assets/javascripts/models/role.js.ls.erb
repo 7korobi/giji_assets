@@ -64,8 +64,6 @@ new Mem.Rule("able").schema ->
   @map_reduce (o)->
 
 
-
-
 Mem.rule.able.set <%= JSON.generate SET_ABLES %>
 for mask, id of SOW_RECORD.maskstates when o = Mem.ables.find(id)
   o.mask = mask
