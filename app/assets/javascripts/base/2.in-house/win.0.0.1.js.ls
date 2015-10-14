@@ -35,31 +35,6 @@ scroll_end = !->
 
   scan()
 
-calc_mouse = (event)->
-  x = event.offsetX || event.layerX # PC || firefox
-  y = event.offsetY || event.layerY # PC || firefox
-  if x && y # mouse interface.
-    {x, y}
-
-calc_touch =
-  if head.browser.ios
-      ({pageX, pageY}, {left, top})->
-        x = pageX - left
-        y = pageY - top
-        {x, y}
-  else
-    if head.browser.ff || head.browser.old && head.browser.chrome
-      ({pageX, pageY}, {left, top})->
-        x = pageX - left - window.scrollX
-        y = pageY - top  - window.scrollY
-        {x, y}
-    else
-      ({pageX, pageY}, {left, top})->
-        x = pageX - left
-        y = pageY - top  - window.scrollY
-        {x, y}
-
-
 
 export win =
   do_event_list: (list, e)!->
@@ -131,33 +106,12 @@ export win =
   top:     0
   horizon: 0
   bottom:  0
+
   left:    0
   right:   0
-  width:   0
+
   height:  0
-  calc:
-    offsets: (e, elem)->
-      return unless e? && elem? && win.is_touch
-
-      console.log e.touches
-      if e.touches?
-        rect = elem.getBoundingClientRect()
-        for touch in e.touches
-          calc_touch(touch, rect)
-      else
-        result = []
-        mouse = calc_mouse(e)
-        result.push mouse if mouse
-        result
-
-    offset: (e, elem)->
-      return unless e? && elem? && win.is_touch
-
-      if e.touches?
-        rect = elem.getBoundingClientRect()
-        calc_touch(e.touches[0], rect) # touch device
-      else
-        calc_mouse(e)
+  width:   0
 
   scroll: null
 
@@ -168,10 +122,6 @@ export win =
   compass: 0
 
   is_tap: false
-
-  max:
-    top:  0
-    left: 0
 
   deploy: ->
     if "onorientationchange" of window

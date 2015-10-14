@@ -86,7 +86,6 @@ m.mount document.querySelector("#win"),
         JSON.stringify
           compass: _.round win.compass, 1
           is_tap:  win.is_tap
-          max:     win.max
       m.component Canvas, "#head", present_canvas, size: [800, 600], layout: [-10,  10, 100]
       m.component Canvas, "#tail", present_canvas, size: [600, 400], layout: [ 10, -10, 100]
       m "table",
