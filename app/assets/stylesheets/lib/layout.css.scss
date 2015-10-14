@@ -12,6 +12,10 @@
   }
 }
 
+.del {
+  text-decoration: line-through;
+}
+
 .btn {
   &.chr_set { width: 24em; }
   &.rating { width: 24em; }

@@ -164,11 +164,11 @@ new Mem.Rule("potof").schema ->
     role_text = roles.join("、")
 
     text = Mem.ables.by_rolestate(o.rolestate).pluck("name")
-    text.push "誘" if 'pixi' == o.sheep
-    text.push "♥" if 'love' == o.love
-    text.push "☠" if 'hate' == o.love
-    text.push "<s>♥</s>" if 'love' == o.pseudolove
-    text.push "<s>☠</s>" if 'hate' == o.pseudolove
+    text.push '<span class="icon-music"></span>' if 'pixi' == o.sheep
+    text.push '<span class="icon-heart"></span>' if 'love' == o.love
+    text.push '<span class="icon-scissors"></span>' if 'hate' == o.love
+    text.push '<span class="icon-heart    del"></span>' if 'love' == o.pseudolove
+    text.push '<span class="icon-scissors del"></span>' if 'hate' == o.pseudolove
     text_str = text.join()
 
     o.order =
