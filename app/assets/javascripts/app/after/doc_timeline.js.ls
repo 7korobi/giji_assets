@@ -32,7 +32,7 @@ timeline_present = ({size: [width, height]})->
     return false unless base.reduce()
 
     masks := base.reduce().mask
-    time_ids := _.sortBy Object.keys(masks), (o)-> unpack.Date(o)
+    time_ids := _.sortBy Object.keys(masks), unpack.Date
     time_width := time_ids.length
     x := width / time_width
     true

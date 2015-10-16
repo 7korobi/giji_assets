@@ -88,14 +88,14 @@ if gon?.potofs?
           filter =
             m "section.plane",
               m "h6",
-                "参照ログ"
+                "参照されている"
                 m "span.btn.edge.icon-pin", pin_click(anchorview, [win.scroll.center])
               for o in anchorview
                 m ".line_text",
                   m ".#{o.mestype}.badge", go_click(o), "#{o.turn}:#{o.anchor}"
                   m.trust o.log.line_text
               m "h6", seeing_measure,
-                "よく見ていたログ"
+                "よく見ていた"
                 m "span.btn.edge.icon-pin", pin_click(seeingview, [])
               for o in seeingview
                 if o._id == center_id

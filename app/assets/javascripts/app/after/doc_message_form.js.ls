@@ -41,10 +41,10 @@ doc.message.form = (v)->
           input.text Mem.actions.find(index).text
       vdoms.push m "fieldset.text",
         m "select.label", input.attr.target(), options
-        m "select.input", act_attrs,
+        m "select.wrapper", act_attrs,
           for act in Mem.actions.list()
             m "option[value=#{act.index}]", "#{act.text}"
-        m "input.input[type=text]", input.attr.text()
+        m "input.wrapper[type=text]", input.attr.text()
         m "input.btn.edge[type=button][value=#{ able.action }]"
 
     if able.targets
@@ -52,21 +52,21 @@ doc.message.form = (v)->
         m "select.roster", input.attr.target(), options
         "と"
         m "select.roster", input.attr.target(), options
-        m "input.btn.edge[type=button][value=#{ able.targets }]"
+        m "input.label.btn.edge[type=button][value=#{ able.targets }]"
 
     if able.target
       vdoms.push m "p.text",
         m "select.roster", input.attr.target(), options
-        m "input.btn.edge[type=button][value=#{ able.target }]"
+        m "input.label.btn.edge[type=button][value=#{ able.target }]"
 
     if able.sw
       vdoms.push m "p.text",
         m "select.roster", input.attr.target(), options
-        m "input.btn.edge[type=button][value=#{ able.sw }？]"
+        m "input.label.btn.edge[type=button][value=#{ able.sw }？]"
 
     if able.btn
       vdoms.push m "p.text",
-        m "input.btn.edge[type=button][value=#{ able.btn }]"
+        m "input.label.btn.edge[type=button][value=#{ able.btn }]"
         m "span.TSAY.emboss", able.change
 
     for msg in input.errors

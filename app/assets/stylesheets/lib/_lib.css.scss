@@ -189,15 +189,24 @@ $action-border: 18px;
   @if $width < 200px { $full: 97%; $label: percentage( 80px / $width); }
   $form: $full - $label;
 
-  textarea,
-  fieldset {
+  .text,
+  fieldset,
+  textarea {
     width: $width;
-    .label,
+  }
+  .text {
+    .label {
+      width: $label;
+    }
+    .wrapper {
+      width: $form;
+    }
+  }
+  fieldset {
     span.form-label label.control-label,
     label {
       width: $label;
     }
-    .input,
     span.form-wrapper input {
       width: $form;
     }
