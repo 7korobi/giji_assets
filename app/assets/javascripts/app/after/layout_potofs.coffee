@@ -91,8 +91,8 @@ if gon?.potofs?
                 "参照されている"
                 m "span.btn.edge.icon-pin", pin_click(anchorview, [win.scroll.center])
               for o in anchorview
-                m ".line_text",
-                  m ".#{o.mestype}.badge", go_click(o), "#{o.turn}:#{o.anchor}"
+                m ".#{o.mestype}.line_text",
+                  m ".badge", go_click(o), "#{o.turn}:#{o.anchor}"
                   m.trust o.log.line_text
               m "h6", seeing_measure,
                 "よく見ていた"
