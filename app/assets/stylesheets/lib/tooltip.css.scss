@@ -1,3 +1,12 @@
+[title]:after {
+  content: attr(title);
+}
+
+[data-tooltip]:after {
+  content: attr(data-tooltip);
+}
+
+[title],
 [data-tooltip] {
   position: relative;
 
@@ -15,7 +24,6 @@
 
   &:after {
     // Content
-    content: attr(data-tooltip);
     text-align: left;
     white-space: pre;
     border-radius: 8px;
@@ -32,14 +40,15 @@
   }
 }
 
+[title],
 .tooltip-bottom,
 .tooltip-right,
 .tooltip-left,
 .tooltip-top {
   &.tap:after,
-  &.tap:before,
   &:hover:after,
   &:focus:after,
+  &.tap:before,
   &:hover:before,
   &:focus:before {
     opacity: 1;
@@ -48,6 +57,7 @@
   }
 }
 
+// Bottom
 .tooltip-bottom {
   &:after,
   &:before {
@@ -63,6 +73,7 @@
 }
 
 // Top
+[title],
 .tooltip-top {
   &:after,
   &:before {

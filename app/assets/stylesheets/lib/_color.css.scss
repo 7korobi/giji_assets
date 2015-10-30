@@ -50,12 +50,14 @@
     background-color: $background;
   }
 
-  [data-tooltip] {
+  [data-tooltip],
+  [title] {
     &:after {
       color: $color;
       background: $background;
     }
   }
+  [title]:before,
   .tooltip-top:before { border-top-color: $background; }
   .tooltip-bottom:before { border-bottom-color: $background; }
   .tooltip-left:before { border-left-color: $background; }
@@ -83,16 +85,23 @@
   .mes_date,
   .name b { color: mix($color, $background); }
 
-  dt,
+  dt {
+    color: mix($color, mix($color, white));
+  }
   .text b {
     @if white == $tone { color: mix($color, blue); }
     @if glass == $tone { color: mix($color, mix($color, yellow)); }
     @if black == $tone { color: mix($color, $background); }
   }
 
+  [data-tooltip],
+  [title] {
+    background-color: lighten($background, 10%);
+  }
   a {
     color: lighten($color, 10%);
   }
+
   @if white == $tone {
     @include markers($color, lighten($background, 10%));
   }
