@@ -79,7 +79,27 @@ doc.message.form = (v)->
   chr_job = Mem.chr_jobs.find(v.chr_job_id)
   face = chr_job.face()
 
-  m "div", {key: v._id},
+  /*
+    function binds(data) {
+        return {onchange: function(e) {
+            data[e.target.name] = e.target.value;
+        }};
+    }
+
+    m("form", binds(ctrl.user), [
+        m("input[name=first]", {value: ctrl.user.first()}),
+        m("input[name=last]", {value: ctrl.user.last()}),
+        m("input[name=email]", {value: ctrl.user.email()}),
+        m("button", {onclick: ctrl.submit})
+    ]);
+  */
+
+  attrs =
+    key: v._id
+    onchange: (e)->
+      v.form[v.mestype][e]
+
+  m "form", attrs,
     m "h6", m.trust v.role_name
     if v.mestype?
       m "table.#{v.mestype}.#{v.format}",
@@ -107,8 +127,9 @@ doc.message.form = (v)->
         select input, able
       m "p.text",
         m.trust v.role_help
-      m "p.text",
-        m.trust v.history
+      if v.history
+        m "p.text",
+          m.trust v.history
     m ".caution.info",
       m "p.text",
         m.trust v.able_help

@@ -8,7 +8,13 @@ new Mem.Rule("form").schema ->
   @default ->
 
   @deploy (o)->
-    listup = (state)->
+    target_onchange = (target, infos, message)->
+      m.withAttr "value", (value)->
+        target(value)
+        infos.length = 0
+        infos.push message
+
+    listup = (state, live, mob)->
       option = (cb)->
         if Mem.potofs
           Mem.potofs.where(cb).list().map (o)->
@@ -34,9 +40,9 @@ new Mem.Rule("form").schema ->
         when "all"
           option -> true
         when "near"
-          switch o.live
+          switch live
             when "mob"
-              switch o.mob
+              switch mob
                 when "grave"
                   listup "dead"
                 when "alive"
@@ -57,8 +63,7 @@ new Mem.Rule("form").schema ->
       errors = []
       text = m.prop("")
       text_on = m.withAttr "value", text
-      target_on = m.withAttr "value", target
-      targets = listup("near")
+      targets = listup("near", o.live, o.mob)
       target_hash = {}
       if mestype in <[SAY GSAY VSAY TSAY]>
         targets.push job: "―――", name: "", pno: -1
@@ -86,7 +91,7 @@ new Mem.Rule("form").schema ->
           onchange: text_on
         target: ->
           value:    target()
-          onchange: target_on
+          onchange: target_onchange(target, infos, "変えました。")
 
       {mestype, infos, errors, target, targets, target_at, text, attr}
 
@@ -95,24 +100,19 @@ new Mem.Rule("form").schema ->
       infos  = []
       errors = []
       target = m.prop(-1)
-      target_changed = (value)->
-        target(value)
-        infos.length = 0
-        infos.push able.change
-
-      target_on = m.withAttr "value", target_changed
       attr =
         target: ->
           value:    target()
-          onchange: target_on
+          onchange: target_onchange(target, infos, able.change)
 
-      targets = listup(able.for)
+      targets = listup(able.for, o.live, o.mob)
       if able.sw
         targets.push name: "", pno: o.pno || 1, job: able.sw
       if able.pass
         targets.push name: "", pno: -1, job: able.pass || "（パス）"
 
       {cmd, infos, errors, target, targets, attr}
+
 
     role_scan = (role_id, can_use)->
       role = Mem.roles.find role_id
@@ -146,6 +146,7 @@ new Mem.Rule("form").schema ->
             able: able
             input: input role, able
           o.selects.push attr
+
 
     o.format = "talk"
     o.format_on = (format)->
@@ -181,19 +182,6 @@ new Mem.Rule("form").schema ->
     o.role_name = role_names.join("、")
     o.role_help = (_.uniq _.compact role_helps).join("\n<br>\n")
     o.able_help = (_.uniq _.compact able_helps).join("\n<br>\n")
-    o.history  ?= ""
-    o.point ?=
-      actaddpt:  0
-      saidcount: 0
-      saidpoint: 0
-    o.say ?=
-      say_act: 10
-      say:   1000
-      gsay:  1000
-      spsay: 1000
-      tsay:  1000
-      wsay:  1000
-      xsay:  1000
 
 
   @map_reduce (o)->

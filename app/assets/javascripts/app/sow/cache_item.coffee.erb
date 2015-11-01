@@ -21,24 +21,39 @@ deploy_samples = ->
     turns = ["main"] if is_main
 
     for turn in turns
-      data = call(turn, chr_job_id, index)
-      Mem.rule.item.merge [data] if data?
-      index += 1
-    faceno += 1
-    faceno += 1 if faceno ==  6
-    faceno += 1 if faceno == 10
+      if data = call(turn)
+        _.merge data,
+          _id: "rolelist-form--#{index}"
+          turn: turn
+          chr_job_id: chr_job_id
+          history: ""
+          point:
+            actaddpt:  0
+            saidcount: 0
+            saidpoint: 0
+          say:
+            say_act: 10
+            say:   1000
+            gsay:  1000
+            spsay: 1000
+            tsay:  1000
+            wsay:  1000
+            xsay:  1000
+
+        Mem.rule.item.merge [data]
+      index++
+    faceno++
+    faceno++ if faceno ==  6
+    faceno++ if faceno == 10
 
   faceno = 1
   index = 10
 
   for role in Mem.roles.where(group: "MOB").list()
-    deploy role, (turn, chr_job_id, index)->
+    deploy role, (turn)->
       return if "start" == turn
       mob: role._id
       enemy: "evil"
-      turn: turn
-      chr_job_id: chr_job_id
-      _id: "rolelist-form--#{index}"
       win: "NONE"
       live: "mob"
       role: ["mob"]
@@ -48,13 +63,11 @@ deploy_samples = ->
       love: null
 
   for role in Mem.roles.where(group: "LIVE").list()
-    deploy role, (turn, chr_job_id, index)->
+    deploy role, (turn)->
       return if "start" == turn
       mob: "visiter"
       enemy: "evil"
       turn: turn
-      chr_job_id: chr_job_id
-      _id: "rolelist-form--#{index}"
       win: "HUMAN"
       live: role._id
       role: ["villager"]
@@ -63,12 +76,10 @@ deploy_samples = ->
       love: null
 
   for rolename in SOW_RECORD.roles when role = Mem.roles.find(rolename)
-    deploy role, (turn, chr_job_id, index)->
+    deploy role, (turn)->
       mob: "visiter"
       enemy: "evil"
       turn: turn
-      chr_job_id: chr_job_id
-      _id: "rolelist-form--#{index}"
       win: role.win || "NONE"
       live: "live"
       role: [role._id]
@@ -79,12 +90,10 @@ deploy_samples = ->
   for rolename in SOW_RECORD.gifts when role = Mem.roles.find(rolename)
     for subrolename in ["lonewolf"]
       subrole = Mem.roles.find(subrolename)
-      deploy role, (turn, chr_job_id, index)->
+      deploy role, (turn)->
         mob: "visiter"
         enemy: "evil"
         turn: "main"
-        chr_job_id: chr_job_id
-        _id: "rolelist-form--#{index}"
         win: role.win || subrole.win || "NONE"
         live: "live"
         role: [subrolename, rolename]
