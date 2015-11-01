@@ -11,6 +11,7 @@ new Mem.Rule("action").schema ->
     unless o.index
       o.index = index += 1
     o._id = o.index
+    o.target ?= true
 
   @map_reduce (o)->
 

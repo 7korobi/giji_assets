@@ -1,6 +1,7 @@
 - index: -5
   text: に話の続きを促した。_REST_
 - index: -4
+  target: false
   text: ここまで読んだ。
 - index: -3
   text: のセキュリティ・クリアランスを引き上げた。

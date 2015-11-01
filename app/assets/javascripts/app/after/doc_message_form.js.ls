@@ -1,16 +1,7 @@
 doc.message.form = (v)->
-  formats =
-    talk: "発言"
-    memo: "メモ"
-  format_btn = (format, text)->
-    m "span.btn.edge", v.format_on(format), text
-
-  text_btn = (able, attr)->
-    m "span.btn.edge", attr.attr.choice(), able.name
-
-  act = (acttype, o)->
+  act = (mestype, o)->
     target = o.target_at o.target()
-    m ".#{acttype}.action",
+    m ".#{mestype}.action",
       m "p.text",
         m "b", face.name
         "は、"
@@ -32,42 +23,46 @@ doc.message.form = (v)->
           for {pno, job, name} in input.targets
             selected = ""
             selected = "[selected]" if input.target() == pno
-            m "option[value=#{pno}]#{selected}", "#{job} #{name}"
+            m "option[value=#{pno}]#{selected}", {key: pno}, "#{job} #{name}"
 
     vdoms = []
     if able.action
-      act_attrs =
-        onchange: m.withAttr "value", (index)->
-          input.text Mem.actions.find(index).text
+      actions = Mem.actions.list().map (act)->
+        m "option[value=#{act.index}]", "#{act.text}"
+      actions.unshift m "option[value=0]", "↓ 自由入力、または選択してください。"
+
       vdoms.push m "fieldset.text",
-        m "select.label", input.attr.target(), options
-        m "select.wrapper", act_attrs,
-          for act in Mem.actions.list()
-            m "option[value=#{act.index}]", "#{act.text}"
-        m "input.wrapper[type=text]", input.attr.text()
-        m "input.btn.edge[type=button][value=#{ able.action }]"
+        m "form", input.attr.form(),
+          m "select.label", input.attr.target(), options
+          m "select.wrapper", input.attr.action(), actions
+          m "input.wrapper[type=text]", input.attr.text()
+          m "input.btn.edge[type=submit][value=#{ able.action }]"
 
     if able.targets
-      vdoms.push m "p.text",
-        m "select.roster", input.attr.target(), options
-        "と"
-        m "select.roster", input.attr.target(), options
-        m "input.label.btn.edge[type=button][value=#{ able.targets }]"
+      vdoms.push m "form", input.attr.form(),
+        m "p.text",
+          m "select.roster", input.attr.target(), options
+          "と"
+          m "select.roster", input.attr.target(), options
+          m "input.label.btn.edge[type=submit][value=#{ able.targets }]"
 
     if able.target
-      vdoms.push m "p.text",
-        m "select.roster", input.attr.target(), options
-        m "input.label.btn.edge[type=button][value=#{ able.target }]"
+      vdoms.push m "form", input.attr.form(),
+        m "p.text",
+          m "select.roster", input.attr.target(), options
+          m "input.label.btn.edge[type=submit][value=#{ able.target }]"
 
     if able.sw
-      vdoms.push m "p.text",
-        m "select.roster", input.attr.target(), options
-        m "input.label.btn.edge[type=button][value=#{ able.sw }？]"
+      vdoms.push m "form", input.attr.form(),
+        m "p.text",
+          m "select.roster", input.attr.target(), options
+          m "input.label.btn.edge[type=submit][value=#{ able.sw }？]"
 
     if able.btn
-      vdoms.push m "p.text",
-        m "input.label.btn.edge[type=button][value=#{ able.btn }]"
-        m "span.TSAY.emboss", able.change
+      vdoms.push m "form", input.attr.form(),
+        m "p.text",
+          m "input.label.btn.edge[type=submit][value=#{ able.btn }]"
+          m "span.TSAY.emboss", able.change
 
     for msg in input.errors
       vdoms.push m ".WSAY", m ".emboss", msg
@@ -78,30 +73,9 @@ doc.message.form = (v)->
 
   chr_job = Mem.chr_jobs.find(v.chr_job_id)
   face = chr_job.face()
-
-  /*
-    function binds(data) {
-        return {onchange: function(e) {
-            data[e.target.name] = e.target.value;
-        }};
-    }
-
-    m("form", binds(ctrl.user), [
-        m("input[name=first]", {value: ctrl.user.first()}),
-        m("input[name=last]", {value: ctrl.user.last()}),
-        m("input[name=email]", {value: ctrl.user.email()}),
-        m("button", {onclick: ctrl.submit})
-    ]);
-  */
-
-  attrs =
-    key: v._id
-    onchange: (e)->
-      v.form[v.mestype][e]
-
-  m "form", attrs,
+  m "div", {key: v._id},
     m "h6", m.trust v.role_name
-    if v.mestype?
+    if form_text = Mem.form_texts.find("#{v._id}-#{v.mestype}-#{v.format}")
       m "table.#{v.mestype}.#{v.format}",
         m "tr",
           m "th",
@@ -110,16 +84,18 @@ doc.message.form = (v)->
           m "td",
             m ".msg",
               doc.message.talk_name v.name, "#{chr_job.job} #{face.name}", v.to
-              m "textarea[rows=5]", v.form[v.mestype][v.format].attr.text()
-              for format, text of formats
-                format_btn format, text
-              for o in v.texts
-                text_btn o.able, o[v.format]
+              m "form", form_text.attr.form(),
+                m "textarea[rows=5]", form_text.attr.text()
+
+              for vv in Mem.form_texts.formats(v._id, v.mestype).list()
+                m "span.btn.edge", v.format_on(vv.format), vv.format_name
+              for vv in Mem.form_texts.mestypes(v._id, v.format).list()
+                m "span.btn.edge", v.mestype_on(vv.mestype), vv.mestype_name
               m "p.mes_date"
 
 
-    if v.acttype? && "talk" == v.format
-      act v.acttype, v.form.act
+    if "talk" == v.format && form_text = Mem.form_texts.find("#{v._id}-#{v.mestype}-act")
+      act v.mestype, form_text
 
     m ".WIN_#{v.win}.info",
       m ".emboss.pull-right", m.trust v.role_name

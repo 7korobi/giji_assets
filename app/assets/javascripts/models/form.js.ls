@@ -58,42 +58,12 @@ new Mem.Rule("form").schema ->
         else
           []
 
-    text = (mestype)->
-      infos  = []
-      errors = []
-      text = m.prop("")
-      text_on = m.withAttr "value", text
+    text = (mestype, format, able)->
+      form_id = o._id
       targets = listup("near", o.live, o.mob)
-      target_hash = {}
       if mestype in <[SAY GSAY VSAY TSAY]>
         targets.push job: "―――", name: "", pno: -1
-        choice_on = ->
-          o.mestype = mestype
-          o.acttype = mestype
-      else
-        choice_on = ->
-          o.mestype = mestype
-          o.acttype = null
-
-      target_at = (value)->
-        target_hash[value]
-      for target in targets
-        target_hash[target.pno] = target
-      target = m.prop targets.last.pno
-
-      attr =
-        choice: ->
-          onmouseup:  choice_on
-          ontouchend: choice_on
-        text: ->
-          value:    text()
-          onkeyup:  text_on
-          onchange: text_on
-        target: ->
-          value:    target()
-          onchange: target_onchange(target, infos, "変えました。")
-
-      {mestype, infos, errors, target, targets, target_at, text, attr}
+      Mem.rule.form_text.merge [{form_id, mestype, format, targets, able}]
 
     input = (role, able)->
       cmd = able.cmd || role.cmd
@@ -101,6 +71,16 @@ new Mem.Rule("form").schema ->
       errors = []
       target = m.prop(-1)
       attr =
+        form: ->
+          onchange: (e)->
+            e.target.name
+            e.target.value
+            console.log [e, o]
+          onreset: (e)->
+          onsubmit: (e)->
+            console.log [e, role, able, o]
+            false
+
         target: ->
           value:    target()
           onchange: target_onchange(target, infos, able.change)
@@ -129,16 +109,14 @@ new Mem.Rule("form").schema ->
     able_scan = (role, able)->
       able_helps.push able.HELP
 
-      if able.text?
-        if able.text in <[SAY GSAY VSAY]>
-          o.form.act = text(able.text)
-          o.mestype = able.text
-          o.acttype = able.text
-        attr = o.form[able.text] ?=
-          able: able
-          memo: text(able.text)
-          talk: text(able.text)
-        o.texts.push attr
+
+      if mestype = able.text
+        if mestype in <[SAY GSAY VSAY]>
+          text mestype, "act", able
+          o.mestype = mestype
+        text mestype, "memo", able
+        text mestype, "talk", able
+        o.texts.push mestype
 
       if able.at?
         if able.at[o.turn]
@@ -152,6 +130,12 @@ new Mem.Rule("form").schema ->
     o.format_on = (format)->
       choice_on = ->
         o.format = format
+      onmouseup: choice_on
+      ontouchend: choice_on
+
+    o.mestype_on = (mestype)->
+      choice_on = ->
+        o.mestype = mestype
       onmouseup: choice_on
       ontouchend: choice_on
 
