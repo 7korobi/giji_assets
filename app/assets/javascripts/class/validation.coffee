@@ -14,20 +14,6 @@ new Mem.Rule("check").schema ->
         target: "TARGET"
         head: "HEAD"
 
-      query = all.where(type: "error", mode: mode).where (o)->
-      query.input = InputSow.new max, validate
-      query
-
-  @deploy (o)->
-
-player_talk = /(^|\/\*)(.*)(\*\/|$)/ig
-
-Mem.rule.check.merge [
-  { type: "error", chk: (o)-> ! o.text? }
-  { type: "error", chk: (o)-> o.compact_size < 4 }
-  { type: "warn", msg: "/*中の人の発言があります*/", chk: (o)-> player_talk.exec }
-]
-
 
 class InputBase
   change: (text = "")->
@@ -43,7 +29,7 @@ class InputBase
     else
       mark = "⊘"
 
-    @out = 
+    @out =
       style: "cautiontext"
       lines: _.max [5, @lines]
       error: message
@@ -55,14 +41,6 @@ class InputBase
       else
         ""
 
-  bad_input: ->
-    return true unless @text?
-    return true if @validate.is_disable
-    return true if @text.replace(/\s/g, '').sjis_length < 4
-    if @max?
-      return true if @max.size < @size
-      return true if @max.line < @lines
-    return null
 
   preview: (cb)->
     if @can_preview
@@ -73,7 +51,7 @@ class InputBase
           when "action"
             target = @validate.target
             head = @validate.head + "は、"
-            text = 
+            text =
               if 0 < @text.length
                 @text.replace(/\n$/g, '\n ')
               else
@@ -162,8 +140,3 @@ class InputSow extends InputBase
 
 
     @change()
-
-  danger_anker: ->
-    if @validate.is_open && @text.match ///>>[\=\*\!]\d+///
-      "あぶない！秘密会話へのアンカーがありますよ！"
-

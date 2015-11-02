@@ -20,14 +20,8 @@ new Mem.Rule("form_text").schema ->
     o._id = "#{o.form_id}-#{o.mestype}-#{o.format}"
     o.format_name = formats[o.format]
     o.mestype_name = Mem.ables.find(o.mestype).name
-    o.infos  = []
-    o.errors = []
-    o.text = m.prop("")
     o.target_hash = {}
-
-    text_on = m.withAttr "value", (value)->
-      o.text(value)
-      o.validate()
+    o.text = m.prop("")
 
     o.target_at = (value)->
       o.target_hash[value]
@@ -35,20 +29,22 @@ new Mem.Rule("form_text").schema ->
       o.target_hash[target.pno] = target
     o.target = m.prop o.targets.last.pno
 
-    validate = ->
     switch o.format
-      when "act"
-        validate = ->
-          console.log ["act", o.action, o.target()]
-          if o.action?.target
-            o.errors.push("対象を選んでください。")   if -1 == o.target()
-          else
-            o.errors.push("誰も選ばないでください。") if -1 != o.target()
+      when \act
+        o.max =
+          unit: 'count'
+          line: 1
+          size: 100
+      else
+        o.max =
+          unit: 'point'
+          line: 5
+          size: 100
 
-    o.validate = ->
-      o.errors = []
-      validate o.errors
-      o.valid = ! o.errors.length
+    text_on = m.withAttr "value", (value)->
+      o.text value
+      validate.talk o
+    validate.talk o
 
     o.attr =
       form: ->
@@ -66,7 +62,7 @@ new Mem.Rule("form_text").schema ->
           o.action = act
           if act
             o.text act.text
-          o.validate()
+          validate.talk o
       text: ->
         value:    o.text()
         onkeyup:  text_on
@@ -75,4 +71,4 @@ new Mem.Rule("form_text").schema ->
         value:    o.target()
         onchange: m.withAttr "value", (value)->
           o.target unpack.Number value
-          o.validate()
+          validate.talk o

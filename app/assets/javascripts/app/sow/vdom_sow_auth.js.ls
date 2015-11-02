@@ -2,8 +2,6 @@ GUI.if_exist \#sow_auth, (dom)->
   m.mount dom,
     controller: (arg)!->
       @url = gon.url
-      @errors = []
-      @infos = []
 
       refresh = (gon)!~>
         if e = gon.errors
@@ -18,10 +16,7 @@ GUI.if_exist \#sow_auth, (dom)->
         @is_login = o.is_login > 0
         @is_admin = o.is_admin > 0
 
-        if @is_login
-          @infos = ["OK."]
-        else
-          @infos = ["IDとパスワードを入力してください。"]
+        validate.sow_auth @
         Url.popstate() # read from cookie
 
       deploy gon
@@ -30,25 +25,15 @@ GUI.if_exist \#sow_auth, (dom)->
 
       @logout = ~>
         @is_loading = true
-        @errors = []
-        @infos = []
-
         Submit.get(@url, cmd: "logout")
         .then refresh
 
       @login = ~>
-        {uid, pwd} = Url.prop
-        if 1 < uid()?.length < 21 && 2 < pwd()?.length < 21
+        if validate.sow_auth @
+          {uid, pwd} = Url.prop
           @is_loading = true
-          @errors = []
-          @infos = []
-
           Submit.iframe(@url, cmd: "login", uid: uid(), pwd: pwd())
           .then refresh
-        else
-          @errors = ["IDとパスワードを入力してください。( 3〜20 byte)"]
-          @infos = []
-
 
     view: (c, args)->
       {uid, pwd} = Url.prop
@@ -72,6 +57,7 @@ GUI.if_exist \#sow_auth, (dom)->
           disabled: true
           onblur:   set
           onchange: set
+          onkeyup:  set
           value: prop()
       else
         form = (call)->
@@ -86,6 +72,7 @@ GUI.if_exist \#sow_auth, (dom)->
           set = m.withAttr("value", prop)
           onblur:   set
           onchange: set
+          onkeyup:  set
           value: prop()
 
       if c.is_login

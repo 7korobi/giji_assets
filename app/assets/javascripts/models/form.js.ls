@@ -8,12 +8,6 @@ new Mem.Rule("form").schema ->
   @default ->
 
   @deploy (o)->
-    target_onchange = (target, infos, message)->
-      m.withAttr "value", (value)->
-        target(value)
-        infos.length = 0
-        infos.push message
-
     listup = (state, live, mob)->
       option = (cb)->
         if Mem.potofs
@@ -66,33 +60,34 @@ new Mem.Rule("form").schema ->
       Mem.rule.form_text.merge [{form_id, mestype, format, targets, able}]
 
     input = (role, able)->
-      cmd = able.cmd || role.cmd
-      infos  = []
-      errors = []
       target = m.prop(-1)
-      attr =
-        form: ->
-          onchange: (e)->
-            e.target.name
-            e.target.value
-            console.log [e, o]
-          onreset: (e)->
-          onsubmit: (e)->
-            console.log [e, role, able, o]
-            false
-
-        target: ->
-          value:    target()
-          onchange: target_onchange(target, infos, able.change)
-
+      old = m.prop(-1)
       targets = listup(able.for, o.live, o.mob)
       if able.sw
         targets.push name: "", pno: o.pno || 1, job: able.sw
       if able.pass
         targets.push name: "", pno: -1, job: able.pass || "（パス）"
 
-      {cmd, infos, errors, target, targets, attr}
+      obj = {able, old, target, targets}
+      obj.cmd = able.cmd || role.cmd
+      obj.attr =
+          form: ->
+            onchange: (e)->
+              e.target.name
+              e.target.value
+              console.log [e, o]
+            onreset: (e)->
+            onsubmit: (e)->
+              console.log [e, role, able, o]
+              false
 
+          target: ->
+            value: target()
+            onchange: m.withAttr "value", (value)->
+              target value
+              validate.input obj
+      validate.input obj
+      obj
 
     role_scan = (role_id, can_use)->
       role = Mem.roles.find role_id

@@ -73,19 +73,5 @@ new Mem.Rule("writer").schema ->
 
 
 new Mem.Rule("history").schema ->
-  point = (size)->
-    pt = 20
-    pt += (size - 50)/14 if 50 < size
-    Math.floor pt
-
   @deploy (o)->
-    o.text = o.text.replace(/\n$/g, '\n ')
     o._id = JSON.stringify [o.form._id, o.text]
-
-    o.compact = o.text.replace(/\s/g, '')
-    o.compact_size = o.compact.sjis_length
-
-    o.lines = o.text.split("\n").length
-    o.size = o.text.sjis_length
-
-    o.point = point o.size
