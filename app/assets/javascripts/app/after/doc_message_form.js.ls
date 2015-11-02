@@ -27,9 +27,9 @@ doc.message.form = (v)->
 
     vdoms = []
     if able.action
-      actions = Mem.actions.list().map (act)->
-        m "option[value=#{act.index}]", "#{act.text}"
-      actions.unshift m "option[value=0]", "↓ 自由入力、または選択してください。"
+      actions = Mem.actions.for_form(mestype, format).list().map (act)->
+        m "option[value=#{act.index}]", {key: act.index}, "#{act.text}"
+      actions.unshift m "option[value=0]", {key: 0}, "↓ 自由入力、または選択してください。"
 
       vdoms.push m "fieldset.text",
         m "form", input.attr.form(),

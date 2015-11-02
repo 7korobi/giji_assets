@@ -3,6 +3,8 @@ new Mem.Rule("action").schema ->
   @order "index"
 
   @scope (all)->
+    for_form: (mestype, format)->
+      all
 
   @default ->
 

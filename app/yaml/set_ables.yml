@@ -283,7 +283,7 @@ snatch:
 
 
 gm_droop:
-  target: 参加者として死なせる
+  target: すぐに墓下へ
   pass: ―――
   change: 参加者として死なせる相手を選択してください。
   for: gm_live
@@ -292,7 +292,7 @@ gm_droop:
   HELP: |-
 
 gm_live:
-  target: 参加者として生かす
+  target: すぐに表舞台へ
   pass: ―――
   change: 参加者として蘇生させる相手を選択してください。
   for: gm_dead

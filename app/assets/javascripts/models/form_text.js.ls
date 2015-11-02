@@ -47,7 +47,7 @@ new Mem.Rule("form_text").schema ->
 
     o.validate = ->
       o.errors = []
-      validate()
+      validate o.errors
       o.valid = ! o.errors.length
 
     o.attr =
@@ -58,7 +58,7 @@ new Mem.Rule("form_text").schema ->
           console.log [e, o]
         onreset: (e)->
         onsubmit: (e)->
-          console.log [e, role, able, o]
+          console.log [e, o]
           false
       action: ->
         onchange: m.withAttr "value", (index)->
