@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/7korobi/livescript-source.git
-  revision: 7fe7aded35bc383d1ef5975c3e246d109fc9996c
+  revision: 08df3efc7d0a6b0eabcdc2de3380909baa3524ce
   specs:
     livescript-source (1.2.0)
 
@@ -43,18 +43,18 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.3)
-    aws-sdk (2.1.19)
-      aws-sdk-resources (= 2.1.19)
-    aws-sdk-core (2.1.19)
+    aws-sdk (2.1.35)
+      aws-sdk-resources (= 2.1.35)
+    aws-sdk-core (2.1.35)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.1.19)
-      aws-sdk-core (= 2.1.19)
+    aws-sdk-resources (2.1.35)
+      aws-sdk-core (= 2.1.35)
     bourbon (3.2.4)
       sass (~> 3.2)
       thor
-    bson (1.12.3)
-    bson_ext (1.12.3)
-      bson (~> 1.12.3)
+    bson (1.12.4)
+    bson_ext (1.12.4)
+      bson (~> 1.12.4)
     builder (3.2.2)
     capistrano (3.4.0)
       i18n
@@ -72,13 +72,12 @@ GEM
     execjs (2.6.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
-    hashie (3.4.2)
+    hashie (3.4.3)
     hike (1.2.3)
     i18n (0.7.0)
-    jmespath (1.0.2)
-      multi_json (~> 1.0)
+    jmespath (1.1.3)
     json (1.8.3)
-    libv8 (3.16.14.11)
+    libv8 (3.16.14.13)
     livescript (2.2.0)
       execjs
       livescript-source
@@ -91,19 +90,20 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    mime-types (2.6.1)
-    mini_portile (0.6.2)
-    minitest (5.8.0)
+    mime-types (2.6.2)
+    mini_portile (0.7.0.rc4)
+    minitest (5.8.2)
     multi_json (1.11.2)
     neat (1.5.1)
       bourbon (>= 3.1)
       sass (~> 3.2.19)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
-    net-ssh (2.9.2)
-    nokogiri (1.6.6.2)
-      mini_portile (~> 0.6.0)
-    pg (0.18.2)
+    net-ssh (3.0.1)
+    nokogiri (1.6.7.rc3-x64-mingw32)
+      mini_portile (~> 0.7.0.rc4)
+    pg (0.18.3)
+    pg (0.18.3-x64-mingw32)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -152,11 +152,12 @@ GEM
       multi_json (~> 1.0)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
-    sprockets-rails (2.3.2)
+    sprockets-rails (2.3.3)
       actionpack (>= 3.0)
       activesupport (>= 3.0)
       sprockets (>= 2.8, < 4.0)
-    sqlite3 (1.3.10)
+    sqlite3 (1.3.11)
+    sqlite3 (1.3.11-x64-mingw32)
     sshkit (1.7.1)
       colorize (>= 0.7.0)
       net-scp (>= 1.1.2)
@@ -170,6 +171,8 @@ GEM
     tilt (1.4.1)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    tzinfo-data (1.2015.7)
+      tzinfo (>= 1.0.0)
     uglifier (2.7.2)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
@@ -177,6 +180,7 @@ GEM
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   aws-sdk
@@ -190,6 +194,7 @@ DEPENDENCIES
   livescript-source!
   mime-types
   neat
+  nokogiri (= 1.6.7.rc3)
   pg
   rails (~> 4.2.0)
   rails_12factor
@@ -198,6 +203,7 @@ DEPENDENCIES
   sqlite3
   therubyracer
   thor
+  tzinfo-data
   uglifier (>= 1.3.0)
   yajl-ruby
 
