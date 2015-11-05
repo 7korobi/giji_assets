@@ -1,8 +1,13 @@
 source 'https://rubygems.org'
 ruby "2.2.3"
 
-gem "nokogiri", "=1.6.7.rc3", platforms: [:x64_mingw]
-gem "tzinfo-data", platforms: [:x64_mingw]
+case RUBY_PLATFORM
+when :mswin, :mingw, :x64_mingw
+  gem "nokogiri", "= 1.6.7.rc3"
+else
+  gem "nokogiri", ">= 1.6.6"
+end
+gem "tzinfo-data", platforms: %i[mswin mingw x64_mingw]
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

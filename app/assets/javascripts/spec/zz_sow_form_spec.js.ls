@@ -26,5 +26,5 @@ describe "(sow) Mem.forms" (...)!->
 
   describe "can input text" (...)!->
     for_all_forms (form)->
-      expect(form.form).to.contain.all.keys "TSAY"
-      expect(form.form).to.contain.any.keys "SAY", "GSAY"
+      expect(Mem.form_texts.where(form_id: form._id, mestype: "TSAY").pluck("format")).to.include.members ["memo", "talk"]
+      expect(Mem.form_texts.where(form_id: form._id, mestype: <[SAY GSAY]>).pluck("format")).to.include.members ["act", "memo", "talk"]
