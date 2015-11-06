@@ -249,4 +249,4 @@ win.on.scroll_end.push Layout.move
 win.on.resize.push Layout.move
 win.deploy()
 
-expect = chai.expect
+@expect = chai.expect

@@ -1,18 +1,19 @@
-GUI = (->
-  names_base = (name)->
-    (list, cb)->
-      hash = {}
-      for key in list
-        hash[key] ||= 0
-        hash[key] += 1
+names_base = (name)->
+  (list, cb)->
+    hash = {}
+    for key in list
+      hash[key] ||= 0
+      hash[key] += 1
 
-      order = Object.keys(hash).sort (a,b)-> hash[b] - hash[a]
-      for key in order
-        cb name(key), hash[key]
+    order = Object.keys(hash).sort (a,b)-> hash[b] - hash[a]
+    for key in order
+      cb name(key), hash[key]
 
-  name_config = (o)->
-      Mem.roles.find(o)?.name || Mem.traps.find(o)?.name || o || ""
+name_config = (o)->
+    Mem.roles.find(o)?.name || Mem.traps.find(o)?.name || o || ""
 
+
+@GUI =
   img_head: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images"
   portrate: (face_id, attr = {})->
     attr.src = GUI.img_head + "/portrate/#{face_id}.jpg"
@@ -38,7 +39,6 @@ GUI = (->
     for elem in parent.querySelectorAll query
       data = attr && unpack.Array elem.attributes[attr]?.value
       cb.apply(elem, data)
-
 
   attrs_to: (parent, query, base_attrs, cb)->
     vdom = m query
@@ -235,4 +235,3 @@ GUI = (->
       cb o, i
 
     m "dl.accordion", win.scroll.mark(mark), items
-)()

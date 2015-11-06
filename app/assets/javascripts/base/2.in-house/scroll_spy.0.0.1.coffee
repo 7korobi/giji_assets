@@ -5,7 +5,7 @@ http://github.com/7korobi/---
 License: MIT
 ///
 
-class ScrollSpy
+class @ScrollSpy
   @elems = {}
 
   @go: (id, offset)=>

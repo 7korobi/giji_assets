@@ -36,8 +36,10 @@ namespace :build do
   desc "asset compile"
   task :asset do
     run_locally do
+      branch = `git rev-parse --abbrev-ref HEAD`.chomp
       execute "rake assets:precompile"
-      execute "rm /www/giji_assets/public/*/manifest-*.json"
+      execute "rm public/*/.sprockets-manifest-*.json public/assets-#{branch}/*.gz || echo 'skip removing.'"
+      execute "gzip -9fk public/assets-#{branch}/*"
     end
   end
 end
@@ -80,12 +82,14 @@ namespace :rsync do
     end
     manifest = "public/giji.appcache"
     appends |= [manifest]
+
+    caches = locals.map {|path| path.gsub(/^public\//, "") }.grep /^(assets-|font|images)/
     File.open(manifest, "w") do |f|
       f.puts(<<-_TEXT_)
 CACHE MANIFEST
 # timer #{Time.now}
       _TEXT_
-      f.puts locals.map {|path| path.gsub(/^public\//, "") } - %w[giji.appcache]
+      f.puts caches - %w[giji.appcache]
     end
 
     deletes = remotes - locals
