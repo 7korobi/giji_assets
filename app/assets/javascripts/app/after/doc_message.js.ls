@@ -24,7 +24,46 @@ identity_action = (o)->
       doc.delegate.tap_identity(o.turn, o.logid, o._id)
 
 
-doc.message = do ->
+ext =
+  say_base: (v, ...timer)->
+    m "table.#{v.mestype}.talk", {key: v._id},
+      m "tr",
+        m "th",
+          GUI.portrate v.face_id
+
+        m "td",
+          m ".msg",
+            ext.talk_name v.user_id, v.name, v.to
+            ext.talk_text v._id, v.style, v.log
+            m "p.mes_date", timer
+
+  action_text: (by_id, name, style, text)->
+    m "p.text.#{style}", deco_action(by_id),
+      m "b", m.trust name
+      "は、"
+      m "span",
+        m.trust text.deco_text
+
+  talk_name: (user_id, name, to)->
+    if to
+      m "p.name.center",
+        m "b.pull-left", m.trust "#{name}"
+        m "b", "▷"
+        m "b.pull-right", m.trust "#{to}"
+    else
+      m "p.name",
+        m "b", m.trust name
+        m ".emboss.pull-right", user_id
+
+  talk_text: (by_id, style, text)->
+    m "p.text.#{style}", deco_action(by_id),
+      m.trust text.deco_text
+
+
+
+doc.message =
+  ext: ext
+
   toc: (o)->
 
   helps: (t)->
@@ -162,31 +201,69 @@ doc.message = do ->
 
     m ".MAKER.guide", {key: "STORY-TEXT"},
       m "p.name", m "b", story.name
-      doc.message.talk_text o._id, "head", story.comment
+      ext.talk_text o._id, "head", story.comment
 
       m "span.mes_date.pull-right",
         "managed by "
         m ".emboss", story.user_id
       m "hr.black"
 
+  story_spines: (v)->
+    header = m "div",
+      m "a",
+        href: "http://giji.check.jp#{v.link}"
+      , m "code.icon-download"
+      m "a",
+        href: "http://7korobi.gehirn.ne.jp/stories/#{v._id}.html"
+      , m "code.icon-download"
+      m "kbd.note",
+        v._id
+      m "a",
+        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{v._id}"
+      , m.trust v.name
+      m "kbd",
+        v.view.rating
+
+    m "tr", {key: v._id },
+      if menu.icon.state() == "resize-full"
+        m "td",
+          header
+          m "table.detail",
+            m "tbody",
+              m "tr",
+                m "th", "更新"
+                m "td", "#{v.view.update_at} #{v.view.update_interval}"
+              m "tr",
+                m "th", "規模"
+                m "td", "#{v.view.player_length}人 #{v.view.say_limit}"
+              m "tr",
+                m "th", "ルール"
+                m "td", "#{v.view.game_rule}"
+          m ".list", v.view.role_cards
+          m ".list", v.view.trap_cards
+
+      else
+        m "td",
+          header
+
   xxx: (v)->
     m "div", {key: v._id}, ".U.C #{v._id}"
 
   info: (v)->
     m ".#{v.mestype}.info", {key: v._id},
-      doc.message.talk_text v._id, "", v.log
+      ext.talk_text v._id, "", v.log
 
   guide: (v)->
     m ".#{v.mestype}.guide", {key: v._id},
-      doc.message.talk_name v.user_id, v.name, v.to
-      doc.message.talk_text v._id, v.style, v.log
+      ext.talk_name v.user_id, v.name, v.to
+      ext.talk_text v._id, v.style, v.log
       m "p.mes_date",
         m "span.emboss", identity_action(v), v.anchor
         GUI.timer "span", v
 
   action: (v)->
     m ".#{v.mestype}.action", {key: v._id},
-      doc.message.action_text v._id, v.name, v.style, v.log
+      ext.action_text v._id, v.name, v.style, v.log
       m "p.mes_date",
         GUI.timer "span", v
 
@@ -197,49 +274,15 @@ doc.message = do ->
           GUI.portrate v.face_id
           m "div", m "b", v.name
         m "td",
-          doc.message.talk_text v._id, v.style, v.log
+          ext.talk_text v._id, v.style, v.log
           m "p.mes_date",
             GUI.timer "span", v
 
   talk: (v)->
-    doc.message.say_base v,
+    ext.say_base v,
       m "span.emboss", identity_action(v), v.anchor
       GUI.timer "span", v
 
   history: (v)->
-    doc.message.say_base v,
+    ext.say_base v,
       m "span.mark", v.anchor
-
-  say_base: (v, ...timer)->
-    m "table.#{v.mestype}.talk", {key: v._id},
-      m "tr",
-        m "th",
-          GUI.portrate v.face_id
-
-        m "td",
-          m ".msg",
-            doc.message.talk_name v.user_id, v.name, v.to
-            doc.message.talk_text v._id, v.style, v.log
-            m "p.mes_date", timer
-
-  action_text: (by_id, name, style, text)->
-    m "p.text.#{style}", deco_action(by_id),
-      m "b", m.trust name
-      "は、"
-      m "span",
-        m.trust text.deco_text
-
-  talk_name: (user_id, name, to)->
-    if to
-      m "p.name.center",
-        m "b.pull-left", m.trust "#{name}"
-        m "b", "▷"
-        m "b.pull-right", m.trust "#{to}"
-    else
-      m "p.name",
-        m "b", m.trust name
-        m ".emboss.pull-right", user_id
-
-  talk_text: (by_id, style, text)->
-    m "p.text.#{style}", deco_action(by_id),
-      m.trust text.deco_text

@@ -7,6 +7,8 @@ export doc =
     tap_random:   -> console.log arguments
     tap_external: -> console.log arguments
 
+  user: {}
+
   seeing: {}
   seeing_add: (id, sec)->
     doc.seeing[id] = (doc.seeing[id] || 0) + sec

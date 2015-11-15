@@ -6,23 +6,6 @@ doc.message.form = (v)->
       for msg in o.infos
         m ".TSAY", m ".emboss", msg
 
-  act = (mestype, o)->
-    target = o.target_at o.target()
-    vdom = []
-    vdom.push m ".#{mestype}.action",
-      m "p.text",
-        m "b", face.name
-        "は、"
-        target.name
-        o.text()
-      m "p.mes_date",
-        o.summary
-    vdom.push m ".#{mestype}.action",
-      m "p.text",
-        select o, action: "ACT"
-      error_and_info o
-    vdom
-
   select = (input, able)->
     selected = (prop, val)->
       if val == prop()
@@ -93,24 +76,34 @@ doc.message.form = (v)->
               m "span.btn.edge", v.mestype_on(vv.mestype), vv.mestype_name
 
     if form_text = Mem.form_texts.find("#{v._id}-#{v.mestype}-#{v.format}")
-      m "table.#{v.mestype}.#{v.format}",
-        m "tr",
-          m "th",
-            GUI.portrate face._id
-
-          m "td",
-            m ".msg",
-              doc.message.talk_name v.name, "#{chr_job.job} #{face.name}", v.to
-              m "form", form_text.attr.form(),
-                m "textarea[rows=5]", form_text.attr.text()
-              m "p.mes_date",
-                form_text.summary
-            m ".msg",
-              error_and_info form_text
-
-
-    if "talk" == v.format && form_text = Mem.form_texts.find("#{v._id}-#{v.mestype}-act")
-      act v.mestype, form_text
+      switch v.format
+      when "act"
+        target = form_text.target_at form_text.target()
+        m ".#{v.mestype}.action",
+          m "p.text",
+            m "b", face.name
+            "は、"
+            target.name
+            form_text.text()
+          m "p.mes_date",
+            form_text.summary
+          m "p.text",
+            select form_text, action: "ACT"
+          error_and_info form_text
+      else
+        m "table.#{v.mestype}.#{v.format}",
+          m "tr",
+            m "th",
+              GUI.portrate face._id
+            m "td",
+              m ".msg",
+                doc.message.ext.talk_name v.name, "#{chr_job.job} #{face.name}", v.to
+                m "form", form_text.attr.form(),
+                  m "textarea[rows=5]", form_text.attr.text()
+                m "p.mes_date",
+                  form_text.summary
+              m ".msg",
+                error_and_info form_text
 
     m ".WIN_#{v.win}.info",
       m ".emboss.pull-right", m.trust v.role_name

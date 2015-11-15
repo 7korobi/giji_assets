@@ -2,6 +2,7 @@ new Mem.Rule("form_text").schema ->
   formats =
     talk: "発言"
     memo: "メモ"
+    act: "アクション"
 
   @belongs_to "form"
 

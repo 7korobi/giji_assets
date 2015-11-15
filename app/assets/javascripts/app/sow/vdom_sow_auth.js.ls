@@ -13,8 +13,8 @@ GUI.if_exist \#sow_auth, (dom)->
       deploy = (gon)!~>
         o = gon.sow_auth
         return unless o
-        @is_login = o.is_login > 0
-        @is_admin = o.is_admin > 0
+        doc.user.is_login = o.is_login > 0
+        doc.user.is_admin = o.is_admin > 0
 
         validate.sow_auth @
         Url.popstate() # read from cookie
@@ -34,6 +34,7 @@ GUI.if_exist \#sow_auth, (dom)->
           @is_loading = true
           Submit.iframe(@url, cmd: "login", uid: uid(), pwd: pwd())
           .then refresh
+      doc.user
 
     view: (c, args)->
       {uid, pwd} = Url.prop
@@ -75,7 +76,7 @@ GUI.if_exist \#sow_auth, (dom)->
           onkeyup:  set
           value: prop()
 
-      if c.is_login
+      if doc.user.is_login
         m "form", form(c.logout),
           m ".paragraph",
             unless c.is_loading
