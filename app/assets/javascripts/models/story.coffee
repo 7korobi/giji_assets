@@ -14,6 +14,19 @@ new Mem.Rule("story").schema ->
         tf &&= _.find(o.view.event_types, (v)-> v == event_type) if event_type != "all"
         tf
 
+    playing: ->
+      all.where(mode: "playing")
+
+    prologue: ->
+      all.where(mode: "prologue")
+
+    oldlog: ->
+      all.where(mode: "oldlog")
+
+    dispose: ->
+      all.where(mode: "dispose")
+
+
   caption = (field, key)->
     data = field[key]
     if data
@@ -58,6 +71,7 @@ new Mem.Rule("story").schema ->
           else
             m ".emboss", "#{name}"
       say_limit: RAILS.saycnt[   o.type.say ]?.CAPTION || "――"
+      say_limit_help: RAILS.saycnt[   o.type.say ]?.HELP || "――"
       game_rule: RAILS.game_rule[o.type.game]?.CAPTION || "タブラの人狼"
 
     o.search_words = o.name
