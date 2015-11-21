@@ -60,7 +60,7 @@ class Crs < Thor
     def to_s
       render_exec
       result = @content_for_layout
-      result = result.gsub(/[✡]/) do |chr| 
+      result = result.gsub(/[✡]/) do |chr|
         "&#x#{chr.ord.to_s(16)};"
       end
       result = result.gsub(/[—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/) do |chr|
@@ -77,7 +77,7 @@ class Crs < Thor
 
   class TagCreate < WebHtml
     def activate
-      @tags = RAILS.tag
+      @tags = RAILS_TAG
 
       @rhtml_content = "./app/views/sow/tag.pl.erb"
       result = to_s
@@ -134,19 +134,19 @@ class Crs < Thor
       @orders = faces.sort_by(&:order)
       @lists  = faces.sort_by(&:face_id)
       @tag_names = {
-        "all" => RAILS.tag.all.name
+        "all" => RAILS_TAG.all.name
       }
       @chr_orders = {
         "all" => @orders.map(&:face_id)
       }
       @orders.each do |face|
         face.tags.each do |tag|
-          next unless RAILS.tag[tag].chr_set_ids.any? {|csid| @csid[csid] }
-          @tag_names[tag] = RAILS.tag[tag].name
+          next unless RAILS_TAG[tag].chr_set_ids.any? {|csid| @csid[csid] }
+          @tag_names[tag] = RAILS_TAG[tag].name
           @chr_orders[tag] = (@chr_orders[tag] || []) + [face.face_id]
         end
       end
-      @tag_order = RAILS.tag.keys.select {|tag| @chr_orders[tag] }
+      @tag_order = RAILS_TAG.keys.select {|tag| @chr_orders[tag] }
       @tag_order.shift if @csid != "all"
 
       @rhtml_content = "./app/views/sow/crs.pl.erb"

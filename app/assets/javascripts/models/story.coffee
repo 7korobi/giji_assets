@@ -44,6 +44,8 @@ new Mem.Rule("story").schema ->
 
     o.type.game ?= "TABULA"
     o.type.mob  ?= "visiter"
+
+    o.evil ||= Mem.conf.folder[o.folder].story.evil
     o.view =
       rating:
         m "img",
@@ -70,9 +72,9 @@ new Mem.Rule("story").schema ->
             m ".emboss", "#{name}x#{size}"
           else
             m ".emboss", "#{name}"
-      say_limit: RAILS.saycnt[   o.type.say ]?.CAPTION || "――"
-      say_limit_help: RAILS.saycnt[   o.type.say ]?.HELP || "――"
-      game_rule: RAILS.game_rule[o.type.game]?.CAPTION || "タブラの人狼"
+      say_limit: Mem.conf.say[   o.type.say ]?.CAPTION || "――"
+      say_limit_help: Mem.conf.say[   o.type.say ]?.HELP || "――"
+      game_rule: Mem.conf.rule[o.type.game]?.CAPTION || "タブラの人狼"
 
     o.search_words = o.name
 

@@ -1,0 +1,24 @@
+config = (key)->
+  ->
+    @scope (all)->
+
+    @default ->
+
+    @deploy (o)->
+      o["#{key}_id"] = o._id
+
+    @map_reduce (o)->
+
+
+
+Mem.conf = {}
+
+<%
+  regexp = /^CONF_(.+)/
+  Kernel.constants.grep(regexp).each do |const|
+  key = const.to_s.match(regexp)[1].downcase
+ %>
+new Mem.Rule("<%= key %>").schema config("<%= key %>")
+Mem.rule.<%= key %>.set <%= JSON.generate Kernel.const_get(const) %>
+Mem.conf.<%= key %> = Mem.<%= key %>s.hash()
+<% end %>

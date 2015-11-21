@@ -1,0 +1,209 @@
+all:
+  name: すべて
+  long: 「人狼議事 ちゃんぷる」のキャラクター
+  chr_set_ids:
+    - all
+
+giji:
+  name: 人狼議事
+  long: 「人狼議事」のキャラクター
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+shoji:
+  name: てやんでえ
+  long: 「和の国てやんでえ」のキャラクター
+  chr_set_ids:
+    - all
+    - wa
+
+travel:
+  name: 帰還者議事
+  long: 「帰還者議事」のキャラクター
+  chr_set_ids:
+    - all
+    - time
+
+stratos:
+  name: 明後日への道標
+  long: 「明後日への道標」のキャラクター
+  chr_set_ids:
+    - all
+    - SF
+
+myth:
+  name: はおうのひろば
+  long: 「はおうのひろば」のキャラクター
+  chr_set_ids:
+    - all
+    - changed
+
+asia:
+  name: 大陸議事
+  long: 「大陸議事」のキャラクター
+  chr_set_ids:
+    - all
+    - ger
+
+marchen:
+  name: 狂騒議事
+  long: 「狂騒議事」のキャラクター
+  chr_set_ids:
+    - all
+    - mad
+
+kid:
+  name: (児童)
+  long: 児童のキャラクター
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+young:
+  name: (若者)
+  long: 若者のキャラクター
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+middle:
+  name: (中年)
+  long: 中年のキャラクター
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+elder:
+  name: (老人)
+  long: 老人のキャラクター
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+
+river:
+  name: -運河-
+  long: 往く人来る人休む人
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+road:
+  name: -往来-
+  long: 往く人来る人休む人
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+immoral:
+  name: -裏道-
+  long: 街灯の裏の背徳達
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+
+guild:
+  name: -商工会-
+  long: 商人と職人の集うギルド
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+elegant:
+  name: -舞踏会-
+  long: 瀟洒な館の舞踏会
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+ecclesia:
+  name: -公教会-
+  long: 信仰と道徳と学識の源泉
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+
+medical:
+  name: -施療院-
+  long: 病苦毒霊と戦う砦
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+market:
+  name: -歌劇酒場-
+  long: 芸の極みに華が咲く
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+apartment:
+  name: -自室の窓-
+  long: 窓から外を眺めると
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+servant:
+  name: -使用人-
+  long: 良家を支えるスタッフ
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+farm:
+  name: -森の農場-
+  long: 森に接する田畑
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+government:
+  name: -統治公共-
+  long: 所領を治める権能者
+  chr_set_ids:
+    - all
+    - animal
+    - school
+    - ririnra
+
+god:
+  name: -かみさま-
+  long: かみさま
+  chr_set_ids:
+    - all

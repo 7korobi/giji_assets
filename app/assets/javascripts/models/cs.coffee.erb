@@ -22,7 +22,7 @@ new Mem.Rule("face").schema ->
         counts[names.length].push "<#{key}>#{names.join(" ")}"
       counts
 
-  item = 
+  item =
     count: 1
   @map_reduce (o, emit)->
     emit "all", "all", item
@@ -69,18 +69,15 @@ new Mem.Rule("chr_job").schema ->
 Mem.rule.face.set <%= JSON.generate FACE %>
 
 
-<%
-%i[CS_GER CS_MAD CS_SCHOOL CS_SF CS_TIME CS_WA CS_RIRINRA  CS_ANIMAL CS_CHANGED  CS_ALL].each do |const|
+<% %i[CS_GER CS_MAD CS_SCHOOL CS_SF CS_TIME CS_WA CS_RIRINRA  CS_ANIMAL CS_CHANGED  CS_ALL].each do |const|
   data = Kernel.const_get( const )
  %>
 Mem.rule.chr_set.merge [<%= JSON.generate(data.chr_set) %>]
 Mem.rule.chr_npc.merge <%=  JSON.generate(data.chr_npc) %>
 Mem.rule.chr_job.merge <%=  JSON.generate(data.chr_job) %>
-<%
-end
-%>
+<% end %>
 
-list = 
+list =
   for face in Mem.faces.list()
     chr_set_id = "all"
     face_id = face._id

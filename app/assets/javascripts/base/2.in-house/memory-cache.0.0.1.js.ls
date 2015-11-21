@@ -1,5 +1,5 @@
 /*
-Mem v0.0.1
+Mem v0.0.2
 http://github.com/7korobi/---
 (c) 7korobi
 License: MIT
@@ -94,6 +94,7 @@ class Mem.Query
     delete @_reduce
     delete @_list
     delete @_hash
+    delete @_memory
 
   reduce: ->
     @finder.calculate(@) unless @_reduce?
@@ -107,16 +108,19 @@ class Mem.Query
     @finder.calculate(@) unless @_hash?
     @_hash
 
+  memory: ->
+    @finder.calculate(@) unless @_memory?
+    @_memory
+
   ids: ->
-    @finder.calculate(@) unless @_hash?
-    Object.keys @_hash
+    Object.keys @memory()
 
   find: (id)->
-    @hash()[id]?.item
+    @hash()[id]
 
   finds: (ids)->
     for id in ids when o = @hash()[id]
-      o.item
+      o
 
   pluck: (...keys)->
     @list().map do
@@ -134,13 +138,14 @@ class Mem.Query
 class Mem.Finder
   (@sort_by)->
     all = new Mem.Query @, [], false, @sort_by
-    all._hash = {}
+    all._memory = {}
     @scope = {all}
     @query = {all}
 
   rehash: (rules, diff)->
     delete @query.all._reduce
     delete @query.all._list
+    delete @query.all._hash
     @query =
       all: @query.all
 
@@ -170,7 +175,7 @@ class Mem.Finder
 
     # map_reduce
     base = {}
-    for id, {item, emits} of query._hash
+    for id, {item, emits} of query._memory
       for [keys, last, map] in emits
         o = base
         for key in keys
@@ -223,15 +228,16 @@ class Mem.Finder
         o[target]
 
   calculate_list: (query, all)->
-    if query._hash == all
+    if query._memory == all
       deploy = (id, o)->
-        o.item
+        query._hash[id] = o.item
     else
-      query._hash = {}
+      query._memory = {}
       deploy = (id, o)->
-        query._hash[id] = o
-        o.item
+        query._memory[id] = o
+        query._hash[id] = o.item
 
+    query._hash = {}
     query._list =
       for id, o of all
         for filters in query.filters
@@ -241,7 +247,7 @@ class Mem.Finder
         deploy(id, o)
 
   calculate: (query)->
-    @calculate_list query, @query.all._hash
+    @calculate_list query, @query.all._memory
     if query._list.length && @map_reduce?
       @calculate_reduce query
       if query._distinct?
@@ -303,7 +309,7 @@ class Mem.Rule
 
       order: (order)~>
         query = @finder.query.all.sort false, order
-        query._hash = @finder.query.all._hash
+        query._memory = @finder.query.all._memory
         Mem[@list_name] = @finder.query.all = query
 
       protect: (...keys)~>
@@ -323,7 +329,7 @@ class Mem.Rule
   set_base: (mode, from, parent)->
     finder = @finder
     diff = finder.diff
-    all = finder.query.all._hash
+    all = finder.query.all._memory
 
     deployer =
       if @__proto__?
@@ -393,8 +399,8 @@ class Mem.Rule
 
   set: (list, parent)->
     @finder.diff = {}
-    for key, val of @finder.query.all._hash
-      @finder.query.all._hash = {}
+    for key, val of @finder.query.all._memory
+      @finder.query.all._memory = {}
       @finder.diff.del = true
       break
     @set_base "merge", list, parent

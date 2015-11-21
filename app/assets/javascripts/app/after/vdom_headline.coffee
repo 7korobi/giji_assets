@@ -1,11 +1,11 @@
 head_menu = (state)->
-  max_vage    = GAME.PERJURY.config.cfg.MAX_VILLAGES
-  max_crazy   = GAME.CRAZY  .config.cfg.MAX_VILLAGES
-  max_xebec   = GAME.XEBEC  .config.cfg.MAX_VILLAGES
-  max_ciel    = GAME.CIEL   .config.cfg.MAX_VILLAGES
-  max_cafe    = GAME.CABALA .config.cfg.MAX_VILLAGES
-  max_pan     = GAME.PAN    .config.cfg.MAX_VILLAGES
-  max_morphe  = GAME.MORPHE .config.cfg.MAX_VILLAGES
+  max_vage    = Mem.conf.folder.PERJURY.config.cfg.MAX_VILLAGES
+  max_crazy   = Mem.conf.folder.CRAZY  .config.cfg.MAX_VILLAGES
+  max_xebec   = Mem.conf.folder.XEBEC  .config.cfg.MAX_VILLAGES
+  max_ciel    = Mem.conf.folder.CIEL   .config.cfg.MAX_VILLAGES
+  max_cafe    = Mem.conf.folder.CABALA .config.cfg.MAX_VILLAGES
+  max_pan     = Mem.conf.folder.PAN    .config.cfg.MAX_VILLAGES
+  max_morphe  = Mem.conf.folder.MORPHE .config.cfg.MAX_VILLAGES
   max_all     = ( max_vage + max_crazy + max_xebec + max_ciel )
   max_all    += ( max_cafe + max_morphe )
 
@@ -36,7 +36,7 @@ head_menu = (state)->
         m "tr",
           m "td",
             m "a",
-              href: GAME.LOBBY.config.cfg.URL_SW + "/sow.cgi"
+              href: Mem.conf.folder.LOBBY.config.cfg.URL_SW + "/sow.cgi"
             , "lobby"
             m "br"
             "offparty"
@@ -44,12 +44,12 @@ head_menu = (state)->
           m "td",
             "#{max_morphe}村:"
             m "a",
-              href: GAME.MORPHE.config.cfg.URL_SW + "/sow.cgi"
+              href: Mem.conf.folder.MORPHE.config.cfg.URL_SW + "/sow.cgi"
             , "morphe"
             m "br"
             "#{max_cafe}村:"
             m "a",
-              href: GAME.CABALA.config.cfg.URL_SW + "/sow.cgi"
+              href: Mem.conf.folder.CABALA.config.cfg.URL_SW + "/sow.cgi"
             , "cafe"
 
           m "td",
@@ -66,22 +66,22 @@ head_menu = (state)->
             m "br"
             "#{max_vage}村:"
             m "a",
-              href: GAME.PERJURY.config.cfg.URL_SW + "/sow.cgi"
+              href: Mem.conf.folder.PERJURY.config.cfg.URL_SW + "/sow.cgi"
             , "perjury"
             m "br"
             "#{max_xebec}村:"
             m "a",
-              href: GAME.XEBEC.config.cfg.URL_SW + "/sow.cgi"
+              href: Mem.conf.folder.XEBEC.config.cfg.URL_SW + "/sow.cgi"
             , "xebec"
             m "br"
             "#{max_crazy}村:"
             m "a",
-              href: GAME.CRAZY.config.cfg.URL_SW + "/sow.cgi"
+              href: Mem.conf.folder.CRAZY.config.cfg.URL_SW + "/sow.cgi"
             , "crazy"
             m "br"
             "#{max_ciel}村:"
             m "a",
-              href: GAME.CIEL.config.cfg.URL_SW + "/sow.cgi"
+              href: Mem.conf.folder.CIEL.config.cfg.URL_SW + "/sow.cgi"
             , "ciel"
     if "finish" == state()
       m "tbody",
@@ -172,11 +172,23 @@ GUI.if_exist "#to_root", (dom)->
 
         m.redraw()
         12*hour - zone % (12*hour)
+
+      win.on.resize.push =>
+        width = document.querySelector("#contentframe").offsetWidth
+
+        @content_width = width
+        @h1_width = 770
+        @h1_width = 580 if width <= 580
+        @h1_width = 458 if width <= 458
+        @right_width = switch Url.prop.layout()
+          when "right"  then 0
+          when "center" then (win.width - width - 4) / 2
+          when "left"   then (win.width - width - 4)
+
       return
 
     view: (c)->
-      width = Url.prop.h1_width?()
-      width?= 458
-      m "a",
-        href: "//giji.check.jp/"
-        GUI.title width, Url.prop.theme(), c.day_or_night
+      theme = Mem.conf.theme[Url.prop.theme()]
+      m 'a[href="//giji.check.jp/"]',
+        m "img",
+          src: GUI.img_head + "/banner/title#{c.h1_width}" + theme.width[c.h1_width][c.day_or_night]

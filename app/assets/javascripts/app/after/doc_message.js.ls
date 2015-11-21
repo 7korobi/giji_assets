@@ -138,7 +138,7 @@ doc.message =
           m "b", story.view.game_rule
         m "p.text",
           m "ul.note",
-            m.trust RAILS.game_rule[story.type.game].HELP
+            m.trust Mem.conf.rule[story.type.game].HELP
           m "ul.note",
             for option_id in story.options
               option = RAILS.options[option_id]
@@ -172,7 +172,7 @@ doc.message =
     return [] unless event && story
 
     rating = RAILS.rating[story.rating]
-    saycnt = RAILS.saycnt[story.type.say] || {}
+    saycnt = Mem.conf.say[story.type.say] || {}
 
     m ".MAKER.#{event.winner}.guide", {key: "STORY-RULE"},
       m "p.name",

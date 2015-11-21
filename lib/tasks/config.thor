@@ -410,7 +410,7 @@ _PERL_
 
       @perl_change = -> s { s.to_s.gsub(/[—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/){ $& + '\\' }}
 
-      GAME.each_pair do |folder,cfg|
+      CONF_FOLDER.each_pair do |folder,cfg|
         config           = cfg['config'] || next
         rhtml_config_out = config['pl']  || next
 

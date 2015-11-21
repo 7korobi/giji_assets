@@ -1,0 +1,27 @@
+seq-event:
+  sow: seqevent
+  help: 事件が順序どおりに発生する
+
+show-id:
+  sow: showid
+  help: ユーザーIDを公開する
+
+entrust:
+  sow: entrust
+  help: 委任投票をする
+
+select-role:
+  sow: selrole
+  help: 役職希望を受け付ける
+
+random-target:
+  sow: randomtarget
+  help: 投票・能力の対象に「ランダム」を含める
+
+undead-talk:
+  sow: undead
+  help: 狼・妖精と死者との間で、会話ができる
+
+aiming-talk:
+  sow: aiming
+  help: ふたりだけの内緒話をすることができる

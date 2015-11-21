@@ -1,4 +1,4 @@
-Url.define LOCATION.props, LOCATION.bind
+Url.define URL_PROPS, {}
 
 Url.routes =
   hash:

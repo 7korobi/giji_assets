@@ -104,7 +104,7 @@ new Mem.Rule("potof").schema ->
     if story.is_epilogue
       pt = "∞"
     else
-      say_type = RAILS.saycnt[story.type.say]
+      say_type = Mem.conf.say[story.type.say]
       pt =
         switch say_type.COST_SAY
           when "point"
@@ -130,7 +130,7 @@ new Mem.Rule("potof").schema ->
 
     win_role = win_by_role(o, Mem.roles)
     win = win_juror || win_love || win_zombie || win_role
-    win = RAILS.folders[story.folder].evil if win == 'EVIL'
+    win = story.evil if win == 'EVIL'
     switch win
       when "LONEWOLF"
         is_dead_lose = 1
@@ -153,10 +153,10 @@ new Mem.Rule("potof").schema ->
           win_result = "敗北" if is_lone_lose && _.any o.bonds, (o)-> o.live != 'live' && _.any o.bonds, o.pno
           win_result = "参加" if "NONE" == win
 
-    stat_type = RAILS.live[o.live].name
-    stat_order = RAILS.live[o.live].order
-    win_side_order = RAILS.wins[win].order
-    role_side_order = RAILS.wins[win_role].order
+    stat_type = Mem.conf.live[o.live].name
+    stat_order = Mem.conf.live[o.live].order
+    win_side_order = Mem.conf.winner["WIN_" + win].order
+    role_side_order = Mem.conf.winner["WIN_" + win_role].order
 
     roles =
       for role in o.role
@@ -194,7 +194,7 @@ new Mem.Rule("potof").schema ->
       urge: urges[urge] || "∞"
       win: win
       win_result: win_result
-      win_side:   RAILS.wins[win].name
+      win_side:   Mem.conf.winner["WIN_" + win].name
       role: role_text
       select: if select then m "kbd", select else ""
       text: text_str

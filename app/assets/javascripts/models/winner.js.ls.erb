@@ -10,4 +10,5 @@ new Mem.Rule("winner").schema ->
 
   @map_reduce (o)->
 
-Mem.rule.winner.set <%= JSON.generate SET_WIN %>
+Mem.rule.winner.set <%= JSON.generate SET_WINNER %>
+Mem.conf.winner = Mem.winners.hash()

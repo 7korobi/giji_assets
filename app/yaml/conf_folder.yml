@@ -1,4 +1,4 @@
----
+
 PERL_DEFAULT:
   config:
     csid: &csid_giji
@@ -152,6 +152,10 @@ PERL_UNION:
       BASEDIR_DOC:   http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
 
 PERL_BRAID:
+  story:
+    evil: WOLF
+    role_play: true
+
   config: &config_braid
     csid: *csid_giji
     erb: ./app/views/sow/giji.pl.erb
@@ -201,9 +205,21 @@ PERL_BRAID:
       BASEDIR_DAT:   ./data
       BASEDIR_DOC:   http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
 
+
+# 選択肢に使う。
+#
+all:
+  nation: "- すべて -"
+
 # 内部 人狼議事
 #
-TESTBED:
+TEST:
+  nation: 人狼議事テスト
+
+  story:
+    evil: EVIL
+    role_play: false
+
   config: &TEST_CONFIG
     <<: *config_all
     saycnt: &saycnt_testbed
@@ -238,15 +254,17 @@ TESTBED:
       DIR_USER: ../sow/data/user
     pl:  /www/giji_log/testbed/config.pl
 
+
 PERJURY_OLD:
+  folder: PERJURY_OLD
+  nation: "人狼議事RP:Bp"
+  vid_code: Bp
+
   server: utage.family.jp
   oldlog:   /perjury/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /perjury/sow.cgi?cmd=rss
-  folder: PERJURY_OLD
   info_url: /perjury/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:Bp"
   epi_url:  /perjury/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: Bp
   config:
     <<: *config_braid
     cfg:
@@ -263,31 +281,48 @@ PERJURY_OLD:
       <<: *GIJI_PATH
     pl:  /www/giji_log/perjury/config.pl
 
+
 PRETENSE:
+  folder: PRETENSE
+  nation: "人狼議事RP:Advance"
+  vid_code: A
+
   server: utage.family.jp
   oldlog:   /pretense/sow.cgi?cmd=oldlog&rowall=on
-  folder: PRETENSE
   info_url: /pretense/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:A"
   epi_url:  /pretense/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: A
+
+  story:
+    evil: WOLF
+    role_play: true
+
+
 RP:
+  folder: RP
+  nation: "人狼議事RP:"
+  vid_code: ""
+
   server: utage.family.jp
   oldlog:   /rp/sow.cgi?cmd=oldlog&rowall=on
-  folder: RP
   info_url: /rp/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:"
   epi_url:  /rp/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: ""
+
+  story:
+    evil: WOLF
+    role_play: true
+
+
 CABALA_OLD:
+  folder: CABALA
+  nation: "人狼議事陰謀:"
+  vid_code: C
+
   server: utage.family.jp
   oldlog:   /cabala/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /cabala/sow.cgi?cmd=rss
-  folder: CABALA
   info_url: /cabala/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事陰謀:"
   epi_url:  /cabala/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: C
+
   config:
     <<: *config_game
     enable:
@@ -305,15 +340,19 @@ CABALA_OLD:
       <<: *GIJI_PATH
       DIR_VIL:  ../cafe/data/vil
     pl:  /www/giji_log/cabala/config.pl
+
+
 ALLSTAR_OLD:
+  folder: ALLSTAR
+  nation: "人狼議事大乱闘:A"
+  vid_code: A
+
   server: utage.family.jp
   oldlog:   /allstar/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /allstar/sow.cgi?cmd=rss
-  folder: ALLSTAR
   info_url: /allstar/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事大乱闘:A"
   epi_url:  /allstar/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: A
+
   config:
     <<: *config_all
     enable:
@@ -331,35 +370,55 @@ ALLSTAR_OLD:
       <<: *GIJI_PATH
       DIR_VIL:  ../jksy/data/vil
     pl:  /www/giji_log/allstar/config.pl
+
+
 ULTIMATE:
+  folder: ULTIMATE
+  nation: "人狼議事大乱闘:"
+  vid_code: ""
+
   server: utage.family.jp
   oldlog:   /ultimate/sow.cgi?cmd=oldlog&rowall=on
-  folder: ULTIMATE
   info_url: /ultimate/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事大乱闘:"
   epi_url:  /ultimate/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: ""
+
+  story:
+    evil: EVIL
+    role_play: false
+
 
 WOLF:
   folder: WOLF
-  nation: "人狼議事標準:"
+  nation: "人狼議事標準"
+  vid_code: ""
+
   server: utage.family.jp
   oldlog:   /wolf/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /wolf/sow.cgi?cmd=rss
   info_url: /wolf/sow.cgi?ua=mb&vid=%s&cmd=vinfo
   epi_url:  /wolf/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: ""
+
+  story:
+    evil: WOLF
+    role_play: false
+
 
 # 外部 人狼議事
 #
 PAN:
+  folder: PAN
+  nation: "似顔絵人狼"
+
   server: soy-bean.sakura.ne.jp
   oldlog:   /pan/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /pan/sow.cgi?cmd=rss
-  folder: PAN
   info_url: /pan/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "似顔絵人狼"
   epi_url:  /pan/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+
+  story:
+    evil: WOLF
+    role_play: false
+
   config:
     <<: *config_all
     csid:
@@ -399,15 +458,22 @@ PAN:
     pl:  /www/giji_log/pan/config.pl
     is_angular: show-fix
 
+
 MORPHE:
+  folder: MORPHE
+  nation: "人狼議事 モルペウス"
+  vid_code: M
+
   server: morphe.sakura.ne.jp
   oldlog:   /sow.cgi?cmd=oldlog&rowall=on
   livelog:  /sow.cgi?cmd=rss
-  folder: MORPHE
   info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事:M"
   epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: M
+
+  story:
+    evil: EVIL
+    role_play: false
+
   config:
     <<: *config_game
     saycnt:
@@ -436,15 +502,22 @@ MORPHE:
       DIR_USER: ./data/user
     pl:  /www/giji_log/morphe/config.pl
 
+
 SOYBEAN:
+  folder: SOYBEAN
+  nation: "人狼議事鯖の味噌煮"
+  vid_code: Bs
+
   server: soy-bean.sakura.ne.jp
   oldlog:   /sow.cgi?cmd=oldlog&rowall=on
   livelog:  /sow.cgi?cmd=rss
-  folder: SOYBEAN
   info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:Cs"
   epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: Bs
+
+  story:
+    evil: WOLF
+    role_play: true
+
   config:
     <<: *config_braid
     <<: *config_new
@@ -471,15 +544,22 @@ SOYBEAN:
     pl:  /www/giji_log/soy-bean/config.pl
     is_angular: show-fix
 
+
 CIEL:
+  folder: CIEL
+  nation: "人狼議事RP:Cheat Ciel"
+  vid_code: Cc
+
   server: ciel.moo.jp
   oldlog:   /cheat/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /cheat/sow.cgi?cmd=rss
-  folder: CIEL
   info_url: /cheat/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:Cc"
   epi_url:  /cheat/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: Cc
+
+  story:
+    evil: WOLF
+    role_play: true
+
   config:
     <<: *config_braid
     <<: *config_new
@@ -505,15 +585,22 @@ CIEL:
     pl:  /www/giji_log/ciel/config.pl
     is_angular: show-fix
 
+
 PERJURY:
+  folder: PERJURY
+  nation: "人狼議事RP:Braid Perjury"
+  vid_code: Bp
+
   server: perjury.rulez.jp
   oldlog:   /sow.cgi?cmd=oldlog&rowall=on
   livelog:  /sow.cgi?cmd=rss
-  folder: PERJURY
   info_url: /sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:Bp"
   epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: Bp
+
+  story:
+    evil: WOLF
+    role_play: true
+
   config:
     <<: *config_braid
     saycnt:
@@ -534,15 +621,22 @@ PERJURY:
     pl:  /www/giji_log/vage/config.pl
 #    is_angular: show-fix
 
+
 XEBEC:
+  folder: XEBEC
+  nation: "人狼議事RP:Braid XEBEC"
+  vid_code: Bx
+
   server: xebec.x0.to
   oldlog:   /xebec/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /xebec/sow.cgi?cmd=rss
-  folder: XEBEC
   info_url: /xebec/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:Bx"
   epi_url:  /xebec/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: Bx
+
+  story:
+    evil: WOLF
+    role_play: true
+
   config:
     <<: *config_braid
     cfg:
@@ -555,15 +649,22 @@ XEBEC:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/xebec/config.pl
 
+
 CRAZY:
+  folder: CRAZY
+  nation: "人狼議事RP:Braid Crazy"
+  vid_code: Bc
+
   server: crazy-crazy.sakura.ne.jp
   oldlog:   /crazy/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /crazy/sow.cgi?cmd=rss
-  folder: CRAZY
   info_url: /crazy/sow.cgi?\ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事RP:Bc"
   epi_url:  /crazy/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: Bc
+
+  story:
+    evil: WOLF
+    role_play: true
+
   config:
     <<: *config_braid
     saycnt:
@@ -587,14 +688,20 @@ CRAZY:
     pl:  /www/giji_log/crazy/config.pl
 
 CABALA:
+  folder: CABALA
+  nation: "人狼議事CabalaCafe"
+  vid_code: C
+
   server: cabala.halfmoon.jp
   oldlog:   /cafe/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /cafe/sow.cgi?cmd=rss
-  folder: CABALA
   info_url: /cafe/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事CabalaCafe:"
   epi_url:  /cafe/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: C
+
+  story:
+    evil: EVIL
+    role_play: false
+
   config:
     <<: *config_game
     <<: *config_new
@@ -616,14 +723,20 @@ CABALA:
 
 
 ALLSTAR:
+  folder: ALLSTAR
+  nation: "人狼議事大乱闘:AllStar"
+  vid_code: A
+
   server: jinro.jksy.org
   oldlog:   /~nanakorobi?cmd=oldlog&rowall=on
   livelog:  /~nanakorobi?cmd=rss
-  folder: ALLSTAR
   info_url: /~nanakorobi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事大乱闘:A"
   epi_url:  /~nanakorobi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: A
+
+  story:
+    evil: EVIL
+    role_play: false
+
   config:
     <<: *config_all
     enable:
@@ -649,15 +762,23 @@ LOBBY_OLD:
   folder: LOBBY_OLD
   nation: "人狼議事旧ロビー"
   vid_code: O
+
+
 LOBBY:
+  folder: LOBBY
+  nation: "人狼議事ロビー"
+  vid_code: L
+
   server: crazy-crazy.sakura.ne.jp
   oldlog:   /giji_lobby/lobby/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /giji_lobby/lobby/sow.cgi?cmd=rss
-  folder: LOBBY
   info_url: /giji_lobby/lobby/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事ロビー"
   epi_url:  /giji_lobby/lobby/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: L
+
+  story:
+    evil: EVIL
+    role_play: false
+
   config:
     <<: *config_all
     <<: *config_new
@@ -690,12 +811,18 @@ LOBBY:
     pl:  /www/giji_log/lobby/config.pl
     is_angular: show-fix
 
+
 OFFPARTY:
+  folder: OFFPARTY
+  nation: "人狼議事オフ相談所"
+  vid_code: P
+
   server: party.ps.land.to
   oldlog:   /kitchen/sow.cgi?cmd=oldlog&rowall=on
   livelog:  /kitchen/sow.cgi?cmd=rss
-  folder: OFFPARTY
   info_url: /kitchen/sow.cgi?ua=mb&vid=%s&cmd=vinfo
-  nation: "人狼議事オフ相談所"
   epi_url:  /kitchen/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
-  vid_code: P
+
+  story:
+    evil: EVIL
+    role_play: false

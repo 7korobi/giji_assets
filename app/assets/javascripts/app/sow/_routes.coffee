@@ -1,5 +1,5 @@
-Url.define LOCATION.props
-Url.binds LOCATION.bind
+Url.define URL_PROPS
+Url.binds {}
 
 Url.routes =
   pathname:

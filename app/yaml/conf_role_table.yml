@@ -1,0 +1,38 @@
+secret:
+  name: 詳細は黒幕だけが知っています。
+
+custom:
+  name: 自由設定
+
+default:
+  name: 標準
+
+hamster:
+  name: ハムスター
+
+mistery:
+  name: （なんだっけ？？？）
+
+random:
+  name: ランダム
+
+test1st:
+  name: 人狼審問試験壱型
+
+test2nd:
+  name: 人狼審問試験弐型
+
+ultimate:
+  name: アルティメット
+
+wbbs_c:
+  name: 人狼BBS-C国
+
+wbbs_f:
+  name: 人狼BBS-F国
+
+wbbs_g:
+  name: 人狼BBS-G国
+
+lover:
+  name: 恋愛天使
