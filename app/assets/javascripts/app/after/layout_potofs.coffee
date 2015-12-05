@@ -25,10 +25,16 @@ if gon?.potofs?
 
     m.mount dom,
       controller: ->
-      view: ->
-        layout.width  = Url.prop.right_width()
-        layout.width += Url.prop.content_width() if layout.large_mode()
+      view: (c)->
+        width = doc.width.content()
 
+        right_width = switch Url.prop.layout()
+          when "right"  then 0
+          when "center" then (win.width - width - 4) / 2
+          when "left"   then (win.width - width - 4)
+
+        layout.width  = right_width
+        layout.width += doc.width.content() if layout.large_mode()
 
         if layout.width < 90
           layout.width = 90
@@ -69,7 +75,6 @@ if gon?.potofs?
                 for o in list
                   pins["#{o.turn}-#{o.logid}"] = true
                 change_pin(center_id)
-                Url.prop.pins(pins)
 
           day = 24 * 60 * 60
           star = (o)->

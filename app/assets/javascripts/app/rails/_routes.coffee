@@ -37,12 +37,12 @@ Url.routes =
         [folder, vid, turn, logid] = scroll.split("-")
         if logid?
           updated_at = Mem.messages.find(scroll)?.updated_at || 0
-          Url.prop.updated_at updated_at, true
-          Url.prop.folder     folder, true
-          Url.prop.turn       turn, true
-          Url.prop.story_id   "#{folder}-#{vid}", true
-          Url.prop.event_id   "#{folder}-#{vid}-#{turn}", true
-          Url.prop.message_id "#{folder}-#{vid}-#{turn}-#{logid}", true
+          Url.prop.updated_at updated_at
+          Url.prop.folder     folder
+          Url.prop.turn       turn
+          Url.prop.story_id   "#{folder}-#{vid}"
+          Url.prop.event_id   "#{folder}-#{vid}-#{turn}"
+          Url.prop.message_id "#{folder}-#{vid}-#{turn}-#{logid}"
         return
 
 Url.cookies =
@@ -50,7 +50,7 @@ Url.cookies =
 
 Url.cookies.css.options.change = (params)->
   list =
-    for key in ["theme", "width", "layout", "font", "w", "item", "color"]
+    for key in ["theme", "width", "layout", "font", "item", "color"]
       "#{Url.prop[key]()}-#{key}"
   list.push "no-player" unless Url.prop.human()
   GUI.header list

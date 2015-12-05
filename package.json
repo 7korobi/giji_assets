@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "coffee": "*",
+    "del": "*",
+    "gulp": "*",
+    "gulp-coffee": "*",
+    "gulp-concat": "*",
+    "gulp-cssnext": "*",
+    "gulp-data": "*",
+    "gulp-ejs": "*",
+    "gulp-gzip": "*",
+    "gulp-if": "*",
+    "gulp-include": "^2.1.0",
+    "gulp-inject": "*",
+    "gulp-jade": "*",
+    "gulp-livescript": "*",
+    "gulp-load-plugins": "*",
+    "gulp-rename": "*",
+    "gulp-sass": "*",
+    "js-yaml": "*",
+    "merge-stream": "*",
+    "node-bourbon": "*",
+    "node-neat": "*",
+    "node-sass": "*"
+  }
+}

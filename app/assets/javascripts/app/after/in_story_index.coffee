@@ -29,7 +29,7 @@ if gon?.stories?
                       m "span",
                         m "img.pull-left",
                           src: GUI.img_head + "/icon/cd_#{o.min_is.rating}.png"
-                        RAILS.rating[key].caption
+                        Mem.conf.rating[key].caption
               main_menu.drill "game",
                 caption: "ルール"
                 view: (sub_menu)->

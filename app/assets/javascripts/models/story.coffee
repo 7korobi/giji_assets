@@ -45,6 +45,8 @@ new Mem.Rule("story").schema ->
     o.type.game ?= "TABULA"
     o.type.mob  ?= "visiter"
 
+    Mem.rule.role.merge mob: Mem.roles.find o.type.mob
+
     o.evil ||= Mem.conf.folder[o.folder].story.evil
     o.view =
       rating:

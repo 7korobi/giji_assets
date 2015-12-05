@@ -66,16 +66,18 @@ new Mem.Rule("chr_job").schema ->
       all.where((o)-> face_id == o.face_id).sort(false, (o)-> o.chr_set_idx )
 
 
-Mem.rule.face.set <%= JSON.generate FACE %>
+Mem.rule.face.set <%- JSON.stringify(FACE) %>
 
 
-<% %i[CS_GER CS_MAD CS_SCHOOL CS_SF CS_TIME CS_WA CS_RIRINRA  CS_ANIMAL CS_CHANGED  CS_ALL].each do |const|
-  data = Kernel.const_get( const )
+<%
+  for (key in csets) {
+    var data = csets[key];
+
  %>
-Mem.rule.chr_set.merge [<%= JSON.generate(data.chr_set) %>]
-Mem.rule.chr_npc.merge <%=  JSON.generate(data.chr_npc) %>
-Mem.rule.chr_job.merge <%=  JSON.generate(data.chr_job) %>
-<% end %>
+Mem.rule.chr_set.merge [<%- JSON.stringify(data.chr_set) %>]
+Mem.rule.chr_npc.merge <%-  JSON.stringify(data.chr_npc) %>
+Mem.rule.chr_job.merge <%-  JSON.stringify(data.chr_job) %>
+<% } %>
 
 list =
   for face in Mem.faces.list()

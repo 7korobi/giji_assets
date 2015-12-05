@@ -17,4 +17,4 @@ new Mem.Rule("action").schema ->
 
   @map_reduce (o)->
 
-Mem.rule.action.set <%= JSON.generate SET_ACTIONS %>
+Mem.rule.action.set <%- JSON.stringify(SET_ACTIONS) %>

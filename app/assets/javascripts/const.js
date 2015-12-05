@@ -1,1 +1,1 @@
-//= require_tree ./models
+//=include models/**/*.js

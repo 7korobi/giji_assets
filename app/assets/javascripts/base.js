@@ -1,2 +1,2 @@
-//= require_tree ./base
-//= require_tree ./class
+//=include base/**/*.js
+//=include class/**/*.js

@@ -41,7 +41,7 @@ Url.cookies =
 
 Url.cookies.css.options.change = (params)->
   list =
-    for key in ["theme", "width", "layout", "font", "w", "item", "color"]
+    for key in ["theme", "width", "layout", "font", "item", "color"]
       "#{Url.prop[key]()}-#{key}"
   list.push "no-player" unless Url.prop.human()
   GUI.header list

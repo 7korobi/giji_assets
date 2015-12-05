@@ -140,5 +140,4 @@ timeline_present = ({size: [width, height]})->
     ctx.stroke()
 
 doc.timeline = ->
-  {content_width} = Url.prop
-  m.component Canvas, \#timeline, timeline_present, size: [2 * content_width(), 150]
+  m.component Canvas, \#timeline, timeline_present, size: [2 * doc.width.content(), 150]

@@ -25,6 +25,11 @@ export doc =
           event.is_loading = false
           cb()
 
+  width:
+    content: ->
+      document.querySelector("\#contentframe").offsetWidth
+
+
   messages:
     seeing: (filter_size, center)->
       ids = Object.keys doc.seeing

@@ -1,4 +1,4 @@
 
-@SOW_RECORD = <%= JSON.generate SOW_RECORD %>
-@URL_PROPS = <%= JSON.generate URL_PROPS %>
-@RAILS = <%=  JSON.generate RAILS %>
+@SOW_RECORD = <%- JSON.stringify(SOW_RECORD) %>
+@URL_PROPS = <%- JSON.stringify(URL_PROPS) %>
+@RAILS = <%- JSON.stringify(RAILS) %>

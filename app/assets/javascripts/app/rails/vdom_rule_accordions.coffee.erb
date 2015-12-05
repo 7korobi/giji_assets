@@ -1,11 +1,9 @@
-Mem.rule.item.set <%= JSON.generate MESSAGE.rails %>
+Mem.rule.item.set <%- JSON.stringify(MESSAGE.rails) %>
 if gon?.items?
   Mem.rule.item.merge gon.items
 
-<% MESSAGE.module.rails.each do |name| %>
-GUI.items_module "<%= name %>"
-<% end %>
-
+for name in <%- JSON.stringify(MESSAGE.module.rails) %>
+  GUI.items_module name
 
 rule_accordion = (type)->
   GUI.if_exist "#rule-#{type}", (dom)->

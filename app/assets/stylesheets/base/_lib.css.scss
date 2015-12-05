@@ -223,7 +223,7 @@ $action-border: 18px;
     $text: $content - $action-left - $film-left - 14px; // see film style.
     $head: nth($head-list, $idx);
     $min: nth($width-list, $idx    ) + $base + ($idx + 0) * $step;
-    $max: nth($width-list, $idx + 1) + $base + ($idx + 1) * $step - 1;
+    $max: nth($width-list, $idx + 1) + $base + ($idx + 1) * $step;
 
     @if $idx == 1 { $min: 1px; }
 
@@ -245,7 +245,7 @@ $action-border: 18px;
         width: $td;
       }
       .action {
-        width: $text + $action-border + 8px;
+        width: $text - 8px;
       }
       table.memo td,
       table.talk td div.msg{

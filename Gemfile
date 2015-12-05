@@ -3,13 +3,10 @@ ruby "2.2.3"
 
 case RUBY_PLATFORM
 when /mswin|mingw/
-  gem "nokogiri", "= 1.6.7.rc3"
   gem "tzinfo-data"
-else
-  gem "nokogiri", ">= 1.6.6"
 end
 
-
+gem "nokogiri", ">= 1.6.7"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 4.2.0'
@@ -26,20 +23,9 @@ gem 'therubyracer', platforms: :ruby
 gem "bson_ext"
 gem 'yajl-ruby'
 
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 4.0.0'
-gem 'coffee-rails', '>= 4.0.0'
-gem 'coffee-script-source', '>= 1.8.0'
-gem 'livescript-rails'
-gem 'livescript-source', github: "7korobi/livescript-source"
 
-gem "bourbon"
-gem "neat"
-
-gem "slim"
 gem "thor"
 gem "hashie"
 gem "mime-types"

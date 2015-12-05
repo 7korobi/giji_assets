@@ -1,3 +1,3 @@
-//= require_tree ./jspec
+//=include jspec/**/*.js
 
 mocha.setup('bdd');

@@ -1,4 +1,4 @@
-@DELAY = <%= JSON.generate DELAY %>
+@DELAY = <%- JSON.stringify(DELAY) %>
 
 window.head_conf =
   screens: [

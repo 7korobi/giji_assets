@@ -100,8 +100,13 @@ CACHE MANIFEST
       amazons[key].delete
     end
 
+    skip = 0
     appends.each_with_index do |path, index|
-      print "(append #{index}/#{appends.size})\r"
+      print "(append #{index}/#{appends.size})(skip #{skip})\r"
+      unless MIME::Types.type_for(path)[0]
+        skip += 1
+        next
+      end
 
       gz = path + ".gz"
       meta = {

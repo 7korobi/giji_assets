@@ -57,8 +57,8 @@ class @ScrollSpy
     @head = @tail = 0
 
   rescroll: (@prop)->
-    window.requestAnimationFrame ->
-      ScrollSpy.go prop()
+    window.requestAnimationFrame =>
+      ScrollSpy.go @prop()
 
   tick: (center)->
     console.log center

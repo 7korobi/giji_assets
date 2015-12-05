@@ -1,4 +1,4 @@
-change_pin = (id)->
+@change_pin = (id)->
   target = menu.scope.state()
   switch target
     when "history"
@@ -46,7 +46,6 @@ if gon?.events? && gon.event?
       return
       pins = Url.prop.pins()
       pins["#{turn}-#{logid}"] = true
-      Url.prop.pins pins
       change_pin(id)
 
     menu.scope.node "history",

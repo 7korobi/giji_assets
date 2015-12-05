@@ -1,4 +1,4 @@
-//= require_tree ./spec
+//=include spec/**/*.js
 
 mocha.checkLeaks();
 mocha.globals([]);

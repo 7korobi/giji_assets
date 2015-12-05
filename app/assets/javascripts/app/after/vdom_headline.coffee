@@ -174,16 +174,11 @@ GUI.if_exist "#to_root", (dom)->
         12*hour - zone % (12*hour)
 
       win.on.resize.push =>
-        width = document.querySelector("#contentframe").offsetWidth
+        width = doc.width.content()
 
-        @content_width = width
         @h1_width = 770
         @h1_width = 580 if width <= 580
         @h1_width = 458 if width <= 458
-        @right_width = switch Url.prop.layout()
-          when "right"  then 0
-          when "center" then (win.width - width - 4) / 2
-          when "left"   then (win.width - width - 4)
 
       return
 

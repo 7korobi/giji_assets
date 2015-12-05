@@ -1,3 +1,3 @@
-//= require_tree ./app/before
-//= require_tree ./app/rails
-//= require_tree ./app/after
+//=include app/before/**/*.js
+//=include app/rails/**/*.js
+//=include app/after/**/*.js

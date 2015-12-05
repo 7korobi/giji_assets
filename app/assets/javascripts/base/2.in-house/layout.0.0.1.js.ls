@@ -77,8 +77,8 @@ export class Layout
       @box.style.transform = ""
     else
       @box.style.position = "fixed"
-      @box.style.top = 0
       @box.style.left = 0
+      @box.style.top = 0
 
       transform  = "translate(#{x}px, #{y}px)"
       @box.style.webkitTransform = transform

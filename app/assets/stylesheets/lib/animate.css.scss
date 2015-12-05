@@ -22,4 +22,12 @@
     transition-timing-function: ease-in-out;
     transition-property: color, background, border;
   }
+
+  #buttons,
+  #sayfilter {
+    transition-delay:      0ms;
+    transition-duration: 400ms;
+    transition-timing-function: ease-in-out;
+    transition-property: width, transform;
+  }
 }

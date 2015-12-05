@@ -1,11 +1,15 @@
 CACHE MANIFEST
-# timer 2015-11-06 19:46:43 +0900
+# timer 2015-12-05 19:35:58 +0900
+assets-master/.sprockets-manifest-1e575abcf1daa1a39020b1fdcd96a008.json
 assets-master/about.html
 assets-master/application.css
+assets-master/application.css_
 assets-master/base.js
 assets-master/character_tag.html
 assets-master/const.js
 assets-master/h1_catalog.html
+assets-master/includes/_copyright.jade
+assets-master/includes/_head.jade
 assets-master/rails.js
 assets-master/rolelist.html
 assets-master/rule.html
@@ -13,6 +17,7 @@ assets-master/scratch.js
 assets-master/sow.js
 assets-master/spec.css
 assets-master/spec.js
+assets-master/spec_helper
 assets-master/spec_helper.js
 assets-master/test_character_tag.html
 assets-master/test_chr_name.html

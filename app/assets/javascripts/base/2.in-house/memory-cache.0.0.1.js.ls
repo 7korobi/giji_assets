@@ -361,7 +361,7 @@ class Mem.Rule
             process(item)
         when \Object
           for id, item of from || {}
-            item._id ||= id
+            item._id = id
             process(item)
 
     switch mode

@@ -24,14 +24,6 @@ module GijiAssets
     config.assets.prefix = "assets-#{branch}"
     # Compress JavaScripts and CSS.
     config.assets.precompile += %w(
-      base.js
-      const.js
-      scratch.js
-      rails.js
-      sow.js
-      spec.js
-      spec_helper.js
-      spec.css
     )
 
 
