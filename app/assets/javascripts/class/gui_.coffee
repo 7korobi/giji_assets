@@ -1,16 +1,29 @@
-names_base = (name)->
-  (list, cb)->
-    hash = {}
-    for key in list
-      hash[key] ||= 0
-      hash[key] += 1
+ids_list = (list, cb)->
+  for key in list
+    obj_config cb, key, 1
 
-    order = Object.keys(hash).sort (a,b)-> hash[b] - hash[a]
-    for key in order
-      cb name(key), hash[key]
+ids_sort = (list, cb)->
+  hash = {}
+  for key in list
+    hash[key] ||= 0
+    hash[key] += 1
 
-name_config = (o)->
-    Mem.roles.find(o)?.name || Mem.traps.find(o)?.name || o || ""
+  order = Object.keys(hash).sort (a,b)-> hash[b] - hash[a]
+  for key in order
+    obj_config cb, key, hash[key]
+
+obj_config = (cb, key, count)->
+  obj = Mem.roles.find(key) || Mem.traps.find(key)
+  if obj
+    win = ""
+    win = "WIN_#{obj.win}" if obj.win
+    cb obj.name, count, win
+  else
+    cb key, count, ""
+
+name_config = (key)->
+  obj = Mem.roles.find(key) || Mem.traps.find(key)
+  obj?.name || key || ""
 
 
 @GUI =
@@ -207,7 +220,8 @@ name_config = (o)->
     config: name_config
 
   names:
-    config: names_base(name_config)
+    order:  ids_list
+    config: ids_sort
 
   accordion: (mark, list)->
     cancel = GUI.attrs {}, ->

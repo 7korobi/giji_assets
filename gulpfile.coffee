@@ -52,6 +52,7 @@ gulp.task "asset:html", ->
   asset ->
     gulp
     .src './app/assets/htmls/*.{slim,html}'
+    .pipe $.plumber()
     .pipe $.if "*.slim", $.jade()
     .pipe $.if "*.html.html", $.rename extname: ""
 
@@ -60,6 +61,7 @@ gulp.task "asset:css", ->
   asset ->
     application = gulp
     .src ['./app/assets/stylesheets/application.css.scss']
+    .pipe $.plumber()
     .pipe $.inject gulp.src(paths.scss_in), relative: true
     .pipe $.sass includePaths: neat.includePaths
     .on 'error', (err)-> console.log err.message
@@ -77,17 +79,14 @@ gulp.task "asset:clean", (cb)->
   del ['./tmp/cache/gulp*'], cb
 
 
-gulp.task "asset:yaml:load", ->
+gulp.task "asset:yaml", ->
   gulp
   .src './app/yaml/*.yml'
+  .pipe $.plumber()
   .pipe $.data (file)->
     file.key = path.basename(file.path, ".yml").toUpperCase()
     yml[file.key] = yaml.load(file.contents)
 
-
-gulp.task "asset:yaml", ["asset:yaml:load"], ->
-  gulp
-  .src './app/yaml/*.yml'
   .pipe $.data (file)->
     file.key = path.basename(file.path, ".yml").toUpperCase()
     data = yml[file.key]
@@ -116,7 +115,7 @@ gulp.task "asset:yaml", ["asset:yaml:load"], ->
 gulp.task "asset:js:tmp", ["asset:clean", "asset:yaml"], ->
   gulp
   .src ['./app/assets/javascripts/**/*.{js,ls,coffee,erb}']
-  .on 'error', (err)-> console.log err.message
+  .pipe $.plumber()
   .pipe $.if "*.erb", $.ejs(yml)
   .pipe $.if "*.html", $.rename extname: ""
   .pipe $.if "*.coffee", $.coffee()

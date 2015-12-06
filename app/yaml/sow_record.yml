@@ -141,7 +141,7 @@ gifts:
   -
 
 events:
-  -
+  - blank
   - nothing
   - aprilfool
   - turnfink
@@ -156,7 +156,7 @@ events:
   - fire
   - nightmare
   - ghost
-  - escape
+  - 15
   - seance
   - 17
   - 18

@@ -100,9 +100,10 @@ deploy_samples = ->
         love: null
 
   forms = Mem.items.where(template: "form").list()
-  Mem.rule.story.merge [<%- JSON.stringify(TEST_VIL.story) %>]
-  Mem.rule.event.merge [<%- JSON.stringify(TEST_VIL.event) %>]
-  Mem.rule.potof.merge  <%- JSON.stringify(TEST_VIL.potofs) %>
-  Mem.rule.form.merge forms
+  Mem.rule.story.set [<%- JSON.stringify(TEST_VIL.story)  %>]
+  Mem.rule.event.set [<%- JSON.stringify(TEST_VIL.event)  %>]
+  Mem.rule.potof.set  <%- JSON.stringify(TEST_VIL.potofs) %>
+  Mem.rule.form.set forms
 
-deploy_samples()
+GUI.if_exist "#item-rolelist", (dom)->
+  deploy_samples()

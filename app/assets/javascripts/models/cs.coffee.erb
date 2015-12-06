@@ -34,11 +34,19 @@ new Mem.Rule("face").schema ->
 new Mem.Rule("chr_set").schema ->
   @order "caption"
 
+  @default ->
+    chr_jobs: ->
+      Mem.chr_jobs.where(chr_set_id: @_id)
+    chr_npcs: ->
+      Mem.chr_npcs.where(chr_set_id: @_id)
+
 
 new Mem.Rule("chr_npc").schema ->
   @belongs_to "chr_set", dependent: true
   @belongs_to "face", dependent: true
+
   @deploy (o)->
+
 
 new Mem.Rule("chr_job").schema ->
   @order (o)-> o.face.order

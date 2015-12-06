@@ -1,10 +1,16 @@
+blank:
+  name: 普通の日
+  HELP: ""
+
 nothing:
   name: 普通の日
+  cmd: trap
   HELP: |-
     今日は、特別なことのない一日のようだ。さあ普段通り、誰かを処刑台にかけよう。
 
 aprilfool:
   name: 四月馬鹿
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_APRIL_FOOL" TARGET="_blank">四月馬鹿</A></b>
     <br>
@@ -31,6 +37,7 @@ aprilfool:
 
 turnfink:
   name: 二重スパイ
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_TURN_FINK" TARGET="_blank">二重スパイ</A></b>
     <br>
@@ -40,6 +47,7 @@ turnfink:
 
 turnfairy:
   name: 妖精の輪
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_TURN_FAIRY" TARGET="_blank">妖精の輪</A></b>
     <br>
@@ -49,6 +57,7 @@ turnfairy:
 
 eclipse:
   name: 日蝕
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_ECLIPSE" TARGET="_blank">日蝕</A></b>
     <br>
@@ -56,6 +65,7 @@ eclipse:
 
 cointoss:
   name: Sir Cointoss
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_COINTOSS" TARGET="_blank">Sir Cointoss</A></b>
     <br>
@@ -65,6 +75,7 @@ cointoss:
 
 force:
   name: 影響力
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_FORCE" TARGET="_blank">影響力</A></b>
     <br>
@@ -72,6 +83,7 @@ force:
 
 miracle:
   name: 奇跡
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_MIRACLE" TARGET="_blank">奇跡</A></b>
     <br>
@@ -81,6 +93,7 @@ miracle:
 
 prophecy:
   name: 聖者のお告げ
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_PROPHECY" TARGET="_blank">聖者のお告げ</A></b>
     <br>
@@ -89,6 +102,7 @@ prophecy:
 
 clamor:
   name: 不満
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_CLAMOR" TARGET="_blank">不満</A></b>
     <br>
@@ -97,6 +111,7 @@ clamor:
 
 fire:
   name: 熱意
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_FIRE" TARGET="_blank">熱意</A></b>
     <br>
@@ -114,6 +129,7 @@ nightmare:
 
 ghost:
   name: 亡霊
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_GHOST" TARGET="_blank">亡霊</A></b>
     <br>
@@ -123,6 +139,7 @@ ghost:
 
 escape:
   name: 逃亡
+  cmd: 
   HELP: |-
     <b>逃亡</b>
     <br>
@@ -133,6 +150,7 @@ escape:
 
 seance:
   name: 降霊会
+  cmd: trap
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_SEANSE" TARGET="_blank">降霊会</A></b>
     <br>

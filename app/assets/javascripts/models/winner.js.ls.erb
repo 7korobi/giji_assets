@@ -1,12 +1,19 @@
 new Mem.Rule("winner").schema ->
+  id_index = SOW_RECORD.winners
+
   @scope (all)->
     shows: ->
       all.where (o)->
         o.name != '―'
 
+    sow: (idx)->
+      all.where((o)-> o.order == idx).list().first
+
+
   @default ->
 
   @deploy (o)->
+    o.order = id_index.indexOf o._id
 
   @map_reduce (o)->
 

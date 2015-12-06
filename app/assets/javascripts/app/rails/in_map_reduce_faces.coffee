@@ -6,7 +6,7 @@ if gon?.map_reduce?.faces?
       controller: ->
       view: ->
         {order, chr_set, search} = Url.prop
-        map_order_set = RAILS.map_faces_orders[order()]
+        map_order_set = Mem.conf.map_faces_order[order()]
         chrs = Mem.map_faces.active(order(), chr_set(), search()).list()
         headline = ""
 
@@ -61,7 +61,7 @@ if gon?.map_reduce?.faces?
             main_menu.drill "order",
               caption: "並び順"
               view: ->
-                for key, o of RAILS.map_faces_orders
+                for key, o of Mem.conf.map_faces_order
                   m "span", Btn.set({}, Url.prop.order, key), o.caption
 
             main_menu.drill "chr_set",

@@ -1,0 +1,7 @@
+manual:
+  caption: 手動開始
+  help: 開始ボタンを押したら開始します。
+
+wbbs:
+  caption: 人狼BBS型
+  help: 更新時間が来たら自動的に開始します。

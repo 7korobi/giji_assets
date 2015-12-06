@@ -107,7 +107,7 @@ PERL_GAME:
       DIR_VIL:  ./data/vil
       DIR_USER: ../sow/data/user
 
-PERL_UNION:
+UNION:
   config: &config_all
     <<: *config_game
     erb: ./app/views/sow/giji.pl.erb
@@ -151,7 +151,7 @@ PERL_UNION:
       BASEDIR_DAT:   ./data
       BASEDIR_DOC:   http://giji-assets.s3-website-ap-northeast-1.amazonaws.com
 
-PERL_BRAID:
+BRAID:
   story:
     evil: WOLF
     role_play: true

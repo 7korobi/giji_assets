@@ -18,6 +18,29 @@ Mem.conf = {}
     var data = confs[key];
  %>
 new Mem.Rule("<%= key %>").schema config("<%= key %>")
+<% } %>
+
+Mem.rule.option.schema ->
+  @deploy (o)->
+    o.option_id = o._id
+    if o.attr?.name
+      o.attr.id = o.attr.name
+
+
+  @scope (all)->
+    checkbox: -> all.where (o)-> o.attr.type == 'checkbox'
+    text:     -> all.where (o)-> o.attr.type == 'text'
+
+<%
+  for (key in confs) {
+    var data = confs[key];
+ %>
 Mem.rule.<%- key %>.set <%- JSON.stringify(data) %>
+<% } %>
+
+<%
+  for (key in confs) {
+    var data = confs[key];
+ %>
 Mem.conf.<%- key %> = Mem.<%- key %>s.hash()
 <% } %>

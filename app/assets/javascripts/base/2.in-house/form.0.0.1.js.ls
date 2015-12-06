@@ -13,14 +13,17 @@ btns = (btn, style, prop, options, order = Object.keys options)->
 
 btn = (style, check, store, load, key)->
   style.class ?= 'edge'
-  GUI.attrs {}, ->
-    @end ->
-      store key
+  cb = ->
+    store key
 
-    if check load, key
-      @className "btn #{style.class} active"
-    else
-      @className "btn #{style.class}"
+  if check load, key
+    class_name = "btn #{style.class} active"
+  else
+    class_name = "btn #{style.class}"
+
+  className: class_name
+  onmouseup: cb
+  ontouchend: cb
 
 is_true = (load)->
   load()

@@ -2,7 +2,7 @@ new Mem.Rule("map_face").schema ->
   @belongs_to "face", dependent: true
   @scope (all)->
     active: (order, chr_set, search)->
-      order = RAILS.map_faces_orders[order].order
+      order = Mem.conf.map_faces_order[order].order
       all.in(chr_set_ids: chr_set).search(search).sort "desc", (o)->
         o.win.value[order] ?= 0
 

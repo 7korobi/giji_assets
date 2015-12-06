@@ -1,27 +1,84 @@
 seq-event:
-  sow: seqevent
-  help: 事件が順序どおりに発生する
+  attr:
+    type: checkbox
+    name: seqevent
+  attr_value: checked
+  name: 固定事件簿
+  help_on:  事件が順序どおりに発生する
+  help_off: 事件はランダムに選ばれる
 
 show-id:
-  sow: showid
-  help: ユーザーIDを公開する
+  attr:
+    type: checkbox
+    name: showid
+  attr_value: checked
+  name: ID公開
+  help_on:  進行中にユーザーIDを公開する
+  help_off: エピローグまで、ユーザーIDを秘密にする
 
 entrust:
-  sow: entrust
-  help: 委任投票をする
+  attr:
+    type: checkbox
+    name: entrust
+  attr_value: checked
+  name: 委任投票
+  help_on:  委任投票ができる
+  help_off: 委任投票ができない
 
-select-role:
-  sow: selrole
-  help: 役職希望を受け付ける
+not-select-role:
+  attr:
+    type: checkbox
+    name: noselrole
+  attr_value: checked
+  name: 役職希望
+  help_on:  役職希望を無視する
+  help_off: 役職希望を受け付ける
 
 random-target:
-  sow: randomtarget
-  help: 投票・能力の対象に「ランダム」を含める
+  attr:
+    type: checkbox
+    name: randomtarget
+  attr_value: checked
+  name: ランダム
+  help_on:  投票・能力の対象に「ランダム」が選択できる
+  help_off: 投票・能力の対象は「ランダム」にできない
 
 undead-talk:
-  sow: undead
-  help: 狼・妖精と死者との間で、会話ができる
+  attr:
+    type: checkbox
+    name: undead
+  attr_value: checked
+  name: 幽界トーク
+  help_on:  狼・妖精と死者との間で、会話ができる
+  help_off: 狼・妖精と死者は会話を交わせない
 
 aiming-talk:
-  sow: aiming
-  help: ふたりだけの内緒話をすることができる
+  attr:
+    type: checkbox
+    name: aiming
+  attr_value: checked
+  name: 内緒話
+  help_on:  ふたりだけの内緒話をすることができる
+  help_off: ふたりだけの内緒話は選べない
+
+vil-name:
+  attr:
+    type: text
+    name: vname
+
+vil-comment:
+  attr:
+    name: vcomment
+    cols: 30
+    rows: 10
+
+entry-password:
+  attr:
+    type: text
+    name: entrypwd
+    size: 8
+    maxlength: 8
+  attr_value: value
+  name: 参加制限
+  help_on:  参加にパスワード必須
+  help_off: 参加制限なし

@@ -16,7 +16,7 @@ vmake =
 
       if doc.user.is_login
         if v.is_check()
-          m 'a.btn.edge[href="./sow.cgi?cmd=makevilform&trsid=all"]', "村の作成"
+          m 'a.btn.edge[href="./sow.cgi?cmd=makevilform"]', "村の作成"
         else
           m "h6",
             "見たよ！今から、村を立てるよ！"
