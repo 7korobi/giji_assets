@@ -1,6 +1,7 @@
 
 WIN_HUMAN:
   name: 村人陣営
+  name_group: 村人陣営
   order: 1
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_HUMAN" TARGET="_blank">村人陣営</A></b>
@@ -11,6 +12,7 @@ WIN_HUMAN:
 
 WIN_EVIL:
   name: 裏切りの陣営
+  name_group: 敵側の人間
   name_human: 敵側の人間
   order: 2
   HELP: |-
@@ -22,6 +24,7 @@ WIN_EVIL:
 
 WIN_WOLF:
   name: 人狼陣営
+  name_group: 人狼陣営
   name_human: 人狼陣営の人間
   order: 3
   HELP: |-
@@ -43,6 +46,7 @@ WIN_LONEWOLF:
 
 WIN_PIXI:
   name: 妖精
+  name_group: 妖精
   order: 5
   HELP: |-
     <b><A href="http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_PIXI" TARGET="_blank">妖精陣営</A></b>
@@ -53,6 +57,7 @@ WIN_PIXI:
 
 WIN_OTHER:
   name: その他
+  name_group: その他
   order: 6
 
 WIN_GURU:

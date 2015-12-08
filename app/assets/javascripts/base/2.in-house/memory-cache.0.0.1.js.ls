@@ -358,9 +358,11 @@ class Mem.Rule
       switch typeof! from
         when \Array
           for item in from || []
+            continue unless item
             process(item)
         when \Object
           for id, item of from || {}
+            continue unless item
             item._id = id
             process(item)
 

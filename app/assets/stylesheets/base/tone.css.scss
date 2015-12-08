@@ -31,39 +31,6 @@
   }
 }
 
-@mixin markers($color, $background){
-  &.btn,
-  &.mark,
-  &.badge,
-  &.menuicon,
-  input[type='submit'],
-  input[type='button'],
-  input[type='image'],
-  input[type='reset'],
-  button,
-  .btn,
-  .mark,
-  .badge,
-  .menuicon,
-  label.control-label {
-    color: $color;
-    background-color: $background;
-  }
-
-  [data-tooltip],
-  [title] {
-    &:after {
-      color: $color;
-      background: $background;
-    }
-  }
-  [title]:before,
-  .tooltip-top:before { border-top-color: $background; }
-  .tooltip-bottom:before { border-bottom-color: $background; }
-  .tooltip-left:before { border-left-color: $background; }
-  .tooltip-right:before { border-right-color: $background; }
-}
-
 @mixin table-tone($line-style, $border, $darker){
   th {
     background-color: $darker;
@@ -103,13 +70,13 @@
   }
 
   @if white == $tone {
-    @include markers($color, lighten($background, 10%));
+    @include marker-tone($color, lighten($background, 10%));
   }
   @if glass == $tone {
-    @include markers($color, lighten($background, 60%));
+    @include marker-tone($color, lighten($background, 60%));
   }
   @if black == $tone {
-    @include markers($color, lighten($background, 20%));
+    @include marker-tone($color, lighten($background, 20%));
   }
   &.emboss,
   .emboss,
@@ -213,4 +180,38 @@
   &.right-layout .outframe {
     border-left : $line-style $border;
   }
+}
+
+
+@mixin marker-tone($color, $background){
+  &.btn,
+  &.mark,
+  &.badge,
+  &.menuicon,
+  input[type='submit'],
+  input[type='button'],
+  input[type='image'],
+  input[type='reset'],
+  button,
+  .btn,
+  .mark,
+  .badge,
+  .menuicon,
+  label.control-label {
+    color: $color;
+    background-color: $background;
+  }
+
+  [data-tooltip],
+  [title] {
+    &:after {
+      color: $color;
+      background: $background;
+    }
+  }
+  [title]:before,
+  .tooltip-top:before { border-top-color: $background; }
+  .tooltip-bottom:before { border-bottom-color: $background; }
+  .tooltip-left:before { border-left-color: $background; }
+  .tooltip-right:before { border-right-color: $background; }
 }

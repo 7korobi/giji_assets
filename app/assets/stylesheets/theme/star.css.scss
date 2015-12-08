@@ -59,9 +59,8 @@
 
   .guide,
   .info {
-    border-width: 2px 0;
-    border-style: dashed none;
-    border-color: #468;
+    border-top:    2px dashed #468;
+    border-bottom: 2px dashed #468;
   }
 
   .msg{

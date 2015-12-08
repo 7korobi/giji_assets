@@ -60,9 +60,8 @@
 
   .guide,
   .info {
-    border-width: 3px 0;
-    border-style: double none;
-    border-color: #555;
+    border-top:    3px double #555;
+    border-bottom: 3px double #555;
   }
 
   .msg{

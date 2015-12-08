@@ -72,7 +72,7 @@ export catch_gon =
 
     face.role_of_wins = _.groupBy face.roles, ([k,count])->
       role = Mem.roles.find(k) || {group: "OTHER"}
-      Mem.conf.winner["WIN_" + role.group].name
+      Mem.conf.winner["WIN_" + role.group].name_group
 
   form: ->
     for o in gon.form.texts

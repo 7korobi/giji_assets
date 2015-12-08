@@ -48,8 +48,12 @@ namespace :rsync do
   desc "deploy amazon s3."
   task :amazon do
     run_locally do
-      options = "-t --links --recursive --exclude='.git' --exclude='.svn'"
-      execute "rsync #{options} ~/Dropbox/web_work/images/ /www/giji_assets/public/images/"
+      case RUBY_PLATFORM
+      when /mswin|mingw/
+      else
+        options = "-t --links --recursive --exclude='.git' --exclude='.svn'"
+        execute "rsync #{options} ~/Dropbox/web_work/images/ /www/giji_assets/public/images/"
+      end
       execute "rm -rf tmp/cache/assets/development/sprockets/*"
     end
 

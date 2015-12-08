@@ -14,6 +14,7 @@ new Mem.Rule("winner").schema ->
 
   @deploy (o)->
     o.order = id_index.indexOf o._id
+    o.name_human ?= o.name
 
   @map_reduce (o)->
 

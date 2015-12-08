@@ -1,0 +1,80 @@
+@mixin font($small, $size-base, $family) {
+  $line-base: $size-base * 1.40;
+
+  html &,
+  body,
+  input,
+  select,
+  button,
+  textarea,
+  .btn {
+    font-family: $family;
+    font-size:   $size-base;
+    line-height: $line-base;
+  }
+
+  .fine {
+    font-size:   $small;
+    line-height: $size-base * 0.8;
+    kbd {
+      line-height: $small;
+    }
+  }
+
+  label.control-label,
+  rt,
+  sup,
+  sub,
+  kbd,
+  code,
+  .mes_date,
+  .small,
+  .badge,
+  .note,
+  .mark {
+    font-size:   $small;
+    line-height: $size-base;
+  }
+
+  span.help-block,
+  abbr,
+  .emboss {
+    padding: 2px $size-base * 0.4 0 $size-base * 0.4;
+    font-size: $small;
+    line-height: $size-base * 0.8;
+  }
+
+  .menuicon {
+    font-size:   $size-base * 2.0;
+    line-height: $size-base * 2.3;
+    width:       $size-base * 2.8;
+  }
+
+  kbd img {
+    margin: 0 0 (- $size-base * 0.30) 0;
+  }
+
+  label.control-label,
+  kbd,
+  code,
+  input,
+  select,
+  button,
+  textarea,
+  .btn.edge,
+  .mark,
+  .badge,
+  .menuicon {
+    padding: $size-base * 0.15 $size-base * 0.4;
+  }
+
+  label.control-label,
+  span.help-block,
+  abbr,
+  .btn.glass,
+  .mark,
+  .badge,
+  .emboss {
+    border-radius: $size-base;
+  }
+}

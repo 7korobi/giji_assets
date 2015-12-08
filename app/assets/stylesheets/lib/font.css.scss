@@ -52,30 +52,21 @@ textarea,
   }
 }
 
-.tiny {
-  @include span-columns(1);
-}
-.mini {
-  @include span-columns(2);
-}
-.quarter,
-.small {
-  @include span-columns(3);
-}
-.medium {
-  @include span-columns(4);
-}
-.half,
-.large {
-  @include span-columns(6);
-}
-.full,
-.huge {
-  @include span-columns(12);
-}
-
 .attention {
   font-weight: bold;
+}
+
+[title],
+[data-tooltip],
+kbd,
+code,
+input,
+select,
+button,
+textarea,
+.btn,
+.menuicon {
+  border-radius: 3px;
 }
 
 input[type='submit'],
@@ -133,5 +124,46 @@ kbd,
   &.line9 {
     min-height: 9 * 16.25px + 2px;
     height:     9 * 16.25px + 2px;
+  }
+}
+
+input[type=color],
+input[type=checkbox],
+input[type=radio],
+input[type=image],
+#{$all-button-inputs},
+select,
+.menuicon,
+.btn {
+  $picnic-dark-overlay:      rgba(0, 0, 0, .3) !default;
+  $picnic-soft-dark-overlay: rgba(0, 0, 0, .1) !default;
+  &.glass {
+    background-color: transparent !important;
+    box-shadow:   inset 0 0 0   1500px $picnic-soft-dark-overlay;
+
+    &:hover,
+    &:focus {
+      box-shadow: inset 0 0 0   1500px $picnic-soft-dark-overlay;
+    }
+
+    &.active,
+    &:active,
+    &:checked {
+      box-shadow: inset 0 0 0  15000px $picnic-dark-overlay,      inset 0 2px 2px $picnic-dark-overlay;
+    }
+  }
+  &.edge {
+    box-shadow:   inset 0 0 0   1500px transparent,               inset 0 -3px $picnic-dark-overlay;
+
+    &:hover,
+    &:focus {
+      box-shadow: inset 0 0 0  15000px $picnic-soft-dark-overlay, inset 0 -1px $picnic-dark-overlay;
+    }
+
+    &.active,
+    &:active,
+    &:checked {
+      box-shadow: inset 0 0 0  15000px $picnic-dark-overlay,      inset 0 2px 2px $picnic-dark-overlay;
+    }
   }
 }

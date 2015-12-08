@@ -1,0 +1,21 @@
+.tiny {
+  @include span-columns(1);
+}
+.mini {
+  @include span-columns(2);
+}
+.quarter,
+.small {
+  @include span-columns(3);
+}
+.medium {
+  @include span-columns(4);
+}
+.half,
+.large {
+  @include span-columns(6);
+}
+.full,
+.huge {
+  @include span-columns(12);
+}
