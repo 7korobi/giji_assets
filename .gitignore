@@ -2,6 +2,7 @@
 .rbx
 .DS_Store
 .bundle
+.awspublish-giji-assets
 db/*.sqlite3
 log/*.log
 tmp/
