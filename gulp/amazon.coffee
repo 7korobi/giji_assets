@@ -9,7 +9,13 @@ module.exports = ({gulp, $, src, conf})->
     .pipe giji.publish headers, options
     .pipe giji.cache()
     .pipe $.awspublish.reporter
-      states: ['create', 'update', 'delete']
+      states: [
+        'create'
+        'update'
+        'delete'
+#        'cache'
+#        'skip'
+      ]
 
 
   gulp.task "amazon", ['amazon:gz', 'amazon:manifest'], ->
@@ -19,11 +25,13 @@ module.exports = ({gulp, $, src, conf})->
     amazon {}, ->
       gulp
       .src ["public/{assets-master,font,images/auth,images/banner,images/icon,images/portrate,images/bg}/**/*", "!**/*.{html,gz,*_}"]
+      .pipe $.sort()
       .pipe $.manifest
         filename: "giji.appcache"
         exclude:  'giji.appcache'
         timestamp: true
         hash: false
+        preferOnline: true
       .pipe gulp.dest 'public'
 
 
