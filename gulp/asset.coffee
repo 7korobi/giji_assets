@@ -1,5 +1,4 @@
-module.exports = ({gulp, $, src, dest, clean,  yml})->
-  del = require 'del'
+module.exports = ({gulp, $, src, dest,  yml})->
   neat = require 'node-neat'
   asset = (cb)->
     cb()
@@ -7,9 +6,14 @@ module.exports = ({gulp, $, src, dest, clean,  yml})->
     .pipe $.gzip gzipOptions: level: 9
     .pipe gulp.dest dest.public
 
-
-  gulp.task "asset:clean", (cb)->
-    del clean.asset.clean, cb
+  gulp.task "asset:html", ->
+    locals = {}
+    asset ->
+      gulp
+      .src src.asset.html
+      .pipe $.plumber()
+      .pipe $.if "*.slim", $.jade()
+      .pipe $.if "*.html.html", $.rename extname: ""
 
 
   # https://github.com/csscomb/csscomb.js/blob/master/doc/options.md
@@ -28,21 +32,10 @@ module.exports = ({gulp, $, src, dest, clean,  yml})->
   gulp.task "asset:js", ["asset:js:tmp"], ->
     asset ->
       gulp
-      .src dest.asset.js.tmp + "/*.js"
+      .src dest.asset.js + "/*.js"
       .pipe $.include()
 
-
-  gulp.task "asset:html", ->
-    locals = {}
-    asset ->
-      gulp
-      .src src.asset.html
-      .pipe $.plumber()
-      .pipe $.if "*.slim", $.jade()
-      .pipe $.if "*.html.html", $.rename extname: ""
-
-
-  gulp.task "asset:js:tmp", ["asset:clean", "asset:yaml"], ->
+  gulp.task "asset:js:tmp", ["clean", "asset:yaml"], ->
     gulp
     .src src.asset.js
     .pipe $.plumber()

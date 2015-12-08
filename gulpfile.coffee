@@ -43,6 +43,7 @@ gulp.task "default", ->
     "asset:css"
   ]
 
-require('./gulp/amazon') config
+require('./gulp/base') config
 require('./gulp/yaml')   config
 require('./gulp/asset')  config
+require('./gulp/amazon') config
