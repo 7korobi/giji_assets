@@ -21,4 +21,3 @@ test:
 production:
   url: postgres://achimfbpyaovvm:Ulp05nCRaPvuen1bZ58tqlZj3j@ec2-50-19-236-178.compute-1.amazonaws.com:5432/d1sklhpolfrmq1
   encoding: utf8
-
