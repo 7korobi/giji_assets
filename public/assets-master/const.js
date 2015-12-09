@@ -583,7 +583,7 @@
         return {
           enable: function() {
             return all.where(function(o) {
-              return !o.hidden;
+              return o.show;
             });
           }
         };
@@ -622,15 +622,10 @@
 
   new Mem.Rule("trs").schema(config("trs"));
 
+  new Mem.Rule("vote_type").schema(config("vote_type"));
+
   Mem.rule.option.schema(function() {
-    this.deploy(function(o) {
-      var ref;
-      o.option_id = o._id;
-      if ((ref = o.attr) != null ? ref.name : void 0) {
-        return o.attr.id = o.attr.name;
-      }
-    });
-    return this.scope(function(all) {
+    this.scope(function(all) {
       return {
         checkbox: function() {
           return all.where(function(o) {
@@ -643,6 +638,84 @@
           });
         }
       };
+    });
+    return this.deploy(function(o) {
+      var event_base, ref;
+      o.option_id = o._id;
+      if ((ref = o.attr) != null ? ref.name : void 0) {
+        o.attr.id = o.attr.name;
+      }
+      o.label_attr = {
+        "for": o.attr.name
+      };
+      event_base = function(e) {
+        return o.event(m.withAttr(o.attr_value, e));
+      };
+      o.view = function(form) {
+        var now_val, prop;
+        prop = form[o._id];
+        now_val = prop();
+        event_base(function(new_val) {
+          return prop(new_val);
+        });
+        o.attr[o.attr_value] = now_val;
+        o.attr.checked = o.attr.checked ? "checked" : void 0;
+        return m("div", m("input", o.attr), m("label", o.label_attr, now_val ? o.help_on : o.help_off));
+      };
+      switch (o.attr.type) {
+        case "checkbox":
+          o.event = function(e) {
+            return o.attr.onchange = e;
+          };
+          o.attr_value = "checked";
+          return o.view = function(form) {
+            var now_val, prop;
+            prop = form[o._id];
+            now_val = prop();
+            event_base(function(new_val) {
+              return prop(new_val);
+            });
+            o.attr.checked = o.attr.checked ? "checked" : void 0;
+            return m("li", m("input", o.attr), m("label", o.label_attr, now_val ? o.help_on : o.help_off));
+          };
+        case "select":
+          o.event = function(e) {
+            return o.attr.onchange = e;
+          };
+          o.attr_value = "value";
+          return o.view = function(form, hash, data, help) {
+            var now_val, option, prop, selected, value;
+            prop = form[o._id];
+            now_val = prop();
+            selected = now_val ? null : "selected";
+            event_base(function(new_val) {
+              return prop(hash[new_val]);
+            });
+            return m('div', m('select', o.attr, m('option', {
+              selected: selected,
+              value: ""
+            }, "- " + o.name + " -"), (function() {
+              var results;
+              results = [];
+              for (value in hash) {
+                option = hash[value];
+                selected = now_val === value ? "selected" : null;
+                results.push(m('option', {
+                  selected: selected,
+                  value: value
+                }, data(option)));
+              }
+              return results;
+            })()), m("label", o.label_attr, help && now_val ? help(now_val) : void 0, now_val ? o.help_on : o.help_off));
+          };
+        default:
+          o.event = function(e) {
+            o.attr.onchange = e;
+            o.attr.onkeyup = e;
+            return o.attr.onblur = e;
+          };
+          return o.attr_value = "value";
+      }
     });
   });
 
@@ -1870,102 +1943,100 @@
   });
 
   Mem.rule.option.set({
-    "seq-event": {
+    "seq_event": {
       "attr": {
-        "type": "checkbox",
-        "name": "seqevent"
+        "name": "seqevent",
+        "type": "checkbox"
       },
-      "attr_value": "checked",
       "name": "固定事件簿",
       "help_on": "事件が順序どおりに発生する",
       "help_off": "事件はランダムに選ばれる"
     },
-    "show-id": {
+    "show_id": {
       "attr": {
-        "type": "checkbox",
-        "name": "showid"
+        "name": "showid",
+        "type": "checkbox"
       },
-      "attr_value": "checked",
       "name": "ID公開",
       "help_on": "進行中にユーザーIDを公開する",
       "help_off": "エピローグまで、ユーザーIDを秘密にする"
     },
     "entrust": {
       "attr": {
-        "type": "checkbox",
-        "name": "entrust"
+        "name": "entrust",
+        "type": "checkbox"
       },
-      "attr_value": "checked",
       "name": "委任投票",
       "help_on": "委任投票ができる",
       "help_off": "委任投票ができない"
     },
-    "not-select-role": {
+    "not_select_role": {
       "attr": {
-        "type": "checkbox",
-        "name": "noselrole"
+        "name": "noselrole",
+        "type": "checkbox"
       },
-      "attr_value": "checked",
       "name": "役職希望",
       "help_on": "役職希望を無視する",
       "help_off": "役職希望を受け付ける"
     },
-    "random-target": {
+    "random_target": {
       "attr": {
-        "type": "checkbox",
-        "name": "randomtarget"
+        "name": "randomtarget",
+        "type": "checkbox"
       },
-      "attr_value": "checked",
       "name": "ランダム",
       "help_on": "投票・能力の対象に「ランダム」が選択できる",
       "help_off": "投票・能力の対象は「ランダム」にできない"
     },
-    "undead-talk": {
+    "undead_talk": {
       "attr": {
-        "type": "checkbox",
-        "name": "undead"
+        "name": "undead",
+        "type": "checkbox"
       },
-      "attr_value": "checked",
       "name": "幽界トーク",
       "help_on": "狼・妖精と死者との間で、会話ができる",
       "help_off": "狼・妖精と死者は会話を交わせない"
     },
-    "aiming-talk": {
+    "aiming_talk": {
       "attr": {
-        "type": "checkbox",
-        "name": "aiming"
+        "name": "aiming",
+        "type": "checkbox"
       },
-      "attr_value": "checked",
       "name": "内緒話",
       "help_on": "ふたりだけの内緒話をすることができる",
       "help_off": "ふたりだけの内緒話は選べない"
     },
-    "vil-name": {
+    "vil_name": {
       "attr": {
         "type": "text",
-        "name": "vname"
+        "name": "vname",
+        "size": 20,
+        "maxlength": 20,
+        "required": "required",
+        "pattern": ".{2,20}"
       }
     },
-    "vil-comment": {
+    "vil_comment": {
       "attr": {
         "name": "vcomment",
         "cols": 30,
-        "rows": 10
+        "rows": 10,
+        "style": "width: 100%"
       }
     },
-    "entry-password": {
+    "entry_password": {
       "attr": {
         "type": "text",
         "name": "entrypwd",
         "size": 8,
-        "maxlength": 8
+        "maxlength": 8,
+        "pattern": "[a-zA-Z0-9]{0,8}"
       },
-      "attr_value": "value",
       "name": "参加制限",
       "help_on": "参加にパスワード必須",
       "help_off": "参加制限なし"
     },
-    "player-count": {
+    "player_count": {
       "attr": {
         "type": "number",
         "name": "vplcnt",
@@ -1974,22 +2045,110 @@
         "step": 1,
         "required": "required"
       },
-      "attr_value": "value",
       "name": "定員",
+      "help_on": "人が定員です。",
+      "help_off": "※入力してください。"
+    },
+    "player_count_start": {
+      "attr": {
+        "type": "number",
+        "name": "vplcnt",
+        "min": 4,
+        "max": 20,
+        "step": 1,
+        "required": "required"
+      },
+      "name": "最少催行人員",
+      "help_on": "人以上で開始します。",
+      "help_off": "※入力してください。"
+    },
+    "game_rule": {
+      "attr": {
+        "type": "select",
+        "name": "game",
+        "required": "required"
+      },
+      "name": "ゲームルール",
       "help_on": "",
       "help_off": "※入力してください。"
     },
-    "player-count-start": {
+    "rating": {
       "attr": {
-        "type": "number",
-        "name": "vplcnt",
-        "min": 4,
-        "max": 20,
-        "step": 1,
+        "type": "select",
+        "name": "rating",
         "required": "required"
       },
-      "attr_value": "value",
-      "name": "最少催行人員",
+      "name": "こだわり",
+      "help_on": "",
+      "help_off": "※入力してください。"
+    },
+    "chr_set": {
+      "attr": {
+        "type": "select",
+        "name": "chr_set",
+        "required": "required"
+      },
+      "name": "登場人物",
+      "help_on": "",
+      "help_off": "※入力してください。"
+    },
+    "csid": {
+      "attr": {
+        "type": "select",
+        "name": "csid",
+        "required": "required"
+      },
+      "name": "NPC選択",
+      "help_on": "",
+      "help_off": "※入力してください。"
+    },
+    "say_count": {
+      "attr": {
+        "type": "select",
+        "name": "saycnttype",
+        "required": "required"
+      },
+      "name": "発言制限",
+      "help_on": "",
+      "help_off": "※入力してください。"
+    },
+    "role_table": {
+      "attr": {
+        "type": "select",
+        "name": "roletable",
+        "required": "required"
+      },
+      "name": "役職配分",
+      "help_on": "",
+      "help_off": "※入力してください。"
+    },
+    "vote_type": {
+      "attr": {
+        "type": "select",
+        "name": "votetype",
+        "required": "required"
+      },
+      "name": "投票方法",
+      "help_on": "",
+      "help_off": "※入力してください。"
+    },
+    "start_type": {
+      "attr": {
+        "type": "select",
+        "name": "starttype",
+        "required": "required"
+      },
+      "name": "開始方法",
+      "help_on": "",
+      "help_off": "※入力してください。"
+    },
+    "mob_type": {
+      "attr": {
+        "type": "select",
+        "name": "mob",
+        "required": "required"
+      },
+      "name": "見物スタイル",
       "help_on": "",
       "help_off": "※入力してください。"
     }
@@ -2001,71 +2160,88 @@
       "alt": ""
     },
     "default": {
-      "caption": "とくになし"
+      "caption": "とくになし",
+      "show": true
     },
     "love": {
       "caption": "[愛] 恋愛を重視",
-      "alt": "愛"
+      "alt": "愛",
+      "show": true
     },
     "sexy": {
       "caption": "[性] 性表現あり",
-      "alt": "性"
+      "alt": "性",
+      "show": true
     },
     "sexylove": {
       "caption": "[性愛] 大人の恋愛",
-      "alt": "性愛"
+      "alt": "性愛",
+      "show": true
     },
     "violence": {
       "caption": "[暴] 暴力、グロ",
-      "alt": "暴"
+      "alt": "暴",
+      "show": true
     },
     "sexyviolence": {
       "caption": "[性暴] えろぐろ",
-      "alt": "性暴"
+      "alt": "性暴",
+      "show": true
     },
     "teller": {
       "caption": "[怖] 恐怖を煽る",
-      "alt": "怖"
+      "alt": "怖",
+      "show": true
     },
     "drunk": {
       "caption": "[楽] 享楽に耽る",
-      "alt": "楽"
+      "alt": "楽",
+      "show": true
     },
     "gamble": {
       "caption": "[賭] 賭博に耽る",
-      "alt": "賭"
+      "alt": "賭",
+      "show": true
     },
     "crime": {
       "caption": "[罪] 犯罪描写あり",
-      "alt": "罪"
+      "alt": "罪",
+      "show": true
     },
     "drug": {
       "caption": "[薬] 薬物表現あり",
-      "alt": "薬"
+      "alt": "薬",
+      "show": true
     },
     "word": {
       "caption": "[言] 殺伐、暴言あり",
-      "alt": "言"
+      "alt": "言",
+      "show": true
     },
     "fireplace": {
       "caption": "[暢] のんびり雑談",
-      "alt": "暢"
+      "alt": "暢",
+      "show": true
     },
     "appare": {
       "caption": "[遖] あっぱれネタ風味",
-      "alt": "遖"
+      "alt": "遖",
+      "show": true
     },
     "ukkari": {
       "caption": "[張] うっかりハリセン",
-      "alt": "張"
+      "alt": "張",
+      "show": true
     },
     "child": {
       "caption": "[全] 大人も子供も初心者も、みんな安心",
-      "alt": "全"
+      "alt": "全",
+      "show": true
     },
     "biohazard": {
       "caption": "[危] 無茶ぶり上等",
-      "alt": "危"
+      "alt": "危",
+      "show": true
     },
     "null": {
       "caption": "null",
@@ -2094,54 +2270,57 @@
 
   Mem.rule.role_table.set({
     "secret": {
-      "name": "詳細は黒幕だけが知っています。",
-      "hidden": true
+      "name": "詳細は黒幕だけが知っています。"
     },
     "ultimate": {
-      "name": "アルティメット",
-      "hidden": true
+      "name": "アルティメット"
     },
     "lover": {
-      "name": "恋愛天使",
-      "hidden": true
+      "name": "恋愛天使"
     },
     "hamster": {
-      "name": "ハムスター",
-      "hidden": true
+      "name": "ハムスター"
     },
     "random": {
-      "name": "ランダム",
-      "hidden": true
+      "name": "ランダム"
     },
     "custom": {
-      "name": "自由設定"
+      "name": "自由設定",
+      "show": true
     },
     "default": {
       "name": "標準",
+      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "fanatic", "medium", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "stigma"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "stigma", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "wisper", "medium", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager", "villager", "villager", "villager"]]
     },
     "mistery": {
       "name": "深い霧の夜",
+      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "lonewolf"], ["villager", "villager", "seer", "lonewolf", "alchemist"], ["villager", "villager", "guard", "lonewolf", "alchemist", "possess"], ["villager", "villager", "guard", "lonewolf", "alchemist", "decide", "possess", "fan"], ["villager", "villager", "guard", "wolf", "wolf", "alchemist", "decide", "aura", "doctor"], ["villager", "villager", "guard", "wolf", "wolf", "alchemist", "decide", "aura", "doctor", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "alchemist"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl", "fan"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl", "fan", "guru"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl", "fan", "guru", "alchemist"]]
     },
     "test1st": {
       "name": "人狼審問試験壱型",
+      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "possess", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "stigma"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "stigma", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "stigma", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "villager", "fm", "fm", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "villager", "fm", "fm", "possess", "villager"]]
     },
     "test2nd": {
       "name": "人狼審問試験弐型",
+      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager", "villager"]]
     },
     "wbbs_c": {
       "name": "人狼BBS-C国",
+      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager", "villager"]]
     },
     "wbbs_f": {
       "name": "人狼BBS-F国",
+      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager", "villager"]]
     },
     "wbbs_g": {
       "name": "人狼BBS-G国",
+      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager", "villager", "villager", "villager"]]
     }
   });
@@ -2784,6 +2963,17 @@
     }
   });
 
+  Mem.rule.vote_type.set({
+    "anonymity": {
+      "caption": "無記名投票",
+      "help": "匿名で投票します。集計結果は人数のみになります。"
+    },
+    "sign": {
+      "caption": "記名投票",
+      "help": "署名して投票します。集計結果に投票者が記されます。"
+    }
+  });
+
   Mem.conf.folder = Mem.folders.hash();
 
   Mem.conf.live = Mem.lives.hash();
@@ -2807,6 +2997,8 @@
   Mem.conf.theme = Mem.themes.hash();
 
   Mem.conf.trs = Mem.trss.hash();
+
+  Mem.conf.vote_type = Mem.vote_types.hash();
 
 }).call(this);
 
@@ -7739,140 +7931,6 @@
 
 }).call(this);
 
-(function() {
-  new Mem.Rule("target").schema(function() {
-    this.scope(function(all) {
-      return {
-        command: function(type) {
-          return all;
-        },
-        vote: function(type) {
-          return all;
-        }
-      };
-    });
-    return this.deploy(function(o) {});
-  });
-
-  new Mem.Rule("command").schema(function() {
-    this.scope(function(all) {
-      return {
-        target: function() {
-          return all.where({
-            jst: "target"
-          });
-        }
-      };
-    });
-    return this.deploy(function(o) {});
-  });
-
-  new Mem.Rule("writer").schema(function() {
-    this.belongs_to("chr_job");
-    this.scope(function(all) {
-      return {};
-    });
-    return this.deploy(function(o) {
-      o._id = o.cmd;
-      o.vdom = GUI.form[o.jst];
-      o.is_preview = m.prop(false);
-      o.style = m.prop("text");
-      o.log = function(log) {
-        if (log) {
-          o.hisoty = {
-            form: o,
-            text: log
-          };
-          Mem.rule.history.merge(o.history);
-          return log;
-        } else {
-          return o.history;
-        }
-      };
-      return o.submit = (function() {
-        switch (o.cmd) {
-          case "entry":
-            return (function(_this) {
-              return function(arg) {
-                var _arg, csid_cid, entrypwd, mes, role, style, turn, vid;
-                turn = arg.turn, vid = arg.vid, mes = arg.mes, style = arg.style, csid_cid = arg.csid_cid, role = arg.role, entrypwd = arg.entrypwd;
-                _arg = {
-                  turn: turn,
-                  vid: vid,
-                  mes: mes,
-                  style: style,
-                  csid_cid: csid_cid,
-                  role: role,
-                  entrypwd: entrypwd
-                };
-                _arg.cmd = "entry";
-                _arg.target = -1;
-                return _arg;
-              };
-            })(this);
-          case "write":
-            return (function(_this) {
-              return function(arg) {
-                var mes, style, target, turn, vid;
-                turn = arg.turn, vid = arg.vid, mes = arg.mes, style = arg.style, target = arg.target;
-                _arg.cmd = "write";
-                return _arg;
-              };
-            })(this);
-          case "wrmemo":
-            return (function(_this) {
-              return function(arg) {
-                var mes, style, target, turn, vid;
-                turn = arg.turn, vid = arg.vid, mes = arg.mes, style = arg.style, target = arg.target;
-                _arg.cmd = "wrmemo";
-                return _arg;
-              };
-            })(this);
-          case "action":
-            return (function(_this) {
-              return function(arg) {
-                var actionno, actiontext, style, target, turn, vid;
-                turn = arg.turn, vid = arg.vid, actiontext = arg.actiontext, style = arg.style, target = arg.target, actionno = arg.actionno;
-                _arg.cmd = "action";
-                return _arg;
-              };
-            })(this);
-          case "select":
-            return (function(_this) {
-              return function(arg) {
-                var cmd, target1, target2, vid;
-                vid = arg.vid, target1 = arg.target1, target2 = arg.target2, cmd = arg.cmd;
-                if ('vote' === cmd) {
-                  _arg.entrust = '';
-                }
-                if ('entrust' === cmd) {
-                  _arg.entrust = 'entrust';
-                }
-                return _arg;
-              };
-            })(this);
-          case "select_commit":
-            return (function(_this) {
-              return function(arg) {
-                var commit, vid;
-                vid = arg.vid, commit = arg.commit;
-                _arg.cmd = "commit";
-                return _arg;
-              };
-            })(this);
-        }
-      }).call(this);
-    });
-  });
-
-  new Mem.Rule("history").schema(function() {
-    return this.deploy(function(o) {
-      return o._id = JSON.stringify([o.form._id, o.text]);
-    });
-  });
-
-}).call(this);
-
 (function(){
   new Mem.Rule("form").schema(function(){
     this.belongs_to("chr_job");
@@ -8233,6 +8291,140 @@
       };
     });
   });
+}).call(this);
+
+(function() {
+  new Mem.Rule("target").schema(function() {
+    this.scope(function(all) {
+      return {
+        command: function(type) {
+          return all;
+        },
+        vote: function(type) {
+          return all;
+        }
+      };
+    });
+    return this.deploy(function(o) {});
+  });
+
+  new Mem.Rule("command").schema(function() {
+    this.scope(function(all) {
+      return {
+        target: function() {
+          return all.where({
+            jst: "target"
+          });
+        }
+      };
+    });
+    return this.deploy(function(o) {});
+  });
+
+  new Mem.Rule("writer").schema(function() {
+    this.belongs_to("chr_job");
+    this.scope(function(all) {
+      return {};
+    });
+    return this.deploy(function(o) {
+      o._id = o.cmd;
+      o.vdom = GUI.form[o.jst];
+      o.is_preview = m.prop(false);
+      o.style = m.prop("text");
+      o.log = function(log) {
+        if (log) {
+          o.hisoty = {
+            form: o,
+            text: log
+          };
+          Mem.rule.history.merge(o.history);
+          return log;
+        } else {
+          return o.history;
+        }
+      };
+      return o.submit = (function() {
+        switch (o.cmd) {
+          case "entry":
+            return (function(_this) {
+              return function(arg) {
+                var _arg, csid_cid, entrypwd, mes, role, style, turn, vid;
+                turn = arg.turn, vid = arg.vid, mes = arg.mes, style = arg.style, csid_cid = arg.csid_cid, role = arg.role, entrypwd = arg.entrypwd;
+                _arg = {
+                  turn: turn,
+                  vid: vid,
+                  mes: mes,
+                  style: style,
+                  csid_cid: csid_cid,
+                  role: role,
+                  entrypwd: entrypwd
+                };
+                _arg.cmd = "entry";
+                _arg.target = -1;
+                return _arg;
+              };
+            })(this);
+          case "write":
+            return (function(_this) {
+              return function(arg) {
+                var mes, style, target, turn, vid;
+                turn = arg.turn, vid = arg.vid, mes = arg.mes, style = arg.style, target = arg.target;
+                _arg.cmd = "write";
+                return _arg;
+              };
+            })(this);
+          case "wrmemo":
+            return (function(_this) {
+              return function(arg) {
+                var mes, style, target, turn, vid;
+                turn = arg.turn, vid = arg.vid, mes = arg.mes, style = arg.style, target = arg.target;
+                _arg.cmd = "wrmemo";
+                return _arg;
+              };
+            })(this);
+          case "action":
+            return (function(_this) {
+              return function(arg) {
+                var actionno, actiontext, style, target, turn, vid;
+                turn = arg.turn, vid = arg.vid, actiontext = arg.actiontext, style = arg.style, target = arg.target, actionno = arg.actionno;
+                _arg.cmd = "action";
+                return _arg;
+              };
+            })(this);
+          case "select":
+            return (function(_this) {
+              return function(arg) {
+                var cmd, target1, target2, vid;
+                vid = arg.vid, target1 = arg.target1, target2 = arg.target2, cmd = arg.cmd;
+                if ('vote' === cmd) {
+                  _arg.entrust = '';
+                }
+                if ('entrust' === cmd) {
+                  _arg.entrust = 'entrust';
+                }
+                return _arg;
+              };
+            })(this);
+          case "select_commit":
+            return (function(_this) {
+              return function(arg) {
+                var commit, vid;
+                vid = arg.vid, commit = arg.commit;
+                _arg.cmd = "commit";
+                return _arg;
+              };
+            })(this);
+        }
+      }).call(this);
+    });
+  });
+
+  new Mem.Rule("history").schema(function() {
+    return this.deploy(function(o) {
+      return o._id = JSON.stringify([o.form._id, o.text]);
+    });
+  });
+
 }).call(this);
 
 (function(){

@@ -6,10 +6,13 @@ vmake_form =
       gift:  []
       trap:  []
 
+    for o in Mem.options.list()
+      v.form[o._id] = m.prop(null)
+
+
     v.reset = ->
-      player_count = v.form["player-count"]?()
-      cards_set = v.form.roletable?()?.cards
-      console.log [v.form]
+      player_count = v.form.player_count?()
+      cards_set = v.form.role_table?()?.cards
       if cards_set
         v.form.role = []
         v.form.gift = []
@@ -48,9 +51,9 @@ vmake_form =
                 human_size
                 "人"
               "以上" if minus
-              "は人間です。"
+              "は村人です。"
       else
-        m "div",
+        m ".emboss",
           "この編成ではゲームが成立しません。"
 
     v.npc_says = (csid)->
@@ -61,11 +64,16 @@ vmake_form =
         if chr_job
           updated_at = _.now()
           mestype = "SAY"
+          user_id = "master"
+          anchor = "0"
           face = Mem.faces.find face_id
           name = "#{chr_job.job} #{face.name}"
 
-          [ doc.message.talk {face_id, name, mestype, updated_at, log: say_0}
-            doc.message.talk {face_id, name, mestype, updated_at, log: say_1}
+          [ m "h3", "プロローグ"
+            doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_0.replace(/\n/g,"<br>")}
+            m "h3", "１日目"
+            doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_1.replace(/\n/g,"<br>")}
+            m "h3", "２日目"
           ]
 
     v
@@ -95,40 +103,6 @@ vmake_form =
       for o in query.list()
         add_btn o
 
-    base = (key)->
-      v.form[key] ?= m.prop(null)
-
-    option = (o)->
-      prop = base o._id
-      o.attr.onchange ?= m.withAttr o.attr_value, prop
-      m "div",
-        m "input", o.attr
-        m "label", {for: o.attr.name},
-          if prop()
-            o.help_on
-          else
-            o.help_off
-
-    select = (key, hash, data, help)->
-      prop = base key
-      select_attr =
-        id: key
-        name: key
-        onchange: m.withAttr "value", (value)->
-          prop hash[value]
-
-      label_attr =
-        for: key
-
-      m 'div',
-        m 'select', select_attr,
-          m 'option', {value: ""}, "- 選択してください -"
-          for value, o of hash
-            m 'option', {value}, data o
-        if help && prop()
-          m "label", label_attr, help prop()
-
-    console.log [v.form["entry-password"]?(), Mem.options.find("entry-password")]
     v.reset()
     vindex = 0
     nindex = 0
@@ -137,157 +111,176 @@ vmake_form =
       "■村のルール"
     ].concat RULE.village.list.map (o)-> "#{++vindex}.#{o.head}"
 
-    m ".vmake.paragraph", {key: v._id},
-      m "fieldset.#{v.mestype}",
-        m "p",
+    m ".vmake", {key: v._id},
+      m ".INFOSP.info",
+        m "p.text",
           "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。"
           m "br"
           "村作成から"
           m "span.mark", "#{Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP}日間"
           "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。"
-      m "fieldset.#{v.mestype}",
-        m "legend", "村の名前と説明"
-        m "input", Mem.options.find("vil-name").attr
-        m "textarea", Mem.options.find("vil-comment").attr, vtext.join("\r\n")
 
-      m "fieldset.#{v.mestype}",
-        m "p", "■国のルール"
-        RULE.nation.list.map (o)-> m "p", "#{++nindex}.#{o.head}"
+      m ".MAKER.plane",
+        m "fieldset.msg",
+          m "legend.emboss", "村の名前、説明、ルール"
+          Mem.options.find("vil_name").view(v.form)
+          m "textarea", Mem.options.find("vil_comment").attr, vtext.join("\r\n")
 
-      m "fieldset.#{v.mestype}",
-        m "p.tips",
-          "以上の項目が、"
-          m 'a[href="./sow.cgi?cmd=rule"]', "人狼議事のルール"
-          "なんだ。編集していい部分は、自由に変更してかまわない。"
+          m "p", "■国のルール"
+          RULE.nation.list.map (o)-> m "p", "#{++nindex}.#{o.head}"
 
-      m "fieldset.#{v.mestype}",
-        m "legend", "設定"
-        option Mem.options.find("entry-password")
-        for o in Mem.options.checkbox().list()
-          option o
+          m ".emboss",
+            "以上の項目が、"
+            m 'a[href="./sow.cgi?cmd=rule"]', "人狼議事のルール"
+            "なんだ。編集していい部分は、自由に変更してかまわない。"
 
-      m "h6", "ゲームルール"
-      select "game",
-        Mem.conf.rule
-        (o)-> o.CAPTION
-        (o)-> m.trust o.HELP
+      m ".SSAY.plane",
+        m "fieldset.msg",
+          m "legend.emboss", "設定"
 
-      m "h6", "こだわり"
-      select "rating",
-        Mem.conf.rating
-        (o)-> o.caption
-        (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
+          Mem.options.find("rating").view v.form,
+            Mem.ratings.enable().hash()
+            (o)-> o.caption
+            (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
 
-      m "h6", "登場人物"
-      select "chr_set",
-        Mem.chr_sets.hash()
-        (o)-> o.caption
+          Mem.options.find("say_count").view v.form,
+            Mem.says.finds Mem.conf.folder.MORPHE.config.saycnt
+            (o)-> o.CAPTION
+            (o)-> m.trust o.HELP
 
-      if v.form.chr_set()
-        select "csid",
-          v.form.chr_set().chr_npcs().hash()
-          (o)-> o.caption
+          Mem.options.find("start_type").view v.form,
+            Mem.conf.start_type
+            (o)-> o.caption
+            (o)-> m.trust o.help
+
+          "更新時間 hour minute"
+          "更新間隔 updinterval"
+
+          Mem.options.find("entry_password").view(v.form)
+
+      m ".SSAY.plane",
+        m "fieldset.msg",
+          m "legend.emboss", "ゲームルール"
+          Mem.options.find("game_rule").view v.form,
+            Mem.conf.rule
+            (o)-> o.CAPTION
+            (o)-> m "ul", m.trust o.HELP
+          m "ul",
+            for o in Mem.options.checkbox().list()
+              o.view(v.form)
+          m "ul",
+            m "li",
+              Mem.options.find("vote_type").view v.form,
+                Mem.conf.vote_type
+                (o)-> o.caption
+                (o)-> m.trust o.help
+
+      m ".VSAY.plane",
+        m "fieldset.msg",
+          m "legend.emboss", "編成"
+
+          Mem.options.find("mob_type").view v.form,
+            Mem.roles.mob().hash()
+            (o)-> o.name
+            (o)-> m.trust o.HELP
+
+          Mem.options.find("role_table").view v.form,
+            Mem.role_tables.enable().hash()
+            (o)-> o.name
+
+          v.player_summary v.form
+
+      switch v.form.role_table()?._id
+        when undefined
+          m ".WSAY.plane",
+            m "fieldset.msg",
+              m "legend.emboss", "編成詳細"
+              m "p", "まずは、役職配分を選択してください。"
+        when "custom"
+          m ".VSAY.plane",
+            m "fieldset.msg",
+              m "legend.emboss", "編成自由設定"
+              Mem.options.find("player_count").view(v.form)
+              if "wbbs" == v.form.start_type?()?._id
+                Mem.options.find("player_count_start").view(v.form)
+              sets "config", v.form.extra
+              sets "config", v.form.role
+              sets "config", v.form.gift
+              if v.form.seq_event?()
+                sets "order", v.form.trap
+              else
+                sets "config", v.form.trap
+
+
+              m "h6", "村側"
+              add_btns Mem.roles.is "human"
+
+              m "h6", "敵方の人間"
+              add_btns Mem.roles.is "evil"
+
+              m "h6", "人狼"
+              add_btns Mem.roles.is "wolf"
+
+              m "h6", "妖精"
+              add_btns Mem.roles.is "pixi"
+
+              m "h6", "その他"
+              add_btns Mem.roles.is "other"
+              add_btn(
+                _id: "mob"
+                cmd: "extra"
+                win: "NONE"
+                name: "見物人"
+              )
+
+              m "h6", "恩恵"
+              add_btns Mem.roles.is "gift"
+
+              m "h6", "事件"
+              add_btns Mem.traps.show()
+
+        else
+          m ".VSAY.plane",
+            m "fieldset.msg",
+              m "legend.emboss", "編成詳細"
+              Mem.options.find("player_count").view(v.form)
+              if "wbbs" == v.form.start_type?()?._id
+                Mem.options.find("player_count_start").view(v.form)
+              sets "config", v.form.extra
+              sets "config", v.form.role
+              sets "config", v.form.gift
+              if v.form.seq_event?()
+                sets "order", v.form.trap
+              else
+                sets "config", v.form.trap
+
+              add_btn(
+                _id: "mob"
+                cmd: "extra"
+                win: "NONE"
+                name: "見物人"
+              )
+
+      m ".SSAY.plane",
+        m "fieldset.msg",
+          m "legend.emboss", "登場人物"
+          Mem.options.find("chr_set").view v.form,
+            Mem.chr_sets.hash()
+            (o)-> o.caption
+
+          if v.form.chr_set()
+            Mem.options.find("csid").view v.form,
+              v.form.chr_set().chr_npcs().hash()
+              (o)-> o.caption
 
       if v.form.chr_set() && v.form.csid()
         v.npc_says v.form.csid()
 
-      m "h6", "発言制限"
-      select "saycnttype",
-        Mem.says.finds Mem.conf.folder.MORPHE.config.saycnt
-        (o)-> o.CAPTION
-        (o)-> m.trust o.HELP
-
-      m "h6", "開始方法"
-      select "starttype",
-        Mem.conf.start_type
-        (o)-> o.caption
-        (o)-> m.trust o.help
-
-      m "fieldset",
-        m "legend", "編成"
-
-        select "mob",
-          Mem.roles.mob().hash()
-          (o)-> o.name
-          (o)-> m.trust o.HELP
-
-        select "roletable",
-          Mem.role_tables.enable().hash()
-          (o)-> o.name
-
-        v.player_summary v.form
-
-      switch v.form.roletable()?._id
-        when undefined
-          m "fieldset",
-            m "p", "まずは、役職配分を選択してください。"
-        when "custom"
-          m "fieldset",
-            m "legend", "編成自由設定"
-            option Mem.options.find("player-count")
-            if "wbbs" == v.form.starttype?._id
-              option Mem.options.find("player-count-start")
-            sets "config", v.form.extra
-            sets "config", v.form.role
-            sets "config", v.form.gift
-            if v.form.seqevent && v.form.seqevent()
-              sets "order", v.form.trap
-            else
-              sets "config", v.form.trap
-
-
-            m "h6", "村側"
-            add_btns Mem.roles.is "human"
-
-            m "h6", "敵方の人間"
-            add_btns Mem.roles.is "evil"
-
-            m "h6", "人狼"
-            add_btns Mem.roles.is "wolf"
-
-            m "h6", "妖精"
-            add_btns Mem.roles.is "pixi"
-
-            m "h6", "その他"
-            add_btns Mem.roles.is "other"
-            add_btn(
-              _id: "mob"
-              cmd: "extra"
-              win: "NONE"
-              name: "見物人"
-            )
-
-            m "h6", "恩恵"
-            add_btns Mem.roles.is "gift"
-
-            m "h6", "事件"
-            add_btns Mem.traps.show()
-
-        else
-          m "fieldset",
-            m "legend", "編成詳細"
-            option Mem.options.find("player-count")
-            if "wbbs" == v.form.starttype?._id
-              option Mem.options.find("player-count-start")
-            sets "config", v.form.extra
-            sets "config", v.form.role
-            sets "config", v.form.gift
-            if v.form.seqevent && v.form.seqevent()
-              sets "order", v.form.trap
-            else
-              sets "config", v.form.trap
-
-            add_btn(
-              _id: "mob"
-              cmd: "extra"
-              win: "NONE"
-              name: "見物人"
-            )
-
-
-      m "fieldset",
-        m "input", {name:"cmd", value: v.cmd, type: "hidden"}
-        m "input", {type:"submit", value: "村の作成"}
+      m ".VSAY.plane",
+        m "fieldset.msg",
+          m "legend.emboss", "決定"
+          m "input", {name:"cmd", value: v.cmd, type: "hidden"}
+          m "input", {type:"submit", value: "村の作成"}
 
 doc.message.vmake_form = (v)->
   m "div", m.component vmake_form, v

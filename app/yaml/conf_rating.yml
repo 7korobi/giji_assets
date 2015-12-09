@@ -1,70 +1,87 @@
 
 default:
   caption: とくになし
+  show: true
 
 love:
   caption: "[愛] 恋愛を重視"
   alt: 愛
+  show: true
 
 sexy:
   caption: "[性] 性表現あり"
   alt: 性
+  show: true
 
 sexylove:
   caption: "[性愛] 大人の恋愛"
   alt: 性愛
+  show: true
 
 violence:
   caption: "[暴] 暴力、グロ"
   alt: 暴
+  show: true
 
 sexyviolence:
   caption: "[性暴] えろぐろ"
   alt: 性暴
+  show: true
 
 teller:
   caption: "[怖] 恐怖を煽る"
   alt: 怖
+  show: true
 
 drunk:
   caption: "[楽] 享楽に耽る"
   alt: 楽
+  show: true
 
 gamble:
   caption: "[賭] 賭博に耽る"
   alt: 賭
+  show: true
 
 crime:
   caption: "[罪] 犯罪描写あり"
   alt: 罪
+  show: true
 
 drug:
   caption: "[薬] 薬物表現あり"
   alt: 薬
+  show: true
 
 word:
   caption: "[言] 殺伐、暴言あり"
   alt: 言
+  show: true
 
 fireplace:
   caption: "[暢] のんびり雑談"
   alt: 暢
+  show: true
 
 appare:
   caption: "[遖] あっぱれネタ風味"
   alt: 遖
+  show: true
 
 ukkari:
   caption: "[張] うっかりハリセン"
   alt: 張
+  show: true
 
 child:
   caption: "[全] 大人も子供も初心者も、みんな安心"
   alt: 全
+  show: true
 
 biohazard:
   caption: "[危] 無茶ぶり上等"
   alt: 危
+  show: true
 
 null:
   caption: "null"

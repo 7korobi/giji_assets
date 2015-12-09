@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# Time: Wed Dec 09 2015 19:42:59 GMT+0900 (東京 (標準時))
+# Time: Wed Dec 09 2015 23:13:09 GMT+0900 (JST)
 
 CACHE:
 assets-master/application.css
@@ -8,11 +8,11 @@ assets-master/const.js
 assets-master/rails.js
 assets-master/scratch.js
 assets-master/sow.js
-assets-master/spec.css
-assets-master/spec.js
 assets-master/spec_browser.js
 assets-master/spec_helper.js
 assets-master/spec_lib.js
+assets-master/spec.css
+assets-master/spec.js
 font/giji.eot
 font/giji.svg
 font/giji.ttf
@@ -45,13 +45,13 @@ images/bg/background.png
 images/bg/background460.png
 images/bg/background580.png
 images/bg/background770.png
-images/bg/earth.png
 images/bg/earth_half.png
-images/bg/film-L.png
-images/bg/film-S.png
+images/bg/earth.png
 images/bg/film-gray460.png
 images/bg/film-gray580.png
 images/bg/film-gray770.png
+images/bg/film-L.png
+images/bg/film-S.png
 images/bg/film-wa-L.png
 images/bg/film-wa-S.png
 images/bg/film-wa460.png
@@ -60,20 +60,20 @@ images/bg/film-wa770.png
 images/bg/film460.png
 images/bg/film580.png
 images/bg/film770.png
-images/bg/grid.gif
-images/bg/grid.svg
 images/bg/grid_blue.gif
 images/bg/grid_blue.svg
-images/bg/jupiter.png
+images/bg/grid.gif
+images/bg/grid.svg
 images/bg/jupiter_half.png
+images/bg/jupiter.png
 images/bg/karakusa.png
 images/bg/karakusa460.png
 images/bg/karakusa580.png
 images/bg/karakusa770.png
+images/bg/moon_half.jpg
 images/bg/moon-blue.png
 images/bg/moon-red.png
 images/bg/moon.jpg
-images/bg/moon_half.jpg
 images/bg/nagatanienn.png
 images/bg/renga.png
 images/bg/renga.svg
@@ -86,8 +86,8 @@ images/icon/ajax-loader.gif
 images/icon/cd_alert.png
 images/icon/cd_appare.png
 images/icon/cd_biohazard.png
-images/icon/cd_child.png
 images/icon/cd_child_org.png
+images/icon/cd_child.png
 images/icon/cd_crime.png
 images/icon/cd_default.png
 images/icon/cd_drug.png

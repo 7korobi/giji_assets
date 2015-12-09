@@ -1,28 +1,25 @@
 secret:
   name: 詳細は黒幕だけが知っています。
-  hidden: true
 
 ultimate:
   name: アルティメット
-  hidden: true
 
 lover:
   name: 恋愛天使
-  hidden: true
 
 hamster:
   name: ハムスター
-  hidden: true
 
 random:
   name: ランダム
-  hidden: true
 
 custom:
   name: 自由設定
+  show: true
 
 default:
   name: 標準
+  show: true
   cards: [null, null, null, null
     , [ villager, villager, seer, wolf ] # 4
     , [ villager, villager, seer, wolf, villager ] # 5
@@ -45,6 +42,7 @@ default:
 
 mistery:
   name: 深い霧の夜
+  show: true
   cards: [null, null, null, null
     , [ villager, villager, seer,  lonewolf ] # 4
     , [ villager, villager, seer,  lonewolf,        alchemist ] # 5
@@ -67,6 +65,7 @@ mistery:
 
 test1st:
   name: 人狼審問試験壱型
+  show: true
   cards: [null, null, null, null
     , [ villager, villager, seer, wolf ] # 4
     , [ villager, villager, seer, wolf, villager ] # 5
@@ -89,6 +88,7 @@ test1st:
 
 test2nd:
   name: 人狼審問試験弐型
+  show: true
   cards: [null, null, null, null
     , [ villager, villager, seer, wolf ] # 4
     , [ villager, villager, seer, wolf, villager ] # 5
@@ -111,6 +111,7 @@ test2nd:
 
 wbbs_c:
   name: 人狼BBS-C国
+  show: true
   cards: [null, null, null, null
     , [ villager, villager, seer, wolf ] # 4
     , [ villager, villager, seer, wolf, villager ] # 5
@@ -132,6 +133,7 @@ wbbs_c:
   ]
 wbbs_f:
   name: 人狼BBS-F国
+  show: true
   cards: [null, null, null, null
     , [ villager, villager, seer, wolf ] # 4
     , [ villager, villager, seer, wolf, villager ] # 5
@@ -154,6 +156,7 @@ wbbs_f:
 
 wbbs_g:
   name: 人狼BBS-G国
+  show: true
   cards: [null, null, null, null
     , [ villager, villager, seer, wolf ] # 4
     , [ villager, villager, seer, wolf, villager ] # 5

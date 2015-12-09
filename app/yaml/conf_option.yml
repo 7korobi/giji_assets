@@ -1,89 +1,87 @@
-seq-event:
+seq_event:
   attr:
-    type: checkbox
     name: seqevent
-  attr_value: checked
+    type: checkbox
   name: 固定事件簿
   help_on:  事件が順序どおりに発生する
   help_off: 事件はランダムに選ばれる
 
-show-id:
+show_id:
   attr:
-    type: checkbox
     name: showid
-  attr_value: checked
+    type: checkbox
   name: ID公開
   help_on:  進行中にユーザーIDを公開する
   help_off: エピローグまで、ユーザーIDを秘密にする
 
 entrust:
   attr:
-    type: checkbox
     name: entrust
-  attr_value: checked
+    type: checkbox
   name: 委任投票
   help_on:  委任投票ができる
   help_off: 委任投票ができない
 
-not-select-role:
+not_select_role:
   attr:
-    type: checkbox
     name: noselrole
-  attr_value: checked
+    type: checkbox
   name: 役職希望
   help_on:  役職希望を無視する
   help_off: 役職希望を受け付ける
 
-random-target:
+random_target:
   attr:
-    type: checkbox
     name: randomtarget
-  attr_value: checked
+    type: checkbox
   name: ランダム
   help_on:  投票・能力の対象に「ランダム」が選択できる
   help_off: 投票・能力の対象は「ランダム」にできない
 
-undead-talk:
+undead_talk:
   attr:
-    type: checkbox
     name: undead
-  attr_value: checked
+    type: checkbox
   name: 幽界トーク
   help_on:  狼・妖精と死者との間で、会話ができる
   help_off: 狼・妖精と死者は会話を交わせない
 
-aiming-talk:
+aiming_talk:
   attr:
-    type: checkbox
     name: aiming
-  attr_value: checked
+    type: checkbox
   name: 内緒話
   help_on:  ふたりだけの内緒話をすることができる
   help_off: ふたりだけの内緒話は選べない
 
-vil-name:
+vil_name:
   attr:
     type: text
     name: vname
+    size: 20
+    maxlength: 20
+    required: required
+    pattern: ".{2,20}"
 
-vil-comment:
+vil_comment:
   attr:
     name: vcomment
     cols: 30
     rows: 10
+    style: "width: 100%"
 
-entry-password:
+entry_password:
   attr:
     type: text
     name: entrypwd
     size: 8
     maxlength: 8
-  attr_value: value
+    pattern: "[a-zA-Z0-9]{0,8}"
   name: 参加制限
   help_on:  参加にパスワード必須
   help_off: 参加制限なし
 
-player-count:
+player_count:
   attr:
     type: number
     name: vplcnt
@@ -91,20 +89,99 @@ player-count:
     max: 20
     step: 1
     required: required
-  attr_value: value
   name: 定員
+  help_on: "人が定員です。"
+  help_off: ※入力してください。
+
+player_count_start:
+  attr:
+    type: number
+    name: vplcnt
+    min:  4
+    max: 20
+    step: 1
+    required: required
+  name: 最少催行人員
+  help_on: "人以上で開始します。"
+  help_off: ※入力してください。
+
+game_rule:
+  attr:
+    type: select
+    name: game
+    required: required
+  name: ゲームルール
   help_on: ""
   help_off: ※入力してください。
 
-player-count-start:
+rating:
   attr:
-    type: number
-    name: vplcnt
-    min:  4
-    max: 20
-    step: 1
+    type: select
+    name: rating
     required: required
-  attr_value: value
-  name: 最少催行人員
+  name: こだわり
+  help_on: ""
+  help_off: ※入力してください。
+
+chr_set:
+  attr:
+    type: select
+    name: chr_set
+    required: required
+  name: 登場人物
+  help_on: ""
+  help_off: ※入力してください。
+
+csid:
+  attr:
+    type: select
+    name: csid
+    required: required
+  name: NPC選択
+  help_on: ""
+  help_off: ※入力してください。
+
+say_count:
+  attr:
+    type: select
+    name: saycnttype
+    required: required
+  name: 発言制限
+  help_on: ""
+  help_off: ※入力してください。
+
+role_table:
+  attr:
+    type: select
+    name: roletable
+    required: required
+  name: 役職配分
+  help_on: ""
+  help_off: ※入力してください。
+
+vote_type:
+  attr:
+    type: select
+    name: votetype
+    required: required
+  name: 投票方法
+  help_on: ""
+  help_off: ※入力してください。
+
+start_type:
+  attr:
+    type: select
+    name: starttype
+    required: required
+  name: 開始方法
+  help_on: ""
+  help_off: ※入力してください。
+
+mob_type:
+  attr:
+    type: select
+    name: mob
+    required: required
+  name: 見物スタイル
   help_on: ""
   help_off: ※入力してください。

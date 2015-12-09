@@ -3,7 +3,7 @@ config = (key)->
     @scope (all)->
       enable: ->
         all.where (o)->
-          ! o.hidden
+          o.show
 
     @default ->
 
@@ -24,15 +24,88 @@ new Mem.Rule("<%= key %>").schema config("<%= key %>")
 <% } %>
 
 Mem.rule.option.schema ->
+  @scope (all)->
+    checkbox: -> all.where (o)-> o.attr.type == 'checkbox'
+    text:     -> all.where (o)-> o.attr.type == 'text'
+
   @deploy (o)->
     o.option_id = o._id
     if o.attr?.name
       o.attr.id = o.attr.name
 
+    o.label_attr =
+      for: o.attr.name
 
-  @scope (all)->
-    checkbox: -> all.where (o)-> o.attr.type == 'checkbox'
-    text:     -> all.where (o)-> o.attr.type == 'text'
+    event_base = (e)->
+      o.event m.withAttr o.attr_value, e
+
+    o.view = (form)->
+      prop = form[o._id]
+      now_val = prop()
+      event_base (new_val)->
+        prop new_val
+      o.attr[o.attr_value] = now_val
+      o.attr.checked = if o.attr.checked then "checked"
+      m "div",
+        m "input", o.attr
+        m "label", o.label_attr,
+          if now_val
+            o.help_on
+          else
+            o.help_off
+
+    switch o.attr.type
+      when "checkbox"
+        o.event = (e)->
+          o.attr.onchange = e
+        o.attr_value = "checked"
+        o.view = (form)->
+          prop = form[o._id]
+          now_val = prop()
+          event_base (new_val)->
+            prop new_val
+          o.attr.checked = if o.attr.checked then "checked"
+          m "li",
+            m "input", o.attr
+            m "label", o.label_attr,
+              if now_val
+                o.help_on
+              else
+                o.help_off
+
+      when "select"
+        o.event = (e)->
+          o.attr.onchange = e
+        o.attr_value = "value"
+        o.view = (form, hash, data, help)->
+          prop = form[o._id]
+          now_val = prop()
+          selected = if now_val then null else "selected"
+          event_base (new_val)->
+            prop hash[new_val]
+          m 'div',
+            m 'select', o.attr,
+              m 'option', {selected, value: ""},
+                "- #{o.name} -"
+              for value, option of hash
+
+                selected = if (now_val == value) then "selected" else null
+                m 'option', {selected, value},
+                  data option
+            m "label", o.label_attr,
+              if help && now_val
+                help now_val
+              if now_val
+                o.help_on
+              else
+                o.help_off
+      else
+        o.event = (e)->
+          o.attr.onchange = e
+          o.attr.onkeyup = e
+          o.attr.onblur = e
+        o.attr_value = "value"
+
 
 <%
   for (key in confs) {
