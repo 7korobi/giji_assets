@@ -1321,7 +1321,7 @@
       return v;
     },
     view: function(v) {
-      var add_btn, add_btns, btn, nindex, o, sets, vindex, vtext;
+      var add_btn, add_btns, btn, nindex, sets, vindex, vtext;
       btn = function(tap) {
         var attr;
         return attr = {
@@ -1386,21 +1386,22 @@
       }), "更新時間 hour minute", "更新間隔 updinterval", Mem.options.find("entry_password").view(v.form))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "ゲームルール"), Mem.options.find("game_rule").view(v.form, Mem.conf.rule, function(o) {
         return o.CAPTION;
       }, function(o) {
-        return m("ul", m.trust(o.HELP));
-      }), m("ul", (function() {
-        var i, len, ref, results;
-        ref = Mem.options.checkbox().list();
-        results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          o = ref[i];
-          results.push(o.view(v.form));
-        }
-        return results;
-      })()), m("ul", m("li", Mem.options.find("vote_type").view(v.form, Mem.conf.vote_type, function(o) {
-        return o.caption;
-      }, function(o) {
-        return m.trust(o.help);
-      }))))), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), Mem.options.find("mob_type").view(v.form, Mem.roles.mob().hash(), function(o) {
+        var chk;
+        return m("ul", m.trust(o.HELP), (function() {
+          var i, len, ref, results;
+          ref = Mem.options.checkbox().list();
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            chk = ref[i];
+            results.push(chk.view(v.form));
+          }
+          return results;
+        })(), m("li", Mem.options.find("vote_type").view(v.form, Mem.conf.vote_type, function(o) {
+          return o.caption;
+        }, function(o) {
+          return m.trust(o.help);
+        })));
+      }))), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), Mem.options.find("mob_type").view(v.form, Mem.roles.mob().hash(), function(o) {
         return o.name;
       }, function(o) {
         return m.trust(o.HELP);

@@ -164,16 +164,16 @@ vmake_form =
           Mem.options.find("game_rule").view v.form,
             Mem.conf.rule
             (o)-> o.CAPTION
-            (o)-> m "ul", m.trust o.HELP
-          m "ul",
-            for o in Mem.options.checkbox().list()
-              o.view(v.form)
-          m "ul",
-            m "li",
-              Mem.options.find("vote_type").view v.form,
-                Mem.conf.vote_type
-                (o)-> o.caption
-                (o)-> m.trust o.help
+            (o)->
+              m "ul",
+                m.trust o.HELP
+                for chk in Mem.options.checkbox().list()
+                  chk.view(v.form)
+                m "li",
+                  Mem.options.find("vote_type").view v.form,
+                    Mem.conf.vote_type
+                    (o)-> o.caption
+                    (o)-> m.trust o.help
 
       m ".VSAY.plane",
         m "fieldset.msg",
