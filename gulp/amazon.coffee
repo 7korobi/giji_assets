@@ -17,29 +17,11 @@ module.exports = ({gulp, $, src, conf})->
 #        'skip'
       ]
 
-
-  gulp.task "amazon", ['amazon:gz', 'amazon:manifest'], ->
-
-
-  gulp.task "amazon:manifest", ['config:yaml'], ->
-    amazon {}, ->
-      gulp
-      .src ["public/{assets-master,font,images/auth,images/banner,images/icon,images/portrate,images/bg}/**/*", "!**/*.{html,gz,*_}"]
-      .pipe $.sort()
-      .pipe $.manifest
-        filename: "giji.appcache"
-        exclude:  'giji.appcache'
-        timestamp: true
-        hash: false
-        preferOnline: true
-      .pipe gulp.dest 'public'
-
-
-  gulp.task "amazon:gz", ['config:yaml'], ->
+  gulp.task "amazon", ['config:yaml'], ->
     headers =
       'Cache-Control': 'max-age=315360000, no-transform, public'
       'Content-Encoding': 'gzip'
     amazon headers, ->
       gulp
-      .src [src.amazon.gz, src.amazon.image, src.amazon.font]
+      .src [src.amazon.cache, src.amazon.gz, src.amazon.image, src.amazon.font]
       .pipe $.if "*.gz", $.rename extname: ""

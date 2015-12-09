@@ -6,12 +6,29 @@ module.exports = ({gulp, $, src, dest,  yml})->
     .pipe $.gzip gzipOptions: level: 9
     .pipe gulp.dest dest.public
 
+  manifest = ->
+    gulp
+    .src [ src.manifest.list, src.manifest.ignore ]
+    .pipe $.sort()
+    .pipe $.manifest
+      filename: "giji.appcache"
+      exclude:  'giji.appcache'
+      hash: false
+      timestamp: true
+      preferOnline: true
+    .pipe gulp.dest 'public'
+
+  gulp.task "asset", ['asset:css', 'asset:js', 'asset:html'], manifest
+  gulp.task "asset:manifest", manifest
+
+
   gulp.task "asset:html", ->
     locals = {}
     asset ->
       gulp
       .src src.asset.html
       .pipe $.plumber()
+      .pipe $.sort()
       .pipe $.if "*.slim", $.jade()
       .pipe $.if "*.html.html", $.rename extname: ""
 
@@ -22,6 +39,7 @@ module.exports = ({gulp, $, src, dest,  yml})->
       gulp
       .src src.asset.css
       .pipe $.plumber()
+      .pipe $.sort()
       .pipe $.include()
       .pipe $.sass includePaths: neat.includePaths
       .pipe $.csso true
@@ -33,6 +51,7 @@ module.exports = ({gulp, $, src, dest,  yml})->
     asset ->
       gulp
       .src dest.asset.js + "/*.js"
+      .pipe $.sort()
       .pipe $.include()
 
   gulp.task "asset:js:tmp", ["clean", "asset:yaml"], ->

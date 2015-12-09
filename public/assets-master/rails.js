@@ -1229,6 +1229,32 @@
 }).call(this);
 
 (function(){
+  var vmake;
+  vmake = {
+    controller: function(v){
+      v.is_check = m.prop(false);
+      v.mosaic = {
+        type: "checkbox",
+        onchange: m.withAttr("checked", v.is_check)
+      };
+      return v;
+    },
+    view: function(v){
+      return m("." + v.mestype + ".action", {
+        key: v._id
+      }, m("p.text." + v.style, "便利な", m('a.btn.edge[href="http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD"]', "企画村予定表"), "はもう見た？建てた村に人が集まりそうかどうか、予想できるかもしれないよ。", m("br")), doc.user.is_login
+        ? v.is_check()
+          ? m('a.btn.edge[href="./sow.cgi?cmd=makevilform"]', "村の作成")
+          : m("h6", "見たよ！今から、村を立てるよ！", m("input", v.mosaic))
+        : m("h6", "村を作成する場合はログインして下さい。"));
+    }
+  };
+  doc.message.vmake = function(v){
+    return m("div", m.component(vmake, v));
+  };
+}).call(this);
+
+(function(){
   var vmake_form;
   vmake_form = {
     controller: function(v){
@@ -1408,32 +1434,6 @@
   };
   doc.message.vmake_form = function(v){
     return m("div", m.component(vmake_form, v));
-  };
-}).call(this);
-
-(function(){
-  var vmake;
-  vmake = {
-    controller: function(v){
-      v.is_check = m.prop(false);
-      v.mosaic = {
-        type: "checkbox",
-        onchange: m.withAttr("checked", v.is_check)
-      };
-      return v;
-    },
-    view: function(v){
-      return m("." + v.mestype + ".action", {
-        key: v._id
-      }, m("p.text." + v.style, "便利な", m('a.btn.edge[href="http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD"]', "企画村予定表"), "はもう見た？建てた村に人が集まりそうかどうか、予想できるかもしれないよ。", m("br")), doc.user.is_login
-        ? v.is_check()
-          ? m('a.btn.edge[href="./sow.cgi?cmd=makevilform"]', "村の作成")
-          : m("h6", "見たよ！今から、村を立てるよ！", m("input", v.mosaic))
-        : m("h6", "村を作成する場合はログインして下さい。"));
-    }
-  };
-  doc.message.vmake = function(v){
-    return m("div", m.component(vmake, v));
   };
 }).call(this);
 

@@ -16,16 +16,20 @@ config =
       clean: './tmp/cache/gulp*/**/*.{css,js}'
   src:
     amazon:
+      cache: 'public/giji.appcache'
       image: 'public/**/*.{jpg,png,gif}'
       font:  'public/**/*.{svg,eot,ttf,woff}'
       gz:    'public/**/*.gz'
-    config:
-      yaml:  'config/yaml/*.yml'
+    manifest:
+      list:  'public/{assets-master,font,images/auth,images/banner,images/icon,images/portrate,images/bg}/**/*'
+      ignore: '!**/*.{html,gz,*_}'
     asset:
       yaml:  'app/yaml/*.yml'
       html:  'app/assets/htmls/*.{slim,html}'
       css:   'app/assets/stylesheets/*.css'
       js:    'app/assets/javascripts/**/*.{js,ls,coffee,erb}'
+    config:
+      yaml:  'config/yaml/*.yml'
 
   dest:
     public: "public/assets-master/"
