@@ -5,14 +5,14 @@ GUI.if_exist "#character_tag", (dom)->
       m "span.emboss.pull-right", val
     ]
   tag_dom = (type)->
-    vdom RAILS.tag[type].name, Mem.faces.reduce().tag[type].count
+    vdom Mem.conf.tag[type].name, Mem.faces.reduce().tag[type].count
 
   m.mount dom,
     controller: ->
     view: ->
       {tag} = Url.prop
       chrs = Mem.faces.tag(tag()).list()
-      set = RAILS.tag[tag()]
+      set = Mem.conf.tag[tag()]
 
       [ menu.icon.icon "th-large",
           view: (main_menu)->
