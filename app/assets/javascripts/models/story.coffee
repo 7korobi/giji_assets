@@ -45,7 +45,7 @@ new Mem.Rule("story").schema ->
     o.type.game ?= "TABULA"
     o.type.mob  ?= "visiter"
 
-    Mem.rules.find("mob").name = Mem.roles.find(o.type.mob).name
+    Mem.roles.find("mob").name = Mem.roles.find(o.type.mob).name
 
     o.evil ||= Mem.conf.folder[o.folder].story.evil
     o.view =

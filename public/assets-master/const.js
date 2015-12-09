@@ -10934,7 +10934,7 @@
       if ((base1 = o.type).mob == null) {
         base1.mob = "visiter";
       }
-      Mem.rules.find("mob").name = Mem.roles.find(o.type.mob).name;
+      Mem.roles.find("mob").name = Mem.roles.find(o.type.mob).name;
       o.evil || (o.evil = Mem.conf.folder[o.folder].story.evil);
       o.view = {
         rating: m("img", {

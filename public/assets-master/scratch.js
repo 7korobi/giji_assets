@@ -627,11 +627,14 @@
     }), m.trust(rating.caption)), m("div", m("code", "発言制限"), m.trust(saycnt.CAPTION + "<br>" + saycnt.HELP)), m("div", m("code", "更新"), story.view.update_at + "(" + story.view.update_interval + "ごと)")), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black"));
   };
   doc.message.story_text = function(o){
-    var story;
+    var story, nindex;
     story = o.story();
+    nindex = 0;
     return m(".MAKER.guide", {
       key: "STORY-TEXT"
-    }, m("p.name", m("b", story.name)), ext.talk_text(o._id, "head", story.comment), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black"));
+    }, m("p.name", m("b", story.name)), ext.talk_text(o._id, "head", story.comment), m("p", "■国のルール"), RULE.nation.list.map(function(o){
+      return m("p", (++nindex) + "." + o.head);
+    }), m(".emboss", "以上の項目が、人狼議事の", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"]', "ルール"), "と", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"]', "心構え"), "なんだ。"), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black"));
   };
   doc.message.story_spines = function(v){
     var header;
@@ -791,7 +794,7 @@
         key: v._id
       }, m(".INFOSP.info", m("p.text", "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。", m("br"), "村作成から", m("span.mark", Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP + "日間"), "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。")), m(".MAKER.plane", m("fieldset.msg", m("legend.emboss", "村の名前、説明、ルール"), Mem.options.find("vil_name").view(v.form), m("textarea", Mem.options.find("vil_comment").attr, vtext.join("\r\n")), m("p", "■国のルール"), RULE.nation.list.map(function(o) {
         return m("p", (++nindex) + "." + o.head);
-      }), m(".emboss", "以上の項目が、", m('a[href="./sow.cgi?cmd=rule"]', "人狼議事のルール"), "なんだ。編集していい部分は、自由に変更してかまわない。"))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "設定"), Mem.options.find("rating").view(v.form, Mem.ratings.enable().hash(), function(o) {
+      }), m(".emboss", "以上の項目が、人狼議事の", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"]', "ルール"), "と", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"]', "心構え"), "なんだ。編集していい部分は、自由に変更してかまわない。"))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "設定"), Mem.options.find("rating").view(v.form, Mem.ratings.enable().hash(), function(o) {
         return o.caption;
       }, function(o) {
         return m("img", {

@@ -130,8 +130,10 @@ vmake_form =
           RULE.nation.list.map (o)-> m "p", "#{++nindex}.#{o.head}"
 
           m ".emboss",
-            "以上の項目が、"
-            m 'a[href="./sow.cgi?cmd=rule"]', "人狼議事のルール"
+            "以上の項目が、人狼議事の"
+            m 'a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"]', "ルール"
+            "と"
+            m 'a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"]', "心構え"
             "なんだ。編集していい部分は、自由に変更してかまわない。"
 
       m ".SSAY.plane",
