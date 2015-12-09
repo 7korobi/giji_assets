@@ -2393,7 +2393,7 @@
         player_size = Mem.roles.players(v.form.role).length;
         can_play = (0 < wolf_size && wolf_size < human_size);
         if (can_play) {
-          return m("div", "最大 ", m("span.mark.SSAY", player_size, "人"), extra_size ? m("span.mark.VSAY", "+", extra_size, "人（見物）") : void 0, " が参加できます。", human_size ? m("span", m("span.mark.TSAY", human_size, "人"), minus ? "以上" : void 0, "は人間です。") : void 0);
+          return m("div", "最大 ", m("span.mark.SSAY", player_size, "人"), extra_size ? m("span.mark.VSAY", "+", extra_size, "人") : void 0, " が参加できます。", human_size ? m("span", m("span.mark.TSAY", human_size, "人"), minus ? "以上" : void 0, "は人間です。") : void 0);
         } else {
           return m("div", "この編成ではゲームが成立しません。");
         }

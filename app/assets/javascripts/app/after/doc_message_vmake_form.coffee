@@ -30,7 +30,7 @@ vmake_form =
             m "span.mark.VSAY",
               "+"
               extra_size
-              "人（見物）"
+              "人"
           " が参加できます。"
           if human_size
             m "span",
