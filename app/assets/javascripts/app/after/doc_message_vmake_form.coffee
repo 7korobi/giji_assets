@@ -1,13 +1,48 @@
 vmake_form =
   controller: (v)->
     v.form =
+      extra: []
       role:  []
       gift:  []
       trap:  []
-      extra: []
     v
 
   view: (v)->
+    player_summary = ->
+      full_list = [v.form.role..., v.form.gift...]
+      minus = 0
+      minus += 2 * Mem.roles.minus2(v.form.role).length
+      minus += 1 * Mem.roles.minus1(full_list).length
+
+      wolf_size = Mem.roles.wolfs(full_list).length
+      human_size = Mem.roles.humans(v.form.role).length - minus
+      extra_size = v.form.extra.length
+      player_size = Mem.roles.players(v.form.role).length
+      can_play = 0 < wolf_size < human_size
+
+      if can_play
+        m "div",
+          "最大 "
+          m "span.mark.SSAY",
+            player_size
+            "人"
+          if extra_size
+            m "span.mark.VSAY",
+              "+"
+              extra_size
+              "人（見物）"
+          " が参加できます。"
+          if human_size
+            m "span",
+              m "span.mark.TSAY",
+                human_size
+                "人"
+              "以上" if minus
+              "は人間です。"
+      else
+        m "div",
+          "この編成ではゲームが成立しません。"
+
     npc_says = (csid)->
       if csid
         {face_id, say_0, say_1} = csid
@@ -37,7 +72,6 @@ vmake_form =
       tap = -> list.pop()
       m "div",
         m "a.btn.edge.icon-cancel-alt", btn(tap), ""
-        m "span", "#{list.length}人"
         GUI.names[method] list, (name, size, style)->
           if size > 1
             m "span.#{style}.emboss", "#{name}x#{size}"
@@ -91,11 +125,12 @@ vmake_form =
 
     m ".vmake.paragraph", {key: v._id},
       m "fieldset.#{v.mestype}",
-        m "p", "
-          村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。
-          募集期限は作成した日から#{Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP}日間です。
-          期限内に村が開始しなかった場合、廃村となります。
-        "
+        m "p",
+          "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。"
+          m "br"
+          "村作成から"
+          m "span.mark", "#{Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP}日間"
+          "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。"
       m "fieldset.#{v.mestype}",
         m "legend", "村の名前と説明"
         m "input", Mem.options.find("vil-name").attr
@@ -162,13 +197,16 @@ vmake_form =
           (o)-> o.HELP
 
         m "h6", "編成"
-        sets "config", v.form.mob
+        player_summary()
+
+        sets "config", v.form.extra
         sets "config", v.form.role
         sets "config", v.form.gift
         if v.form.seqevent && v.form.seqevent()
           sets "order", v.form.trap
         else
           sets "config", v.form.trap
+
 
         m "h6", "村側"
         add_btns Mem.roles.is "human"
@@ -183,13 +221,13 @@ vmake_form =
         add_btns Mem.roles.is "pixi"
 
         m "h6", "その他"
-        add_btn
+        add_btns Mem.roles.is "other"
+        add_btn(
           _id: "mob"
           cmd: "extra"
           win: "NONE"
           name: "見物人"
-
-        add_btns Mem.roles.is "other"
+        )
 
         m "h6", "恩恵"
         add_btns Mem.roles.is "gift"

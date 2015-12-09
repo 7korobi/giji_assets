@@ -9068,6 +9068,33 @@
           return all.where(function(o){
             return o.gift_idx === idx;
           }).list().first;
+        },
+        players: function(ids){
+          return all.where(function(o){
+            return "role" === o.cmd && "robber" !== o._id;
+          }).finds(ids);
+        },
+        humans: function(ids){
+          return all.where(function(o){
+            return "HUMAN" === o.group;
+          }).finds(ids);
+        },
+        wolfs: function(ids){
+          return all.where(function(o){
+            return "WOLF" === o.group;
+          }).finds(ids);
+        },
+        minus2: function(ids){
+          return all.where(function(o){
+            var ref$;
+            return (ref$ = o._id) === "hatedevil" || ref$ === "loveangel";
+          }).finds(ids);
+        },
+        minus1: function(ids){
+          return all.where(function(o){
+            var ref$;
+            return (ref$ = o._id) === "bitch" || ref$ === "fink" || ref$ === "fairy" || ref$ === "ogre";
+          }).finds(ids);
         }
       };
     });
@@ -9907,6 +9934,12 @@
       "ables": ["hike", "vote", "entrust"],
       "HELP": "あなたは正体不明です。"
     },
+    "mob": {
+      "name": "見物人",
+      "win": "MOB",
+      "group": null,
+      "HELP": "見物人全般のための仮想役職です。"
+    },
     "visiter": {
       "name": "客席",
       "win": "MOB",
@@ -10661,9 +10694,7 @@
       if ((base1 = o.type).mob == null) {
         base1.mob = "visiter";
       }
-      Mem.rule.role.merge({
-        mob: Mem.roles.find(o.type.mob)
-      });
+      Mem.rules.find("mob").name = Mem.roles.find(o.type.mob).name;
       o.evil || (o.evil = Mem.conf.folder[o.folder].story.evil);
       o.view = {
         rating: m("img", {

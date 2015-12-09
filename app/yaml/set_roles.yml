@@ -142,6 +142,13 @@ hide:
   HELP: |-
     あなたは正体不明です。
 
+mob:
+  name: 見物人
+  win: MOB
+  group:
+  HELP: |-
+    見物人全般のための仮想役職です。
+
 visiter:
   name: 客席
   win: MOB
