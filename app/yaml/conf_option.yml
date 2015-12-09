@@ -82,3 +82,29 @@ entry-password:
   name: 参加制限
   help_on:  参加にパスワード必須
   help_off: 参加制限なし
+
+player-count:
+  attr:
+    type: number
+    name: vplcnt
+    min:  4
+    max: 20
+    step: 1
+    required: required
+  attr_value: value
+  name: 定員
+  help_on: ""
+  help_off: ※入力してください。
+
+player-count-start:
+  attr:
+    type: number
+    name: vplcnt
+    min:  4
+    max: 20
+    step: 1
+    required: required
+  attr_value: value
+  name: 最少催行人員
+  help_on: ""
+  help_off: ※入力してください。

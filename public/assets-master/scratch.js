@@ -688,20 +688,37 @@
         gift: [],
         trap: []
       };
-      return v;
-    },
-    view: function(v) {
-      var add_btn, add_btns, base, btn, nindex, npc_says, o, option, player_summary, select, sets, vindex, vtext;
-      player_summary = function() {
-        var can_play, extra_size, full_list, human_size, minus, player_size, wolf_size;
-        full_list = slice.call(v.form.role).concat(slice.call(v.form.gift));
+      v.reset = function() {
+        var base1, base2, cards, cards_set, i, len, o, player_count, ref, ref1, results;
+        player_count = typeof (base1 = v.form)["player-count"] === "function" ? base1["player-count"]() : void 0;
+        cards_set = typeof (base2 = v.form).roletable === "function" ? (ref = base2.roletable()) != null ? ref.cards : void 0 : void 0;
+        console.log([v.form]);
+        if (cards_set) {
+          v.form.role = [];
+          v.form.gift = [];
+          cards = cards_set[player_count];
+          if (cards) {
+            ref1 = Mem.roles.finds(cards);
+            results = [];
+            for (i = 0, len = ref1.length; i < len; i++) {
+              o = ref1[i];
+              results.push(v.form[o.cmd].push(o._id));
+            }
+            return results;
+          }
+        }
+      };
+      v.player_summary = function(arg) {
+        var can_play, extra, extra_size, full, gift, human_size, minus, player_size, role, wolf_size;
+        role = arg.role, gift = arg.gift, extra = arg.extra;
+        full = slice.call(role).concat(slice.call(gift));
         minus = 0;
-        minus += 2 * Mem.roles.minus2(v.form.role).length;
-        minus += 1 * Mem.roles.minus1(full_list).length;
-        wolf_size = Mem.roles.wolfs(full_list).length;
-        human_size = Mem.roles.humans(v.form.role).length - minus;
-        extra_size = v.form.extra.length;
-        player_size = Mem.roles.players(v.form.role).length;
+        minus += 2 * Mem.roles.minus2(role).length;
+        minus += 1 * Mem.roles.minus1(full).length;
+        wolf_size = Mem.roles.wolfs(full).length;
+        human_size = Mem.roles.humans(role).length - minus;
+        extra_size = extra.length;
+        player_size = Mem.roles.players(role).length;
         can_play = (0 < wolf_size && wolf_size < human_size);
         if (can_play) {
           return m("div", "最大 ", m("span.mark.SSAY", player_size, "人"), extra_size ? m("span.mark.VSAY", "+", extra_size, "人") : void 0, " が参加できます。", human_size ? m("span", m("span.mark.TSAY", human_size, "人"), minus ? "以上" : void 0, "は人間です。") : void 0);
@@ -709,7 +726,7 @@
           return m("div", "この編成ではゲームが成立しません。");
         }
       };
-      npc_says = function(csid) {
+      v.npc_says = function(csid) {
         var chr_job, chr_set, face, face_id, mestype, name, say_0, say_1, updated_at;
         if (csid) {
           face_id = csid.face_id, say_0 = csid.say_0, say_1 = csid.say_1;
@@ -738,6 +755,10 @@
           }
         }
       };
+      return v;
+    },
+    view: function(v) {
+      var add_btn, add_btns, base, base1, btn, nindex, o, option, select, sets, vindex, vtext;
       btn = function(tap) {
         var attr;
         return attr = {
@@ -777,10 +798,7 @@
       };
       base = function(key) {
         var base1;
-        if ((base1 = v.form)[key] == null) {
-          base1[key] = m.prop(null);
-        }
-        return v.form[key];
+        return (base1 = v.form)[key] != null ? base1[key] : base1[key] = m.prop(null);
       };
       option = function(o) {
         var base1, prop;
@@ -817,8 +835,10 @@
             }, data(o)));
           }
           return results;
-        })()), help && prop() ? m("label", label_attr, m.trust(help(prop()))) : void 0);
+        })()), help && prop() ? m("label", label_attr, help(prop())) : void 0);
       };
+      console.log([typeof (base1 = v.form)["entry-password"] === "function" ? base1["entry-password"]() : void 0, Mem.options.find("entry-password")]);
+      v.reset();
       vindex = 0;
       nindex = 0;
       vtext = ["（村のルールは、自由に編集できるよ！）", "■村のルール"].concat(RULE.village.list.map(function(o) {
@@ -840,7 +860,7 @@
       })()), m("h6", "ゲームルール"), select("game", Mem.conf.rule, function(o) {
         return o.CAPTION;
       }, function(o) {
-        return o.HELP;
+        return m.trust(o.HELP);
       }), m("h6", "こだわり"), select("rating", Mem.conf.rating, function(o) {
         return o.caption;
       }, function(o) {
@@ -851,24 +871,41 @@
         return o.caption;
       }), v.form.chr_set() ? select("csid", v.form.chr_set().chr_npcs().hash(), function(o) {
         return o.caption;
-      }) : void 0, v.form.chr_set() && v.form.csid() ? npc_says(v.form.csid()) : void 0, m("h6", "発言制限"), select("saycnttype", Mem.says.finds(Mem.conf.folder.MORPHE.config.saycnt), function(o) {
+      }) : void 0, v.form.chr_set() && v.form.csid() ? v.npc_says(v.form.csid()) : void 0, m("h6", "発言制限"), select("saycnttype", Mem.says.finds(Mem.conf.folder.MORPHE.config.saycnt), function(o) {
         return o.CAPTION;
       }, function(o) {
-        return o.HELP;
+        return m.trust(o.HELP);
       }), m("h6", "開始方法"), select("starttype", Mem.conf.start_type, function(o) {
         return o.caption;
       }, function(o) {
-        return o.help;
-      }), m("fieldset", m("h6", "見物人"), select("mob", Mem.roles.mob().hash(), function(o) {
+        return m.trust(o.help);
+      }), m("fieldset", m("legend", "編成"), select("mob", Mem.roles.mob().hash(), function(o) {
         return o.name;
       }, function(o) {
-        return o.HELP;
-      }), m("h6", "編成"), player_summary(), sets("config", v.form.extra), sets("config", v.form.role), sets("config", v.form.gift), v.form.seqevent && v.form.seqevent() ? sets("order", v.form.trap) : sets("config", v.form.trap), m("h6", "村側"), add_btns(Mem.roles.is("human")), m("h6", "敵方の人間"), add_btns(Mem.roles.is("evil")), m("h6", "人狼"), add_btns(Mem.roles.is("wolf")), m("h6", "妖精"), add_btns(Mem.roles.is("pixi")), m("h6", "その他"), add_btns(Mem.roles.is("other")), add_btn({
-        _id: "mob",
-        cmd: "extra",
-        win: "NONE",
-        name: "見物人"
-      }), m("h6", "恩恵"), add_btns(Mem.roles.is("gift")), m("h6", "事件"), add_btns(Mem.traps.show())), m("fieldset", m("input", {
+        return m.trust(o.HELP);
+      }), select("roletable", Mem.role_tables.enable().hash(), function(o) {
+        return o.name;
+      }), v.player_summary(v.form)), (function() {
+        var ref, ref1, ref2;
+        switch ((ref = v.form.roletable()) != null ? ref._id : void 0) {
+          case void 0:
+            return m("fieldset", m("p", "まずは、役職配分を選択してください。"));
+          case "custom":
+            return m("fieldset", m("legend", "編成自由設定"), option(Mem.options.find("player-count")), "wbbs" === ((ref1 = v.form.starttype) != null ? ref1._id : void 0) ? option(Mem.options.find("player-count-start")) : void 0, sets("config", v.form.extra), sets("config", v.form.role), sets("config", v.form.gift), v.form.seqevent && v.form.seqevent() ? sets("order", v.form.trap) : sets("config", v.form.trap), m("h6", "村側"), add_btns(Mem.roles.is("human")), m("h6", "敵方の人間"), add_btns(Mem.roles.is("evil")), m("h6", "人狼"), add_btns(Mem.roles.is("wolf")), m("h6", "妖精"), add_btns(Mem.roles.is("pixi")), m("h6", "その他"), add_btns(Mem.roles.is("other")), add_btn({
+              _id: "mob",
+              cmd: "extra",
+              win: "NONE",
+              name: "見物人"
+            }), m("h6", "恩恵"), add_btns(Mem.roles.is("gift")), m("h6", "事件"), add_btns(Mem.traps.show()));
+          default:
+            return m("fieldset", m("legend", "編成詳細"), option(Mem.options.find("player-count")), "wbbs" === ((ref2 = v.form.starttype) != null ? ref2._id : void 0) ? option(Mem.options.find("player-count-start")) : void 0, sets("config", v.form.extra), sets("config", v.form.role), sets("config", v.form.gift), v.form.seqevent && v.form.seqevent() ? sets("order", v.form.trap) : sets("config", v.form.trap), add_btn({
+              _id: "mob",
+              cmd: "extra",
+              win: "NONE",
+              name: "見物人"
+            }));
+        }
+      })(), m("fieldset", m("input", {
         name: "cmd",
         value: v.cmd,
         type: "hidden"
