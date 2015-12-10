@@ -14,6 +14,7 @@ config/omni_auth.yml
 config/deploy
 config/yaml
 config/initializers/secret.rb
+public/assets-master/*.gz
 public/images/15girls
 public/images/TMMI
 public/images/banner
