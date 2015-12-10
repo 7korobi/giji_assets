@@ -652,11 +652,10 @@
         return o.event(m.withAttr(o.attr_value, e));
       };
       o.view = function(form) {
-        var now_val, prop;
-        prop = form[o._id];
-        now_val = prop();
+        var now_val;
+        now_val = form[o._id];
         event_base(function(new_val) {
-          return prop(new_val);
+          return form[o._id] = new_val;
         });
         o.attr[o.attr_value] = now_val;
         o.attr.checked = o.attr.checked ? "checked" : void 0;
@@ -669,11 +668,10 @@
           };
           o.attr_value = "checked";
           return o.view = function(form) {
-            var now_val, prop;
-            prop = form[o._id];
-            now_val = prop();
+            var now_val;
+            now_val = form[o._id];
             event_base(function(new_val) {
-              return prop(new_val);
+              return form[o._id] = new_val;
             });
             o.attr.checked = o.attr.checked ? "checked" : void 0;
             return m("li", m("input", o.attr), m("label", o.label_attr, now_val ? o.help_on : o.help_off));
@@ -684,12 +682,11 @@
           };
           o.attr_value = "value";
           return o.view = function(form, hash, data, help) {
-            var now_val, option, prop, selected, value;
-            prop = form[o._id];
-            now_val = prop();
+            var now_val, option, selected, value;
+            now_val = form[o._id];
             selected = now_val ? null : "selected";
             event_base(function(new_val) {
-              return prop(hash[new_val]);
+              return form[o._id] = hash[new_val];
             });
             return m('div', m('select', o.attr, m('option', {
               selected: selected,
@@ -707,6 +704,23 @@
               }
               return results;
             })()), m("label", o.label_attr, help && now_val ? help(now_val) : void 0, now_val ? o.help_on : o.help_off));
+          };
+        case "textarea":
+          o.event = function(e) {
+            o.attr.onchange = e;
+            o.attr.onkeyup = e;
+            return o.attr.onblur = e;
+          };
+          o.attr_value = "value";
+          return o.view = function(form) {
+            var now_val;
+            now_val = form[o._id];
+            event_base(function(new_val) {
+              return form[o._id] = new_val;
+            });
+            o.attr[o.attr_value] = now_val;
+            o.attr.checked = o.attr.checked ? "checked" : void 0;
+            return m("div", m("textarea", o.attr, now_val));
           };
         default:
           o.event = function(e) {
@@ -1967,6 +1981,7 @@
         "type": "checkbox"
       },
       "name": "委任投票",
+      "default": true,
       "help_on": "委任投票ができる",
       "help_off": "委任投票ができない"
     },
@@ -1976,6 +1991,7 @@
         "type": "checkbox"
       },
       "name": "役職希望",
+      "default": true,
       "help_on": "役職希望を無視する",
       "help_off": "役職希望を受け付ける"
     },
@@ -2008,21 +2024,28 @@
     },
     "vil_name": {
       "attr": {
-        "type": "text",
         "name": "vname",
+        "type": "text",
         "size": 20,
         "maxlength": 20,
         "required": "required",
         "pattern": ".{2,20}"
-      }
+      },
+      "name": null,
+      "help_on": null,
+      "help_off": null
     },
     "vil_comment": {
       "attr": {
         "name": "vcomment",
+        "type": "textarea",
         "cols": 30,
         "rows": 10,
         "style": "width: 100%"
-      }
+      },
+      "name": null,
+      "help_on": null,
+      "help_off": null
     },
     "entry_password": {
       "attr": {
@@ -10921,7 +10944,7 @@
     };
     all_traps = Mem.traps.ids();
     this.deploy(function(o) {
-      var base, base1, ref, ref1, ref2;
+      var base, base1, mob, ref, ref1, ref2;
       o.order = o.folder + GUI.field(o.vid, 4);
       if (!o.rating) {
         o.rating = "default";
@@ -10934,7 +10957,9 @@
       if ((base1 = o.type).mob == null) {
         base1.mob = "visiter";
       }
-      Mem.roles.find("mob").name = Mem.roles.find(o.type.mob).name;
+      if (mob = Mem.roles.find(o.type.mob)) {
+        Mem.roles.find("mob").name = mob.name;
+      }
       o.evil || (o.evil = Mem.conf.folder[o.folder].story.evil);
       o.view = {
         rating: m("img", {

@@ -7,12 +7,17 @@ vmake_form =
       trap:  []
 
     for o in Mem.options.list()
-      v.form[o._id] = m.prop(null)
+      v.form[o._id] = o.default || null
 
+    vindex = 0
+    v.form.vil_comment = [
+      "（村のルールは、自由に編集できるよ！）"
+      "■村のルール"
+    ].concat(RULE.village.list.map (o)-> "#{++vindex}.#{o.head}").join("\r\n")
 
     v.reset = ->
-      player_count = v.form.player_count?()
-      cards_set = v.form.role_table?()?.cards
+      player_count = v.form.player_count
+      cards_set = v.form.role_table?.cards
       if cards_set
         v.form.role = []
         v.form.gift = []
@@ -59,7 +64,7 @@ vmake_form =
     v.npc_says = (csid)->
       if csid
         {face_id, say_0, say_1} = csid
-        chr_set = v.form.chr_set()
+        chr_set = v.form.chr_set
         chr_job = chr_set.chr_jobs().find "#{chr_set._id}_#{face_id}"
         if chr_job
           updated_at = _.now()
@@ -104,12 +109,7 @@ vmake_form =
         add_btn o
 
     v.reset()
-    vindex = 0
     nindex = 0
-    vtext = [
-      "（村のルールは、自由に編集できるよ！）"
-      "■村のルール"
-    ].concat RULE.village.list.map (o)-> "#{++vindex}.#{o.head}"
 
     m ".vmake", {key: v._id},
       m ".INFOSP.info",
@@ -124,7 +124,7 @@ vmake_form =
         m "fieldset.msg",
           m "legend.emboss", "村の名前、説明、ルール"
           Mem.options.find("vil_name").view(v.form)
-          m "textarea", Mem.options.find("vil_comment").attr, vtext.join("\r\n")
+          Mem.options.find("vil_comment").view(v.form)
 
           m "p", "■国のルール"
           RULE.nation.list.map (o)-> m "p", "#{++nindex}.#{o.head}"
@@ -192,7 +192,7 @@ vmake_form =
 
           v.player_summary v.form
 
-      switch v.form.role_table()?._id
+      switch v.form.role_table?._id
         when undefined
           m ".WSAY.plane",
             m "fieldset.msg",
@@ -203,12 +203,12 @@ vmake_form =
             m "fieldset.msg",
               m "legend.emboss", "編成自由設定"
               Mem.options.find("player_count").view(v.form)
-              if "wbbs" == v.form.start_type?()?._id
+              if "wbbs" == v.form.start_type?._id
                 Mem.options.find("player_count_start").view(v.form)
               sets "config", v.form.extra
               sets "config", v.form.role
               sets "config", v.form.gift
-              if v.form.seq_event?()
+              if v.form.seq_event
                 sets "order", v.form.trap
               else
                 sets "config", v.form.trap
@@ -246,12 +246,12 @@ vmake_form =
             m "fieldset.msg",
               m "legend.emboss", "編成詳細"
               Mem.options.find("player_count").view(v.form)
-              if "wbbs" == v.form.start_type?()?._id
+              if "wbbs" == v.form.start_type?._id
                 Mem.options.find("player_count_start").view(v.form)
               sets "config", v.form.extra
               sets "config", v.form.role
               sets "config", v.form.gift
-              if v.form.seq_event?()
+              if v.form.seq_event
                 sets "order", v.form.trap
               else
                 sets "config", v.form.trap
@@ -270,13 +270,13 @@ vmake_form =
             Mem.chr_sets.hash()
             (o)-> o.caption
 
-          if v.form.chr_set()
+          if v.form.chr_set
             Mem.options.find("csid").view v.form,
-              v.form.chr_set().chr_npcs().hash()
+              v.form.chr_set.chr_npcs().hash()
               (o)-> o.caption
 
-      if v.form.chr_set() && v.form.csid()
-        v.npc_says v.form.csid()
+      if v.form.chr_set && v.form.csid
+        v.npc_says v.form.csid
 
       m ".VSAY.plane",
         m "fieldset.msg",

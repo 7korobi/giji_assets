@@ -19,6 +19,7 @@ entrust:
     name: entrust
     type: checkbox
   name: 委任投票
+  default: true
   help_on:  委任投票ができる
   help_off: 委任投票ができない
 
@@ -27,6 +28,7 @@ not_select_role:
     name: noselrole
     type: checkbox
   name: 役職希望
+  default: true
   help_on:  役職希望を無視する
   help_off: 役職希望を受け付ける
 
@@ -56,19 +58,26 @@ aiming_talk:
 
 vil_name:
   attr:
-    type: text
     name: vname
+    type: text
     size: 20
     maxlength: 20
     required: required
     pattern: ".{2,20}"
+  name:
+  help_on:
+  help_off:
 
 vil_comment:
   attr:
     name: vcomment
+    type: textarea
     cols: 30
     rows: 10
     style: "width: 100%"
+  name:
+  help_on:
+  help_off:
 
 entry_password:
   attr:

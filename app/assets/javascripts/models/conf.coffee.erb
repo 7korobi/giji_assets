@@ -40,10 +40,9 @@ Mem.rule.option.schema ->
       o.event m.withAttr o.attr_value, e
 
     o.view = (form)->
-      prop = form[o._id]
-      now_val = prop()
+      now_val = form[o._id]
       event_base (new_val)->
-        prop new_val
+        form[o._id] = new_val
       o.attr[o.attr_value] = now_val
       o.attr.checked = if o.attr.checked then "checked"
       m "div",
@@ -60,10 +59,9 @@ Mem.rule.option.schema ->
           o.attr.onchange = e
         o.attr_value = "checked"
         o.view = (form)->
-          prop = form[o._id]
-          now_val = prop()
+          now_val = form[o._id]
           event_base (new_val)->
-            prop new_val
+            form[o._id] = new_val
           o.attr.checked = if o.attr.checked then "checked"
           m "li",
             m "input", o.attr
@@ -78,11 +76,10 @@ Mem.rule.option.schema ->
           o.attr.onchange = e
         o.attr_value = "value"
         o.view = (form, hash, data, help)->
-          prop = form[o._id]
-          now_val = prop()
+          now_val = form[o._id]
           selected = if now_val then null else "selected"
           event_base (new_val)->
-            prop hash[new_val]
+            form[o._id] = hash[new_val]
           m 'div',
             m 'select', o.attr,
               m 'option', {selected, value: ""},
@@ -99,6 +96,21 @@ Mem.rule.option.schema ->
                 o.help_on
               else
                 o.help_off
+      when "textarea"
+        o.event = (e)->
+          o.attr.onchange = e
+          o.attr.onkeyup = e
+          o.attr.onblur = e
+        o.attr_value = "value"
+        o.view = (form)->
+          now_val = form[o._id]
+          event_base (new_val)->
+            form[o._id] = new_val
+          o.attr[o.attr_value] = now_val
+          o.attr.checked = if o.attr.checked then "checked"
+          m "div",
+            m "textarea", o.attr, now_val
+
       else
         o.event = (e)->
           o.attr.onchange = e
