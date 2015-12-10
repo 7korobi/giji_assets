@@ -15,11 +15,11 @@ ids_sort = (list, cb)->
 obj_config = (cb, key, count)->
   obj = Mem.roles.find(key) || Mem.traps.find(key)
   if obj
-    win = ""
-    win = "WIN_#{obj.win}" if obj.win
-    cb obj.name, count, win
+    cb count, obj
   else
-    cb key, count, ""
+    cb count,
+      _id: key
+      win: ""
 
 name_config = (key)->
   obj = Mem.roles.find(key) || Mem.traps.find(key)

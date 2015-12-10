@@ -1,0 +1,39 @@
+config = (key)->
+  ->
+    @scope (all)->
+      enable: ->
+        all.where (o)->
+          o.show
+
+    @default ->
+
+    @deploy (o)->
+      o["#{key}_id"] = o._id
+
+    @map_reduce (o)->
+
+
+Mem.conf = {}
+
+<%
+  for (key in confs) {
+    if ("option" == key) { continue; }
+    if ("say"  == key) { continue; }
+    var data = confs[key];
+ %>
+new Mem.Rule("<%= key %>").schema config("<%= key %>")
+<% } %>
+
+<%
+  for (key in confs) {
+    var data = confs[key];
+ %>
+Mem.rule.<%- key %>.set <%- JSON.stringify(data) %>
+<% } %>
+
+<%
+  for (key in confs) {
+    var data = confs[key];
+ %>
+Mem.conf.<%- key %> = Mem.<%- key %>s.hash()
+<% } %>

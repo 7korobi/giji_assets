@@ -575,56 +575,7 @@
 }).call(this);
 
 (function() {
-  var config;
-
-  config = function(key) {
-    return function() {
-      this.scope(function(all) {
-        return {
-          enable: function() {
-            return all.where(function(o) {
-              return o.show;
-            });
-          }
-        };
-      });
-      this["default"](function() {});
-      this.deploy(function(o) {
-        return o[key + "_id"] = o._id;
-      });
-      return this.map_reduce(function(o) {});
-    };
-  };
-
-  Mem.conf = {};
-
-  new Mem.Rule("folder").schema(config("folder"));
-
-  new Mem.Rule("live").schema(config("live"));
-
-  new Mem.Rule("map_faces_order").schema(config("map_faces_order"));
-
-  new Mem.Rule("option").schema(config("option"));
-
-  new Mem.Rule("rating").schema(config("rating"));
-
-  new Mem.Rule("role_table").schema(config("role_table"));
-
-  new Mem.Rule("rule").schema(config("rule"));
-
-  new Mem.Rule("say").schema(config("say"));
-
-  new Mem.Rule("start_type").schema(config("start_type"));
-
-  new Mem.Rule("tag").schema(config("tag"));
-
-  new Mem.Rule("theme").schema(config("theme"));
-
-  new Mem.Rule("trs").schema(config("trs"));
-
-  new Mem.Rule("vote_type").schema(config("vote_type"));
-
-  Mem.rule.option.schema(function() {
+  new Mem.Rule("option").schema(function() {
     this.scope(function(all) {
       return {
         checkbox: function() {
@@ -643,6 +594,7 @@
       var event_base, ref;
       o.option_id = o._id;
       if ((ref = o.attr) != null ? ref.name : void 0) {
+        o.attr.key = o._id;
         o.attr.id = o.attr.name;
       }
       o.label_attr = {
@@ -674,28 +626,29 @@
               return form[o._id] = new_val;
             });
             o.attr.checked = o.attr.checked ? "checked" : void 0;
-            return m("li", m("input", o.attr), m("label", o.label_attr, now_val ? o.help_on : o.help_off));
+            return m("div", m("input", o.attr), m("label", o.label_attr, now_val ? o.help_on : o.help_off));
           };
         case "select":
           o.event = function(e) {
             return o.attr.onchange = e;
           };
           o.attr_value = "value";
-          return o.view = function(form, hash, data, help) {
+          return o.view = function(form, data, help) {
             var now_val, option, selected, value;
             now_val = form[o._id];
             selected = now_val ? null : "selected";
             event_base(function(new_val) {
-              return form[o._id] = hash[new_val];
+              return form[o._id] = o.options[new_val];
             });
-            return m('div', m('select', o.attr, m('option', {
+            return m('div', m('select', o.attr, !(o.attr.required && o["default"]) ? m('option', {
               selected: selected,
               value: ""
-            }, "- " + o.name + " -"), (function() {
-              var results;
+            }, "- " + o.name + " -") : void 0, (function() {
+              var ref1, results;
+              ref1 = o.options;
               results = [];
-              for (value in hash) {
-                option = hash[value];
+              for (value in ref1) {
+                option = ref1[value];
                 selected = now_val === value ? "selected" : null;
                 results.push(m('option', {
                   selected: selected,
@@ -732,6 +685,79 @@
       }
     });
   });
+
+}).call(this);
+
+(function() {
+  new Mem.Rule("say").schema(function() {
+    var enables;
+    enables = null;
+    this.scope(function(all) {
+      return {
+        enable: function() {
+          var i, len, ref, say_id;
+          if (!enables) {
+            enables = {};
+            ref = Mem.conf.folder.MORPHE.config.saycnt;
+            for (i = 0, len = ref.length; i < len; i++) {
+              say_id = ref[i];
+              enables[say_id] = true;
+            }
+          }
+          return all.where(function(o) {
+            return enables[o._id];
+          });
+        }
+      };
+    });
+    return this.deploy(function(o) {
+      return o.say_id = o._id;
+    });
+  });
+
+}).call(this);
+
+(function() {
+  var config;
+
+  config = function(key) {
+    return function() {
+      this.scope(function(all) {
+        return {
+          enable: function() {
+            return all.where(function(o) {
+              return o.show;
+            });
+          }
+        };
+      });
+      this["default"](function() {});
+      this.deploy(function(o) {
+        return o[key + "_id"] = o._id;
+      });
+      return this.map_reduce(function(o) {});
+    };
+  };
+
+  Mem.conf = {};
+
+  new Mem.Rule("folder").schema(config("folder"));
+
+  new Mem.Rule("live").schema(config("live"));
+
+  new Mem.Rule("map_faces_order").schema(config("map_faces_order"));
+
+  new Mem.Rule("rating").schema(config("rating"));
+
+  new Mem.Rule("role_table").schema(config("role_table"));
+
+  new Mem.Rule("rule").schema(config("rule"));
+
+  new Mem.Rule("tag").schema(config("tag"));
+
+  new Mem.Rule("theme").schema(config("theme"));
+
+  new Mem.Rule("trs").schema(config("trs"));
 
   Mem.rule.folder.set({
     "PERL_DEFAULT": {
@@ -1957,6 +1983,24 @@
   });
 
   Mem.rule.option.set({
+    "vote_sign": {
+      "attr": {
+        "name": "votetype",
+        "type": "checkbox"
+      },
+      "name": "記名投票",
+      "help_on": "記名で投票　※集計結果に投票者が記されます",
+      "help_off": "匿名で投票　※集計結果は人数のみになります"
+    },
+    "start_auto": {
+      "attr": {
+        "name": "starttype",
+        "type": "checkbox"
+      },
+      "name": "自動開始",
+      "help_on": "更新時に、最少催行人数が集まっていると開始",
+      "help_off": "村立て人が開始ボタンを押すと開始"
+    },
     "seq_event": {
       "attr": {
         "name": "seqevent",
@@ -2056,8 +2100,8 @@
         "pattern": "[a-zA-Z0-9]{0,8}"
       },
       "name": "参加制限",
-      "help_on": "参加にパスワード必須",
-      "help_off": "参加制限なし"
+      "help_on": "参加者はパスワードを入力する",
+      "help_off": "参加制限しない　※パスワードをつけると、鍵付きの村になります。"
     },
     "player_count": {
       "attr": {
@@ -2070,7 +2114,7 @@
       },
       "name": "定員",
       "help_on": "人が定員です。",
-      "help_off": "※入力してください。"
+      "help_off": "定員　※入力してください。"
     },
     "player_count_start": {
       "attr": {
@@ -2083,6 +2127,43 @@
       },
       "name": "最少催行人員",
       "help_on": "人以上で開始します。",
+      "help_off": "最少催行人数　※入力してください。"
+    },
+    "time": {
+      "attr": {
+        "type": "time",
+        "name": "time",
+        "step": 1800,
+        "required": "required"
+      },
+      "default": "22:30",
+      "name": "更新時刻",
+      "help_on": "に更新します。",
+      "help_off": "更新時刻　※入力してください。"
+    },
+    "interval": {
+      "attr": {
+        "type": "select",
+        "name": "updinterval",
+        "required": "required"
+      },
+      "default": 24,
+      "options": {
+        "24": {
+          "_id": 24,
+          "caption": "24時間"
+        },
+        "48": {
+          "_id": 48,
+          "caption": "48時間"
+        },
+        "72": {
+          "_id": 72,
+          "caption": "72時間"
+        }
+      },
+      "name": "更新間隔",
+      "help_on": "ごとに更新します。",
       "help_off": "※入力してください。"
     },
     "game_rule": {
@@ -2142,26 +2223,6 @@
         "required": "required"
       },
       "name": "役職配分",
-      "help_on": "",
-      "help_off": "※入力してください。"
-    },
-    "vote_type": {
-      "attr": {
-        "type": "select",
-        "name": "votetype",
-        "required": "required"
-      },
-      "name": "投票方法",
-      "help_on": "",
-      "help_off": "※入力してください。"
-    },
-    "start_type": {
-      "attr": {
-        "type": "select",
-        "name": "starttype",
-        "required": "required"
-      },
-      "name": "開始方法",
       "help_on": "",
       "help_off": "※入力してください。"
     },
@@ -2350,26 +2411,32 @@
 
   Mem.rule.rule.set({
     "TABULA": {
+      "show": true,
       "CAPTION": "タブラの人狼",
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"
     },
     "MILLERHOLLOW": {
+      "show": true,
       "CAPTION": "ミラーズホロウ",
       "HELP": "<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>すべての死者は役職が公開される。\n<li>狼を全滅させると、村勝利。\n<li>「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"
     },
     "LIVE_TABULA": {
+      "show": true,
       "CAPTION": "タブラの人狼（死んだら負け）",
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"
     },
     "LIVE_MILLERHOLLOW": {
+      "show": true,
       "CAPTION": "ミラーズホロウ（死んだら負け）",
       "HELP": "<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>「村人」を全滅させると、狼勝利。役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"
     },
     "TROUBLE": {
+      "show": true,
       "CAPTION": "Trouble☆Aliens",
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>守護者は、より大人数の人狼からは守りきることができず、身代わりに感染する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村側の生存者が勝利（村側は死んだら負ける）。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼と感染者の勝利。\n"
     },
     "MISTERY": {
+      "show": true,
       "CAPTION": "深い霧の夜",
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>村側は自分の役職を自覚しない。\n<li>村側は、能力の結果不審者を見かけることがある。\n<li>人狼の行動対象に選ばれると、不審者を見かける。\n<li>狼を全滅させると、村勝利。\n<li>役職「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"
     },
@@ -2378,6 +2445,7 @@
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"
     },
     "SECRET": {
+      "show": true,
       "CAPTION": "陰謀に集う胡蝶",
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼の生存者が勝利。\n<li>いかなる場合も、死んでしまったものは敗北である。\n"
     }
@@ -2721,17 +2789,6 @@
     }
   });
 
-  Mem.rule.start_type.set({
-    "manual": {
-      "caption": "手動開始",
-      "help": "開始ボタンを押したら開始します。"
-    },
-    "wbbs": {
-      "caption": "人狼BBS型",
-      "help": "更新時間が来たら自動的に開始します。"
-    }
-  });
-
   Mem.rule.tag.set({
     "all": {
       "name": "すべて",
@@ -2986,17 +3043,6 @@
     }
   });
 
-  Mem.rule.vote_type.set({
-    "anonymity": {
-      "caption": "無記名投票",
-      "help": "匿名で投票します。集計結果は人数のみになります。"
-    },
-    "sign": {
-      "caption": "記名投票",
-      "help": "署名して投票します。集計結果に投票者が記されます。"
-    }
-  });
-
   Mem.conf.folder = Mem.folders.hash();
 
   Mem.conf.live = Mem.lives.hash();
@@ -3013,15 +3059,11 @@
 
   Mem.conf.say = Mem.says.hash();
 
-  Mem.conf.start_type = Mem.start_types.hash();
-
   Mem.conf.tag = Mem.tags.hash();
 
   Mem.conf.theme = Mem.themes.hash();
 
   Mem.conf.trs = Mem.trss.hash();
-
-  Mem.conf.vote_type = Mem.vote_types.hash();
 
 }).call(this);
 
@@ -10968,24 +11010,32 @@
         update_at: Timer.hhmm(o.upd.hour, o.upd.minute),
         update_interval: (o.upd.interval * 24) + "時間",
         player_length: o.vpl.last,
-        role_types: GUI.names.config(o.card.role, function(name, size, style) {
+        role_types: GUI.names.config(o.card.role, function(size, arg) {
+          var name;
+          name = arg.name;
           return name;
         }),
-        event_types: GUI.names.config(o.card.event, function(name, size, style) {
+        event_types: GUI.names.config(o.card.event, function(size, arg) {
+          var name;
+          name = arg.name;
           return name;
         }),
-        role_cards: GUI.names.config(o.card.role, function(name, size, style) {
+        role_cards: GUI.names.config(o.card.role, function(size, arg) {
+          var name, win;
+          name = arg.name, win = arg.win;
           if (size > 1) {
-            return m(".emboss." + style, name + "x" + size);
+            return m(".emboss.WIN_" + win, name + "x" + size);
           } else {
-            return m(".emboss." + style, "" + name);
+            return m(".emboss.WIN_" + win, "" + name);
           }
         }),
-        trap_cards: GUI.names.config(o.card.event, function(name, size, style) {
+        trap_cards: GUI.names.config(o.card.event, function(size, arg) {
+          var name, win;
+          name = arg.name, win = arg.win;
           if (size > 1) {
-            return m(".emboss." + style, name + "x" + size);
+            return m(".emboss.WIN_" + win, name + "x" + size);
           } else {
-            return m(".emboss." + style, "" + name);
+            return m(".emboss.WIN_" + win, "" + name);
           }
         }),
         say_limit: ((ref = Mem.conf.say[o.type.say]) != null ? ref.CAPTION : void 0) || "――",

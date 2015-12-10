@@ -2343,8 +2343,10 @@
 }).call(this);
 
 (function() {
-  var vmake_form,
+  var field, vmake_form,
     slice = [].slice;
+
+  field = Mem.options.hash();
 
   vmake_form = {
     controller: function(v) {
@@ -2361,22 +2363,30 @@
         v.form[o._id] = o["default"] || null;
       }
       vindex = 0;
-      v.form.vil_comment = ["（村のルールは、自由に編集できるよ！）", "■村のルール"].concat(RULE.village.list.map(function(o) {
+      v.form.vil_comment = ["（村のルールは、自由に編集できるよ！）", " ", "■村のルール"].concat(RULE.village.list.map(function(o) {
         return (++vindex) + "." + o.head;
       })).join("\r\n");
       v.reset = function() {
-        var cards, cards_set, j, len1, player_count, ref1, ref2, results;
+        var cards, cards_set, j, len1, player_count, ref1, ref2, ref3, results;
+        console.log(v.form);
+        field.role_table.options = Mem.role_tables.enable().hash();
+        field.game_rule.options = Mem.rules.enable().hash();
+        field.say_count.options = Mem.says.enable().hash();
+        field.mob_type.options = Mem.roles.mob().hash();
+        field.chr_set.options = Mem.chr_sets.hash();
+        field.rating.options = Mem.ratings.enable().hash();
+        field.csid.options = (ref1 = v.form.chr_set) != null ? ref1.chr_npcs().hash() : void 0;
         player_count = v.form.player_count;
-        cards_set = (ref1 = v.form.role_table) != null ? ref1.cards : void 0;
+        cards_set = (ref2 = v.form.role_table) != null ? ref2.cards : void 0;
         if (cards_set) {
           v.form.role = [];
           v.form.gift = [];
           cards = cards_set[player_count];
           if (cards) {
-            ref2 = Mem.roles.finds(cards);
+            ref3 = Mem.roles.finds(cards);
             results = [];
-            for (j = 0, len1 = ref2.length; j < len1; j++) {
-              o = ref2[j];
+            for (j = 0, len1 = ref3.length; j < len1; j++) {
+              o = ref3[j];
               results.push(v.form[o.cmd].push(o._id));
             }
             return results;
@@ -2439,7 +2449,7 @@
       return v;
     },
     view: function(v) {
-      var add_btn, add_btns, btn, nindex, sets;
+      var add_btn, add_btns, btn, chk, nindex, sets;
       btn = function(tap) {
         var attr;
         return attr = {
@@ -2459,11 +2469,13 @@
         tap = function() {
           return list.pop();
         };
-        return m("div", m("a.btn.edge.icon-cancel-alt", btn(tap), ""), GUI.names[method](list, function(name, size, style) {
+        return m("div", m("a.btn.edge.icon-cancel-alt", btn(tap), ""), GUI.names[method](list, function(size, arg) {
+          var name, win;
+          name = arg.name, win = arg.win;
           if (size > 1) {
-            return m("span." + style + ".emboss", name + "x" + size);
+            return m("span.WIN_" + win + ".emboss", name + "x" + size);
           } else {
-            return m("span." + style + ".emboss", "" + name);
+            return m("span.WIN_" + win + ".emboss", "" + name);
           }
         }));
       };
@@ -2481,69 +2493,62 @@
       nindex = 0;
       return m(".vmake", {
         key: v._id
-      }, m(".INFOSP.info", m("p.text", "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。", m("br"), "村作成から", m("span.mark", Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP + "日間"), "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。")), m(".MAKER.plane", m("fieldset.msg", m("legend.emboss", "村の名前、説明、ルール"), Mem.options.find("vil_name").view(v.form), Mem.options.find("vil_comment").view(v.form), m("p", "■国のルール"), RULE.nation.list.map(function(o) {
+      }, m(".INFOSP.info", m("p.text", "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。", m("br"), "村作成から", m("span.mark", Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP + "日間"), "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。")), m(".MAKER.plane", m("fieldset.msg", m("legend.emboss", "村の名前、説明、ルール"), field.vil_name.view(v.form), field.vil_comment.view(v.form), m("p", "■国のルール"), RULE.nation.list.map(function(o) {
         return m("p", (++nindex) + "." + o.head);
-      }), m(".emboss", "以上の項目が、人狼議事の", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"]', "ルール"), "と", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"]', "心構え"), "なんだ。編集していい部分は、自由に変更してかまわない。"))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "設定"), Mem.options.find("rating").view(v.form, Mem.ratings.enable().hash(), function(o) {
+      }), m(".emboss", "以上の項目が、人狼議事の", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"]', "ルール"), "と", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"]', "心構え"), "なんだ。編集していい部分は、自由に変更してかまわない。"))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "設定"), field.rating.view(v.form, function(o) {
         return o.caption;
       }, function(o) {
         return m("img", {
           src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_" + o._id + ".png"
         });
-      }), Mem.options.find("say_count").view(v.form, Mem.says.finds(Mem.conf.folder.MORPHE.config.saycnt), function(o) {
+      }), field.say_count.view(v.form, function(o) {
         return o.CAPTION;
       }, function(o) {
         return m.trust(o.HELP);
-      }), Mem.options.find("start_type").view(v.form, Mem.conf.start_type, function(o) {
+      }), field.time.view(v.form), field.interval.view(v.form, function(o) {
         return o.caption;
-      }, function(o) {
-        return m.trust(o.help);
-      }), "更新時間 hour minute", "更新間隔 updinterval", Mem.options.find("entry_password").view(v.form))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "ゲームルール"), Mem.options.find("game_rule").view(v.form, Mem.conf.rule, function(o) {
+      }), field.entry_password.view(v.form))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "ゲームルール"), field.game_rule.view(v.form, function(o) {
         return o.CAPTION;
       }, function(o) {
-        var chk;
-        return m("ul", m.trust(o.HELP), (function() {
-          var i, len, ref, results;
-          ref = Mem.options.checkbox().list();
-          results = [];
-          for (i = 0, len = ref.length; i < len; i++) {
-            chk = ref[i];
-            results.push(chk.view(v.form));
-          }
-          return results;
-        })(), m("li", Mem.options.find("vote_type").view(v.form, Mem.conf.vote_type, function(o) {
-          return o.caption;
-        }, function(o) {
-          return m.trust(o.help);
-        })));
-      }))), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), Mem.options.find("mob_type").view(v.form, Mem.roles.mob().hash(), function(o) {
+        return m("ul", m.trust(o.HELP));
+      }), (function() {
+        var i, len, ref, results;
+        ref = Mem.options.checkbox().list();
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          chk = ref[i];
+          results.push(chk.view(v.form));
+        }
+        return results;
+      })())), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), field.mob_type.view(v.form, function(o) {
         return o.name;
       }, function(o) {
         return m.trust(o.HELP);
-      }), Mem.options.find("role_table").view(v.form, Mem.role_tables.enable().hash(), function(o) {
+      }), field.role_table.view(v.form, function(o) {
         return o.name;
       }), v.player_summary(v.form))), (function() {
-        var ref, ref1, ref2;
+        var ref;
         switch ((ref = v.form.role_table) != null ? ref._id : void 0) {
           case void 0:
             return m(".WSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), m("p", "まずは、役職配分を選択してください。")));
           case "custom":
-            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成自由設定"), Mem.options.find("player_count").view(v.form), "wbbs" === ((ref1 = v.form.start_type) != null ? ref1._id : void 0) ? Mem.options.find("player_count_start").view(v.form) : void 0, sets("config", v.form.extra), sets("config", v.form.role), sets("config", v.form.gift), v.form.seq_event ? sets("order", v.form.trap) : sets("config", v.form.trap), m("h6", "村側"), add_btns(Mem.roles.is("human")), m("h6", "敵方の人間"), add_btns(Mem.roles.is("evil")), m("h6", "人狼"), add_btns(Mem.roles.is("wolf")), m("h6", "妖精"), add_btns(Mem.roles.is("pixi")), m("h6", "その他"), add_btns(Mem.roles.is("other")), add_btn({
+            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成自由設定"), field.player_count.view(v.form), v.form.start_auto ? field.player_count_start.view(v.form) : void 0, sets("config", v.form.extra), sets("config", v.form.role), sets("config", v.form.gift), v.form.seq_event ? sets("order", v.form.trap) : sets("config", v.form.trap), m("h6", "村側"), add_btns(Mem.roles.is("human")), m("h6", "敵方の人間"), add_btns(Mem.roles.is("evil")), m("h6", "人狼"), add_btns(Mem.roles.is("wolf")), m("h6", "妖精"), add_btns(Mem.roles.is("pixi")), m("h6", "その他"), add_btns(Mem.roles.is("other")), add_btn({
               _id: "mob",
               cmd: "extra",
               win: "NONE",
               name: "見物人"
             }), m("h6", "恩恵"), add_btns(Mem.roles.is("gift")), m("h6", "事件"), add_btns(Mem.traps.show())));
           default:
-            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), Mem.options.find("player_count").view(v.form), "wbbs" === ((ref2 = v.form.start_type) != null ? ref2._id : void 0) ? Mem.options.find("player_count_start").view(v.form) : void 0, sets("config", v.form.extra), sets("config", v.form.role), sets("config", v.form.gift), v.form.seq_event ? sets("order", v.form.trap) : sets("config", v.form.trap), add_btn({
+            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), field.player_count.view(v.form), v.form.start_auto ? field.player_count_start.view(v.form) : void 0, sets("config", v.form.extra), sets("config", v.form.role), sets("config", v.form.gift), v.form.seq_event ? sets("order", v.form.trap) : sets("config", v.form.trap), add_btn({
               _id: "mob",
               cmd: "extra",
               win: "NONE",
               name: "見物人"
             })));
         }
-      })(), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "登場人物"), Mem.options.find("chr_set").view(v.form, Mem.chr_sets.hash(), function(o) {
+      })(), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "登場人物"), field.chr_set.view(v.form, function(o) {
         return o.caption;
-      }), v.form.chr_set ? Mem.options.find("csid").view(v.form, v.form.chr_set.chr_npcs().hash(), function(o) {
+      }), v.form.chr_set ? field.csid.view(v.form, function(o) {
         return o.caption;
       }) : void 0)), v.form.chr_set && v.form.csid ? v.npc_says(v.form.csid) : void 0, m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "決定"), m("input", {
         name: "cmd",

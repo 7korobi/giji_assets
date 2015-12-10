@@ -1,3 +1,19 @@
+vote_sign:
+  attr:
+    name: votetype
+    type: checkbox
+  name: 記名投票
+  help_on: 記名で投票　※集計結果に投票者が記されます
+  help_off: 匿名で投票　※集計結果は人数のみになります
+
+start_auto:
+  attr:
+    name: starttype
+    type: checkbox
+  name: 自動開始
+  help_on: 更新時に、最少催行人数が集まっていると開始
+  help_off: 村立て人が開始ボタンを押すと開始
+
 seq_event:
   attr:
     name: seqevent
@@ -87,8 +103,8 @@ entry_password:
     maxlength: 8
     pattern: "[a-zA-Z0-9]{0,8}"
   name: 参加制限
-  help_on:  参加にパスワード必須
-  help_off: 参加制限なし
+  help_on:  参加者はパスワードを入力する
+  help_off: 参加制限しない　※パスワードをつけると、鍵付きの村になります。
 
 player_count:
   attr:
@@ -99,8 +115,8 @@ player_count:
     step: 1
     required: required
   name: 定員
-  help_on: "人が定員です。"
-  help_off: ※入力してください。
+  help_on:  人が定員です。
+  help_off: 定員　※入力してください。
 
 player_count_start:
   attr:
@@ -111,7 +127,38 @@ player_count_start:
     step: 1
     required: required
   name: 最少催行人員
-  help_on: "人以上で開始します。"
+  help_on:  人以上で開始します。
+  help_off: 最少催行人数　※入力してください。
+
+time:
+  attr:
+    type: time
+    name: time
+    step: 1800
+    required: required
+  default: "22:30"
+  name: 更新時刻
+  help_on:  に更新します。
+  help_off: 更新時刻　※入力してください。
+
+interval:
+  attr:
+    type: select
+    name: updinterval
+    required: required
+  default: 24
+  options:
+    72:
+      _id: 72
+      caption: 72時間
+    48:
+      _id: 48
+      caption: 48時間
+    24:
+      _id: 24
+      caption: 24時間
+  name: 更新間隔
+  help_on:  ごとに更新します。
   help_off: ※入力してください。
 
 game_rule:
@@ -165,24 +212,6 @@ role_table:
     name: roletable
     required: required
   name: 役職配分
-  help_on: ""
-  help_off: ※入力してください。
-
-vote_type:
-  attr:
-    type: select
-    name: votetype
-    required: required
-  name: 投票方法
-  help_on: ""
-  help_off: ※入力してください。
-
-start_type:
-  attr:
-    type: select
-    name: starttype
-    required: required
-  name: 開始方法
   help_on: ""
   help_off: ※入力してください。
 

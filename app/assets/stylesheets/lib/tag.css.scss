@@ -104,6 +104,9 @@ ul.unstyled, ol.unstyled {
   list-style: none
 }
 
+input[type=checkbox] {
+  width: 23px;
+}
 ul, ol {
   padding: 0px;
   margin: 0px 0px 10.5px 25px;

@@ -31606,6 +31606,10 @@ OL.unstyled {
   list-style: none;
 }
 
+INPUT[type=checkbox] {
+  width: 23px;
+}
+
 UL,
 OL {
   padding: 0;

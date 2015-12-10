@@ -2894,16 +2894,15 @@ License: MIT
   };
 
   obj_config = function(cb, key, count) {
-    var obj, win;
+    var obj;
     obj = Mem.roles.find(key) || Mem.traps.find(key);
     if (obj) {
-      win = "";
-      if (obj.win) {
-        win = "WIN_" + obj.win;
-      }
-      return cb(obj.name, count, win);
+      return cb(count, obj);
     } else {
-      return cb(key, count, "");
+      return cb(count, {
+        _id: key,
+        win: ""
+      });
     }
   };
 

@@ -1,4 +1,5 @@
 TABULA:
+  show: true
   CAPTION: タブラの人狼
   HELP: |
     <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
@@ -6,6 +7,7 @@ TABULA:
     <li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。
 
 MILLERHOLLOW:
+  show: true
   CAPTION: ミラーズホロウ
   HELP: |
     <li>同数票の処刑候補が複数いた場合、処刑をとりやめる。
@@ -14,6 +16,7 @@ MILLERHOLLOW:
     <li>「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。
 
 LIVE_TABULA:
+  show: true
   CAPTION: タブラの人狼（死んだら負け）
   HELP: |
     <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
@@ -22,6 +25,7 @@ LIVE_TABULA:
     <li>ただし、仲間が勝利していても、死んでしまった者は敗北である。
 
 LIVE_MILLERHOLLOW:
+  show: true
   CAPTION: ミラーズホロウ（死んだら負け）
   HELP: |
     <li>同数票の処刑候補が複数いた場合、処刑をとりやめる。
@@ -30,6 +34,7 @@ LIVE_MILLERHOLLOW:
     <li>ただし、仲間が勝利していても、死んでしまった者は敗北である。
 
 TROUBLE:
+  show: true
   CAPTION: Trouble☆Aliens
   HELP: |
     <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
@@ -41,6 +46,7 @@ TROUBLE:
     <li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼と感染者の勝利。
 
 MISTERY:
+  show: true
   CAPTION: 深い霧の夜
   HELP: |
    <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
@@ -59,6 +65,7 @@ VOV:
     <li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。
 
 SECRET:
+  show: true
   CAPTION: 陰謀に集う胡蝶
   HELP:  |
     <li>同数票の処刑候補が複数いた場合、ランダムに処刑する。
