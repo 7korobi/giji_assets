@@ -85,24 +85,40 @@ unhtml = (log)->
 Number.MAX_INT32 = 0x7fffffff
 Number.MAX_BITS  = 0xffffffff
 
-Array ::=
-  last:~ -> @[* - 1]
-  first:~ -> @[0]
 
-String ::=
-  deco_preview:~ ->
-    br space player anchor_preview link random_preview unhtml @
+defines = (obj, hash)!->
+  configurable = false
+  enumerable = false
+  for key, {get, set} of hash
+    Object.defineProperty obj.prototype, key, {configurable, enumerable, get, set}
 
-  deco_text:~ ->
-    space player anchor link random @
+defines Array,
+  last:
+    get: -> @[@.length - 1]
 
-  line_text:~ ->
-    nowrap player anchor link random @
+  first:
+    get: -> @[0]
 
-  undecolate:~ ->
-    unanchor unrandom unbr @
 
-  sjis_length:~ ->
-    # countup sjis byte size
-    other = @match(/[^\x01-\xff]/g) or []
-    @length + other.length
+defines String,
+  deco_preview:
+    get: ->
+      br space player anchor_preview link random_preview unhtml @
+
+  deco_text:
+    get: ->
+      space player anchor link random @
+
+  line_text:
+    get: ->
+      nowrap player anchor link random @
+
+  undecolate:
+    get: ->
+      unanchor unrandom unbr @
+
+  sjis_length:
+    get: ->
+      # countup sjis byte size
+      other = @match(/[^\x01-\xff]/g) or []
+      @length + other.length

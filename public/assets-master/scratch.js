@@ -680,12 +680,6 @@
       v.reset = function() {
         var cards, cards_set, j, len1, player_count, ref1, ref2, ref3, results;
         console.log(v.form);
-        field.role_table.options = Mem.role_tables.enable().hash();
-        field.game_rule.options = Mem.rules.enable().hash();
-        field.say_count.options = Mem.says.enable().hash();
-        field.mob_type.options = Mem.roles.mob().hash();
-        field.chr_set.options = Mem.chr_sets.hash();
-        field.rating.options = Mem.ratings.enable().hash();
         field.csid.options = (ref1 = v.form.chr_set) != null ? ref1.chr_npcs().hash() : void 0;
         player_count = v.form.player_count;
         cards_set = (ref2 = v.form.role_table) != null ? ref2.cards : void 0;

@@ -1,49 +1,54 @@
-/*
-Mem v0.0.2
+###
+Mem v0.0.3
 http://github.com/7korobi/---
 (c) 7korobi
 License: MIT
-*/
+###
 
-export class Mem
+typeof_str = Object.prototype.toString
+type = (o)->
+  typeof_str.call(o)[8..-2]
+
+
+class @Mem
   @rule = {}
 
 class Mem.Query
-  (@finder, @filters, @desc, @sort_by)->
+  constructor: (@finder, @filters, @desc, @sort_by)->
 
   _filters: (query, cb)->
     return @ unless query
     filters = @filters.concat()
-    switch typeof! query
-      when \Object
+    switch type query
+      when "Object"
         for target, req of query
           filters.push cb target, req
-      when \Function
+      when "Function"
         filters.push cb null, query
       else
-        console.log [typeof! query, query]
-        ...
+        console.log [type query, query]
+        throw Error 'unimplemented'
     new Mem.Query @finder, filters, @desc, @sort_by
 
   in: (query)->
     @_filters query, (target, req)->
-      switch typeof! req
-        when \Array
+      switch type req
+        when "Array"
           (o)->
             for key in req
               return true if key in o[target]
             false
-        when \RegExp
+        when "RegExp"
           (o)->
             for val in o[target]
               return true if req.test val
             false
-        when \Null, \Boolean, \String, \Number
+        when "Null", "Boolean", "String", "Number"
           (o)->
             req in o[target]
         else
-          console.log [typeof! req, req]
-          ...
+          console.log [type req, req]
+          throw Error 'unimplemented'
 
   distinct: (reduce, target)->
     query = new Mem.Query @finder, @filters, @desc, @sort_by
@@ -52,19 +57,19 @@ class Mem.Query
 
   where: (query)->
     @_filters query, (target, req)->
-      switch typeof! req
-        when \Array
+      switch type req
+        when "Array"
           (o)->
             o[target] in req
-        when \RegExp
+        when "RegExp"
           (o)-> req.test o[target]
-        when \Function
+        when "Function"
           req
-        when \Null, \Boolean, \String, \Number
+        when "Null", "Boolean", "String", "Number"
           (o)-> o[target] == req
         else
-          console.log [typeof! req, req]
-          ...
+          console.log [type req, req]
+          throw Error 'unimplemented'
 
   search: (text)->
     return @ unless text
@@ -79,14 +84,14 @@ class Mem.Query
 
   sort: (desc, order = @sort_by)->
     sort_by =
-      switch typeof! order
-        when \Function
+      switch type order
+        when "Function"
           order
-        when \String, \Number
+        when "String", "Number"
           (o)-> o[order]
         else
-          console.log [typeof! req, req]
-          ...
+          console.log [type req, req]
+          throw Error 'unimplemented'
     return @ if desc == @desc && sort_by == @sort_by
     new Mem.Query @finder, @filters, desc, sort_by
 
@@ -122,12 +127,12 @@ class Mem.Query
     for id in ids when o = @hash()[id]
       o
 
-  pluck: (...keys)->
+  pluck: (keys...)->
     @list().map do
       switch keys.length
-        case 0
+        when 0
           -> null
-        case 1
+        when 1
           (o)->
             o[keys[0]]
         else
@@ -136,7 +141,7 @@ class Mem.Query
               o[key]
 
 class Mem.Finder
-  (@sort_by)->
+  constructor: (@sort_by)->
     all = new Mem.Query @, [], false, @sort_by
     all._memory = {}
     @scope = {all}
@@ -258,7 +263,7 @@ class Mem.Finder
 class Mem.Rule
   @responses = {}
 
-  (field)->
+  constructor: (field)->
     @id = "#{field}_id"
     @list_name = "#{field}s"
     @base_obj = {}
@@ -266,7 +271,7 @@ class Mem.Rule
     @responses = Mem.Rule.responses[field] ?= []
     @map_reduce = ->
     @protect = ->
-    @deploy = (o)~>
+    @deploy = (o)=>
       o._id = o[@id] unless o._id
       o[@id] = o._id unless o[@id]
     @finder = new Mem.Finder (list)-> list
@@ -277,26 +282,27 @@ class Mem.Rule
 
   schema: (cb)->
     definer =
-      scope: (cb)~>
+      scope: (cb)=>
         @finder.scope = cb @finder.query.all
         set_scope = (key, finder, query_call)->
-          switch typeof! query_call
-            when \Function
-              finder.query.all[key] = (...args)->
-                finder.query["#{key}:#{JSON.stringify args}"] ?= query_call ...args
+          switch type query_call
+            when "Function"
+              finder.query.all[key] = (args...)->
+                finder.query["#{key}:#{JSON.stringify args}"] ?= query_call args...
             else
               finder.query.all[key] = query_call
         for key, query_call of @finder.scope
           set_scope(key, @finder, query_call)
 
-      default: (cb)~>
-        @base_obj <<< cb()
+      default: (cb)=>
+        for key, val of cb()
+          @base_obj[key] = val
 
-      depend_on: (parent)~>
+      depend_on: (parent)=>
         Mem.Rule.responses[parent] ?= []
         Mem.Rule.responses[parent].push @
 
-      belongs_to: (parent, option)~>
+      belongs_to: (parent, option)=>
         parents = "#{parent}s"
         parent_id = "#{parent}_id"
         @base_obj[parent] = ->
@@ -307,18 +313,18 @@ class Mem.Rule
           definer.depend_on parent
           @validates.push (o)-> o[parent]()?
 
-      order: (order)~>
+      order: (order)=>
         query = @finder.query.all.sort false, order
         query._memory = @finder.query.all._memory
         Mem[@list_name] = @finder.query.all = query
 
-      protect: (...keys)~>
+      protect: (keys...)=>
         @protect = (o, old)->
           for key in keys
             o[key] = old[key]
 
-      deploy: (@deploy)~>
-      map_reduce: (@map_reduce)~>
+      deploy: (@deploy)=>
+      map_reduce: (@map_reduce)=>
 
     cb.call(definer, @)
 
@@ -341,34 +347,35 @@ class Mem.Rule
 
     deployer =
       if @__proto__?
-        (o)~>
+        (o)=>
           o.__proto__ = @base_obj
           @deploy o
       else
-        (o)~>
+        (o)=>
           _.defaults o, @base_obj
           @deploy o
 
-    validate_item = (item)~>
+    validate_item = (item)=>
       for validate in @validates
         return false unless validate item
       true
 
-    each = (process)!->
-      switch typeof! from
-        when \Array
+    each = (process)->
+      switch type from
+        when "Array"
           for item in from || []
             continue unless item
             process(item)
-        when \Object
+        when "Object"
           for id, item of from || {}
             continue unless item
             item._id = id
             process(item)
+      return
 
     switch mode
-      case "merge"
-        each (item)!~>
+      when "merge"
+        each (item)=>
           for key, val of parent
             item[key] = val
 
@@ -384,17 +391,19 @@ class Mem.Rule
             diff.add = true
           all[item._id] = o
 
-          emit = (...keys, last, map)~>
+          emit = (keys..., last, map)=>
             finder.map_reduce = true
             o.emits.push [keys, last, map]
           @map_reduce o.item, emit
+          return
 
       else
-        each (item)!~>
+        each (item)=>
           old = all[item._id]
           if old?
             diff.del = true
             delete all[item._id]
+          return
 
     @rehash(diff)
     return

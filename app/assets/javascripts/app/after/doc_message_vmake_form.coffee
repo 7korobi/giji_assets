@@ -20,12 +20,6 @@ vmake_form =
 
     v.reset = ->
       console.log v.form
-      field.role_table.options = Mem.role_tables.enable().hash()
-      field.game_rule.options = Mem.rules.enable().hash()
-      field.say_count.options = Mem.says.enable().hash()
-      field.mob_type.options = Mem.roles.mob().hash()
-      field.chr_set.options = Mem.chr_sets.hash()
-      field.rating.options = Mem.ratings.enable().hash()
       field.csid.options = v.form.chr_set?.chr_npcs().hash()
 
       player_count = v.form.player_count

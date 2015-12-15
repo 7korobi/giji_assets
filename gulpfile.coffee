@@ -37,10 +37,11 @@ config =
       js:   'tmp/cache/gulp-js'
 
 
-gulp.task "default", ->
+gulp.task "default", ["browser:sync"], ->
   gulp.watch "app/**/*.{html,slim}",            ["asset:html"]
   gulp.watch "app/**/*.{js,ls,coffee,erb,yml}", ["asset:js"]
   gulp.watch "app/**/*.{css,scss}",             ["asset:css"]
+  gulp.watch "public/assets-master/*", ["browser:reload"]
   gulp.start [
     "asset:html"
     "asset:js"
@@ -50,4 +51,5 @@ gulp.task "default", ->
 require('./gulp/base') config
 require('./gulp/yaml')   config
 require('./gulp/asset')  config
+require('./gulp/browser') config
 require('./gulp/amazon') config

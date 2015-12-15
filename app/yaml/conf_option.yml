@@ -175,6 +175,7 @@ rating:
     type: select
     name: rating
     required: required
+  default: default
   name: こだわり
   help_on: ""
   help_off: ※入力してください。
@@ -211,6 +212,7 @@ role_table:
     type: select
     name: roletable
     required: required
+  default: default
   name: 役職配分
   help_on: ""
   help_off: ※入力してください。
