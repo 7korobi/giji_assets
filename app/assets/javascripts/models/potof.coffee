@@ -43,9 +43,9 @@ new Mem.Rule("potof").schema ->
     o.user_id ?= o.sow_auth_id
     o.chr_job_id ?= "#{o.csid.toLowerCase()}_#{o.face_id}"
 
-    chr_job = o.chr_job()
+    chr_job = o.chr_job
     if chr_job?
-      name = chr_job.face()?.name
+      name = chr_job.face?.name
       job = chr_job.job
     else
       job = "***"
@@ -76,8 +76,8 @@ new Mem.Rule("potof").schema ->
     urge     = o.point.actaddpt
     pt_no    = o.say.gsay
 
-    story = o.story()
-    event = o.event()
+    story = o.story
+    event = o.event
 
     switch o.live
       when "live"

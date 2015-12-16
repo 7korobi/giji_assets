@@ -53,7 +53,7 @@ if gon?.potofs?
           center_id = win.scroll.prop()
           potofs = doc.message.potofs()
 
-          anchorview = doc.messages.anchor(Url.prop).list()
+          anchorview = doc.messages.anchor(Url.prop).list
           seeingview = doc.messages.seeing(filter_size, win.scroll.center)
 
           go_click = (o)->

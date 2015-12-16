@@ -5,13 +5,13 @@ GUI.if_exist "#character_tag", (dom)->
       m "span.emboss.pull-right", val
     ]
   tag_dom = (type)->
-    vdom Mem.conf.tag[type].name, Mem.faces.reduce().tag[type].count
+    vdom Mem.conf.tag[type].name, Mem.faces.reduce.tag[type].count
 
   m.mount dom,
     controller: ->
     view: ->
       {tag} = Url.prop
-      chrs = Mem.faces.tag(tag()).list()
+      chrs = Mem.faces.tag(tag()).list
       set = Mem.conf.tag[tag()]
 
       [ menu.icon.icon "th-large",
@@ -19,7 +19,7 @@ GUI.if_exist "#character_tag", (dom)->
             m ".paragraph",
               m "h6", "タグを選んでみよう"
               Btns.radio {class: "edge"}, tag,
-                all:       vdom "- 全体 -", Mem.faces.reduce().all.all.count
+                all:       vdom "- 全体 -", Mem.faces.reduce.all.all.count
                 giji:      tag_dom "giji"
                 shoji:     tag_dom "shoji"
                 travel:    tag_dom "travel"

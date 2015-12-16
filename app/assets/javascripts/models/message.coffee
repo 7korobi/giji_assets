@@ -85,8 +85,8 @@ new Mem.Rule("message").schema ->
       when "QUEUE"
         o.mestype = "SAY" # data cleaned
       when "VSAY"
-        story = o.story()
-        event = o.event()
+        story = o.story
+        event = o.event
         has.vsay = true
         if story && event && "grave" == story.type.mob && ! event.name.match /プロローグ|エピローグ/
           o.mestype = "VGSAY"

@@ -131,7 +131,7 @@ if gon?.events? && gon.event?
     m.mount dom,
       controller: ->
       view: ->
-        win.scroll.pager "div", doc.messages[menu.scope.state()](Url.prop).list(), (o)->
+        win.scroll.pager "div", doc.messages[menu.scope.state()](Url.prop).list, (o)->
           anchor_num  = o.logid[2..] - 0 || 0
           o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
           unless o.updated_at

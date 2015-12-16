@@ -5,7 +5,7 @@ if gon?.villages?
     m.mount dom,
       controller: ->
       view: ->
-        win.scroll.pager "div", Mem.items.list(), (v)->
+        win.scroll.pager "div", Mem.items.list, (v)->
           doc.message.action(v)
 
 if gon?.byebyes?
@@ -14,7 +14,7 @@ if gon?.byebyes?
     m.mount dom,
       controller: ->
       view: ->
-        win.scroll.pager "div", Mem.items.list(), (v)->
+        win.scroll.pager "div", Mem.items.list, (v)->
           doc.message.action(v)
 
 if gon?.history?
@@ -23,5 +23,5 @@ if gon?.history?
     m.mount dom,
       controller: ->
       view: ->
-        win.scroll.pager "div", Mem.items.list(), (v)->
+        win.scroll.pager "div", Mem.items.list, (v)->
           doc.message.history(v)

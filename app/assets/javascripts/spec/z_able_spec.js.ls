@@ -6,13 +6,13 @@ describe "Mem.ables" (...)!->
       expect(able.change).to.exist
 
   describe "has switch" (...)!->
-    for role in Mem.ables.where((o)-> o.sw? ).list()
+    for role in Mem.ables.where((o)-> o.sw? ).list
       do_test_selects(role)
 
   describe "has target" (...)!->
-    for role in Mem.ables.where((o)-> o.target? ).list()
+    for role in Mem.ables.where((o)-> o.target? ).list
       do_test_selects(role)
 
   describe "has targets" (...)!->
-    for role in Mem.ables.where((o)-> o.targets? ).list()
+    for role in Mem.ables.where((o)-> o.targets? ).list
       do_test_selects(role)

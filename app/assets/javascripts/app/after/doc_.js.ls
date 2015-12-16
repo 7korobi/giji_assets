@@ -57,7 +57,7 @@ export doc =
       Mem.messages.memo(memo(), false, potofs_hide(), search())
 
   security_modes: (prop)->
-    story = Mem.storys.list().first
+    story = Mem.storys.list.first
     mob = Mem.roles.find(story?.type.mob)
 
     grave_caption = []
@@ -82,7 +82,7 @@ export doc =
 
   potofs: ->
     {potofs_desc, potofs_order, potofs_hide} = Url.prop
-    potofs = Mem.potofs.view(potofs_desc(), potofs_order()).list()
+    potofs = Mem.potofs.view(potofs_desc(), potofs_order()).list
     hides = potofs_hide()
     turn = win.scroll.center?.event()?.turn || 0
 
@@ -111,7 +111,7 @@ export doc =
       m "hr.black"
 
   writer: ->
-    for o in Mem.writers.list()
+    for o in Mem.writers.list
       props = {form: o, log: ""}
       Mem.rule.history.merge props
       o.vdom(o, props)

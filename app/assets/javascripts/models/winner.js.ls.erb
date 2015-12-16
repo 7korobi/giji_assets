@@ -7,7 +7,7 @@ new Mem.Rule("winner").schema ->
         o.name != '―'
 
     sow: (idx)->
-      all.where((o)-> o.order == idx).list().first
+      all.where((o)-> o.order == idx).list.first
 
 
   @default ->
@@ -19,4 +19,4 @@ new Mem.Rule("winner").schema ->
   @map_reduce (o)->
 
 Mem.rule.winner.set <%- JSON.stringify(SET_WINNER) %>
-Mem.conf.winner = Mem.winners.hash()
+Mem.conf.winner = Mem.winners.hash

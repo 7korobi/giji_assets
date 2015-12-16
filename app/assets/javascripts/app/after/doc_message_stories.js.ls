@@ -7,7 +7,7 @@ stories =
         m "tr",
           m "td[colspan=6]", v.error
       else
-        Mem.storys[v.mestype]().list().map (v)->
+        Mem.storys[v.mestype]().list.map (v)->
           chr_set = Mem.chr_sets.find(v.csid)
           m "tr",
             m "td",

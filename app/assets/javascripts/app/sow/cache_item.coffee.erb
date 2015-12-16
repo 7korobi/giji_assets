@@ -2,9 +2,6 @@ Mem.rule.item.set <%- JSON.stringify(MESSAGE.sow) %>
 if gon?.items?
   Mem.rule.item.merge gon.items
 
-for name in <%- JSON.stringify(MESSAGE.module.sow) %>
-  GUI.items_module name
-
 deploy_samples = ->
   deploy = (role, call)->
     chr_job_id = "all_c"
@@ -47,7 +44,7 @@ deploy_samples = ->
   faceno = 1
   index = 10
 
-  for role in Mem.roles.where(group: "MOB").list()
+  for role in Mem.roles.where(group: "MOB").list
     deploy role, (turn)->
       return if "start" == turn
       mob: role._id
@@ -60,7 +57,7 @@ deploy_samples = ->
       sheep: []
       love: null
 
-  for role in Mem.roles.where(group: "LIVE").list()
+  for role in Mem.roles.where(group: "LIVE").list
     deploy role, (turn)->
       return if "start" == turn
       mob: "visiter"
@@ -99,7 +96,7 @@ deploy_samples = ->
         sheep: []
         love: null
 
-  forms = Mem.items.where(template: "form").list()
+  forms = Mem.items.where(template: "form").list
   Mem.rule.story.set [<%- JSON.stringify(TEST_VIL.story)  %>]
   Mem.rule.event.set [<%- JSON.stringify(TEST_VIL.event)  %>]
   Mem.rule.potof.set  <%- JSON.stringify(TEST_VIL.potofs) %>
@@ -107,3 +104,6 @@ deploy_samples = ->
 
 GUI.if_exist "#item-rolelist", (dom)->
   deploy_samples()
+
+for name in <%- JSON.stringify(MESSAGE.module.sow) %>
+  GUI.items_module name

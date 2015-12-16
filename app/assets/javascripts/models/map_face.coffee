@@ -10,14 +10,14 @@ new Mem.Rule("map_face").schema ->
     o._id = o.face_id
     o.win.value.合計 = o.win.all
 
-    list = Mem.chr_jobs.face(o.face_id).list()
+    list = o.face.chr_jobs.list
     if list
       search_words = list.map (o)-> o.job
       o.chr_set_ids = list.map (o)-> o.chr_set_id
     else
       search_words = o.chr_set_ids = []
 
-    face = o.face()
+    face = o.face
     if face
       search_words.push face.name
       for sow_auth_id of o.sow_auth_id.value

@@ -11,3 +11,4 @@ module.exports = ({gulp, $, src, dest,  yml})->
 
   gulp.task "browser:reload", ->
     sync.reload()
+    

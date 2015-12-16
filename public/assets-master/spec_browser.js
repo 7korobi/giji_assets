@@ -178,7 +178,7 @@
   describe("Mem.chr_job", function(){
     it("zoy", function(){
       var chr;
-      chr = Mem.chr_jobs.face("c10").list();
+      chr = Mem.chr_jobs.face("c10").list;
       expect(chr[0].job).to.eq("小娘");
       expect(chr[0].chr_set_id).to.eq("ririnra");
       expect(chr[0].chr_job_id).to.eq("ririnra_c10");
@@ -192,7 +192,7 @@
     });
     it("iris", function(){
       var chr;
-      chr = Mem.chr_jobs.face("c83").list();
+      chr = Mem.chr_jobs.face("c83").list;
       expect(chr[0].job).to.eq("受付");
       expect(chr[0].chr_set_id).to.eq("ririnra");
       expect(chr[0].chr_job_id).to.eq("ririnra_c83");
@@ -488,7 +488,7 @@
     };
     describe("has switch", function(){
       var i$, ref$, len$, role;
-      for (i$ = 0, len$ = (ref$ = Mem.ables.where(fn$).list()).length; i$ < len$; ++i$) {
+      for (i$ = 0, len$ = (ref$ = Mem.ables.where(fn$).list).length; i$ < len$; ++i$) {
         role = ref$[i$];
         do_test_selects(role);
       }
@@ -498,7 +498,7 @@
     });
     describe("has target", function(){
       var i$, ref$, len$, role;
-      for (i$ = 0, len$ = (ref$ = Mem.ables.where(fn$).list()).length; i$ < len$; ++i$) {
+      for (i$ = 0, len$ = (ref$ = Mem.ables.where(fn$).list).length; i$ < len$; ++i$) {
         role = ref$[i$];
         do_test_selects(role);
       }
@@ -508,7 +508,7 @@
     });
     describe("has targets", function(){
       var i$, ref$, len$, role;
-      for (i$ = 0, len$ = (ref$ = Mem.ables.where(fn$).list()).length; i$ < len$; ++i$) {
+      for (i$ = 0, len$ = (ref$ = Mem.ables.where(fn$).list).length; i$ < len$; ++i$) {
         role = ref$[i$];
         do_test_selects(role);
       }
@@ -531,7 +531,7 @@
       var i$, ref$, len$, role;
       for (i$ = 0, len$ = (ref$ = Mem.roles.where({
         group: "MOB"
-      }).list()).length; i$ < len$; ++i$) {
+      }).list).length; i$ < len$; ++i$) {
         role = ref$[i$];
         do_test_mob(role);
       }
@@ -557,7 +557,7 @@
       return results$;
       function fn$(){
         var i$, ref$, len$, role, j$, ref1$, len1$, enemy, k$, ref2$, len2$, mob, form;
-        for (i$ = 0, len$ = (ref$ = Mem.roles.list()).length; i$ < len$; ++i$) {
+        for (i$ = 0, len$ = (ref$ = Mem.roles.list).length; i$ < len$; ++i$) {
           role = ref$[i$];
           for (j$ = 0, len1$ = (ref1$ = ['evil', 'wolf']).length; j$ < len1$; ++j$) {
             enemy = ref1$[j$];
@@ -576,7 +576,7 @@
                 sheep: [],
                 love: null
               }]);
-              form = Mem.forms.list().first;
+              form = Mem.forms.list.first;
               call(form);
             }
           }

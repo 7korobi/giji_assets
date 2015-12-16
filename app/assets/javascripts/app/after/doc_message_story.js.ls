@@ -8,8 +8,8 @@ ext = doc.ext
 "turn":0,
 */
 doc.message.story_game = (o)->
-  event = o.event()
-  story = o.story()
+  event = o.event
+  story = o.story
   return [] unless event && story
 
   roletable = Mem.conf.role_table[story.type.roletable]
@@ -61,8 +61,8 @@ doc.message.story_game = (o)->
     ]
 
 doc.message.story_rule = (o)->
-  event = o.event()
-  story = o.story()
+  event = o.event
+  story = o.story
   return [] unless event && story
 
   rating = Mem.conf.rating[story.rating]
@@ -91,7 +91,7 @@ doc.message.story_rule = (o)->
 
 
 doc.message.story_text = (o)->
-  story = o.story()
+  story = o.story
   nindex = 0
 
   m ".MAKER.guide", {key: "STORY-TEXT"},

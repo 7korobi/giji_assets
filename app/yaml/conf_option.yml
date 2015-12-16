@@ -189,12 +189,12 @@ chr_set:
   help_on: ""
   help_off: ※入力してください。
 
-csid:
+chr_npc:
   attr:
     type: select
     name: csid
     required: required
-  name: NPC選択
+  name: 登場人物とNPC
   help_on: ""
   help_off: ※入力してください。
 

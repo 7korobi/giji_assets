@@ -647,7 +647,7 @@ License: MIT
  */
 
 (function() {
-  var type, typeof_str,
+  var def, type, typeof_str,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     slice = [].slice;
 
@@ -655,6 +655,19 @@ License: MIT
 
   type = function(o) {
     return typeof_str.call(o).slice(8, -1);
+  };
+
+  def = function(obj, key, arg) {
+    var configurable, enumerable, get, set;
+    get = arg.get, set = arg.set;
+    configurable = false;
+    enumerable = false;
+    Object.defineProperty(obj, key, {
+      configurable: configurable,
+      enumerable: enumerable,
+      get: get,
+      set: set
+    });
   };
 
   this.Mem = (function() {
@@ -835,40 +848,50 @@ License: MIT
       return delete this._memory;
     };
 
-    Query.prototype.reduce = function() {
-      if (this._reduce == null) {
-        this.finder.calculate(this);
+    def(Query.prototype, "reduce", {
+      get: function() {
+        if (this._reduce == null) {
+          this.finder.calculate(this);
+        }
+        return this._reduce;
       }
-      return this._reduce;
-    };
+    });
 
-    Query.prototype.list = function() {
-      if (this._list == null) {
-        this.finder.calculate(this);
+    def(Query.prototype, "list", {
+      get: function() {
+        if (this._list == null) {
+          this.finder.calculate(this);
+        }
+        return this._list;
       }
-      return this._list;
-    };
+    });
 
-    Query.prototype.hash = function() {
-      if (this._hash == null) {
-        this.finder.calculate(this);
+    def(Query.prototype, "hash", {
+      get: function() {
+        if (this._hash == null) {
+          this.finder.calculate(this);
+        }
+        return this._hash;
       }
-      return this._hash;
-    };
+    });
 
-    Query.prototype.memory = function() {
-      if (this._memory == null) {
-        this.finder.calculate(this);
+    def(Query.prototype, "memory", {
+      get: function() {
+        if (this._memory == null) {
+          this.finder.calculate(this);
+        }
+        return this._memory;
       }
-      return this._memory;
-    };
+    });
 
-    Query.prototype.ids = function() {
-      return Object.keys(this.memory());
-    };
+    def(Query.prototype, "ids", {
+      get: function() {
+        return Object.keys(this.memory);
+      }
+    });
 
     Query.prototype.find = function(id) {
-      return this.hash()[id];
+      return this.hash[id];
     };
 
     Query.prototype.finds = function(ids) {
@@ -876,7 +899,7 @@ License: MIT
       results = [];
       for (i = 0, len = ids.length; i < len; i++) {
         id = ids[i];
-        if (o = this.hash()[id]) {
+        if (o = this.hash[id]) {
           results.push(o);
         }
       }
@@ -886,28 +909,26 @@ License: MIT
     Query.prototype.pluck = function() {
       var keys;
       keys = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      return this.list().map((function() {
-        switch (keys.length) {
-          case 0:
-            return function() {
-              return null;
-            };
-          case 1:
-            return function(o) {
-              return o[keys[0]];
-            };
-          default:
-            return function(o) {
-              var i, key, len, results;
-              results = [];
-              for (i = 0, len = keys.length; i < len; i++) {
-                key = keys[i];
-                results.push(o[key]);
-              }
-              return results;
-            };
-        }
-      })()());
+      switch (keys.length) {
+        case 0:
+          return this.list.map(function() {
+            return null;
+          });
+        case 1:
+          return this.list.map(function(o) {
+            return o[keys[0]];
+          });
+        default:
+          return this.list.map(function(o) {
+            var i, key, len, results;
+            results = [];
+            for (i = 0, len = keys.length; i < len; i++) {
+              key = keys[i];
+              results.push(o[key]);
+            }
+            return results;
+          });
+      }
     };
 
     return Query;
@@ -1141,29 +1162,29 @@ License: MIT
     }
 
     Rule.prototype.schema = function(cb) {
-      var definer;
+      var cache_scope, definer;
+      cache_scope = function(key, finder, query_call) {
+        switch (type(query_call)) {
+          case "Function":
+            return finder.query.all[key] = function() {
+              var args, base1, name;
+              args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+              return (base1 = finder.query)[name = key + ":" + (JSON.stringify(args))] != null ? base1[name] : base1[name] = query_call.apply(null, args);
+            };
+          default:
+            return finder.query.all[key] = query_call;
+        }
+      };
       definer = {
         scope: (function(_this) {
           return function(cb) {
-            var key, query_call, ref, results, set_scope;
+            var key, query_call, ref, results;
             _this.finder.scope = cb(_this.finder.query.all);
-            set_scope = function(key, finder, query_call) {
-              switch (type(query_call)) {
-                case "Function":
-                  return finder.query.all[key] = function() {
-                    var args, base1, name;
-                    args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-                    return (base1 = finder.query)[name = key + ":" + (JSON.stringify(args))] != null ? base1[name] : base1[name] = query_call.apply(null, args);
-                  };
-                default:
-                  return finder.query.all[key] = query_call;
-              }
-            };
             ref = _this.finder.scope;
             results = [];
             for (key in ref) {
               query_call = ref[key];
-              results.push(set_scope(key, _this.finder, query_call));
+              results.push(cache_scope(key, _this.finder, query_call));
             }
             return results;
           };
@@ -1194,16 +1215,39 @@ License: MIT
             var dependent, parent_id, parents;
             parents = parent + "s";
             parent_id = parent + "_id";
-            _this.base_obj[parent] = function() {
-              return Mem[parents].find(this[parent_id]);
-            };
+            def(_this.base_obj, parent, {
+              get: function() {
+                return Mem[parents].find(this[parent_id]);
+              }
+            });
             dependent = (option != null ? option.dependent : void 0) != null;
             if (dependent) {
               definer.depend_on(parent);
               return _this.validates.push(function(o) {
-                return o[parent]() != null;
+                return o[parent] != null;
               });
             }
+          };
+        })(this),
+        has_many: (function(_this) {
+          return function(children, option) {
+            var all, key, query;
+            key = _this.id;
+            all = _this.finder.query.all;
+            query = option != null ? option.query : void 0;
+            cache_scope(children, _this.finder, function(id) {
+              if (query == null) {
+                query = Mem[children];
+              }
+              return query.where(function(o) {
+                return o[key] === id;
+              });
+            });
+            return def(_this.base_obj, children, {
+              get: function() {
+                return all[children](this._id);
+              }
+            });
           };
         })(this),
         order: (function(_this) {
@@ -1252,19 +1296,9 @@ License: MIT
       finder = this.finder;
       diff = finder.diff;
       all = finder.query.all._memory;
-      deployer = this.__proto__ != null ? function(o, base) {
-        return o.__proto__ = base;
-      } : function(o, base) {
-        return _.defaults(o, base);
-      };
-      deployer = this.__proto__ != null ? (function(_this) {
+      deployer = (function(_this) {
         return function(o) {
           o.__proto__ = _this.base_obj;
-          return _this.deploy(o);
-        };
-      })(this) : (function(_this) {
-        return function(o) {
-          _.defaults(o, _this.base_obj);
           return _this.deploy(o);
         };
       })(this);

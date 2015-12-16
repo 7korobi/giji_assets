@@ -5,5 +5,5 @@ describe "(sow) Mem.roles" (...)!->
       expect(role.ables).to.include.members ["VSAY"]
 
   describe " has VSAY" (...)!->
-    for role in Mem.roles.where(group: "MOB").list()
+    for role in Mem.roles.where(group: "MOB").list
       do_test_mob(role)

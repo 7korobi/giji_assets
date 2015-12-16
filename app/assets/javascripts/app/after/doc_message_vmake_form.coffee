@@ -1,4 +1,4 @@
-field = Mem.options.hash()
+field = Mem.options.hash
 
 vmake_form =
   controller: (v)->
@@ -8,7 +8,7 @@ vmake_form =
       gift:  []
       trap:  []
 
-    for o in Mem.options.list()
+    for o in Mem.options.list
       v.form[o._id] = o.default || null
 
     vindex = 0
@@ -19,9 +19,6 @@ vmake_form =
     ].concat(RULE.village.list.map (o)-> "#{++vindex}.#{o.head}").join("\r\n")
 
     v.reset = ->
-      console.log v.form
-      field.csid.options = v.form.chr_set?.chr_npcs().hash()
-
       player_count = v.form.player_count
       cards_set = v.form.role_table?.cards
       if cards_set
@@ -67,11 +64,11 @@ vmake_form =
         m ".emboss",
           "この編成ではゲームが成立しません。"
 
-    v.npc_says = (csid)->
-      if csid
-        {face_id, say_0, say_1} = csid
-        chr_set = v.form.chr_set
-        chr_job = chr_set.chr_jobs().find "#{chr_set._id}_#{face_id}"
+    v.npc_says = (chr_npc)->
+      chr_set = chr_npc.chr_set
+      if chr_set
+        {face_id, say_0, say_1} = chr_npc
+        chr_job = chr_set.chr_jobs.find "#{chr_set._id}_#{face_id}"
         if chr_job
           updated_at = _.now()
           mestype = "SAY"
@@ -111,7 +108,7 @@ vmake_form =
             m "span.WIN_#{win}.emboss", "#{name}"
 
     add_btns = (query)->
-      for o in query.list()
+      for o in query.list
         add_btn o
 
     v.reset()
@@ -167,7 +164,7 @@ vmake_form =
             (o)->
               m "ul",
                 m.trust o.HELP
-          for chk in Mem.options.checkbox().list()
+          for chk in Mem.options.checkbox().list
             chk.view(v.form)
 
       m ".VSAY.plane",
@@ -257,15 +254,11 @@ vmake_form =
       m ".SSAY.plane",
         m "fieldset.msg",
           m "legend.emboss", "登場人物"
-          field.chr_set.view v.form,
+          field.chr_npc.view v.form,
             (o)-> o.caption
 
-          if v.form.chr_set
-            field.csid.view v.form,
-              (o)-> o.caption
-
-      if v.form.chr_set && v.form.csid
-        v.npc_says v.form.csid
+      if v.form.chr_npc
+        v.npc_says v.form.chr_npc
 
       m ".VSAY.plane",
         m "fieldset.msg",

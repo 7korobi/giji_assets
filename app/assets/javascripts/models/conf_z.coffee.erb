@@ -5,8 +5,6 @@ config = (key)->
         all.where (o)->
           o.show
 
-    @default ->
-
     @deploy (o)->
       o["#{key}_id"] = o._id
 
@@ -35,5 +33,5 @@ Mem.rule.<%- key %>.set <%- JSON.stringify(data) %>
   for (key in confs) {
     var data = confs[key];
  %>
-Mem.conf.<%- key %> = Mem.<%- key %>s.hash()
+Mem.conf.<%- key %> = Mem.<%- key %>s.hash
 <% } %>

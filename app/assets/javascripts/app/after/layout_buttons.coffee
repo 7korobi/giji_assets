@@ -51,29 +51,29 @@ GUI.if_exist "#buttons", (dom)->
 
       badges =
         "pin": ->
-          doc.messages.pins(Url.prop).list().length - Mem.events.list().length
+          doc.messages.pins(Url.prop).list.length - Mem.events.list.length
         "home": ->
-          Mem.messages.home("announce").list().length - Mem.events.list().length
+          Mem.messages.home("announce").list.length - Mem.events.list.length
         "mail": ->
           prop = _.merge {}, Url.prop,
             memo: -> "all"
             uniq: -> true
             search: -> ""
-          doc.messages.memo(prop).list().length - Mem.events.list().length
+          doc.messages.memo(prop).list.length - Mem.events.list.length
         "clock": ->
           prop = _.merge {}, Url.prop,
             talk: -> "all"
             open: -> true
             search: -> ""
-          doc.messages.history(prop).list().length - Mem.events.list().length
+          doc.messages.history(prop).list.length - Mem.events.list.length
         "chat-alt": ->
           prop = _.merge {}, Url.prop,
             talk: -> "all"
             open: -> true
             search: -> ""
-          doc.messages.talk(prop).list().length - Mem.events.list().length
+          doc.messages.talk(prop).list.length - Mem.events.list.length
         "th-large": ->
-          Mem.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list().length
+          Mem.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list.length
 
       switch menu.scope.state()
         when "pins"

@@ -28,6 +28,6 @@ menu =
     m ".SAY.paragraph",
       doc.timeline()
       m "h6", "あなたが書き込む内容です。 - 記述"
-      if event = Mem.events.list().last()
-        for role in Mem.roles.list()
+      if event = Mem.events.list.last()
+        for role in Mem.roles.list
           m.component form, role, story, event, potof

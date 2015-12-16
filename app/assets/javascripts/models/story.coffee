@@ -34,7 +34,7 @@ new Mem.Rule("story").schema ->
     else
       null
 
-  all_traps = Mem.traps.ids()
+  all_traps = Mem.traps.ids
 
   @deploy (o)->
     o.order = o.folder + GUI.field(o.vid, 4)

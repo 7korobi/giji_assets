@@ -2696,7 +2696,7 @@ Navi = (function() {
           func(_this.value);
         }
         Navi.set_cookie();
-        list = Navi.to_hash();
+        list = Navi.to_hash;
         if (list.search) {
           val_search = "?" + list.search.join("&");
           if (location.search !== val_search) {

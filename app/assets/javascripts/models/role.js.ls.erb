@@ -23,10 +23,10 @@ new Mem.Rule("role").schema ->
         o.group == "MOB"
 
     sow_role: (idx)->
-      all.where((o)-> o.role_idx == idx).list().first
+      all.where((o)-> o.role_idx == idx).list.first
 
     sow_gift: (idx)->
-      all.where((o)-> o.gift_idx == idx).list().first
+      all.where((o)-> o.gift_idx == idx).list.first
 
 
     players: (ids)->
@@ -90,7 +90,7 @@ new Mem.Rule("trap").schema ->
         ! o.cmd || o.order < 0
 
     sow: (idx)->
-      all.where((o)-> o.order == idx).list().first
+      all.where((o)-> o.order == idx).list.first
 
 
   @default ->

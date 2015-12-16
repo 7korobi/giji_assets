@@ -23,7 +23,7 @@ doc.message.form = (v)->
 
     vdoms = []
     if able.action
-      actions = Mem.actions.for_form(v.mestype, v.format).list().map (act)->
+      actions = Mem.actions.for_form(v.mestype, v.format).list.map (act)->
         m "option[value=#{act.index}]", {key: act.index}, "#{act.text}"
       actions.unshift m "option[value=0]", {key: 0}, "↓ 自由入力、または選択してください。"
 
@@ -62,7 +62,7 @@ doc.message.form = (v)->
     vdoms
 
   chr_job = Mem.chr_jobs.find(v.chr_job_id)
-  face = chr_job.face()
+  face = chr_job.face
   m "div", {key: v._id},
     m "h6", m.trust v.role_name
     m "table.#{v.mestype}.talk",
@@ -70,9 +70,9 @@ doc.message.form = (v)->
         m "th"
         m "td",
           m ".msg",
-            for vv in Mem.form_texts.formats(v._id, v.mestype).list()
+            for vv in Mem.form_texts.formats(v._id, v.mestype).list
               m "span.btn.edge", v.format_on(vv.format), vv.format_name
-            for vv in Mem.form_texts.mestypes(v._id, v.format).list()
+            for vv in Mem.form_texts.mestypes(v._id, v.format).list
               m "span.btn.edge", v.mestype_on(vv.mestype), vv.mestype_name
 
     if form_text = Mem.form_texts.find("#{v._id}-#{v.mestype}-#{v.format}")

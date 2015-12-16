@@ -7,7 +7,7 @@ if gon?.map_reduce?.faces?
       view: ->
         {order, chr_set, search} = Url.prop
         map_order_set = Mem.conf.map_faces_order[order()]
-        chrs = Mem.map_faces.active(order(), chr_set(), search()).list()
+        chrs = Mem.map_faces.active(order(), chr_set(), search()).list
         headline = ""
 
         if chrs?.length
@@ -43,7 +43,7 @@ if gon?.map_reduce?.faces?
               GUI.portrate o.face_id, attr_main
               m ".chrblank.line4", attr,
                 m "div", job_name
-                m "div", o.face().name
+                m "div", o.face.name
                 m "div",
                   m "a.mark",
                     href: "/map_reduce/faces/#{o.face_id}"
@@ -67,7 +67,7 @@ if gon?.map_reduce?.faces?
             main_menu.drill "chr_set",
               caption: "キャラセット"
               view: (sub_menu)->
-                sub_menu.radio {class: "chr_set"}, Url.prop.chr_set, Mem.map_faces.reduce(), "chr_set", (key)->
+                sub_menu.radio {class: "chr_set"}, Url.prop.chr_set, Mem.map_faces.reduce, "chr_set", (key)->
                   Mem.chr_sets.find(key).caption
 
           view: (main_menu)->

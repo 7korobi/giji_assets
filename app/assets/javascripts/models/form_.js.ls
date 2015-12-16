@@ -11,9 +11,9 @@ new Mem.Rule("form").schema ->
     listup = (state, live, mob)->
       option = (cb)->
         if Mem.potofs
-          Mem.potofs.where(cb).list().map (o)->
+          Mem.potofs.where(cb).list.map (o)->
             pno: o.pno,
-            job: o.chr_job().job,
+            job: o.chr_job.job,
             name: o.name
         else
           []
@@ -161,6 +161,5 @@ new Mem.Rule("form").schema ->
     o.role_name = role_names.join("、")
     o.role_help = (_.uniq _.compact role_helps).join("\n<br>\n")
     o.able_help = (_.uniq _.compact able_helps).join("\n<br>\n")
-
 
   @map_reduce (o)->

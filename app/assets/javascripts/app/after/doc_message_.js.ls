@@ -69,7 +69,7 @@ doc.message =
   helps: (t)->
     m ".paragraph.#{t.mestype}", {key: t._id},
       m "ul",
-        for o in t.list() || []
+        for o in t.list || []
           m "li",
             m "code", m.trust o.name
             m "kbd", m.trust o.HELP
@@ -84,7 +84,7 @@ doc.message =
                 m "th", m.trust header
         if t.cols
           m "tbody",
-            for o in t.list() || []
+            for o in t.list || []
               m "tr",
                 for key in t.cols
                   m "td",
@@ -99,7 +99,7 @@ doc.message =
       m.trust o.log.deco_text
 
   event: (o)->
-    btn = o.event().view.btn()
+    btn = o.event.view.btn()
     list = []
     list.push m "h3", m.trust o.name
     list.push btn if btn

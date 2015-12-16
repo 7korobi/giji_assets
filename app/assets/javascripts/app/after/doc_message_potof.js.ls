@@ -26,7 +26,7 @@ doc.message.potofs = (v)->
           m "th", m "a", toggle_desc(potofs_order, potofs_desc, "role"),       "役割"
           m "th", m "a", toggle_desc(potofs_order, potofs_desc, "text"),       "補足"
       m "tbody.plane", {test:"test"},
-        for o in Mem.potofs.view(potofs_desc(), potofs_order()).list()
+        for o in Mem.potofs.view(potofs_desc(), potofs_order()).list
           filter_class =
             if hides[o.face_id]
               "filter-hide"

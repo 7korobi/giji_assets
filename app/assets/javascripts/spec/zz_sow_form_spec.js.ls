@@ -5,7 +5,7 @@ describe "(sow) Mem.forms" (...)!->
       live_name = Mem.roles.find(live).name
       for turn in <[prologue start main epilogue]>
         it "#{live_name} #{turn}" (...)!->
-          for role in Mem.roles.list()
+          for role in Mem.roles.list
             for enemy in <[evil wolf]>
               for mob in <[visiter grave alive juror gamemaster]>
                 Mem.rule.form.set [
@@ -21,7 +21,7 @@ describe "(sow) Mem.forms" (...)!->
                   sheep: []
                   love: null
                 ]
-                form = Mem.forms.list().first
+                form = Mem.forms.list.first
                 call form
 
   describe "can input text" (...)!->

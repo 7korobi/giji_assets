@@ -14,7 +14,7 @@ new Mem.Rule("item").schema !->
     list: ->
       if @query
         [rule, ...ary] = @query.split(/ +/)
-        data(rule, ary).list()
+        data(rule, ary).list
 
   @deploy (o)->
     [type, template, mestype, index] = o._id.split('-')
@@ -41,5 +41,5 @@ GUI.items_module = (type)->
           case 'rolelist'
             win.scroll.size = 10
       view: ->
-        win.scroll.pager "div", query.list(), (v)->
+        win.scroll.pager "div", query.list, (v)->
           doc.message[v.template](v)

@@ -18,7 +18,7 @@ mestype_orders = <[
 
 timeline_present = ({size: [width, height]})->
   {talk, open, potofs_hide, talk_at, search} = Url.prop
-  return unless Mem.events.list().length
+  return unless Mem.events.list.length
 
   graph_height = height - 50
 
@@ -29,9 +29,9 @@ timeline_present = ({size: [width, height]})->
 
   view_port_x = ->
     base := Mem.messages.talk(talk(), open(), potofs_hide())
-    return false unless base.reduce()
+    return false unless base.reduce
 
-    masks := base.reduce().mask
+    masks := base.reduce.mask
     time_ids := _.sortBy Object.keys(masks), unpack.Date
     time_width := time_ids.length
     x := width / time_width
@@ -56,7 +56,7 @@ timeline_present = ({size: [width, height]})->
     return 0
 
   choice_last = (query, time)->
-    for o in query.list() by -1
+    for o in query.list by -1
       if time > o.updated_at
         talk_at o._id
         menu.icon.change "search"
@@ -68,7 +68,7 @@ timeline_present = ({size: [width, height]})->
 
   data: ->
     view_port_x()
-    base.reduce()
+    base.reduce
 
   onmove: ({state, is_touch, offset})->
     return unless is_touch && offset? && view_port_x()
@@ -118,7 +118,7 @@ timeline_present = ({size: [width, height]})->
           ctx.fillRect x * left, y * top, 1 + x * count_width, y * count_height
 
     ctx.beginPath()
-    for event in Mem.events.list() when event.created_at
+    for event in Mem.events.list when event.created_at
       right = index_at event.updated_at
       left = index_at event.created_at
       ctx.strokeStyle = RAILS.log.colors.line

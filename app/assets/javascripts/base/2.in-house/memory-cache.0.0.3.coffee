@@ -9,6 +9,12 @@ typeof_str = Object.prototype.toString
 type = (o)->
   typeof_str.call(o)[8..-2]
 
+def = (obj, key, {get, set})->
+  configurable = false
+  enumerable = false
+  Object.defineProperty obj, key, {configurable, enumerable, get, set}
+  return
+
 
 class @Mem
   @rule = {}
@@ -101,44 +107,48 @@ class Mem.Query
     delete @_hash
     delete @_memory
 
-  reduce: ->
-    @finder.calculate(@) unless @_reduce?
-    @_reduce
+  def @.prototype, "reduce",
+    get: ->
+      @finder.calculate(@) unless @_reduce?
+      @_reduce
 
-  list: ->
-    @finder.calculate(@) unless @_list?
-    @_list
+  def @.prototype, "list",
+    get: ->
+      @finder.calculate(@) unless @_list?
+      @_list
 
-  hash: ->
-    @finder.calculate(@) unless @_hash?
-    @_hash
+  def @.prototype, "hash",
+    get: ->
+      @finder.calculate(@) unless @_hash?
+      @_hash
 
-  memory: ->
-    @finder.calculate(@) unless @_memory?
-    @_memory
+  def @.prototype, "memory",
+    get: ->
+      @finder.calculate(@) unless @_memory?
+      @_memory
 
-  ids: ->
-    Object.keys @memory()
+  def @.prototype, "ids",
+    get: ->
+      Object.keys @memory
 
   find: (id)->
-    @hash()[id]
+    @hash[id]
 
   finds: (ids)->
-    for id in ids when o = @hash()[id]
+    for id in ids when o = @hash[id]
       o
 
   pluck: (keys...)->
-    @list().map do
-      switch keys.length
-        when 0
-          -> null
-        when 1
-          (o)->
-            o[keys[0]]
-        else
-          (o)->
-            for key in keys
-              o[key]
+    switch keys.length
+      when 0
+        @list.map -> null
+      when 1
+        @list.map (o)->
+          o[keys[0]]
+      else
+        @list.map (o)->
+          for key in keys
+            o[key]
 
 class Mem.Finder
   constructor: (@sort_by)->
@@ -281,18 +291,19 @@ class Mem.Rule
     Mem[@list_name] = @finder.query.all
 
   schema: (cb)->
+    cache_scope = (key, finder, query_call)->
+      switch type query_call
+        when "Function"
+          finder.query.all[key] = (args...)->
+            finder.query["#{key}:#{JSON.stringify args}"] ?= query_call args...
+        else
+          finder.query.all[key] = query_call
+
     definer =
       scope: (cb)=>
         @finder.scope = cb @finder.query.all
-        set_scope = (key, finder, query_call)->
-          switch type query_call
-            when "Function"
-              finder.query.all[key] = (args...)->
-                finder.query["#{key}:#{JSON.stringify args}"] ?= query_call args...
-            else
-              finder.query.all[key] = query_call
         for key, query_call of @finder.scope
-          set_scope(key, @finder, query_call)
+          cache_scope(key, @finder, query_call)
 
       default: (cb)=>
         for key, val of cb()
@@ -305,13 +316,28 @@ class Mem.Rule
       belongs_to: (parent, option)=>
         parents = "#{parent}s"
         parent_id = "#{parent}_id"
-        @base_obj[parent] = ->
-          Mem[parents].find @[parent_id]
+
+        def @base_obj, parent,
+          get: ->
+            Mem[parents].find @[parent_id]
 
         dependent = option?.dependent?
         if dependent
           definer.depend_on parent
-          @validates.push (o)-> o[parent]()?
+          @validates.push (o)-> o[parent]?
+
+      has_many: (children, option)=>
+        key = @id
+        all = @finder.query.all
+        query = option?.query
+
+        cache_scope children, @finder, (id)->
+          query ?= Mem[children]
+          query.where (o)-> o[key] == id
+
+        def @base_obj, children,
+          get: ->
+            all[children](@._id)
 
       order: (order)=>
         query = @finder.query.all.sort false, order
@@ -338,22 +364,9 @@ class Mem.Rule
     all = finder.query.all._memory
 
     deployer =
-      if @__proto__?
-        (o, base)->
-          o.__proto__ = base
-      else
-        (o, base)->
-          _.defaults o, base
-
-    deployer =
-      if @__proto__?
-        (o)=>
-          o.__proto__ = @base_obj
-          @deploy o
-      else
-        (o)=>
-          _.defaults o, @base_obj
-          @deploy o
+      (o)=>
+        o.__proto__ = @base_obj
+        @deploy o
 
     validate_item = (item)=>
       for validate in @validates

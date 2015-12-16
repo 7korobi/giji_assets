@@ -731,7 +731,6 @@
           }
         };
       });
-      this["default"](function() {});
       this.deploy(function(o) {
         return o[key + "_id"] = o._id;
       });
@@ -2197,13 +2196,13 @@
       "help_on": "",
       "help_off": "※入力してください。"
     },
-    "csid": {
+    "chr_npc": {
       "attr": {
         "type": "select",
         "name": "csid",
         "required": "required"
       },
-      "name": "NPC選択",
+      "name": "登場人物とNPC",
       "help_on": "",
       "help_off": "※入力してください。"
     },
@@ -3045,27 +3044,27 @@
     }
   });
 
-  Mem.conf.folder = Mem.folders.hash();
+  Mem.conf.folder = Mem.folders.hash;
 
-  Mem.conf.live = Mem.lives.hash();
+  Mem.conf.live = Mem.lives.hash;
 
-  Mem.conf.map_faces_order = Mem.map_faces_orders.hash();
+  Mem.conf.map_faces_order = Mem.map_faces_orders.hash;
 
-  Mem.conf.option = Mem.options.hash();
+  Mem.conf.option = Mem.options.hash;
 
-  Mem.conf.rating = Mem.ratings.hash();
+  Mem.conf.rating = Mem.ratings.hash;
 
-  Mem.conf.role_table = Mem.role_tables.hash();
+  Mem.conf.role_table = Mem.role_tables.hash;
 
-  Mem.conf.rule = Mem.rules.hash();
+  Mem.conf.rule = Mem.rules.hash;
 
-  Mem.conf.say = Mem.says.hash();
+  Mem.conf.say = Mem.says.hash;
 
-  Mem.conf.tag = Mem.tags.hash();
+  Mem.conf.tag = Mem.tags.hash;
 
-  Mem.conf.theme = Mem.themes.hash();
+  Mem.conf.theme = Mem.themes.hash;
 
-  Mem.conf.trs = Mem.trss.hash();
+  Mem.conf.trs = Mem.trss.hash;
 
 }).call(this);
 
@@ -3074,6 +3073,8 @@
 
   new Mem.Rule("face").schema(function() {
     var item;
+    this.has_many("chr_jobs");
+    this.has_many("chr_npcs");
     this.order("order");
     this.scope(function(all) {
       return {
@@ -3099,7 +3100,7 @@
             key = String.fromCharCode(idx);
             names = all.where({
               name: RegExp("^" + key)
-            }).list().map(function(o) {
+            }).list.map(function(o) {
               return o.name;
             });
             if (counts[name = names.length] == null) {
@@ -3129,23 +3130,12 @@
 
   new Mem.Rule("chr_set").schema(function() {
     this.order("caption");
-    return this["default"](function() {
-      return {
-        chr_jobs: function() {
-          return Mem.chr_jobs.where({
-            chr_set_id: this._id
-          });
-        },
-        chr_npcs: function() {
-          return Mem.chr_npcs.where({
-            chr_set_id: this._id
-          });
-        }
-      };
-    });
+    this.has_many("chr_jobs");
+    return this.has_many("chr_npcs");
   });
 
   new Mem.Rule("chr_npc").schema(function() {
+    this.order("caption");
     this.belongs_to("chr_set", {
       dependent: true
     });
@@ -7935,14 +7925,14 @@
 
   list = (function() {
     var i, len, ref, ref1, results;
-    ref = Mem.faces.list();
+    ref = Mem.faces.list;
     results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       face = ref[i];
       chr_set_id = "all";
       face_id = face._id;
       _id = "all_" + face_id;
-      job = (ref1 = Mem.chr_jobs.face(face_id).list().first) != null ? ref1.job : void 0;
+      job = (ref1 = Mem.chr_jobs.face(face_id).list.first) != null ? ref1.job : void 0;
       if (job == null) {
         continue;
       }
@@ -8012,10 +8002,10 @@
         var option;
         option = function(cb){
           if (Mem.potofs) {
-            return Mem.potofs.where(cb).list().map(function(o){
+            return Mem.potofs.where(cb).list.map(function(o){
               return {
                 pno: o.pno,
-                job: o.chr_job().job,
+                job: o.chr_job.job,
                 name: o.name
               };
             });
@@ -8599,7 +8589,7 @@
     map_reduce_faces: function(){
       Mem.rule.chr_set.schema(function(){
         return this.order(function(o){
-          return Mem.map_faces.reduce().chr_set[o._id].count;
+          return Mem.map_faces.reduce.chr_set[o._id].count;
         });
       });
       return Mem.rule.map_face.set(gon.map_reduce.faces);
@@ -8640,13 +8630,13 @@
         }
       }
       if (!Url.prop.talk_at()) {
-        Url.prop.talk_at(doc.messages.talk(Url.prop).list().first._id);
+        Url.prop.talk_at(doc.messages.talk(Url.prop).list.first._id);
       }
       if (!Url.prop.memo_at()) {
-        Url.prop.memo_at(doc.messages.memo(Url.prop).list().first._id);
+        Url.prop.memo_at(doc.messages.memo(Url.prop).list.first._id);
       }
       if (!Url.prop.home_at()) {
-        return Url.prop.home_at(doc.messages.home(Url.prop).list().first._id);
+        return Url.prop.home_at(doc.messages.home(Url.prop).list.first._id);
       }
     }
   };
@@ -8675,7 +8665,7 @@
           var ref$, rule, ary;
           if (this.query) {
             ref$ = this.query.split(/ +/), rule = ref$[0], ary = slice$.call(ref$, 1);
-            return data(rule, ary).list();
+            return data(rule, ary).list;
           }
         }
       };
@@ -8712,7 +8702,7 @@
           }
         },
         view: function(){
-          return win.scroll.pager("div", query.list(), function(v){
+          return win.scroll.pager("div", query.list, function(v){
             return doc.message[v.template](v);
           });
         }
@@ -8744,7 +8734,7 @@
       var face, list, search_words, sow_auth_id;
       o._id = o.face_id;
       o.win.value.合計 = o.win.all;
-      list = Mem.chr_jobs.face(o.face_id).list();
+      list = o.face.chr_jobs.list;
       if (list) {
         search_words = list.map(function(o) {
           return o.job;
@@ -8755,7 +8745,7 @@
       } else {
         search_words = o.chr_set_ids = [];
       }
-      face = o.face();
+      face = o.face;
       if (face) {
         search_words.push(face.name);
         for (sow_auth_id in o.sow_auth_id.value) {
@@ -8901,8 +8891,8 @@
           o.mestype = "SAY";
           break;
         case "VSAY":
-          story = o.story();
-          event = o.event();
+          story = o.story;
+          event = o.event;
           has.vsay = true;
           if (story && event && "grave" === story.type.mob && !event.name.match(/プロローグ|エピローグ/)) {
             o.mestype = "VGSAY";
@@ -9134,9 +9124,9 @@
       if (o.chr_job_id == null) {
         o.chr_job_id = (o.csid.toLowerCase()) + "_" + o.face_id;
       }
-      chr_job = o.chr_job();
+      chr_job = o.chr_job;
       if (chr_job != null) {
-        name = (ref = chr_job.face()) != null ? ref.name : void 0;
+        name = (ref = chr_job.face) != null ? ref.name : void 0;
         job = chr_job.job;
       } else {
         job = "***";
@@ -9157,8 +9147,8 @@
       said_num = o.point.saidcount;
       urge = o.point.actaddpt;
       pt_no = o.say.gsay;
-      story = o.story();
-      event = o.event();
+      story = o.story;
+      event = o.event;
       switch (o.live) {
         case "live":
           pt_no = o.say.say;
@@ -9369,12 +9359,12 @@
         sow_role: function(idx){
           return all.where(function(o){
             return o.role_idx === idx;
-          }).list().first;
+          }).list.first;
         },
         sow_gift: function(idx){
           return all.where(function(o){
             return o.gift_idx === idx;
-          }).list().first;
+          }).list.first;
         },
         players: function(ids){
           return all.where(function(o){
@@ -9447,7 +9437,7 @@
         sow: function(idx){
           return all.where(function(o){
             return o.order === idx;
-          }).list().first;
+          }).list.first;
         }
       };
     });
@@ -10986,7 +10976,7 @@
         return null;
       }
     };
-    all_traps = Mem.traps.ids();
+    all_traps = Mem.traps.ids;
     this.deploy(function(o) {
       var base, base1, mob, ref, ref1, ref2;
       o.order = o.folder + GUI.field(o.vid, 4);
@@ -11284,7 +11274,7 @@
         sow: function(idx){
           return all.where(function(o){
             return o.order === idx;
-          }).list().first;
+          }).list.first;
         }
       };
     });
@@ -11371,25 +11361,31 @@
       "HELP": "あなたは村を去りました。勝利したり、敗北したりといったことは、もうありません。"
     }
   });
-  Mem.conf.winner = Mem.winners.hash();
+  Mem.conf.winner = Mem.winners.hash;
 }).call(this);
 
 (function() {
   var field;
 
-  field = Mem.options.hash();
+  field = Mem.options.hash;
 
-  field.role_table.options = Mem.role_tables.enable().hash();
+  field.role_table.options = Mem.role_tables.enable().hash;
 
-  field.game_rule.options = Mem.rules.enable().hash();
+  field.game_rule.options = Mem.rules.enable().hash;
 
-  field.say_count.options = Mem.says.enable().hash();
+  field.say_count.options = Mem.says.enable().hash;
 
-  field.mob_type.options = Mem.roles.mob().hash();
+  field.mob_type.options = Mem.roles.mob().hash;
 
-  field.chr_set.options = Mem.chr_sets.hash();
+  field.chr_npc.group_by = function(o) {
+    return o.chr_npcs().hash;
+  };
 
-  field.rating.options = Mem.ratings.enable().hash();
+  field.chr_npc.options = Mem.chr_npcs.hash;
+
+  field.chr_set.options = field.chr_npc.groups = Mem.chr_sets.hash;
+
+  field.rating.options = Mem.ratings.enable().hash;
 
 }).call(this);
 
