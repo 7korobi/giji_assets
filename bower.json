@@ -1,0 +1,27 @@
+{
+  "name": "giji_assets",
+  "description": "",
+  "main": "",
+  "authors": [
+    "7korobi <7korobi@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/7korobi/giji_assets",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "mithriljs": "~0.2.0",
+    "lodash": "~3.10.1",
+    "headjs": "~1.0.3",
+    "chessjs": "~0.9.0",
+    "bounce.js": "bounce-js#~0.8.2",
+    "memory-record": "*"
+  }
+}

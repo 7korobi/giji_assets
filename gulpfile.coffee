@@ -27,14 +27,16 @@ config =
       yaml:  'app/yaml/*.yml'
       html:  'app/assets/htmls/*.{slim,html}'
       css:   'app/assets/stylesheets/*.css'
+      bower: 'bower_components/**/*.min.js'
       js:    'app/assets/javascripts/**/*.{js,ls,coffee,erb}'
     config:
       yaml:  'config/yaml/*.yml'
 
   dest:
-    public: "public/assets-master/"
+    public:  "public/assets-master/"
     asset:
-      js:   'tmp/cache/gulp-js'
+      bower: 'tmp/cache/gulp-js/base/1.bower'
+      js:    'tmp/cache/gulp-js'
 
 
 gulp.task "default", ["browser:sync"], ->
@@ -48,8 +50,8 @@ gulp.task "default", ["browser:sync"], ->
     "asset:css"
   ]
 
-require('./gulp/base') config
-require('./gulp/yaml')   config
-require('./gulp/asset')  config
-require('./gulp/browser') config
-require('./gulp/amazon') config
+require('./lib/gulp/base') config
+require('./lib/gulp/yaml')   config
+require('./lib/gulp/asset')  config
+require('./lib/gulp/browser') config
+require('./lib/gulp/amazon') config

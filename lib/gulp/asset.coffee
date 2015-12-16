@@ -1,5 +1,6 @@
 module.exports = ({gulp, $, src, dest,  yml})->
   neat = require 'node-neat'
+  bower = require 'main-bower-files'
   asset = (cb)->
     cb()
     .pipe gulp.dest dest.public
@@ -54,7 +55,14 @@ module.exports = ({gulp, $, src, dest,  yml})->
       .pipe $.sort()
       .pipe $.include()
 
-  gulp.task "asset:js:tmp", ["clean", "asset:yaml"], ->
+  gulp.task "asset:bower", ["clean"], ->
+    gulp
+    .src bower
+      checkExistence: true
+    .pipe $.sort()
+    .pipe gulp.dest dest.asset.bower
+
+  gulp.task "asset:js:tmp", ["asset:bower", "clean", "asset:yaml"], ->
     gulp
     .src src.asset.js
     .pipe $.plumber()
