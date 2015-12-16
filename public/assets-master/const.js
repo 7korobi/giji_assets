@@ -8568,12 +8568,13 @@
         return (ref$ = k.split("-")) != null ? ref$[0] : void 8;
       });
       return face.role_of_wins = _.groupBy(face.roles, function(arg$){
-        var k, count, role;
+        var k, count, role, group;
         k = arg$[0], count = arg$[1];
         role = Mem.roles.find(k) || {
           group: "OTHER"
         };
-        return Mem.conf.winner["WIN_" + role.group].name_group;
+        group = role.group || "MOB";
+        return Mem.conf.winner["WIN_" + group].name_group;
       });
     },
     form: function(){
@@ -8731,10 +8732,10 @@
       };
     });
     this.deploy(function(o) {
-      var face, list, search_words, sow_auth_id;
+      var face, list, ref, ref1, search_words, sow_auth_id;
       o._id = o.face_id;
       o.win.value.合計 = o.win.all;
-      list = o.face.chr_jobs.list;
+      list = (ref = o.face) != null ? (ref1 = ref.chr_jobs) != null ? ref1.list : void 0 : void 0;
       if (list) {
         search_words = list.map(function(o) {
           return o.job;
@@ -11311,6 +11312,7 @@
     },
     "WIN_LONEWOLF": {
       "name": "一匹狼",
+      "name_group": "その他",
       "order": 4,
       "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_LONEWOLF\" TARGET=\"_blank\">一匹狼陣営</A></b>\n<br>\nルール「タブラの人狼」「死んだら負け」「Trouble☆Aliens」では人間(妖精や人外の者を除く)の数を一匹狼と同数以下まで減らせば、ルール「ミラーズホロウ」「深い霧の夜」では役職「村人」を全滅させ、かつ、人狼陣営の狼が生きていなければ勝利です。\n<br>\nただし、最後まで妖精、もしくは恋人が生き残っていると敗北になり、他にも勝利を掻っ攫うもの達が存在します。"
     },
@@ -11327,36 +11329,43 @@
     },
     "WIN_GURU": {
       "name": "笛吹き",
+      "name_group": "その他",
       "order": 7,
       "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_GURU\" TARGET=\"_blank\">笛吹き</A></b>\n<br>\n笛吹き以外の生存者が勧誘された者だけになれば勝利となります。笛吹き自身は、最終的に生き残っていなくとも構いません。\n<br>\nただし、横から勝利を掻っ攫うもの達が存在します。"
     },
     "WIN_LOVER": {
       "name": "恋人陣営",
+      "name_group": "その他",
       "order": 8,
       "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_LOVER\" TARGET=\"_blank\">恋人陣営</A></b>\n<br>\n恋人達だけが生き残る、もしくはいずこかの陣営が勝利を手にしたとき、絆の恋人達が生存していれば勝利です。\n<br>\nただし、ひとりだけ蘇生したなどの不幸で、恋を成就できない恋人は、勝利しません。"
     },
     "WIN_HATER": {
       "name": "邪気陣営",
+      "name_group": "その他",
       "order": 9,
       "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_HATER\" TARGET=\"_blank\">邪気陣営</A></b>\n<br>\nいずこかの陣営が勝利を手にしたとき、運命に決着をつけていれば勝利します。決着とは、絆の天敵をすべて倒し、一人だけが生き残っていることです。\n殺し合いの絆を断ち切りましょう。絆の相手が死んでも、後を追うことはありません。\n<br>\n絆の天敵とは、たとえあなた自身には関係のなくとも、あらゆる絆を結んでいるもの全てを指します。"
     },
     "WIN_DISH": {
       "name": "据え膳",
+      "name_group": "その他",
       "order": 10,
       "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_DISH\" TARGET=\"_blank\">据え膳</A></b>\n<br>\nすべてに決着がついたとき、あなたが狼の襲撃、もしくは賞金稼の道連れにより死亡していれば、勝利者の一員に加わります。"
     },
     "WIN_NONE": {
       "name": "―",
+      "name_group": "その他",
       "order": 98,
       "HELP": ""
     },
     "WIN_MOB": {
       "name": "見物人",
+      "name_group": "その他",
       "order": 99,
       "HELP": "あなたは<b>_ROLE_の<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MOB\" TARGET=\"_blank\">見物人</A></b>です。いかなる陣営の人数にも含まれません。"
     },
     "WIN_LEAVE": {
       "name": "―",
+      "name_group": "その他",
       "order": 100,
       "HELP": "あなたは村を去りました。勝利したり、敗北したりといったことは、もうありません。"
     }

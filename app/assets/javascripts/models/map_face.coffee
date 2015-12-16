@@ -10,7 +10,7 @@ new Mem.Rule("map_face").schema ->
     o._id = o.face_id
     o.win.value.合計 = o.win.all
 
-    list = o.face.chr_jobs.list
+    list = o.face?.chr_jobs?.list
     if list
       search_words = list.map (o)-> o.job
       o.chr_set_ids = list.map (o)-> o.chr_set_id
