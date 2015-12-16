@@ -84,7 +84,7 @@ export doc =
     {potofs_desc, potofs_order, potofs_hide} = Url.prop
     potofs = Mem.potofs.view(potofs_desc(), potofs_order()).list
     hides = potofs_hide()
-    turn = win.scroll.center?.event()?.turn || 0
+    turn = win.scroll.center?.event?.turn || 0
 
     m ".minilist",
       m "h6", "キャラクターフィルタ"

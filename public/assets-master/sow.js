@@ -1867,7 +1867,7 @@
       ref$ = Url.prop, potofs_desc = ref$.potofs_desc, potofs_order = ref$.potofs_order, potofs_hide = ref$.potofs_hide;
       potofs = Mem.potofs.view(potofs_desc(), potofs_order()).list;
       hides = potofs_hide();
-      turn = ((ref$ = win.scroll.center) != null ? (ref1$ = ref$.event()) != null ? ref1$.turn : void 8 : void 8) || 0;
+      turn = ((ref$ = win.scroll.center) != null ? (ref1$ = ref$.event) != null ? ref1$.turn : void 8 : void 8) || 0;
       return m(".minilist", m("h6", "キャラクターフィルタ"), m("p", m("a", Btn.keys_reset({}, potofs_hide, []), "全員表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.others()), "参加者表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.potofs()), "その他を表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.full()), "全員隠す")), m("hr.black"), (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = potofs).length; i$ < len$; ++i$) {
