@@ -3,11 +3,6 @@ describe "(browser css)" (...)!->
     requestAnimationFrame !->
       done()
 
-  it "spec spec" !->
-    expect ->
-      throw "Error"
-    .to.throw("Error")
-
   it "disable", !->
     expect( document.styleSheets[0].disabled = true ).to.be.ok
     expect( document.styleSheets[0].disabled = false ).to.not.be.ok

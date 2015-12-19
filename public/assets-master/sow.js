@@ -1651,7 +1651,7 @@
       view: function(c, args){
         var ref$, uid, pwd, messages, form, btn, input;
         ref$ = Url.prop, uid = ref$.uid, pwd = ref$.pwd;
-        messages = function(){
+        messages = function(c){
           var msg;
           return m(".paragraph", (function(){
             var i$, ref$, len$, results$ = [];
@@ -1723,9 +1723,9 @@
           };
         }
         if (doc.user.is_login) {
-          return m("form", form(c.logout), m(".paragraph", !c.is_loading ? m("input", btn(uid() + " がログアウト")) : void 8), messages());
+          return m("form", form(c.logout), m(".paragraph", !c.is_loading ? m("input", btn(uid() + " がログアウト")) : void 8), messages(c));
         } else {
-          return m("form", form(c.login), m(".paragraph", m("label", m("span.mark", "user id : "), m("input", input(uid))), m("label", m("span.mark", "password : "), m("input[type=password]", input(pwd))), !c.is_loading ? m("input", btn("ログイン")) : void 8), messages());
+          return m("form", form(c.login), m(".paragraph", m("label", m("span.mark", "user id : "), m("input", input(uid))), m("label", m("span.mark", "password : "), m("input[type=password]", input(pwd))), !c.is_loading ? m("input", btn("ログイン")) : void 8), messages(c));
         }
       }
     });
@@ -2343,10 +2343,32 @@
 }).call(this);
 
 (function() {
-  var field, vmake_form,
-    slice = [].slice;
+  var error_and_info, field, vmake_form;
 
   field = Mem.options.hash;
+
+  error_and_info = function(o) {
+    var msg;
+    return m("p.mes_date", (function() {
+      var i, len, ref, results;
+      ref = o.errors;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        msg = ref[i];
+        results.push(m(".WSAY", m(".emboss", msg)));
+      }
+      return results;
+    })(), (function() {
+      var i, len, ref, results;
+      ref = o.infos;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        msg = ref[i];
+        results.push(m(".TSAY", m(".emboss", msg)));
+      }
+      return results;
+    })());
+  };
 
   vmake_form = {
     controller: function(v) {
@@ -2356,6 +2378,9 @@
         role: [],
         gift: [],
         trap: []
+      };
+      v.attrs = {
+        form: v.form
       };
       ref = Mem.options.list;
       for (i = 0, len = ref.length; i < len; i++) {
@@ -2367,81 +2392,110 @@
         return (++vindex) + "." + o.head;
       })).join("\r\n");
       v.reset = function() {
-        var cards, cards_set, j, len1, player_count, ref1, ref2, results;
+        var cards, cards_set, j, len1, player_count, ref1, results, role_table;
         player_count = v.form.player_count;
-        cards_set = (ref1 = v.form.role_table) != null ? ref1.cards : void 0;
-        if (cards_set) {
-          v.form.role = [];
-          v.form.gift = [];
-          cards = cards_set[player_count];
-          if (cards) {
-            ref2 = Mem.roles.finds(cards);
-            results = [];
-            for (j = 0, len1 = ref2.length; j < len1; j++) {
-              o = ref2[j];
-              results.push(v.form[o.cmd].push(o._id));
-            }
-            return results;
-          }
+        role_table = Mem.role_tables.find(v.form.role_table);
+        if (!role_table) {
+          return null;
+        }
+        cards_set = role_table.cards;
+        if (!cards_set) {
+          return null;
+        }
+        v.form.role = [];
+        v.form.gift = [];
+        cards = cards_set[player_count];
+        if (!cards) {
+          return null;
+        }
+        ref1 = Mem.roles.finds(cards);
+        results = [];
+        for (j = 0, len1 = ref1.length; j < len1; j++) {
+          o = ref1[j];
+          results.push(v.form[o.cmd].push(o._id));
+        }
+        return results;
+      };
+      v.make = function() {
+        if (validate.cards(this)) {
+          v.form;
+          this.is_loading = true;
+          return Submit.iframe("sow.cgi", {
+            cmd: "makevilform"
+          }, v.form).then(function(o) {
+            return console.log(o);
+          });
         }
       };
-      v.player_summary = function(arg) {
-        var can_play, extra, extra_size, full, gift, human_size, minus, player_size, role, wolf_size;
-        role = arg.role, gift = arg.gift, extra = arg.extra;
-        full = slice.call(role).concat(slice.call(gift));
-        minus = 0;
-        minus += 2 * Mem.roles.minus2(role).length;
-        minus += 1 * Mem.roles.minus1(full).length;
-        wolf_size = Mem.roles.wolfs(full).length;
-        human_size = Mem.roles.humans(role).length - minus;
-        extra_size = extra.length;
-        player_size = Mem.roles.players(role).length;
-        can_play = (0 < wolf_size && wolf_size < human_size);
-        if (can_play) {
-          return m("div", "最大 ", m("span.mark.SSAY", player_size, "人"), extra_size ? m("span.mark.VSAY", "+", extra_size, "人") : void 0, " が参加できます。", human_size ? m("span", m("span.mark.TSAY", human_size, "人"), minus ? "以上" : void 0, "は村人です。") : void 0);
-        } else {
-          return m(".emboss", "この編成ではゲームが成立しません。");
+      v.player_summary = function(form) {
+        var extra, human, minus, player, ref1, vdoms;
+        vdoms = [];
+        if (validate.cards(v.attrs)) {
+          ref1 = v.attrs.size, player = ref1.player, extra = ref1.extra, human = ref1.human, minus = ref1.minus;
+          vdoms.push("最大 ");
+          vdoms.push(m("span.mark.SSAY", player + "人"));
+          if (extra) {
+            vdoms.push(m("span.mark.VSAY", "+" + extra + "人"));
+          }
+          vdoms.push(" が参加できます。");
+          if (human) {
+            vdoms.push(m("span", m("span.mark.TSAY", human + "人"), minus ? "以上" : void 0, "は村人です。"));
+          }
         }
+        return m("div", vdoms, error_and_info(v.attrs));
       };
       v.npc_says = function(chr_npc) {
         var anchor, chr_job, chr_set, face, face_id, mestype, name, say_0, say_1, updated_at, user_id;
-        chr_set = chr_npc.chr_set;
-        if (chr_set) {
-          face_id = chr_npc.face_id, say_0 = chr_npc.say_0, say_1 = chr_npc.say_1;
-          chr_job = chr_set.chr_jobs.find(chr_set._id + "_" + face_id);
-          if (chr_job) {
-            updated_at = _.now();
-            mestype = "SAY";
-            user_id = "master";
-            anchor = "0";
-            face = Mem.faces.find(face_id);
-            name = chr_job.job + " " + face.name;
-            return [
-              m("h3", "プロローグ"), doc.message.talk({
-                face_id: face_id,
-                user_id: user_id,
-                anchor: anchor,
-                name: name,
-                mestype: mestype,
-                updated_at: updated_at,
-                log: say_0.replace(/\n/g, "<br>")
-              }), m("h3", "１日目"), doc.message.talk({
-                face_id: face_id,
-                user_id: user_id,
-                anchor: anchor,
-                name: name,
-                mestype: mestype,
-                updated_at: updated_at,
-                log: say_1.replace(/\n/g, "<br>")
-              }), m("h3", "２日目")
-            ];
-          }
+        if (!chr_npc) {
+          return null;
         }
+        chr_set = chr_npc.chr_set;
+        if (!chr_set) {
+          return null;
+        }
+        face_id = chr_npc.face_id, say_0 = chr_npc.say_0, say_1 = chr_npc.say_1;
+        chr_job = chr_set.chr_jobs.find(chr_set._id + "_" + face_id);
+        if (!chr_job) {
+          return null;
+        }
+        updated_at = _.now();
+        mestype = "SAY";
+        user_id = "master";
+        anchor = "0";
+        face = Mem.faces.find(face_id);
+        name = chr_job.job + " " + face.name;
+        return [
+          m("h3", "プロローグ"), doc.message.talk({
+            face_id: face_id,
+            user_id: user_id,
+            anchor: anchor,
+            name: name,
+            mestype: mestype,
+            updated_at: updated_at,
+            log: say_0.replace(/\n/g, "<br>")
+          }), m("h3", "１日目"), doc.message.talk({
+            face_id: face_id,
+            user_id: user_id,
+            anchor: anchor,
+            name: name,
+            mestype: mestype,
+            updated_at: updated_at,
+            log: say_1.replace(/\n/g, "<br>")
+          }), m("h3", "２日目")
+        ];
       };
       return v;
     },
     view: function(v) {
-      var add_btn, add_btns, btn, chk, nindex, sets;
+      var add_btn, add_btns, btn, chk, form, nindex, sets;
+      form = function(call) {
+        return {
+          onsubmit: function() {
+            call();
+            return false;
+          }
+        };
+      };
       btn = function(tap) {
         var attr;
         return attr = {
@@ -2483,7 +2537,7 @@
       };
       v.reset();
       nindex = 0;
-      return m(".vmake", {
+      return m("form", form(v.make), m(".vmake", {
         key: v._id
       }, m(".INFOSP.info", m("p.text", "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。", m("br"), "村作成から", m("span.mark", Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP + "日間"), "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。")), m(".MAKER.plane", m("fieldset.msg", m("legend.emboss", "村の名前、説明、ルール"), field.vil_name.view(v.form), field.vil_comment.view(v.form), m("p", "■国のルール"), RULE.nation.list.map(function(o) {
         return m("p", (++nindex) + "." + o.head);
@@ -2519,8 +2573,7 @@
       }), field.role_table.view(v.form, function(o) {
         return o.name;
       }), v.player_summary(v.form))), (function() {
-        var ref;
-        switch ((ref = v.form.role_table) != null ? ref._id : void 0) {
+        switch (v.form.role_table) {
           case void 0:
             return m(".WSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), m("p", "まずは、役職配分を選択してください。")));
           case "custom":
@@ -2540,14 +2593,14 @@
         }
       })(), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "登場人物"), field.chr_npc.view(v.form, function(o) {
         return o.caption;
-      }))), v.form.chr_npc ? v.npc_says(v.form.chr_npc) : void 0, m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "決定"), m("input", {
+      }))), v.npc_says(Mem.chr_npcs.find(v.form.chr_npc)), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "決定"), m("input", {
         name: "cmd",
         value: v.cmd,
         type: "hidden"
       }), m("input", {
         type: "submit",
         value: "村の作成"
-      }))));
+      })))));
     }
   };
 

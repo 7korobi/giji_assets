@@ -71,6 +71,7 @@ export pack =
   String:    string_serializer
   null:      string_serializer
   undefined: string_serializer
+  Thru: (o)-> o
 
 
 
@@ -127,6 +128,7 @@ export unpack =
   String:    string_parser
   null:      string_parser
   undefined: string_parser
+  Thru: (o)-> o
 
 export Serial =
   url: {}

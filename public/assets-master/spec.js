@@ -138,11 +138,6 @@
         done();
       });
     });
-    it("spec spec", function(){
-      expect(function(){
-        throw "Error";
-      }).to['throw']("Error");
-    });
     it("disable", function(){
       expect(document.styleSheets[0].disabled = true).to.be.ok;
       expect(document.styleSheets[0].disabled = false).to.not.be.ok;
@@ -160,12 +155,6 @@
       done();
       expect(document.querySelectorAll("li.pass")[0].tagName).to.eq("LI");
     });
-  });
-}).call(this);
-
-(function(){
-  describe("Mem", function(){
-    describe("messages", function(){});
   });
 }).call(this);
 

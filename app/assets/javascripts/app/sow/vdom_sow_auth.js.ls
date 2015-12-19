@@ -39,7 +39,7 @@ GUI.if_exist \#sow_auth, (dom)->
     view: (c, args)->
       {uid, pwd} = Url.prop
 
-      messages = ->
+      messages = (c)->
         m ".paragraph",
           for msg in c.errors
             m ".WSAY", m ".emboss", msg
@@ -81,7 +81,7 @@ GUI.if_exist \#sow_auth, (dom)->
           m ".paragraph",
             unless c.is_loading
               m "input", btn "#{uid()} がログアウト"
-          messages()
+          messages c
       else
         m "form", form(c.login),
           m ".paragraph",
@@ -93,4 +93,4 @@ GUI.if_exist \#sow_auth, (dom)->
               m "input[type=password]", input pwd
             unless c.is_loading
               m "input", btn "ログイン"
-          messages()
+          messages c

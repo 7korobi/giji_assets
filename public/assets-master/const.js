@@ -576,6 +576,7 @@
 
 (function() {
   new Mem.Rule("option").schema(function() {
+    var set_event;
     this.scope(function(all) {
       return {
         checkbox: function() {
@@ -590,8 +591,15 @@
         }
       };
     });
+    set_event = function(form, o) {
+      var val;
+      val = unpack[o.type];
+      return o.event(m.withAttr(o.attr_value, function(new_val) {
+        return form[o._id] = val(new_val);
+      }));
+    };
     return this.deploy(function(o) {
-      var event_base, ref;
+      var ref;
       o.option_id = o._id;
       if ((ref = o.attr) != null ? ref.name : void 0) {
         o.attr.key = o._id;
@@ -600,31 +608,26 @@
       o.label_attr = {
         "for": o.attr.name
       };
-      event_base = function(e) {
-        return o.event(m.withAttr(o.attr_value, e));
-      };
+      o.type = "Thru";
       o.view = function(form) {
         var now_val;
+        set_event(form, o);
         now_val = form[o._id];
-        event_base(function(new_val) {
-          return form[o._id] = new_val;
-        });
         o.attr[o.attr_value] = now_val;
         o.attr.checked = o.attr.checked ? "checked" : void 0;
         return m("div", m("input", o.attr), m("label", o.label_attr, now_val ? o.help_on : o.help_off));
       };
       switch (o.attr.type) {
         case "checkbox":
+          o.type = "Bool";
           o.event = function(e) {
             return o.attr.onchange = e;
           };
           o.attr_value = "checked";
           return o.view = function(form) {
             var now_val;
+            set_event(form, o);
             now_val = form[o._id];
-            event_base(function(new_val) {
-              return form[o._id] = new_val;
-            });
             o.attr.checked = o.attr.checked ? "checked" : void 0;
             return m("div", m("input", o.attr), m("label", o.label_attr, now_val ? o.help_on : o.help_off));
           };
@@ -634,12 +637,11 @@
           };
           o.attr_value = "value";
           return o.view = function(form, data, help) {
-            var now_val, option, selected, value;
+            var now_option, now_val, option, selected, value;
+            set_event(form, o);
             now_val = form[o._id];
-            selected = now_val ? null : "selected";
-            event_base(function(new_val) {
-              return form[o._id] = o.options[new_val];
-            });
+            now_option = o.options[now_val];
+            selected = now_option ? null : "selected";
             return m('div', m('select', o.attr, !(o.attr.required && o["default"]) ? m('option', {
               selected: selected,
               value: ""
@@ -656,7 +658,7 @@
                 }, data(option)));
               }
               return results;
-            })()), m("label", o.label_attr, help && now_val ? help(now_val) : void 0, now_val ? o.help_on : o.help_off));
+            })()), m("label", o.label_attr, help && now_option ? help(now_option) : void 0, now_option ? o.help_on : o.help_off));
           };
         case "textarea":
           o.event = function(e) {
@@ -667,14 +669,20 @@
           o.attr_value = "value";
           return o.view = function(form) {
             var now_val;
+            set_event(form, o);
             now_val = form[o._id];
-            event_base(function(new_val) {
-              return form[o._id] = new_val;
-            });
             o.attr[o.attr_value] = now_val;
             o.attr.checked = o.attr.checked ? "checked" : void 0;
             return m("div", m("textarea", o.attr, now_val));
           };
+        case "number":
+          o.type = "Number";
+          o.event = function(e) {
+            o.attr.onchange = e;
+            o.attr.onkeyup = e;
+            return o.attr.onblur = e;
+          };
+          return o.attr_value = "value";
         default:
           o.event = function(e) {
             o.attr.onchange = e;
@@ -9367,9 +9375,42 @@
             return o.gift_idx === idx;
           }).list.first;
         },
+        gift_sides: function(ids){
+          return all.where(function(o){
+            return o.group !== "OTHER";
+          }).finds(ids);
+        },
+        gift_appends: function(ids){
+          return all.where(function(o){
+            var ref$;
+            return (ref$ = o._id) === "decide" || ref$ === "seeronce";
+          }).finds(ids);
+        },
+        gift_items: function(ids){
+          return all.where(function(o){
+            var ref$;
+            return (ref$ = o._id) === "glass" || ref$ === "shield";
+          }).finds(ids);
+        },
+        gift_without_items: function(ids){
+          return all.where(function(o){
+            var ref$;
+            return (ref$ = !o._id) === "glass" || ref$ === "shield";
+          }).finds(ids);
+        },
         players: function(ids){
           return all.where(function(o){
             return "role" === o.cmd && "robber" !== o._id;
+          }).finds(ids);
+        },
+        robbers: function(ids){
+          return all.where(function(o){
+            return "robber" === o._id;
+          }).finds(ids);
+        },
+        villagers: function(ids){
+          return all.where(function(o){
+            return "villager" === o._id;
           }).finds(ids);
         },
         humans: function(ids){
@@ -11068,7 +11109,7 @@
 }).call(this);
 
 (function(){
-  var Validator, point, text, summary, required, secret, no_player, action, input, sow_auth, sow_auth_validator, input_validator, announce, character, relative, combat, validate, out$ = typeof exports != 'undefined' && exports || this;
+  var Validator, point, text, summary, required, secret, no_player, action, cards, input, sow_auth, sow_auth_validator, input_validator, cards_validator, announce, character, relative, combat, validate, slice$ = [].slice, out$ = typeof exports != 'undefined' && exports || this;
   Validator = (function(){
     Validator.displayName = 'Validator';
     var prototype = Validator.prototype, constructor = Validator;
@@ -11179,6 +11220,95 @@
       }
     }
   };
+  cards = function(arg$){
+    var error, info, ref$, role, gift, extra, mob_type, game_rule, start_auto, player_count, player_count_start, full, minus, player;
+    error = arg$.error, info = arg$.info;
+    ref$ = this.form, role = ref$.role, gift = ref$.gift, extra = ref$.extra, mob_type = ref$.mob_type, game_rule = ref$.game_rule, start_auto = ref$.start_auto, player_count = ref$.player_count, player_count_start = ref$.player_count_start;
+    full = slice$.call(role).concat(slice$.call(gift));
+    minus = 0;
+    minus += 2 * Mem.roles.minus2(role).length;
+    minus += 1 * Mem.roles.minus1(full).length;
+    player = Mem.roles.players(role).length;
+    this.size = {
+      drop: player - player_count,
+      wolf: Mem.roles.wolfs(full).length,
+      minus: minus,
+      extra: extra.length,
+      human: Mem.roles.humans(role).length - minus,
+      player: player,
+      robber: Mem.roles.robbers(role).length,
+      villager: Mem.roles.villagers(role).length,
+      gift_sides: Mem.roles.gift_sides(gift).length,
+      gift_items: Mem.roles.gift_items(gift).length,
+      gift_appends: Mem.roles.gift_appends(gift).length
+    };
+    switch (mob_type) {
+    case "juror":
+      if (!(this.size.extra || in$("decide", gift))) {
+        error("投票する人物が必要です。見物人（陪審）または、決定者を割り当てましょう。");
+      }
+      break;
+    case "gamemaster":
+      if (!this.size.extra) {
+        info("見物人（黒幕）を割り当てましょう。");
+      }
+    }
+    switch (game_rule) {
+    case "TABULA":
+    case "LIVE_TABULA":
+    case "TROUBLE":
+      if (!(0 < (ref$ = this.size.wolf) && ref$ < this.size.human)) {
+        error("人間(" + this.size.human + "人)は人狼(" + this.size.wolf + "人)より多く必要です。");
+      }
+      break;
+    case "MILLERHOLLOW":
+    case "LIVE_MILLERHOLLOW":
+    case "MISTERY":
+      if (!(1 < this.size.villager)) {
+        error("村人(" + this.size.villager + "人)が足りません。");
+      }
+      if (!(0 < this.size.wolf)) {
+        error("人狼(" + this.size.wolf + "人)が足りません。");
+      }
+    }
+    if (start_auto) {
+      if (!(player_count_start <= player_count)) {
+        error("ゲームが開始できません。");
+      }
+      if (!(3 < player_count_start)) {
+        error("最少催行人数が少なすぎます。");
+      }
+    }
+    if (game_rule === "LIVE_TABULA" || game_rule === "LIVE_MILLERHOLLOW") {
+      if (in$("dish", role)) {
+        error("鱗魚人が勝利できません。");
+      }
+    }
+    if (this.size.robber) {
+      if (this.size.player < player_count) {
+        error("役職(" + this.size.player + "人)が足りません。盗賊(" + this.size.robber + "人)には余り札が必要です。");
+      }
+      if (this.size.wolf <= this.size.robber) {
+        error("人狼(" + this.size.wolf + "人)が足りません。盗賊(" + this.size.robber + "人)より多くないと、人狼がいない村になる可能性があります。");
+      }
+    } else {
+      if (this.size.drop < 0) {
+        error("役職(" + this.size.player + "人)が足りません。定員以上にしましょう。");
+      }
+    }
+    if (0 < this.size.drop) {
+      info("役職配布時、余り札（" + this.size.drop + "枚）は捨て去ります。");
+    }
+    if (this.size.gift_sides + this.size.gift_appends && this.size.gift_items) {
+      error("光の輪や魔鏡と、能力や勝利条件を付与する恩恵は共存できません。");
+    }
+    if (this.size.gift_sides && this.size.gift_appends) {
+      error("能力を加える恩恵と、勝利条件が変わる恩恵は共存できません。");
+    }
+    if (!in$("villager", role)) {
+      return error("NPCのために、村人をひとつ入れてください。");
+    }
+  };
   input = function(arg$){
     var info;
     info = arg$.info;
@@ -11207,6 +11337,7 @@
   };
   sow_auth_validator = new Validator([sow_auth]);
   input_validator = new Validator([input]);
+  cards_validator = new Validator([cards]);
   announce = {
     memo: new Validator([text, required, summary]),
     talk: new Validator([text, required, summary]),
@@ -11230,6 +11361,9 @@
   out$.validate = validate = {
     sow_auth: function(target){
       return sow_auth_validator.validate(target);
+    },
+    cards: function(target){
+      return cards_validator.validate(target);
     },
     input: function(target){
       return input_validator.validate(target);
@@ -11259,6 +11393,11 @@
       return o[format].validate(target);
     }
   };
+  function in$(x, xs){
+    var i = -1, l = xs.length >>> 0;
+    while (++i < l) if (x === xs[i]) return true;
+    return false;
+  }
 }).call(this);
 
 (function(){

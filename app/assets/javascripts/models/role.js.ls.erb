@@ -28,32 +28,49 @@ new Mem.Rule("role").schema ->
     sow_gift: (idx)->
       all.where((o)-> o.gift_idx == idx).list.first
 
+    gift_sides: (ids)->
+      all.where (o)->  o.group != "OTHER"
+      .finds ids
+
+    gift_appends: (ids)->
+      all.where (o)-> o._id in ["decide", "seeronce"]
+      .finds ids
+
+    gift_items: (ids)->
+      all.where (o)-> o._id in ["glass", "shield"]
+      .finds ids
+
+    gift_without_items: (ids)->
+      all.where (o)-> not o._id in ["glass", "shield"]
+      .finds ids
 
     players: (ids)->
-      all
-      .where (o)->
-        "role" == o.cmd && "robber" != o._id
-      .finds(ids)
+      all.where (o)-> "role" == o.cmd && "robber" != o._id
+      .finds ids
+
+    robbers: (ids)->
+      all.where (o)-> "robber" == o._id
+      .finds ids
+
+    villagers: (ids)->
+      all.where (o)-> "villager" == o._id
+      .finds ids
 
     humans: (ids)->
-      all
-      .where((o)-> "HUMAN" == o.group )
-      .finds(ids)
+      all.where (o)-> "HUMAN" == o.group
+      .finds ids
 
     wolfs: (ids)->
-      all
-      .where((o)-> "WOLF" == o.group )
-      .finds(ids)
+      all.where (o)-> "WOLF" == o.group
+      .finds ids
 
     minus2: (ids)->
-      all
-      .where((o)-> o._id in ["hatedevil", "loveangel"] )
-      .finds(ids)
+      all.where (o)-> o._id in ["hatedevil", "loveangel"]
+      .finds ids
 
     minus1: (ids)->
-      all
-      .where((o)-> o._id in ["bitch", "fink", "fairy", "ogre"] )
-      .finds(ids)
+      all.where (o)-> o._id in ["bitch", "fink", "fairy", "ogre"]
+      .finds ids
 
   @default ->
 

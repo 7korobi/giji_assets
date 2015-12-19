@@ -16391,7 +16391,10 @@ License: MIT
     Text: string_serializer,
     String: string_serializer,
     'null': string_serializer,
-    undefined: string_serializer
+    undefined: string_serializer,
+    Thru: function(o){
+      return o;
+    }
   };
   out$.unpack = unpack = {
     HtmlGon: function(html){
@@ -16465,7 +16468,10 @@ License: MIT
     Text: string_parser,
     String: string_parser,
     'null': string_parser,
-    undefined: string_parser
+    undefined: string_parser,
+    Thru: function(o){
+      return o;
+    }
   };
   out$.Serial = Serial = {
     url: {},
