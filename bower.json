@@ -16,12 +16,25 @@
     "test",
     "tests"
   ],
+  "overrides": {
+    "bounce.js": {
+      "main": "bounce.min.js"
+    },
+    "lodash": {
+      "main": "lodash.min.js"
+    },
+    "mithriljs": {
+      "main": "mithril.min.js"
+    }
+  },
   "dependencies": {
     "mithriljs": "~0.2.0",
     "lodash": "~3.10.1",
     "headjs": "~1.0.3",
     "chessjs": "~0.9.0",
     "bounce.js": "bounce-js#~0.8.2",
-    "memory-record": "*"
+    "memory-record": "*",
+    "mithril-giji": "*",
+    "serialized-property": "*"
   }
 }

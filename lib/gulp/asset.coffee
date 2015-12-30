@@ -1,6 +1,11 @@
 module.exports = ({gulp, $, src, dest,  yml})->
   neat = require 'node-neat'
   bower = require 'main-bower-files'
+
+  alert = (err)->
+    console.log err.toString()
+    @emit "end"
+
   asset = (cb)->
     cb()
     .pipe gulp.dest dest.public
@@ -28,7 +33,7 @@ module.exports = ({gulp, $, src, dest,  yml})->
     asset ->
       gulp
       .src src.asset.html
-      .pipe $.plumber()
+      .on "error", alert
       .pipe $.sort()
       .pipe $.if "*.slim", $.jade()
       .pipe $.if "*.html.html", $.rename extname: ""
@@ -39,7 +44,7 @@ module.exports = ({gulp, $, src, dest,  yml})->
     asset ->
       gulp
       .src src.asset.css
-      .pipe $.plumber()
+      .on "error", alert
       .pipe $.sort()
       .pipe $.include()
       .pipe $.sass includePaths: neat.includePaths
@@ -52,6 +57,7 @@ module.exports = ({gulp, $, src, dest,  yml})->
     asset ->
       gulp
       .src dest.asset.js + "/*.js"
+      .on "error", alert
       .pipe $.sort()
       .pipe $.include()
 
@@ -65,7 +71,7 @@ module.exports = ({gulp, $, src, dest,  yml})->
   gulp.task "asset:js:tmp", ["asset:bower", "clean", "asset:yaml"], ->
     gulp
     .src src.asset.js
-    .pipe $.plumber()
+    .on "error", alert
     .pipe $.if "*.erb", $.ejs(yml)
     .pipe $.if "*.html", $.rename extname: ""
     .pipe $.if "*.coffee", $.coffee()
