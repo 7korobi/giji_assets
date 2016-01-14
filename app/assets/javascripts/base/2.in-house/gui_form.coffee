@@ -1,3 +1,5 @@
+GUI = require 'gui'
+
 GUI.form = (->
 
   submit = (props, f)->

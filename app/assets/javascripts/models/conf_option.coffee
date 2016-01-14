@@ -3,10 +3,49 @@ new Mem.Rule("option").schema ->
     checkbox: -> all.where (o)-> o.attr.type == 'checkbox'
     text:     -> all.where (o)-> o.attr.type == 'text'
 
-  set_event = (form, o)->
-    val = unpack[o.type]
-    o.event m.withAttr o.attr_value, (new_val)->
-      form[o._id] = val new_val
+  set_event = (form, {_id, type, event, attr_value})->
+    val = unpack[type]
+    event m.withAttr attr_value, (new_val)->
+      form[_id] = val new_val
+
+  input = (form, {_id, attr, attr_value})->
+    now_val = form[_id]
+    attr[attr_value] = now_val
+    attr.checked = if attr.checked then "checked"
+    ->
+      m "input", attr
+
+  textarea = (form, {_id, attr})->
+    now_val = form[_id]
+    ->
+      m "textarea", attr, now_val
+
+  select = (form, {_id, attr, name, options, init})->
+    now_val = form[_id]
+    now_option = options[now_val]
+    selected = if now_option then null else "selected"
+    (data)->
+      m 'select', attr,
+        unless attr.required && init
+          m 'option', {selected, value: "", key: name},
+            "- #{name} -"
+        for value, option of options
+          selected = if (now_val == value) then "selected" else null
+          key = value
+          m 'option', {selected, value, key},
+            data option
+
+  label = (form, {_id, label_attr, options, help_on, help_off})->
+    now_val = form[_id]
+    (help)->
+      m "label", label_attr,
+        if help && now_val
+          help options[now_val]
+        if now_val
+          help_on
+        else
+          help_off
+
 
   @deploy (o)->
     o.option_id = o._id
@@ -18,88 +57,44 @@ new Mem.Rule("option").schema ->
       for: o.attr.name
 
     o.type = "Thru"
-    o.view = (form)->
+
+    o.view = (form, vdom)->
       set_event form, o
-      now_val = form[o._id]
-      o.attr[o.attr_value] = now_val
-      o.attr.checked = if o.attr.checked then "checked"
-      m "div",
-        m "input", o.attr
-        m "label", o.label_attr,
-          if now_val
-            o.help_on
-          else
-            o.help_off
+      vdom input(form, o), label(form, o)
+
+    change_event = (e)->
+      o.attr.onchange = e
+
+    input_event = (e)->
+      o.attr.onchange = e
+      o.attr.onkeyup = e
+      o.attr.onblur = e
 
     switch o.attr.type
       when "checkbox"
         o.type = "Bool"
-        o.event = (e)->
-          o.attr.onchange = e
         o.attr_value = "checked"
-        o.view = (form)->
-          set_event form, o
-          now_val = form[o._id]
-          o.attr.checked = if o.attr.checked then "checked"
-          m "div",
-            m "input", o.attr
-            m "label", o.label_attr,
-              if now_val
-                o.help_on
-              else
-                o.help_off
+        o.event = change_event
 
       when "select"
-        o.event = (e)->
-          o.attr.onchange = e
         o.attr_value = "value"
-        o.view = (form, data, help)->
+        o.event = change_event
+        o.view = (form, vdom)->
           set_event form, o
-          now_val = form[o._id]
-          now_option = o.options[now_val]
-          selected = if now_option then null else "selected"
-          m 'div',
-            m 'select', o.attr,
-              unless o.attr.required && o.default
-                m 'option', {selected, value: ""},
-                  "- #{o.name} -"
-              for value, option of o.options
-                selected = if (now_val == value) then "selected" else null
-                m 'option', {selected, value},
-                  data option
-            m "label", o.label_attr,
-              if help && now_option
-                help now_option
-              if now_option
-                o.help_on
-              else
-                o.help_off
+          vdom select(form, o), label(form, o)
 
       when "textarea"
-        o.event = (e)->
-          o.attr.onchange = e
-          o.attr.onkeyup = e
-          o.attr.onblur = e
         o.attr_value = "value"
-        o.view = (form)->
+        o.event = input_event
+        o.view = (form, vdom)->
           set_event form, o
-          now_val = form[o._id]
-          o.attr[o.attr_value] = now_val
-          o.attr.checked = if o.attr.checked then "checked"
-          m "div",
-            m "textarea", o.attr, now_val
+          vdom textarea(form, o), label(form, o)
 
       when "number"
         o.type = "Number"
-        o.event = (e)->
-          o.attr.onchange = e
-          o.attr.onkeyup = e
-          o.attr.onblur = e
+        o.event = input_event
         o.attr_value = "value"
 
       else
-        o.event = (e)->
-          o.attr.onchange = e
-          o.attr.onkeyup = e
-          o.attr.onblur = e
+        o.event = input_event
         o.attr_value = "value"

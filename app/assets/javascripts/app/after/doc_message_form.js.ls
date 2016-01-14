@@ -1,31 +1,28 @@
 doc.message.form = (v)->
   error_and_info = (o)->
-    m "p.mes_date",
-      for msg in o.errors
-        m ".WSAY", m ".emboss", msg
-      for msg in o.infos
-        m ".TSAY", m ".emboss", msg
+    list = []
+    for msg in o.errors
+      list.push m ".WSAY", m ".emboss", msg
+    for msg in o.infos
+      list.push m ".TSAY", m ".emboss", msg
+    m "p.mes_date", list
 
   select = (input, able)->
-    selected = (prop, val)->
-      if val == prop()
-        "[selected]"
-      else
-        ""
-
     if input.targets
       options =
         m "optgroup[label=選択肢]",
           for {pno, job, name} in input.targets
+            key = value = pno
             selected = ""
-            selected = "[selected]" if input.target() == pno
-            m "option[value=#{pno}]#{selected}", {key: pno}, "#{job} #{name}"
+            selected = "selected" if input.target() == pno
+            m "option", {key, value, selected}, "#{job} #{name}"
 
     vdoms = []
     if able.action
       actions = Mem.actions.for_form(v.mestype, v.format).list.map (act)->
-        m "option[value=#{act.index}]", {key: act.index}, "#{act.text}"
-      actions.unshift m "option[value=0]", {key: 0}, "↓ 自由入力、または選択してください。"
+          key = value = act.index
+          m "option", {value, key}, "#{act.text}"
+      actions.unshift m "option", {value: 0, key: 0}, "↓ 自由入力、または選択してください。"
 
       vdoms.push m "fieldset.text",
         m "form", input.attr.form(),
@@ -108,8 +105,7 @@ doc.message.form = (v)->
     m ".WIN_#{v.win}.info",
       m ".emboss.pull-right", m.trust v.role_name
       for {able, input} in v.selects
-        select input, able
-        error_and_info input
+        [select(input, able), error_and_info(input)]
       m "p.text",
         m.trust v.role_help
       if v.history

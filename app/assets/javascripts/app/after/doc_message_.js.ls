@@ -100,11 +100,10 @@ doc.message =
 
   event: (o)->
     btn = o.event.view.btn()
-    list = []
-    list.push m "h3", m.trust o.name
-    list.push btn if btn
 
-    m ".#{o.mestype}", {key: o._id}, list
+    m ".#{o.mestype}", {key: o._id},
+      m "h3", m.trust o.name
+      btn if btn
 
   xxx: (v)->
     m "div", {key: v._id}, ".U.C #{v._id}"

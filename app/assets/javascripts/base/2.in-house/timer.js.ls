@@ -1,9 +1,4 @@
-/*
-timer v0.0.1
-http://github.com/7korobi/---
-(c) 7korobi
-License: MIT
-*/
+
 
 export class Timer
   @week = ["日","月","火","水","木","金","土"]

@@ -576,7 +576,7 @@
 
 (function() {
   new Mem.Rule("option").schema(function() {
-    var set_event;
+    var input, label, select, set_event, textarea;
     this.scope(function(all) {
       return {
         checkbox: function() {
@@ -591,15 +591,71 @@
         }
       };
     });
-    set_event = function(form, o) {
-      var val;
-      val = unpack[o.type];
-      return o.event(m.withAttr(o.attr_value, function(new_val) {
-        return form[o._id] = val(new_val);
+    set_event = function(form, arg) {
+      var _id, attr_value, event, type, val;
+      _id = arg._id, type = arg.type, event = arg.event, attr_value = arg.attr_value;
+      val = unpack[type];
+      return event(m.withAttr(attr_value, function(new_val) {
+        return form[_id] = val(new_val);
       }));
     };
+    input = function(form, arg) {
+      var _id, attr, attr_value, now_val;
+      _id = arg._id, attr = arg.attr, attr_value = arg.attr_value;
+      now_val = form[_id];
+      attr[attr_value] = now_val;
+      attr.checked = attr.checked ? "checked" : void 0;
+      return function() {
+        return m("input", attr);
+      };
+    };
+    textarea = function(form, arg) {
+      var _id, attr, now_val;
+      _id = arg._id, attr = arg.attr;
+      now_val = form[_id];
+      return function() {
+        return m("textarea", attr, now_val);
+      };
+    };
+    select = function(form, arg) {
+      var _id, attr, init, name, now_option, now_val, options, selected;
+      _id = arg._id, attr = arg.attr, name = arg.name, options = arg.options, init = arg.init;
+      now_val = form[_id];
+      now_option = options[now_val];
+      selected = now_option ? null : "selected";
+      return function(data) {
+        var key, option, value;
+        return m('select', attr, !(attr.required && init) ? m('option', {
+          selected: selected,
+          value: "",
+          key: name
+        }, "- " + name + " -") : void 0, (function() {
+          var results;
+          results = [];
+          for (value in options) {
+            option = options[value];
+            selected = now_val === value ? "selected" : null;
+            key = value;
+            results.push(m('option', {
+              selected: selected,
+              value: value,
+              key: key
+            }, data(option)));
+          }
+          return results;
+        })());
+      };
+    };
+    label = function(form, arg) {
+      var _id, help_off, help_on, label_attr, now_val, options;
+      _id = arg._id, label_attr = arg.label_attr, options = arg.options, help_on = arg.help_on, help_off = arg.help_off;
+      now_val = form[_id];
+      return function(help) {
+        return m("label", label_attr, help && now_val ? help(options[now_val]) : void 0, now_val ? help_on : help_off);
+      };
+    };
     return this.deploy(function(o) {
-      var ref;
+      var change_event, input_event, ref;
       o.option_id = o._id;
       if ((ref = o.attr) != null ? ref.name : void 0) {
         o.attr.key = o._id;
@@ -609,86 +665,43 @@
         "for": o.attr.name
       };
       o.type = "Thru";
-      o.view = function(form) {
-        var now_val;
+      o.view = function(form, vdom) {
         set_event(form, o);
-        now_val = form[o._id];
-        o.attr[o.attr_value] = now_val;
-        o.attr.checked = o.attr.checked ? "checked" : void 0;
-        return m("div", m("input", o.attr), m("label", o.label_attr, now_val ? o.help_on : o.help_off));
+        return vdom(input(form, o), label(form, o));
+      };
+      change_event = function(e) {
+        return o.attr.onchange = e;
+      };
+      input_event = function(e) {
+        o.attr.onchange = e;
+        o.attr.onkeyup = e;
+        return o.attr.onblur = e;
       };
       switch (o.attr.type) {
         case "checkbox":
           o.type = "Bool";
-          o.event = function(e) {
-            return o.attr.onchange = e;
-          };
           o.attr_value = "checked";
-          return o.view = function(form) {
-            var now_val;
-            set_event(form, o);
-            now_val = form[o._id];
-            o.attr.checked = o.attr.checked ? "checked" : void 0;
-            return m("div", m("input", o.attr), m("label", o.label_attr, now_val ? o.help_on : o.help_off));
-          };
+          return o.event = change_event;
         case "select":
-          o.event = function(e) {
-            return o.attr.onchange = e;
-          };
           o.attr_value = "value";
-          return o.view = function(form, data, help) {
-            var now_option, now_val, option, selected, value;
+          o.event = change_event;
+          return o.view = function(form, vdom) {
             set_event(form, o);
-            now_val = form[o._id];
-            now_option = o.options[now_val];
-            selected = now_option ? null : "selected";
-            return m('div', m('select', o.attr, !(o.attr.required && o["default"]) ? m('option', {
-              selected: selected,
-              value: ""
-            }, "- " + o.name + " -") : void 0, (function() {
-              var ref1, results;
-              ref1 = o.options;
-              results = [];
-              for (value in ref1) {
-                option = ref1[value];
-                selected = now_val === value ? "selected" : null;
-                results.push(m('option', {
-                  selected: selected,
-                  value: value
-                }, data(option)));
-              }
-              return results;
-            })()), m("label", o.label_attr, help && now_option ? help(now_option) : void 0, now_option ? o.help_on : o.help_off));
+            return vdom(select(form, o), label(form, o));
           };
         case "textarea":
-          o.event = function(e) {
-            o.attr.onchange = e;
-            o.attr.onkeyup = e;
-            return o.attr.onblur = e;
-          };
           o.attr_value = "value";
-          return o.view = function(form) {
-            var now_val;
+          o.event = input_event;
+          return o.view = function(form, vdom) {
             set_event(form, o);
-            now_val = form[o._id];
-            o.attr[o.attr_value] = now_val;
-            o.attr.checked = o.attr.checked ? "checked" : void 0;
-            return m("div", m("textarea", o.attr, now_val));
+            return vdom(textarea(form, o), label(form, o));
           };
         case "number":
           o.type = "Number";
-          o.event = function(e) {
-            o.attr.onchange = e;
-            o.attr.onkeyup = e;
-            return o.attr.onblur = e;
-          };
+          o.event = input_event;
           return o.attr_value = "value";
         default:
-          o.event = function(e) {
-            o.attr.onchange = e;
-            o.attr.onkeyup = e;
-            return o.attr.onblur = e;
-          };
+          o.event = input_event;
           return o.attr_value = "value";
       }
     });
@@ -1995,6 +2008,9 @@
         "name": "votetype",
         "type": "checkbox"
       },
+      "query": {
+        "SOW": "votetype"
+      },
       "name": "記名投票",
       "help_on": "記名で投票　※集計結果に投票者が記されます",
       "help_off": "匿名で投票　※集計結果は人数のみになります"
@@ -2004,6 +2020,7 @@
         "name": "starttype",
         "type": "checkbox"
       },
+      "query": {},
       "name": "自動開始",
       "help_on": "更新時に、最少催行人数が集まっていると開始",
       "help_off": "村立て人が開始ボタンを押すと開始"
@@ -2012,6 +2029,9 @@
       "attr": {
         "name": "seqevent",
         "type": "checkbox"
+      },
+      "query": {
+        "SOW": "seqevent"
       },
       "name": "固定事件簿",
       "help_on": "事件が順序どおりに発生する",
@@ -2022,6 +2042,9 @@
         "name": "showid",
         "type": "checkbox"
       },
+      "query": {
+        "SOW": "showid"
+      },
       "name": "ID公開",
       "help_on": "進行中にユーザーIDを公開する",
       "help_off": "エピローグまで、ユーザーIDを秘密にする"
@@ -2031,8 +2054,11 @@
         "name": "entrust",
         "type": "checkbox"
       },
+      "query": {
+        "SOW": "entrust"
+      },
       "name": "委任投票",
-      "default": true,
+      "init": true,
       "help_on": "委任投票ができる",
       "help_off": "委任投票ができない"
     },
@@ -2041,8 +2067,11 @@
         "name": "noselrole",
         "type": "checkbox"
       },
+      "query": {
+        "SOW": "noselrole"
+      },
       "name": "役職希望",
-      "default": true,
+      "init": true,
       "help_on": "役職希望を無視する",
       "help_off": "役職希望を受け付ける"
     },
@@ -2050,6 +2079,9 @@
       "attr": {
         "name": "randomtarget",
         "type": "checkbox"
+      },
+      "query": {
+        "SOW": "randomtarget"
       },
       "name": "ランダム",
       "help_on": "投票・能力の対象に「ランダム」が選択できる",
@@ -2060,6 +2092,9 @@
         "name": "undead",
         "type": "checkbox"
       },
+      "query": {
+        "SOW": "undead"
+      },
       "name": "幽界トーク",
       "help_on": "狼・妖精と死者との間で、会話ができる",
       "help_off": "狼・妖精と死者は会話を交わせない"
@@ -2068,6 +2103,9 @@
       "attr": {
         "name": "aiming",
         "type": "checkbox"
+      },
+      "query": {
+        "SOW": "aiming"
       },
       "name": "内緒話",
       "help_on": "ふたりだけの内緒話をすることができる",
@@ -2082,6 +2120,9 @@
         "required": "required",
         "pattern": ".{2,20}"
       },
+      "query": {
+        "SOW": "vname"
+      },
       "name": null,
       "help_on": null,
       "help_off": null
@@ -2094,6 +2135,9 @@
         "rows": 10,
         "style": "width: 100%"
       },
+      "query": {
+        "SOW": "vcomment"
+      },
       "name": null,
       "help_on": null,
       "help_off": null
@@ -2105,6 +2149,9 @@
         "size": 8,
         "maxlength": 8,
         "pattern": "[a-zA-Z0-9]{0,8}"
+      },
+      "query": {
+        "SOW": "entrypwd"
       },
       "name": "参加制限",
       "help_on": "参加者はパスワードを入力する",
@@ -2119,6 +2166,9 @@
         "step": 1,
         "required": "required"
       },
+      "query": {
+        "SOW": "vplcnt"
+      },
       "name": "定員",
       "help_on": "人が定員です。",
       "help_off": "定員　※入力してください。"
@@ -2126,11 +2176,14 @@
     "player_count_start": {
       "attr": {
         "type": "number",
-        "name": "vplcnt",
+        "name": "vplcntstart",
         "min": 4,
         "max": 20,
         "step": 1,
         "required": "required"
+      },
+      "query": {
+        "SOW": "vplcntstart"
       },
       "name": "最少催行人員",
       "help_on": "人以上で開始します。",
@@ -2143,7 +2196,8 @@
         "step": 1800,
         "required": "required"
       },
-      "default": "22:30",
+      "query": {},
+      "init": "22:30",
       "name": "更新時刻",
       "help_on": "に更新します。",
       "help_off": "更新時刻　※入力してください。"
@@ -2154,7 +2208,10 @@
         "name": "updinterval",
         "required": "required"
       },
-      "default": 24,
+      "query": {
+        "SOW": "updinterval"
+      },
+      "init": 24,
       "options": {
         "24": {
           "_id": 24,
@@ -2179,6 +2236,9 @@
         "name": "game",
         "required": "required"
       },
+      "query": {
+        "SOW": "game"
+      },
       "name": "ゲームルール",
       "help_on": "",
       "help_off": "※入力してください。"
@@ -2189,7 +2249,10 @@
         "name": "rating",
         "required": "required"
       },
-      "default": "default",
+      "query": {
+        "SOW": "rating"
+      },
+      "init": "default",
       "name": "こだわり",
       "help_on": "",
       "help_off": "※入力してください。"
@@ -2200,6 +2263,7 @@
         "name": "chr_set",
         "required": "required"
       },
+      "query": {},
       "name": "登場人物",
       "help_on": "",
       "help_off": "※入力してください。"
@@ -2209,6 +2273,9 @@
         "type": "select",
         "name": "csid",
         "required": "required"
+      },
+      "query": {
+        "SOW": "csid"
       },
       "name": "登場人物とNPC",
       "help_on": "",
@@ -2220,6 +2287,9 @@
         "name": "saycnttype",
         "required": "required"
       },
+      "query": {
+        "SOW": "saycnttype"
+      },
       "name": "発言制限",
       "help_on": "",
       "help_off": "※入力してください。"
@@ -2230,7 +2300,10 @@
         "name": "roletable",
         "required": "required"
       },
-      "default": "default",
+      "query": {
+        "SOW": "roletable"
+      },
+      "init": "default",
       "name": "役職配分",
       "help_on": "",
       "help_off": "※入力してください。"
@@ -2242,6 +2315,20 @@
         "required": "required"
       },
       "name": "見物スタイル",
+      "help_on": "",
+      "help_off": "※入力してください。"
+    },
+    "trs_type": {
+      "attr": {
+        "type": "select",
+        "name": "trsid",
+        "required": "required"
+      },
+      "query": {
+        "SOW": "trsid"
+      },
+      "init": "all",
+      "name": "地の文章",
       "help_on": "",
       "help_off": "※入力してください。"
     }
@@ -2995,20 +3082,33 @@
 
   Mem.rule.trs.set({
     "all": {
+      "show": true,
       "CAPTION": "オール☆スター",
       "HELP": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。"
     },
-    "simple": {
-      "CAPTION": "ラッキー☆スター",
-      "HELP": "初心者向けの、シンプルな設定です。拡張設定の一部が固定になっています。"
-    },
     "star": {
+      "show": true,
       "CAPTION": "Orbital☆Star",
       "HELP": "すべての役職、恩恵、事件を楽しむことができます。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>宇宙時代に突入した「全部入り」のセットです。村落共同体は渓谷や高原ではなく、小惑星帯や人工コロニー、移民船にあるでしょう。事件が始まるまでは、とても充実した近代的なインフラが整っていたのですが……"
     },
     "regend": {
+      "show": true,
       "CAPTION": "議事☆伝承",
       "HELP": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。アクション内容は穏当になり、未来的ですばらしいクローンも居ません。"
+    },
+    "heavy": {
+      "show": true,
+      "CAPTION": "絶望☆議事",
+      "HELP": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。たいへん重苦しい設定となっていて、未来的ですばらしいクローンも居ません。"
+    },
+    "complexx": {
+      "show": true,
+      "CAPTION": "ParanoiA",
+      "HELP": "ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"
+    },
+    "simple": {
+      "CAPTION": "ラッキー☆スター",
+      "HELP": "初心者向けの、シンプルな設定です。拡張設定の一部が固定になっています。"
     },
     "fool": {
       "CAPTION": "適当系",
@@ -3028,10 +3128,6 @@
     },
     "complex": {
       "CAPTION": "PARANOIA",
-      "HELP": "ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"
-    },
-    "complexx": {
-      "CAPTION": "ParanoiA",
       "HELP": "ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"
     },
     "cabala": {
@@ -8125,9 +8221,9 @@
           form: function(){
             return {
               onchange: function(e){
+                console.log([e.target]);
                 e.target.name;
-                e.target.value;
-                return console.log([e, o]);
+                return e.target.value;
               },
               onreset: function(e){},
               onsubmit: function(e){
@@ -11400,6 +11496,8 @@
   field.chr_set.options = field.chr_npc.groups = Mem.chr_sets.hash;
 
   field.rating.options = Mem.ratings.enable().hash;
+
+  field.trs_type.options = Mem.trss.enable().hash;
 
 }).call(this);
 

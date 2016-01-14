@@ -1,3 +1,5 @@
+GUI = require 'gui'
+
 class GUI.Animate
 
   spin = new Bounce

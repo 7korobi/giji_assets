@@ -1,2 +1,1 @@
-//=include base/**/*.js
-//=include class/**/*.js
+//=include base/npm.js

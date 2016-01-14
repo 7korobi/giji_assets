@@ -7,3 +7,4 @@ field.chr_npc.group_by = (o)-> o.chr_npcs().hash
 field.chr_npc.options = Mem.chr_npcs.hash
 field.chr_set.options = field.chr_npc.groups = Mem.chr_sets.hash
 field.rating.options = Mem.ratings.enable().hash
+field.trs_type.options = Mem.trss.enable().hash

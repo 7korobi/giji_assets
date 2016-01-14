@@ -1,9 +1,4 @@
-/*
-Url v0.0.1
-http://github.com/7korobi/---
-(c) 7korobi
-License: MIT
-*/
+
 
 getter_setter =
   callee: (store, current, parse, serial, key)->
@@ -26,7 +21,7 @@ do_define = (key, option)->
   Url.prop[key] = getter_setter.callee(current, current, parse, serial, key)
 
 
-class Url
+export class Url
   @routes = {}
   @cookies = {}
   @prop = {}
@@ -189,6 +184,3 @@ class Url
   values: (diff = {})->
     for key in @keys_in_url
       diff[key] || Url.prop[key]()
-
-
-export Url

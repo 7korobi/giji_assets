@@ -1,6 +1,9 @@
 module.exports = ({gulp, $, src, dest,  yml})->
   neat = require 'node-neat'
-  bower = require 'main-bower-files'
+  source = require 'vinyl-source-stream'
+  browserify = require 'browserify'
+  yamlify = require 'yamlify'
+
 
   alert = (err)->
     console.log err.toString()
@@ -53,24 +56,38 @@ module.exports = ({gulp, $, src, dest,  yml})->
       .pipe $.csscomb()
 
 
-  gulp.task "asset:js", ["asset:js:tmp"], ->
+  gulp.task "asset:js", ["asset:js:plane", "asset:js:npm:base"], ->
+
+  gulp.task "asset:js:plane", ["asset:js:asset"], ->
     asset ->
       gulp
-      .src dest.asset.js + "/*.js"
-      .on "error", alert
-      .pipe $.sort()
-      .pipe $.include()
+      .src [dest.asset.asset + "/*.js", "!" + dest.asset.asset + "/base.js"]
 
-  gulp.task "asset:bower", ["clean"], ->
+
+  gulp.task "asset:js:npm:base", ["asset:js:asset"], ->
+    asset ->
+      browserify
+        entries: [dest.asset.asset + "/base.js"]
+        extensions: [""]
+        paths: src.asset.require
+      .transform { global: true }, "uglifyify"
+      .transform "yamlify"
+      .bundle()
+      .pipe source 'base.js'
+
+
+  gulp.task "asset:js:asset", ["asset:js:tmp"], ->
     gulp
-    .src bower
-      checkExistence: true
+    .src dest.asset.js + "/*.js"
+    .on "error", alert
     .pipe $.sort()
-    .pipe gulp.dest dest.asset.bower
+    .pipe $.include()
+    .pipe gulp.dest dest.asset.asset
 
-  gulp.task "asset:js:tmp", ["asset:bower", "clean", "asset:yaml"], ->
+
+  gulp.task "asset:js:tmp", ["clean", "asset:yaml"], ->
     gulp
-    .src src.asset.js
+    .src [src.asset.js]
     .on "error", alert
     .pipe $.if "*.erb", $.ejs(yml)
     .pipe $.if "*.html", $.rename extname: ""

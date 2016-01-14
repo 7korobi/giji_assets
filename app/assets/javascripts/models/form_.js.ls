@@ -73,9 +73,9 @@ new Mem.Rule("form").schema ->
       obj.attr =
           form: ->
             onchange: (e)->
+              console.log [e.target]
               e.target.name
               e.target.value
-              console.log [e, o]
             onreset: (e)->
             onsubmit: (e)->
               console.log [e, role, able, o]

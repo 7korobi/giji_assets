@@ -14,12 +14,19 @@ vmake_form =
       role:  []
       gift:  []
       trap:  []
+      attr:
+        onreset: (e)->
+          console.log e
+          false
 
-    v.attrs =
-      form: v.form
+        onsubmit: (e)->
+          v.submit(v.form)
+          if validate.cards v
+            v.submit(v.form)
+          false
 
-    for o in Mem.options.list
-      v.form[o._id] = o.default || null
+    for {_id, init} in Mem.options.list
+      v.form[_id] = init || null
 
     vindex = 0
     v.form.vil_comment = [
@@ -44,18 +51,10 @@ vmake_form =
       for o in Mem.roles.finds cards
         v.form[o.cmd].push o._id
 
-    v.make = ->
-      if validate.cards @
-        v.form
-        @is_loading = true
-        Submit.iframe("sow.cgi", cmd: "makevilform", v.form)
-        .then (o)->
-          console.log o
-
     v.player_summary = (form)->
       vdoms = []
-      if validate.cards v.attrs
-        {player, extra, human, minus} = v.attrs.size
+      if validate.cards v
+        {player, extra, human, minus} = v.size
         vdoms.push "最大 "
         vdoms.push m "span.mark.SSAY", "#{player}人"
         if extra
@@ -70,7 +69,7 @@ vmake_form =
 
       m "div",
         vdoms
-        error_and_info v.attrs
+        error_and_info v
 
     v.npc_says = (chr_npc)->
       return null unless chr_npc
@@ -89,20 +88,14 @@ vmake_form =
       name = "#{chr_job.job} #{face.name}"
 
       [ m "h3", "プロローグ"
-        doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_0.replace(/\n/g,"<br>")}
+        doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_0.deco_text}
         m "h3", "１日目"
-        doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_1.replace(/\n/g,"<br>")}
-        m "h3", "２日目"
+        doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_1.deco_text}
+        m "h3", "参加キャラクター"
       ]
-
     v
 
   view: (v)->
-    form = (call)->
-      onsubmit: ->
-        call()
-        false
-
     btn = (tap)->
       attr =
         onmouseup: tap
@@ -129,8 +122,12 @@ vmake_form =
 
     v.reset()
     nindex = 0
+    if npc = Mem.chr_npcs.find v.form.chr_npc
+      jobs = npc.chr_set.chr_jobs.list
+    else
+      jobs = []
 
-    m "form", form(v.make),
+    m "form", v.form.attr,
       m ".vmake", {key: v._id},
         m ".INFOSP.info",
           m "p.text",
@@ -143,57 +140,76 @@ vmake_form =
         m ".MAKER.plane",
           m "fieldset.msg",
             m "legend.emboss", "村の名前、説明、ルール"
-            field.vil_name.view(v.form)
-            field.vil_comment.view(v.form)
+            field.vil_name.view v.form, (input)-> input()
+            field.vil_comment.view v.form, (input)-> input()
 
             m "p", "■国のルール"
             RULE.nation.list.map (o)-> m "p", "#{++nindex}.#{o.head}"
 
             m ".emboss",
               "以上の項目が、人狼議事の"
-              m 'a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"]', "ルール"
+              m 'a', {href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"}, "ルール"
               "と"
-              m 'a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"]', "心構え"
+              m 'a', {href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"}, "心構え"
               "なんだ。編集していい部分は、自由に変更してかまわない。"
 
         m ".SSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "設定"
 
-            field.rating.view v.form,
-              (o)-> o.caption
-              (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
+            field.trs_type.view v.form, (select, label)->
+              m "p",
+                select (o)-> o.CAPTION
+                label (o)->
+                  m "div",
+                    m.trust o.HELP
 
-            field.say_count.view v.form,
-              (o)-> o.CAPTION
-              (o)-> m.trust o.HELP
+            field.rating.view v.form, (select, label)->
+              m "p",
+                select (o)-> o.caption
+                label (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
 
-            field.time.view v.form
-            field.interval.view v.form,
-              (o)-> o.caption
-            field.entry_password.view(v.form)
+            field.say_count.view v.form, (select, label)->
+              m "p",
+                select (o)-> o.CAPTION
+                label (o)-> m.trust o.HELP
+
+            field.time.view v.form, (input)-> input()
+            field.interval.view v.form, (select)->
+              m "p",
+                select (o)-> o.caption
+            field.entry_password.view v.form, (input, label)->
+              m "p",
+                input()
+                label()
 
         m ".SSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "ゲームルール"
-            field.game_rule.view v.form,
-              (o)-> o.CAPTION
-              (o)->
-                m "ul",
-                  m.trust o.HELP
+            field.game_rule.view v.form, (select, label)->
+              [ select((o)-> o.CAPTION)
+                label (o)->
+                  m "ul",
+                    m.trust o.HELP
+              ]
             for chk in Mem.options.checkbox().list
-              chk.view(v.form)
+              chk.view v.form, (input, label)->
+                m "p",
+                  input()
+                  label()
 
         m ".VSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "編成"
 
-            field.mob_type.view v.form,
-              (o)-> o.name
-              (o)-> m.trust o.HELP
+            field.mob_type.view v.form, (select, label)->
+              m "p",
+                select (o)-> o.name
+                label (o)-> m.trust o.HELP
 
-            field.role_table.view v.form,
-              (o)-> o.name
+            field.role_table.view v.form, (select, label)->
+              m "p",
+                select (o)-> o.name
 
             v.player_summary v.form
 
@@ -207,9 +223,15 @@ vmake_form =
             m ".VSAY.plane",
               m "fieldset.msg",
                 m "legend.emboss", "編成自由設定"
-                field.player_count.view(v.form)
+                field.player_count.view v.form, (input, label)->
+                  m "p",
+                    input()
+                    label()
                 if v.form.start_auto
-                  field.player_count_start.view(v.form)
+                  field.player_count_start.view v.form, (input, label)->
+                    m "p",
+                      input()
+                      label()
                 sets "config", v.form.extra
                 sets "config", v.form.role
                 sets "config", v.form.gift
@@ -250,9 +272,15 @@ vmake_form =
             m ".VSAY.plane",
               m "fieldset.msg",
                 m "legend.emboss", "編成詳細"
-                field.player_count.view(v.form)
+                field.player_count.view v.form, (input, label)->
+                  m "p",
+                    input()
+                    label()
                 if v.form.start_auto
-                  field.player_count_start.view(v.form)
+                  field.player_count_start.view v.form, (input, label)->
+                    m "p",
+                      input()
+                      label()
                 sets "config", v.form.extra
                 sets "config", v.form.role
                 sets "config", v.form.gift
@@ -271,10 +299,19 @@ vmake_form =
         m ".SSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "登場人物"
-            field.chr_npc.view v.form,
-              (o)-> o.caption
+            field.chr_npc.view v.form, (input, label)->
+              m "p",
+                input (o)-> o.caption
+                label()
 
-        v.npc_says Mem.chr_npcs.find v.form.chr_npc
+        v.npc_says npc
+        m ".minilist",
+          m "hr.black"
+          for o in jobs
+            m ".chrbox", {key: o.face_id},
+              GUI.portrate o.face_id
+              m ".bar.live",
+          m "hr.black"
 
         m ".VSAY.plane",
           m "fieldset.msg",
@@ -283,4 +320,4 @@ vmake_form =
             m "input", {type:"submit", value: "村の作成"}
 
 doc.message.vmake_form = (v)->
-  m "div", m.component vmake_form, v
+  m.component vmake_form, v

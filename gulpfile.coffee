@@ -13,7 +13,7 @@ config =
 
   clean:
     asset:
-      clean: './tmp/cache/gulp*/**/*.{css,js}'
+      clean: 'tmp/cache/gulp*/**/*.{css,js,yml}'
   src:
     amazon:
       cache: 'public/giji.appcache'
@@ -24,19 +24,24 @@ config =
       list:  'public/{assets-master,font,images/auth,images/banner,images/icon,images/portrate,images/bg}/**/*'
       ignore: '!**/*.{html,gz,*_}'
     asset:
-      yaml:  'app/yaml/*.yml'
-      html:  'app/assets/htmls/*.{slim,html}'
-      css:   'app/assets/stylesheets/*.css'
-      bower: 'bower_components/**/*.min.js'
-      js:    'app/assets/javascripts/**/*.{js,ls,coffee,erb}'
+      require: [
+        'node_modules'
+        'app/yaml'
+        'tmp/cache/gulp-js/base/2.in-house'
+      ]
+      yaml:    'app/yaml/*.yml'
+      html:    'app/assets/htmls/*.{slim,html}'
+      css:     'app/assets/stylesheets/*.css'
+      module:  'in_house_modules/**/*.{js,ls,coffee}'
+      js:      'app/assets/javascripts/**/*.{js,ls,coffee,erb}'
     config:
       yaml:  'config/yaml/*.yml'
 
   dest:
     public:  "public/assets-master/"
     asset:
-      bower: 'tmp/cache/gulp-js/base/1.bower'
       js:    'tmp/cache/gulp-js'
+      asset: 'tmp/cache/gulp-asset'
 
 
 gulp.task "default", ["browser:sync"], ->
@@ -51,7 +56,7 @@ gulp.task "default", ["browser:sync"], ->
   ]
 
 require('./lib/gulp/base') config
-require('./lib/gulp/yaml')   config
-require('./lib/gulp/asset')  config
+require('./lib/gulp/yaml') config
+require('./lib/gulp/asset') config
 require('./lib/gulp/browser') config
 require('./lib/gulp/amazon') config

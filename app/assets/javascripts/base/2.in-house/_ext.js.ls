@@ -107,7 +107,7 @@ defines String,
 
   deco_text:
     get: ->
-      space player anchor link random @
+      br space player anchor link random @
 
   line_text:
     get: ->
