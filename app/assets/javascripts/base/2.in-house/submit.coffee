@@ -15,20 +15,24 @@ build = (key, o, cb)->
       for subkey, val of o
         break unless val?
         cb "#{key}#{subkey}", val
+    when "Function"
+      cb key, o()
     else
-      cb key, val
+      cb key, o
 
 
 module.exports = Submit =
-  get: (url, params)->
+  get: (base_url, params)->
     query_string = "?"
     for key, val of params
       query_string += "#{key}=#{val}"
-    query =
-      method: "GET"
-      url: url + encodeURI(query_string)
-      deserialize: unpack.HtmlGon
-    m.request(query)
+
+    method = "GET"
+    url = encodeURI(base_url) + encodeURI(query_string)
+    deserialize = unpack.HtmlGon
+    m.request({method, url, deserialize}).then (data)->
+      console.log " :: GET #{url}"
+      data
 
   iframe: (url, params)->
     deferred = m.deferred()
@@ -50,7 +54,6 @@ module.exports = Submit =
         iframe.style.display = "none"
         iframe.contentWindow.name = "submit_result"
         iframe.onload = ->
-          console.log "iframe.onload"
           try
             clearTimeout timer
             deferred.resolve unpack.HtmlGon iframe.contentDocument.body.innerHTML
@@ -60,7 +63,7 @@ module.exports = Submit =
             m.endComputation()
 
     m.startComputation()
-    m.render iframe_handler,
+    m.render iframe_handler, [
       m 'iframe', auto_load
       m 'form#submit_request', auto_submit,
         build "", params, (key, val)->
@@ -68,5 +71,7 @@ module.exports = Submit =
             type: "hidden"
             name: key
             value: val
-
-    deferred.promise
+    ]
+    deferred.promise.then (data)->
+      console.log " :: POST(iframe) -> #{url}"
+      data

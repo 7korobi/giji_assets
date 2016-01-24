@@ -1661,7 +1661,6 @@
         this.url = gon.url;
         refresh = function(gon){
           var e;
-          console.log(refresh);
           if (e = gon.errors) {
             this$.errors = e.login || e[""];
           } else {}

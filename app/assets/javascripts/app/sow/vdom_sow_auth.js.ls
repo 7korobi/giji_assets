@@ -3,7 +3,6 @@ win.mount \#sow_auth, (dom)->
       @url = gon.url
 
       refresh = (gon)!~>
-        console.log refresh
         if e = gon.errors
           @errors = e.login || e[""]
         else
