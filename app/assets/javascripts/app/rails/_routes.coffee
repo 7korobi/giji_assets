@@ -56,4 +56,4 @@ Url.cookies.css.options.change = (params)->
   GUI.header list
 
   window.requestAnimationFrame ->
-    Layout.move()
+    win.do.layout()

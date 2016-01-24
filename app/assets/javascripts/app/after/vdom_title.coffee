@@ -1,5 +1,4 @@
-GUI.if_exist "title", (dom)->
-  m.mount dom,
+win.mount "title", (dom)->
     controller: ->
     view: ->
       {story_id, event_id} = Url.prop

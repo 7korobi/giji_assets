@@ -1,19 +1,18 @@
 if gon?.stories?
   Mem.rule.story.set gon.stories
-  GUI.if_exist "#stories", (dom)->
-    menu.icon.icon "resize-full",
-      open: ->
-        win.scroll.size = 30
-        menu.scope.change "full"
-    menu.icon.icon "resize-normal",
-      deploy: ->
-        win.scroll.size = 120
-        menu.scope.change "normal"
-      open: ->
-        win.scroll.size = 120
-        menu.scope.change "normal"
+  win.mount "#stories", (dom)->
+      menu.icon.icon "resize-full",
+        open: ->
+          win.scroll.size = 30
+          menu.scope.change "full"
+      menu.icon.icon "resize-normal",
+        deploy: ->
+          win.scroll.size = 120
+          menu.scope.change "normal"
+        open: ->
+          win.scroll.size = 120
+          menu.scope.change "normal"
 
-    m.mount dom,
       controller: ->
       view: ->
         query = Mem.storys.menu(Url.prop.folder(), Url.routes.search.stories.values()...)

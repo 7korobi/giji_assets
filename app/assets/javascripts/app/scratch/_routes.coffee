@@ -25,4 +25,4 @@ Url.routes =
         list.push "no-player" unless Url.prop.human()
         GUI.header list
         window.requestAnimationFrame ->
-          Layout.move()
+          win.do.layout()

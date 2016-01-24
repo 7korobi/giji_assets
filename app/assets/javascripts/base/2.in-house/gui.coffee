@@ -205,11 +205,6 @@ name_config = (key)->
 
     m "ul.inline.mark", cb.call(list_cmds)
 
-  if_exist: (query, cb)->
-    win.on.load.push ->
-      dom = document.querySelector(query)
-      cb(dom) if !!dom && cb
-
   comma: (num)->
     (String Math.round num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
 

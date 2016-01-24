@@ -1,13 +1,12 @@
 
-GUI.if_exist "#character_tag", (dom)->
-  vdom = (name, val)->
-    [ m "span", name
-      m "span.emboss.pull-right", val
-    ]
-  tag_dom = (type)->
-    vdom Mem.conf.tag[type].name, Mem.faces.reduce.tag[type].count
+win.mount "#character_tag", (dom)->
+    vdom = (name, val)->
+      [ m "span", name
+        m "span.emboss.pull-right", val
+      ]
+    tag_dom = (type)->
+      vdom Mem.conf.tag[type].name, Mem.faces.reduce.tag[type].count
 
-  m.mount dom,
     controller: ->
     view: ->
       {tag} = Url.prop

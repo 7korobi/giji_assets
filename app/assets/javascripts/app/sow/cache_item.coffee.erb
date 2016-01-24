@@ -102,7 +102,7 @@ deploy_samples = ->
   Mem.rule.potof.set  <%- JSON.stringify(TEST_VIL.potofs) %>
   Mem.rule.form.set forms
 
-GUI.if_exist "#item-rolelist", (dom)->
+if document.querySelector "#item-rolelist"
   deploy_samples()
 
 for name in <%- JSON.stringify(MESSAGE.module.sow) %>

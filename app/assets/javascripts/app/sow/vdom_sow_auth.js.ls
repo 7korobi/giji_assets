@@ -1,9 +1,9 @@
-GUI.if_exist \#sow_auth, (dom)->
-  m.mount dom,
+win.mount \#sow_auth, (dom)->
     controller: (arg)!->
       @url = gon.url
 
       refresh = (gon)!~>
+        console.log refresh
         if e = gon.errors
           @errors = e.login || e[""]
         else
@@ -25,15 +25,20 @@ GUI.if_exist \#sow_auth, (dom)->
 
       @logout = ~>
         @is_loading = true
-        Submit.get(@url, cmd: "logout")
+        Submit.get @url,
+          cmd: "logout"
         .then refresh
 
       @login = ~>
         if validate.sow_auth @
           {uid, pwd} = Url.prop
           @is_loading = true
-          Submit.iframe(@url, cmd: "login", uid: uid(), pwd: pwd())
+          Submit.iframe @url,
+            cmd: "login"
+            uid: uid()
+            pwd: pwd()
           .then refresh
+
       doc.user
 
     view: (c, args)->
@@ -48,27 +53,29 @@ GUI.if_exist \#sow_auth, (dom)->
 
       if c.is_loading
         form = (call)->
-          onsubmit: -> false
-        btn = (label)->
+          onsubmit: ->
+            false
+
+        submit = (label)->
           className: "btn edge active"
           value: label
           type: "submit"
+
         input = (prop)->
           set = m.withAttr("value", prop)
           disabled: true
-          onblur:   set
-          onchange: set
-          onkeyup:  set
           value: prop()
       else
         form = (call)->
           onsubmit: ->
             call()
             false
-        btn = (label)->
+
+        submit = (label)->
           className: "btn edge"
           value: label
           type: "submit"
+
         input = (prop)->
           set = m.withAttr("value", prop)
           onblur:   set
@@ -76,11 +83,13 @@ GUI.if_exist \#sow_auth, (dom)->
           onkeyup:  set
           value: prop()
 
+      validate.sow_auth c
+
       if doc.user.is_login
         m "form", form(c.logout),
           m ".paragraph",
             unless c.is_loading
-              m "input", btn "#{uid()} がログアウト"
+              m "input", submit "#{uid()} がログアウト"
           messages c
       else
         m "form", form(c.login),
@@ -92,5 +101,5 @@ GUI.if_exist \#sow_auth, (dom)->
               m "span.mark", "password : "
               m "input[type=password]", input pwd
             unless c.is_loading
-              m "input", btn "ログイン"
+              m "input", submit "ログイン"
           messages c

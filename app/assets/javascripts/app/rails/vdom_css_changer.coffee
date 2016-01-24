@@ -1,5 +1,4 @@
-GUI.if_exist "#css_changer", (dom)->
-  m.mount dom,
+win.mount "#css_changer", (dom)->
     controller: ->
     view: ->
       m ".paragraph",

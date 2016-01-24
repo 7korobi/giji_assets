@@ -68,7 +68,7 @@
     }
     GUI.header(list);
     return window.requestAnimationFrame(function() {
-      return Layout.move();
+      return win["do"].layout();
     });
   };
 
@@ -1508,9 +1508,9 @@
     return Mem.rule.form.set(forms);
   };
 
-  GUI.if_exist("#item-rolelist", function(dom) {
-    return deploy_samples();
-  });
+  if (document.querySelector("#item-rolelist")) {
+    deploy_samples();
+  }
 
   ref = ["howto", "rolelist", "title"];
   for (i = 0, len = ref.length; i < len; i++) {
@@ -1569,8 +1569,8 @@
 }).call(this);
 
 (function() {
-  GUI.if_exist("#css_changer", function(dom) {
-    return m.mount(dom, {
+  win.mount("#css_changer", function(dom) {
+    return {
       controller: function() {},
       view: function() {
         var pwd, ref, uid;
@@ -1582,7 +1582,7 @@
           wa: "和の国"
         }), m("hr.black"));
       }
-    });
+    };
   });
 
 }).call(this);
@@ -1615,8 +1615,8 @@
     return results;
   };
 
-  GUI.if_exist("#make_vil", function(dom) {
-    return m.mount(dom, {
+  win.mount("#make_vil", function(dom) {
+    return {
       controller: function() {},
       view: function() {
         return doc.message.vmake_form({
@@ -1648,19 +1648,20 @@
           }
         });
       }
-    });
+    };
   });
 
 }).call(this);
 
 (function(){
-  GUI.if_exist('#sow_auth', function(dom){
-    return m.mount(dom, {
+  win.mount('#sow_auth', function(dom){
+    return {
       controller: function(arg){
         var refresh, deploy, this$ = this;
         this.url = gon.url;
         refresh = function(gon){
           var e;
+          console.log(refresh);
           if (e = gon.errors) {
             this$.errors = e.login || e[""];
           } else {}
@@ -1700,7 +1701,7 @@
         doc.user;
       },
       view: function(c, args){
-        var ref$, uid, pwd, messages, form, btn, input;
+        var ref$, uid, pwd, messages, form, submit, input;
         ref$ = Url.prop, uid = ref$.uid, pwd = ref$.pwd;
         messages = function(c){
           var msg;
@@ -1728,7 +1729,7 @@
               }
             };
           };
-          btn = function(label){
+          submit = function(label){
             return {
               className: "btn edge active",
               value: label,
@@ -1740,9 +1741,6 @@
             set = m.withAttr("value", prop);
             return {
               disabled: true,
-              onblur: set,
-              onchange: set,
-              onkeyup: set,
               value: prop()
             };
           };
@@ -1755,7 +1753,7 @@
               }
             };
           };
-          btn = function(label){
+          submit = function(label){
             return {
               className: "btn edge",
               value: label,
@@ -1773,13 +1771,14 @@
             };
           };
         }
+        validate.sow_auth(c);
         if (doc.user.is_login) {
-          return m("form", form(c.logout), m(".paragraph", !c.is_loading ? m("input", btn(uid() + " がログアウト")) : void 8), messages(c));
+          return m("form", form(c.logout), m(".paragraph", !c.is_loading ? m("input", submit(uid() + " がログアウト")) : void 8), messages(c));
         } else {
-          return m("form", form(c.login), m(".paragraph", m("label", m("span.mark", "user id : "), m("input", input(uid))), m("label", m("span.mark", "password : "), m("input[type=password]", input(pwd))), !c.is_loading ? m("input", btn("ログイン")) : void 8), messages(c));
+          return m("form", form(c.login), m(".paragraph", m("label", m("span.mark", "user id : "), m("input", input(uid))), m("label", m("span.mark", "password : "), m("input[type=password]", input(pwd))), !c.is_loading ? m("input", submit("ログイン")) : void 8), messages(c));
         }
       }
-    });
+    };
   });
 }).call(this);
 
@@ -2008,7 +2007,7 @@
       }, m("tr", m("th", GUI.portrate(v.face_id)), m("td", m(".msg", ext.talk_name(v.user_id, v.name, v.to), ext.talk_text(v._id, v.style, v.log), m("p.mes_date", timer)))));
     },
     action_text: function(by_id, name, style, text){
-      return m("p.text." + style, deco_action(by_id), m("b", m.trust(name)), "は、", m("span", m.trust(text.deco_text)));
+      return m("p.text." + style, deco_action(by_id), m("b", m.trust(name)), "は、", m("span", m.trust(text.deco_text_br)));
     },
     talk_name: function(user_id, name, to){
       if (to) {
@@ -2018,7 +2017,7 @@
       }
     },
     talk_text: function(by_id, style, text){
-      return m("p.text." + style, deco_action(by_id), m.trust(text.deco_text));
+      return m("p.text." + style, deco_action(by_id), m.trust(text.deco_text_br));
     }
   };
   doc.message = {
@@ -2068,14 +2067,14 @@
     paragraph: function(o){
       return m(".paragraph", {
         key: o._id
-      }, m.trust(o.log.deco_text));
+      }, m.trust(o.log.deco_text_br));
     },
     head: function(o){
       return m(o.mestype, {
         key: o._id
       }, m('a', {
         name: o._id
-      }), m.trust(o.log.deco_text));
+      }), m.trust(o.log.deco_text_br));
     },
     event: function(o){
       var btn;
@@ -2511,7 +2510,7 @@
             name: name,
             mestype: mestype,
             updated_at: updated_at,
-            log: say_0.deco_text
+            log: say_0.deco_text_lf
           }), m("h3", "１日目"), doc.message.talk({
             face_id: face_id,
             user_id: user_id,
@@ -2519,7 +2518,7 @@
             name: name,
             mestype: mestype,
             updated_at: updated_at,
-            log: say_1.deco_text
+            log: say_1.deco_text_lf
           }), m("h3", "参加キャラクター")
         ];
       };
@@ -2895,7 +2894,7 @@
 
   if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) {
     Mem.rule.story.set(gon.stories);
-    GUI.if_exist("#stories", function(dom) {
+    win.mount("#stories", function(dom) {
       menu.icon.icon("resize-full", {
         open: function() {
           win.scroll.size = 30;
@@ -2912,7 +2911,7 @@
           return menu.scope.change("normal");
         }
       });
-      return m.mount(dom, {
+      return {
         controller: function() {},
         view: function() {
           var query, ref;
@@ -3064,7 +3063,7 @@
             }, menu.icon.state() === "resize-full" ? m("td", header, m("table.detail", m("tbody", m("tr", m("th", "更新"), m("td", o.view.update_at + " " + o.view.update_interval)), m("tr", m("th", "規模"), m("td", o.view.player_length + "人 " + o.view.say_limit)), m("tr", m("th", "ルール"), m("td", "" + o.view.game_rule)))), m(".list", o.view.role_cards), m(".list", o.view.trap_cards)) : m("td", header));
           })));
         }
-      });
+      };
     });
   }
 
@@ -3092,7 +3091,7 @@
   };
 
   if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && (gon.event != null)) {
-    GUI.if_exist("#messages", function(dom) {
+    win.mount("#messages", function(dom) {
       win.scroll.size = 30;
       doc.delegate.tap_external = function(id, uri, protocol, host, path) {
         var message;
@@ -3201,7 +3200,14 @@
           return m(".paragraph", doc.timeline(), m("input.medium", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black"));
         }
       });
-      m.mount(dom, {
+      m.startComputation();
+      window.requestAnimationFrame(function() {
+        catch_gon.villages();
+        catch_gon.messages();
+        menu.scope.open();
+        return m.endComputation();
+      });
+      return {
         controller: function() {},
         view: function() {
           return win.scroll.pager("div", doc.messages[menu.scope.state()](Url.prop).list, function(o) {
@@ -3219,22 +3225,17 @@
             }
           });
         }
-      });
-      m.startComputation();
-      return window.requestAnimationFrame(function() {
-        catch_gon.villages();
-        catch_gon.messages();
-        menu.scope.open();
-        return m.endComputation();
-      });
+      };
     });
   }
 
 }).call(this);
 
 (function() {
-  GUI.if_exist("#buttons", function(dom) {
+  win.mount("#buttons", function(dom) {
     var layout;
+    layout = new win.layout(dom, 1, -1);
+    layout.width = 5;
     if (!head.browser.ios) {
       win.on.orientation.push(function() {
         var alpha, anime, beta, box, gamma, i, len, ref, ref1, results, rotate, z;
@@ -3263,10 +3264,7 @@
         return results;
       });
     }
-    layout = new Layout(dom, 1, -1, 120);
-    layout.width = 5;
-    layout.transition();
-    return m.mount(dom, {
+    return {
       controller: function() {
         return {
           helps: {
@@ -3389,16 +3387,16 @@
         section("cog");
         return m("table", m("tr", m("td", vdoms)));
       }
-    });
+    };
   });
 
 }).call(this);
 
 (function() {
   if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) {
-    GUI.if_exist("#sayfilter", function(dom) {
+    win.mount("#sayfilter", function(dom) {
       var layout, line_text_height, line_text_height_measure, seeing_measure, seeing_top, wide_attr;
-      layout = new Layout(dom, -1, 1, 100);
+      layout = new win.layout(dom, -1, 1);
       layout.small_mode = true;
       layout.large_mode = function() {
         return !(menu.icon.state() || layout.small_mode);
@@ -3426,7 +3424,7 @@
           return line_text_height = elem.offsetHeight;
         }
       };
-      return m.mount(dom, {
+      return {
         controller: function() {},
         view: function(c) {
           var anchorview, center_id, day, event, filter, filter_size, go_click, key, o, pin_click, potofs, right_width, seeingview, star, tag, val, width;
@@ -3536,22 +3534,23 @@
           event = Mem.events.find(Url.prop.event_id());
           return m("div", event != null ? m(".head", event.name) : m(".foot"), m("aside", potofs, filter), m(".foot"));
         }
-      });
+      };
     });
   }
 
 }).call(this);
 
 (function() {
-  GUI.if_exist("#topviewer", function(dom) {
-    var layout;
-    layout = new Layout(dom, 0, 1, 110, false, 0);
-    return m.mount(dom, {
-      controller: function() {},
+  win.mount("#topviewer", function(dom) {
+    return {
+      controller: function() {
+        var layout;
+        return layout = new win.layout(dom, 0, 1, false, 0);
+      },
       view: function() {
         return menu.icon.view();
       }
-    });
+    };
   });
 
 }).call(this);
@@ -3654,7 +3653,7 @@
 }).call(this);
 
 (function() {
-  GUI.if_exist("#character_tag", function(dom) {
+  win.mount("#character_tag", function(dom) {
     var tag_dom, vdom;
     vdom = function(name, val) {
       return [m("span", name), m("span.emboss.pull-right", val)];
@@ -3662,7 +3661,7 @@
     tag_dom = function(type) {
       return vdom(Mem.conf.tag[type].name, Mem.faces.reduce.tag[type].count);
     };
-    return m.mount(dom, {
+    return {
       controller: function() {},
       view: function() {
         var attr, chr_job, chrs, job_name, o, set, tag;
@@ -3720,7 +3719,7 @@
           })(), m("hr.black"))
         ];
       }
-    });
+    };
   });
 
 }).call(this);
@@ -3793,30 +3792,30 @@
     }, "ciel")))) : void 0);
   };
 
-  GUI.if_exist("#head_navi", function(dom) {
+  win.mount("#head_navi", function(dom) {
     var state;
     state = m.prop("finish");
-    return m.mount(dom, {
+    return {
       controller: function() {},
       view: function() {
         return m(".paragraph", m(".left_image"), m(".right_image"), head_menu(state));
       }
-    });
+    };
   });
 
-  GUI.if_exist("#headline", function(dom) {
+  win.mount("#headline", function(dom) {
     var state;
     state = m.prop("finish");
-    return m.mount(dom, {
+    return {
       controller: function() {},
       view: function() {
         return m(".choice", head_menu(state));
       }
-    });
+    };
   });
 
-  GUI.if_exist("#to_root", function(dom) {
-    return m.mount(dom, {
+  win.mount("#to_root", function(dom) {
+    return {
       controller: function() {
         var hour;
         hour = 1000 * 60 * 60;
@@ -3850,14 +3849,14 @@
           src: GUI.img_head + ("/banner/title" + c.h1_width) + theme.width[c.h1_width][c.day_or_night]
         }));
       }
-    });
+    };
   });
 
 }).call(this);
 
 (function() {
-  GUI.if_exist("title", function(dom) {
-    return m.mount(dom, {
+  win.mount("title", function(dom) {
+    return {
       controller: function() {},
       view: function() {
         var event, event_id, ref, story, story_id;
@@ -3870,13 +3869,13 @@
           return "人狼議事";
         }
       }
-    });
+    };
   });
 
 }).call(this);
 
 (function(){
-  win.scroll = new ScrollSpy(Url.prop.scroll);
+  win.scroll.prop = Url.prop.scroll;
   win.scroll.tick = function(center, sec){
     if (center.subid === "S") {
       doc.seeing_add(center._id, sec);
@@ -3885,11 +3884,13 @@
       }
     }
   };
-  win.on.scroll_end.push(Layout.move);
-  win.on.scroll_end.push(function(){
-    return ScrollSpy.capture();
+  win.on.resize.push(function(){
+    var ref$;
+    if (win.short < 380) {
+      head.browser.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5";
+      return (ref$ = document.querySelector("meta[name=viewport]")) != null ? ref$.content = head.browser.viewport : void 8;
+    }
   });
-  win.on.resize.push(Layout.move);
 }).call(this);
 
 (function() {

@@ -19,7 +19,7 @@ present_canvas = ({size: [width, height], layout: [dx, dy, dz]})->
 
   config: (canvas, is_continue, context)->
     return if is_continue
-    new Layout canvas, dx, dy, dz
+    layout = new win.layout canvas, dx, dy, dz
 
   data: ->
     data_store
@@ -38,7 +38,7 @@ present_canvas = ({size: [width, height], layout: [dx, dy, dz]})->
         arc ctx, clientX, clientY, 4, "rgba(0,0,0,0.2)"
 
 
-m.mount document.querySelector("#win"),
+win.mount "#win",
   controller: ->
     @test = test =
       orientation: 0
@@ -86,8 +86,8 @@ m.mount document.querySelector("#win"),
         JSON.stringify
           compass: _.round win.compass, 1
           is_tap:  win.is_tap
-      m.component Canvas, "#head", present_canvas, size: [800, 600], layout: [-10,  10, 100]
-      m.component Canvas, "#tail", present_canvas, size: [600, 400], layout: [ 10, -10, 100]
+      m Canvas, "#head", present_canvas, size: [800, 600], layout: [-10,  10]
+      m Canvas, "#tail", present_canvas, size: [600, 400], layout: [ 10, -10]
       m "table",
         m "thead",
           m "tr",
@@ -245,8 +245,6 @@ m.mount document.querySelector("#win"),
               m "td"
               m "td"
 
-win.on.scroll_end.push Layout.move
-win.on.resize.push Layout.move
 win.deploy()
 
 @expect = chai.expect

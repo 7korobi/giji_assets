@@ -1,8 +1,6 @@
 
-GUI.if_exist "#topviewer", (dom)->
-  layout = new Layout dom, 0, 1, 110, false, 0
-
-  m.mount dom,
-    controller: ->
-    view: ->
-      menu.icon.view()
+win.mount "#topviewer", (dom)->
+  controller: ->
+    layout = new win.layout dom, 0, 1, false, 0
+  view: ->
+    menu.icon.view()

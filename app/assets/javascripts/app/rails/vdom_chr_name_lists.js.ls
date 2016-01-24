@@ -1,5 +1,4 @@
-GUI.if_exist \#chr_name_lists, (dom)->
-  m.mount dom,
+win.mount \#chr_name_lists, (dom)->
     controller: ->
     view: ->
       for code_counts, idx in Mem.faces.name_head()

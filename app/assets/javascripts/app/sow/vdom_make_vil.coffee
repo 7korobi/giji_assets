@@ -9,8 +9,7 @@ countup = (data, list)->
     data[key] ?= 0
     data[key]++
 
-GUI.if_exist "#make_vil", (dom)->
-  m.mount dom,
+win.mount "#make_vil", (dom)->
     controller: ->
     view: ->
       doc.message.vmake_form

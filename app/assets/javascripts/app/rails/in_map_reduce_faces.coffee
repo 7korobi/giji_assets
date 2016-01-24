@@ -1,8 +1,7 @@
 if gon?.map_reduce?.faces?
   catch_gon.map_reduce_faces()
 
-  GUI.if_exist "#map_faces", (dom)->
-    m.mount dom,
+  win.mount "#map_faces", (dom)->
       controller: ->
       view: ->
         {order, chr_set, search} = Url.prop
@@ -52,8 +51,7 @@ if gon?.map_reduce?.faces?
           m "hr.black"
         ]
 
-  GUI.if_exist "#chr_sets", (dom)->
-    m.mount dom,
+  win.mount "#chr_sets", (dom)->
       controller: ->
       view: ->
         menu.icon.icon "th-large",

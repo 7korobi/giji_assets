@@ -1,8 +1,7 @@
 if gon?.face?
   catch_gon.face()
 
-  GUI.if_exist "#summary", (dom)->
-    m.mount dom,
+  win.mount "#summary", (dom)->
       controller: ->
       view: ->
         face = Mem.map_face_detail
@@ -46,8 +45,7 @@ if gon?.face?
                   m ".msg", letters
         ]
 
-  GUI.if_exist "#calc", (dom)->
-    m.mount dom,
+  win.mount "#calc", (dom)->
       controller: ->
       view: ->
         face = Mem.map_face_detail
@@ -87,8 +85,7 @@ if gon?.face?
           m "table.info", win.scroll.mark("says_calc"), says_calc_lines
         ]
 
-  GUI.if_exist "#village", (dom)->
-    m.mount dom,
+  win.mount "#village", (dom)->
       controller: ->
       view: ->
         face = Mem.map_face_detail
@@ -113,8 +110,7 @@ if gon?.face?
         ]
         m ".MAKER.guide", win.scroll.mark("villages"), letters
 
-  GUI.if_exist "#sow_user", (dom)->
-    m.mount dom,
+  win.mount "#sow_user", (dom)->
       controller: ->
       view: ->
         face = Mem.map_face_detail

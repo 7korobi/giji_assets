@@ -1,26 +1,23 @@
 
 if gon?.villages?
-  GUI.if_exist "#villages", (dom)->
-    Mem.rule.item.set gon.villages
-    m.mount dom,
+  win.mount "#villages", (dom)->
+      Mem.rule.item.set gon.villages
       controller: ->
       view: ->
         win.scroll.pager "div", Mem.items.list, (v)->
           doc.message.action(v)
 
 if gon?.byebyes?
-  GUI.if_exist "#byebyes", (dom)->
-    Mem.rule.item.set gon.byebyes
-    m.mount dom,
+  win.mount "#byebyes", (dom)->
+      Mem.rule.item.set gon.byebyes
       controller: ->
       view: ->
         win.scroll.pager "div", Mem.items.list, (v)->
           doc.message.action(v)
 
 if gon?.history?
-  GUI.if_exist "#history", (dom)->
-    Mem.rule.item.set gon.history
-    m.mount dom,
+  win.mount "#history", (dom)->
+      Mem.rule.item.set gon.history
       controller: ->
       view: ->
         win.scroll.pager "div", Mem.items.list, (v)->

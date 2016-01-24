@@ -1,24 +1,23 @@
-GUI.if_exist "#buttons", (dom)->
-  unless head.browser.ios
-    win.on.orientation.push ->
-      {alpha, beta, gamma} = win.orientation
-      z = - alpha + beta + gamma
-      rotate = "rotateZ(#{z}deg)"
 
-      anime = (box)->
-        box.style.webkitTransform = rotate
-        box.style.mozTransform = rotate if head.browser.ff
-        box.style.msTransform = rotate if head.browser.ie
-        box.style.oTransform = rotate if head.browser.opera
-        box.style.transform = rotate
-      for box in document.querySelectorAll(".icon-cog")
-        anime box
+win.mount "#buttons", (dom)->
+    layout = new win.layout dom, 1, -1
+    layout.width = 5
 
-  layout = new Layout dom, 1, -1, 120
-  layout.width = 5
-  layout.transition()
+    unless head.browser.ios
+      win.on.orientation.push ->
+        {alpha, beta, gamma} = win.orientation
+        z = - alpha + beta + gamma
+        rotate = "rotateZ(#{z}deg)"
 
-  m.mount dom,
+        anime = (box)->
+          box.style.webkitTransform = rotate
+          box.style.mozTransform = rotate if head.browser.ff
+          box.style.msTransform = rotate if head.browser.ie
+          box.style.oTransform = rotate if head.browser.opera
+          box.style.transform = rotate
+        for box in document.querySelectorAll(".icon-cog")
+          anime box
+
     controller: ->
       helps:
         "cog": "画面表示を調整します。"
@@ -100,4 +99,6 @@ GUI.if_exist "#buttons", (dom)->
       section "search" unless "pins" == menu.scope.state()
       section "cog"
 
-      m "table", m "tr", m "td", vdoms
+      m "table",
+        m "tr",
+          m "td", vdoms

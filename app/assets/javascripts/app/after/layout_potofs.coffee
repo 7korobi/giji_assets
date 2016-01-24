@@ -1,29 +1,28 @@
 if gon?.potofs?
-  GUI.if_exist "#sayfilter", (dom)->
-    layout = new Layout dom, -1, 1, 100
-    layout.small_mode = true
-    layout.large_mode = ->
-      ! (menu.icon.state() || layout.small_mode)
+  win.mount "#sayfilter", (dom)->
+      layout = new win.layout dom, -1, 1
+      layout.small_mode = true
+      layout.large_mode = ->
+        ! (menu.icon.state() || layout.small_mode)
 
-    wide_attr = GUI.attrs {}, ->
-      @click ->
-        layout.small_mode = ! layout.small_mode
-        unless layout.small_mode
-          menu.icon.state ""
-      @actioned ->
-        layout.translate()
+      wide_attr = GUI.attrs {}, ->
+        @click ->
+          layout.small_mode = ! layout.small_mode
+          unless layout.small_mode
+            menu.icon.state ""
+        @actioned ->
+          layout.translate()
 
-    seeing_top = 100
-    seeing_measure =
-      config: (elem)->
-        seeing_top = elem.offsetTop
+      seeing_top = 100
+      seeing_measure =
+        config: (elem)->
+          seeing_top = elem.offsetTop
 
-    line_text_height = 27
-    line_text_height_measure =
-      config: (elem)->
-        line_text_height = elem.offsetHeight
+      line_text_height = 27
+      line_text_height_measure =
+        config: (elem)->
+          line_text_height = elem.offsetHeight
 
-    m.mount dom,
       controller: ->
       view: (c)->
         width = doc.width.content()

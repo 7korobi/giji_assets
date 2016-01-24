@@ -42,7 +42,7 @@ doc.ext = ext =
       m "b", m.trust name
       "は、"
       m "span",
-        m.trust text.deco_text
+        m.trust text.deco_text_br
 
   talk_name: (user_id, name, to)->
     if to
@@ -57,7 +57,7 @@ doc.ext = ext =
 
   talk_text: (by_id, style, text)->
     m "p.text.#{style}", deco_action(by_id),
-      m.trust text.deco_text
+      m.trust text.deco_text_br
 
 
 
@@ -91,12 +91,12 @@ doc.message =
                     m "p", m.trust o[key]
 
   paragraph: (o)->
-    m ".paragraph", {key: o._id}, m.trust o.log.deco_text
+    m ".paragraph", {key: o._id}, m.trust o.log.deco_text_br
 
   head: (o)->
     m o.mestype, {key: o._id},
       m 'a', {name: o._id}
-      m.trust o.log.deco_text
+      m.trust o.log.deco_text_br
 
   event: (o)->
     btn = o.event.view.btn()

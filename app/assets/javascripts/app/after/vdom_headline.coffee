@@ -142,9 +142,8 @@ head_menu = (state)->
               href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CIEL"
             , "ciel"
 
-GUI.if_exist "#head_navi", (dom)->
-  state = m.prop "finish"
-  m.mount dom,
+win.mount "#head_navi", (dom)->
+    state = m.prop "finish"
     controller: ->
     view: ->
       m ".paragraph",
@@ -152,17 +151,15 @@ GUI.if_exist "#head_navi", (dom)->
         m ".right_image"
         head_menu state
 
-GUI.if_exist "#headline", (dom)->
-  state = m.prop "finish"
-  m.mount dom,
+win.mount "#headline", (dom)->
+    state = m.prop "finish"
     controller: ->
     view: ->
       m ".choice",
         head_menu state
 
 
-GUI.if_exist "#to_root", (dom)->
-  m.mount dom,
+win.mount "#to_root", (dom)->
     controller: ->
       hour = 1000 * 60 * 60
 

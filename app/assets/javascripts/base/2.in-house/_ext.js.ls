@@ -105,7 +105,11 @@ defines String,
     get: ->
       br space player anchor_preview link random_preview unhtml @
 
-  deco_text:
+  deco_text_br:
+    get: ->
+      space player anchor link random @
+
+  deco_text_lf:
     get: ->
       br space player anchor link random @
 

@@ -88,9 +88,9 @@ vmake_form =
       name = "#{chr_job.job} #{face.name}"
 
       [ m "h3", "プロローグ"
-        doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_0.deco_text}
+        doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_0.deco_text_lf}
         m "h3", "１日目"
-        doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_1.deco_text}
+        doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_1.deco_text_lf}
         m "h3", "参加キャラクター"
       ]
     v

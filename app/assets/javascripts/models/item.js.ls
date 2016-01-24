@@ -33,9 +33,8 @@ new Mem.Rule("item").schema !->
 
 GUI.items_module = (type)->
   console.log "deploy \#item-#{type}"
-  GUI.if_exist "\#item-#{type}", (dom)->
-    query = Mem.items.where({type})
-    m.mount dom,
+  win.mount "\#item-#{type}", (dom)->
+      query = Mem.items.where({type})
       controller: ->
         switch type
           case 'rolelist'

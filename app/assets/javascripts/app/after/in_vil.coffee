@@ -15,7 +15,7 @@
 
 
 if gon?.events? && gon.event?
-  GUI.if_exist "#messages", (dom)->
+  win.mount "#messages", (dom)->
     win.scroll.size = 30
 
     doc.delegate.tap_external = (id, uri, protocol, host, path)->
@@ -127,21 +127,6 @@ if gon?.events? && gon.event?
           m "span", "発言中の言葉を検索します。"
           m "hr.black"
 
-
-    m.mount dom,
-      controller: ->
-      view: ->
-        win.scroll.pager "div", doc.messages[menu.scope.state()](Url.prop).list, (o)->
-          anchor_num  = o.logid[2..] - 0 || 0
-          o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
-          unless o.updated_at
-            o.updated_at = new Date(o.date) - 0
-            delete o.date
-          if o.vdom
-            o.vdom(o)
-          else
-            m ".paragraph", JSON.stringify o
-
     m.startComputation()
     window.requestAnimationFrame ->
       catch_gon.villages()
@@ -149,3 +134,16 @@ if gon?.events? && gon.event?
 
       menu.scope.open()
       m.endComputation()
+
+    controller: ->
+    view: ->
+      win.scroll.pager "div", doc.messages[menu.scope.state()](Url.prop).list, (o)->
+        anchor_num  = o.logid[2..] - 0 || 0
+        o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
+        unless o.updated_at
+          o.updated_at = new Date(o.date) - 0
+          delete o.date
+        if o.vdom
+          o.vdom(o)
+        else
+          m ".paragraph", JSON.stringify o

@@ -8660,12 +8660,12 @@
   });
   GUI.items_module = function(type){
     console.log("deploy #item-" + type);
-    return GUI.if_exist("#item-" + type, function(dom){
+    return win.mount("#item-" + type, function(dom){
       var query;
       query = Mem.items.where({
         type: type
       });
-      return m.mount(dom, {
+      return {
         controller: function(){
           switch (type) {
           case 'rolelist':
@@ -8677,7 +8677,7 @@
             return doc.message[v.template](v);
           });
         }
-      });
+      };
     });
   };
 }).call(this);
@@ -9188,12 +9188,12 @@
           is_dead_lose = 1;
           break;
         case "HATER":
-          if (!_.include(o.role, "HATEDEVIL")) {
+          if (!_.includes(o.role, "HATEDEVIL")) {
             is_dead_lose = 1;
           }
           break;
         case "LOVER":
-          if (!_.include(o.role, "LOVEANGEL")) {
+          if (!_.includes(o.role, "LOVEANGEL")) {
             is_lone_lose = 1;
           }
       }
@@ -9218,8 +9218,8 @@
             if (is_dead_lose && 'live' !== o.live) {
               win_result = "敗北";
             }
-            if (is_lone_lose && _.any(o.bonds, function(o) {
-              return o.live !== 'live' && _.any(o.bonds, o.pno);
+            if (is_lone_lose && _.some(o.bonds, function(o) {
+              return o.live !== 'live' && _.some(o.bonds, o.pno);
             })) {
               win_result = "敗北";
             }

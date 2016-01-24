@@ -135,9 +135,9 @@ new Mem.Rule("potof").schema ->
       when "LONEWOLF"
         is_dead_lose = 1
       when "HATER"
-        is_dead_lose = 1 if ! _.include o.role, "HATEDEVIL"
+        is_dead_lose = 1 unless _.includes o.role, "HATEDEVIL"
       when "LOVER"
-        is_lone_lose = 1 if ! _.include o.role, "LOVEANGEL"
+        is_lone_lose = 1 unless _.includes o.role, "LOVEANGEL"
 
     if story.is_epilogue
       switch o.live
@@ -150,7 +150,7 @@ new Mem.Rule("potof").schema ->
           win_result = "勝利" if winner != "WIN_HUMAN"  && winner != "WIN_LOVER" && "EVIL" == win
           win_result = "勝利" if "victim" == o.live && "DISH" == win
           win_result = "敗北" if is_dead_lose && 'live' != o.live
-          win_result = "敗北" if is_lone_lose && _.any o.bonds, (o)-> o.live != 'live' && _.any o.bonds, o.pno
+          win_result = "敗北" if is_lone_lose && _.some o.bonds, (o)-> o.live != 'live' && _.some o.bonds, o.pno
           win_result = "参加" if "NONE" == win
 
     stat_type = Mem.conf.live[o.live].name

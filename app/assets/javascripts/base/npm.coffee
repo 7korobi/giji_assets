@@ -1,13 +1,8 @@
 deploy = (hash)->
   for key, o of hash
-    console.log [key, o]
     window[key] = o
 
 deploy
-  _: require 'lodash'
-  m: require 'mithril'
-  Bounce: require 'bounce.js'
-  DELAY: require 'delay.yml'
   head_conf:
     screens: [
       460
@@ -45,11 +40,22 @@ head.useragent = navigator.userAgent
 # portrait - landscape
 # gradient rgba opacity textshadow multiplebgs boxshadow borderimage borderradius cssreflections csstransforms csstransitions touch retina fontface
 
-deploy require 'memory-record'
+deploy
+  _: require 'lodash'
+  Mem: require 'memory-record'
+  Bounce: require 'bounce.js'
+  Submit: require 'submit'
+
+  m: require 'mithril'
+  win: require 'mithril-giji'
+  Canvas: require('mithril-canvas')(head.browser)
+
+  DELAY: require 'delay.yml'
+
+
 deploy require 'serialized-property'
-deploy require 'mithril-giji'
 
-
+deploy require 'base'
 deploy require 'gui'
 deploy require 'menu_tree'
 deploy require 'form'
