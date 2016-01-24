@@ -527,8 +527,14 @@
         ? m("tr", m("td[colspan=6]", v.error))
         : Mem.storys[v.mestype]().list.map(function(v){
           var chr_set;
-          chr_set = Mem.chr_sets.find(v.csid);
-          return m("tr", m("td", v.vid, m('a[href="#{v.link}"]', v.name), m("span.note", m("br"), "〈", m('a[href="#{v.link}"]', "最新"), "〉", v.entry_limit === "password" ? m('img[src="#{GUI.img_head}/icon/key.png"][alt="[鍵]"]') : void 8), v.view.rating, m("span.note", m("br"), "　　人物 ： " + chr_set.caption, m("br"), "　　更新 ： " + v.view.updated_at + " " + v.view.update_interval + "毎", m("br"), "　 ")), m("td.small", v.player_count, m("span.note", m("br")), v.status + ""), m("td"), m("span.note", v.view.say_limit_help), v.view.game_rule, m("span.note", m("br"), v.trs));
+          chr_set = Mem.chr_sets.hash[v.csid] || Mem.chr_sets.where({
+            csid: v.csid
+          }).list.first;
+          return m("tr", m("td", v.vid), m("td", m('a', {
+            href: v.link
+          }, v.name), m("span.note", m("br"), "〈", m('a', {
+            href: v.link
+          }, "最新"), "〉", v.entry_limit === "password" ? m('img[src="#{GUI.img_head}/icon/key.png"][alt="[鍵]"]') : void 8), v.view.rating, m("span.note", m("br"), "　　人物 ： " + chr_set.caption, m("br"), "　　更新 ： " + v.view.update_at + " " + v.view.update_interval + "毎", m("br"), "　 ")), m("td", v.player_count), m("td", v.status + ""), m("td", v.trs, m("br"), v.view.game_rule), m("td", m("span.note", v.view.say_limit_help)));
         }));
     }
   };
@@ -684,7 +690,6 @@
             return false;
           },
           onsubmit: function(e) {
-            v.submit(v.form);
             if (validate.cards(v)) {
               v.submit(v.form);
             }
@@ -944,13 +949,9 @@
         }
         return results;
       })(), m("hr.black")), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "決定"), m("input", {
-        name: "cmd",
-        value: v.cmd,
-        type: "hidden"
-      }), m("input", {
         type: "submit",
         value: "村の作成"
-      })))));
+      }), error_and_info(v.http)))));
     }
   };
 

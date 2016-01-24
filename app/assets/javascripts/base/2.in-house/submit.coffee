@@ -13,12 +13,14 @@ build = (key, o, cb)->
         cb "#{key}[]", val
     when "Object"
       for subkey, val of o
-        break unless val?
+        continue unless val
         cb "#{key}#{subkey}", val
     when "Function"
-      cb key, o()
+      if o()
+        cb key, o()
     else
-      cb key, o
+      if o
+        cb key, o
 
 
 module.exports = Submit =

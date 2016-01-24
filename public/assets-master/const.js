@@ -2008,9 +2008,7 @@
         "name": "votetype",
         "type": "checkbox"
       },
-      "query": {
-        "SOW": "votetype"
-      },
+      "query": {},
       "name": "記名投票",
       "help_on": "記名で投票　※集計結果に投票者が記されます",
       "help_off": "匿名で投票　※集計結果は人数のみになります"
@@ -2211,18 +2209,18 @@
       "query": {
         "SOW": "updinterval"
       },
-      "init": 24,
+      "init": 1,
       "options": {
-        "24": {
-          "_id": 24,
+        "1": {
+          "_id": 1,
           "caption": "24時間"
         },
-        "48": {
-          "_id": 48,
+        "2": {
+          "_id": 2,
           "caption": "48時間"
         },
-        "72": {
-          "_id": 72,
+        "3": {
+          "_id": 3,
           "caption": "72時間"
         }
       },
@@ -2274,9 +2272,7 @@
         "name": "csid",
         "required": "required"
       },
-      "query": {
-        "SOW": "csid"
-      },
+      "query": {},
       "name": "登場人物とNPC",
       "help_on": "",
       "help_off": "※入力してください。"

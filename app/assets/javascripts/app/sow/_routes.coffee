@@ -36,7 +36,8 @@ Url.routes =
         return
 
 Url.cookies =
-  uid: Url.cookie "uid=:uid; pwd=:pwd;", "readonly"
+  uid: Url.cookie "uid=:uid;", "readonly"
+  pwd: Url.cookie "pwd=:pwd;", "readonly"
   css: Url.cookie "css=:theme~:width~:layout~:font", time: 12, path: "/"
 
 Url.cookies.css.options.change = (params)->

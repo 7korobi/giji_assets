@@ -20,7 +20,6 @@ vmake_form =
           false
 
         onsubmit: (e)->
-          v.submit(v.form)
           if validate.cards v
             v.submit(v.form)
           false
@@ -316,8 +315,8 @@ vmake_form =
         m ".VSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "決定"
-            m "input", {name:"cmd", value: v.cmd, type: "hidden"}
             m "input", {type:"submit", value: "村の作成"}
+            error_and_info v.http
 
 doc.message.vmake_form = (v)->
   m.component vmake_form, v

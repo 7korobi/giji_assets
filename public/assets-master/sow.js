@@ -44,7 +44,8 @@
   };
 
   Url.cookies = {
-    uid: Url.cookie("uid=:uid; pwd=:pwd;", "readonly"),
+    uid: Url.cookie("uid=:uid;", "readonly"),
+    pwd: Url.cookie("pwd=:pwd;", "readonly"),
     css: Url.cookie("css=:theme~:width~:layout~:font", {
       time: 12,
       path: "/"
@@ -1617,10 +1618,14 @@
 
   win.mount("#make_vil", function(dom) {
     return {
-      controller: function() {},
-      view: function() {
-        return doc.message.vmake_form({
+      controller: function() {
+        return {
           _id: "new",
+          is_loading: false,
+          http: {
+            errors: [],
+            infos: []
+          },
           mestype: "SSAY",
           submit: function(form) {
             var data;
@@ -1631,22 +1636,36 @@
               hour: form.time.slice(0, 2),
               minite: form.time.slice(3, 5),
               eventcard: form.trap.join("/"),
+              csid: Mem.options.hash.chr_npc.options[form.chr_npc].csid,
+              votetype: form.vote_sign ? "sign" : "anonymity",
               starttype: form.start_auto ? "wbbs" : "manual",
-              entrylimit: form.entry_password ? 'password' : null
+              entrylimit: form.entry_password ? 'password' : 'free'
             });
             countup(data, form.extra);
             countup(data, form.role);
             countup(data, form.gift);
-            console.log(data);
-            return;
-            return Submit.iframe("sow.cgi", params).then((function(_this) {
+            return Submit.iframe("sow.cgi", data).then((function(_this) {
               return function(o) {
+                var errors;
                 _this.is_loading = false;
-                return console.log(o);
+                console.log(data);
+                errors = o.errors;
+                if (errors) {
+                  _this.http = {
+                    errors: errors.makevil,
+                    infos: ["作成に失敗しました。"]
+                  };
+                }
+                if (!errors) {
+                  return console.log(o);
+                }
               };
             })(this));
           }
-        });
+        };
+      },
+      view: function(v) {
+        return doc.message.vmake_form(v);
       }
     };
   });
@@ -2265,8 +2284,14 @@
         ? m("tr", m("td[colspan=6]", v.error))
         : Mem.storys[v.mestype]().list.map(function(v){
           var chr_set;
-          chr_set = Mem.chr_sets.find(v.csid);
-          return m("tr", m("td", v.vid, m('a[href="#{v.link}"]', v.name), m("span.note", m("br"), "〈", m('a[href="#{v.link}"]', "最新"), "〉", v.entry_limit === "password" ? m('img[src="#{GUI.img_head}/icon/key.png"][alt="[鍵]"]') : void 8), v.view.rating, m("span.note", m("br"), "　　人物 ： " + chr_set.caption, m("br"), "　　更新 ： " + v.view.updated_at + " " + v.view.update_interval + "毎", m("br"), "　 ")), m("td.small", v.player_count, m("span.note", m("br")), v.status + ""), m("td"), m("span.note", v.view.say_limit_help), v.view.game_rule, m("span.note", m("br"), v.trs));
+          chr_set = Mem.chr_sets.hash[v.csid] || Mem.chr_sets.where({
+            csid: v.csid
+          }).list.first;
+          return m("tr", m("td", v.vid), m("td", m('a', {
+            href: v.link
+          }, v.name), m("span.note", m("br"), "〈", m('a', {
+            href: v.link
+          }, "最新"), "〉", v.entry_limit === "password" ? m('img[src="#{GUI.img_head}/icon/key.png"][alt="[鍵]"]') : void 8), v.view.rating, m("span.note", m("br"), "　　人物 ： " + chr_set.caption, m("br"), "　　更新 ： " + v.view.update_at + " " + v.view.update_interval + "毎", m("br"), "　 ")), m("td", v.player_count), m("td", v.status + ""), m("td", v.trs, m("br"), v.view.game_rule), m("td", m("span.note", v.view.say_limit_help)));
         }));
     }
   };
@@ -2422,7 +2447,6 @@
             return false;
           },
           onsubmit: function(e) {
-            v.submit(v.form);
             if (validate.cards(v)) {
               v.submit(v.form);
             }
@@ -2682,13 +2706,9 @@
         }
         return results;
       })(), m("hr.black")), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "決定"), m("input", {
-        name: "cmd",
-        value: v.cmd,
-        type: "hidden"
-      }), m("input", {
         type: "submit",
         value: "村の作成"
-      })))));
+      }), error_and_info(v.http)))));
     }
   };
 

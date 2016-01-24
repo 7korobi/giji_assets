@@ -38,7 +38,7 @@ present_canvas = ({size: [width, height], layout: [dx, dy, dz]})->
         arc ctx, clientX, clientY, 4, "rgba(0,0,0,0.2)"
 
 
-win.mount "#win",
+win.mount "#win", (dom)->
   controller: ->
     @test = test =
       orientation: 0
