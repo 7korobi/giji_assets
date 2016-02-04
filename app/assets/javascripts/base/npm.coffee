@@ -52,16 +52,17 @@ deploy
 
   DELAY: require 'delay.yml'
 
+  GUI: require 'gui'
+
+GUI.Animate = require 'gui_animate'
+GUI.form = require 'gui_form'
 
 deploy require 'serialized-property'
 
 deploy require 'base'
-deploy require 'gui'
 deploy require 'menu_tree'
 deploy require 'form'
 deploy require 'timer'
 deploy require 'gui_url'
 
 require '_ext'
-require 'gui_animate'
-require 'gui_form'

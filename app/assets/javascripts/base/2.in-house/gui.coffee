@@ -26,7 +26,7 @@ name_config = (key)->
   obj?.name || key || ""
 
 
-@GUI =
+GUI =
   img_head: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images"
   portrate: (face_id, attr = {})->
     attr.src = GUI.img_head + "/portrate/#{face_id}.jpg"
@@ -240,3 +240,5 @@ name_config = (key)->
       cb o, i
 
     m "dl.accordion", win.scroll.mark(mark), items
+
+module.exports = GUI

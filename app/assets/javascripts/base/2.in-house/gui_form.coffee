@@ -1,12 +1,10 @@
-GUI = require 'gui'
+submit = (props, f)->
+  GUI.attrs {}, ()->
+    @end (e)->
+      form.delegate.submit(props, f)
 
-GUI.form = (->
 
-  submit = (props, f)->
-    GUI.attrs {}, ()->
-      @end (e)->
-        GUI.form.delegate.submit(props, f)
-
+form =
   delegate:
     submit: -> console.log arguments
 
@@ -108,4 +106,6 @@ GUI.form = (->
   version: (f, props)->
   votes: (f, props)->
   story: (f, props)->
-)()
+
+
+module.exports = form

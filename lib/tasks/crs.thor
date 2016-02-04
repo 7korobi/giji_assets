@@ -77,7 +77,7 @@ class Crs < Thor
 
   class TagCreate < WebHtml
     def activate
-      @tags = RAILS_TAG
+      @tags = CONF_TAG
 
       @rhtml_content = "./app/views/sow/tag.pl.erb"
       result = to_s
@@ -134,19 +134,19 @@ class Crs < Thor
       @orders = faces.sort_by(&:order)
       @lists  = faces.sort_by(&:face_id)
       @tag_names = {
-        "all" => RAILS_TAG.all.name
+        "all" => CONF_TAG.all.name
       }
       @chr_orders = {
         "all" => @orders.map(&:face_id)
       }
       @orders.each do |face|
         face.tags.each do |tag|
-          next unless RAILS_TAG[tag].chr_set_ids.any? {|csid| @csid[csid] }
-          @tag_names[tag] = RAILS_TAG[tag].name
+          next unless CONF_TAG[tag].chr_set_ids.any? {|csid| @csid[csid] }
+          @tag_names[tag] = CONF_TAG[tag].name
           @chr_orders[tag] = (@chr_orders[tag] || []) + [face.face_id]
         end
       end
-      @tag_order = RAILS_TAG.keys.select {|tag| @chr_orders[tag] }
+      @tag_order = CONF_TAG.keys.select {|tag| @chr_orders[tag] }
       @tag_order.shift if @csid != "all"
 
       @rhtml_content = "./app/views/sow/crs.pl.erb"

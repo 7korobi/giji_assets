@@ -1,6 +1,4 @@
-GUI = require 'gui'
-
-class GUI.Animate
+class Animate
 
   spin = new Bounce
   spin.rotate
@@ -76,3 +74,5 @@ class GUI.Animate
     down: apply DELAY.andante, "jelly-down",
       begin: zIndex 2
       finish: zIndex 1
+
+module.exports = Animate

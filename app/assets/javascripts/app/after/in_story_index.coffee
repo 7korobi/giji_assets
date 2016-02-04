@@ -42,7 +42,7 @@ if gon?.stories?
                   reduce = Mem.storys.menu("all", Url.routes.search.stories.values()...).reduce
                   m ".paragraph",
                     sub_menu.radio {class:"edge folder"}, Url.prop.folder, reduce, "folder", (key, o)->
-                      GAME[key]?.nation
+                      CONF_FOLDER[key]?.nation
               main_menu.drill "say_limit",
                 caption: "発言制限"
                 view: (sub_menu)->

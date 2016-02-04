@@ -4,10 +4,15 @@ btns = (btn, style, prop, options, order = Object.keys options)->
     attr = btn(style, prop, key)
     m "span", attr, caption
 
-btn = (style, check, store, load, key)->
+btn = (style, check, store_base, load, key)->
   style.class ?= 'edge'
+  store = store_base
   cb = ->
     store key
+    store = ->
+    setTimeout ->
+      store = store_base
+    , 200
 
   if check load, key
     class_name = "btn #{style.class} active"

@@ -25,17 +25,17 @@ sub OutHTMLAdminInfo {
   my $reqvals = &SWBase::GetRequestValues($sow);
   my $topcss  = &SWBase::GetLinkValues($sow, $reqvals);
 
-  my $max_perjury  =  <%= GAME[:PERJURY_OLD]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_vage     =  <%= GAME[:PERJURY]['config']['cfg'][:MAX_VILLAGES] %>;
+  my $max_perjury  =  <%= CONF_FOLDER[:PERJURY_OLD]['config']['cfg'][:MAX_VILLAGES] %>;
+  my $max_vage     =  <%= CONF_FOLDER[:PERJURY]['config']['cfg'][:MAX_VILLAGES] %>;
 
-  my $max_crazy    =  <%= GAME[:CRAZY  ]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_xebec    =  <%= GAME[:XEBEC  ]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_cafe     =  <%= GAME[:CABALA ]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_ciel     =  <%= GAME[:CIEL   ]['config']['cfg'][:MAX_VILLAGES] %>;
+  my $max_crazy    =  <%= CONF_FOLDER[:CRAZY  ]['config']['cfg'][:MAX_VILLAGES] %>;
+  my $max_xebec    =  <%= CONF_FOLDER[:XEBEC  ]['config']['cfg'][:MAX_VILLAGES] %>;
+  my $max_cafe     =  <%= CONF_FOLDER[:CABALA ]['config']['cfg'][:MAX_VILLAGES] %>;
+  my $max_ciel     =  <%= CONF_FOLDER[:CIEL   ]['config']['cfg'][:MAX_VILLAGES] %>;
 
-  my $max_morphe   =  <%= GAME[:MORPHE ]['config']['cfg'][:MAX_VILLAGES] %>;
+  my $max_morphe   =  <%= CONF_FOLDER[:MORPHE ]['config']['cfg'][:MAX_VILLAGES] %>;
 
-  my $max_pan      =  <%= GAME[:PAN    ]['config']['cfg'][:MAX_VILLAGES] %>;
+  my $max_pan      =  <%= CONF_FOLDER[:PAN    ]['config']['cfg'][:MAX_VILLAGES] %>;
   my $max_all      = ( $max_perjury + $max_vage   + $max_crazy + $max_xebec + $max_ciel )
                    + ( $max_cafe )
                    + ( $max_morphe )
@@ -60,7 +60,7 @@ sub OutHTMLAdminInfo {
 <div class="finished_log">
 <a style="color: #ccc;" onclick="\$('.progress_log').show();\$('.finished_log').hide();">進行中の村を見る</a><strong>　→　終了した村</strong>
 </div>
-<td rowspan=2 class="no_choice link"><a href="<%= GAME[:PAN]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">似顔絵<br>人狼</a>
+<td rowspan=2 class="no_choice link"><a href="<%= CONF_FOLDER[:PAN]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">似顔絵<br>人狼</a>
 <tr class="link">
 <td class="$choice_lobby">  ロビー　
 <td class="$choice_morphe"> 夢の形　
@@ -74,8 +74,8 @@ sub OutHTMLAdminInfo {
 　<br>
 　<br>
 <td class="$choice_cabala" style="text-align:left;">
-  $max_morphe村:<a href="<%= GAME[:MORPHE]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">morphe</a><br>
-  $max_cafe村:<a href="<%= GAME[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">cafe</a><br>
+  $max_morphe村:<a href="<%= CONF_FOLDER[:MORPHE]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">morphe</a><br>
+  $max_cafe村:<a href="<%= CONF_FOLDER[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">cafe</a><br>
 　<br>
 　<br>
 　<br>
@@ -88,10 +88,10 @@ sub OutHTMLAdminInfo {
 <td class="$choice_braid" style="text-align:left;">
   role-play<br>
   RP-advance<br>
-  $max_vage村:<a href="<%= GAME[:PERJURY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">perjury</a><br>
-  $max_xebec村:<a href="<%= GAME[:XEBEC]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">xebec</a><br>
-  $max_crazy村:<a href="<%= GAME[:CRAZY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">crazy</a><br>
-  $max_ciel村:<a href="<%= GAME[:CIEL]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">ciel</a><br>
+  $max_vage村:<a href="<%= CONF_FOLDER[:PERJURY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">perjury</a><br>
+  $max_xebec村:<a href="<%= CONF_FOLDER[:XEBEC]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">xebec</a><br>
+  $max_crazy村:<a href="<%= CONF_FOLDER[:CRAZY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">crazy</a><br>
+  $max_ciel村:<a href="<%= CONF_FOLDER[:CIEL]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">ciel</a><br>
 <td class="no_choice">
   $max_pan村:pan<br>
 　<br>
