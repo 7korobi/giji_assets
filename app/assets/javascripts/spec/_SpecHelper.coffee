@@ -86,8 +86,8 @@ win.mount "#win", (dom)->
         JSON.stringify
           compass: _.round win.compass, 1
           is_tap:  win.is_tap
-      m Canvas, "#head", present_canvas, size: [800, 600], layout: [-10,  10]
-      m Canvas, "#tail", present_canvas, size: [600, 400], layout: [ 10, -10]
+      m.component Canvas, "#head", present_canvas, size: [800, 600], layout: [-10,  10]
+      m.component Canvas, "#tail", present_canvas, size: [600, 400], layout: [ 10, -10]
       m "table",
         m "thead",
           m "tr",

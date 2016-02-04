@@ -35,11 +35,11 @@ export doc =
       ids = Object.keys doc.seeing
       ids = _.sortBy(ids, (id)-> - doc.seeing[id] )[0 to filter_size]
       if center?.subid == "S"
-        ids = _.select(ids, (id)-> 25 < doc.seeing[id] && id != center._id)
+        ids = _.filter(ids, (id)-> 25 < doc.seeing[id] && id != center._id)
         list = Mem.messages.finds(ids)
         list.unshift center
       else
-        ids = _.select(ids, (id)-> 25 < doc.seeing[id])
+        ids = _.filter(ids, (id)-> 25 < doc.seeing[id])
         list = Mem.messages.finds(ids)
       list
 
