@@ -93,13 +93,13 @@
           return -doc.seeing[id];
         }), 0, filter_size + 1 || 9e9);
         if ((center != null ? center.subid : void 8) === "S") {
-          ids = _.select(ids, function(id){
+          ids = _.filter(ids, function(id){
             return 25 < doc.seeing[id] && id !== center._id;
           });
           list = Mem.messages.finds(ids);
           list.unshift(center);
         } else {
-          ids = _.select(ids, function(id){
+          ids = _.filter(ids, function(id){
             return 25 < doc.seeing[id];
           });
           list = Mem.messages.finds(ids);
@@ -1219,7 +1219,7 @@
                     "class": "edge folder"
                   }, Url.prop.folder, reduce, "folder", function(key, o) {
                     var ref2;
-                    return (ref2 = GAME[key]) != null ? ref2.nation : void 0;
+                    return (ref2 = CONF_FOLDER[key]) != null ? ref2.nation : void 0;
                   }));
                 }
               });
