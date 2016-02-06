@@ -1335,23 +1335,23 @@
           "all": 2244608
         },
         "appendex": {
-          "event_asc": 2097152,
+          "event_asc": 3145728,
           "event_desc": 1048576
         },
         "home": {
-          "announce": 6299648
+          "announce": 7348224
         },
         "talk": {
-          "main": 2240512,
-          "grave": 2238464,
-          "open": 2242560,
-          "clan": 2308608,
-          "think": 2275712,
-          "all": 2341632
+          "main": 3289088,
+          "grave": 3287040,
+          "open": 3291136,
+          "clan": 3357184,
+          "think": 3324288,
+          "all": 3390208
         },
         "memo": {
-          "main": 2097248,
-          "grave": 2097232,
+          "main": 1048672,
+          "grave": 1048656,
           "open": 1048688,
           "clan": 1048692,
           "think": 1048691,
@@ -9204,6 +9204,10 @@
       return {};
     });
     this.deploy(function(o) {
+      if (o.sow != null) {
+        o.winner = Mem.winners.sow(o.sow.winner)._id;
+        o.event = Mem.traps.sow(o.sow.event)._id;
+      }
       if (o._id == null) {
         o._id = o.story_id + "-" + o.turn;
       }
@@ -9606,7 +9610,6 @@
     messages = [];
     if ("プロローグ" === name) {
       messages.push({
-        event_id: _id,
         story_id: story_id,
         logid: "STORY-TEXT",
         mestype: "STORY",
@@ -9616,7 +9619,6 @@
         updated_at: created_at - 4
       });
       messages.push({
-        event_id: _id,
         story_id: story_id,
         logid: "STORY-RULE",
         mestype: "STORY",
@@ -9626,7 +9628,6 @@
         updated_at: created_at - 3
       });
       messages.push({
-        event_id: _id,
         story_id: story_id,
         logid: "STORY-GAME",
         mestype: "STORY",
@@ -9637,32 +9638,35 @@
       });
     }
     messages.push({
-      event_id: _id,
       story_id: story_id,
       logid: "EVENT-ASC",
       mestype: "EVENT",
       anchor: "info",
       show: RAILS.message.bit.EVENT_ASC,
       name: name,
-      updated_at: created_at - 5
+      updated_at: created_at - 100
     });
     messages.push({
-      event_id: _id,
       story_id: story_id,
       logid: "EVENT-DESC",
       mestype: "EVENT",
       anchor: "info",
       show: RAILS.message.bit.EVENT_DESC,
       name: name,
-      updated_at: updated_at - -1
+      updated_at: updated_at - -100
     });
-    return Mem.rule.message.merge(messages);
+    return Mem.rule.message.merge(messages, {
+      event_id: _id
+    });
   };
-  set_event_messages = function(event){
-    Mem.rule.message.merge(event.messages, {
-      event_id: event._id
+  set_event_messages = function(arg$){
+    var _id, story_id, messages;
+    _id = arg$._id, story_id = arg$.story_id, messages = arg$.messages;
+    Mem.rule.message.merge(messages, {
+      event_id: _id,
+      story_id: story_id
     });
-    return console.log(event.messages.length + " messages cache. (" + event._id + ")");
+    return console.log(messages.length + " messages cache. (" + _id + ")");
   };
   out$.catch_gon = catch_gon = {
     face: function(){
@@ -9993,6 +9997,9 @@
     });
     this.deploy(function(o) {
       var anchor_num, anker_id, event, folder, lognumber, logtype, ref1, story, tail, turn, vdom, vid;
+      if (o.sow != null) {
+        o.mestype = SOW_RECORD.mestypes[o.sow.mestype];
+      }
       logtype = o.logid.slice(0, 2);
       lognumber = o.logid.slice(2);
       switch (o.mestype) {
@@ -10000,8 +10007,7 @@
           o.mestype = "SAY";
           break;
         case "VSAY":
-          story = o.story;
-          event = o.event;
+          story = o.story, event = o.event;
           has.vsay = true;
           if (story && event && "grave" === story.type.mob && !event.name.match(/プロローグ|エピローグ/)) {
             o.mestype = "VGSAY";
@@ -10046,7 +10052,7 @@
       if (ats[o.updated_at]) {
         o.updated_at += ats[o.updated_at]++;
       } else {
-        ats[o.updated_at] = 0;
+        ats[o.updated_at] = 1;
       }
       vdom = doc.message.xxx;
       switch (o.logid[1]) {
@@ -10225,8 +10231,14 @@
       };
     });
     this.deploy(function(o) {
-      var chr_job, event, is_dead_lose, is_lone_lose, job, name, pt, pt_no, ref, ref1, ref2, role, role_side_order, role_text, roles, said_num, say_type, select, stat_at, stat_order, stat_type, story, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie;
-      o._id = o.event_id + "-" + o.csid + "-" + o.face_id;
+      var chr_job, event, is_dead_lose, is_lone_lose, job, name, pt, pt_no, ref, ref1, ref2, ref3, role, role_side_order, role_text, roles, said_num, say_type, select, stat_at, stat_order, stat_type, story, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie;
+      if (o.sow != null) {
+        o.role = [Mem.roles.sow_role(o.sow.role)._id, Mem.roles.sow_gift(o.sow.gift)._id];
+        o.select = Mem.roles.sow_role(o.sow.selrole)._id;
+      }
+      if (((ref = o._id) != null ? ref.$oid : void 0) != null) {
+        o._id = o._id.$oid;
+      }
       if (o.user_id == null) {
         o.user_id = o.sow_auth_id;
       }
@@ -10235,7 +10247,7 @@
       }
       chr_job = o.chr_job;
       if (chr_job != null) {
-        name = (ref = chr_job.face) != null ? ref.name : void 0;
+        name = (ref1 = chr_job.face) != null ? ref1.name : void 0;
         job = chr_job.job;
       } else {
         job = "***";
@@ -10245,19 +10257,19 @@
       }
       o.name = o.zapcount ? "" + RAILS.clearance[o.clearance] + name + "-" + o.zapcount : name;
       o.hide = {};
-      if (o.event_id) {
-        if (o.event_id.match(/-0$/)) {
-          o.live = "leave";
-        }
-      } else {
-        o.live = "leave";
-      }
-      stat_at = (0 < (ref1 = o.deathday) && ref1 < Infinity) ? o.deathday + "日" : (o.deathday = Infinity, "");
+
+      /*
+      if o.event_id
+        if o.event_id.match /-0$/
+          o.live = "leave"
+      else
+        o.live = "leave"
+       */
+      stat_at = (0 < (ref2 = o.deathday) && ref2 < Infinity) ? o.deathday + "日" : (o.deathday = Infinity, "");
       said_num = o.point.saidcount;
       urge = o.point.actaddpt;
       pt_no = o.say.gsay;
-      story = o.story;
-      event = o.event;
+      story = o.story, event = o.event;
       switch (o.live) {
         case "live":
           pt_no = o.say.say;
@@ -10315,7 +10327,7 @@
         case "SECRET":
           is_dead_lose = 1;
       }
-      win_love = (ref2 = RAILS.loves[o.love]) != null ? ref2.win : void 0;
+      win_love = (ref3 = RAILS.loves[o.love]) != null ? ref3.win : void 0;
       win_role = win_by_role(o, Mem.roles);
       win = win_juror || win_love || win_zombie || win_role;
       if (win === 'EVIL') {
@@ -10371,11 +10383,11 @@
       win_side_order = Mem.conf.winner["WIN_" + win].order;
       role_side_order = Mem.conf.winner["WIN_" + win_role].order;
       roles = (function() {
-        var i, len, ref3, results;
-        ref3 = o.role;
+        var i, len, ref4, results;
+        ref4 = o.role;
         results = [];
-        for (i = 0, len = ref3.length; i < len; i++) {
-          role = ref3[i];
+        for (i = 0, len = ref4.length; i < len; i++) {
+          role = ref4[i];
           results.push(GUI.name.config(role));
         }
         return results;

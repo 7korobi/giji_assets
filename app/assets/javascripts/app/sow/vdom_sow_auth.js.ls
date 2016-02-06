@@ -1,5 +1,5 @@
 win.mount \#sow_auth, (dom)->
-    controller: (arg)!->
+    controller: (args)!->
       @url = gon.url
 
       refresh = (gon)!~>
@@ -20,8 +20,6 @@ win.mount \#sow_auth, (dom)->
 
       deploy gon
 
-
-
       @logout = ~>
         @is_loading = true
         Submit.get @url,
@@ -38,7 +36,6 @@ win.mount \#sow_auth, (dom)->
             pwd: pwd()
           .then refresh
 
-      doc.user
 
     view: (c, args)->
       {uid, pwd} = Url.prop
@@ -51,7 +48,7 @@ win.mount \#sow_auth, (dom)->
             m ".TSAY", m ".emboss", msg
 
       if c.is_loading
-        form = (call)->
+        form =
           onsubmit: ->
             false
 
@@ -61,13 +58,15 @@ win.mount \#sow_auth, (dom)->
           type: "submit"
 
         input = (prop)->
-          set = m.withAttr("value", prop)
           disabled: true
           value: prop()
       else
-        form = (call)->
+        form =
           onsubmit: ->
-            call()
+            if doc.user.is_login
+              c.logout()
+            else
+              c.login()
             false
 
         submit = (label)->
@@ -76,22 +75,23 @@ win.mount \#sow_auth, (dom)->
           type: "submit"
 
         input = (prop)->
-          set = m.withAttr("value", prop)
+          set = m.withAttr "value", (val)->
+            prop val
+            validate.sow_auth c
+
           onblur:   set
           onchange: set
           onkeyup:  set
           value: prop()
 
-      validate.sow_auth c
-
       if doc.user.is_login
-        m "form", form(c.logout),
+        m "form", form,
           m ".paragraph",
             unless c.is_loading
               m "input", submit "#{uid()} がログアウト"
           messages c
       else
-        m "form", form(c.login),
+        m "form", form,
           m ".paragraph",
             m "label",
               m "span.mark", "user id : "

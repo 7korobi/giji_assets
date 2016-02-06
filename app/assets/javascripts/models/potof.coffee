@@ -39,7 +39,11 @@ new Mem.Rule("potof").schema ->
 
 
   @deploy (o)->
-    o._id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
+    if o.sow?
+      o.role = [Mem.roles.sow_role(o.sow.role)._id, Mem.roles.sow_gift(o.sow.gift)._id]
+      o.select = Mem.roles.sow_role(o.sow.selrole)._id
+
+    o._id = o._id.$oid if o._id?.$oid?
     o.user_id ?= o.sow_auth_id
     o.chr_job_id ?= "#{o.csid.toLowerCase()}_#{o.face_id}"
 
@@ -59,11 +63,13 @@ new Mem.Rule("potof").schema ->
 
     o.hide = {}
 
+    ###
     if o.event_id
       if o.event_id.match /-0$/
         o.live = "leave"
     else
       o.live = "leave"
+    ###
 
     stat_at =
       if 0 < o.deathday < Infinity
@@ -76,8 +82,7 @@ new Mem.Rule("potof").schema ->
     urge     = o.point.actaddpt
     pt_no    = o.say.gsay
 
-    story = o.story
-    event = o.event
+    { story, event } = o
 
     switch o.live
       when "live"

@@ -79,14 +79,16 @@ new Mem.Rule("message").schema ->
     face_id: null
 
   @deploy (o)->
+    if o.sow?
+      o.mestype = SOW_RECORD.mestypes[o.sow.mestype]
+
     logtype = o.logid[0..1]
     lognumber = o.logid[2..-1]
     switch o.mestype
       when "QUEUE"
         o.mestype = "SAY" # data cleaned
       when "VSAY"
-        story = o.story
-        event = o.event
+        { story, event } = o
         has.vsay = true
         if story && event && "grave" == story.type.mob && ! event.name.match /プロローグ|エピローグ/
           o.mestype = "VGSAY"
@@ -108,7 +110,6 @@ new Mem.Rule("message").schema ->
         else
           o.mestype = "TSAY"       # data cleaned
     # legacy support
-
     [folder, vid, turn] = o.event_id.split("-")
     o.folder ||= folder
     o.vid ||= vid
@@ -127,7 +128,7 @@ new Mem.Rule("message").schema ->
     if ats[o.updated_at]
       o.updated_at += ats[o.updated_at]++
     else
-      ats[o.updated_at] = 0
+      ats[o.updated_at] = 1
 
     vdom = doc.message.xxx
     switch o.logid[1]

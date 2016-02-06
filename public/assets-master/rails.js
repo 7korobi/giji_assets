@@ -916,11 +916,34 @@
       }), m.trust(o.log.deco_text_br));
     },
     event: function(o){
-      var btn;
-      btn = o.event.view.btn();
-      return m("." + o.mestype, {
-        key: o._id
-      }, m("h3", m.trust(o.name)), btn ? btn : void 8);
+      switch (menu.scope.state()) {
+      case "home":
+      case "talk":
+        switch (o.logid) {
+        case "EVENT-ASC":
+          return m("." + o.mestype, {
+            key: o._id
+          }, m("h3", m.trust(o.name)));
+        case "EVENT-DESC":
+          return m("." + o.mestype, {
+            key: o._id
+          }, o.event.view.btn());
+        }
+        break;
+      case "pins":
+      case "memo":
+      case "history":
+        switch (o.logid) {
+        case "EVENT-DESC":
+          return m("." + o.mestype, {
+            key: o._id
+          }, m("h3", m.trust(o.name)), o.event.view.btn());
+        case "EVENT-ASC":
+          return m("." + o.mestype, {
+            key: o._id
+          });
+        }
+      }
     },
     xxx: function(v){
       return m("div", {
@@ -1585,7 +1608,7 @@
       if (!base.reduce) {
         return false;
       }
-      masks = base.reduce.mask;
+      masks = base.reduce.mask || {};
       time_ids = _.sortBy(Object.keys(masks), unpack.Date);
       time_width = time_ids.length;
       x = width / time_width;

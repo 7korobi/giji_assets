@@ -232,6 +232,12 @@
       "_id": "howto-paragraph--101",
       "log": "ここからはエピローグの時間です。明かされた全ての発言などを話の種にして、みんなで色々笑ったり嘆いたりしましょう。\n楽しくて別れ難いなら、村建て人さんは更新を延長してもいいでしょう。お疲れ様でした。"
     }, {
+      "_id": "oldlog-head-h3-10",
+      "log": "終了済みの村の一覧"
+    }, {
+      "_id": "oldlog-head-h3-20",
+      "log": "廃村の一覧"
+    }, {
       "_id": "rolelist-head-h2-1",
       "log": "役職を選んでみよう。"
     }, {
@@ -1513,7 +1519,7 @@
     deploy_samples();
   }
 
-  ref = ["howto", "rolelist", "title"];
+  ref = ["howto", "oldlog", "rolelist", "title"];
   for (i = 0, len = ref.length; i < len; i++) {
     name = ref[i];
     GUI.items_module(name);
@@ -1675,7 +1681,7 @@
 (function(){
   win.mount('#sow_auth', function(dom){
     return {
-      controller: function(arg){
+      controller: function(args){
         var refresh, deploy, this$ = this;
         this.url = gon.url;
         refresh = function(gon){
@@ -1716,7 +1722,6 @@
             }).then(refresh);
           }
         };
-        doc.user;
       },
       view: function(c, args){
         var ref$, uid, pwd, messages, form, submit, input;
@@ -1740,12 +1745,10 @@
           }()));
         };
         if (c.is_loading) {
-          form = function(call){
-            return {
-              onsubmit: function(){
-                return false;
-              }
-            };
+          form = {
+            onsubmit: function(){
+              return false;
+            }
           };
           submit = function(label){
             return {
@@ -1755,21 +1758,21 @@
             };
           };
           input = function(prop){
-            var set;
-            set = m.withAttr("value", prop);
             return {
               disabled: true,
               value: prop()
             };
           };
         } else {
-          form = function(call){
-            return {
-              onsubmit: function(){
-                call();
-                return false;
+          form = {
+            onsubmit: function(){
+              if (doc.user.is_login) {
+                c.logout();
+              } else {
+                c.login();
               }
-            };
+              return false;
+            }
           };
           submit = function(label){
             return {
@@ -1780,7 +1783,10 @@
           };
           input = function(prop){
             var set;
-            set = m.withAttr("value", prop);
+            set = m.withAttr("value", function(val){
+              prop(val);
+              return validate.sow_auth(c);
+            });
             return {
               onblur: set,
               onchange: set,
@@ -1789,11 +1795,10 @@
             };
           };
         }
-        validate.sow_auth(c);
         if (doc.user.is_login) {
-          return m("form", form(c.logout), m(".paragraph", !c.is_loading ? m("input", submit(uid() + " がログアウト")) : void 8), messages(c));
+          return m("form", form, m(".paragraph", !c.is_loading ? m("input", submit(uid() + " がログアウト")) : void 8), messages(c));
         } else {
-          return m("form", form(c.login), m(".paragraph", m("label", m("span.mark", "user id : "), m("input", input(uid))), m("label", m("span.mark", "password : "), m("input[type=password]", input(pwd))), !c.is_loading ? m("input", submit("ログイン")) : void 8), messages(c));
+          return m("form", form, m(".paragraph", m("label", m("span.mark", "user id : "), m("input", input(uid))), m("label", m("span.mark", "password : "), m("input[type=password]", input(pwd))), !c.is_loading ? m("input", submit("ログイン")) : void 8), messages(c));
         }
       }
     };
@@ -2095,11 +2100,34 @@
       }), m.trust(o.log.deco_text_br));
     },
     event: function(o){
-      var btn;
-      btn = o.event.view.btn();
-      return m("." + o.mestype, {
-        key: o._id
-      }, m("h3", m.trust(o.name)), btn ? btn : void 8);
+      switch (menu.scope.state()) {
+      case "home":
+      case "talk":
+        switch (o.logid) {
+        case "EVENT-ASC":
+          return m("." + o.mestype, {
+            key: o._id
+          }, m("h3", m.trust(o.name)));
+        case "EVENT-DESC":
+          return m("." + o.mestype, {
+            key: o._id
+          }, o.event.view.btn());
+        }
+        break;
+      case "pins":
+      case "memo":
+      case "history":
+        switch (o.logid) {
+        case "EVENT-DESC":
+          return m("." + o.mestype, {
+            key: o._id
+          }, m("h3", m.trust(o.name)), o.event.view.btn());
+        case "EVENT-ASC":
+          return m("." + o.mestype, {
+            key: o._id
+          });
+        }
+      }
     },
     xxx: function(v){
       return m("div", {
@@ -2764,7 +2792,7 @@
       if (!base.reduce) {
         return false;
       }
-      masks = base.reduce.mask;
+      masks = base.reduce.mask || {};
       time_ids = _.sortBy(Object.keys(masks), unpack.Date);
       time_width = time_ids.length;
       x = width / time_width;

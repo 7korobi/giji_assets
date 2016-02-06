@@ -99,11 +99,25 @@ doc.message =
       m.trust o.log.deco_text_br
 
   event: (o)->
-    btn = o.event.view.btn()
+    switch menu.scope.state()
+      when "home", "talk"
+        switch o.logid
+          when "EVENT-ASC"
+            m ".#{o.mestype}", {key: o._id},
+              m "h3", m.trust o.name
+          when "EVENT-DESC"
+            m ".#{o.mestype}", {key: o._id},
+              o.event.view.btn()
+      when "pins","memo", "history"
+        switch o.logid
+          when "EVENT-DESC"
+            m ".#{o.mestype}", {key: o._id},
+              m "h3", m.trust o.name
+              o.event.view.btn()
+          when "EVENT-ASC"
+            m ".#{o.mestype}", {key: o._id}
 
-    m ".#{o.mestype}", {key: o._id},
-      m "h3", m.trust o.name
-      btn if btn
+
 
   xxx: (v)->
     m "div", {key: v._id}, ".U.C #{v._id}"

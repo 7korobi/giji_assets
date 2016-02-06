@@ -31,7 +31,7 @@ timeline_present = ({size: [width, height]})->
     base := Mem.messages.talk(talk(), open(), potofs_hide())
     return false unless base.reduce
 
-    masks := base.reduce.mask
+    masks := base.reduce.mask || {}
     time_ids := _.sortBy Object.keys(masks), unpack.Date
     time_width := time_ids.length
     x := width / time_width

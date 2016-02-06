@@ -5,7 +5,6 @@ set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
 
   if "プロローグ" == name
     messages.push do
-      event_id: _id
       story_id: story_id
       logid: "STORY-TEXT"
       mestype: "STORY"
@@ -15,7 +14,6 @@ set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
       updated_at: created_at - 4
 
     messages.push do
-      event_id: _id
       story_id: story_id
       logid: "STORY-RULE"
       mestype: "STORY"
@@ -25,7 +23,6 @@ set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
       updated_at: created_at - 3
 
     messages.push do
-      event_id: _id
       story_id: story_id
       logid: "STORY-GAME"
       mestype: "STORY"
@@ -35,31 +32,31 @@ set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
       updated_at: created_at - 2
 
   messages.push do
-    event_id: _id
     story_id: story_id
     logid: "EVENT-ASC"
     mestype: "EVENT"
     anchor: "info"
     show: RAILS.message.bit.EVENT_ASC
     name: name
-    updated_at: created_at - 5
+    updated_at: created_at - 100
 
   messages.push do
-    event_id: _id
     story_id: story_id
     logid: "EVENT-DESC"
     mestype: "EVENT"
     anchor: "info"
     show: RAILS.message.bit.EVENT_DESC
     name: name
-    updated_at: updated_at - -1
+    updated_at: updated_at - -100
 
-  Mem.rule.message.merge messages
+  Mem.rule.message.merge messages,
+    event_id: _id
 
-set_event_messages = (event)->
-  Mem.rule.message.merge event.messages,
-    event_id: event._id
-  console.log "#{event.messages.length} messages cache. (#{event._id})"
+set_event_messages = ({_id, story_id, messages})->
+  Mem.rule.message.merge messages,
+    event_id: _id
+    story_id: story_id
+  console.log "#{messages.length} messages cache. (#{_id})"
 
 
 export catch_gon =
