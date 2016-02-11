@@ -24931,6 +24931,33 @@ TABLE .talk TD .msg,
   padding: 0;
 }
 
+.accordion {
+  border-top: 1px solid #CCC;
+}
+
+.accordion DT {
+  font-weight: 700;
+}
+
+.accordion DT .allow {
+  line-height: 0;
+  text-align: right;
+  margin: -0.5ex 0 0.5ex 0;
+}
+
+.accordion DT,
+.accordion DD {
+  background: rgba(0,0,0,0.5);
+  padding: 4px 0;
+  text-align: left;
+  border-bottom: 1px solid #CCC;
+}
+
+.accordion DD.plain {
+  background: transparent;
+  margin: 0;
+}
+
 .name {
   padding: 0.2rem 0;
   margin: 0 0 0.2rem 0;
@@ -42574,127 +42601,4 @@ TABLE.talk TD .msg {
 
 .wa-theme .memo TD {
   border-color: #000;
-}
-
-.accordion {
-  border-top: 1px solid #CCC;
-}
-
-.accordion DT {
-  font-weight: 700;
-}
-
-.accordion DT .allow {
-  line-height: 0;
-  text-align: right;
-  margin: -0.5ex 0 0.5ex 0;
-}
-
-.accordion DT,
-.accordion DD {
-  background: rgba(0,0,0,0.5);
-  padding: 4px 0;
-  text-align: left;
-  border-bottom: 1px solid #CCC;
-}
-
-.accordion DD.plain {
-  background: transparent;
-  margin: 0;
-}
-
-LI.token-input-token,
-LI.token-input-input-token {
-  list-style: none;
-  float: left;
-  white-space: nowrap;
-}
-
-LI.token-input-token {
-  border: 1px solid #000;
-  margin: 1px;
-  float: left;
-  height: auto!important;
-  overflow: hidden;
-  white-space: nowrap;
-  border-radius: 5px;
-}
-
-LI.token-input-token SPAN {
-  margin-left: 5px;
-  cursor: pointer;
-}
-
-LI.token-input-token P {
-  display: inline;
-  padding: 0;
-  margin: 0;
-}
-
-LI.token-input-selected-token {
-  font-weight: 700;
-}
-
-UL.token-input-list {
-  list-style: none;
-  background: #FFF;
-  border: 1px solid #000;
-  overflow: hidden;
-  min-height: 1px;
-  height: auto!important;
-  cursor: text;
-  clear: left;
-  clear: left;
-}
-
-UL.token-input-list LI INPUT {
-  background: #FFF;
-  -webkit-appearance: caret;
-  width: 30px;
-  border: 0;
-  margin: 0;
-  padding: 0;
-}
-
-DIV.token-input-dropdown {
-  background: #FFF;
-  position: absolute;
-  overflow: hidden;
-  border: 1px solid #CCC;
-  cursor: default;
-  z-index: 1;
-}
-
-DIV.token-input-dropdown P {
-  margin: 0;
-  padding: 5px;
-  font-weight: 700;
-  color: #777;
-}
-
-DIV.token-input-dropdown UL {
-  margin: 0;
-  padding: 0;
-}
-
-DIV.token-input-dropdown UL LI {
-  list-style: none;
-  background: #FFF;
-  padding: 3px;
-  margin: 0;
-}
-
-DIV.token-input-dropdown UL LI EM {
-  font-weight: 700;
-  font-style: normal;
-}
-
-DIV.token-input-dropdown UL LI .token-input-dropdown-item,
-DIV.token-input-dropdown UL LI .token-input-dropdown-item2 {
-  background: #FFF;
-}
-
-DIV.token-input-dropdown UL LI .token-input-selected-dropdown-item {
-  background: #3B5998;
-  color: #FFF;
 }

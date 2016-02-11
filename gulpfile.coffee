@@ -31,7 +31,7 @@ config =
       ]
       yaml:    'app/yaml/*.yml'
       html:    'asset/html/*.{slim,html}'
-      css:     'app/assets/stylesheets/*.css'
+      css:     'asset/css/*.css'
       js:      'app/assets/javascripts/**/*.{js,ls,coffee,erb}'
     config:
       yaml:  'config/yaml/*.yml'
