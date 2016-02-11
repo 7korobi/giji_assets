@@ -73,7 +73,7 @@ PERL_NEW:
 PERL_GAME:
   config: &config_game
     csid: *csid_giji
-    erb: ./app/views/sow/giji.pl.erb
+    erb: ./asset/sow/giji.pl.erb
     cd_default: 戦
     maxsize: &maxsize_game
       MAXSIZE_ACTION:     60
@@ -110,7 +110,7 @@ PERL_GAME:
 UNION:
   config: &config_all
     <<: *config_game
-    erb: ./app/views/sow/giji.pl.erb
+    erb: ./asset/sow/giji.pl.erb
     saycnt: &saycnt_all
       - tiny
       - weak
@@ -158,7 +158,7 @@ BRAID:
 
   config: &config_braid
     csid: *csid_giji
-    erb: ./app/views/sow/giji.pl.erb
+    erb: ./asset/sow/giji.pl.erb
     cd_default: 演
     maxsize: &maxsize_braid
       MAXSIZE_ACTION:    120
@@ -431,7 +431,7 @@ PAN:
       - tmmi
       - cat
       - bunmei
-    erb: ./app/views/sow/pan.pl.erb
+    erb: ./asset/sow/pan.pl.erb
     enable:
       <<: *enable
       ENABLED_PERMIT_DEAD: [1, "墓下の人狼/共鳴者/コウモリ人間が囁きを見られるかどうか"]

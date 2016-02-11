@@ -404,7 +404,7 @@ _PERL_
       result  = {}
 
       rhtml_info_out = "/www/giji_log/sow/_info.pl"
-      @rhtml_content = "./app/views/sow/_info.pl.erb"
+      @rhtml_content = "./asset/sow/_info.pl.erb"
       File.open(rhtml_info_out ,'w:sjis:utf-8'){|f| f.write( to_s ) }
       FileUtils.chmod( 0666, rhtml_info_out )
 
@@ -423,7 +423,7 @@ _PERL_
         @saycnt   = saycnt_all    if  chk_all
         @saycnt   = saycnt_test   if  chk_braid && chk_all
         @saycnt   = saycnt_game   unless chk_lobby || chk_braid || chk_all
-        @ratings  = RAILS[:rating]
+        @ratings  = CONF_RATING
         @ratings[:default][:alt] = config['cd_default']
         @rating_list = @ratings.keys() - ['alert']
 
@@ -442,9 +442,9 @@ _PERL_
       end
 
       rsync.each do |folder, protocol, set|
-        next unless GAME[folder]  &&  GAME[folder][:config]
+        next unless CONF_FOLDER[folder]  &&  CONF_FOLDER[folder][:config]
         next unless yield(set['files'])
-        rhtml_config_out = GAME[folder][:config][:pl]
+        rhtml_config_out = CONF_FOLDER[folder][:config][:pl]
         rsync.put(protocol, set, 'config.pl', :ldata, :config)
       end
 

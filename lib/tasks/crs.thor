@@ -79,7 +79,7 @@ class Crs < Thor
     def activate
       @tags = CONF_TAG
 
-      @rhtml_content = "./app/views/sow/tag.pl.erb"
+      @rhtml_content = "./asset/sow/tag.pl.erb"
       result = to_s
 
       @rhtml_src_testbed_out = "/www/sow-giji/show-fix/rs/tag.pl"
@@ -149,7 +149,7 @@ class Crs < Thor
       @tag_order = CONF_TAG.keys.select {|tag| @chr_orders[tag] }
       @tag_order.shift if @csid != "all"
 
-      @rhtml_content = "./app/views/sow/crs.pl.erb"
+      @rhtml_content = "./asset/sow/crs.pl.erb"
       result = to_s
 
       @rhtml_src_testbed_out = "/www/sow-giji/show-fix/rs/crs_" + @csid +".pl"

@@ -32,7 +32,6 @@ config =
       yaml:    'app/yaml/*.yml'
       html:    'app/assets/htmls/*.{slim,html}'
       css:     'app/assets/stylesheets/*.css'
-      module:  'in_house_modules/**/*.{js,ls,coffee}'
       js:      'app/assets/javascripts/**/*.{js,ls,coffee,erb}'
     config:
       yaml:  'config/yaml/*.yml'
