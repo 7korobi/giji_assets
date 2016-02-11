@@ -36,7 +36,7 @@
     "PERL_GAME": {
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -58,7 +58,7 @@
     "UNION": {
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -97,7 +97,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -148,7 +148,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -211,7 +211,7 @@
       "epi_url": "/perjury/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50",
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -300,7 +300,7 @@
       "epi_url": "/cabala/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50",
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -363,7 +363,7 @@
       "epi_url": "/allstar/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50",
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -456,7 +456,7 @@
       },
       "config": {
         "csid": ["sow", "juna", "name", "bloody", "orange", "15girls", "tmmi", "cat", "bunmei"],
-        "erb": "./app/views/sow/pan.pl.erb",
+        "erb": "./asset/sow/pan.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -525,7 +525,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -592,7 +592,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -662,7 +662,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -730,7 +730,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -797,7 +797,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -864,7 +864,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -931,7 +931,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -998,7 +998,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -1070,7 +1070,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -1947,7 +1947,7 @@
     "PERL_GAME": {
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -1969,7 +1969,7 @@
     "UNION": {
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -2008,7 +2008,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -2059,7 +2059,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -2122,7 +2122,7 @@
       "epi_url": "/perjury/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50",
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -2211,7 +2211,7 @@
       "epi_url": "/cabala/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50",
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -2274,7 +2274,7 @@
       "epi_url": "/allstar/sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50",
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -2367,7 +2367,7 @@
       },
       "config": {
         "csid": ["sow", "juna", "name", "bloody", "orange", "15girls", "tmmi", "cat", "bunmei"],
-        "erb": "./app/views/sow/pan.pl.erb",
+        "erb": "./asset/sow/pan.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -2436,7 +2436,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -2503,7 +2503,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -2573,7 +2573,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -2641,7 +2641,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -2708,7 +2708,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -2775,7 +2775,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "演",
         "maxsize": {
           "MAXSIZE_ACTION": 120,
@@ -2842,7 +2842,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -2909,7 +2909,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,
@@ -2981,7 +2981,7 @@
       },
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
-        "erb": "./app/views/sow/giji.pl.erb",
+        "erb": "./asset/sow/giji.pl.erb",
         "cd_default": "戦",
         "maxsize": {
           "MAXSIZE_ACTION": 60,

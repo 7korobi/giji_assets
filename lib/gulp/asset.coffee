@@ -61,7 +61,10 @@ module.exports = ({gulp, $, src, dest,  yml})->
   gulp.task "asset:js:plane", ["asset:js:asset"], ->
     asset ->
       gulp
-      .src [dest.asset.asset + "/*.js", "!" + dest.asset.asset + "/base.js"]
+      .src [
+        dest.asset.asset + "/*.js"
+        "!" + dest.asset.asset + "/base.js"
+      ]
 
 
   gulp.task "asset:js:npm:base", ["asset:js:asset"], ->

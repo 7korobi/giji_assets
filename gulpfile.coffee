@@ -26,13 +26,13 @@ config =
     asset:
       require: [
         'node_modules'
-        'app/yaml'
-        'tmp/cache/gulp-js/base/2.in-house'
+        'asset/yaml'
+        'tmp/cache/gulp-js/require/'
       ]
       yaml:    'asset/yaml/*.yml'
       html:    'asset/html/*.{slim,html}'
       css:     'asset/css/*.css'
-      js:      'app/assets/javascripts/**/*.{js,ls,coffee,erb}'
+      js:      'asset/js/**/*.{js,ls,coffee,erb}'
     config:
       yaml:  'config/yaml/*.yml'
 

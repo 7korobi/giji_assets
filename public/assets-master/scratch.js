@@ -1,4 +1,4 @@
-//=include app/before/**/*.js
+//=include before/**/*.js
 (function() {
   Url.define(URL_PROPS, {});
 
