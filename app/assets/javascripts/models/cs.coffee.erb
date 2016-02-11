@@ -9,18 +9,16 @@ new Mem.Rule("face").schema ->
         when "all"
           all
         else
-          all.in(tags:tag_id)
+          all.in tags:tag_id
 
     chr_jobs: (chr_job_id)->
-      all.where({chr_job_id})
-
-
+      all.where {chr_job_id}
 
     name_head: ->
       counts = []
       for idx in ["ア".charCodeAt(0) .. "ン".charCodeAt(0)]
         key = String.fromCharCode idx
-        names = all.where(name:///^#{key}///).list.map((o)-> o.name)
+        names = all.where(name:///^#{key}///).pluck "name"
         counts[names.length] ?= []
         counts[names.length].push "<#{key}>#{names.join(" ")}"
       counts

@@ -1853,22 +1853,11 @@
 
 (function() {
   new Mem.Rule("say").schema(function() {
-    var enables;
-    enables = null;
     this.scope(function(all) {
       return {
         enable: function() {
-          var i, len, ref, say_id;
-          if (!enables) {
-            enables = {};
-            ref = Mem.conf.folder.MORPHE.config.saycnt;
-            for (i = 0, len = ref.length; i < len; i++) {
-              say_id = ref[i];
-              enables[say_id] = true;
-            }
-          }
-          return all.where(function(o) {
-            return enables[o._id];
+          return all.where({
+            _id: Mem.conf.folder.PERJURY.config.saycnt
           });
         }
       };
@@ -4342,9 +4331,7 @@
             key = String.fromCharCode(idx);
             names = all.where({
               name: RegExp("^" + key)
-            }).list.map(function(o) {
-              return o.name;
-            });
+            }).pluck("name");
             if (counts[name = names.length] == null) {
               counts[name] = [];
             }
