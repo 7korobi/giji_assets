@@ -30,7 +30,7 @@ config =
         'tmp/cache/gulp-js/base/2.in-house'
       ]
       yaml:    'app/yaml/*.yml'
-      html:    'app/assets/htmls/*.{slim,html}'
+      html:    'asset/html/*.{slim,html}'
       css:     'app/assets/stylesheets/*.css'
       js:      'app/assets/javascripts/**/*.{js,ls,coffee,erb}'
     config:
