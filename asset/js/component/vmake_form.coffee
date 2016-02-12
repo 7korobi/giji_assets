@@ -318,5 +318,4 @@ vmake_form =
             m "input", {type:"submit", value: "村の作成"}
             error_and_info v.http
 
-doc.message.vmake_form = (v)->
-  m.component vmake_form, v
+doc.component.vmake_form = vmake_form

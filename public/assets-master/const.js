@@ -9803,7 +9803,15 @@
         },
         view: function(){
           return win.scroll.pager("div", query.list, function(v){
-            return doc.message[v.template](v);
+            var t;
+            switch (false) {
+            case (t = doc.component[v.template]) == null:
+              return m("div", m.component(t, v));
+            case (t = doc.view[v.template]) == null:
+              return t(v);
+            case (t = doc.message[v.template]) == null:
+              return t(v);
+            }
           });
         }
       };

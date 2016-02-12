@@ -7,6 +7,9 @@ export doc =
     tap_random:   -> console.log arguments
     tap_external: -> console.log arguments
 
+  view: {}
+  component: {}
+
   user: {}
 
   seeing: {}

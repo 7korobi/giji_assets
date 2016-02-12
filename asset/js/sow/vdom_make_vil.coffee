@@ -48,4 +48,4 @@ win.mount "#make_vil", (dom)->
           console.log o
 
   view: (v)->
-    doc.message.vmake_form v
+    m.component doc.component.vmake_form, v

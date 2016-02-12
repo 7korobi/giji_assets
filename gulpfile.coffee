@@ -44,10 +44,9 @@ config =
 
 
 gulp.task "default", ["browser:sync"], ->
-  gulp.watch "app/**/*.{html,slim}",            ["asset:html"]
-  gulp.watch "app/**/*.{js,ls,coffee,erb,yml}", ["asset:js"]
-  gulp.watch "app/**/*.{css,scss}",             ["asset:css"]
-  gulp.watch "public/assets-master/*", ["browser:reload"]
+  gulp.watch "asset/**/*.{html,slim}",            ["asset:html"]
+  gulp.watch "asset/**/*.{js,ls,coffee,erb,yml}", ["asset:js"]
+  gulp.watch "asset/**/*.{css,scss}",             ["asset:css"]
   gulp.start [
     "asset:html"
     "asset:js"

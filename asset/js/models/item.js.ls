@@ -41,4 +41,10 @@ GUI.items_module = (type)->
             win.scroll.size = 10
       view: ->
         win.scroll.pager "div", query.list, (v)->
-          doc.message[v.template](v)
+          switch
+            case (t = doc.component[v.template])?
+              m "div", m.component t, v
+            case (t = doc.view[v.template])?
+              t(v)
+            case (t = doc.message[v.template])?
+              t(v)
