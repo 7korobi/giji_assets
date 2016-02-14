@@ -57,7 +57,8 @@ new Mem.Rule("form").schema ->
       targets = listup("near", o.live, o.mob)
       if mestype in <[SAY GSAY VSAY TSAY]>
         targets.push job: "―――", name: "", pno: -1
-      Mem.rule.form_text.merge [{form_id, mestype, format, targets, able}]
+      if targets.length
+        Mem.rule.form_text.merge [{form_id, mestype, format, targets, able}]
 
     input = (role, able)->
       target = m.prop(-1)

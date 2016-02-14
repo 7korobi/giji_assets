@@ -94,7 +94,7 @@ doc.message.form = (v)->
               GUI.portrate face._id
             m "td",
               m ".msg",
-                doc.message.ext.talk_name v.name, "#{chr_job.job} #{face.name}", v.to
+                doc.ext.talk_name v.name, "#{chr_job.job} #{face.name}", v.to
                 m "form", form_text.attr.form(),
                   m "textarea[rows=5]", form_text.attr.text()
                 m "p.mes_date",

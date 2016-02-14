@@ -218,27 +218,5 @@ GUI =
     order:  ids_list
     config: ids_sort
 
-  accordion: (mark, list)->
-    cancel = GUI.attrs {}, ->
-      @end (e)->
-        list.tap = null
-
-    items = []
-    items.push m "dt", cancel, m "span.mark", m.trust "&#x2718"
-
-    cb = ({head, text}, idx)->
-      tap = GUI.attrs {}, ->
-        @end (e)->
-          list.tap = idx
-      items.push m "dt", tap,
-        m "strong", m.trust head
-        m ".allow", "↨"
-      if list.tap == idx
-        items.push m "dd", m.trust text
-
-    for o, i in list
-      cb o, i
-
-    m "dl.accordion", win.scroll.mark(mark), items
 
 module.exports = GUI

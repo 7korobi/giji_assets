@@ -1,19 +1,3 @@
-@change_pin = (id)->
-  target = menu.scope.state()
-  switch target
-    when "history"
-      target_at = Url.prop.memo_at
-    when "memo", "talk", "home"
-      target_at = Url.prop["#{target}_at"]
-
-  if target_at
-    target_at id
-    Url.prop.back target
-
-  Url.prop.scroll id
-  menu.icon.change "pin"
-
-
 if gon?.events? && gon.event?
   win.mount "#messages", (dom)->
     win.scroll.size = 30

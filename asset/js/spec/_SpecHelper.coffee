@@ -7,7 +7,7 @@ roop = ->
 roop()
 
 data_store = {}
-present_canvas = ({size: [width, height], layout: [dx, dy, dz]})->
+touch_view = Canvas ({size: [width, height], layout: [dx, dy, dz]})->
   arc = (ctx, x, y, size, color)->
     ctx.beginPath()
     ctx.arc(x, y, size, 0, 2 * Math.PI, true);
@@ -86,8 +86,8 @@ win.mount "#win", (dom)->
         JSON.stringify
           compass: _.round win.compass, 1
           is_tap:  win.is_tap
-      m.component Canvas, "#head", present_canvas, size: [800, 600], layout: [-10,  10]
-      m.component Canvas, "#tail", present_canvas, size: [600, 400], layout: [ 10, -10]
+      m.component touch_view, "#head", size: [800, 600], layout: [-10,  10]
+      m.component touch_view, "#tail", size: [600, 400], layout: [ 10, -10]
       m "table",
         m "thead",
           m "tr",

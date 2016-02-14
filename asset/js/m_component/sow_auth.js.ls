@@ -1,4 +1,4 @@
-sow_auth =
+doc.component.sow_auth =
   controller: ({uid, pwd})!->
     @url = gon.url
 
@@ -94,10 +94,3 @@ sow_auth =
           m ".WSAY", m ".emboss", msg
         for msg in c.infos
           m ".TSAY", m ".emboss", msg
-
-doc.component.sow_auth = sow_auth
-
-win.mount \#sow_auth, ->
-  controller: ->
-  view: ->
-    m.component doc.component.sow_auth, Url.prop

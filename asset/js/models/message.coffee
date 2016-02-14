@@ -130,13 +130,13 @@ new Mem.Rule("message").schema ->
     else
       ats[o.updated_at] = 1
 
-    vdom = doc.message.xxx
+    vdom = doc.view.xxx
     switch o.logid[1]
       when "S", "X"
-        vdom = doc.message.talk
+        vdom = doc.view.talk
         o.show = bit.TALK
       when "A", "B"
-        vdom = doc.message.action
+        vdom = doc.view.action
         o.anchor = "act"
         o.show = bit.ACTION
       when "M"
@@ -144,11 +144,11 @@ new Mem.Rule("message").schema ->
         anker_id = o.event_id + "-M" + tail
         # o.logid = o.mestype[0..0] + tail  # data cleaned
         ids[anker_id] = o._id
-        vdom = doc.message.memo
+        vdom = doc.view.memo
         o.anchor = "memo"
         o.show = bit.MEMO
       when "I"
-        vdom = doc.message.info
+        vdom = doc.view.info
         o.anchor = "info"
         o.show = bit.INFO
 
@@ -171,22 +171,22 @@ new Mem.Rule("message").schema ->
 
     switch o.mestype
       when "MAKER", "ADMIN"
-        vdom = doc.message.guide unless o.show == bit.ACTION
+        vdom = doc.view.guide unless o.show == bit.ACTION
         o.mask = "ANNOUNCE"
       when "CAST"
-        vdom = doc.message.potofs
+        vdom = doc.view.potofs
       when "STORY"
         o.pen = o.event_id
         o.mask = "ALL"
         switch o.logid
           when "STORY-TEXT"
-            vdom = doc.message.story_text
+            vdom = doc.view.story_text
           when "STORY-RULE"
-            vdom = doc.message.story_rule
+            vdom = doc.view.story_rule
           when "STORY-GAME"
-            vdom = doc.message.story_game
+            vdom = doc.view.story_game
       when "EVENT"
-        vdom = doc.message.event
+        vdom = doc.view.event
         o.pen = o.event_id
         o.mask = "ALL"
 
@@ -198,7 +198,7 @@ new Mem.Rule("message").schema ->
   @map_reduce (o, emit)->
     has.face[o.face_id] = true
 
-    if o.vdom == doc.message.talk || o.vdom == doc.message.guide
+    if o.vdom == doc.view.talk || o.vdom == doc.view.guide
       if o.log
         time_id = pack.Date(o.updated_at / timespan)
         item =

@@ -9312,13 +9312,15 @@
             pno: -1
           });
         }
-        return Mem.rule.form_text.merge([{
-          form_id: form_id,
-          mestype: mestype,
-          format: format,
-          targets: targets,
-          able: able
-        }]);
+        if (targets.length) {
+          return Mem.rule.form_text.merge([{
+            form_id: form_id,
+            mestype: mestype,
+            format: format,
+            targets: targets,
+            able: able
+          }]);
+        }
       };
       input = function(role, able){
         var target, old, targets, obj;
@@ -10049,16 +10051,16 @@
       } else {
         ats[o.updated_at] = 1;
       }
-      vdom = doc.message.xxx;
+      vdom = doc.view.xxx;
       switch (o.logid[1]) {
         case "S":
         case "X":
-          vdom = doc.message.talk;
+          vdom = doc.view.talk;
           o.show = bit.TALK;
           break;
         case "A":
         case "B":
-          vdom = doc.message.action;
+          vdom = doc.view.action;
           o.anchor = "act";
           o.show = bit.ACTION;
           break;
@@ -10066,12 +10068,12 @@
           tail = o.logid.slice(1);
           anker_id = o.event_id + "-M" + tail;
           ids[anker_id] = o._id;
-          vdom = doc.message.memo;
+          vdom = doc.view.memo;
           o.anchor = "memo";
           o.show = bit.MEMO;
           break;
         case "I":
-          vdom = doc.message.info;
+          vdom = doc.view.info;
           o.anchor = "info";
           o.show = bit.INFO;
       }
@@ -10102,29 +10104,29 @@
         case "MAKER":
         case "ADMIN":
           if (o.show !== bit.ACTION) {
-            vdom = doc.message.guide;
+            vdom = doc.view.guide;
           }
           o.mask = "ANNOUNCE";
           break;
         case "CAST":
-          vdom = doc.message.potofs;
+          vdom = doc.view.potofs;
           break;
         case "STORY":
           o.pen = o.event_id;
           o.mask = "ALL";
           switch (o.logid) {
             case "STORY-TEXT":
-              vdom = doc.message.story_text;
+              vdom = doc.view.story_text;
               break;
             case "STORY-RULE":
-              vdom = doc.message.story_rule;
+              vdom = doc.view.story_rule;
               break;
             case "STORY-GAME":
-              vdom = doc.message.story_game;
+              vdom = doc.view.story_game;
           }
           break;
         case "EVENT":
-          vdom = doc.message.event;
+          vdom = doc.view.event;
           o.pen = o.event_id;
           o.mask = "ALL";
       }
@@ -10135,7 +10137,7 @@
     return this.map_reduce(function(o, emit) {
       var item, time_id;
       has.face[o.face_id] = true;
-      if (o.vdom === doc.message.talk || o.vdom === doc.message.guide) {
+      if (o.vdom === doc.view.talk || o.vdom === doc.view.guide) {
         if (o.log) {
           time_id = pack.Date(o.updated_at / timespan);
           item = {

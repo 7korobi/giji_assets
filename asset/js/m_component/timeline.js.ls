@@ -15,8 +15,7 @@ mestype_orders = <[
   ADMIN
 ]>
 
-
-timeline_present = ({size: [width, height]})->
+doc.component.timeline = Canvas ({size: [width, height]})->
   {talk, open, potofs_hide, talk_at, search} = Url.prop
   return unless Mem.events.list.length
 
@@ -138,6 +137,3 @@ timeline_present = ({size: [width, height]})->
         ctx.fillText event.name, x * left, height - 12, max_width
 
     ctx.stroke()
-
-doc.timeline = ->
-  m.component Canvas, \#timeline, timeline_present, size: [2 * doc.width.content(), 150]

@@ -45,11 +45,12 @@ config =
 
 gulp.task "default", ["browser:sync"], ->
   gulp.watch "asset/**/*.{html,slim}",            ["asset:html"]
-  gulp.watch "asset/**/*.{js,ls,coffee,erb,yml}", ["asset:js"]
+  gulp.watch "asset/**/*.{js,ls,coffee,erb,yml}", ["clean", "asset:js"]
   gulp.watch "asset/**/*.{css,scss}",             ["asset:css"]
   gulp.start [
-    "asset:html"
+    "clean"
     "asset:js"
+    "asset:html"
     "asset:css"
   ]
 

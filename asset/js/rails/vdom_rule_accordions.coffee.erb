@@ -4,14 +4,3 @@ if gon?.items?
 
 for name in <%- JSON.stringify(MESSAGE.module.rails) %>
   GUI.items_module name
-
-rule_accordion = (type)->
-  win.mount "#rule-#{type}", (dom)->
-      controller: ->
-      view: ->
-        GUI.accordion type, RULE[type].list
-
-rule_accordion "nation"
-rule_accordion "village"
-rule_accordion "maker"
-rule_accordion "player"

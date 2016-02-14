@@ -88,7 +88,7 @@ module.exports = ({gulp, $, src, dest,  yml})->
     .pipe gulp.dest dest.asset.asset
 
 
-  gulp.task "asset:js:tmp", ["clean", "asset:yaml"], ->
+  gulp.task "asset:js:tmp", ["asset:yaml"], ->
     gulp
     .src [src.asset.js]
     .on "error", alert

@@ -1,4 +1,4 @@
-vmake =
+doc.component.vmake =
   controller: (v)!->
     @is_check = m.prop false
     @mosaic =
@@ -22,5 +22,3 @@ vmake =
             m "input", mosaic
       else
         m "h6", "村を作成する場合はログインして下さい。"
-
-doc.component.vmake = vmake

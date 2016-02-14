@@ -11,7 +11,7 @@ form =
   action: (f, props)->
     m "form[name=action_form]",
       m ".#{f.mestype}.action", {key: f._id},
-        doc.message.ext.action_text null, f.name, f.style, f.log().deco_preview
+        doc.ext.action_text null, f.name, f.style, f.log().deco_preview
         m "h6", "#{f.count} #{f.title}"
         m ".mark", f.errors
         m ".formpl_content",
@@ -43,8 +43,8 @@ form =
                 m "select#entry_role", Txt.input(props.role), f.roles
               m "div",
                 if f.is_preview()
-                  doc.message.ext.talk_name null, "#{f.chr_job.job} #{f.chr_job.face.name}"
-                  doc.message.ext.talk_text null, props.style(), f.log().deco_preview
+                  doc.ext.talk_name null, "#{f.chr_job.job} #{f.chr_job.face.name}"
+                  doc.ext.talk_text null, props.style(), f.log().deco_preview
                   m "h6", "参加する時のセリフ"
                 else
                   m "textarea[cols=30][rows=#{f.lines}]", Txt.input(f.log)
@@ -77,7 +77,7 @@ form =
 
           m "td",
             if f.is_preview()
-              doc.message.ext.talk_text props.style(), f.log().deco_preview
+              doc.ext.talk_text props.style(), f.log().deco_preview
               m "h6", "参加する時のセリフ"
             else
               m "textarea[cols=30][rows=#{f.lines}]", Txt.input(f.log)

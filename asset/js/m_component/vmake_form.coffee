@@ -7,7 +7,7 @@ error_and_info = (o)->
     for msg in o.infos
       m ".TSAY", m ".emboss", msg
 
-vmake_form =
+doc.component.vmake_form =
   controller: (v)->
     v.form =
       extra: []
@@ -87,9 +87,9 @@ vmake_form =
       name = "#{chr_job.job} #{face.name}"
 
       [ m "h3", "プロローグ"
-        doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_0.deco_text_lf}
+        doc.view.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_0.deco_text_lf}
         m "h3", "１日目"
-        doc.message.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_1.deco_text_lf}
+        doc.view.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_1.deco_text_lf}
         m "h3", "参加キャラクター"
       ]
     v
@@ -317,5 +317,3 @@ vmake_form =
             m "legend.emboss", "決定"
             m "input", {type:"submit", value: "村の作成"}
             error_and_info v.http
-
-doc.component.vmake_form = vmake_form
