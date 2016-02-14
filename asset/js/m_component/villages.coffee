@@ -1,4 +1,4 @@
-doc.component.villages
+doc.component.villages =
   controller: ->
   view: ->
     face = Mem.map_face_detail

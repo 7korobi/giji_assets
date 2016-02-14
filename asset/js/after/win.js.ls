@@ -107,4 +107,4 @@ if gon?.stories?
       open: ->
         win.scroll.size = 120
         menu.scope.change "normal"
-    doc.component.storys
+    doc.component.stories

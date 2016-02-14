@@ -1510,7 +1510,7 @@
           return menu.scope.change("normal");
         }
       });
-      return doc.component.storys;
+      return doc.component.stories;
     });
   }
 }).call(this);
@@ -2812,7 +2812,7 @@
 }).call(this);
 
 (function() {
-  doc.component.villages({
+  doc.component.villages = {
     controller: function() {},
     view: function() {
       var face, folder, letters, story_id;
@@ -2846,7 +2846,7 @@
       ];
       return m(".MAKER.guide", win.scroll.mark("villages"), letters);
     }
-  });
+  };
 
 }).call(this);
 
