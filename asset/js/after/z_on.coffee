@@ -1,2 +1,0 @@
-win.deploy()
-m.endComputation()

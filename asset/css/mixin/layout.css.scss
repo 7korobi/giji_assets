@@ -74,10 +74,8 @@ $action-border: 18px;
         }
       }
 
-      h1 {
-        width: $head;
-        margin-left: ($content - $head) / $h1_margin;
-      }
+      h1,
+      h1 img,
       .memo,
       .talk {
         width: $content;

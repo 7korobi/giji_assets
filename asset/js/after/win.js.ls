@@ -12,8 +12,12 @@ win.on.resize.push ->
 
 
 win.mount \title, -> doc.component.title
-win.mount \#to_root, -> doc.component.banner
-win.mount \#character_tag, -> doc.component.characters
+win.mount \#to_root, ->
+  controller: ->
+  view: doc.view.banner
+win.mount \#character_tag, ->
+  controller: ->
+  view: doc.view.characters
 
 win.mount \#buttons, (dom)->
   layout = new win.layout dom, 1, -1
@@ -108,3 +112,6 @@ if gon?.stories?
         win.scroll.size = 120
         menu.scope.change "normal"
     doc.component.stories
+
+win.deploy()
+m.endComputation()

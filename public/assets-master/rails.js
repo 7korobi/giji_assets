@@ -291,214 +291,6 @@
 }).call(this);
 
 (function() {
-  if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
-    catch_gon.face();
-    win.mount("#summary", function() {
-      return doc.component.summary;
-    });
-    win.mount("#calc", function() {
-      return doc.component.calc;
-    });
-    win.mount("#village", function() {
-      return doc.component.villages;
-    });
-    win.mount("#sow_user", function() {
-      return doc.component.sow_users;
-    });
-  }
-
-}).call(this);
-
-(function() {
-  var ref;
-
-  if ((typeof gon !== "undefined" && gon !== null ? (ref = gon.map_reduce) != null ? ref.faces : void 0 : void 0) != null) {
-    catch_gon.map_reduce_faces();
-    win.mount("#map_faces", function(dom) {
-      return {
-        controller: function() {},
-        view: function() {
-          var attr, attr_main, chr_job, chr_set, chrs, headline, job_name, map_order_set, o, order, ref1, search;
-          ref1 = Url.prop, order = ref1.order, chr_set = ref1.chr_set, search = ref1.search;
-          map_order_set = Mem.conf.map_faces_order[order()];
-          chrs = Mem.map_faces.active(order(), chr_set(), search()).list;
-          headline = "";
-          if (chrs != null ? chrs.length : void 0) {
-            headline = [m(".GSAY.badge", Mem.chr_sets.find(chr_set()).caption), "の" + chrs.length + "人を、", m(".GSAY.badge", map_order_set.headline), "回数で並べています"];
-          }
-          return [
-            m("div", headline), m("hr.black"), (function() {
-              var i, len, results;
-              results = [];
-              for (i = 0, len = chrs.length; i < len; i++) {
-                o = chrs[i];
-                chr_job = Mem.chr_jobs.find((chr_set()) + "_" + o.face_id);
-                job_name = chr_job.job;
-                attr = null;
-                attr_main = GUI.attrs({}, function() {
-                  var config, elem, out, over;
-                  elem = null;
-                  config = function(_elem) {
-                    return elem = _elem;
-                  };
-                  over = function() {
-                    return GUI.Animate.jelly.up(elem);
-                  };
-                  out = function() {
-                    return GUI.Animate.jelly.down(elem);
-                  };
-                  this.config(config);
-                  this.over(over);
-                  this.out(out);
-                  return attr = GUI.attrs({}, function() {
-                    this.over(over);
-                    return this.out(out);
-                  });
-                });
-                results.push(m(".chrbox", {
-                  key: o._id
-                }, GUI.portrate(o.face_id, attr_main), m(".chrblank.line4", attr, m("div", job_name), m("div", o.face.name), m("div", m("a.mark", {
-                  href: "/map_reduce/faces/" + o.face_id
-                }, map_order_set.caption + " " + o.win.value[map_order_set.order] + "回")), m("div", "♥" + o.sow_auth_id.max_is))));
-              }
-              return results;
-            })(), m("hr.black")
-          ];
-        }
-      };
-    });
-    win.mount("#chr_sets", function(dom) {
-      return {
-        controller: function() {},
-        view: function() {
-          return menu.icon.icon("th-large", {
-            deploy: function(main_menu) {
-              main_menu.drill("order", {
-                caption: "並び順",
-                view: function() {
-                  var key, o, ref1, results;
-                  ref1 = Mem.conf.map_faces_order;
-                  results = [];
-                  for (key in ref1) {
-                    o = ref1[key];
-                    results.push(m("span", Btn.set({}, Url.prop.order, key), o.caption));
-                  }
-                  return results;
-                }
-              });
-              return main_menu.drill("chr_set", {
-                caption: "キャラセット",
-                view: function(sub_menu) {
-                  return sub_menu.radio({
-                    "class": "chr_set"
-                  }, Url.prop.chr_set, Mem.map_faces.reduce, "chr_set", function(key) {
-                    return Mem.chr_sets.find(key).caption;
-                  });
-                }
-              });
-            },
-            view: function(main_menu) {
-              return m(".paragraph", m("h6", "詳しく検索してみよう"), m("input.small", Txt.input(Url.prop.search)), m("span", "検索条件：キャラクター名 / 肩書き / プレイヤー "), m("h6", "キャラセットを選んでみよう"), main_menu.drills({}, ["order", "chr_set"]));
-            }
-          });
-        }
-      };
-    });
-  }
-
-}).call(this);
-
-(function() {
-  var chr_box, chrs, new_chrs, old_chrs;
-
-  if (((typeof gon !== "undefined" && gon !== null ? gon.new_chr_faces : void 0) != null) && ((typeof gon !== "undefined" && gon !== null ? gon.new_chr_jobs : void 0) != null)) {
-    Mem.rule.face.merge(gon.new_chr_faces);
-    Mem.rule.chr_job.merge(gon.new_chr_jobs);
-    chrs = Mem.chr_jobs.where({
-      chr_set_id: "time"
-    }).sort(false, function(o) {
-      return o.face.order;
-    }).list;
-    old_chrs = chrs.slice(0, 24);
-    new_chrs = chrs.slice(24);
-    chr_box = function(o) {
-      var attr;
-      attr = GUI.attrs({}, function() {
-        var elem;
-        elem = null;
-        this.over(function() {
-          return GUI.Animate.jelly.up(elem);
-        });
-        this.out(function() {
-          return GUI.Animate.jelly.down(elem);
-        });
-        return this.config(function(_elem) {
-          return elem = _elem;
-        });
-      });
-      return m(".chrbox", {
-        key: o._id
-      }, GUI.portrate(o.face_id, attr), m(".chrblank", m("div", m.trust(o.job)), m("div", m.trust(o.face.name))));
-    };
-    win.mount("#map_faces", function(dom) {
-      return {
-        controller: function() {},
-        view: function() {
-          var o;
-          return [
-            m("h6", "参考文献"), m("hr.black"), m(".mark", "〜 新人さん歓迎パーティー 〜"), m("h6", "いま記述のある新人さんの肩書、名前は仮のものです。"), (function() {
-              var i, len, results;
-              results = [];
-              for (i = 0, len = new_chrs.length; i < len; i++) {
-                o = new_chrs[i];
-                results.push(chr_box(o));
-              }
-              return results;
-            })(), m("h6", "歓迎する人達"), (function() {
-              var i, len, results;
-              results = [];
-              for (i = 0, len = old_chrs.length; i < len; i++) {
-                o = old_chrs[i];
-                results.push(chr_box(o));
-              }
-              return results;
-            })(), m("hr.black")
-          ];
-        }
-      };
-    });
-  }
-
-}).call(this);
-
-(function(){
-  win.mount('#chr_name_lists', function(dom){
-    return {
-      controller: function(){},
-      view: function(){
-        var i$, ref$, len$, idx, code_counts, lresult$, code_str, results$ = [];
-        for (i$ = 0, len$ = (ref$ = Mem.faces.name_head()).length; i$ < len$; ++i$) {
-          idx = i$;
-          code_counts = ref$[i$];
-          lresult$ = [];
-          lresult$.push(m("div", m("h2", idx + " hits の頭文字"), code_counts ? (fn$()) : void 8));
-          results$.push(lresult$);
-        }
-        return results$;
-        function fn$(){
-          var i$, ref$, len$, results$ = [];
-          for (i$ = 0, len$ = (ref$ = code_counts).length; i$ < len$; ++i$) {
-            code_str = ref$[i$];
-            results$.push(m(".paragraph", m("code", code_str)));
-          }
-          return results$;
-        }
-      }
-    };
-  });
-}).call(this);
-
-(function() {
   win.mount("#css_changer", function(dom) {
     return {
       controller: function() {},
@@ -1389,10 +1181,16 @@
     return doc.component.title;
   });
   win.mount('#to_root', function(){
-    return doc.component.banner;
+    return {
+      controller: function(){},
+      view: doc.view.banner
+    };
   });
   win.mount('#character_tag', function(){
-    return doc.component.characters;
+    return {
+      controller: function(){},
+      view: doc.view.characters
+    };
   });
   win.mount('#buttons', function(dom){
     var layout;
@@ -1513,6 +1311,8 @@
       return doc.component.stories;
     });
   }
+  win.deploy();
+  m.endComputation();
 }).call(this);
 
 (function() {
@@ -1855,6 +1655,115 @@
         }
         return results$;
       }()));
+    }
+  };
+}).call(this);
+
+(function(){
+  doc.component.form = {
+    controller: function(v){},
+    view: function(c, v){
+      var error_and_info, select, chr_job, face, vv, form_text, target, able, input;
+      error_and_info = function(o){
+        var list, i$, ref$, len$, msg;
+        list = [];
+        for (i$ = 0, len$ = (ref$ = o.errors).length; i$ < len$; ++i$) {
+          msg = ref$[i$];
+          list.push(m(".WSAY", m(".emboss", msg)));
+        }
+        for (i$ = 0, len$ = (ref$ = o.infos).length; i$ < len$; ++i$) {
+          msg = ref$[i$];
+          list.push(m(".TSAY", m(".emboss", msg)));
+        }
+        return m("p.mes_date", list);
+      };
+      select = function(input, able){
+        var options, pno, job, name, key, value, selected, vdoms, actions;
+        if (input.targets) {
+          options = m("optgroup[label=選択肢]", (function(){
+            var i$, ref$, len$, ref1$, results$ = [];
+            for (i$ = 0, len$ = (ref$ = input.targets).length; i$ < len$; ++i$) {
+              ref1$ = ref$[i$], pno = ref1$.pno, job = ref1$.job, name = ref1$.name;
+              key = value = pno;
+              selected = "";
+              if (input.target() === pno) {
+                selected = "selected";
+              }
+              results$.push(m("option", {
+                key: key,
+                value: value,
+                selected: selected
+              }, job + " " + name));
+            }
+            return results$;
+          }()));
+        }
+        vdoms = [];
+        if (able.action) {
+          actions = Mem.actions.for_form(v.mestype, v.format).list.map(function(act){
+            var key, value;
+            key = value = act.index;
+            return m("option", {
+              value: value,
+              key: key
+            }, act.text + "");
+          });
+          actions.unshift(m("option", {
+            value: 0,
+            key: 0
+          }, "↓ 自由入力、または選択してください。"));
+          vdoms.push(m("fieldset.text", m("form", input.attr.form(), m("select.label", input.attr.target(), options), m("select.wrapper", input.attr.action(), actions), m("input.wrapper[type=text]", input.attr.text()), m("input.btn.edge[type=submit][value=" + able.action + "]"))));
+        }
+        if (able.targets) {
+          vdoms.push(m("form", input.attr.form(), m("p.text", m("select.roster", input.attr.target(), options), "と", m("select.roster", input.attr.target(), options), m("input.label.btn.edge[type=submit][value=" + able.targets + "]"))));
+        }
+        if (able.target) {
+          vdoms.push(m("form", input.attr.form(), m("p.text", m("select.roster", input.attr.target(), options), m("input.label.btn.edge[type=submit][value=" + able.target + "]"))));
+        }
+        if (able.sw) {
+          vdoms.push(m("form", input.attr.form(), m("p.text", m("select.roster", input.attr.target(), options), m("input.label.btn.edge[type=submit][value=" + able.sw + "？]"))));
+        }
+        if (able.btn) {
+          vdoms.push(m("form", input.attr.form(), m("p.text", m("input.label.btn.edge[type=submit][value=" + able.btn + "]"), m("span.TSAY.emboss", able.change))));
+        }
+        return vdoms;
+      };
+      chr_job = Mem.chr_jobs.find(v.chr_job_id);
+      face = chr_job.face;
+      return m("div", {
+        key: v._id
+      }, m("h6", m.trust(v.role_name)), m("table." + v.mestype + ".talk", m("tr", m("th"), m("td", m(".msg", (function(){
+        var i$, ref$, len$, results$ = [];
+        for (i$ = 0, len$ = (ref$ = Mem.form_texts.formats(v._id, v.mestype).list).length; i$ < len$; ++i$) {
+          vv = ref$[i$];
+          results$.push(m("span.btn.edge", v.format_on(vv.format), vv.format_name));
+        }
+        return results$;
+      }()), (function(){
+        var i$, ref$, len$, results$ = [];
+        for (i$ = 0, len$ = (ref$ = Mem.form_texts.mestypes(v._id, v.format).list).length; i$ < len$; ++i$) {
+          vv = ref$[i$];
+          results$.push(m("span.btn.edge", v.mestype_on(vv.mestype), vv.mestype_name));
+        }
+        return results$;
+      }()))))), (form_text = Mem.form_texts.find(v._id + "-" + v.mestype + "-" + v.format)) ? (function(){
+        switch (v.format) {
+        case "act":
+          target = form_text.target_at(form_text.target());
+          return m("." + v.mestype + ".action", m("p.text", m("b", face.name), "は、", target.name, form_text.text()), m("p.mes_date", form_text.summary), m("p.text", select(form_text, {
+            action: "ACT"
+          })), error_and_info(form_text));
+        default:
+          return m("table." + v.mestype + "." + v.format, m("tr", m("th", GUI.portrate(face._id)), m("td", m(".msg", doc.ext.talk_name(v.name, chr_job.job + " " + face.name, v.to), m("form", form_text.attr.form(), m("textarea[rows=5]", form_text.attr.text())), m("p.mes_date", form_text.summary)), m(".msg", error_and_info(form_text)))));
+        }
+      }()) : void 8, m(".WIN_" + v.win + ".info", m(".emboss.pull-right", m.trust(v.role_name)), (function(){
+        var i$, ref$, len$, ref1$, results$ = [];
+        for (i$ = 0, len$ = (ref$ = v.selects).length; i$ < len$; ++i$) {
+          ref1$ = ref$[i$], able = ref1$.able, input = ref1$.input;
+          results$.push([select(input, able), error_and_info(input)]);
+        }
+        return results$;
+      }()), m("p.text", m.trust(v.role_help)), v.history ? m("p.text", m.trust(v.history)) : void 8), m(".caution.info", m("p.text", m.trust(v.able_help))), m("hr.black"));
     }
   };
 }).call(this);
