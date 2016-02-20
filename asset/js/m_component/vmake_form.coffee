@@ -9,46 +9,69 @@ error_and_info = (o)->
 
 doc.component.vmake_form =
   controller: (v)->
-    v.form =
+    v.params =
       extra: []
       role:  []
       gift:  []
       trap:  []
-      attr:
-        onreset: (e)->
-          console.log e
-          false
 
-        onsubmit: (e)->
-          if validate.cards v
-            v.submit(v.form)
-          false
+    fields = [
+      "vil_name"
+      "vil_comment"
 
-    for {_id, init} in Mem.options.list
-      v.form[_id] = init || null
+      "rating"
+      "trs_type"
+      "say_count"
+
+      "time"
+      "interval"
+      "entry_password"
+
+      "chr_npc"
+      "mob_type"
+      "game_rule"
+      "role_table"
+
+      "player_count"
+      "player_count_start"
+    ]
+    v.form = Mem.options.form v.params, fields,
+      oninput: ->
+        validate.cards v
+      onchange: ->
+        validate.cards v
+      onsubmit: ->
+        if validate.cards v
+          v.submit(v.params)
+
+    v.form.checkboxes =
+      for chk in Mem.options.checkbox().list
+        v.params[chk._id] = unpack[chk.type] chk.init
+        chk.vdom v.form.attr
+
 
     vindex = 0
-    v.form.vil_comment = [
+    v.params.vil_comment = [
       "（村のルールは、自由に編集できるよ！）"
       " "
       "■村のルール"
     ].concat(RULE.village.list.map (o)-> "#{++vindex}.#{o.head}").join("\r\n")
 
     v.reset = ->
-      {player_count} = v.form
-      role_table = Mem.role_tables.find v.form.role_table
+      {player_count} = v.params
+      role_table = Mem.role_tables.find v.params.role_table
 
       return null unless role_table
       cards_set = role_table.cards
 
       return null unless cards_set
-      v.form.role = []
-      v.form.gift = []
+      v.params.role = []
+      v.params.gift = []
       cards = cards_set[player_count]
 
       return null unless cards
       for o in Mem.roles.finds cards
-        v.form[o.cmd].push o._id
+        v.params[o.cmd].push o._id
 
     v.player_summary = (form)->
       vdoms = []
@@ -92,36 +115,58 @@ doc.component.vmake_form =
         doc.view.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_1.deco_text_lf}
         m "h3", "参加キャラクター"
       ]
-    v
 
-  view: (v)->
-    btn = (tap)->
+    add_btn = ({_id, cmd, win, name})->
+      tap = ->
+        v.params[cmd].push _id
       attr =
         onmouseup: tap
         ontouchend: tap
+      m "a.WIN_#{win}.btn.edge", attr, name
 
-    add_btn = (o)->
+    pop_btn = (cmd)->
       tap = ->
-        v.form[o.cmd].push o._id
-      m "a.WIN_#{o.win}.btn.edge", btn(tap), o.name
+        v.params[cmd].pop()
+      attr =
+        onmouseup: tap
+        ontouchend: tap
+      {attr, cmd}
 
-    sets = (method, list)->
-      tap = -> list.pop()
+    v.sets =
+      extra: pop_btn "extra"
+      role:  pop_btn "role"
+      gift:  pop_btn "gift"
+      trap:  pop_btn "trap"
+
+    v.adds =
+      human: Mem.roles.is("human").list.map add_btn
+      evil:  Mem.roles.is("evil").list.map add_btn
+      wolf:  Mem.roles.is("wolf").list.map add_btn
+      pixi:  Mem.roles.is("pixi").list.map add_btn
+      other: Mem.roles.is("other").list.map add_btn
+      gift:  Mem.roles.is("gift").list.map add_btn
+      trap:  Mem.traps.show().list.map add_btn
+      mob: [
+        _id: "mob"
+        cmd: "extra"
+        win: "NONE"
+        name: "見物人"
+      ].map add_btn
+    v
+
+  view: (v)->
+    sets = (method, {attr, cmd})->
       m "div",
-        m "a.btn.edge.icon-cancel-alt", btn(tap), ""
-        GUI.names[method] list, (size, {name, win})->
+        m "a.btn.edge.icon-cancel-alt", attr, ""
+        GUI.names[method] v.params[cmd], (size, {name, win})->
           if size > 1
             m "span.WIN_#{win}.emboss", "#{name}x#{size}"
           else
             m "span.WIN_#{win}.emboss", "#{name}"
 
-    add_btns = (query)->
-      for o in query.list
-        add_btn o
-
     v.reset()
     nindex = 0
-    if npc = Mem.chr_npcs.find v.form.chr_npc
+    if npc = Mem.chr_npcs.find v.params.chr_npc
       jobs = npc.chr_set.chr_jobs.list
     else
       jobs = []
@@ -139,8 +184,8 @@ doc.component.vmake_form =
         m ".MAKER.plane",
           m "fieldset.msg",
             m "legend.emboss", "村の名前、説明、ルール"
-            field.vil_name.view v.form, (input)-> input()
-            field.vil_comment.view v.form, (input)-> input()
+            v.form.vil_name.field()
+            v.form.vil_comment.field()
 
             m "p", "■国のルール"
             RULE.nation.list.map (o)-> m "p", "#{++nindex}.#{o.head}"
@@ -155,64 +200,52 @@ doc.component.vmake_form =
         m ".SSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "設定"
+            m "p",
+              v.form.trs_type.field (o)-> o.CAPTION
+              v.form.trs_type.label (o)->
+                m "div",
+                  m.trust o.HELP
 
-            field.trs_type.view v.form, (select, label)->
-              m "p",
-                select (o)-> o.CAPTION
-                label (o)->
-                  m "div",
-                    m.trust o.HELP
+            m "p",
+              v.form.rating.field (o)-> o.caption
+              v.form.rating.label (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
 
-            field.rating.view v.form, (select, label)->
-              m "p",
-                select (o)-> o.caption
-                label (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
+            m "p",
+              v.form.say_count.field (o)-> o.CAPTION
+              v.form.say_count.label (o)-> m.trust o.HELP
 
-            field.say_count.view v.form, (select, label)->
-              m "p",
-                select (o)-> o.CAPTION
-                label (o)-> m.trust o.HELP
-
-            field.time.view v.form, (input)-> input()
-            field.interval.view v.form, (select)->
-              m "p",
-                select (o)-> o.caption
-            field.entry_password.view v.form, (input, label)->
-              m "p",
-                input()
-                label()
+            v.form.time.field()
+            m "p",
+              v.form.interval.field (o)-> o.caption
+            m "p",
+              v.form.entry_password.field()
+              v.form.entry_password.label()
 
         m ".SSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "ゲームルール"
-            field.game_rule.view v.form, (select, label)->
-              [ select((o)-> o.CAPTION)
-                label (o)->
-                  m "ul",
-                    m.trust o.HELP
-              ]
-            for chk in Mem.options.checkbox().list
-              chk.view v.form, (input, label)->
-                m "p",
-                  input()
-                  label()
+            v.form.game_rule.field (o)-> o.CAPTION
+            v.form.game_rule.label (o)->
+              m "ul",
+                m.trust o.HELP
+            for chk in v.form.checkboxes
+              m "p",
+                chk.field()
+                chk.label()
 
         m ".VSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "編成"
+            m "p",
+              v.form.mob_type.field (o)-> o.name
+              v.form.mob_type.label (o)-> m.trust o.HELP
 
-            field.mob_type.view v.form, (select, label)->
-              m "p",
-                select (o)-> o.name
-                label (o)-> m.trust o.HELP
+            m "p",
+              v.form.role_table.field (o)-> o.name
 
-            field.role_table.view v.form, (select, label)->
-              m "p",
-                select (o)-> o.name
+            v.player_summary v.params
 
-            v.player_summary v.form
-
-        switch v.form.role_table
+        switch v.params.role_table
           when undefined
             m ".WSAY.plane",
               m "fieldset.msg",
@@ -222,86 +255,72 @@ doc.component.vmake_form =
             m ".VSAY.plane",
               m "fieldset.msg",
                 m "legend.emboss", "編成自由設定"
-                field.player_count.view v.form, (input, label)->
+                m "p",
+                  v.form.player_count.field()
+                  v.form.player_count.label()
+                if v.params.start_auto
                   m "p",
-                    input()
-                    label()
-                if v.form.start_auto
-                  field.player_count_start.view v.form, (input, label)->
-                    m "p",
-                      input()
-                      label()
-                sets "config", v.form.extra
-                sets "config", v.form.role
-                sets "config", v.form.gift
-                if v.form.seq_event
-                  sets "order", v.form.trap
+                    v.form.player_count_start.field()
+                    v.form.player_count_start.label()
+
+                sets "config", v.sets.extra
+                sets "config", v.sets.role
+                sets "config", v.sets.gift
+                if v.params.seq_event
+                  sets "order", v.sets.trap
                 else
-                  sets "config", v.form.trap
+                  sets "config", v.sets.trap
 
 
                 m "h6", "村側"
-                add_btns Mem.roles.is "human"
+                btn for btn in v.adds.human
 
                 m "h6", "敵方の人間"
-                add_btns Mem.roles.is "evil"
+                btn for btn in v.adds.evil
 
                 m "h6", "人狼"
-                add_btns Mem.roles.is "wolf"
+                btn for btn in v.adds.wolf
 
                 m "h6", "妖精"
-                add_btns Mem.roles.is "pixi"
+                btn for btn in v.adds.pixi
 
                 m "h6", "その他"
-                add_btns Mem.roles.is "other"
-                add_btn(
-                  _id: "mob"
-                  cmd: "extra"
-                  win: "NONE"
-                  name: "見物人"
-                )
+                btn for btn in v.adds.other
+                btn for btn in v.adds.mob
 
                 m "h6", "恩恵"
-                add_btns Mem.roles.is "gift"
+                btn for btn in v.adds.gift
 
                 m "h6", "事件"
-                add_btns Mem.traps.show()
+                btn for btn in v.adds.trap
 
           else
             m ".VSAY.plane",
               m "fieldset.msg",
                 m "legend.emboss", "編成詳細"
-                field.player_count.view v.form, (input, label)->
+                m "p",
+                  v.form.player_count.field()
+                  v.form.player_count.label()
+                if v.params.start_auto
                   m "p",
-                    input()
-                    label()
-                if v.form.start_auto
-                  field.player_count_start.view v.form, (input, label)->
-                    m "p",
-                      input()
-                      label()
-                sets "config", v.form.extra
-                sets "config", v.form.role
-                sets "config", v.form.gift
-                if v.form.seq_event
-                  sets "order", v.form.trap
+                    v.form.player_count_start.field()
+                    v.form.player_count_start.label()
+                sets "config", v.sets.extra
+                sets "config", v.sets.role
+                sets "config", v.sets.gift
+                if v.params.seq_event
+                  sets "order", v.sets.trap
                 else
-                  sets "config", v.form.trap
+                  sets "config", v.sets.trap
 
-                add_btn(
-                  _id: "mob"
-                  cmd: "extra"
-                  win: "NONE"
-                  name: "見物人"
-                )
+                btn for btn in v.adds.mob
 
         m ".SSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "登場人物"
-            field.chr_npc.view v.form, (input, label)->
-              m "p",
-                input (o)-> o.caption
-                label()
+            m "p",
+              v.form.chr_npc.field (o)-> o.caption
+              v.form.chr_npc.label()
 
         v.npc_says npc
         m ".minilist",

@@ -1717,8 +1717,100 @@
 }).call(this);
 
 (function() {
+  var change_attr, event, header, input, input_attr, labeler, select, textarea;
+
+  input = function(params, attr, arg) {
+    var _id, attr_value;
+    _id = arg._id, attr_value = arg.attr_value;
+    return function() {
+      var now_val;
+      now_val = params[_id];
+      attr[attr_value] = now_val;
+      attr.checked = attr.checked ? "checked" : void 0;
+      return m("input", attr);
+    };
+  };
+
+  textarea = function(params, attr, arg) {
+    var _id;
+    _id = arg._id;
+    return function() {
+      var now_val;
+      now_val = params[_id];
+      return m("textarea", attr, now_val);
+    };
+  };
+
+  select = function(params, attr, arg) {
+    var _id, init, name, options;
+    _id = arg._id, name = arg.name, options = arg.options, init = arg.init;
+    return function(data) {
+      var key, now_option, now_val, option, selected, value;
+      now_val = params[_id];
+      now_option = options[now_val];
+      selected = now_option ? null : "selected";
+      return m('select', attr, !(attr.required && init) ? m('option', {
+        selected: selected,
+        value: "",
+        key: name
+      }, "- " + name + " -") : void 0, (function() {
+        var results;
+        results = [];
+        for (value in options) {
+          option = options[value];
+          selected = now_val === value ? "selected" : null;
+          key = value;
+          results.push(m('option', {
+            selected: selected,
+            value: value,
+            key: key
+          }, data(option)));
+        }
+        return results;
+      })());
+    };
+  };
+
+  header = function(params, arg) {
+    var label_attr, name;
+    name = arg.name, label_attr = arg.label_attr;
+    return function() {
+      return m("label", label_attr, name);
+    };
+  };
+
+  labeler = function(params, arg) {
+    var _id, help_off, help_on, label_attr, options;
+    _id = arg._id, label_attr = arg.label_attr, options = arg.options, help_on = arg.help_on, help_off = arg.help_off;
+    return function(help) {
+      var now_val;
+      now_val = params[_id];
+      return m("label", label_attr, help && now_val ? help(options[now_val]) : void 0, now_val ? help_on : help_off);
+    };
+  };
+
+  event = function(params, arg) {
+    var _id, attr_value, type, val;
+    _id = arg._id, type = arg.type, attr_value = arg.attr_value;
+    val = unpack[type];
+    return m.withAttr(attr_value, function(new_val) {
+      return params[_id] = val(new_val);
+    });
+  };
+
+  change_attr = function(e) {
+    return {
+      onchange: e
+    };
+  };
+
+  input_attr = function(e) {
+    return {
+      oninput: e
+    };
+  };
+
   new Mem.Rule("option").schema(function() {
-    var input, label, select, set_event, textarea;
     this.scope(function(all) {
       return {
         checkbox: function() {
@@ -1730,74 +1822,53 @@
           return all.where(function(o) {
             return o.attr.type === 'text';
           });
+        },
+        form: function(params, list, attr) {
+          var hash, i, init, key, len, onsubmit, ref, type;
+          onsubmit = attr.onsubmit || function() {};
+          hash = {
+            attr: attr
+          };
+          hash.by_cookie = function() {
+            var cookie, i, key, len, match, ref, type;
+            for (i = 0, len = list.length; i < len; i++) {
+              key = list[i];
+              ref = all.hash[key], cookie = ref.cookie, type = ref.type;
+              if (cookie) {
+                match = document.cookie.match(RegExp(key + "=([^;]+)"));
+                if ((match != null ? match[1] : void 0) != null) {
+                  params[key] = unpack[type](decodeURI(match[1]));
+                }
+              }
+            }
+          };
+          hash.disable = function(b) {
+            var i, key, len;
+            for (i = 0, len = list.length; i < len; i++) {
+              key = list[i];
+              hash[key].attr.disabled = b;
+            }
+            return attr.disabled = b;
+          };
+          attr.onsubmit = function() {
+            if (attr.disabled) {
+              return;
+            }
+            onsubmit();
+            return false;
+          };
+          for (i = 0, len = list.length; i < len; i++) {
+            key = list[i];
+            ref = all.hash[key], init = ref.init, type = ref.type;
+            hash[key] = all.hash[key].vdom(params);
+            params[key] = unpack[type](init);
+          }
+          return hash;
         }
       };
     });
-    set_event = function(form, arg) {
-      var _id, attr_value, event, type, val;
-      _id = arg._id, type = arg.type, event = arg.event, attr_value = arg.attr_value;
-      val = unpack[type];
-      return event(m.withAttr(attr_value, function(new_val) {
-        return form[_id] = val(new_val);
-      }));
-    };
-    input = function(form, arg) {
-      var _id, attr, attr_value, now_val;
-      _id = arg._id, attr = arg.attr, attr_value = arg.attr_value;
-      now_val = form[_id];
-      attr[attr_value] = now_val;
-      attr.checked = attr.checked ? "checked" : void 0;
-      return function() {
-        return m("input", attr);
-      };
-    };
-    textarea = function(form, arg) {
-      var _id, attr, now_val;
-      _id = arg._id, attr = arg.attr;
-      now_val = form[_id];
-      return function() {
-        return m("textarea", attr, now_val);
-      };
-    };
-    select = function(form, arg) {
-      var _id, attr, init, name, now_option, now_val, options, selected;
-      _id = arg._id, attr = arg.attr, name = arg.name, options = arg.options, init = arg.init;
-      now_val = form[_id];
-      now_option = options[now_val];
-      selected = now_option ? null : "selected";
-      return function(data) {
-        var key, option, value;
-        return m('select', attr, !(attr.required && init) ? m('option', {
-          selected: selected,
-          value: "",
-          key: name
-        }, "- " + name + " -") : void 0, (function() {
-          var results;
-          results = [];
-          for (value in options) {
-            option = options[value];
-            selected = now_val === value ? "selected" : null;
-            key = value;
-            results.push(m('option', {
-              selected: selected,
-              value: value,
-              key: key
-            }, data(option)));
-          }
-          return results;
-        })());
-      };
-    };
-    label = function(form, arg) {
-      var _id, help_off, help_on, label_attr, now_val, options;
-      _id = arg._id, label_attr = arg.label_attr, options = arg.options, help_on = arg.help_on, help_off = arg.help_off;
-      now_val = form[_id];
-      return function(help) {
-        return m("label", label_attr, help && now_val ? help(options[now_val]) : void 0, now_val ? help_on : help_off);
-      };
-    };
     return this.deploy(function(o) {
-      var change_event, input_event, ref;
+      var ref;
       o.option_id = o._id;
       if ((ref = o.attr) != null ? ref.name : void 0) {
         o.attr.key = o._id;
@@ -1806,45 +1877,85 @@
       o.label_attr = {
         "for": o.attr.name
       };
-      o.type = "Thru";
-      o.view = function(form, vdom) {
-        set_event(form, o);
-        return vdom(input(form, o), label(form, o));
-      };
-      change_event = function(e) {
-        return o.attr.onchange = e;
-      };
-      input_event = function(e) {
-        o.attr.onchange = e;
-        o.attr.onkeyup = e;
-        return o.attr.onblur = e;
-      };
+      o.type = "String";
       switch (o.attr.type) {
         case "checkbox":
           o.type = "Bool";
           o.attr_value = "checked";
-          return o.event = change_event;
+          return o.vdom = function(params) {
+            var attr, field, head, label;
+            attr = change_attr(event(params, o));
+            head = header(params, o);
+            label = labeler(params, o);
+            field = input(params, _.assign(o.attr, attr), o);
+            return {
+              attr: attr,
+              head: head,
+              label: label,
+              field: field
+            };
+          };
         case "select":
           o.attr_value = "value";
-          o.event = change_event;
-          return o.view = function(form, vdom) {
-            set_event(form, o);
-            return vdom(select(form, o), label(form, o));
+          return o.vdom = function(params) {
+            var attr, field, head, label;
+            attr = change_attr(event(params, o));
+            head = header(params, o);
+            label = labeler(params, o);
+            field = select(params, _.assign(o.attr, attr), o);
+            return {
+              attr: attr,
+              head: head,
+              label: label,
+              field: field
+            };
           };
         case "textarea":
           o.attr_value = "value";
-          o.event = input_event;
-          return o.view = function(form, vdom) {
-            set_event(form, o);
-            return vdom(textarea(form, o), label(form, o));
+          return o.vdom = function(params) {
+            var attr, field, head, label;
+            attr = input_attr(event(params, o));
+            head = header(params, o);
+            label = labeler(params, o);
+            field = textarea(params, _.assign(o.attr, attr), o);
+            return {
+              attr: attr,
+              head: head,
+              label: label,
+              field: field
+            };
           };
         case "number":
           o.type = "Number";
-          o.event = input_event;
-          return o.attr_value = "value";
+          o.attr_value = "value";
+          return o.vdom = function(params) {
+            var attr, field, head, label;
+            attr = input_attr(event(params, o));
+            head = header(params, o);
+            label = labeler(params, o);
+            field = input(params, _.assign(o.attr, attr), o);
+            return {
+              attr: attr,
+              head: head,
+              label: label,
+              field: field
+            };
+          };
         default:
-          o.event = input_event;
-          return o.attr_value = "value";
+          o.attr_value = "value";
+          return o.vdom = function(params) {
+            var attr, field, head, label;
+            attr = input_attr(event(params, o));
+            head = header(params, o);
+            label = labeler(params, o);
+            field = input(params, _.assign(o.attr, attr), o);
+            return {
+              attr: attr,
+              head: head,
+              label: label,
+              field: field
+            };
+          };
       }
     });
   });
@@ -3247,7 +3358,7 @@
         "size": 20,
         "maxlength": 20,
         "required": "required",
-        "pattern": ".{2,20}"
+        "pattern": ".{6,20}"
       },
       "query": {
         "SOW": "vname"
@@ -3268,6 +3379,32 @@
         "SOW": "vcomment"
       },
       "name": null,
+      "help_on": null,
+      "help_off": null
+    },
+    "uid": {
+      "attr": {
+        "type": "text",
+        "name": "uid",
+        "size": 10,
+        "maxlength": 20
+      },
+      "query": {},
+      "name": "アカウント",
+      "cookie": true,
+      "help_on": null,
+      "help_off": null
+    },
+    "pwd": {
+      "attr": {
+        "type": "password",
+        "name": "pwd",
+        "size": 10,
+        "maxlength": 20
+      },
+      "query": {},
+      "name": "パスワード",
+      "cookie": true,
       "help_on": null,
       "help_off": null
     },
@@ -9789,36 +9926,6 @@
     });
     this.map_reduce(function(o){});
   });
-  GUI.items_module = function(type){
-    console.log("deploy #item-" + type);
-    return win.mount("#item-" + type, function(dom){
-      var query;
-      query = Mem.items.where({
-        type: type
-      });
-      return {
-        controller: function(){
-          switch (type) {
-          case 'rolelist':
-            return win.scroll.size = 10;
-          }
-        },
-        view: function(){
-          return win.scroll.pager("div", query.list, function(v){
-            var t;
-            switch (false) {
-            case (t = doc.component[v.template]) == null:
-              return m("div", m.component(t, v));
-            case (t = doc.view[v.template]) == null:
-              return t(v);
-            case (t = doc.message[v.template]) == null:
-              return t(v);
-            }
-          });
-        }
-      };
-    });
-  };
 }).call(this);
 
 (function() {
@@ -12332,7 +12439,7 @@
   cards = function(arg$){
     var error, info, ref$, role, gift, extra, mob_type, game_rule, start_auto, player_count, player_count_start, full, minus, player;
     error = arg$.error, info = arg$.info;
-    ref$ = this.form, role = ref$.role, gift = ref$.gift, extra = ref$.extra, mob_type = ref$.mob_type, game_rule = ref$.game_rule, start_auto = ref$.start_auto, player_count = ref$.player_count, player_count_start = ref$.player_count_start;
+    ref$ = this.params, role = ref$.role, gift = ref$.gift, extra = ref$.extra, mob_type = ref$.mob_type, game_rule = ref$.game_rule, start_auto = ref$.start_auto, player_count = ref$.player_count, player_count_start = ref$.player_count_start;
     full = slice$.call(role).concat(slice$.call(gift));
     minus = 0;
     minus += 2 * Mem.roles.minus2(role).length;
@@ -12426,13 +12533,12 @@
     }
   };
   sow_auth = function(arg$){
-    var error, info, uid, pwd, uid_size, pwd_size;
+    var error, info, ref$, uid, pwd, uid_size, pwd_size;
     error = arg$.error, info = arg$.info;
+    ref$ = this.params, uid = ref$.uid, pwd = ref$.pwd;
     if (this.is_login) {
       return info("OK.");
     } else {
-      uid = Url.prop.uid();
-      pwd = Url.prop.pwd();
       uid_size = (uid != null ? uid.length : void 8) || 0;
       pwd_size = (pwd != null ? pwd.length : void 8) || 0;
       if ((1 < uid_size && uid_size < 21) && (2 < pwd_size && pwd_size < 21)) {

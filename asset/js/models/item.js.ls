@@ -29,22 +29,3 @@ new Mem.Rule("item").schema !->
       o.log = data(rule, ary)[key]
 
   @map_reduce (o)->
-
-
-GUI.items_module = (type)->
-  console.log "deploy \#item-#{type}"
-  win.mount "\#item-#{type}", (dom)->
-      query = Mem.items.where({type})
-      controller: ->
-        switch type
-          case 'rolelist'
-            win.scroll.size = 10
-      view: ->
-        win.scroll.pager "div", query.list, (v)->
-          switch
-            case (t = doc.component[v.template])?
-              m "div", m.component t, v
-            case (t = doc.view[v.template])?
-              t(v)
-            case (t = doc.message[v.template])?
-              t(v)

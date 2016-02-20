@@ -39,16 +39,6 @@ GUI =
     html.className = html.className.replace GUI.header_style_p, style
     GUI.header_style_p = style
 
-
-  dom: (parent, query, cb)->
-    vdom = m query
-    tag = vdom.tag
-    attr = Object.keys(vdom.attrs)[0]
-
-    for elem in parent.querySelectorAll query
-      data = attr && unpack.Array elem.attributes[attr]?.value
-      cb.apply(elem, data)
-
   attrs_to: (parent, query, base_attrs, cb)->
     vdom = m query
     tag = vdom.tag
@@ -176,22 +166,6 @@ GUI =
 
     dsl.call func
     o
-
-  timer: (query, o)->
-    child = ""
-    attr =
-      config: (elem, is_continue, context)->
-        at = Timer.fetch o.updated_at
-        context.onunload = ->
-          delete context.update
-        context.update = (text)->
-          child = text
-          elem.innerText = text
-          elem.textContent = text
-        unless is_continue
-          at.start context
-
-    m query, attr, child
 
   inline_item: (cb)->
     inline_item_span = (align, em, vdom)->

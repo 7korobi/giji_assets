@@ -1,18 +1,43 @@
+timer = (query, o)->
+  child = ""
+  attr =
+    config: (elem, is_continue, context)->
+      at = Timer.fetch o.updated_at
+      context.onunload = ->
+        delete context.update
+      context.update = (text)->
+        child = text
+        elem.innerText = text
+        elem.textContent = text
+      unless is_continue
+        at.start context
+
+  m query, attr, child
+
+dom = (parent, query, cb)->
+  vdom = m query
+  tag = vdom.tag
+  attr = Object.keys(vdom.attrs)[0]
+
+  for elem in parent.querySelectorAll query
+    data = attr && unpack.Array elem.attributes[attr]?.value
+    cb.apply(elem, data)
+
 deco_action = (by_id)->
   config: (parent, is_continue, context)->
-    GUI.dom parent, "span[anchor]", (a, turn, id)->
+    dom parent, "span[anchor]", (a, turn, id)->
       @onmouseup = @ontouchend = (e)->
         m.startComputation()
         doc.delegate.tap_anchor(turn, a, id, by_id)
         m.endComputation()
 
-    GUI.dom parent, "span[random]", (cmd, val)->
+    dom parent, "span[random]", (cmd, val)->
       @onmouseup = @ontouchend = (e)->
         m.startComputation()
         doc.delegate.tap_random(cmd, val, by_turn, by_id)
         m.endComputation()
 
-    GUI.dom parent, "span[external]", (id, uri, protocol, host, path)->
+    dom parent, "span[external]", (id, uri, protocol, host, path)->
       @onmouseup = @ontouchend = (e)->
         m.startComputation()
         doc.delegate.tap_external(id, uri, protocol, host, path, by_id)
@@ -127,13 +152,13 @@ doc.view.guide = (v)->
     ext.talk_text v._id, v.style, v.log
     m "p.mes_date",
       m "span.emboss", identity_action(v), v.anchor
-      GUI.timer "span", v
+      timer "span", v
 
 doc.view.action = (v)->
   m ".#{v.mestype}.action", {key: v._id},
     ext.action_text v._id, v.name, v.style, v.log
     m "p.mes_date",
-      GUI.timer "span", v
+      timer "span", v
 
 doc.view.memo = (v)->
   m "table.#{v.mestype}.memo", {key: v._id},
@@ -144,12 +169,12 @@ doc.view.memo = (v)->
       m "td",
         ext.talk_text v._id, v.style, v.log
         m "p.mes_date",
-          GUI.timer "span", v
+          timer "span", v
 
 doc.view.talk = (v)->
   ext.say_base v,
     m "span.emboss", identity_action(v), v.anchor
-    GUI.timer "span", v
+    timer "span", v
 
 doc.view.history = (v)->
   ext.say_base v,

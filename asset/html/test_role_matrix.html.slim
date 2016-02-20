@@ -1,0 +1,25 @@
+doctype html
+html(lang="ja")
+  head
+    include ./includes/_head.jade
+    link(media="screen" rel="stylesheet" type="text/css" href="application.css")
+
+  body
+    #head_navi
+    #outframe.outframe
+      #contentframe.contentframe
+        .inframe
+          #role_matrix
+
+        .inframe
+          include ./includes/_copyright.jade
+
+      #footer
+
+      #tab
+        #topviewer
+        #sayfilter
+        #buttons
+  script(type="text/javascript" src="base.js")
+  script(type="text/javascript" src="const.js")
+  script(type="text/javascript" src="sow.js")

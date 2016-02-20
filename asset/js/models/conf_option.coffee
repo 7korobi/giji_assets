@@ -1,51 +1,90 @@
+input = (params, attr, {_id, attr_value})->
+  ->
+    now_val = params[_id]
+    attr[attr_value] = now_val
+    attr.checked = if attr.checked then "checked"
+    m "input", attr
+
+textarea = (params, attr, {_id})->
+  ->
+    now_val = params[_id]
+    m "textarea", attr, now_val
+
+select = (params, attr, {_id, name, options, init})->
+  (data)->
+    now_val = params[_id]
+    now_option = options[now_val]
+    selected = if now_option then null else "selected"
+    m 'select', attr,
+      unless attr.required && init
+        m 'option', {selected, value: "", key: name},
+          "- #{name} -"
+      for value, option of options
+        selected = if (now_val == value) then "selected" else null
+        key = value
+        m 'option', {selected, value, key},
+          data option
+
+header = (params, {name, label_attr})->
+  ->
+    m "label", label_attr, name
+
+labeler = (params, {_id, label_attr, options, help_on, help_off})->
+  (help)->
+    now_val = params[_id]
+    m "label", label_attr,
+      if help && now_val
+        help options[now_val]
+      if now_val
+        help_on
+      else
+        help_off
+
+
+event = (params, {_id, type, attr_value})->
+  val = unpack[type]
+  m.withAttr attr_value, (new_val)->
+    params[_id] = val new_val
+
+change_attr = (e)->
+  onchange: e
+
+input_attr = (e)->
+  oninput: e
+
+
 new Mem.Rule("option").schema ->
   @scope (all)->
     checkbox: -> all.where (o)-> o.attr.type == 'checkbox'
     text:     -> all.where (o)-> o.attr.type == 'text'
 
-  set_event = (form, {_id, type, event, attr_value})->
-    val = unpack[type]
-    event m.withAttr attr_value, (new_val)->
-      form[_id] = val new_val
+    form: (params, list, attr)->
+      onsubmit = attr.onsubmit or ->
+      hash = {attr}
+      hash.by_cookie = ->
+        for key in list
+          {cookie, type} = all.hash[key]
+          if cookie
+            match = document.cookie.match ///#{key}=([^;]+)///
+            if match?[1]?
+              params[key] = unpack[type] decodeURI match[1]
+        return
 
-  input = (form, {_id, attr, attr_value})->
-    now_val = form[_id]
-    attr[attr_value] = now_val
-    attr.checked = if attr.checked then "checked"
-    ->
-      m "input", attr
+      hash.disable = (b)->
+        for key in list
+          hash[key].attr.disabled = b
+        attr.disabled = b
 
-  textarea = (form, {_id, attr})->
-    now_val = form[_id]
-    ->
-      m "textarea", attr, now_val
+      attr.onsubmit = ->
+        return if attr.disabled
+        onsubmit()
+        false
 
-  select = (form, {_id, attr, name, options, init})->
-    now_val = form[_id]
-    now_option = options[now_val]
-    selected = if now_option then null else "selected"
-    (data)->
-      m 'select', attr,
-        unless attr.required && init
-          m 'option', {selected, value: "", key: name},
-            "- #{name} -"
-        for value, option of options
-          selected = if (now_val == value) then "selected" else null
-          key = value
-          m 'option', {selected, value, key},
-            data option
-
-  label = (form, {_id, label_attr, options, help_on, help_off})->
-    now_val = form[_id]
-    (help)->
-      m "label", label_attr,
-        if help && now_val
-          help options[now_val]
-        if now_val
-          help_on
-        else
-          help_off
-
+      for key in list
+        {init, type} = all.hash[key]
+        hash[key] = all.hash[key].vdom params
+        params[key] = unpack[type] init
+      hash
 
   @deploy (o)->
     o.option_id = o._id
@@ -56,45 +95,52 @@ new Mem.Rule("option").schema ->
     o.label_attr =
       for: o.attr.name
 
-    o.type = "Thru"
-
-    o.view = (form, vdom)->
-      set_event form, o
-      vdom input(form, o), label(form, o)
-
-    change_event = (e)->
-      o.attr.onchange = e
-
-    input_event = (e)->
-      o.attr.onchange = e
-      o.attr.onkeyup = e
-      o.attr.onblur = e
+    o.type = "String"
 
     switch o.attr.type
       when "checkbox"
         o.type = "Bool"
         o.attr_value = "checked"
-        o.event = change_event
+        o.vdom = (params)->
+          attr = change_attr event params, o
+          head = header params, o
+          label = labeler params, o
+          field = input params, _.assign(o.attr, attr), o
+          {attr, head, label, field}
 
       when "select"
         o.attr_value = "value"
-        o.event = change_event
-        o.view = (form, vdom)->
-          set_event form, o
-          vdom select(form, o), label(form, o)
+        o.vdom = (params)->
+          attr = change_attr event params, o
+          head = header params, o
+          label = labeler params, o
+          field = select params, _.assign(o.attr, attr), o
+          {attr, head, label, field}
 
       when "textarea"
         o.attr_value = "value"
-        o.event = input_event
-        o.view = (form, vdom)->
-          set_event form, o
-          vdom textarea(form, o), label(form, o)
+        o.vdom = (params)->
+          attr = input_attr event params, o
+          head = header params, o
+          label = labeler params, o
+          field = textarea params, _.assign(o.attr, attr), o
+          {attr, head, label, field}
 
       when "number"
         o.type = "Number"
-        o.event = input_event
         o.attr_value = "value"
+        o.vdom = (params)->
+          attr = input_attr event params, o
+          head = header params, o
+          label = labeler params, o
+          field = input params, _.assign(o.attr, attr), o
+          {attr, head, label, field}
 
       else
-        o.event = input_event
         o.attr_value = "value"
+        o.vdom = (params)->
+          attr = input_attr event params, o
+          head = header params, o
+          label = labeler params, o
+          field = input params, _.assign(o.attr, attr), o
+          {attr, head, label, field}

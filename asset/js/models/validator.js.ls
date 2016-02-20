@@ -80,7 +80,7 @@ action = ({error})->
 ### card choice section
 
 cards = ({error, info})->
-  {role, gift, extra, mob_type, game_rule, start_auto, player_count, player_count_start} = @form
+  {role, gift, extra, mob_type, game_rule, start_auto, player_count, player_count_start} = @params
   full = [...role, ...gift]
 
   minus = 0
@@ -145,11 +145,10 @@ input = ({info})->
 ### sow_auth section
 
 sow_auth = ({error, info})->
+  {uid, pwd} = @params
   if @is_login
     info "OK."
   else
-    uid = Url.prop.uid()
-    pwd = Url.prop.pwd()
     uid_size = uid?.length || 0
     pwd_size = pwd?.length || 0
     if 1 < uid_size < 21 && 2 < pwd_size < 21

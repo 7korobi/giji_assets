@@ -1,9 +1,20 @@
 doc.component.sow_auth =
-  controller: ({uid, pwd})!->
+  controller: !->
+    doc.user = @
     @url = gon.url
 
-    loading = (b)~>
-      @uid.disabled = @pwd.disabled = b
+    @params = {}
+    @form = Mem.options.form @params, <[uid pwd]>,
+      oninput: ~>
+        validate.sow_auth @
+      onchange: ~>
+        validate.sow_auth @
+      onsubmit: ~>
+        if doc.user.is_login
+          logout()
+        else
+          login()
+        false
 
     error = (message)~>
       @errors = [message]
@@ -14,58 +25,31 @@ doc.component.sow_auth =
         @errors = e.login || e[""]
       else
       deploy gon
-      loading false
+      @form.disable false
 
     deploy = (gon)!~>
       o = gon.sow_auth
       return unless o
-      doc.user.is_login = o.is_login > 0
+      doc.user.is_login = @is_login = o.is_login > 0
       doc.user.is_admin = o.is_admin > 0
 
       validate.sow_auth @
-      Url.popstate() # read from cookie
+      @form.by_cookie()
 
-    deploy gon
-
-    @logout = ~>
-      loading true
-      Submit.get @url,
-        cmd: "logout"
+    logout = ~>
+      cmd = "logout"
+      @form.disable true
+      Submit.get @url, {cmd}
       .then refresh, error
 
-    @login = ~>
+    login = ~>
+      @params.cmd = "login"
       if validate.sow_auth @
-        loading true
-        Submit.iframe @url,
-          cmd: "login"
-          uid: uid()
-          pwd: pwd()
+        @form.disable true
+        Submit.iframe @url, @params
         .then refresh, error
 
-
-    text = (prop)~>
-      set = m.withAttr "value", (val)~>
-        return if @is_loading
-        prop val
-        validate.sow_auth @
-
-      disabled: false
-      onblur:   set
-      onchange: set
-      onkeyup:  set
-      value: prop()
-
-    @form =
-      onsubmit: ~>
-        return false if @is_loading
-        if doc.user.is_login
-          @logout()
-        else
-          @login()
-        false
-
-    @uid = text uid
-    @pwd = text pwd
+    deploy gon
 
 
   view: (c, {uid, pwd})->
@@ -74,19 +58,17 @@ doc.component.sow_auth =
       value: label
       type: "submit"
 
-    m "form", c.form,
-      if doc.user.is_login
+    m "form", c.form.attr,
+      if c.is_login
         m ".paragraph",
           unless c.is_loading
-            m "input", submit "#{uid()} がログアウト"
+            m "input", submit "#{c.params.uid} がログアウト"
       else
         m ".paragraph",
-          m "label",
-            m "span.mark", "user id : "
-            m "input", c.uid
-          m "label",
-            m "span.mark", "password : "
-            m "input[type=password]", c.pwd
+          c.form.uid.head()
+          c.form.uid.field()
+          c.form.pwd.head()
+          c.form.pwd.field()
           unless c.is_loading
             m "input", submit "ログイン"
       m ".paragraph",

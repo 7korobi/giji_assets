@@ -95,7 +95,7 @@ vil_name:
     size: 20
     maxlength: 20
     required: required
-    pattern: ".{2,20}"
+    pattern: ".{6,20}"
   query:
     SOW: vname
   name:
@@ -112,6 +112,30 @@ vil_comment:
   query:
     SOW: vcomment
   name:
+  help_on:
+  help_off:
+
+uid:
+  attr:
+    type: text
+    name: uid
+    size: 10
+    maxlength: 20
+  query: {}
+  name: アカウント
+  cookie: true
+  help_on:
+  help_off:
+
+pwd:
+  attr:
+    type: password
+    name: pwd
+    size: 10
+    maxlength: 20
+  query: {}
+  name: パスワード
+  cookie: true
   help_on:
   help_off:
 
