@@ -47,7 +47,7 @@ doc.component.vmake_form =
     v.form.checkboxes =
       for chk in Mem.options.checkbox().list
         v.params[chk._id] = unpack[chk.type] chk.init
-        chk.vdom v.form.attr
+        chk.vdom v.params
 
 
     vindex = 0
@@ -215,8 +215,10 @@ doc.component.vmake_form =
               v.form.say_count.label (o)-> m.trust o.HELP
 
             v.form.time.field()
+            v.form.time.label()
             m "p",
               v.form.interval.field (o)-> o.caption
+              v.form.interval.label()
             m "p",
               v.form.entry_password.field()
               v.form.entry_password.label()

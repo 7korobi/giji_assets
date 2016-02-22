@@ -1717,7 +1717,36 @@
 }).call(this);
 
 (function() {
-  var change_attr, event, header, input, input_attr, labeler, select, textarea;
+  var change_attr, checkbox, event, header, input, input_attr, labeler, radio, select, textarea;
+
+  radio = function(params, attr, arg) {
+    var _id, type, uri, val;
+    _id = arg._id, type = arg.type;
+    val = unpack[type];
+    uri = pack[type];
+    return function(value) {
+      var now_val;
+      now_val = params[_id];
+      attr.value = uri(value);
+      if (now_val === val(value)) {
+        attr.checked = "checked";
+      }
+      return m("input", attr);
+    };
+  };
+
+  checkbox = function(params, attr, arg) {
+    var _id;
+    _id = arg._id;
+    return function() {
+      var now_val;
+      now_val = params[_id];
+      if (now_val) {
+        attr.checked = "checked";
+      }
+      return m("input", attr);
+    };
+  };
 
   input = function(params, attr, arg) {
     var _id, attr_value;
@@ -1726,7 +1755,6 @@
       var now_val;
       now_val = params[_id];
       attr[attr_value] = now_val;
-      attr.checked = attr.checked ? "checked" : void 0;
       return m("input", attr);
     };
   };
@@ -1785,7 +1813,7 @@
     return function(help) {
       var now_val;
       now_val = params[_id];
-      return m("label", label_attr, help && now_val ? help(options[now_val]) : void 0, now_val ? help_on : help_off);
+      return m("label", label_attr, help && now_val ? options ? help(options[now_val]) : help(now_val) : void 0, help_on || help_off ? now_val ? help_on : help_off : void 0);
     };
   };
 
@@ -1812,6 +1840,48 @@
 
   new Mem.Rule("option").schema(function() {
     this.scope(function(all) {
+      all.form = function(params, list, attr) {
+        var hash, i, init, key, len, onsubmit, ref, type;
+        onsubmit = attr.onsubmit || function() {};
+        hash = {
+          attr: attr
+        };
+        hash.by_cookie = function() {
+          var cookie, i, key, len, match, ref, type;
+          for (i = 0, len = list.length; i < len; i++) {
+            key = list[i];
+            ref = all.hash[key], cookie = ref.cookie, type = ref.type;
+            if (cookie) {
+              match = document.cookie.match(RegExp(key + "=([^;]+)"));
+              if ((match != null ? match[1] : void 0) != null) {
+                params[key] = unpack[type](decodeURI(match[1]));
+              }
+            }
+          }
+        };
+        hash.disable = function(b) {
+          var i, key, len;
+          for (i = 0, len = list.length; i < len; i++) {
+            key = list[i];
+            hash[key].attr.disabled = b;
+          }
+          return attr.disabled = b;
+        };
+        attr.onsubmit = function() {
+          if (attr.disabled) {
+            return;
+          }
+          onsubmit();
+          return false;
+        };
+        for (i = 0, len = list.length; i < len; i++) {
+          key = list[i];
+          ref = all.hash[key], init = ref.init, type = ref.type;
+          hash[key] = all.hash[key].vdom(params);
+          params[key] = unpack[type](init);
+        }
+        return hash;
+      };
       return {
         checkbox: function() {
           return all.where(function(o) {
@@ -1822,48 +1892,6 @@
           return all.where(function(o) {
             return o.attr.type === 'text';
           });
-        },
-        form: function(params, list, attr) {
-          var hash, i, init, key, len, onsubmit, ref, type;
-          onsubmit = attr.onsubmit || function() {};
-          hash = {
-            attr: attr
-          };
-          hash.by_cookie = function() {
-            var cookie, i, key, len, match, ref, type;
-            for (i = 0, len = list.length; i < len; i++) {
-              key = list[i];
-              ref = all.hash[key], cookie = ref.cookie, type = ref.type;
-              if (cookie) {
-                match = document.cookie.match(RegExp(key + "=([^;]+)"));
-                if ((match != null ? match[1] : void 0) != null) {
-                  params[key] = unpack[type](decodeURI(match[1]));
-                }
-              }
-            }
-          };
-          hash.disable = function(b) {
-            var i, key, len;
-            for (i = 0, len = list.length; i < len; i++) {
-              key = list[i];
-              hash[key].attr.disabled = b;
-            }
-            return attr.disabled = b;
-          };
-          attr.onsubmit = function() {
-            if (attr.disabled) {
-              return;
-            }
-            onsubmit();
-            return false;
-          };
-          for (i = 0, len = list.length; i < len; i++) {
-            key = list[i];
-            ref = all.hash[key], init = ref.init, type = ref.type;
-            hash[key] = all.hash[key].vdom(params);
-            params[key] = unpack[type](init);
-          }
-          return hash;
         }
       };
     });
@@ -1877,7 +1905,9 @@
       o.label_attr = {
         "for": o.attr.name
       };
-      o.type = "String";
+      if (o.type == null) {
+        o.type = "String";
+      }
       switch (o.attr.type) {
         case "checkbox":
           o.type = "Bool";
@@ -1885,13 +1915,26 @@
           return o.vdom = function(params) {
             var attr, field, head, label;
             attr = change_attr(event(params, o));
+            attr = _.assign(o.attr, attr);
             head = header(params, o);
             label = labeler(params, o);
-            field = input(params, _.assign(o.attr, attr), o);
+            field = checkbox(params, attr, o);
             return {
               attr: attr,
               head: head,
               label: label,
+              field: field
+            };
+          };
+        case "radio":
+          o.attr_value = "value";
+          return o.vdom = function(params) {
+            var attr, field;
+            attr = change_attr(event(params, o));
+            attr = _.assign(o.attr, attr);
+            field = radio(params, attr, o);
+            return {
+              attr: attr,
               field: field
             };
           };
@@ -1900,9 +1943,10 @@
           return o.vdom = function(params) {
             var attr, field, head, label;
             attr = change_attr(event(params, o));
+            attr = _.assign(o.attr, attr);
             head = header(params, o);
             label = labeler(params, o);
-            field = select(params, _.assign(o.attr, attr), o);
+            field = select(params, attr, o);
             return {
               attr: attr,
               head: head,
@@ -1915,9 +1959,10 @@
           return o.vdom = function(params) {
             var attr, field, head, label;
             attr = input_attr(event(params, o));
+            attr = _.assign(o.attr, attr);
             head = header(params, o);
             label = labeler(params, o);
-            field = textarea(params, _.assign(o.attr, attr), o);
+            field = textarea(params, attr, o);
             return {
               attr: attr,
               head: head,
@@ -1931,9 +1976,10 @@
           return o.vdom = function(params) {
             var attr, field, head, label;
             attr = input_attr(event(params, o));
+            attr = _.assign(o.attr, attr);
             head = header(params, o);
             label = labeler(params, o);
-            field = input(params, _.assign(o.attr, attr), o);
+            field = input(params, attr, o);
             return {
               attr: attr,
               head: head,
@@ -1946,9 +1992,10 @@
           return o.vdom = function(params) {
             var attr, field, head, label;
             attr = input_attr(event(params, o));
+            attr = _.assign(o.attr, attr);
             head = header(params, o);
             label = labeler(params, o);
-            field = input(params, _.assign(o.attr, attr), o);
+            field = input(params, attr, o);
             return {
               attr: attr,
               head: head,
@@ -3245,6 +3292,13 @@
   });
 
   Mem.rule.option.set({
+    "header_state": {
+      "attr": {
+        "className": "invisible",
+        "type": "radio"
+      },
+      "init": "finish"
+    },
     "vote_sign": {
       "attr": {
         "name": "votetype",

@@ -1,8 +1,22 @@
+radio = (params, attr, {_id, type})->
+  val = unpack[type]
+  uri = pack[type]
+  (value)->
+    now_val = params[_id]
+    attr.value = uri value
+    attr.checked = "checked" if now_val == val value
+    m "input", attr
+
+checkbox = (params, attr, {_id})->
+  ->
+    now_val = params[_id]
+    attr.checked = "checked" if now_val
+    m "input", attr
+
 input = (params, attr, {_id, attr_value})->
   ->
     now_val = params[_id]
     attr[attr_value] = now_val
-    attr.checked = if attr.checked then "checked"
     m "input", attr
 
 textarea = (params, attr, {_id})->
@@ -34,11 +48,15 @@ labeler = (params, {_id, label_attr, options, help_on, help_off})->
     now_val = params[_id]
     m "label", label_attr,
       if help && now_val
-        help options[now_val]
-      if now_val
-        help_on
-      else
-        help_off
+        if options
+          help options[now_val]
+        else
+          help now_val
+      if help_on || help_off
+        if now_val
+          help_on
+        else
+          help_off
 
 
 event = (params, {_id, type, attr_value})->
@@ -55,10 +73,7 @@ input_attr = (e)->
 
 new Mem.Rule("option").schema ->
   @scope (all)->
-    checkbox: -> all.where (o)-> o.attr.type == 'checkbox'
-    text:     -> all.where (o)-> o.attr.type == 'text'
-
-    form: (params, list, attr)->
+    all.form = (params, list, attr)->
       onsubmit = attr.onsubmit or ->
       hash = {attr}
       hash.by_cookie = ->
@@ -86,6 +101,10 @@ new Mem.Rule("option").schema ->
         params[key] = unpack[type] init
       hash
 
+    checkbox: -> all.where (o)-> o.attr.type == 'checkbox'
+    text:     -> all.where (o)-> o.attr.type == 'text'
+
+
   @deploy (o)->
     o.option_id = o._id
     if o.attr?.name
@@ -95,7 +114,7 @@ new Mem.Rule("option").schema ->
     o.label_attr =
       for: o.attr.name
 
-    o.type = "String"
+    o.type ?= "String"
 
     switch o.attr.type
       when "checkbox"
@@ -103,27 +122,38 @@ new Mem.Rule("option").schema ->
         o.attr_value = "checked"
         o.vdom = (params)->
           attr = change_attr event params, o
+          attr = _.assign o.attr, attr
           head = header params, o
           label = labeler params, o
-          field = input params, _.assign(o.attr, attr), o
+          field = checkbox params, attr, o
           {attr, head, label, field}
+
+      when "radio"
+        o.attr_value = "value"
+        o.vdom = (params)->
+          attr = change_attr event params, o
+          attr = _.assign o.attr, attr
+          field = radio params, attr, o
+          {attr, field}
 
       when "select"
         o.attr_value = "value"
         o.vdom = (params)->
           attr = change_attr event params, o
+          attr = _.assign o.attr, attr
           head = header params, o
           label = labeler params, o
-          field = select params, _.assign(o.attr, attr), o
+          field = select params, attr, o
           {attr, head, label, field}
 
       when "textarea"
         o.attr_value = "value"
         o.vdom = (params)->
           attr = input_attr event params, o
+          attr = _.assign o.attr, attr
           head = header params, o
           label = labeler params, o
-          field = textarea params, _.assign(o.attr, attr), o
+          field = textarea params, attr, o
           {attr, head, label, field}
 
       when "number"
@@ -131,16 +161,18 @@ new Mem.Rule("option").schema ->
         o.attr_value = "value"
         o.vdom = (params)->
           attr = input_attr event params, o
+          attr = _.assign o.attr, attr
           head = header params, o
           label = labeler params, o
-          field = input params, _.assign(o.attr, attr), o
+          field = input params, attr, o
           {attr, head, label, field}
 
       else
         o.attr_value = "value"
         o.vdom = (params)->
           attr = input_attr event params, o
+          attr = _.assign o.attr, attr
           head = header params, o
           label = labeler params, o
-          field = input params, _.assign(o.attr, attr), o
+          field = input params, attr, o
           {attr, head, label, field}

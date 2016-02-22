@@ -1502,6 +1502,7 @@ HR,
   clear: both;
 }
 
+.invisible,
 .invisible_hr {
   display: none;
 }

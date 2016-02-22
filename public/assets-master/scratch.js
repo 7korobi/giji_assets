@@ -1547,72 +1547,88 @@
 (function() {
   doc.component.header = {
     controller: function() {
-      this.state = m.prop("finish");
+      this.params = {};
+      this.form = Mem.options.form(this.params, ["header_state"], {
+        onchange: function() {}
+      });
     },
     view: function(arg) {
-      var max_all, max_cafe, max_ciel, max_crazy, max_morphe, max_pan, max_vage, max_xebec, state, top_line_attr;
-      state = arg.state;
+      var form, max_all, max_cafe, max_ciel, max_crazy, max_morphe, max_pan, max_vage, max_xebec, params, top_line_attr;
+      form = arg.form, params = arg.params;
       max_vage = Mem.conf.folder.PERJURY.config.cfg.MAX_VILLAGES;
       max_crazy = Mem.conf.folder.CRAZY.config.cfg.MAX_VILLAGES;
       max_xebec = Mem.conf.folder.XEBEC.config.cfg.MAX_VILLAGES;
       max_ciel = Mem.conf.folder.CIEL.config.cfg.MAX_VILLAGES;
       max_cafe = Mem.conf.folder.CABALA.config.cfg.MAX_VILLAGES;
-      max_pan = Mem.conf.folder.PAN.config.cfg.MAX_VILLAGES;
       max_morphe = Mem.conf.folder.MORPHE.config.cfg.MAX_VILLAGES;
-      max_all = max_vage + max_crazy + max_xebec + max_ciel;
-      max_all += max_cafe + max_morphe;
+      max_all = (max_vage + max_crazy + max_xebec + max_ciel) + (max_cafe + max_morphe);
+      max_pan = Mem.conf.folder.PAN.config.cfg.MAX_VILLAGES;
       top_line_attr = {
         style: "height: 4em; vertical-align: bottom;"
       };
-      return m("table.board#headline", m("thead", "progress" === state() ? m("tr", top_line_attr, m("th.choice[colspan=2]", {
-        key: "p"
-      }, m("strong", "進行中の村")), m("th[colspan=2]", {
-        key: "f"
-      }, m("a", Btn.set({}, state, "finish"), "終了した村を見る"))) : void 0, "finish" === state() ? m("tr", top_line_attr, m("th[colspan=2]", {
-        key: "p"
-      }, m("a", Btn.set({}, state, "progress"), "進行中の村を見る")), m("th.choice[colspan=2]", {
-        key: "f"
-      }, m("strong", "終了した村"))) : void 0, m("tr", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ"))), "progress" === state() ? m("tbody", m("tr", m("td", m("a", {
-        href: Mem.conf.folder.LOBBY.config.cfg.URL_SW + "/sow.cgi"
-      }, "lobby"), m("br"), "offparty"), m("td", max_morphe + "村:", m("a", {
-        href: Mem.conf.folder.MORPHE.config.cfg.URL_SW + "/sow.cgi"
-      }, "morphe"), m("br"), max_cafe + "村:", m("a", {
-        href: Mem.conf.folder.CABALA.config.cfg.URL_SW + "/sow.cgi"
-      }, "cafe")), m("td", "wolf", m("br"), "ultimate", m("br"), "allstar"), m("td", "role-play", m("br"), "RP-advance", m("br"), max_vage + "村:", m("a", {
-        href: Mem.conf.folder.PERJURY.config.cfg.URL_SW + "/sow.cgi"
-      }, "perjury"), m("br"), max_xebec + "村:", m("a", {
-        href: Mem.conf.folder.XEBEC.config.cfg.URL_SW + "/sow.cgi"
-      }, "xebec"), m("br"), max_crazy + "村:", m("a", {
-        href: Mem.conf.folder.CRAZY.config.cfg.URL_SW + "/sow.cgi"
-      }, "crazy"), m("br"), max_ciel + "村:", m("a", {
-        href: Mem.conf.folder.CIEL.config.cfg.URL_SW + "/sow.cgi"
-      }, "ciel")))) : void 0, "finish" === state() ? m("tbody", m("tr", m("td", m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=LOBBY"
-      }, "lobby"), m("br"), m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=OFFPARTY"
-      }, "offparty")), m("td", m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=MORPHE"
-      }, "morphe"), m("br"), m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CABALA"
-      }, "cafe")), m("td", m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=WOLF"
-      }, "wolf"), m("br"), m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ULTIMATE"
-      }, "ultimate"), m("br"), m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ALLSTAR"
-      }, "allstar")), m("td", m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=RP"
-      }, "role-play"), m("br"), m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PRETENSE"
-      }, "advance"), m("br"), m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PERJURY"
-      }, "perjury"), m("br"), m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=XEBEC"
-      }, "xebec"), m("br"), m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CRAZY"
-      }, "crazy"), m("br"), m("a", {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CIEL"
-      }, "ciel")))) : void 0);
+      return m("table.board#headline", m("thead", (function() {
+        switch (params.header_state) {
+          case "progress":
+            return m("tr", top_line_attr, m("th.choice[colspan=2]", {
+              key: "p"
+            }, m("strong", "進行中の村")), m("th[colspan=2]", {
+              key: "f"
+            }, m("label.btn.edge", form.header_state.field("finish"), "終了した村を見る")));
+          case "finish":
+            return m("tr", top_line_attr, m("th[colspan=2]", {
+              key: "p"
+            }, m("label.btn.edge", form.header_state.field("progress"), "進行中の村を見る")), m("th.choice[colspan=2]", {
+              key: "f"
+            }, m("strong", "終了した村")));
+        }
+      })(), m("tr", m("th.choice", "ロビー"), m("th.choice", "夢の形"), m("th.choice", "陰謀"), m("th.choice", "ＲＰ"))), (function() {
+        switch (params.header_state) {
+          case "progress":
+            return m("tbody", m("tr", m("td", m("a", {
+              href: Mem.conf.folder.LOBBY.config.cfg.URL_SW + "/sow.cgi"
+            }, "lobby"), m("br"), "offparty"), m("td", max_morphe + "村:", m("a", {
+              href: Mem.conf.folder.MORPHE.config.cfg.URL_SW + "/sow.cgi"
+            }, "morphe"), m("br"), max_cafe + "村:", m("a", {
+              href: Mem.conf.folder.CABALA.config.cfg.URL_SW + "/sow.cgi"
+            }, "cafe")), m("td", "wolf", m("br"), "ultimate", m("br"), "allstar"), m("td", "role-play", m("br"), "RP-advance", m("br"), max_vage + "村:", m("a", {
+              href: Mem.conf.folder.PERJURY.config.cfg.URL_SW + "/sow.cgi"
+            }, "perjury"), m("br"), max_xebec + "村:", m("a", {
+              href: Mem.conf.folder.XEBEC.config.cfg.URL_SW + "/sow.cgi"
+            }, "xebec"), m("br"), max_crazy + "村:", m("a", {
+              href: Mem.conf.folder.CRAZY.config.cfg.URL_SW + "/sow.cgi"
+            }, "crazy"), m("br"), max_ciel + "村:", m("a", {
+              href: Mem.conf.folder.CIEL.config.cfg.URL_SW + "/sow.cgi"
+            }, "ciel"))));
+          case "finish":
+            return m("tbody", m("tr", m("td", m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=LOBBY"
+            }, "lobby"), m("br"), m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=OFFPARTY"
+            }, "offparty")), m("td", m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=MORPHE"
+            }, "morphe"), m("br"), m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CABALA"
+            }, "cafe")), m("td", m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=WOLF"
+            }, "wolf"), m("br"), m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ULTIMATE"
+            }, "ultimate"), m("br"), m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ALLSTAR"
+            }, "allstar")), m("td", m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=RP"
+            }, "role-play"), m("br"), m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PRETENSE"
+            }, "advance"), m("br"), m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PERJURY"
+            }, "perjury"), m("br"), m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=XEBEC"
+            }, "xebec"), m("br"), m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CRAZY"
+            }, "crazy"), m("br"), m("a", {
+              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CIEL"
+            }, "ciel"))));
+        }
+      })());
     }
   };
 
@@ -2733,7 +2749,7 @@
         for (i = 0, len = ref.length; i < len; i++) {
           chk = ref[i];
           v.params[chk._id] = unpack[chk.type](chk.init);
-          results.push(chk.vdom(v.form.attr));
+          results.push(chk.vdom(v.params));
         }
         return results;
       })();
@@ -2918,9 +2934,9 @@
         return o.CAPTION;
       }), v.form.say_count.label(function(o) {
         return m.trust(o.HELP);
-      })), v.form.time.field(), m("p", v.form.interval.field(function(o) {
+      })), v.form.time.field(), v.form.time.label(), m("p", v.form.interval.field(function(o) {
         return o.caption;
-      })), m("p", v.form.entry_password.field(), v.form.entry_password.label()))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "ゲームルール"), v.form.game_rule.field(function(o) {
+      }), v.form.interval.label()), m("p", v.form.entry_password.field(), v.form.entry_password.label()))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "ゲームルール"), v.form.game_rule.field(function(o) {
         return o.CAPTION;
       }), v.form.game_rule.label(function(o) {
         return m("ul", m.trust(o.HELP));

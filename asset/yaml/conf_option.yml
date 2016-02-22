@@ -1,3 +1,9 @@
+header_state:
+  attr:
+    className: invisible
+    type: radio
+  init: finish
+
 vote_sign:
   attr:
     name: votetype
