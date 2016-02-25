@@ -66,6 +66,17 @@
         return document.querySelector("#contentframe").offsetWidth;
       }
     },
+    template: function(v){
+      var t;
+      switch (false) {
+      case (t = doc.component[v.template]) == null:
+        return m("div", m.component(t, v));
+      case (t = doc.view[v.template]) == null:
+        return t(v);
+      default:
+        return m(".paragraph", JSON.stringify(v));
+      }
+    },
     messages: {
       seeing: function(filter_size, center){
         var ids, list;
@@ -219,17 +230,7 @@
         view: function(arg$){
           var query;
           query = arg$.query;
-          return win.scroll.pager("div", query.list, function(v){
-            var t;
-            switch (false) {
-            case (t = doc.component[v.template]) == null:
-              return m("div", m.component(t, v));
-            case (t = doc.view[v.template]) == null:
-              return t(v);
-            case (t = doc.message[v.template]) == null:
-              return t(v);
-            }
-          });
+          return win.scroll.pager("div", query.list, doc.template);
         }
       };
     }
@@ -818,24 +819,26 @@
       return {
         controller: function() {},
         view: function() {
-          return win.scroll.pager("div", doc.messages[menu.scope.state()](Url.prop).list, function(o) {
-            var anchor_num;
-            anchor_num = o.logid.slice(2) - 0 || 0;
-            o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
-            if (!o.updated_at) {
-              o.updated_at = new Date(o.date) - 0;
-              delete o.date;
-            }
-            if (o.vdom) {
-              return o.vdom(o);
-            } else {
-              return m(".paragraph", JSON.stringify(o));
-            }
-          });
+          return win.scroll.pager("div", doc.messages[menu.scope.state()](Url.prop).list, doc.template);
         }
       };
     });
   }
+
+  (function(o) {
+    var anchor_num;
+    anchor_num = o.logid.slice(2) - 0 || 0;
+    o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
+    if (!o.updated_at) {
+      o.updated_at = new Date(o.date) - 0;
+      delete o.date;
+    }
+    if (o.vdom) {
+      return o.vdom(o);
+    } else {
+      return m(".paragraph", JSON.stringify(o));
+    }
+  });
 
 }).call(this);
 
@@ -1060,7 +1063,7 @@
           event = Mem.events.find(Url.prop.event_id());
           return m("div", event != null
             ? m(".head", event.name)
-            : m(".foot"), m("aside", m.component(potofs, Url.prop, wide_attr), m.component(filter, Url.prop)), m(".foot"));
+            : m(".foot"), m("aside", m.component(potofs, wide_attr), m.component(filter)), m(".foot"));
         }
       };
     });
@@ -1336,9 +1339,9 @@
 
 (function(){
   doc.component.filter = {
-    controller: function(arg$){
-      var talk_at, scroll, pins, this$ = this;
-      talk_at = arg$.talk_at, scroll = arg$.scroll, pins = arg$.pins;
+    controller: function(){
+      var ref$, talk_at, scroll, pins, this$ = this;
+      ref$ = Url.prop, talk_at = ref$.talk_at, scroll = ref$.scroll, pins = ref$.pins;
       this.click = {
         go: function(arg$){
           var _id;
@@ -1385,12 +1388,12 @@
         }
       };
     },
-    view: function(arg$, prop){
+    view: function(arg$){
       var seeing_top, seeing_measure, line_text_height, line_text_height_measure, click, day, center_id, filter_size, anchorview, seeingview, star, o, tag;
       seeing_top = arg$.seeing_top, seeing_measure = arg$.seeing_measure, line_text_height = arg$.line_text_height, line_text_height_measure = arg$.line_text_height_measure, click = arg$.click, day = arg$.day;
       center_id = win.scroll.prop();
       filter_size = Math.floor((win.height - seeing_top) / line_text_height) - 3;
-      anchorview = doc.messages.anchor(prop).list;
+      anchorview = doc.messages.anchor(Url.prop).list;
       seeingview = doc.messages.seeing(filter_size, win.scroll.center);
       star = function(o){
         var attr;
@@ -1753,7 +1756,7 @@
 (function(){
   doc.component.potofs_hide = {
     controller: function(){},
-    view: function(c, prop, wide_attr){
+    view: function(c, wide_attr){
       return m("section.table-swipe", m("table", m("tfoot", m("tr.center", m("th[colspan=2]"))), m("tbody.plane", wide_attr, m("tr", m("th.calc", "…")))));
     }
   };
@@ -1787,9 +1790,9 @@
     };
   };
   doc.component.potofs = {
-    controller: function(arg$){
-      var potofs_order, potofs_desc;
-      potofs_order = arg$.potofs_order, potofs_desc = arg$.potofs_desc;
+    controller: function(){
+      var ref$, potofs_order, potofs_desc;
+      ref$ = Url.prop, potofs_order = ref$.potofs_order, potofs_desc = ref$.potofs_desc;
       this.stat_at = toggle_desc(potofs_order, potofs_desc, "stat_at");
       this.stat_type = toggle_desc(potofs_order, potofs_desc, "stat_type");
       this.said_num = toggle_desc(potofs_order, potofs_desc, "said_num");
@@ -1801,9 +1804,9 @@
       this.role = toggle_desc(potofs_order, potofs_desc, "role");
       this.text = toggle_desc(potofs_order, potofs_desc, "text");
     },
-    view: function(c, arg$, wide_attr){
-      var potofs_order, potofs_desc, potofs_hide, o, className;
-      potofs_order = arg$.potofs_order, potofs_desc = arg$.potofs_desc, potofs_hide = arg$.potofs_hide;
+    view: function(c, wide_attr){
+      var ref$, potofs_order, potofs_desc, potofs_hide, o, className;
+      ref$ = Url.prop, potofs_order = ref$.potofs_order, potofs_desc = ref$.potofs_desc, potofs_hide = ref$.potofs_hide;
       return m("section.table-swipe", m("table", m("tfoot", m("tr.center", m("th[colspan=2]", m("sup", "(スクロールします。)")), m("th", m("a", c.stat_at(), "日程")), m("th", m("a", c.stat_type(), "状態")), m("th", m("a", c.said_num(), "発言")), m("th", m("a", c.pt(), "残り")), m("th", m("a", c.urge(), "促")), m("th", m("span.icon-user", " ")), m("th", m("a", c.select(), "希望")), m("th", m("a", c.win_result(), "勝敗")), m("th", m("a", c.win_side(), "陣営")), m("th", m("a", c.role(), "役割")), m("th", m("a", c.text(), "補足")))), m("tbody.plane", wide_attr, (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = Mem.potofs.view(potofs_desc(), potofs_order()).list).length; i$ < len$; ++i$) {
@@ -2405,7 +2408,7 @@
       return m(".MAKER.guide", {
         key: "STORY-TEXT"
       }, m("p.name", m("b", story.name)), doc.ext.talk_text(_id, "head", story.comment), m("p", "■国のルール"), RULE.nation.list.map(function(o){
-        return m("p", (++nindex) + "." + head);
+        return m("p", (++nindex) + "." + o.head);
       }), m(".emboss", "以上の項目が、人狼議事の", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"]', "ルール"), "と", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"]', "心構え"), "なんだ。"), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black"));
     }
   };
@@ -3455,6 +3458,110 @@
           href: v.link
         }, "最新"), "〉", v.entry_limit === "password" ? m('img[src="#{GUI.img_head}/icon/key.png"][alt="[鍵]"]') : void 8), v.view.rating, m("span.note", m("br"), "　　人物 ： " + chr_set.caption, m("br"), "　　更新 ： " + v.view.update_at + " " + v.view.update_interval + "毎", m("br"), "　 ")), m("td", v.player_count), m("td", v.status + ""), m("td", v.trs, m("br"), v.view.game_rule), m("td", m("span.note", v.view.say_limit_help)));
       }))));
+  };
+}).call(this);
+
+(function(){
+  doc.view.story_game = function(arg$){
+    var event, story, roletable, mob, trap_card, texts, text, option_id, option;
+    event = arg$.event, story = arg$.story;
+    if (!(event && story)) {
+      return [];
+    }
+    roletable = Mem.conf.role_table[story.type.roletable];
+    mob = Mem.roles.find(story.type.mob);
+    trap_card = Mem.traps.find(event.event);
+    texts = [];
+    if (event.winner && "WIN_NONE" !== event.winner) {
+      texts.push(Mem.winners.find(event.winner).name + "の勝利です。");
+    }
+    if (trap_card) {
+      texts.push(m("kbd", trap_card));
+    }
+    if (event.turn === event.grudge) {
+      texts.push(RAILS.event_state.grudge);
+    }
+    if (event.turn === event.riot) {
+      texts.push(RAILS.event_state.riot);
+    }
+    if (event.turn === event.scapegoat) {
+      texts.push(RAILS.event_state.scapegoat);
+    }
+    if (_.find(event.eclipse, event.turn)) {
+      texts.push(RAILS.event_state.eclipse);
+    }
+    return m(".MAKER." + event.winner + ".guide", {
+      key: "STORY-GAME"
+    }, (function(){
+      var i$, ref$, len$, results$ = [];
+      for (i$ = 0, len$ = (ref$ = texts).length; i$ < len$; ++i$) {
+        text = ref$[i$];
+        results$.push(m("p.text", text));
+      }
+      return results$;
+    }()), [
+      m("p.name", m("b", story.view.game_rule)), m("p.text", m("ul.note", m.trust(Mem.conf.rule[story.type.game].HELP)), m("ul.note", (function(){
+        var i$, ref$, len$, results$ = [];
+        for (i$ = 0, len$ = (ref$ = story.options).length; i$ < len$; ++i$) {
+          option_id = ref$[i$];
+          option = Mem.conf.option[option_id];
+          if (!option) {
+            continue;
+          }
+          results$.push(m("li", option.help));
+        }
+        return results$;
+      }()))), m("p.name", m("b", roletable.name + " / " + story.view.player_length + "人")), m("p.text", m("div", m("code", "事件"), story.view.trap_cards), m("div", m("code", "役職"), story.view.role_cards), m("div", m("code", mob.name), m("kbd", mob.HELP + ""))), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black")
+    ]);
+  };
+}).call(this);
+
+(function(){
+  doc.view.story_rule = function(arg$){
+    var event, story, rating, saycnt;
+    event = arg$.event, story = arg$.story;
+    if (!(event && story)) {
+      return [];
+    }
+    rating = Mem.conf.rating[story.rating];
+    saycnt = Mem.conf.say[story.type.say] || {};
+    return m(".MAKER." + event.winner + ".guide", {
+      key: "STORY-RULE"
+    }, m("p.name", m("b", "設定")), m("p.text", m("div", m("code", "こだわり"), m("img", {
+      src: GUI.img_head + ("/icon/cd_" + story.rating + ".png")
+    }), m.trust(rating.caption)), m("div", m("code", "発言制限"), m.trust(saycnt.CAPTION + "<br>" + saycnt.HELP)), m("div", m("code", "更新"), story.view.update_at + "(" + story.view.update_interval + "ごと)")), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black"));
+  };
+}).call(this);
+
+(function(){
+  doc.view.story_spines = function(arg$){
+    var _id, link, name, view, header;
+    _id = arg$._id, link = arg$.link, name = arg$.name, view = arg$.view;
+    header = m("div", m("a", {
+      href: "http://giji.check.jp" + link
+    }, m("code.icon-download")), m("a", {
+      href: "http://7korobi.gehirn.ne.jp/stories/" + _id + ".html"
+    }, m("code.icon-download")), m("kbd.note", _id), m("a", {
+      href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/" + _id
+    }, m.trust(name)), m("kbd", view.rating));
+    return m("tr", {
+      key: _id
+    }, menu.icon.state() === "resize-full"
+      ? m("td", header, m("table.detail", m("tbody", m("tr", m("th", "更新"), m("td", view.update_at + " " + view.update_interval)), m("tr", m("th", "規模"), m("td", view.player_length + "人 " + view.say_limit)), m("tr", m("th", "ルール"), m("td", view.game_rule + "")))), m(".list", view.role_cards), m(".list", view.trap_cards))
+      : m("td", header));
+  };
+}).call(this);
+
+(function(){
+  doc.view.story_text = function(arg$){
+    var _id, story, nindex;
+    _id = arg$._id, story = arg$.story;
+    nindex = 0;
+    return m(".MAKER.guide", {
+      key: "STORY-TEXT"
+    }, m("p.name", m("b", story.name)), doc.ext.talk_text(_id, "head", story.comment), m("p", "■国のルール"), RULE.nation.list.map(function(o){
+      return m("p", (++nindex) + "." + o.head);
+    }), m(".emboss", "以上の項目が、人狼議事の", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"]', "ルール"), "と", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"]', "心構え"), "なんだ。"), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black"));
   };
 }).call(this);
 

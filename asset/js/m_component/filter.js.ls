@@ -1,5 +1,6 @@
 doc.component.filter =
-  controller: ({talk_at, scroll, pins})!->
+  controller: !->
+    { talk_at, scroll, pins } = Url.prop
     @click =
       go: ({_id})->
         GUI.attrs {}, ->
@@ -32,11 +33,11 @@ doc.component.filter =
         @line_text_height = elem.offsetHeight
 
 
-  view: ({seeing_top, seeing_measure, line_text_height, line_text_height_measure, click, day}, prop)->
+  view: ({seeing_top, seeing_measure, line_text_height, line_text_height_measure, click, day})->
     center_id = win.scroll.prop()
     filter_size = Math.floor((win.height - seeing_top) / line_text_height) - 3
 
-    anchorview = doc.messages.anchor(prop).list
+    anchorview = doc.messages.anchor(Url.prop).list
     seeingview = doc.messages.seeing(filter_size, win.scroll.center)
 
     star = (o)->

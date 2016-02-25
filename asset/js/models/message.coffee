@@ -130,25 +130,25 @@ new Mem.Rule("message").schema ->
     else
       ats[o.updated_at] = 1
 
-    vdom = doc.view.xxx
+    template = o.template
     switch o.logid[1]
       when "S", "X"
-        vdom = doc.view.talk
+        template = "talk"
         o.show = bit.TALK
       when "A", "B"
-        vdom = doc.view.action
+        template = "action"
         o.anchor = "act"
         o.show = bit.ACTION
       when "M"
-        tail = o.logid[1..-1]
-        anker_id = o.event_id + "-M" + tail
-        # o.logid = o.mestype[0..0] + tail  # data cleaned
-        ids[anker_id] = o._id
-        vdom = doc.view.memo
+        template = "memo"
         o.anchor = "memo"
         o.show = bit.MEMO
+        tail = o.logid[1..-1]
+        anker_id = o.event_id + "-M" + tail
+        ids[anker_id] = o._id
+        # o.logid = o.mestype[0..0] + tail  # data cleaned
       when "I"
-        vdom = doc.view.info
+        template = "info"
         o.anchor = "info"
         o.show = bit.INFO
 
@@ -171,42 +171,35 @@ new Mem.Rule("message").schema ->
 
     switch o.mestype
       when "MAKER", "ADMIN"
-        vdom = doc.view.guide unless o.show == bit.ACTION
+        template = "guide" unless o.show == bit.ACTION
         o.mask = "ANNOUNCE"
       when "CAST"
-        vdom = doc.view.potofs
+        template = "potofs"
       when "STORY"
         o.pen = o.event_id
         o.mask = "ALL"
-        switch o.logid
-          when "STORY-TEXT"
-            vdom = doc.view.story_text
-          when "STORY-RULE"
-            vdom = doc.view.story_rule
-          when "STORY-GAME"
-            vdom = doc.view.story_game
       when "EVENT"
-        vdom = doc.view.event
         o.pen = o.event_id
         o.mask = "ALL"
 
     o.show &= mask[o.mask]
-    o.vdom = vdom
+    o.template = template
 
     o.search_words = o.log
 
   @map_reduce (o, emit)->
     has.face[o.face_id] = true
 
-    if o.vdom == doc.view.talk || o.vdom == doc.view.guide
-      if o.log
-        time_id = pack.Date(o.updated_at / timespan)
-        item =
-          count: o.log.length
-          min: o.updated_at
-          max: o.updated_at
-        emit "mask", time_id, o.mestype, item
-        emit "mask", time_id, "all", item
+    switch o.template
+      when "talk", "guide"
+        if o.log
+          time_id = pack.Date(o.updated_at / timespan)
+          item =
+            count: o.log.length
+            min: o.updated_at
+            max: o.updated_at
+          emit "mask", time_id, o.mestype, item
+          emit "mask", time_id, "all", item
     emit "event", o.event_id,
       max: o.updated_at
     emit "pen", o.pen,

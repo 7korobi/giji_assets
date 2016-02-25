@@ -42,7 +42,6 @@ export doc =
           event.is_loading = false
           cb()
 
-
   timeline: ->
     m.component doc.component.timeline, \#timeline, size: [2 * doc.width.content(), 150]
 
@@ -50,6 +49,14 @@ export doc =
     content: ->
       document.querySelector("\#contentframe").offsetWidth
 
+  template: (v)->
+    switch
+      case (t = doc.component[v.template])?
+        m "div", m.component t, v
+      case (t = doc.view[v.template])?
+        t(v)
+      else
+        m ".paragraph", JSON.stringify v
 
   messages:
     seeing: (filter_size, center)->
@@ -147,11 +154,4 @@ export doc =
           case 'rolelist'
             win.scroll.size = 10
       view: ({query})->
-        win.scroll.pager "div", query.list, (v)->
-          switch
-            case (t = doc.component[v.template])?
-              m "div", m.component t, v
-            case (t = doc.view[v.template])?
-              t(v)
-            case (t = doc.message[v.template])?
-              t(v)
+        win.scroll.pager "div", query.list, doc.template

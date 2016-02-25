@@ -1,6 +1,6 @@
 doc.component.potofs_hide =
   controller: ->
-  view: (c, prop, wide_attr)->
+  view: (c, wide_attr)->
     m "section.table-swipe",
       m "table",
         m "tfoot",

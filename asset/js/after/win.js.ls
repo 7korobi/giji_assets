@@ -93,8 +93,8 @@ if gon?.potofs?
         else
           m ".foot"
         m "aside",
-          m.component potofs, Url.prop, wide_attr
-          m.component filter, Url.prop
+          m.component potofs, wide_attr
+          m.component filter
         m ".foot"
 
 if gon?.stories?

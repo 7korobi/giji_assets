@@ -7,6 +7,7 @@ set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
     messages.push do
       story_id: story_id
       logid: "STORY-TEXT"
+      template: "story_text"
       mestype: "STORY"
       anchor: "info"
       show: RAILS.message.bit.STORY
@@ -16,6 +17,7 @@ set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
     messages.push do
       story_id: story_id
       logid: "STORY-RULE"
+      template: "story_rule"
       mestype: "STORY"
       anchor: "info"
       show: RAILS.message.bit.STORY
@@ -25,6 +27,7 @@ set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
     messages.push do
       story_id: story_id
       logid: "STORY-GAME"
+      template: "story_game"
       mestype: "STORY"
       anchor: "info"
       show: RAILS.message.bit.STORY
@@ -34,6 +37,7 @@ set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
   messages.push do
     story_id: story_id
     logid: "EVENT-ASC"
+    template: "event"
     mestype: "EVENT"
     anchor: "info"
     show: RAILS.message.bit.EVENT_ASC
@@ -43,6 +47,7 @@ set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
   messages.push do
     story_id: story_id
     logid: "EVENT-DESC"
+    template: "event"
     mestype: "EVENT"
     anchor: "info"
     show: RAILS.message.bit.EVENT_DESC

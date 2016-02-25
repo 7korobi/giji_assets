@@ -32,7 +32,8 @@ module.exports = Submit =
     method = "GET"
     url = encodeURI(base_url) + encodeURI(query_string)
     deserialize = unpack.HtmlGon
-    m.request({method, url, deserialize}).then (data)->
+    m.request({method, url, deserialize})
+    .then (data)->
       console.log " :: GET #{url}"
       data
 
@@ -74,6 +75,7 @@ module.exports = Submit =
             name: key
             value: val
     ]
-    deferred.promise.then (data)->
+    deferred.promise
+    .then (data)->
       console.log " :: POST(iframe) -> #{url}"
       data

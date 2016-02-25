@@ -21,7 +21,8 @@ toggle_desc = (prop, desc, value)->
 
 
 doc.component.potofs =
-  controller: ({potofs_order, potofs_desc})!->
+  controller: !->
+    { potofs_order, potofs_desc } = Url.prop
     @stat_at    = toggle_desc potofs_order, potofs_desc, "stat_at"
     @stat_type  = toggle_desc potofs_order, potofs_desc, "stat_type"
     @said_num   = toggle_desc potofs_order, potofs_desc, "said_num"
@@ -33,7 +34,8 @@ doc.component.potofs =
     @role       = toggle_desc potofs_order, potofs_desc, "role"
     @text       = toggle_desc potofs_order, potofs_desc, "text"
 
-  view: (c, {potofs_order, potofs_desc, potofs_hide}, wide_attr)->
+  view: (c, wide_attr)->
+    { potofs_order, potofs_desc, potofs_hide } = Url.prop
     m "section.table-swipe",
       m "table",
         m "tfoot",

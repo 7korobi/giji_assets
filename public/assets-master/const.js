@@ -9792,6 +9792,7 @@
       messages.push({
         story_id: story_id,
         logid: "STORY-TEXT",
+        template: "story_text",
         mestype: "STORY",
         anchor: "info",
         show: RAILS.message.bit.STORY,
@@ -9801,6 +9802,7 @@
       messages.push({
         story_id: story_id,
         logid: "STORY-RULE",
+        template: "story_rule",
         mestype: "STORY",
         anchor: "info",
         show: RAILS.message.bit.STORY,
@@ -9810,6 +9812,7 @@
       messages.push({
         story_id: story_id,
         logid: "STORY-GAME",
+        template: "story_game",
         mestype: "STORY",
         anchor: "info",
         show: RAILS.message.bit.STORY,
@@ -9820,6 +9823,7 @@
     messages.push({
       story_id: story_id,
       logid: "EVENT-ASC",
+      template: "event",
       mestype: "EVENT",
       anchor: "info",
       show: RAILS.message.bit.EVENT_ASC,
@@ -9829,6 +9833,7 @@
     messages.push({
       story_id: story_id,
       logid: "EVENT-DESC",
+      template: "event",
       mestype: "EVENT",
       anchor: "info",
       show: RAILS.message.bit.EVENT_DESC,
@@ -9970,9 +9975,9 @@
         o.csid || (o.csid = "all");
       }
       o.type || (o.type = type);
+      o.index || (o.index = Number(index) || o.updated_at);
       o.mestype || (o.mestype = mestype);
       o.template || (o.template = template);
-      o.index || (o.index = Number(index) || o.updated_at);
       if (o.object) {
         ref$ = o.object.split(/ +/), rule = ref$[0], ary = 1 < (i$ = ref$.length - 1) ? slice$.call(ref$, 1, i$) : (i$ = 1, []), key = ref$[i$];
         return o.log = data(rule, ary)[key];
@@ -10154,7 +10159,7 @@
       };
     });
     this.deploy(function(o) {
-      var anchor_num, anker_id, event, folder, lognumber, logtype, ref1, story, tail, turn, vdom, vid;
+      var anchor_num, anker_id, event, folder, lognumber, logtype, ref1, story, tail, template, turn, vid;
       if (o.sow != null) {
         o.mestype = SOW_RECORD.mestypes[o.sow.mestype];
       }
@@ -10212,29 +10217,29 @@
       } else {
         ats[o.updated_at] = 1;
       }
-      vdom = doc.view.xxx;
+      template = o.template;
       switch (o.logid[1]) {
         case "S":
         case "X":
-          vdom = doc.view.talk;
+          template = "talk";
           o.show = bit.TALK;
           break;
         case "A":
         case "B":
-          vdom = doc.view.action;
+          template = "action";
           o.anchor = "act";
           o.show = bit.ACTION;
           break;
         case "M":
+          template = "memo";
+          o.anchor = "memo";
+          o.show = bit.MEMO;
           tail = o.logid.slice(1);
           anker_id = o.event_id + "-M" + tail;
           ids[anker_id] = o._id;
-          vdom = doc.view.memo;
-          o.anchor = "memo";
-          o.show = bit.MEMO;
           break;
         case "I":
-          vdom = doc.view.info;
+          template = "info";
           o.anchor = "info";
           o.show = bit.INFO;
       }
@@ -10265,50 +10270,41 @@
         case "MAKER":
         case "ADMIN":
           if (o.show !== bit.ACTION) {
-            vdom = doc.view.guide;
+            template = "guide";
           }
           o.mask = "ANNOUNCE";
           break;
         case "CAST":
-          vdom = doc.view.potofs;
+          template = "potofs";
           break;
         case "STORY":
           o.pen = o.event_id;
           o.mask = "ALL";
-          switch (o.logid) {
-            case "STORY-TEXT":
-              vdom = doc.view.story_text;
-              break;
-            case "STORY-RULE":
-              vdom = doc.view.story_rule;
-              break;
-            case "STORY-GAME":
-              vdom = doc.view.story_game;
-          }
           break;
         case "EVENT":
-          vdom = doc.view.event;
           o.pen = o.event_id;
           o.mask = "ALL";
       }
       o.show &= mask[o.mask];
-      o.vdom = vdom;
+      o.template = template;
       return o.search_words = o.log;
     });
     return this.map_reduce(function(o, emit) {
       var item, time_id;
       has.face[o.face_id] = true;
-      if (o.vdom === doc.view.talk || o.vdom === doc.view.guide) {
-        if (o.log) {
-          time_id = pack.Date(o.updated_at / timespan);
-          item = {
-            count: o.log.length,
-            min: o.updated_at,
-            max: o.updated_at
-          };
-          emit("mask", time_id, o.mestype, item);
-          emit("mask", time_id, "all", item);
-        }
+      switch (o.template) {
+        case "talk":
+        case "guide":
+          if (o.log) {
+            time_id = pack.Date(o.updated_at / timespan);
+            item = {
+              count: o.log.length,
+              min: o.updated_at,
+              max: o.updated_at
+            };
+            emit("mask", time_id, o.mestype, item);
+            emit("mask", time_id, "all", item);
+          }
       }
       emit("event", o.event_id, {
         max: o.updated_at
