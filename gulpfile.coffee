@@ -30,7 +30,7 @@ config =
         'tmp/cache/gulp-js/require/'
       ]
       yaml:    'asset/yaml/*.yml'
-      html:    'asset/html/*.{slim,html}'
+      html:    'asset/html/*.{jade,html}'
       css:     'asset/css/*.css'
       js:      'asset/js/**/*.{js,ls,coffee,erb}'
     config:
@@ -44,7 +44,7 @@ config =
 
 
 gulp.task "default", ["browser:sync"], ->
-  gulp.watch "asset/**/*.{html,slim}",            ["asset:html"]
+  gulp.watch "asset/**/*.{html,jade}",            ["asset:html"]
   gulp.watch "asset/**/*.{js,ls,coffee,erb,yml}", ["clean", "asset:js"]
   gulp.watch "asset/**/*.{css,scss}",             ["asset:css"]
   gulp.start [

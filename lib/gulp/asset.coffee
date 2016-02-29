@@ -38,7 +38,7 @@ module.exports = ({gulp, $, src, dest,  yml})->
       .src src.asset.html
       .on "error", alert
       .pipe $.sort()
-      .pipe $.if "*.slim", $.jade()
+      .pipe $.if "*.jade", $.jade()
       .pipe $.if "*.html.html", $.rename extname: ""
 
 
