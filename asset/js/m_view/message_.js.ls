@@ -44,10 +44,10 @@ deco_action = (by_id)->
         m.endComputation()
 
 identity_action = (o)->
-  attr = GUI.attrs {}, ->
-    @end (e)->
-      doc.delegate.tap_identity(o.turn, o.logid, o._id)
-
+  cb = ->
+    doc.delegate.tap_identity(o.turn, o.logid, o._id)
+  onmouseup: cb
+  ontouchend: cb
 
 doc.ext = ext =
   say_base: (v, ...timer)->

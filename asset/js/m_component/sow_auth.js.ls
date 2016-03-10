@@ -1,9 +1,11 @@
+ua = "javascript"
+
 doc.component.sow_auth =
   controller: !->
     doc.user = @
     @url = gon.url
 
-    @params = {}
+    @params = {ua}
     @form = Mem.options.form @params, <[uid pwd]>,
       oninput: ~>
         validate.sow_auth @
@@ -39,7 +41,7 @@ doc.component.sow_auth =
     logout = ~>
       cmd = "logout"
       @form.disable true
-      Submit.get @url, {cmd}
+      Submit.iframe @url, {cmd, ua}
       .then refresh, error
 
     login = ~>

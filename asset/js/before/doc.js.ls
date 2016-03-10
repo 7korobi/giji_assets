@@ -122,17 +122,21 @@ export doc =
         m "a", Btn.keys_reset({}, potofs_hide, Mem.potofs.potofs() ), "その他を表示"
         m "a", Btn.keys_reset({}, potofs_hide, Mem.potofs.full()   ), "全員隠す"
       m "hr.black"
+
+
+      attr = (o)->
+        cb = ->
+          hides[o.face_id] = ! hides[o.face_id]
+          potofs_hide hides
+        elem = null
+
+        className: (if hides[o.face_id] then "filter-hide" else "")
+        config: (_elem)-> elem = _elem
+        onclick: cb
+        onmouseup: cb
+        ontouchend: cb
+
       for o in potofs
-        attr = (o)->
-          GUI.attrs {}, ->
-            @className(if hides[o.face_id] then "filter-hide" else "")
-
-            elem = null
-            @config (_elem)-> elem = _elem
-            @click ->
-              hides[o.face_id] = ! hides[o.face_id]
-              potofs_hide hides
-
         m ".chrbox", {key: o._id},
           GUI.portrate o.face_id, attr(o)
           m ".bar.#{o.live}",

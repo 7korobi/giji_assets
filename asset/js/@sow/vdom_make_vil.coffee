@@ -20,6 +20,7 @@ win.mount "#make_vil", (dom)->
     submit: (form)->
       @is_loading = true
       data = params form, "SOW",
+        ua: "javascript"
         cmd: "makevil"
         trsid: form.chr_npc
         hour: form.time[0..1]

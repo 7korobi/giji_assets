@@ -1,8 +1,8 @@
 submit = (props, f)->
-  GUI.attrs {}, ()->
-    @end (e)->
-      form.delegate.submit(props, f)
-
+  cb = ->
+    form.delegate.submit(props, f)
+  onmouseup: cb
+  ontouchend: cb
 
 form =
   delegate:

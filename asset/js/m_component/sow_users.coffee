@@ -1,4 +1,4 @@
-doc.component.sow_users = 
+doc.component.sow_users =
   controller: ->
   view: ->
     face = Mem.map_face_detail

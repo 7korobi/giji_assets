@@ -166,36 +166,37 @@
       return m("p", list);
     },
     potofs: function(){
-      var ref$, potofs_desc, potofs_order, potofs_hide, potofs, hides, turn, ref1$, o, attr;
+      var ref$, potofs_desc, potofs_order, potofs_hide, potofs, hides, turn, ref1$, attr, o;
       ref$ = Url.prop, potofs_desc = ref$.potofs_desc, potofs_order = ref$.potofs_order, potofs_hide = ref$.potofs_hide;
       potofs = Mem.potofs.view(potofs_desc(), potofs_order()).list;
       hides = potofs_hide();
       turn = ((ref$ = win.scroll.center) != null ? (ref1$ = ref$.event) != null ? ref1$.turn : void 8 : void 8) || 0;
-      return m(".minilist", m("h6", "キャラクターフィルタ"), m("p", m("a", Btn.keys_reset({}, potofs_hide, []), "全員表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.others()), "参加者表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.potofs()), "その他を表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.full()), "全員隠す")), m("hr.black"), (function(){
+      return m(".minilist", m("h6", "キャラクターフィルタ"), m("p", m("a", Btn.keys_reset({}, potofs_hide, []), "全員表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.others()), "参加者表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.potofs()), "その他を表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.full()), "全員隠す")), m("hr.black"), attr = function(o){
+        var cb, elem;
+        cb = function(){
+          hides[o.face_id] = !hides[o.face_id];
+          return potofs_hide(hides);
+        };
+        elem = null;
+        return {
+          className: hides[o.face_id] ? "filter-hide" : "",
+          config: function(_elem){
+            var elem;
+            return elem = _elem;
+          },
+          onclick: cb,
+          onmouseup: cb,
+          ontouchend: cb
+        };
+      }, (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = potofs).length; i$ < len$; ++i$) {
           o = ref$[i$];
-          attr = fn$;
           results$.push(m(".chrbox", {
             key: o._id
           }, GUI.portrate(o.face_id, attr(o)), m(".bar." + o.live)));
         }
         return results$;
-        function fn$(o){
-          return GUI.attrs({}, function(){
-            var elem;
-            this.className(hides[o.face_id] ? "filter-hide" : "");
-            elem = null;
-            this.config(function(_elem){
-              var elem;
-              return elem = _elem;
-            });
-            return this.click(function(){
-              hides[o.face_id] = !hides[o.face_id];
-              return potofs_hide(hides);
-            });
-          });
-        }
       }()), m("hr.black"));
     },
     writer: function(){
@@ -1766,6 +1767,12 @@
 }).call(this);
 
 (function(){
+  doc.config = function(xhr, options){
+    return console.log(options);
+  };
+}).call(this);
+
+(function(){
   var sw, target, text, form, menu;
   sw = {
     controller: function(f){},
@@ -1816,7 +1823,10 @@
 (function() {
   win.mount("#css_changer", function(dom) {
     return {
-      controller: function() {},
+      controller: function() {
+        var ref;
+        this.url = (ref = window.gon) != null ? ref.url : void 0;
+      },
       view: doc.view.sow_css_changer
     };
   });
@@ -1866,6 +1876,7 @@
             var data;
             this.is_loading = true;
             data = params(form, "SOW", {
+              ua: "javascript",
               cmd: "makevil",
               trsid: form.chr_npc,
               hour: form.time.slice(0, 2),
@@ -1908,7 +1919,10 @@
 }).call(this);
 
 (function(){
-
+  doc.config = function(xhr, options){
+    console.log(options);
+    return xhr.overrideMimeType("text/plain; charset=Shift_JIS");
+  };
 }).call(this);
 
 (function(){
@@ -2646,24 +2660,27 @@
     win.mount('#sayfilter', function(dom){
       return {
         controller: function(){
-          var layout;
+          var layout, cb;
           this.layout = layout = new win.layout(dom, -1, 1);
           layout.small_mode = true;
           layout.large_mode = function(){
             return !(menu.icon.state() || this.small_mode);
           };
-          this.wide_attr = GUI.attrs({}, function(){
-            this.click(function(){
-              layout.small_mode = !layout.small_mode;
-              if (!layout.small_mode) {
-                return menu.icon.state("");
-              }
-            });
-            return this.actioned(function(){
+          cb = function(){
+            layout.small_mode = !layout.small_mode;
+            if (!layout.small_mode) {
+              menu.icon.state("");
+            }
+            return window.requestAnimationFrame(function(){
               return layout.translate();
             });
-          });
-          this.wide_attr.className = "plane fine";
+          };
+          this.wide_attr = {
+            className: "plane fine",
+            onclick: cb,
+            onmouseup: cb,
+            ontouchend: cb
+          };
         },
         view: function(arg$){
           var click, wide_attr, layout, width, potofs, filter, event;
@@ -2974,34 +2991,64 @@
       ref$ = Url.prop, talk_at = ref$.talk_at, scroll = ref$.scroll, pins = ref$.pins;
       this.click = {
         go: function(arg$){
-          var _id;
+          var _id, cb;
           _id = arg$._id;
-          return GUI.attrs({}, function(){
-            return this.click(function(){
-              talk_at(_id);
-              pins({});
-              menu.icon.change("");
-              menu.scope.change("talk");
-              scroll("");
-              return win.scroll.rescroll(talk_at);
-            });
-          });
+          cb = function(){
+            talk_at(_id);
+            pins({});
+            menu.icon.change("");
+            menu.scope.change("talk");
+            scroll("");
+            return win.scroll.rescroll(talk_at);
+          };
+          return {
+            onclick: cb,
+            onmouseup: cb,
+            ontouchend: cb
+          };
         },
         pin: function(list, append){
-          return GUI.attrs({}, function(){
-            return this.click(function(){
-              var i$, ref$, len$, o;
-              for (i$ = 0, len$ = (ref$ = append).length; i$ < len$; ++i$) {
-                o = ref$[i$];
-                pins()[o.turn + "-" + o.logid] = true;
-              }
-              for (i$ = 0, len$ = (ref$ = list).length; i$ < len$; ++i$) {
-                o = ref$[i$];
-                pins()[o.turn + "-" + o.logid] = true;
-              }
-              return change_pin(win.scroll.prop());
-            });
-          });
+          var cb;
+          cb = function(){
+            var i$, ref$, len$, o;
+            for (i$ = 0, len$ = (ref$ = append).length; i$ < len$; ++i$) {
+              o = ref$[i$];
+              pins()[o.turn + "-" + o.logid] = true;
+            }
+            for (i$ = 0, len$ = (ref$ = list).length; i$ < len$; ++i$) {
+              o = ref$[i$];
+              pins()[o.turn + "-" + o.logid] = true;
+            }
+            return change_pin(win.scroll.prop());
+          };
+          return {
+            onclick: cb,
+            onmouseup: cb,
+            ontouchend: cb
+          };
+        },
+        star_off: function(o){
+          var cb;
+          cb = function(){
+            var ref$, key$, ref1$;
+            return ref1$ = (ref$ = doc.seeing)[key$ = o._id], delete ref$[key$], ref1$;
+          };
+          return {
+            onclick: cb,
+            onmouseup: cb,
+            ontouchend: cb
+          };
+        },
+        star_on: function(o){
+          var cb;
+          cb = function(){
+            return doc.seeing_add(o._id, day);
+          };
+          return {
+            onclick: cb,
+            onmouseup: cb,
+            ontouchend: cb
+          };
         }
       };
       this.day = 24 * 60 * 60;
@@ -3026,22 +3073,10 @@
       anchorview = doc.messages.anchor(Url.prop).list;
       seeingview = doc.messages.seeing(filter_size, win.scroll.center);
       star = function(o){
-        var attr;
         if (doc.seeing[o._id] >= day) {
-          attr = GUI.attrs({}, function(){
-            return this.end(function(e){
-              var ref$, key$, ref1$;
-              return ref1$ = (ref$ = doc.seeing)[key$ = o._id], delete ref$[key$], ref1$;
-            });
-          });
-          return m("span." + o.mestype + ".btn.edge", attr, "★ ");
+          return m("span." + o.mestype + ".btn.edge", click.star_off(o), "★ ");
         } else {
-          attr = GUI.attrs({}, function(){
-            return this.end(function(e){
-              return doc.seeing_add(o._id, day);
-            });
-          });
-          return m("span." + o.mestype + ".btn.edge", attr, "☆ ");
+          return m("span." + o.mestype + ".btn.edge", click.star_on(o), "☆ ");
         }
       };
       return m("section.plane", m("h6", "参照されている", m("span.btn.edge.icon-pin", click.pin(anchorview, [win.scroll.center]))), (function(){
@@ -3271,23 +3306,37 @@
   var chr_box;
 
   chr_box = function(o) {
-    var attr;
-    attr = GUI.attrs({}, function() {
-      var elem;
+    var attr, attr_main;
+    attr = null;
+    attr_main = function() {
+      var elem, out, over;
       elem = null;
-      this.over(function() {
+      over = function() {
         return GUI.Animate.jelly.up(elem);
-      });
-      this.out(function() {
+      };
+      out = function() {
         return GUI.Animate.jelly.down(elem);
-      });
-      return this.config(function(_elem) {
-        return elem = _elem;
-      });
-    });
+      };
+      attr = {
+        onmouseover: over,
+        ontouchmove: over,
+        onmouseup: out,
+        onmouseout: out
+      };
+      return {
+        config: function(_elem) {
+          return elem = _elem;
+        },
+        onmouseover: over,
+        ontouchmove: over,
+        onmouseup: out,
+        onmouseout: out,
+        ontouchend: out
+      };
+    };
     return m(".chrbox", {
       key: o._id
-    }, GUI.portrate(o.face_id, attr), m(".chrblank", m("div", m.trust(o.job)), m("div", m.trust(o.face.name))));
+    }, GUI.portrate(o.face_id, attr_main()), m(".chrblank", attr, m("div", m.trust(o.job)), m("div", m.trust(o.face.name))));
   };
 
   doc.component.map_faces_new = {
@@ -3349,29 +3398,35 @@
             chr_job = Mem.chr_jobs.find((chr_set()) + "_" + o.face_id);
             job_name = chr_job.job;
             attr = null;
-            attr_main = GUI.attrs({}, function() {
-              var config, elem, out, over;
+            attr_main = function() {
+              var elem, out, over;
               elem = null;
-              config = function(_elem) {
-                return elem = _elem;
-              };
               over = function() {
                 return GUI.Animate.jelly.up(elem);
               };
               out = function() {
                 return GUI.Animate.jelly.down(elem);
               };
-              this.config(config);
-              this.over(over);
-              this.out(out);
-              return attr = GUI.attrs({}, function() {
-                this.over(over);
-                return this.out(out);
-              });
-            });
+              attr = {
+                onmouseover: over,
+                ontouchmove: over,
+                onmouseup: out,
+                onmouseout: out
+              };
+              return {
+                config: function(_elem) {
+                  return elem = _elem;
+                },
+                onmouseover: over,
+                ontouchmove: over,
+                onmouseup: out,
+                onmouseout: out,
+                ontouchend: out
+              };
+            };
             results.push(m(".chrbox", {
               key: o._id
-            }, GUI.portrate(o.face_id, attr_main), m(".chrblank.line4", attr, m("div", job_name), m("div", o.face.name), m("div", m("a.mark", {
+            }, GUI.portrate(o.face_id, attr_main()), m(".chrblank.line4", attr, m("div", job_name), m("div", o.face.name), m("div", m("a.mark", {
               href: "/map_reduce/faces/" + o.face_id
             }, map_order_set.caption + " " + o.win.value[map_order_set.order] + "回")), m("div", "♥" + o.sow_auth_id.max_is))));
           }
@@ -3622,12 +3677,15 @@
     });
     return doc.component[key] = {
       controller: function() {
+        var cb;
+        cb = function() {
+          return list.tap = null;
+        };
         this.list = RULE[type].list;
-        this.cancel = GUI.attrs({}, function() {
-          return this.end(function(e) {
-            return list.tap = null;
-          });
-        });
+        this.cancel = {
+          onmouseup: cb,
+          ontouchend: cb
+        };
       },
       view: function(arg) {
         var cancel, cb, i, items, j, len, list, o;
@@ -3637,11 +3695,13 @@
         cb = function(arg1, idx) {
           var head, tap, text;
           head = arg1.head, text = arg1.text;
-          tap = GUI.attrs({}, function() {
-            return this.end(function(e) {
-              return list.tap = idx;
-            });
-          });
+          cb = function(e) {
+            return list.tap = idx;
+          };
+          tap = {
+            onmouseup: cb,
+            ontouchend: cb
+          };
           items.push(m("dt", tap, m("strong", m.trust(head)), m(".allow", "↨")));
           if (list.tap === idx) {
             return items.push(m("dd", m.trust(text)));
@@ -3667,12 +3727,16 @@
 }).call(this);
 
 (function(){
+  var ua;
+  ua = "javascript";
   doc.component.sow_auth = {
     controller: function(){
       var error, refresh, deploy, logout, login, this$ = this;
       doc.user = this;
       this.url = gon.url;
-      this.params = {};
+      this.params = {
+        ua: ua
+      };
       this.form = Mem.options.form(this.params, ['uid', 'pwd'], {
         oninput: function(){
           return validate.sow_auth(this$);
@@ -3716,8 +3780,9 @@
         var cmd;
         cmd = "logout";
         this$.form.disable(true);
-        return Submit.get(this$.url, {
-          cmd: cmd
+        return Submit.iframe(this$.url, {
+          cmd: cmd,
+          ua: ua
         }).then(refresh, error);
       };
       login = function(){
@@ -4776,7 +4841,7 @@
   };
 
   doc.view.characters = function() {
-    var attr, chr_job, chrs, job_name, o, set, tag;
+    var attr, cb, chr_job, chrs, job_name, o, set, tag;
     tag = Url.prop.tag;
     chrs = Mem.faces.tag(tag()).list;
     set = Mem.conf.tag[tag()];
@@ -4820,9 +4885,11 @@
           o = chrs[i];
           chr_job = Mem.chr_jobs.find(set.chr_set_ids.last + "_" + o._id) || Mem.chr_jobs.find("all_" + o._id);
           job_name = chr_job.job;
-          attr = GUI.attrs({}, function() {
-            return this.click(function() {});
-          });
+          cb = function() {};
+          attr = {
+            onmouseup: cb,
+            ontouchend: cb
+          };
           results.push(m(".chrbox", {
             key: o._id
           }, GUI.portrate(o._id, attr), m(".chrblank.line2", m("div", job_name), m("div", o.name))));
@@ -4913,12 +4980,14 @@
     };
   };
   identity_action = function(o){
-    var attr;
-    return attr = GUI.attrs({}, function(){
-      return this.end(function(e){
-        return doc.delegate.tap_identity(o.turn, o.logid, o._id);
-      });
-    });
+    var cb;
+    cb = function(){
+      return doc.delegate.tap_identity(o.turn, o.logid, o._id);
+    };
+    return {
+      onmouseup: cb,
+      ontouchend: cb
+    };
   };
   doc.ext = ext = {
     say_base: function(v){
@@ -5060,9 +5129,9 @@
 }).call(this);
 
 (function() {
-  doc.view.sow_css_changer = function() {
+  doc.view.sow_css_changer = function(c) {
     var pwd, ref, uid;
-    return m(".paragraph", m("a.menuicon.pull-right.icon-cog", menu.icon.start({}, "cog"), " "), doc.user.is_login ? ((ref = Url.prop, uid = ref.uid, pwd = ref.pwd, ref), m("a.btn.edge[href=" + gon.url + "?ua=mb&cmd=vindex&uid=" + (uid()) + "&pwd=" + (pwd()) + "]", "携帯")) : m("a.btn.edge[href=" + gon.url + "?ua=mb]", "携帯"), Btns.radio({}, Url.prop.theme, {
+    return m(".paragraph", m("a.menuicon.pull-right.icon-cog", menu.icon.start({}, "cog"), " "), c.url ? doc.user.is_login ? ((ref = Url.prop, uid = ref.uid, pwd = ref.pwd, ref), m("a.btn.edge[href=" + c.url + "?ua=mb&cmd=vindex&uid=" + (uid()) + "&pwd=" + (pwd()) + "]", "携帯")) : m("a.btn.edge[href=" + c.url + "?ua=mb]", "携帯") : void 0, Btns.radio({}, Url.prop.theme, {
       cinema: "煉瓦",
       star: "蒼穹",
       night: "闇夜",

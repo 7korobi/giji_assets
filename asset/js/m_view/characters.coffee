@@ -60,9 +60,10 @@ doc.view.characters = ->
         chr_job = Mem.chr_jobs.find("#{set.chr_set_ids.last}_#{o._id}") || Mem.chr_jobs.find("all_#{o._id}")
         job_name = chr_job.job
 
-        attr = GUI.attrs {}, ->
-          @click ->
-
+        cb = ->
+        attr = 
+          onmouseup: cb
+          ontouchend: cb
 
         m ".chrbox", {key: o._id},
           GUI.portrate o._id, attr

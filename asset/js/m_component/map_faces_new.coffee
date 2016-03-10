@@ -1,13 +1,26 @@
 chr_box = (o)->
-  attr = GUI.attrs {}, ->
+  attr = null
+  attr_main = ->
     elem = null
-    @over -> GUI.Animate.jelly.up elem
-    @out ->  GUI.Animate.jelly.down elem
-    @config (_elem)-> elem = _elem
+    over = -> GUI.Animate.jelly.up elem
+    out = -> GUI.Animate.jelly.down elem
+
+    attr =
+      onmouseover: over
+      ontouchmove: over
+      onmouseup:  out
+      onmouseout: out
+
+    config: (_elem)-> elem = _elem
+    onmouseover: over
+    ontouchmove: over
+    onmouseup:  out
+    onmouseout: out
+    ontouchend: out
 
   m ".chrbox", { key: o._id },
-    GUI.portrate o.face_id, attr
-    m ".chrblank",
+    GUI.portrate o.face_id, attr_main()
+    m ".chrblank", attr,
       m "div", m.trust o.job
       m "div", m.trust o.face.name
 

@@ -20,23 +20,27 @@ doc.component.map_faces =
         chr_job = Mem.chr_jobs.find("#{chr_set()}_#{o.face_id}")
         job_name = chr_job.job
 
-
         attr = null
-        attr_main = GUI.attrs {}, ->
+        attr_main = ->
           elem = null
-          config = (_elem)-> elem = _elem
           over = -> GUI.Animate.jelly.up elem
           out = -> GUI.Animate.jelly.down elem
-          @config config
-          @over over
-          @out out
 
-          attr = GUI.attrs {}, ->
-            @over over
-            @out out
+          attr =
+            onmouseover: over
+            ontouchmove: over
+            onmouseup:  out
+            onmouseout: out
+
+          config: (_elem)-> elem = _elem
+          onmouseover: over
+          ontouchmove: over
+          onmouseup:  out
+          onmouseout: out
+          ontouchend: out
 
         m ".chrbox", {key: o._id},
-          GUI.portrate o.face_id, attr_main
+          GUI.portrate o.face_id, attr_main()
           m ".chrblank.line4", attr,
             m "div", job_name
             m "div", o.face.name

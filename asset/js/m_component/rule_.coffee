@@ -4,10 +4,13 @@ rule_accordion = (type)->
 
   doc.component[key] =
     controller: ->
+      cb = ->
+        list.tap = null
+
       @list = RULE[type].list
-      @cancel = GUI.attrs {}, ->
-        @end (e)->
-          list.tap = null
+      @cancel =
+        onmouseup: cb
+        ontouchend: cb
       return
 
     view: ({list, cancel})->
@@ -15,9 +18,12 @@ rule_accordion = (type)->
       items.push m "dt", cancel, m "span.mark", m.trust "&#x2718"
 
       cb = ({head, text}, idx)->
-        tap = GUI.attrs {}, ->
-          @end (e)->
-            list.tap = idx
+        cb = (e)->
+          list.tap = idx
+        tap = 
+          onmouseup: cb
+          ontouchend: cb
+
         items.push m "dt", tap,
           m "strong", m.trust head
           m ".allow", "↨"

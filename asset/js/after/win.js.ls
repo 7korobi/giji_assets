@@ -53,21 +53,25 @@ win.mount \#headline, ->
 
 if gon?.potofs?
   win.mount \#sayfilter, (dom)->
-    controller: ->
+    controller: !->
       @layout = layout = new win.layout dom, -1, 1
       layout.small_mode = true
       layout.large_mode = ->
         ! (menu.icon.state() || @small_mode)
 
-      @wide_attr = GUI.attrs {}, ->
-        @click ->
-          layout.small_mode = ! layout.small_mode
-          unless layout.small_mode
-            menu.icon.state ""
-        @actioned ->
+      cb = ->
+        layout.small_mode = ! layout.small_mode
+        unless layout.small_mode
+          menu.icon.state ""
+        window.requestAnimationFrame ->
           layout.translate()
-      @wide_attr.className = "plane fine"
-      return
+
+      @wide_attr =
+        className: "plane fine"
+        onclick: cb
+        onmouseup: cb
+        ontouchend: cb
+
 
     view: ({click, wide_attr, layout})->
       width = doc.width.content()

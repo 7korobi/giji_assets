@@ -3,23 +3,41 @@ doc.component.filter =
     { talk_at, scroll, pins } = Url.prop
     @click =
       go: ({_id})->
-        GUI.attrs {}, ->
-          @click ->
-            talk_at _id
-            pins {}
-            menu.icon.change ""
-            menu.scope.change "talk"
-            scroll ""
-            win.scroll.rescroll talk_at
+        cb = ->
+          talk_at _id
+          pins {}
+          menu.icon.change ""
+          menu.scope.change "talk"
+          scroll ""
+          win.scroll.rescroll talk_at
+        onclick: cb
+        onmouseup: cb
+        ontouchend: cb
 
       pin: (list, append)->
-        GUI.attrs {}, ->
-          @click ->
-            for o in append
-              pins()["#{o.turn}-#{o.logid}"] = true
-            for o in list
-              pins()["#{o.turn}-#{o.logid}"] = true
-            change_pin win.scroll.prop()
+        cb = ->
+          for o in append
+            pins()["#{o.turn}-#{o.logid}"] = true
+          for o in list
+            pins()["#{o.turn}-#{o.logid}"] = true
+          change_pin win.scroll.prop()
+        onclick: cb
+        onmouseup: cb
+        ontouchend: cb
+
+      star_off: (o)->
+        cb = ->
+          delete doc.seeing[o._id]
+        onclick: cb
+        onmouseup: cb
+        ontouchend: cb
+
+      star_on: (o)->
+        cb = ->
+          doc.seeing_add o._id, day
+        onclick: cb
+        onmouseup: cb
+        ontouchend: cb
 
     @day = 24 * 60 * 60
     @seeing_top = 100
@@ -42,16 +60,9 @@ doc.component.filter =
 
     star = (o)->
       if doc.seeing[o._id] >= day
-        attr = GUI.attrs {}, ->
-          @end (e)->
-            delete doc.seeing[o._id]
-        m "span.#{o.mestype}.btn.edge", attr, "★ "
-
+        m "span.#{o.mestype}.btn.edge", click.star_off(o), "★ "
       else
-        attr = GUI.attrs {}, ->
-          @end (e)->
-            doc.seeing_add o._id, day
-        m "span.#{o.mestype}.btn.edge", attr, "☆ "
+        m "span.#{o.mestype}.btn.edge", click.star_on(o), "☆ "
 
     m "section.plane",
       m "h6",

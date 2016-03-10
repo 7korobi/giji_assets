@@ -1554,8 +1554,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1px) and (max-width:380px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 290px;
+    width: 458px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 290px;
@@ -1669,8 +1673,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:380.01px) and (max-width:440px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 320px;
+    width: 458px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 320px;
@@ -1784,8 +1792,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:440.01px) and (max-width:500px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 350px;
+    width: 458px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 350px;
@@ -1899,8 +1911,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:500.01px) and (max-width:560px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 380px;
+    width: 458px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 380px;
@@ -2014,8 +2030,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:560.01px) and (max-width:620px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 410px;
+    width: 458px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 410px;
@@ -2129,8 +2149,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:620.01px) and (max-width:680px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 440px;
+    width: 458px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 440px;
@@ -2244,8 +2268,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:680.01px) and (max-width:740px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 470px;
+    width: 580px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 470px;
@@ -2359,8 +2387,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:740.01px) and (max-width:800px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 500px;
+    width: 580px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 500px;
@@ -2474,8 +2506,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:800.01px) and (max-width:860px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 530px;
+    width: 580px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 530px;
@@ -2589,8 +2625,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:860.01px) and (max-width:920px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 560px;
+    width: 580px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 560px;
@@ -2704,8 +2744,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:920.01px) and (max-width:980px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 590px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 590px;
@@ -2819,8 +2863,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:980.01px) and (max-width:1040px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 620px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 620px;
@@ -2934,8 +2982,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1040.01px) and (max-width:1100px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 650px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 650px;
@@ -3049,8 +3101,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1100.01px) and (max-width:1160px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 680px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 680px;
@@ -3164,8 +3220,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1160.01px) and (max-width:1220px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 710px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 710px;
@@ -3279,8 +3339,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1220.01px) and (max-width:1280px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 740px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 740px;
@@ -3394,8 +3458,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1280.01px) and (max-width:1340px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 770px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 770px;
@@ -3509,8 +3577,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1340.01px) and (max-width:1400px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 800px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 800px;
@@ -3624,8 +3696,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1400.01px) and (max-width:1460px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 830px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 830px;
@@ -3739,8 +3815,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1460.01px) and (max-width:1520px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 860px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 860px;
@@ -3854,8 +3934,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1520.01px) and (max-width:1580px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 890px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 890px;
@@ -3969,8 +4053,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1580.01px) and (max-width:100689px) {
+  .left-layout.std-width H1 IMG {
+    max-width: 920px;
+    width: 770px;
+  }
+
   .left-layout.std-width H1,
-  .left-layout.std-width H1 IMG,
   .left-layout.std-width .memo,
   .left-layout.std-width .talk {
     width: 920px;
@@ -4084,8 +4172,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1px) and (max-width:350px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 290px;
+    width: 458px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 290px;
@@ -4199,8 +4291,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:350.01px) and (max-width:390px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 320px;
+    width: 458px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 320px;
@@ -4314,8 +4410,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:390.01px) and (max-width:430px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 350px;
+    width: 458px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 350px;
@@ -4429,8 +4529,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:430.01px) and (max-width:470px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 380px;
+    width: 458px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 380px;
@@ -4544,8 +4648,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:470.01px) and (max-width:510px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 410px;
+    width: 458px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 410px;
@@ -4659,8 +4767,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:510.01px) and (max-width:550px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 440px;
+    width: 458px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 440px;
@@ -4774,8 +4886,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:550.01px) and (max-width:590px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 470px;
+    width: 580px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 470px;
@@ -4889,8 +5005,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:590.01px) and (max-width:630px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 500px;
+    width: 580px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 500px;
@@ -5004,8 +5124,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:630.01px) and (max-width:670px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 530px;
+    width: 580px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 530px;
@@ -5119,8 +5243,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:670.01px) and (max-width:710px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 560px;
+    width: 580px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 560px;
@@ -5234,8 +5362,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:710.01px) and (max-width:750px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 590px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 590px;
@@ -5349,8 +5481,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:750.01px) and (max-width:790px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 620px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 620px;
@@ -5464,8 +5600,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:790.01px) and (max-width:830px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 650px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 650px;
@@ -5579,8 +5719,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:830.01px) and (max-width:870px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 680px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 680px;
@@ -5694,8 +5838,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:870.01px) and (max-width:910px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 710px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 710px;
@@ -5809,8 +5957,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:910.01px) and (max-width:950px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 740px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 740px;
@@ -5924,8 +6076,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:950.01px) and (max-width:990px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 770px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 770px;
@@ -6039,8 +6195,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:990.01px) and (max-width:1030px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 800px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 800px;
@@ -6154,8 +6314,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1030.01px) and (max-width:1070px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 830px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 830px;
@@ -6269,8 +6433,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1070.01px) and (max-width:1110px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 860px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 860px;
@@ -6384,8 +6552,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1110.01px) and (max-width:1150px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 890px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 890px;
@@ -6499,8 +6671,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1150.01px) and (max-width:100239px) {
+  .left-layout.wide-width H1 IMG {
+    max-width: 920px;
+    width: 770px;
+  }
+
   .left-layout.wide-width H1,
-  .left-layout.wide-width H1 IMG,
   .left-layout.wide-width .memo,
   .left-layout.wide-width .talk {
     width: 920px;
@@ -6613,9 +6789,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:1px) and (max-width:320px) {
+@media screen and (min-width:1px) and (max-width:330px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 290px;
+    width: 458px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 290px;
@@ -6728,9 +6908,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:320.01px) and (max-width:350px) {
+@media screen and (min-width:330.01px) and (max-width:360px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 320px;
+    width: 458px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 320px;
@@ -6843,9 +7027,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:350.01px) and (max-width:380px) {
+@media screen and (min-width:360.01px) and (max-width:390px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 350px;
+    width: 458px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 350px;
@@ -6958,9 +7146,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:380.01px) and (max-width:410px) {
+@media screen and (min-width:390.01px) and (max-width:420px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 380px;
+    width: 458px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 380px;
@@ -7073,9 +7265,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:410.01px) and (max-width:440px) {
+@media screen and (min-width:420.01px) and (max-width:450px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 410px;
+    width: 458px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 410px;
@@ -7188,9 +7384,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:440.01px) and (max-width:470px) {
+@media screen and (min-width:450.01px) and (max-width:480px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 440px;
+    width: 458px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 440px;
@@ -7303,9 +7503,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:470.01px) and (max-width:500px) {
+@media screen and (min-width:480.01px) and (max-width:510px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 470px;
+    width: 580px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 470px;
@@ -7418,9 +7622,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:500.01px) and (max-width:530px) {
+@media screen and (min-width:510.01px) and (max-width:540px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 500px;
+    width: 580px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 500px;
@@ -7533,9 +7741,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:530.01px) and (max-width:560px) {
+@media screen and (min-width:540.01px) and (max-width:570px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 530px;
+    width: 580px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 530px;
@@ -7648,9 +7860,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:560.01px) and (max-width:590px) {
+@media screen and (min-width:570.01px) and (max-width:600px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 560px;
+    width: 580px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 560px;
@@ -7763,9 +7979,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:590.01px) and (max-width:620px) {
+@media screen and (min-width:600.01px) and (max-width:630px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 590px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 590px;
@@ -7878,9 +8098,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:620.01px) and (max-width:650px) {
+@media screen and (min-width:630.01px) and (max-width:660px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 620px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 620px;
@@ -7993,9 +8217,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:650.01px) and (max-width:680px) {
+@media screen and (min-width:660.01px) and (max-width:690px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 650px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 650px;
@@ -8108,9 +8336,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:680.01px) and (max-width:710px) {
+@media screen and (min-width:690.01px) and (max-width:720px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 680px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 680px;
@@ -8223,9 +8455,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:710.01px) and (max-width:740px) {
+@media screen and (min-width:720.01px) and (max-width:750px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 710px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 710px;
@@ -8338,9 +8574,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:740.01px) and (max-width:770px) {
+@media screen and (min-width:750.01px) and (max-width:780px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 740px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 740px;
@@ -8453,9 +8693,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:770.01px) and (max-width:800px) {
+@media screen and (min-width:780.01px) and (max-width:810px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 770px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 770px;
@@ -8568,9 +8812,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:800.01px) and (max-width:830px) {
+@media screen and (min-width:810.01px) and (max-width:840px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 800px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 800px;
@@ -8683,9 +8931,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:830.01px) and (max-width:860px) {
+@media screen and (min-width:840.01px) and (max-width:870px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 830px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 830px;
@@ -8798,9 +9050,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:860.01px) and (max-width:890px) {
+@media screen and (min-width:870.01px) and (max-width:900px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 860px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 860px;
@@ -8913,9 +9169,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:890.01px) and (max-width:920px) {
+@media screen and (min-width:900.01px) and (max-width:930px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 890px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 890px;
@@ -9028,9 +9288,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:920.01px) and (max-width:99999px) {
+@media screen and (min-width:930.01px) and (max-width:100009px) {
+  .left-layout.full-width H1 IMG {
+    max-width: 920px;
+    width: 770px;
+  }
+
   .left-layout.full-width H1,
-  .left-layout.full-width H1 IMG,
   .left-layout.full-width .memo,
   .left-layout.full-width .talk {
     width: 920px;
@@ -9149,8 +9413,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1px) and (max-width:440px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 290px;
+    width: 458px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 290px;
@@ -9264,8 +9532,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:440.01px) and (max-width:530px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 320px;
+    width: 458px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 320px;
@@ -9379,8 +9651,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:530.01px) and (max-width:620px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 350px;
+    width: 458px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 350px;
@@ -9494,8 +9770,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:620.01px) and (max-width:710px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 380px;
+    width: 458px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 380px;
@@ -9609,8 +9889,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:710.01px) and (max-width:800px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 410px;
+    width: 458px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 410px;
@@ -9724,8 +10008,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:800.01px) and (max-width:890px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 440px;
+    width: 458px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 440px;
@@ -9839,8 +10127,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:890.01px) and (max-width:980px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 470px;
+    width: 580px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 470px;
@@ -9954,8 +10246,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:980.01px) and (max-width:1070px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 500px;
+    width: 580px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 500px;
@@ -10069,8 +10365,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1070.01px) and (max-width:1160px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 530px;
+    width: 580px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 530px;
@@ -10184,8 +10484,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1160.01px) and (max-width:1250px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 560px;
+    width: 580px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 560px;
@@ -10299,8 +10603,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1250.01px) and (max-width:1340px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 590px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 590px;
@@ -10414,8 +10722,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1340.01px) and (max-width:1430px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 620px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 620px;
@@ -10529,8 +10841,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1430.01px) and (max-width:1520px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 650px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 650px;
@@ -10644,8 +10960,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1520.01px) and (max-width:1610px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 680px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 680px;
@@ -10759,8 +11079,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1610.01px) and (max-width:1700px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 710px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 710px;
@@ -10874,8 +11198,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1700.01px) and (max-width:1790px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 740px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 740px;
@@ -10989,8 +11317,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1790.01px) and (max-width:1880px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 770px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 770px;
@@ -11104,8 +11436,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1880.01px) and (max-width:1970px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 800px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 800px;
@@ -11219,8 +11555,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1970.01px) and (max-width:2060px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 830px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 830px;
@@ -11334,8 +11674,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:2060.01px) and (max-width:2150px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 860px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 860px;
@@ -11449,8 +11793,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:2150.01px) and (max-width:2240px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 890px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 890px;
@@ -11564,8 +11912,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:2240.01px) and (max-width:101379px) {
+  .center-layout.std-width H1 IMG {
+    max-width: 920px;
+    width: 770px;
+  }
+
   .center-layout.std-width H1,
-  .center-layout.std-width H1 IMG,
   .center-layout.std-width .memo,
   .center-layout.std-width .talk {
     width: 920px;
@@ -11679,8 +12031,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1px) and (max-width:380px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 290px;
+    width: 458px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 290px;
@@ -11794,8 +12150,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:380.01px) and (max-width:430px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 320px;
+    width: 458px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 320px;
@@ -11909,8 +12269,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:430.01px) and (max-width:480px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 350px;
+    width: 458px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 350px;
@@ -12024,8 +12388,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:480.01px) and (max-width:530px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 380px;
+    width: 458px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 380px;
@@ -12139,8 +12507,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:530.01px) and (max-width:580px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 410px;
+    width: 458px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 410px;
@@ -12254,8 +12626,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:580.01px) and (max-width:630px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 440px;
+    width: 458px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 440px;
@@ -12369,8 +12745,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:630.01px) and (max-width:680px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 470px;
+    width: 580px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 470px;
@@ -12484,8 +12864,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:680.01px) and (max-width:730px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 500px;
+    width: 580px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 500px;
@@ -12599,8 +12983,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:730.01px) and (max-width:780px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 530px;
+    width: 580px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 530px;
@@ -12714,8 +13102,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:780.01px) and (max-width:830px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 560px;
+    width: 580px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 560px;
@@ -12829,8 +13221,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:830.01px) and (max-width:880px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 590px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 590px;
@@ -12944,8 +13340,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:880.01px) and (max-width:930px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 620px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 620px;
@@ -13059,8 +13459,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:930.01px) and (max-width:980px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 650px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 650px;
@@ -13174,8 +13578,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:980.01px) and (max-width:1030px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 680px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 680px;
@@ -13289,8 +13697,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1030.01px) and (max-width:1080px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 710px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 710px;
@@ -13404,8 +13816,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1080.01px) and (max-width:1130px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 740px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 740px;
@@ -13519,8 +13935,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1130.01px) and (max-width:1180px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 770px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 770px;
@@ -13634,8 +14054,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1180.01px) and (max-width:1230px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 800px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 800px;
@@ -13749,8 +14173,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1230.01px) and (max-width:1280px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 830px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 830px;
@@ -13864,8 +14292,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1280.01px) and (max-width:1330px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 860px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 860px;
@@ -13979,8 +14411,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1330.01px) and (max-width:1380px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 890px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 890px;
@@ -14094,8 +14530,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1380.01px) and (max-width:100479px) {
+  .center-layout.wide-width H1 IMG {
+    max-width: 920px;
+    width: 770px;
+  }
+
   .center-layout.wide-width H1,
-  .center-layout.wide-width H1 IMG,
   .center-layout.wide-width .memo,
   .center-layout.wide-width .talk {
     width: 920px;
@@ -14208,9 +14648,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:1px) and (max-width:320px) {
+@media screen and (min-width:1px) and (max-width:340px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 290px;
+    width: 458px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 290px;
@@ -14323,9 +14767,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:320.01px) and (max-width:350px) {
+@media screen and (min-width:340.01px) and (max-width:370px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 320px;
+    width: 458px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 320px;
@@ -14438,9 +14886,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:350.01px) and (max-width:380px) {
+@media screen and (min-width:370.01px) and (max-width:400px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 350px;
+    width: 458px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 350px;
@@ -14553,9 +15005,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:380.01px) and (max-width:410px) {
+@media screen and (min-width:400.01px) and (max-width:430px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 380px;
+    width: 458px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 380px;
@@ -14668,9 +15124,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:410.01px) and (max-width:440px) {
+@media screen and (min-width:430.01px) and (max-width:460px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 410px;
+    width: 458px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 410px;
@@ -14783,9 +15243,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:440.01px) and (max-width:470px) {
+@media screen and (min-width:460.01px) and (max-width:490px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 440px;
+    width: 458px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 440px;
@@ -14898,9 +15362,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:470.01px) and (max-width:500px) {
+@media screen and (min-width:490.01px) and (max-width:520px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 470px;
+    width: 580px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 470px;
@@ -15013,9 +15481,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:500.01px) and (max-width:530px) {
+@media screen and (min-width:520.01px) and (max-width:550px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 500px;
+    width: 580px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 500px;
@@ -15128,9 +15600,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:530.01px) and (max-width:560px) {
+@media screen and (min-width:550.01px) and (max-width:580px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 530px;
+    width: 580px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 530px;
@@ -15243,9 +15719,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:560.01px) and (max-width:590px) {
+@media screen and (min-width:580.01px) and (max-width:610px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 560px;
+    width: 580px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 560px;
@@ -15358,9 +15838,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:590.01px) and (max-width:620px) {
+@media screen and (min-width:610.01px) and (max-width:640px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 590px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 590px;
@@ -15473,9 +15957,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:620.01px) and (max-width:650px) {
+@media screen and (min-width:640.01px) and (max-width:670px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 620px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 620px;
@@ -15588,9 +16076,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:650.01px) and (max-width:680px) {
+@media screen and (min-width:670.01px) and (max-width:700px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 650px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 650px;
@@ -15703,9 +16195,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:680.01px) and (max-width:710px) {
+@media screen and (min-width:700.01px) and (max-width:730px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 680px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 680px;
@@ -15818,9 +16314,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:710.01px) and (max-width:740px) {
+@media screen and (min-width:730.01px) and (max-width:760px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 710px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 710px;
@@ -15933,9 +16433,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:740.01px) and (max-width:770px) {
+@media screen and (min-width:760.01px) and (max-width:790px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 740px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 740px;
@@ -16048,9 +16552,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:770.01px) and (max-width:800px) {
+@media screen and (min-width:790.01px) and (max-width:820px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 770px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 770px;
@@ -16163,9 +16671,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:800.01px) and (max-width:830px) {
+@media screen and (min-width:820.01px) and (max-width:850px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 800px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 800px;
@@ -16278,9 +16790,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:830.01px) and (max-width:860px) {
+@media screen and (min-width:850.01px) and (max-width:880px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 830px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 830px;
@@ -16393,9 +16909,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:860.01px) and (max-width:890px) {
+@media screen and (min-width:880.01px) and (max-width:910px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 860px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 860px;
@@ -16508,9 +17028,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:890.01px) and (max-width:920px) {
+@media screen and (min-width:910.01px) and (max-width:940px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 890px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 890px;
@@ -16623,9 +17147,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:920.01px) and (max-width:99999px) {
+@media screen and (min-width:940.01px) and (max-width:100019px) {
+  .center-layout.full-width H1 IMG {
+    max-width: 920px;
+    width: 770px;
+  }
+
   .center-layout.full-width H1,
-  .center-layout.full-width H1 IMG,
   .center-layout.full-width .memo,
   .center-layout.full-width .talk {
     width: 920px;
@@ -16744,8 +17272,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1px) and (max-width:380px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 290px;
+    width: 458px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 290px;
@@ -16859,8 +17391,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:380.01px) and (max-width:440px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 320px;
+    width: 458px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 320px;
@@ -16974,8 +17510,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:440.01px) and (max-width:500px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 350px;
+    width: 458px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 350px;
@@ -17089,8 +17629,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:500.01px) and (max-width:560px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 380px;
+    width: 458px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 380px;
@@ -17204,8 +17748,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:560.01px) and (max-width:620px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 410px;
+    width: 458px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 410px;
@@ -17319,8 +17867,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:620.01px) and (max-width:680px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 440px;
+    width: 458px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 440px;
@@ -17434,8 +17986,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:680.01px) and (max-width:740px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 470px;
+    width: 580px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 470px;
@@ -17549,8 +18105,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:740.01px) and (max-width:800px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 500px;
+    width: 580px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 500px;
@@ -17664,8 +18224,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:800.01px) and (max-width:860px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 530px;
+    width: 580px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 530px;
@@ -17779,8 +18343,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:860.01px) and (max-width:920px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 560px;
+    width: 580px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 560px;
@@ -17894,8 +18462,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:920.01px) and (max-width:980px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 590px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 590px;
@@ -18009,8 +18581,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:980.01px) and (max-width:1040px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 620px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 620px;
@@ -18124,8 +18700,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1040.01px) and (max-width:1100px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 650px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 650px;
@@ -18239,8 +18819,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1100.01px) and (max-width:1160px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 680px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 680px;
@@ -18354,8 +18938,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1160.01px) and (max-width:1220px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 710px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 710px;
@@ -18469,8 +19057,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1220.01px) and (max-width:1280px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 740px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 740px;
@@ -18584,8 +19176,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1280.01px) and (max-width:1340px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 770px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 770px;
@@ -18699,8 +19295,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1340.01px) and (max-width:1400px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 800px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 800px;
@@ -18814,8 +19414,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1400.01px) and (max-width:1460px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 830px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 830px;
@@ -18929,8 +19533,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1460.01px) and (max-width:1520px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 860px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 860px;
@@ -19044,8 +19652,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1520.01px) and (max-width:1580px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 890px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 890px;
@@ -19159,8 +19771,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1580.01px) and (max-width:100689px) {
+  .right-layout.std-width H1 IMG {
+    max-width: 920px;
+    width: 770px;
+  }
+
   .right-layout.std-width H1,
-  .right-layout.std-width H1 IMG,
   .right-layout.std-width .memo,
   .right-layout.std-width .talk {
     width: 920px;
@@ -19274,8 +19890,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1px) and (max-width:350px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 290px;
+    width: 458px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 290px;
@@ -19389,8 +20009,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:350.01px) and (max-width:390px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 320px;
+    width: 458px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 320px;
@@ -19504,8 +20128,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:390.01px) and (max-width:430px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 350px;
+    width: 458px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 350px;
@@ -19619,8 +20247,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:430.01px) and (max-width:470px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 380px;
+    width: 458px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 380px;
@@ -19734,8 +20366,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:470.01px) and (max-width:510px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 410px;
+    width: 458px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 410px;
@@ -19849,8 +20485,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:510.01px) and (max-width:550px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 440px;
+    width: 458px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 440px;
@@ -19964,8 +20604,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:550.01px) and (max-width:590px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 470px;
+    width: 580px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 470px;
@@ -20079,8 +20723,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:590.01px) and (max-width:630px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 500px;
+    width: 580px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 500px;
@@ -20194,8 +20842,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:630.01px) and (max-width:670px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 530px;
+    width: 580px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 530px;
@@ -20309,8 +20961,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:670.01px) and (max-width:710px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 560px;
+    width: 580px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 560px;
@@ -20424,8 +21080,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:710.01px) and (max-width:750px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 590px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 590px;
@@ -20539,8 +21199,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:750.01px) and (max-width:790px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 620px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 620px;
@@ -20654,8 +21318,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:790.01px) and (max-width:830px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 650px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 650px;
@@ -20769,8 +21437,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:830.01px) and (max-width:870px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 680px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 680px;
@@ -20884,8 +21556,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:870.01px) and (max-width:910px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 710px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 710px;
@@ -20999,8 +21675,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:910.01px) and (max-width:950px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 740px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 740px;
@@ -21114,8 +21794,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:950.01px) and (max-width:990px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 770px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 770px;
@@ -21229,8 +21913,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:990.01px) and (max-width:1030px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 800px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 800px;
@@ -21344,8 +22032,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1030.01px) and (max-width:1070px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 830px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 830px;
@@ -21459,8 +22151,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1070.01px) and (max-width:1110px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 860px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 860px;
@@ -21574,8 +22270,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1110.01px) and (max-width:1150px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 890px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 890px;
@@ -21689,8 +22389,12 @@ TABLE .talk TD .msg,
 }
 
 @media screen and (min-width:1150.01px) and (max-width:100239px) {
+  .right-layout.wide-width H1 IMG {
+    max-width: 920px;
+    width: 770px;
+  }
+
   .right-layout.wide-width H1,
-  .right-layout.wide-width H1 IMG,
   .right-layout.wide-width .memo,
   .right-layout.wide-width .talk {
     width: 920px;
@@ -21803,9 +22507,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:1px) and (max-width:320px) {
+@media screen and (min-width:1px) and (max-width:330px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 290px;
+    width: 458px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 290px;
@@ -21918,9 +22626,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:320.01px) and (max-width:350px) {
+@media screen and (min-width:330.01px) and (max-width:360px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 320px;
+    width: 458px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 320px;
@@ -22033,9 +22745,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:350.01px) and (max-width:380px) {
+@media screen and (min-width:360.01px) and (max-width:390px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 350px;
+    width: 458px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 350px;
@@ -22148,9 +22864,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:380.01px) and (max-width:410px) {
+@media screen and (min-width:390.01px) and (max-width:420px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 380px;
+    width: 458px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 380px;
@@ -22263,9 +22983,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:410.01px) and (max-width:440px) {
+@media screen and (min-width:420.01px) and (max-width:450px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 410px;
+    width: 458px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 410px;
@@ -22378,9 +23102,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:440.01px) and (max-width:470px) {
+@media screen and (min-width:450.01px) and (max-width:480px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 440px;
+    width: 458px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 440px;
@@ -22493,9 +23221,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:470.01px) and (max-width:500px) {
+@media screen and (min-width:480.01px) and (max-width:510px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 470px;
+    width: 580px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 470px;
@@ -22608,9 +23340,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:500.01px) and (max-width:530px) {
+@media screen and (min-width:510.01px) and (max-width:540px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 500px;
+    width: 580px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 500px;
@@ -22723,9 +23459,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:530.01px) and (max-width:560px) {
+@media screen and (min-width:540.01px) and (max-width:570px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 530px;
+    width: 580px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 530px;
@@ -22838,9 +23578,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:560.01px) and (max-width:590px) {
+@media screen and (min-width:570.01px) and (max-width:600px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 560px;
+    width: 580px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 560px;
@@ -22953,9 +23697,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:590.01px) and (max-width:620px) {
+@media screen and (min-width:600.01px) and (max-width:630px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 590px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 590px;
@@ -23068,9 +23816,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:620.01px) and (max-width:650px) {
+@media screen and (min-width:630.01px) and (max-width:660px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 620px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 620px;
@@ -23183,9 +23935,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:650.01px) and (max-width:680px) {
+@media screen and (min-width:660.01px) and (max-width:690px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 650px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 650px;
@@ -23298,9 +24054,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:680.01px) and (max-width:710px) {
+@media screen and (min-width:690.01px) and (max-width:720px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 680px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 680px;
@@ -23413,9 +24173,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:710.01px) and (max-width:740px) {
+@media screen and (min-width:720.01px) and (max-width:750px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 710px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 710px;
@@ -23528,9 +24292,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:740.01px) and (max-width:770px) {
+@media screen and (min-width:750.01px) and (max-width:780px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 740px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 740px;
@@ -23643,9 +24411,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:770.01px) and (max-width:800px) {
+@media screen and (min-width:780.01px) and (max-width:810px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 770px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 770px;
@@ -23758,9 +24530,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:800.01px) and (max-width:830px) {
+@media screen and (min-width:810.01px) and (max-width:840px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 800px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 800px;
@@ -23873,9 +24649,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:830.01px) and (max-width:860px) {
+@media screen and (min-width:840.01px) and (max-width:870px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 830px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 830px;
@@ -23988,9 +24768,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:860.01px) and (max-width:890px) {
+@media screen and (min-width:870.01px) and (max-width:900px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 860px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 860px;
@@ -24103,9 +24887,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:890.01px) and (max-width:920px) {
+@media screen and (min-width:900.01px) and (max-width:930px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 890px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 890px;
@@ -24218,9 +25006,13 @@ TABLE .talk TD .msg,
   }
 }
 
-@media screen and (min-width:920.01px) and (max-width:99999px) {
+@media screen and (min-width:930.01px) and (max-width:100009px) {
+  .right-layout.full-width H1 IMG {
+    max-width: 920px;
+    width: 770px;
+  }
+
   .right-layout.full-width H1,
-  .right-layout.full-width H1 IMG,
   .right-layout.full-width .memo,
   .right-layout.full-width .talk {
     width: 920px;
