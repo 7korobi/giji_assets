@@ -22,15 +22,14 @@ build = (key, o, cb)->
       if o
         cb key, o
 
-
 module.exports = Submit =
   get: (base_url, params)->
-    query_string = "?"
+    query_array = ["?"]
     for key, val of params
-      query_string += "#{key}=#{val}"
+      query_array.push "#{key}=#{val}"
 
     method = "GET"
-    url = encodeURI(base_url) + encodeURI(query_string)
+    url = base_url + encodeURI(query_array.join("&"))
     deserialize = unpack.HtmlGon
     m.request({method, url, deserialize})
     .then (data)->
@@ -41,7 +40,7 @@ module.exports = Submit =
     deferred = m.deferred()
 
     auto_submit =
-      action: encodeURI url
+      action: url
       method: "POST"
       target: "submit_result"
       config: (form)->
@@ -50,10 +49,11 @@ module.exports = Submit =
 
     auto_load =
       name: "submit_result"
+      sandbox: "allow-same-origin"
       config: (iframe)->
         timer = setTimeout ->
           deferred.reject Error("form request time out.")
-        , DELAY.largo
+        , 10000
         iframe.style.display = "none"
         iframe.contentWindow.name = "submit_result"
         iframe.onload = ->
@@ -77,5 +77,8 @@ module.exports = Submit =
     ]
     deferred.promise
     .then (data)->
+      p = {gon: {}}
+      data.call p, p
       console.log " :: POST(iframe) -> #{url}"
-      data
+      console.log p
+      p.gon
