@@ -1,15 +1,11 @@
 source 'https://rubygems.org'
 ruby "2.3.0"
 
-case RUBY_PLATFORM
-when /mswin|mingw/
-  gem "tzinfo-data"
-end
-
-gem "nokogiri", ">= 1.6.7"
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+gem "nokogiri", ">= 1.6.7.2"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.2.0'
+gem 'rails', '4.2.5.2'
 
 gem 'sqlite3', :group => [:development, :test]
 group :production do
