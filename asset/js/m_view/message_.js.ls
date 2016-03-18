@@ -20,7 +20,7 @@ dom = (parent, query, cb)->
   attr = Object.keys(vdom.attrs)[0]
 
   for elem in parent.querySelectorAll query
-    data = attr && unpack.Array elem.attributes[attr]?.value
+    data = attr && Mem.unpack.Array elem.attributes[attr]?.value
     cb.apply(elem, data)
 
 deco_action = (by_id)->

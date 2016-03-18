@@ -20,7 +20,7 @@ new Mem.Rule("form_text").schema ->
   @deploy (o)->
     o._id = "#{o.form_id}-#{o.mestype}-#{o.format}"
     o.format_name = formats[o.format]
-    o.mestype_name = Mem.ables.find(o.mestype).name
+    o.mestype_name = Mem.Query.ables.find(o.mestype).name
     o.target_hash = {}
     o.text = m.prop("")
 
@@ -59,7 +59,7 @@ new Mem.Rule("form_text").schema ->
           false
       action: ->
         onchange: m.withAttr "value", (index)->
-          act = Mem.actions.find(index)
+          act = Mem.Query.actions.find(index)
           o.action = act
           if act
             o.text act.text
@@ -71,5 +71,5 @@ new Mem.Rule("form_text").schema ->
       target: ->
         value:    o.target()
         onchange: m.withAttr "value", (value)->
-          o.target unpack.Number value
+          o.target Mem.unpack.Number value
           validate.talk o

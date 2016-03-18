@@ -54,11 +54,11 @@ set_event_without_messages = ({_id, story_id, name, created_at, updated_at})->
     name: name
     updated_at: updated_at - -100
 
-  Mem.rule.message.merge messages,
+  Mem.Collection.message.merge messages,
     event_id: _id
 
 set_event_messages = ({_id, story_id, messages})->
-  Mem.rule.message.merge messages,
+  Mem.Collection.message.merge messages,
     event_id: _id
     story_id: story_id
   console.log "#{messages.length} messages cache. (#{_id})"
@@ -67,13 +67,13 @@ set_event_messages = ({_id, story_id, messages})->
 export catch_gon =
   face: ->
     face = Mem.map_face_detail = gon.face
-    Mem.rule.map_face_story_log.set face.story_logs
-    face.name = Mem.faces.find(face.face_id).name
+    Mem.Collection.map_face_story_log.set face.story_logs
+    face.name = Mem.Query.faces.find(face.face_id).name
     face.story_id_of_folders = _.groupBy face.story_ids, ([k,count])->
       k.split("-")?[0]
 
     face.role_of_wins = _.groupBy face.roles, ([k,count])->
-      role = Mem.roles.find(k) || {group: "OTHER"}
+      role = Mem.Query.roles.find(k) || {group: "OTHER"}
       group = role.group || "MOB"
       Mem.conf.winner["WIN_" + group].name_group
 
@@ -82,28 +82,28 @@ export catch_gon =
       if o.csid_cid
         o.chr_job_id = o.csid_cid.replace("/","_").toLowerCase()
 
-    Mem.rule.writer.set gon.form.texts
+    Mem.Collection.writer.set gon.form.texts
 
   map_reduce_faces: ->
-    Mem.rule.chr_set.schema ->
+    Mem.Collection.chr_set.schema ->
       @order (o)->
-        Mem.map_faces.reduce.chr_set[o._id].count
+        Mem.Query.map_faces.reduce.chr_set[o._id].count
 
-    Mem.rule.map_face.set gon.map_reduce.faces
+    Mem.Collection.map_face.set gon.map_reduce.faces
 
   villages: ->
     if gon?.story?
-      Mem.rule.story.set [gon.story]
+      Mem.Collection.story.set [gon.story]
       console.log "1 story cache."
 
     for event in gon.events
       id = "#{event.story_id}-#{event.turn}"
-      event.is_full ||= Mem.events.find(id)?.is_full
+      event.is_full ||= Mem.Query.events.find(id)?.is_full
 
-    Mem.rule.event.merge gon.events
+    Mem.Collection.event.merge gon.events
     console.log "#{gon.events.length} events cache. (#{gon.story?._id})"
 
-    Mem.rule.potof.set gon.potofs,
+    Mem.Collection.potof.set gon.potofs,
       event_id: gon.events.last._id
 
   messages: ->

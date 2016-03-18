@@ -34,7 +34,7 @@ new Mem.Rule("story").schema ->
     else
       null
 
-  all_traps = Mem.traps.ids
+  all_traps = Mem.Query.traps.ids
 
   @deploy (o)->
     o.order = o.folder + GUI.field(o.vid, 4)
@@ -45,8 +45,8 @@ new Mem.Rule("story").schema ->
     o.type.game ?= "TABULA"
     o.type.mob  ?= "visiter"
 
-    if mob = Mem.roles.find(o.type.mob)
-      Mem.roles.find("mob").name = mob.name
+    if mob = Mem.Query.roles.find(o.type.mob)
+      Mem.Query.roles.find("mob").name = mob.name
 
     o.evil ||= Mem.conf.folder[o.folder].story.evil
     o.view =

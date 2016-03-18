@@ -31,7 +31,7 @@ new Mem.Rule("writer").schema ->
         o.hisoty =
           form: o
           text: log
-        Mem.rule.history.merge o.history
+        Mem.Collection.history.merge o.history
         log
       else
         o.history

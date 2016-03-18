@@ -15,7 +15,7 @@ if gon?.map_reduce?.faces?
   win.mount "#chr_sets", -> doc.component.chr_sets
 
 if gon?.new_chr_faces? && gon?.new_chr_jobs?
-  Mem.rule.face.merge    gon.new_chr_faces
-  Mem.rule.chr_job.merge gon.new_chr_jobs
+  Mem.Collection.face.merge    gon.new_chr_faces
+  Mem.Collection.chr_job.merge gon.new_chr_jobs
 
   win.mount "#map_faces", (dom)-> doc.component.map_faces_new

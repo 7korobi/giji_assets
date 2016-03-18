@@ -1609,7 +1609,7 @@
     });
     return this.map_reduce(function(o){});
   });
-  Mem.rule.action.set([
+  Mem.Collection.action.set([
     {
       "index": -5,
       "text": "に話の続きを促した。_REST_"
@@ -1722,8 +1722,8 @@
   radio = function(params, attr, arg) {
     var _id, type, uri, val;
     _id = arg._id, type = arg.type;
-    val = unpack[type];
-    uri = pack[type];
+    val = Mem.unpack[type];
+    uri = Mem.pack[type];
     return function(value) {
       var now_val;
       now_val = params[_id];
@@ -1820,7 +1820,7 @@
   event = function(params, arg) {
     var _id, attr_value, type, val;
     _id = arg._id, type = arg.type, attr_value = arg.attr_value;
-    val = unpack[type];
+    val = Mem.unpack[type];
     return m.withAttr(attr_value, function(new_val) {
       return params[_id] = val(new_val);
     });
@@ -1854,7 +1854,7 @@
             if (cookie) {
               match = document.cookie.match(RegExp(key + "=([^;]+)"));
               if ((match != null ? match[1] : void 0) != null) {
-                params[key] = unpack[type](decodeURI(match[1]));
+                params[key] = Mem.unpack[type](decodeURI(match[1]));
               }
             }
           }
@@ -1878,7 +1878,7 @@
           key = list[i];
           ref = all.hash[key], init = ref.init, type = ref.type;
           hash[key] = all.hash[key].vdom(params);
-          params[key] = unpack[type](init);
+          params[key] = Mem.unpack[type](init);
         }
         return hash;
       };
@@ -2068,7 +2068,7 @@
 
   new Mem.Rule("trs").schema(config("trs"));
 
-  Mem.rule.folder.set({
+  Mem.Collection.folder.set({
     "PERL_DEFAULT": {
       "config": {
         "csid": ["ririnra", "ririnra_c05", "ririnra_c08", "ririnra_c19", "ririnra_c67", "ririnra_c68", "ririnra_c72", "ririnra_c51", "ririnra_c20", "ririnra_c32", "all", "mad", "mad_mad05", "time", "ger", "animal", "school", "changed", "changed_m05", "SF", "SF_sf10", "wa", "wa_w23"],
@@ -3210,7 +3210,7 @@
     }
   });
 
-  Mem.rule.live.set({
+  Mem.Collection.live.set({
     "live": {
       "name": "生存者",
       "order": 2
@@ -3258,7 +3258,7 @@
     }
   });
 
-  Mem.rule.map_faces_order.set({
+  Mem.Collection.map_faces_order.set({
     "all": {
       "caption": "登場",
       "headline": "登場した",
@@ -3291,7 +3291,7 @@
     }
   });
 
-  Mem.rule.option.set({
+  Mem.Collection.option.set({
     "header_state": {
       "attr": {
         "className": "invisible",
@@ -3652,7 +3652,7 @@
     }
   });
 
-  Mem.rule.rating.set({
+  Mem.Collection.rating.set({
     "0": {
       "caption": "0",
       "alt": ""
@@ -3766,7 +3766,7 @@
     }
   });
 
-  Mem.rule.role_table.set({
+  Mem.Collection.role_table.set({
     "secret": {
       "name": "詳細は黒幕だけが知っています。"
     },
@@ -3823,7 +3823,7 @@
     }
   });
 
-  Mem.rule.rule.set({
+  Mem.Collection.rule.set({
     "TABULA": {
       "show": true,
       "CAPTION": "タブラの人狼",
@@ -3865,7 +3865,7 @@
     }
   });
 
-  Mem.rule.say.set({
+  Mem.Collection.say.set({
     "sow": {
       "CAPTION": "人狼物語",
       "HELP": null
@@ -4203,7 +4203,7 @@
     }
   });
 
-  Mem.rule.tag.set({
+  Mem.Collection.tag.set({
     "all": {
       "name": "すべて",
       "long": "「人狼議事 ちゃんぷる」のキャラクター",
@@ -4331,7 +4331,7 @@
     }
   });
 
-  Mem.rule.theme.set([
+  Mem.Collection.theme.set([
     {
       "_id": "juna",
       "item": "box-msg",
@@ -4398,7 +4398,7 @@
     }
   ]);
 
-  Mem.rule.trs.set({
+  Mem.Collection.trs.set({
     "all": {
       "show": true,
       "CAPTION": "オール☆スター",
@@ -4466,27 +4466,27 @@
     }
   });
 
-  Mem.conf.folder = Mem.folders.hash;
+  Mem.conf.folder = Mem.Query.folders.hash;
 
-  Mem.conf.live = Mem.lives.hash;
+  Mem.conf.live = Mem.Query.lives.hash;
 
-  Mem.conf.map_faces_order = Mem.map_faces_orders.hash;
+  Mem.conf.map_faces_order = Mem.Query.map_faces_orders.hash;
 
-  Mem.conf.option = Mem.options.hash;
+  Mem.conf.option = Mem.Query.options.hash;
 
-  Mem.conf.rating = Mem.ratings.hash;
+  Mem.conf.rating = Mem.Query.ratings.hash;
 
-  Mem.conf.role_table = Mem.role_tables.hash;
+  Mem.conf.role_table = Mem.Query.role_tables.hash;
 
-  Mem.conf.rule = Mem.rules.hash;
+  Mem.conf.rule = Mem.Query.rules.hash;
 
-  Mem.conf.say = Mem.says.hash;
+  Mem.conf.say = Mem.Query.says.hash;
 
-  Mem.conf.tag = Mem.tags.hash;
+  Mem.conf.tag = Mem.Query.tags.hash;
 
-  Mem.conf.theme = Mem.themes.hash;
+  Mem.conf.theme = Mem.Query.themes.hash;
 
-  Mem.conf.trs = Mem.trss.hash;
+  Mem.conf.trs = Mem.Query.trss.hash;
 
 }).call(this);
 
@@ -4594,7 +4594,7 @@
     });
   });
 
-  Mem.rule.face.set([
+  Mem.Collection.face.set([
     {
       "_id": "c49",
       "comment": "test",
@@ -6454,7 +6454,7 @@
     }
   ]);
 
-  Mem.rule.chr_set.merge([
+  Mem.Collection.chr_set.merge([
     {
       "_id": "all",
       "admin": "闇の呟き",
@@ -6464,7 +6464,7 @@
     }
   ]);
 
-  Mem.rule.chr_npc.merge([
+  Mem.Collection.chr_npc.merge([
     {
       "caption": "人狼議事 ちゃんぷる",
       "csid": "all",
@@ -6476,7 +6476,7 @@
     }
   ]);
 
-  Mem.rule.chr_job.merge([
+  Mem.Collection.chr_job.merge([
     {
       "face_id": "all",
       "job": "かみさま",
@@ -6485,7 +6485,7 @@
     }
   ]);
 
-  Mem.rule.chr_set.merge([
+  Mem.Collection.chr_set.merge([
     {
       "_id": "animal",
       "admin": "大地の震動",
@@ -6495,7 +6495,7 @@
     }
   ]);
 
-  Mem.rule.chr_npc.merge([
+  Mem.Collection.chr_npc.merge([
     {
       "caption": "うきうきサバンナ",
       "csid": "animal",
@@ -6507,7 +6507,7 @@
     }
   ]);
 
-  Mem.rule.chr_job.merge([
+  Mem.Collection.chr_job.merge([
     {
       "face_id": "c01",
       "job": "こじか",
@@ -7056,7 +7056,7 @@
     }
   ]);
 
-  Mem.rule.chr_set.merge([
+  Mem.Collection.chr_set.merge([
     {
       "_id": "changed",
       "admin": "闇の呟き",
@@ -7066,7 +7066,7 @@
     }
   ]);
 
-  Mem.rule.chr_npc.merge([
+  Mem.Collection.chr_npc.merge([
     {
       "caption": "とのさま広場",
       "csid": "changed",
@@ -7086,7 +7086,7 @@
     }
   ]);
 
-  Mem.rule.chr_job.merge([
+  Mem.Collection.chr_job.merge([
     {
       "face_id": "b44",
       "job": "こあくとう",
@@ -7205,7 +7205,7 @@
     }
   ]);
 
-  Mem.rule.chr_set.merge([
+  Mem.Collection.chr_set.merge([
     {
       "_id": "ger",
       "admin": "闇の呟き",
@@ -7215,7 +7215,7 @@
     }
   ]);
 
-  Mem.rule.chr_npc.merge([
+  Mem.Collection.chr_npc.merge([
     {
       "caption": "エクスパンション・セット「大陸議事」",
       "csid": "ger",
@@ -7227,7 +7227,7 @@
     }
   ]);
 
-  Mem.rule.chr_job.merge([
+  Mem.Collection.chr_job.merge([
     {
       "face_id": "g01",
       "job": "三元道士",
@@ -7276,7 +7276,7 @@
     }
   ]);
 
-  Mem.rule.chr_set.merge([
+  Mem.Collection.chr_set.merge([
     {
       "_id": "mad",
       "admin": "闇の呟き",
@@ -7286,7 +7286,7 @@
     }
   ]);
 
-  Mem.rule.chr_npc.merge([
+  Mem.Collection.chr_npc.merge([
     {
       "caption": "エクスパンション・セット「狂騒議事」",
       "csid": "mad",
@@ -7306,7 +7306,7 @@
     }
   ]);
 
-  Mem.rule.chr_job.merge([
+  Mem.Collection.chr_job.merge([
     {
       "face_id": "c103",
       "job": "厭世家",
@@ -7375,7 +7375,7 @@
     }
   ]);
 
-  Mem.rule.chr_set.merge([
+  Mem.Collection.chr_set.merge([
     {
       "_id": "ririnra",
       "admin": "闇の呟き",
@@ -7385,7 +7385,7 @@
     }
   ]);
 
-  Mem.rule.chr_npc.merge([
+  Mem.Collection.chr_npc.merge([
     {
       "caption": "人狼議事（キャサリン）",
       "csid": "ririnra_c05",
@@ -7469,7 +7469,7 @@
     }
   ]);
 
-  Mem.rule.chr_job.merge([
+  Mem.Collection.chr_job.merge([
     {
       "face_id": "c01",
       "job": "花売り",
@@ -8078,7 +8078,7 @@
     }
   ]);
 
-  Mem.rule.chr_set.merge([
+  Mem.Collection.chr_set.merge([
     {
       "_id": "school",
       "admin": "校内放送",
@@ -8088,7 +8088,7 @@
     }
   ]);
 
-  Mem.rule.chr_npc.merge([
+  Mem.Collection.chr_npc.merge([
     {
       "caption": "私立七転学園",
       "csid": "school",
@@ -8100,7 +8100,7 @@
     }
   ]);
 
-  Mem.rule.chr_job.merge([
+  Mem.Collection.chr_job.merge([
     {
       "face_id": "c01",
       "job": "華道部",
@@ -8649,7 +8649,7 @@
     }
   ]);
 
-  Mem.rule.chr_set.merge([
+  Mem.Collection.chr_set.merge([
     {
       "_id": "sf",
       "admin": "黒体放射のエヴェレット解釈",
@@ -8659,7 +8659,7 @@
     }
   ]);
 
-  Mem.rule.chr_npc.merge([
+  Mem.Collection.chr_npc.merge([
     {
       "caption": "明後日への道標",
       "csid": "SF",
@@ -8679,7 +8679,7 @@
     }
   ]);
 
-  Mem.rule.chr_job.merge([
+  Mem.Collection.chr_job.merge([
     {
       "face_id": "sf01",
       "job": "通信士",
@@ -8843,7 +8843,7 @@
     }
   ]);
 
-  Mem.rule.chr_set.merge([
+  Mem.Collection.chr_set.merge([
     {
       "_id": "time",
       "admin": "第四の壁の深奥",
@@ -8853,7 +8853,7 @@
     }
   ]);
 
-  Mem.rule.chr_npc.merge([
+  Mem.Collection.chr_npc.merge([
     {
       "caption": "エクスパンション・セット「帰還者議事」",
       "csid": "time",
@@ -8865,7 +8865,7 @@
     }
   ]);
 
-  Mem.rule.chr_job.merge([
+  Mem.Collection.chr_job.merge([
     {
       "face_id": "c10",
       "job": "小銃協会",
@@ -9054,7 +9054,7 @@
     }
   ]);
 
-  Mem.rule.chr_set.merge([
+  Mem.Collection.chr_set.merge([
     {
       "_id": "wa",
       "admin": "闇の呟き",
@@ -9064,7 +9064,7 @@
     }
   ]);
 
-  Mem.rule.chr_npc.merge([
+  Mem.Collection.chr_npc.merge([
     {
       "caption": "和の国てやんでえ",
       "csid": "wa",
@@ -9084,7 +9084,7 @@
     }
   ]);
 
-  Mem.rule.chr_job.merge([
+  Mem.Collection.chr_job.merge([
     {
       "face_id": "w01",
       "job": "役者",
@@ -9345,14 +9345,14 @@
 
   list = (function() {
     var i, len, ref, ref1, results;
-    ref = Mem.faces.list;
+    ref = Mem.Query.faces.list;
     results = [];
     for (i = 0, len = ref.length; i < len; i++) {
       face = ref[i];
       chr_set_id = "all";
       face_id = face._id;
       _id = "all_" + face_id;
-      job = (ref1 = Mem.chr_jobs.face(face_id).list.first) != null ? ref1.job : void 0;
+      job = (ref1 = Mem.Query.chr_jobs.face(face_id).list.first) != null ? ref1.job : void 0;
       if (job == null) {
         continue;
       }
@@ -9366,7 +9366,7 @@
     return results;
   })();
 
-  Mem.rule.chr_job.merge(list);
+  Mem.Collection.chr_job.merge(list);
 
 }).call(this);
 
@@ -9383,8 +9383,8 @@
     });
     this.deploy(function(o) {
       if (o.sow != null) {
-        o.winner = Mem.winners.sow(o.sow.winner)._id;
-        o.event = Mem.traps.sow(o.sow.event)._id;
+        o.winner = Mem.Query.winners.sow(o.sow.winner)._id;
+        o.event = Mem.Query.traps.sow(o.sow.event)._id;
       }
       if (o._id == null) {
         o._id = o.story_id + "-" + o.turn;
@@ -9425,8 +9425,8 @@
       listup = function(state, live, mob){
         var option;
         option = function(cb){
-          if (Mem.potofs) {
-            return Mem.potofs.where(cb).list.map(function(o){
+          if (Mem.Query.potofs) {
+            return Mem.Query.potofs.where(cb).list.map(function(o){
               return {
                 pno: o.pno,
                 job: o.chr_job.job,
@@ -9504,7 +9504,7 @@
           });
         }
         if (targets.length) {
-          return Mem.rule.form_text.merge([{
+          return Mem.Collection.form_text.merge([{
             form_id: form_id,
             mestype: mestype,
             format: format,
@@ -9569,7 +9569,7 @@
       };
       role_scan = function(role_id, can_use){
         var role, i$, ref$, len$, able_id, able, results$ = [];
-        role = Mem.roles.find(role_id);
+        role = Mem.Query.roles.find(role_id);
         role_names.push(role.name);
         role_helps.push(role.HELP);
         if (in$("grave", role.ables)) {
@@ -9578,7 +9578,7 @@
         if (can_use) {
           for (i$ = 0, len$ = (ref$ = role.ables).length; i$ < len$; ++i$) {
             able_id = ref$[i$];
-            able = Mem.ables.find(able_id);
+            able = Mem.Query.ables.find(able_id);
             results$.push(able_scan(role, able));
           }
           return results$;
@@ -9647,7 +9647,7 @@
           role_scan(role_id, can_use);
         }
       }
-      for (i$ = 0, len$ = (ref$ = Mem.ables.by_rolestate(o.rolestate)).length; i$ < len$; ++i$) {
+      for (i$ = 0, len$ = (ref$ = Mem.Query.ables.by_rolestate(o.rolestate)).length; i$ < len$; ++i$) {
         able = ref$[i$];
         role_names.push(able.name);
         able_scan({}, able);
@@ -9696,7 +9696,7 @@
       var i$, ref$, len$, target, text_on;
       o._id = o.form_id + "-" + o.mestype + "-" + o.format;
       o.format_name = formats[o.format];
-      o.mestype_name = Mem.ables.find(o.mestype).name;
+      o.mestype_name = Mem.Query.ables.find(o.mestype).name;
       o.target_hash = {};
       o.text = m.prop("");
       o.target_at = function(value){
@@ -9746,7 +9746,7 @@
           return {
             onchange: m.withAttr("value", function(index){
               var act;
-              act = Mem.actions.find(index);
+              act = Mem.Query.actions.find(index);
               o.action = act;
               if (act) {
                 o.text(act.text);
@@ -9766,7 +9766,7 @@
           return {
             value: o.target(),
             onchange: m.withAttr("value", function(value){
-              o.target(unpack.Number(value));
+              o.target(Mem.unpack.Number(value));
               return validate.talk(o);
             })
           };
@@ -9840,14 +9840,14 @@
       name: name,
       updated_at: updated_at - -100
     });
-    return Mem.rule.message.merge(messages, {
+    return Mem.Collection.message.merge(messages, {
       event_id: _id
     });
   };
   set_event_messages = function(arg$){
     var _id, story_id, messages;
     _id = arg$._id, story_id = arg$.story_id, messages = arg$.messages;
-    Mem.rule.message.merge(messages, {
+    Mem.Collection.message.merge(messages, {
       event_id: _id,
       story_id: story_id
     });
@@ -9857,8 +9857,8 @@
     face: function(){
       var face;
       face = Mem.map_face_detail = gon.face;
-      Mem.rule.map_face_story_log.set(face.story_logs);
-      face.name = Mem.faces.find(face.face_id).name;
+      Mem.Collection.map_face_story_log.set(face.story_logs);
+      face.name = Mem.Query.faces.find(face.face_id).name;
       face.story_id_of_folders = _.groupBy(face.story_ids, function(arg$){
         var k, count, ref$;
         k = arg$[0], count = arg$[1];
@@ -9867,7 +9867,7 @@
       return face.role_of_wins = _.groupBy(face.roles, function(arg$){
         var k, count, role, group;
         k = arg$[0], count = arg$[1];
-        role = Mem.roles.find(k) || {
+        role = Mem.Query.roles.find(k) || {
           group: "OTHER"
         };
         group = role.group || "MOB";
@@ -9882,30 +9882,30 @@
           o.chr_job_id = o.csid_cid.replace("/", "_").toLowerCase();
         }
       }
-      return Mem.rule.writer.set(gon.form.texts);
+      return Mem.Collection.writer.set(gon.form.texts);
     },
     map_reduce_faces: function(){
-      Mem.rule.chr_set.schema(function(){
+      Mem.Collection.chr_set.schema(function(){
         return this.order(function(o){
-          return Mem.map_faces.reduce.chr_set[o._id].count;
+          return Mem.Query.map_faces.reduce.chr_set[o._id].count;
         });
       });
-      return Mem.rule.map_face.set(gon.map_reduce.faces);
+      return Mem.Collection.map_face.set(gon.map_reduce.faces);
     },
     villages: function(){
       var i$, ref$, len$, event, id, ref1$;
       if ((typeof gon != 'undefined' && gon !== null ? gon.story : void 8) != null) {
-        Mem.rule.story.set([gon.story]);
+        Mem.Collection.story.set([gon.story]);
         console.log("1 story cache.");
       }
       for (i$ = 0, len$ = (ref$ = gon.events).length; i$ < len$; ++i$) {
         event = ref$[i$];
         id = event.story_id + "-" + event.turn;
-        event.is_full || (event.is_full = (ref1$ = Mem.events.find(id)) != null ? ref1$.is_full : void 8);
+        event.is_full || (event.is_full = (ref1$ = Mem.Query.events.find(id)) != null ? ref1$.is_full : void 8);
       }
-      Mem.rule.event.merge(gon.events);
+      Mem.Collection.event.merge(gon.events);
       console.log(gon.events.length + " events cache. (" + ((ref$ = gon.story) != null ? ref$._id : void 8) + ")");
-      return Mem.rule.potof.set(gon.potofs, {
+      return Mem.Collection.potof.set(gon.potofs, {
         event_id: gon.events.last._id
       });
     },
@@ -9946,7 +9946,7 @@
     var data;
     data = function(rule, ary){
       var q, scope;
-      q = Mem[rule];
+      q = Mem.Query[rule];
       if (ary.length > 0) {
         scope = ary.shift();
         q = q[scope].apply(q, ary);
@@ -10296,7 +10296,7 @@
         case "talk":
         case "guide":
           if (o.log) {
-            time_id = pack.Date(o.updated_at / timespan);
+            time_id = Mem.pack.Date(o.updated_at / timespan);
             item = {
               count: o.log.length,
               min: o.updated_at,
@@ -10347,11 +10347,11 @@
     this.scope(function(all) {
       return {
         full: function() {
-          delete Mem.messages.has.face.undefined;
-          delete Mem.messages.has.face["null"];
-          delete Mem.messages.has.face.admin;
-          delete Mem.messages.has.face.maker;
-          return Object.keys(Mem.messages.has.face).sort();
+          delete Mem.Query.messages.has.face.undefined;
+          delete Mem.Query.messages.has.face["null"];
+          delete Mem.Query.messages.has.face.admin;
+          delete Mem.Query.messages.has.face.maker;
+          return Object.keys(Mem.Query.messages.has.face).sort();
         },
         potofs: function() {
           return _.without.apply(_, [all.full()].concat(slice.call(all.others())));
@@ -10387,8 +10387,8 @@
     this.deploy(function(o) {
       var chr_job, event, is_dead_lose, is_lone_lose, job, name, pt, pt_no, ref, ref1, ref2, ref3, role, role_side_order, role_text, roles, said_num, say_type, select, stat_at, stat_order, stat_type, story, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie;
       if (o.sow != null) {
-        o.role = [Mem.roles.sow_role(o.sow.role)._id, Mem.roles.sow_gift(o.sow.gift)._id];
-        o.select = Mem.roles.sow_role(o.sow.selrole)._id;
+        o.role = [Mem.Query.roles.sow_role(o.sow.role)._id, Mem.Query.roles.sow_gift(o.sow.gift)._id];
+        o.select = Mem.Query.roles.sow_role(o.sow.selrole)._id;
       }
       if (((ref = o._id) != null ? ref.$oid : void 0) != null) {
         o._id = o._id.$oid;
@@ -10482,7 +10482,7 @@
           is_dead_lose = 1;
       }
       win_love = (ref3 = RAILS.loves[o.love]) != null ? ref3.win : void 0;
-      win_role = win_by_role(o, Mem.roles);
+      win_role = win_by_role(o, Mem.Query.roles);
       win = win_juror || win_love || win_zombie || win_role;
       if (win === 'EVIL') {
         win = story.evil;
@@ -10547,7 +10547,7 @@
         return results;
       })();
       role_text = roles.join("、");
-      text = Mem.ables.by_rolestate(o.rolestate).pluck("name");
+      text = Mem.Query.ables.by_rolestate(o.rolestate).pluck("name");
       if ('pixi' === o.sheep) {
         text.push('<span class="icon-music"></span>');
       }
@@ -10815,7 +10815,7 @@
     });
     return this.map_reduce(function(o){});
   });
-  Mem.rule.able.set({
+  Mem.Collection.able.set({
     "editvilform": {
       "btn": "村を編集する",
       "change": "村の編集フォームを確認、修正します。",
@@ -11332,14 +11332,14 @@
   });
   for (mask in ref$ = RAILS.maskstates_to_able) {
     id = ref$[mask];
-    if (o = Mem.ables.find(id)) {
+    if (o = Mem.Query.ables.find(id)) {
       o.mask = mask;
     }
   }
-  Mem.ables.masks = _.sortBy(Object.keys(RAILS.maskstates_to_able), function(i){
+  Mem.Query.ables.masks = _.sortBy(Object.keys(RAILS.maskstates_to_able), function(i){
     return -i;
   });
-  Mem.rule.trap.set({
+  Mem.Collection.trap.set({
     "blank": {
       "name": "普通の日",
       "HELP": ""
@@ -11419,7 +11419,7 @@
       "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_SEANSE\" TARGET=\"_blank\">降霊会</A></b>\n<br>\nこっくりさん、こっくりさん……<br>秘密の儀式で、墓場の霊魂がかえってきた。今日に限り、生者も姿の見えぬ死者も屋根を共にし、議論するだろう。"
     }
   });
-  Mem.rule.role.set({
+  Mem.Collection.role.set({
     "entry": {
       "name": "エントリー",
       "win": null,
@@ -12284,7 +12284,7 @@
         return null;
       }
     };
-    all_traps = Mem.traps.ids;
+    all_traps = Mem.Query.traps.ids;
     this.deploy(function(o) {
       var base, base1, mob, ref, ref1, ref2;
       o.order = o.folder + GUI.field(o.vid, 4);
@@ -12299,8 +12299,8 @@
       if ((base1 = o.type).mob == null) {
         base1.mob = "visiter";
       }
-      if (mob = Mem.roles.find(o.type.mob)) {
-        Mem.roles.find("mob").name = mob.name;
+      if (mob = Mem.Query.roles.find(o.type.mob)) {
+        Mem.Query.roles.find("mob").name = mob.name;
       }
       o.evil || (o.evil = Mem.conf.folder[o.folder].story.evil);
       o.view = {
@@ -12492,21 +12492,21 @@
     ref$ = this.params, role = ref$.role, gift = ref$.gift, extra = ref$.extra, mob_type = ref$.mob_type, game_rule = ref$.game_rule, start_auto = ref$.start_auto, player_count = ref$.player_count, player_count_start = ref$.player_count_start;
     full = slice$.call(role).concat(slice$.call(gift));
     minus = 0;
-    minus += 2 * Mem.roles.minus2(role).length;
-    minus += 1 * Mem.roles.minus1(full).length;
-    player = Mem.roles.players(role).length;
+    minus += 2 * Mem.Query.roles.minus2(role).length;
+    minus += 1 * Mem.Query.roles.minus1(full).length;
+    player = Mem.Query.roles.players(role).length;
     this.size = {
       drop: player - player_count,
-      wolf: Mem.roles.wolfs(full).length,
+      wolf: Mem.Query.roles.wolfs(full).length,
       minus: minus,
       extra: extra.length,
-      human: Mem.roles.humans(role).length - minus,
+      human: Mem.Query.roles.humans(role).length - minus,
       player: player,
-      robber: Mem.roles.robbers(role).length,
-      villager: Mem.roles.villagers(role).length,
-      gift_sides: Mem.roles.gift_sides(gift).length,
-      gift_items: Mem.roles.gift_items(gift).length,
-      gift_appends: Mem.roles.gift_appends(gift).length
+      robber: Mem.Query.roles.robbers(role).length,
+      villager: Mem.Query.roles.villagers(role).length,
+      gift_sides: Mem.Query.roles.gift_sides(gift).length,
+      gift_items: Mem.Query.roles.gift_items(gift).length,
+      gift_appends: Mem.Query.roles.gift_appends(gift).length
     };
     switch (mob_type) {
     case "juror":
@@ -12693,7 +12693,7 @@
     });
     return this.map_reduce(function(o){});
   });
-  Mem.rule.winner.set({
+  Mem.Collection.winner.set({
     "WIN_HUMAN": {
       "name": "村人陣営",
       "name_group": "村人陣営",
@@ -12774,33 +12774,33 @@
       "HELP": "あなたは村を去りました。勝利したり、敗北したりといったことは、もうありません。"
     }
   });
-  Mem.conf.winner = Mem.winners.hash;
+  Mem.conf.winner = Mem.Query.winners.hash;
 }).call(this);
 
 (function() {
   var field;
 
-  field = Mem.options.hash;
+  field = Mem.Query.options.hash;
 
-  field.role_table.options = Mem.role_tables.enable().hash;
+  field.role_table.options = Mem.Query.role_tables.enable().hash;
 
-  field.game_rule.options = Mem.rules.enable().hash;
+  field.game_rule.options = Mem.Query.rules.enable().hash;
 
-  field.say_count.options = Mem.says.enable().hash;
+  field.say_count.options = Mem.Query.says.enable().hash;
 
-  field.mob_type.options = Mem.roles.mob().hash;
+  field.mob_type.options = Mem.Query.roles.mob().hash;
 
   field.chr_npc.group_by = function(o) {
     return o.chr_npcs().hash;
   };
 
-  field.chr_npc.options = Mem.chr_npcs.hash;
+  field.chr_npc.options = Mem.Query.chr_npcs.hash;
 
-  field.chr_set.options = field.chr_npc.groups = Mem.chr_sets.hash;
+  field.chr_set.options = field.chr_npc.groups = Mem.Query.chr_sets.hash;
 
-  field.rating.options = Mem.ratings.enable().hash;
+  field.rating.options = Mem.Query.ratings.enable().hash;
 
-  field.trs_type.options = Mem.trss.enable().hash;
+  field.trs_type.options = Mem.Query.trss.enable().hash;
 
 }).call(this);
 

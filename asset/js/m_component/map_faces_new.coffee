@@ -27,7 +27,7 @@ chr_box = (o)->
 
 doc.component.map_faces_new =
   controller: ->
-    chrs = Mem.chr_jobs.where(chr_set_id:"time").sort(false, (o)-> o.face.order ).list
+    chrs = Mem.Query.chr_jobs.where(chr_set_id:"time").sort(false, (o)-> o.face.order ).list
     @old_chrs = chrs[0..23]
     @new_chrs = chrs[24..-1]
     return

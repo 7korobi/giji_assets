@@ -193,7 +193,7 @@ new Mem.Rule("message").schema ->
     switch o.template
       when "talk", "guide"
         if o.log
-          time_id = pack.Date(o.updated_at / timespan)
+          time_id = Mem.pack.Date(o.updated_at / timespan)
           item =
             count: o.log.length
             min: o.updated_at

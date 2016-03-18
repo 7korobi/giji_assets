@@ -563,7 +563,7 @@
             enemy = ref1$[j$];
             for (k$ = 0, len2$ = (ref2$ = ['visiter', 'grave', 'alive', 'juror', 'gamemaster']).length; k$ < len2$; ++k$) {
               mob = ref2$[k$];
-              Mem.rule.form.set([{
+              Mem.Collection.form.set([{
                 enemy: enemy,
                 turn: turn,
                 live: live,

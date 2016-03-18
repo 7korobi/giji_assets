@@ -1,7 +1,7 @@
 doc.component.header =
   controller: ->
     @params = {}
-    @form = Mem.options.form @params, ["header_state"],
+    @form = Mem.Query.options.form @params, ["header_state"],
       onchange: ->
     return
 

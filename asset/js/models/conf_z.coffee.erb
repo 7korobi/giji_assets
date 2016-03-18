@@ -26,12 +26,12 @@ new Mem.Rule("<%= key %>").schema config("<%= key %>")
   for (key in confs) {
     var data = confs[key];
  %>
-Mem.rule.<%- key %>.set <%- JSON.stringify(data) %>
+Mem.Collection.<%- key %>.set <%- JSON.stringify(data) %>
 <% } %>
 
 <%
   for (key in confs) {
     var data = confs[key];
  %>
-Mem.conf.<%- key %> = Mem.<%- key %>s.hash
+Mem.conf.<%- key %> = Mem.Query.<%- key %>s.hash
 <% } %>

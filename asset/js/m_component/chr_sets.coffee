@@ -12,8 +12,8 @@ doc.component.chr_sets =
         main_menu.drill "chr_set",
           caption: "キャラセット"
           view: (sub_menu)->
-            sub_menu.radio {class: "chr_set"}, Url.prop.chr_set, Mem.map_faces.reduce, "chr_set", (key)->
-              Mem.chr_sets.find(key).caption
+            sub_menu.radio {class: "chr_set"}, Url.prop.chr_set, Mem.Query.map_faces.reduce, "chr_set", (key)->
+              Mem.Query.chr_sets.find(key).caption
 
       view: (main_menu)->
         m ".paragraph",

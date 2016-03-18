@@ -142,10 +142,10 @@ new Mem.Rule("able").schema ->
   @map_reduce (o)->
 
 
-Mem.rule.able.set <%- JSON.stringify(SET_ABLES) %>
-for mask, id of RAILS.maskstates_to_able when o = Mem.ables.find(id)
+Mem.Collection.able.set <%- JSON.stringify(SET_ABLES) %>
+for mask, id of RAILS.maskstates_to_able when o = Mem.Query.ables.find(id)
   o.mask = mask
-Mem.ables.masks = _.sortBy Object.keys(RAILS.maskstates_to_able), (i)-> -i
+Mem.Query.ables.masks = _.sortBy Object.keys(RAILS.maskstates_to_able), (i)-> -i
 
-Mem.rule.trap.set <%- JSON.stringify(SET_TRAPS) %>
-Mem.rule.role.set <%- JSON.stringify(SET_ROLES) %>
+Mem.Collection.trap.set <%- JSON.stringify(SET_TRAPS) %>
+Mem.Collection.role.set <%- JSON.stringify(SET_ROLES) %>

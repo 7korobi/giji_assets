@@ -1,6 +1,6 @@
 radio = (params, attr, {_id, type})->
-  val = unpack[type]
-  uri = pack[type]
+  val = Mem.unpack[type]
+  uri = Mem.pack[type]
   (value)->
     now_val = params[_id]
     attr.value = uri value
@@ -60,7 +60,7 @@ labeler = (params, {_id, label_attr, options, help_on, help_off})->
 
 
 event = (params, {_id, type, attr_value})->
-  val = unpack[type]
+  val = Mem.unpack[type]
   m.withAttr attr_value, (new_val)->
     params[_id] = val new_val
 
@@ -82,7 +82,7 @@ new Mem.Rule("option").schema ->
           if cookie
             match = document.cookie.match ///#{key}=([^;]+)///
             if match?[1]?
-              params[key] = unpack[type] decodeURI match[1]
+              params[key] = Mem.unpack[type] decodeURI match[1]
         return
 
       hash.disable = (b)->
@@ -98,7 +98,7 @@ new Mem.Rule("option").schema ->
       for key in list
         {init, type} = all.hash[key]
         hash[key] = all.hash[key].vdom params
-        params[key] = unpack[type] init
+        params[key] = Mem.unpack[type] init
       hash
 
     checkbox: -> all.where (o)-> o.attr.type == 'checkbox'

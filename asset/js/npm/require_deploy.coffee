@@ -57,8 +57,6 @@ deploy
 GUI.Animate = require 'gui_animate'
 GUI.form = require 'gui_form'
 
-deploy require 'serialized-property'
-
 deploy require 'base'
 deploy require 'menu_tree'
 deploy require 'form'

@@ -71,7 +71,7 @@ new Mem.Rule("chr_job").schema ->
       all.where((o)-> face_id == o.face_id).sort(false, (o)-> o.chr_set_idx )
 
 
-Mem.rule.face.set <%- JSON.stringify(FACE) %>
+Mem.Collection.face.set <%- JSON.stringify(FACE) %>
 
 
 <%
@@ -79,18 +79,18 @@ Mem.rule.face.set <%- JSON.stringify(FACE) %>
     var data = csets[key];
 
  %>
-Mem.rule.chr_set.merge [<%- JSON.stringify(data.chr_set) %>]
-Mem.rule.chr_npc.merge <%-  JSON.stringify(data.chr_npc) %>
-Mem.rule.chr_job.merge <%-  JSON.stringify(data.chr_job) %>
+Mem.Collection.chr_set.merge [<%- JSON.stringify(data.chr_set) %>]
+Mem.Collection.chr_npc.merge <%-  JSON.stringify(data.chr_npc) %>
+Mem.Collection.chr_job.merge <%-  JSON.stringify(data.chr_job) %>
 <% } %>
 
 list =
-  for face in Mem.faces.list
+  for face in Mem.Query.faces.list
     chr_set_id = "all"
     face_id = face._id
     _id = "all_#{face_id}"
-    job = Mem.chr_jobs.face(face_id).list.first?.job
+    job = Mem.Query.chr_jobs.face(face_id).list.first?.job
     continue unless job?
     {chr_set_id, face_id, job, _id}
 
-Mem.rule.chr_job.merge list
+Mem.Collection.chr_job.merge list

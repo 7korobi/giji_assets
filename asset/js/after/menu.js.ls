@@ -45,7 +45,7 @@ map_reduce
         radio pixi:
         radio other:
       drill chr_set:
-        radio Mem.map_faces.reduce
+        radio Mem.Query.map_faces.reduce
     icon cog:
 
 

@@ -158,23 +158,23 @@
 }).call(this);
 
 (function(){
-  describe("Mem.faces", function(){
+  describe("Mem.Query.faces", function(){
     it("bye jelemy", function(){
-      return expect(Mem.faces.find("c06")).to.eq(undefined);
+      return expect(Mem.Query.faces.find("c06")).to.eq(undefined);
     });
     it("symon", function(){
       var list;
-      list = Mem.faces.find("c99").chr_jobs.list;
+      list = Mem.Query.faces.find("c99").chr_jobs.list;
       expect(list[0].job).to.eq("しんかいぎょ");
       expect(list[0].chr_set_id).to.eq("animal");
       expect(list[1].job).to.eq("厭世家");
       expect(list[1].chr_set_id).to.eq("ririnra");
     });
   });
-  describe("Mem.chr_jobs", function(){
+  describe("Mem.Query.chr_jobs", function(){
     it("zoy", function(){
       var chr;
-      chr = Mem.chr_jobs.face("c10").list;
+      chr = Mem.Query.chr_jobs.face("c10").list;
       expect(chr[0].job).to.eq("小娘");
       expect(chr[0].chr_set_id).to.eq("ririnra");
       expect(chr[0].chr_job_id).to.eq("ririnra_c10");
@@ -188,7 +188,7 @@
     });
     it("iris", function(){
       var chr;
-      chr = Mem.chr_jobs.face("c83").list;
+      chr = Mem.Query.chr_jobs.face("c83").list;
       expect(chr[0].job).to.eq("受付");
       expect(chr[0].chr_set_id).to.eq("ririnra");
       expect(chr[0].chr_job_id).to.eq("ririnra_c83");
@@ -474,7 +474,7 @@
 }).call(this);
 
 (function(){
-  describe("Mem.ables", function(){
+  describe("Mem.Query.ables", function(){
     var do_test_selects;
     do_test_selects = function(able){
       return it(able._id + "", function(){
@@ -484,7 +484,7 @@
     };
     describe("has switch", function(){
       var i$, ref$, len$, role;
-      for (i$ = 0, len$ = (ref$ = Mem.ables.where(fn$).list).length; i$ < len$; ++i$) {
+      for (i$ = 0, len$ = (ref$ = Mem.Query.ables.where(fn$).list).length; i$ < len$; ++i$) {
         role = ref$[i$];
         do_test_selects(role);
       }
@@ -494,7 +494,7 @@
     });
     describe("has target", function(){
       var i$, ref$, len$, role;
-      for (i$ = 0, len$ = (ref$ = Mem.ables.where(fn$).list).length; i$ < len$; ++i$) {
+      for (i$ = 0, len$ = (ref$ = Mem.Query.ables.where(fn$).list).length; i$ < len$; ++i$) {
         role = ref$[i$];
         do_test_selects(role);
       }
@@ -504,7 +504,7 @@
     });
     describe("has targets", function(){
       var i$, ref$, len$, role;
-      for (i$ = 0, len$ = (ref$ = Mem.ables.where(fn$).list).length; i$ < len$; ++i$) {
+      for (i$ = 0, len$ = (ref$ = Mem.Query.ables.where(fn$).list).length; i$ < len$; ++i$) {
         role = ref$[i$];
         do_test_selects(role);
       }
@@ -516,7 +516,7 @@
 }).call(this);
 
 (function(){
-  describe("(sow) Mem.roles", function(){
+  describe("(sow) Mem.Query.roles", function(){
     var do_test_mob;
     do_test_mob = function(role){
       return it(role.name + "", function(){
@@ -525,7 +525,7 @@
     };
     describe(" has VSAY", function(){
       var i$, ref$, len$, role;
-      for (i$ = 0, len$ = (ref$ = Mem.roles.where({
+      for (i$ = 0, len$ = (ref$ = Mem.Query.roles.where({
         group: "MOB"
       }).list).length; i$ < len$; ++i$) {
         role = ref$[i$];
@@ -536,14 +536,14 @@
 }).call(this);
 
 (function(){
-  describe("(sow) Mem.forms", function(){
+  describe("(sow) Mem.Query.forms", function(){
     var for_all_forms;
     for_all_forms = function(call){
       var i$, ref$, len$, live, lresult$, live_name, j$, ref1$, len1$, turn, results$ = [];
       for (i$ = 0, len$ = (ref$ = ['live', 'executed', 'victim', 'cursed', 'droop', 'suicide', 'feared', 'suddendead']).length; i$ < len$; ++i$) {
         live = ref$[i$];
         lresult$ = [];
-        live_name = Mem.roles.find(live).name;
+        live_name = Mem.Query.roles.find(live).name;
         for (j$ = 0, len1$ = (ref1$ = ['prologue', 'start', 'main', 'epilogue']).length; j$ < len1$; ++j$) {
           turn = ref1$[j$];
           lresult$.push(it(live_name + " " + turn, fn$));
@@ -553,13 +553,13 @@
       return results$;
       function fn$(){
         var i$, ref$, len$, role, j$, ref1$, len1$, enemy, k$, ref2$, len2$, mob, form;
-        for (i$ = 0, len$ = (ref$ = Mem.roles.list).length; i$ < len$; ++i$) {
+        for (i$ = 0, len$ = (ref$ = Mem.Query.roles.list).length; i$ < len$; ++i$) {
           role = ref$[i$];
           for (j$ = 0, len1$ = (ref1$ = ['evil', 'wolf']).length; j$ < len1$; ++j$) {
             enemy = ref1$[j$];
             for (k$ = 0, len2$ = (ref2$ = ['visiter', 'grave', 'alive', 'juror', 'gamemaster']).length; k$ < len2$; ++k$) {
               mob = ref2$[k$];
-              Mem.rule.form.set([{
+              Mem.Query.Collection.form.set([{
                 enemy: enemy,
                 turn: turn,
                 live: live,
@@ -572,7 +572,7 @@
                 sheep: [],
                 love: null
               }]);
-              form = Mem.forms.list.first;
+              form = Mem.Query.forms.list.first;
               call(form);
             }
           }
@@ -581,11 +581,11 @@
     };
     describe("can input text", function(){
       for_all_forms(function(form){
-        expect(Mem.form_texts.where({
+        expect(Mem.Query.form_texts.where({
           form_id: form._id,
           mestype: "TSAY"
         }).pluck("format")).to.include.members(["memo", "talk"]);
-        return expect(Mem.form_texts.where({
+        return expect(Mem.Query.form_texts.where({
           form_id: form._id,
           mestype: ['SAY', 'GSAY']
         }).pluck("format")).to.include.members(["act", "memo", "talk"]);

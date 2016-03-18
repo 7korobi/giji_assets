@@ -26,7 +26,7 @@ win.mount "#make_vil", (dom)->
         hour: form.time[0..1]
         minite: form.time[3..4]
         eventcard: form.trap.join("/")
-        csid: Mem.options.hash.chr_npc.options[form.chr_npc].csid
+        csid: Mem.Query.options.hash.chr_npc.options[form.chr_npc].csid
         votetype: if form.vote_sign then "sign" else "anonymity"
         starttype: if form.start_auto then "wbbs" else "manual"
         entrylimit: if form.entry_password then 'password' else 'free'

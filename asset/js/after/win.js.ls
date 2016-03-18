@@ -90,7 +90,7 @@ if gon?.potofs?
         potofs = doc.component.potofs
         filter = doc.component.filter
 
-      event = Mem.events.find Url.prop.event_id()
+      event = Mem.Query.events.find Url.prop.event_id()
       m "div",
         if event?
           m ".head", event.name
@@ -102,7 +102,7 @@ if gon?.potofs?
         m ".foot"
 
 if gon?.stories?
-  Mem.rule.story.set gon.stories
+  Mem.Collection.story.set gon.stories
   win.mount \#stories, (dom)->
     menu.icon.icon "resize-full",
       open: ->

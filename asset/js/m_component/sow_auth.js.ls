@@ -6,7 +6,7 @@ doc.component.sow_auth =
     @url = gon.url
 
     @params = {ua}
-    @form = Mem.options.form @params, <[uid pwd]>,
+    @form = Mem.Query.options.form @params, <[uid pwd]>,
       oninput: ~>
         validate.sow_auth @
       onchange: ~>

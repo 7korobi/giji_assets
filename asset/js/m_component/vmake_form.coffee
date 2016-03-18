@@ -1,4 +1,4 @@
-field = Mem.options.hash
+field = Mem.Query.options.hash
 
 error_and_info = (o)->
   m "p.mes_date",
@@ -35,7 +35,7 @@ doc.component.vmake_form =
       "player_count"
       "player_count_start"
     ]
-    v.form = Mem.options.form v.params, fields,
+    v.form = Mem.Query.options.form v.params, fields,
       oninput: ->
         validate.cards v
       onchange: ->
@@ -45,8 +45,8 @@ doc.component.vmake_form =
           v.submit(v.params)
 
     v.form.checkboxes =
-      for chk in Mem.options.checkbox().list
-        v.params[chk._id] = unpack[chk.type] chk.init
+      for chk in Mem.Query.options.checkbox().list
+        v.params[chk._id] = Mem.unpack[chk.type] chk.init
         chk.vdom v.params
 
 
@@ -59,7 +59,7 @@ doc.component.vmake_form =
 
     v.reset = ->
       {player_count} = v.params
-      role_table = Mem.role_tables.find v.params.role_table
+      role_table = Mem.Query.role_tables.find v.params.role_table
 
       return null unless role_table
       cards_set = role_table.cards
@@ -70,7 +70,7 @@ doc.component.vmake_form =
       cards = cards_set[player_count]
 
       return null unless cards
-      for o in Mem.roles.finds cards
+      for o in Mem.Query.roles.finds cards
         v.params[o.cmd].push o._id
 
     v.player_summary = (form)->
@@ -106,7 +106,7 @@ doc.component.vmake_form =
       mestype = "SAY"
       user_id = "master"
       anchor = "0"
-      face = Mem.faces.find face_id
+      face = Mem.Query.faces.find face_id
       name = "#{chr_job.job} #{face.name}"
 
       [ m "h3", "プロローグ"
@@ -139,13 +139,13 @@ doc.component.vmake_form =
       trap:  pop_btn "trap"
 
     v.adds =
-      human: Mem.roles.is("human").list.map add_btn
-      evil:  Mem.roles.is("evil").list.map add_btn
-      wolf:  Mem.roles.is("wolf").list.map add_btn
-      pixi:  Mem.roles.is("pixi").list.map add_btn
-      other: Mem.roles.is("other").list.map add_btn
-      gift:  Mem.roles.is("gift").list.map add_btn
-      trap:  Mem.traps.show().list.map add_btn
+      human: Mem.Query.roles.is("human").list.map add_btn
+      evil:  Mem.Query.roles.is("evil").list.map add_btn
+      wolf:  Mem.Query.roles.is("wolf").list.map add_btn
+      pixi:  Mem.Query.roles.is("pixi").list.map add_btn
+      other: Mem.Query.roles.is("other").list.map add_btn
+      gift:  Mem.Query.roles.is("gift").list.map add_btn
+      trap:  Mem.Query.traps.show().list.map add_btn
       mob: [
         _id: "mob"
         cmd: "extra"
@@ -166,7 +166,7 @@ doc.component.vmake_form =
 
     v.reset()
     nindex = 0
-    if npc = Mem.chr_npcs.find v.params.chr_npc
+    if npc = Mem.Query.chr_npcs.find v.params.chr_npc
       jobs = npc.chr_set.chr_jobs.list
     else
       jobs = []

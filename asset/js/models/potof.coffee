@@ -16,11 +16,11 @@ new Mem.Rule("potof").schema ->
 
   @scope (all)->
     full: ->
-      delete Mem.messages.has.face.undefined
-      delete Mem.messages.has.face.null
-      delete Mem.messages.has.face.admin
-      delete Mem.messages.has.face.maker
-      Object.keys(Mem.messages.has.face).sort()
+      delete Mem.Query.messages.has.face.undefined
+      delete Mem.Query.messages.has.face.null
+      delete Mem.Query.messages.has.face.admin
+      delete Mem.Query.messages.has.face.maker
+      Object.keys(Mem.Query.messages.has.face).sort()
     potofs: ->
       _.without all.full(), all.others()...
     not_lives: (turn)->
@@ -40,8 +40,8 @@ new Mem.Rule("potof").schema ->
 
   @deploy (o)->
     if o.sow?
-      o.role = [Mem.roles.sow_role(o.sow.role)._id, Mem.roles.sow_gift(o.sow.gift)._id]
-      o.select = Mem.roles.sow_role(o.sow.selrole)._id
+      o.role = [Mem.Query.roles.sow_role(o.sow.role)._id, Mem.Query.roles.sow_gift(o.sow.gift)._id]
+      o.select = Mem.Query.roles.sow_role(o.sow.selrole)._id
 
     o._id = o._id.$oid if o._id?.$oid?
     o.user_id ?= o.sow_auth_id
@@ -133,7 +133,7 @@ new Mem.Rule("potof").schema ->
 
     win_love = RAILS.loves[o.love]?.win
 
-    win_role = win_by_role(o, Mem.roles)
+    win_role = win_by_role(o, Mem.Query.roles)
     win = win_juror || win_love || win_zombie || win_role
     win = story.evil if win == 'EVIL'
     switch win
@@ -168,7 +168,7 @@ new Mem.Rule("potof").schema ->
         GUI.name.config role
     role_text = roles.join("、")
 
-    text = Mem.ables.by_rolestate(o.rolestate).pluck("name")
+    text = Mem.Query.ables.by_rolestate(o.rolestate).pluck("name")
     text.push '<span class="icon-music"></span>' if 'pixi' == o.sheep
     text.push '<span class="icon-heart"></span>' if 'love' == o.love
     text.push '<span class="icon-scissors"></span>' if 'hate' == o.love

@@ -2,10 +2,10 @@ doc.view.story_game = ({event, story})->
   return [] unless event && story
 
   roletable = Mem.conf.role_table[story.type.roletable]
-  mob = Mem.roles.find(story.type.mob)
-  trap_card = Mem.traps.find(event.event)
+  mob = Mem.Query.roles.find(story.type.mob)
+  trap_card = Mem.Query.traps.find(event.event)
   texts = []
-  texts.push Mem.winners.find(event.winner).name + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
+  texts.push Mem.Query.winners.find(event.winner).name + "の勝利です。" if event.winner && "WIN_NONE" != event.winner
   texts.push m "kbd", trap_card if trap_card
   texts.push RAILS.event_state.grudge    if event.turn == event.grudge
   texts.push RAILS.event_state.riot      if event.turn == event.riot

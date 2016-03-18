@@ -84,23 +84,23 @@ cards = ({error, info})->
   full = [...role, ...gift]
 
   minus = 0
-  minus += 2 * Mem.roles.minus2(role).length
-  minus += 1 * Mem.roles.minus1(full).length
+  minus += 2 * Mem.Query.roles.minus2(role).length
+  minus += 1 * Mem.Query.roles.minus1(full).length
 
-  player = Mem.roles.players(role).length
+  player = Mem.Query.roles.players(role).length
 
   @size =
     drop: player - player_count
-    wolf: Mem.roles.wolfs(full).length
+    wolf: Mem.Query.roles.wolfs(full).length
     minus: minus
     extra: extra.length
-    human: Mem.roles.humans(role).length - minus
+    human: Mem.Query.roles.humans(role).length - minus
     player: player
-    robber: Mem.roles.robbers(role).length
-    villager: Mem.roles.villagers(role).length
-    gift_sides: Mem.roles.gift_sides(gift).length
-    gift_items: Mem.roles.gift_items(gift).length
-    gift_appends: Mem.roles.gift_appends(gift).length
+    robber: Mem.Query.roles.robbers(role).length
+    villager: Mem.Query.roles.villagers(role).length
+    gift_sides: Mem.Query.roles.gift_sides(gift).length
+    gift_items: Mem.Query.roles.gift_items(gift).length
+    gift_appends: Mem.Query.roles.gift_appends(gift).length
 
   switch mob_type
     case "juror"

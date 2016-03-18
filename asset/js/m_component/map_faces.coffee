@@ -3,12 +3,12 @@ doc.component.map_faces =
   view: ->
     {order, chr_set, search} = Url.prop
     map_order_set = Mem.conf.map_faces_order[order()]
-    chrs = Mem.map_faces.active(order(), chr_set(), search()).list
+    chrs = Mem.Query.map_faces.active(order(), chr_set(), search()).list
     headline = ""
 
     if chrs?.length
       headline = [
-        m ".GSAY.badge", Mem.chr_sets.find(chr_set()).caption
+        m ".GSAY.badge", Mem.Query.chr_sets.find(chr_set()).caption
         "の#{chrs.length}人を、"
         m ".GSAY.badge", map_order_set.headline
         "回数で並べています"
@@ -17,7 +17,7 @@ doc.component.map_faces =
     [ m "div", headline
       m "hr.black"
       for o in chrs
-        chr_job = Mem.chr_jobs.find("#{chr_set()}_#{o.face_id}")
+        chr_job = Mem.Query.chr_jobs.find("#{chr_set()}_#{o.face_id}")
         job_name = chr_job.job
 
         attr = null

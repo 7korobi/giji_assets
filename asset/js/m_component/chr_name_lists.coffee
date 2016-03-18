@@ -1,7 +1,7 @@
 doc.component.chr_name_lists =
   controller: ->
   view: ->
-    for code_counts, idx in Mem.faces.name_head()
+    for code_counts, idx in Mem.Query.faces.name_head()
       m "div",
         m "h2", "#{idx} hits の頭文字"
         if code_counts

@@ -21,7 +21,7 @@ doc.component.form =
 
       vdoms = []
       if able.action
-        actions = Mem.actions.for_form(v.mestype, v.format).list.map (act)->
+        actions = Mem.Query.actions.for_form(v.mestype, v.format).list.map (act)->
             key = value = act.index
             m "option", {value, key}, "#{act.text}"
         actions.unshift m "option", {value: 0, key: 0}, "↓ 自由入力、または選択してください。"
@@ -60,7 +60,7 @@ doc.component.form =
             m "span.TSAY.emboss", able.change
       vdoms
 
-    chr_job = Mem.chr_jobs.find(v.chr_job_id)
+    chr_job = Mem.Query.chr_jobs.find(v.chr_job_id)
     face = chr_job.face
     m "div", {key: v._id},
       m "h6", m.trust v.role_name
@@ -69,12 +69,12 @@ doc.component.form =
           m "th"
           m "td",
             m ".msg",
-              for vv in Mem.form_texts.formats(v._id, v.mestype).list
+              for vv in Mem.Query.form_texts.formats(v._id, v.mestype).list
                 m "span.btn.edge", v.format_on(vv.format), vv.format_name
-              for vv in Mem.form_texts.mestypes(v._id, v.format).list
+              for vv in Mem.Query.form_texts.mestypes(v._id, v.format).list
                 m "span.btn.edge", v.mestype_on(vv.mestype), vv.mestype_name
 
-      if form_text = Mem.form_texts.find("#{v._id}-#{v.mestype}-#{v.format}")
+      if form_text = Mem.Query.form_texts.find("#{v._id}-#{v.mestype}-#{v.format}")
         switch v.format
         when "act"
           target = form_text.target_at form_text.target()

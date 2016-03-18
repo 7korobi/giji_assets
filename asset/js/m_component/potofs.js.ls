@@ -53,7 +53,7 @@ doc.component.potofs =
             m "th", m "a", c.role(), "役割"
             m "th", m "a", c.text(), "補足"
         m "tbody.plane", wide_attr,
-          for o in Mem.potofs.view(potofs_desc(), potofs_order()).list
+          for o in Mem.Query.potofs.view(potofs_desc(), potofs_order()).list
             className =
               if potofs_hide()[o.face_id]
                 "filter-hide"

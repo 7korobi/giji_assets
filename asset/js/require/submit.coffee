@@ -30,7 +30,7 @@ module.exports = Submit =
 
     method = "GET"
     url = base_url + encodeURI(query_array.join("&"))
-    deserialize = unpack.HtmlGon
+    deserialize = Mem.unpack.HtmlGon
     m.request({method, url, deserialize})
     .then (data)->
       console.log " :: GET #{url}"
@@ -59,7 +59,7 @@ module.exports = Submit =
         iframe.onload = ->
           try
             clearTimeout timer
-            deferred.resolve unpack.HtmlGon iframe.contentDocument.body.innerHTML
+            deferred.resolve Mem.unpack.HtmlGon iframe.contentDocument.body.innerHTML
           catch e
             deferred.reject e
           finally

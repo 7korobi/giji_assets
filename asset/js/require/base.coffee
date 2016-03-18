@@ -33,7 +33,7 @@ include = (load, key)->
   load()[key]
 
 keys_eq = (load, keys)->
-  to_s = pack.Keys
+  to_s = Mem.pack.Keys
   to_s(load()) == to_s(keys)
 
 
@@ -58,7 +58,7 @@ keys_eq = (load, keys)->
   keys_reset: (style, prop, val)->
     setter = (key)->
       unless keys_eq(prop, val)
-        prop unpack.Keys val
+        prop Mem.unpack.Keys val
     btn style, keys_eq, setter, prop, val
 
   keys: (style, prop, val)->

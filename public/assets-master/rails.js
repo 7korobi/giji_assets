@@ -88,63 +88,63 @@
           ids = _.filter(ids, function(id){
             return 25 < doc.seeing[id] && id !== center._id;
           });
-          list = Mem.messages.finds(ids);
+          list = Mem.Query.messages.finds(ids);
           list.unshift(center);
         } else {
           ids = _.filter(ids, function(id){
             return 25 < doc.seeing[id];
           });
-          list = Mem.messages.finds(ids);
+          list = Mem.Query.messages.finds(ids);
         }
         return list;
       },
       pins: function(arg$){
         var story_id, pins;
         story_id = arg$.story_id, pins = arg$.pins;
-        return Mem.messages.pins(story_id(), pins());
+        return Mem.Query.messages.pins(story_id(), pins());
       },
       anchor: function(arg$){
         var talk;
         talk = arg$.talk;
-        return Mem.messages.anchor(talk(), win.scroll.prop());
+        return Mem.Query.messages.anchor(talk(), win.scroll.prop());
       },
       home: function(arg$){
         var home;
         home = arg$.home;
-        return Mem.messages.home(home());
+        return Mem.Query.messages.home(home());
       },
       talk: function(arg$){
         var talk, open, potofs_hide, search;
         talk = arg$.talk, open = arg$.open, potofs_hide = arg$.potofs_hide, search = arg$.search;
-        return Mem.messages.talk(talk(), open(), potofs_hide(), search());
+        return Mem.Query.messages.talk(talk(), open(), potofs_hide(), search());
       },
       memo: function(arg$){
         var memo, potofs_hide, search;
         memo = arg$.memo, potofs_hide = arg$.potofs_hide, search = arg$.search;
-        return Mem.messages.memo(memo(), true, potofs_hide(), search());
+        return Mem.Query.messages.memo(memo(), true, potofs_hide(), search());
       },
       history: function(arg$){
         var memo, potofs_hide, search;
         memo = arg$.memo, potofs_hide = arg$.potofs_hide, search = arg$.search;
-        return Mem.messages.memo(memo(), false, potofs_hide(), search());
+        return Mem.Query.messages.memo(memo(), false, potofs_hide(), search());
       }
     },
     security_modes: function(prop){
       var story, mob, grave_caption, think_caption, list;
-      story = Mem.storys.list.first;
-      mob = Mem.roles.find(story != null ? story.type.mob : void 8);
+      story = Mem.Query.storys.list.first;
+      mob = Mem.Query.roles.find(story != null ? story.type.mob : void 8);
       grave_caption = [];
-      if (Mem.messages.has.grave) {
+      if (Mem.Query.messages.has.grave) {
         grave_caption.push("墓下");
       }
-      if (Mem.messages.has.vsay && mob.CAPTION) {
+      if (Mem.Query.messages.has.vsay && mob.CAPTION) {
         grave_caption.push(mob.CAPTION);
       }
       think_caption = [];
-      if (Mem.messages.has.think) {
+      if (Mem.Query.messages.has.think) {
         think_caption.push("独り言");
       }
-      if (Mem.messages.has.to) {
+      if (Mem.Query.messages.has.to) {
         think_caption.push("内緒話");
       }
       list = [];
@@ -152,7 +152,7 @@
       if (think_caption.length > 0) {
         list.push(m("a", Btn.set({}, prop, "think"), think_caption.join("/") + "つき"));
       }
-      if (Mem.messages.has.clan) {
+      if (Mem.Query.messages.has.clan) {
         list.push(m("a", Btn.set({}, prop, "clan"), "仲間つき"));
       }
       list.push(m("a", Btn.set({}, prop, "open"), "公開情報のみ"));
@@ -168,10 +168,10 @@
     potofs: function(){
       var ref$, potofs_desc, potofs_order, potofs_hide, potofs, hides, turn, ref1$, attr, o;
       ref$ = Url.prop, potofs_desc = ref$.potofs_desc, potofs_order = ref$.potofs_order, potofs_hide = ref$.potofs_hide;
-      potofs = Mem.potofs.view(potofs_desc(), potofs_order()).list;
+      potofs = Mem.Query.potofs.view(potofs_desc(), potofs_order()).list;
       hides = potofs_hide();
       turn = ((ref$ = win.scroll.center) != null ? (ref1$ = ref$.event) != null ? ref1$.turn : void 8 : void 8) || 0;
-      return m(".minilist", m("h6", "キャラクターフィルタ"), m("p", m("a", Btn.keys_reset({}, potofs_hide, []), "全員表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.others()), "参加者表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.potofs()), "その他を表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.potofs.full()), "全員隠す")), m("hr.black"), attr = function(o){
+      return m(".minilist", m("h6", "キャラクターフィルタ"), m("p", m("a", Btn.keys_reset({}, potofs_hide, []), "全員表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.Query.potofs.others()), "参加者表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.Query.potofs.potofs()), "その他を表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.Query.potofs.full()), "全員隠す")), m("hr.black"), attr = function(o){
         var cb, elem;
         cb = function(){
           hides[o.face_id] = !hides[o.face_id];
@@ -201,13 +201,13 @@
     },
     writer: function(){
       var i$, ref$, len$, o, props, results$ = [];
-      for (i$ = 0, len$ = (ref$ = Mem.writers.list).length; i$ < len$; ++i$) {
+      for (i$ = 0, len$ = (ref$ = Mem.Query.writers.list).length; i$ < len$; ++i$) {
         o = ref$[i$];
         props = {
           form: o,
           log: ""
         };
-        Mem.rule.history.merge(props);
+        Mem.Collection.history.merge(props);
         results$.push(o.vdom(o, props));
       }
       return results$;
@@ -220,7 +220,7 @@
       });
       return component = doc.component["item_" + type] = {
         controller: function(){
-          this.query = Mem.items.where({
+          this.query = Mem.Query.items.where({
             type: type
           });
           switch (type) {
@@ -282,7 +282,7 @@
           scroll = win.scroll.prop();
           ref1 = scroll.split("-"), folder = ref1[0], vid = ref1[1], turn = ref1[2], logid = ref1[3];
           if (logid != null) {
-            updated_at = ((ref2 = Mem.messages.find(scroll)) != null ? ref2.updated_at : void 0) || 0;
+            updated_at = ((ref2 = Mem.Query.messages.find(scroll)) != null ? ref2.updated_at : void 0) || 0;
             Url.prop.updated_at(updated_at);
             Url.prop.folder(folder);
             Url.prop.turn(turn);
@@ -327,8 +327,7 @@
 
 (function(){
   doc.config = function(xhr, options){
-    console.log(options);
-    return xhr.overrideMimeType("text/html; charset=Shift_JIS");
+    return console.log(options);
   };
 }).call(this);
 
@@ -345,11 +344,11 @@
 (function() {
   if ((typeof gon !== "undefined" && gon !== null ? gon.villages : void 0) != null) {
     win.mount("#villages", function(dom) {
-      Mem.rule.item.set(gon.villages);
+      Mem.Collection.item.set(gon.villages);
       return {
         controller: function() {},
         view: function() {
-          return win.scroll.pager("div", Mem.items.list, function(v) {
+          return win.scroll.pager("div", Mem.Query.items.list, function(v) {
             return doc.view.action(v);
           });
         }
@@ -359,11 +358,11 @@
 
   if ((typeof gon !== "undefined" && gon !== null ? gon.byebyes : void 0) != null) {
     win.mount("#byebyes", function(dom) {
-      Mem.rule.item.set(gon.byebyes);
+      Mem.Collection.item.set(gon.byebyes);
       return {
         controller: function() {},
         view: function() {
-          return win.scroll.pager("div", Mem.items.list, function(v) {
+          return win.scroll.pager("div", Mem.Query.items.list, function(v) {
             return doc.view.action(v);
           });
         }
@@ -373,11 +372,11 @@
 
   if ((typeof gon !== "undefined" && gon !== null ? gon.history : void 0) != null) {
     win.mount("#history", function(dom) {
-      Mem.rule.item.set(gon.history);
+      Mem.Collection.item.set(gon.history);
       return {
         controller: function() {},
         view: function() {
-          return win.scroll.pager("div", Mem.items.list, function(v) {
+          return win.scroll.pager("div", Mem.Query.items.list, function(v) {
             return doc.view.history(v);
           });
         }
@@ -390,7 +389,7 @@
 (function() {
   var i, len, name, ref;
 
-  Mem.rule.item.set([
+  Mem.Collection.item.set([
     {
       "_id": "about-paragraph--1",
       "log": "人狼議事は、やや敷居の高いゲームです。遊び方をよく読み、更に既に終了した村のログを２～３村ほど読んで感覚をある程度掴んでから、参加される事をお薦めします。"
@@ -489,7 +488,7 @@
   ]);
 
   if ((typeof gon !== "undefined" && gon !== null ? gon.items : void 0) != null) {
-    Mem.rule.item.merge(gon.items);
+    Mem.Collection.item.merge(gon.items);
   }
 
   ref = ["about", "maker", "ruleguide", "violation"];
@@ -530,8 +529,8 @@
     });
   }
   if ((typeof gon != 'undefined' && gon !== null ? gon.new_chr_faces : void 8) != null && (typeof gon != 'undefined' && gon !== null ? gon.new_chr_jobs : void 8) != null) {
-    Mem.rule.face.merge(gon.new_chr_faces);
-    Mem.rule.chr_job.merge(gon.new_chr_jobs);
+    Mem.Collection.face.merge(gon.new_chr_faces);
+    Mem.Collection.chr_job.merge(gon.new_chr_jobs);
     win.mount(map_faces + "", function(dom){
       return doc.component.map_faces_new;
     });
@@ -969,10 +968,10 @@
       doc.delegate.tap_anchor = function(turn, logid, id, by_id) {
         var __, anker_id, by_logid, by_turn, event, folder, has_tap, ref, ref1, vid;
         ref = by_id.split("-"), folder = ref[0], vid = ref[1], by_turn = ref[2], by_logid = ref[3];
-        anker_id = Mem.messages.anker_id(folder, vid, turn, logid);
+        anker_id = Mem.Query.messages.anker_id(folder, vid, turn, logid);
         ref1 = anker_id.split("-"), __ = ref1[0], __ = ref1[1], __ = ref1[2], logid = ref1[3];
-        has_tap = Mem.messages.find(anker_id);
-        event = Mem.events.find(folder + "-" + vid + "-" + turn);
+        has_tap = Mem.Query.messages.find(anker_id);
+        event = Mem.Query.events.find(folder + "-" + vid + "-" + turn);
         return doc.load.event(has_tap, event, function() {
           var pins;
           pins = Url.prop.pins();
@@ -1144,7 +1143,7 @@
           radio pixi:
           radio other:
         drill chr_set:
-          radio Mem.map_faces.reduce
+          radio Mem.Query.map_faces.reduce
       icon cog:
   
   
@@ -1320,7 +1319,7 @@
             potofs = doc.component.potofs;
             filter = doc.component.filter;
           }
-          event = Mem.events.find(Url.prop.event_id());
+          event = Mem.Query.events.find(Url.prop.event_id());
           return m("div", event != null
             ? m(".head", event.name)
             : m(".foot"), m("aside", m.component(potofs, wide_attr), m.component(filter)), m(".foot"));
@@ -1329,7 +1328,7 @@
     });
   }
   if ((typeof gon != 'undefined' && gon !== null ? gon.stories : void 8) != null) {
-    Mem.rule.story.set(gon.stories);
+    Mem.Collection.story.set(gon.stories);
     win.mount('#stories', function(dom){
       menu.icon.icon("resize-full", {
         open: function(){
@@ -1403,10 +1402,10 @@
       };
       badges = {
         "pin": function() {
-          return doc.messages.pins(Url.prop).list.length - Mem.events.list.length;
+          return doc.messages.pins(Url.prop).list.length - Mem.Query.events.list.length;
         },
         "home": function() {
-          return Mem.messages.home("announce").list.length - Mem.events.list.length;
+          return Mem.Query.messages.home("announce").list.length - Mem.Query.events.list.length;
         },
         "mail": function() {
           var prop;
@@ -1421,7 +1420,7 @@
               return "";
             }
           });
-          return doc.messages.memo(prop).list.length - Mem.events.list.length;
+          return doc.messages.memo(prop).list.length - Mem.Query.events.list.length;
         },
         "clock": function() {
           var prop;
@@ -1436,7 +1435,7 @@
               return "";
             }
           });
-          return doc.messages.history(prop).list.length - Mem.events.list.length;
+          return doc.messages.history(prop).list.length - Mem.Query.events.list.length;
         },
         "chat-alt": function() {
           var prop;
@@ -1451,10 +1450,10 @@
               return "";
             }
           });
-          return doc.messages.talk(prop).list.length - Mem.events.list.length;
+          return doc.messages.talk(prop).list.length - Mem.Query.events.list.length;
         },
         "th-large": function() {
-          return Mem.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list.length;
+          return Mem.Query.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list.length;
         }
       };
       switch (menu.scope.state()) {
@@ -1527,7 +1526,7 @@
     controller: function() {},
     view: function() {
       var code_counts, code_str, i, idx, len, ref, results;
-      ref = Mem.faces.name_head();
+      ref = Mem.Query.faces.name_head();
       results = [];
       for (idx = i = 0, len = ref.length; i < len; idx = ++i) {
         code_counts = ref[idx];
@@ -1573,8 +1572,8 @@
             view: function(sub_menu) {
               return sub_menu.radio({
                 "class": "chr_set"
-              }, Url.prop.chr_set, Mem.map_faces.reduce, "chr_set", function(key) {
-                return Mem.chr_sets.find(key).caption;
+              }, Url.prop.chr_set, Mem.Query.map_faces.reduce, "chr_set", function(key) {
+                return Mem.Query.chr_sets.find(key).caption;
               });
             }
           });
@@ -1757,7 +1756,7 @@
         }
         vdoms = [];
         if (able.action) {
-          actions = Mem.actions.for_form(v.mestype, v.format).list.map(function(act){
+          actions = Mem.Query.actions.for_form(v.mestype, v.format).list.map(function(act){
             var key, value;
             key = value = act.index;
             return m("option", {
@@ -1785,25 +1784,25 @@
         }
         return vdoms;
       };
-      chr_job = Mem.chr_jobs.find(v.chr_job_id);
+      chr_job = Mem.Query.chr_jobs.find(v.chr_job_id);
       face = chr_job.face;
       return m("div", {
         key: v._id
       }, m("h6", m.trust(v.role_name)), m("table." + v.mestype + ".talk", m("tr", m("th"), m("td", m(".msg", (function(){
         var i$, ref$, len$, results$ = [];
-        for (i$ = 0, len$ = (ref$ = Mem.form_texts.formats(v._id, v.mestype).list).length; i$ < len$; ++i$) {
+        for (i$ = 0, len$ = (ref$ = Mem.Query.form_texts.formats(v._id, v.mestype).list).length; i$ < len$; ++i$) {
           vv = ref$[i$];
           results$.push(m("span.btn.edge", v.format_on(vv.format), vv.format_name));
         }
         return results$;
       }()), (function(){
         var i$, ref$, len$, results$ = [];
-        for (i$ = 0, len$ = (ref$ = Mem.form_texts.mestypes(v._id, v.format).list).length; i$ < len$; ++i$) {
+        for (i$ = 0, len$ = (ref$ = Mem.Query.form_texts.mestypes(v._id, v.format).list).length; i$ < len$; ++i$) {
           vv = ref$[i$];
           results$.push(m("span.btn.edge", v.mestype_on(vv.mestype), vv.mestype_name));
         }
         return results$;
-      }()))))), (form_text = Mem.form_texts.find(v._id + "-" + v.mestype + "-" + v.format)) ? (function(){
+      }()))))), (form_text = Mem.Query.form_texts.find(v._id + "-" + v.mestype + "-" + v.format)) ? (function(){
         switch (v.format) {
         case "act":
           target = form_text.target_at(form_text.target());
@@ -1829,7 +1828,7 @@
   doc.component.header = {
     controller: function() {
       this.params = {};
-      this.form = Mem.options.form(this.params, ["header_state"], {
+      this.form = Mem.Query.options.form(this.params, ["header_state"], {
         onchange: function() {}
       });
     },
@@ -1955,7 +1954,7 @@
   doc.component.map_faces_new = {
     controller: function() {
       var chrs;
-      chrs = Mem.chr_jobs.where({
+      chrs = Mem.Query.chr_jobs.where({
         chr_set_id: "time"
       }).sort(false, function(o) {
         return o.face.order;
@@ -1997,10 +1996,10 @@
       var attr, attr_main, chr_job, chr_set, chrs, headline, job_name, map_order_set, o, order, ref, search;
       ref = Url.prop, order = ref.order, chr_set = ref.chr_set, search = ref.search;
       map_order_set = Mem.conf.map_faces_order[order()];
-      chrs = Mem.map_faces.active(order(), chr_set(), search()).list;
+      chrs = Mem.Query.map_faces.active(order(), chr_set(), search()).list;
       headline = "";
       if (chrs != null ? chrs.length : void 0) {
-        headline = [m(".GSAY.badge", Mem.chr_sets.find(chr_set()).caption), "の" + chrs.length + "人を、", m(".GSAY.badge", map_order_set.headline), "回数で並べています"];
+        headline = [m(".GSAY.badge", Mem.Query.chr_sets.find(chr_set()).caption), "の" + chrs.length + "人を、", m(".GSAY.badge", map_order_set.headline), "回数で並べています"];
       }
       return [
         m("div", headline), m("hr.black"), (function() {
@@ -2008,7 +2007,7 @@
           results = [];
           for (i = 0, len = chrs.length; i < len; i++) {
             o = chrs[i];
-            chr_job = Mem.chr_jobs.find((chr_set()) + "_" + o.face_id);
+            chr_job = Mem.Query.chr_jobs.find((chr_set()) + "_" + o.face_id);
             job_name = chr_job.job;
             attr = null;
             attr_main = function() {
@@ -2107,7 +2106,7 @@
       ref$ = Url.prop, potofs_order = ref$.potofs_order, potofs_desc = ref$.potofs_desc, potofs_hide = ref$.potofs_hide;
       return m("section.table-swipe", m("table", m("tfoot", m("tr.center", m("th[colspan=2]", m("sup", "(スクロールします。)")), m("th", m("a", c.stat_at(), "日程")), m("th", m("a", c.stat_type(), "状態")), m("th", m("a", c.said_num(), "発言")), m("th", m("a", c.pt(), "残り")), m("th", m("a", c.urge(), "促")), m("th", m("span.icon-user", " ")), m("th", m("a", c.select(), "希望")), m("th", m("a", c.win_result(), "勝敗")), m("th", m("a", c.win_side(), "陣営")), m("th", m("a", c.role(), "役割")), m("th", m("a", c.text(), "補足")))), m("tbody.plane", wide_attr, (function(){
         var i$, ref$, len$, results$ = [];
-        for (i$ = 0, len$ = (ref$ = Mem.potofs.view(potofs_desc(), potofs_order()).list).length; i$ < len$; ++i$) {
+        for (i$ = 0, len$ = (ref$ = Mem.Query.potofs.view(potofs_desc(), potofs_order()).list).length; i$ < len$; ++i$) {
           o = ref$[i$];
           className = potofs_hide()[o.face_id] ? "filter-hide" : "";
           results$.push(m("tr", {
@@ -2127,14 +2126,14 @@
     controller: function() {},
     view: function() {
       var query, ref;
-      query = (ref = Mem.storys).menu.apply(ref, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values())));
+      query = (ref = Mem.Query.storys).menu.apply(ref, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values())));
       return m(".paragraph", menu.icon.icon("search", {
         deploy: function(main_menu) {
           main_menu.drill("rating", {
             caption: "こだわり",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 rating: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2150,7 +2149,7 @@
             caption: "ルール",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 game: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2164,7 +2163,7 @@
             caption: "州",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, ["all"].concat(slice.call(Url.routes.search.stories.values()))).reduce;
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, ["all"].concat(slice.call(Url.routes.search.stories.values()))).reduce;
               return m(".paragraph", sub_menu.radio({
                 "class": "edge folder"
               }, Url.prop.folder, reduce, "folder", function(key, o) {
@@ -2177,7 +2176,7 @@
             caption: "発言制限",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 say_limit: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2191,7 +2190,7 @@
             caption: "更新時刻",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 update_at: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2205,7 +2204,7 @@
             caption: "更新間隔",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 update_interval: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2219,7 +2218,7 @@
             caption: "事件",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 event_type: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2233,7 +2232,7 @@
             caption: "役職",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 role_type: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2247,7 +2246,7 @@
             caption: "人数",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 player_length: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2350,7 +2349,7 @@
       this.params = {
         ua: ua
       };
-      this.form = Mem.options.form(this.params, ['uid', 'pwd'], {
+      this.form = Mem.Query.options.form(this.params, ['uid', 'pwd'], {
         oninput: function(){
           return validate.sow_auth(this$);
         },
@@ -2482,14 +2481,14 @@
     controller: function() {},
     view: function() {
       var query, ref;
-      query = (ref = Mem.storys).menu.apply(ref, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values())));
+      query = (ref = Mem.Query.storys).menu.apply(ref, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values())));
       return m(".paragraph", menu.icon.icon("search", {
         deploy: function(main_menu) {
           main_menu.drill("rating", {
             caption: "こだわり",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 rating: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2505,7 +2504,7 @@
             caption: "ルール",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 game: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2519,7 +2518,7 @@
             caption: "州",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, ["all"].concat(slice.call(Url.routes.search.stories.values()))).reduce;
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, ["all"].concat(slice.call(Url.routes.search.stories.values()))).reduce;
               return m(".paragraph", sub_menu.radio({
                 "class": "edge folder"
               }, Url.prop.folder, reduce, "folder", function(key, o) {
@@ -2532,7 +2531,7 @@
             caption: "発言制限",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 say_limit: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2546,7 +2545,7 @@
             caption: "更新時刻",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 update_at: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2560,7 +2559,7 @@
             caption: "更新間隔",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 update_interval: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2574,7 +2573,7 @@
             caption: "事件",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 event_type: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2588,7 +2587,7 @@
             caption: "役職",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 role_type: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2602,7 +2601,7 @@
             caption: "人数",
             view: function(sub_menu) {
               var reduce, ref1;
-              reduce = (ref1 = Mem.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
+              reduce = (ref1 = Mem.Query.storys).menu.apply(ref1, [Url.prop.folder()].concat(slice.call(Url.routes.search.stories.values({
                 player_length: "all"
               })))).reduce;
               return m(".paragraph", sub_menu.radio({
@@ -2793,7 +2792,7 @@
     var ref$, width, height, talk, open, potofs_hide, talk_at, search, graph_height, base, masks, time_ids, x, y, max_height, time_width, view_port_x, view_port_y, index_at, choice_last;
     ref$ = arg$.size, width = ref$[0], height = ref$[1];
     ref$ = Url.prop, talk = ref$.talk, open = ref$.open, potofs_hide = ref$.potofs_hide, talk_at = ref$.talk_at, search = ref$.search;
-    if (!Mem.events.list.length) {
+    if (!Mem.Query.events.list.length) {
       return;
     }
     graph_height = height - 50;
@@ -2802,12 +2801,12 @@
     time_ids = [];
     x = y = max_height = time_width = 0;
     view_port_x = function(){
-      base = Mem.messages.talk(talk(), open(), potofs_hide());
+      base = Mem.Query.messages.talk(talk(), open(), potofs_hide());
       if (!base.reduce) {
         return false;
       }
       masks = base.reduce.mask || {};
-      time_ids = _.sortBy(Object.keys(masks), unpack.Date);
+      time_ids = _.sortBy(Object.keys(masks), Mem.unpack.Date);
       time_width = time_ids.length;
       x = width / time_width;
       return true;
@@ -2872,13 +2871,13 @@
         search("");
         index = Math.floor(offset.x / x);
         time = masks[time_ids[index]].all.min;
-        query = graph_height < offset.y ? Mem.messages.talk("open", false, {}) : base;
+        query = graph_height < offset.y ? Mem.Query.messages.talk("open", false, {}) : base;
         return choice_last(query, time);
       },
       draw: function(arg$){
         var ctx, focus, offset;
         ctx = arg$.ctx;
-        focus = Mem.messages.find(talk_at());
+        focus = Mem.Query.messages.find(talk_at());
         if (!(focus && view_port_x())) {
           return;
         }
@@ -2919,7 +2918,7 @@
           }
         }
         ctx.beginPath();
-        for (i$ = 0, len$ = (ref$ = Mem.events.list).length; i$ < len$; ++i$) {
+        for (i$ = 0, len$ = (ref$ = Mem.Query.events.list).length; i$ < len$; ++i$) {
           event = ref$[i$];
           if (event.created_at) {
             right = index_at(event.updated_at);
@@ -2951,8 +2950,8 @@
     view: function() {
       var event, event_id, ref, story, story_id;
       ref = Url.prop, story_id = ref.story_id, event_id = ref.event_id;
-      story = Mem.storys.find(story_id());
-      event = Mem.events.find(event_id());
+      story = Mem.Query.storys.find(story_id());
+      event = Mem.Query.events.find(event_id());
       if ((story != null) && (event != null)) {
         return story.name + " " + event.name;
       } else {
@@ -3005,7 +3004,7 @@
 (function() {
   var error_and_info, field;
 
-  field = Mem.options.hash;
+  field = Mem.Query.options.hash;
 
   error_and_info = function(o) {
     var msg;
@@ -3040,7 +3039,7 @@
         trap: []
       };
       fields = ["vil_name", "vil_comment", "rating", "trs_type", "say_count", "time", "interval", "entry_password", "chr_npc", "mob_type", "game_rule", "role_table", "player_count", "player_count_start"];
-      v.form = Mem.options.form(v.params, fields, {
+      v.form = Mem.Query.options.form(v.params, fields, {
         oninput: function() {
           return validate.cards(v);
         },
@@ -3055,11 +3054,11 @@
       });
       v.form.checkboxes = (function() {
         var i, len, ref, results;
-        ref = Mem.options.checkbox().list;
+        ref = Mem.Query.options.checkbox().list;
         results = [];
         for (i = 0, len = ref.length; i < len; i++) {
           chk = ref[i];
-          v.params[chk._id] = unpack[chk.type](chk.init);
+          v.params[chk._id] = Mem.unpack[chk.type](chk.init);
           results.push(chk.vdom(v.params));
         }
         return results;
@@ -3071,7 +3070,7 @@
       v.reset = function() {
         var cards, cards_set, i, len, o, player_count, ref, results, role_table;
         player_count = v.params.player_count;
-        role_table = Mem.role_tables.find(v.params.role_table);
+        role_table = Mem.Query.role_tables.find(v.params.role_table);
         if (!role_table) {
           return null;
         }
@@ -3085,7 +3084,7 @@
         if (!cards) {
           return null;
         }
-        ref = Mem.roles.finds(cards);
+        ref = Mem.Query.roles.finds(cards);
         results = [];
         for (i = 0, len = ref.length; i < len; i++) {
           o = ref[i];
@@ -3128,7 +3127,7 @@
         mestype = "SAY";
         user_id = "master";
         anchor = "0";
-        face = Mem.faces.find(face_id);
+        face = Mem.Query.faces.find(face_id);
         name = chr_job.job + " " + face.name;
         return [
           m("h3", "プロローグ"), doc.view.talk({
@@ -3183,13 +3182,13 @@
         trap: pop_btn("trap")
       };
       v.adds = {
-        human: Mem.roles.is("human").list.map(add_btn),
-        evil: Mem.roles.is("evil").list.map(add_btn),
-        wolf: Mem.roles.is("wolf").list.map(add_btn),
-        pixi: Mem.roles.is("pixi").list.map(add_btn),
-        other: Mem.roles.is("other").list.map(add_btn),
-        gift: Mem.roles.is("gift").list.map(add_btn),
-        trap: Mem.traps.show().list.map(add_btn),
+        human: Mem.Query.roles.is("human").list.map(add_btn),
+        evil: Mem.Query.roles.is("evil").list.map(add_btn),
+        wolf: Mem.Query.roles.is("wolf").list.map(add_btn),
+        pixi: Mem.Query.roles.is("pixi").list.map(add_btn),
+        other: Mem.Query.roles.is("other").list.map(add_btn),
+        gift: Mem.Query.roles.is("gift").list.map(add_btn),
+        trap: Mem.Query.traps.show().list.map(add_btn),
         mob: [
           {
             _id: "mob",
@@ -3218,7 +3217,7 @@
       };
       v.reset();
       nindex = 0;
-      if (npc = Mem.chr_npcs.find(v.params.chr_npc)) {
+      if (npc = Mem.Query.chr_npcs.find(v.params.chr_npc)) {
         jobs = npc.chr_set.chr_jobs.list;
       } else {
         jobs = [];
@@ -3450,13 +3449,13 @@
   };
 
   tag_dom = function(type) {
-    return vdom(Mem.conf.tag[type].name, Mem.faces.reduce.tag[type].count);
+    return vdom(Mem.conf.tag[type].name, Mem.Query.faces.reduce.tag[type].count);
   };
 
   doc.view.characters = function() {
     var attr, cb, chr_job, chrs, job_name, o, set, tag;
     tag = Url.prop.tag;
-    chrs = Mem.faces.tag(tag()).list;
+    chrs = Mem.Query.faces.tag(tag()).list;
     set = Mem.conf.tag[tag()];
     return [
       menu.icon.icon("th-large", {
@@ -3464,7 +3463,7 @@
           return m(".paragraph", m("h6", "タグを選んでみよう"), Btns.radio({
             "class": "edge"
           }, tag, {
-            all: vdom("- 全体 -", Mem.faces.reduce.all.all.count),
+            all: vdom("- 全体 -", Mem.Query.faces.reduce.all.all.count),
             giji: tag_dom("giji"),
             shoji: tag_dom("shoji"),
             travel: tag_dom("travel"),
@@ -3496,7 +3495,7 @@
         results = [];
         for (i = 0, len = chrs.length; i < len; i++) {
           o = chrs[i];
-          chr_job = Mem.chr_jobs.find(set.chr_set_ids.last + "_" + o._id) || Mem.chr_jobs.find("all_" + o._id);
+          chr_job = Mem.Query.chr_jobs.find(set.chr_set_ids.last + "_" + o._id) || Mem.Query.chr_jobs.find("all_" + o._id);
           job_name = chr_job.job;
           cb = function() {};
           attr = {
@@ -3560,7 +3559,7 @@
     attr = Object.keys(vdom.attrs)[0];
     for (i$ = 0, len$ = (ref$ = parent.querySelectorAll(query)).length; i$ < len$; ++i$) {
       elem = ref$[i$];
-      data = attr && unpack.Array((ref1$ = elem.attributes[attr]) != null ? ref1$.value : void 8);
+      data = attr && Mem.unpack.Array((ref1$ = elem.attributes[attr]) != null ? ref1$.value : void 8);
       results$.push(cb.apply(elem, data));
     }
     return results$;
@@ -3759,9 +3758,9 @@
   doc.view.sow_stories = function(v){
     return m(".paragraph", m("table.vindex", m("thead", m("tr", m("td", "id"), m("td", "村の名前"), m("td", "人数"), m("td", "進行"), m("td", "ルール"), m("td", "制限"))), m("tbody", v.error
       ? m("tr", m("td[colspan=6]", v.error))
-      : Mem.storys[v.mestype]().list.map(function(v){
+      : Mem.Query.storys[v.mestype]().list.map(function(v){
         var chr_set;
-        chr_set = Mem.chr_sets.hash[v.csid] || Mem.chr_sets.where({
+        chr_set = Mem.Query.chr_sets.hash[v.csid] || Mem.Query.chr_sets.where({
           csid: v.csid
         }).list.first;
         return m("tr", m("td", v.vid), m("td", m('a', {
@@ -3781,11 +3780,11 @@
       return [];
     }
     roletable = Mem.conf.role_table[story.type.roletable];
-    mob = Mem.roles.find(story.type.mob);
-    trap_card = Mem.traps.find(event.event);
+    mob = Mem.Query.roles.find(story.type.mob);
+    trap_card = Mem.Query.traps.find(event.event);
     texts = [];
     if (event.winner && "WIN_NONE" !== event.winner) {
-      texts.push(Mem.winners.find(event.winner).name + "の勝利です。");
+      texts.push(Mem.Query.winners.find(event.winner).name + "の勝利です。");
     }
     if (trap_card) {
       texts.push(m("kbd", trap_card));

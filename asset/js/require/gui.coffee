@@ -13,7 +13,7 @@ ids_sort = (list, cb)->
     obj_config cb, key, hash[key]
 
 obj_config = (cb, key, count)->
-  obj = Mem.roles.find(key) || Mem.traps.find(key)
+  obj = Mem.Query.roles.find(key) || Mem.Query.traps.find(key)
   if obj
     cb count, obj
   else
@@ -22,7 +22,7 @@ obj_config = (cb, key, count)->
       win: ""
 
 name_config = (key)->
-  obj = Mem.roles.find(key) || Mem.traps.find(key)
+  obj = Mem.Query.roles.find(key) || Mem.Query.traps.find(key)
   obj?.name || key || ""
 
 
@@ -47,7 +47,7 @@ GUI =
       ->
         cb.apply @, data
     for elem in parent.querySelectorAll query
-      data = attr && unpack.Array elem.attributes[attr]?.value
+      data = attr && Mem.unpack.Array elem.attributes[attr]?.value
       for key, func of GUI.attrs base_attrs, attr_cb(elem, data, cb)
         elem[key] = func
 

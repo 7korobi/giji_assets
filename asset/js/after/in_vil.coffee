@@ -15,11 +15,11 @@ if gon?.events? && gon.event?
 
     doc.delegate.tap_anchor = (turn, logid, id, by_id)->
       [folder, vid, by_turn, by_logid] = by_id.split("-")
-      anker_id = Mem.messages.anker_id(folder, vid, turn, logid)
+      anker_id = Mem.Query.messages.anker_id(folder, vid, turn, logid)
       [__, __, __, logid] = anker_id.split("-")
 
-      has_tap = Mem.messages.find(anker_id)
-      event = Mem.events.find("#{folder}-#{vid}-#{turn}")
+      has_tap = Mem.Query.messages.find(anker_id)
+      event = Mem.Query.events.find("#{folder}-#{vid}-#{turn}")
       doc.load.event has_tap, event, ->
         pins = Url.prop.pins()
         pins["#{by_turn}-#{by_logid}"] = true

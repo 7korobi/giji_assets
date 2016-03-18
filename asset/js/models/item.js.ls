@@ -1,6 +1,6 @@
 new Mem.Rule("item").schema !->
   data = (rule, ary)->
-    q = Mem[rule]
+    q = Mem.Query[rule]
     if ary.length > 0
       scope = ary.shift()
       q = q[scope](...ary)

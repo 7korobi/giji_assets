@@ -14,8 +14,8 @@ doc.view.sow_stories = (v)->
           m "tr",
             m "td[colspan=6]", v.error
         else
-          Mem.storys[v.mestype]().list.map (v)->
-            chr_set = Mem.chr_sets.hash[v.csid] || Mem.chr_sets.where(csid: v.csid).list.first
+          Mem.Query.storys[v.mestype]().list.map (v)->
+            chr_set = Mem.Query.chr_sets.hash[v.csid] || Mem.Query.chr_sets.where(csid: v.csid).list.first
             m "tr",
               m "td",
                 v.vid

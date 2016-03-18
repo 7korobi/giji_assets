@@ -10,8 +10,8 @@ new Mem.Rule("form").schema ->
   @deploy (o)->
     listup = (state, live, mob)->
       option = (cb)->
-        if Mem.potofs
-          Mem.potofs.where(cb).list.map (o)->
+        if Mem.Query.potofs
+          Mem.Query.potofs.where(cb).list.map (o)->
             pno: o.pno,
             job: o.chr_job.job,
             name: o.name
@@ -58,7 +58,7 @@ new Mem.Rule("form").schema ->
       if mestype in <[SAY GSAY VSAY TSAY]>
         targets.push job: "―――", name: "", pno: -1
       if targets.length
-        Mem.rule.form_text.merge [{form_id, mestype, format, targets, able}]
+        Mem.Collection.form_text.merge [{form_id, mestype, format, targets, able}]
 
     input = (role, able)->
       target = m.prop(-1)
@@ -91,7 +91,7 @@ new Mem.Rule("form").schema ->
       obj
 
     role_scan = (role_id, can_use)->
-      role = Mem.roles.find role_id
+      role = Mem.Query.roles.find role_id
       role_names.push role.name
       role_helps.push role.HELP
 
@@ -99,7 +99,7 @@ new Mem.Rule("form").schema ->
         can_use = ! can_use
       if can_use
         for able_id in role.ables
-          able = Mem.ables.find able_id
+          able = Mem.Query.ables.find able_id
           able_scan role, able
 
     able_scan = (role, able)->
@@ -155,7 +155,7 @@ new Mem.Rule("form").schema ->
       for role_id in o.role
         role_scan(role_id, can_use)
 
-    for able in Mem.ables.by_rolestate(o.rolestate)
+    for able in Mem.Query.ables.by_rolestate(o.rolestate)
       role_names.push able.name
       able_scan {}, able
 

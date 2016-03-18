@@ -1,6 +1,6 @@
-Mem.rule.item.set <%- JSON.stringify(MESSAGE.sow) %>
+Mem.Collection.item.set <%- JSON.stringify(MESSAGE.sow) %>
 if gon?.items?
-  Mem.rule.item.merge gon.items
+  Mem.Collection.item.merge gon.items
 
 deploy_samples = ->
   deploy = (role, call)->
@@ -11,7 +11,7 @@ deploy_samples = ->
     turns = ["start", "main"]
     is_main = false
     for able in role.ables when able not in ["vote", "entrust"]
-      is_main ||= Mem.ables.find(able).at.main
+      is_main ||= Mem.Query.ables.find(able).at.main
 
     turns = ["main"] if is_main
 
@@ -35,7 +35,7 @@ deploy_samples = ->
             wsay:  1000
             xsay:  1000
 
-        Mem.rule.item.merge [data]
+        Mem.Collection.item.merge [data]
       index++
     faceno++
     faceno++ if faceno ==  6
@@ -44,7 +44,7 @@ deploy_samples = ->
   faceno = 1
   index = 10
 
-  for role in Mem.roles.where(group: "MOB").list
+  for role in Mem.Query.roles.where(group: "MOB").list
     deploy role, (turn)->
       return if "start" == turn
       mob: role._id
@@ -57,7 +57,7 @@ deploy_samples = ->
       sheep: []
       love: null
 
-  for role in Mem.roles.where(group: "LIVE").list
+  for role in Mem.Query.roles.where(group: "LIVE").list
     deploy role, (turn)->
       return if "start" == turn
       mob: "visiter"
@@ -70,7 +70,7 @@ deploy_samples = ->
       sheep: []
       love: null
 
-  for rolename in SOW_RECORD.roles when role = Mem.roles.find(rolename)
+  for rolename in SOW_RECORD.roles when role = Mem.Query.roles.find(rolename)
     deploy role, (turn)->
       mob: "visiter"
       enemy: "evil"
@@ -82,9 +82,9 @@ deploy_samples = ->
       sheep: []
       love: null
 
-  for rolename in SOW_RECORD.gifts when role = Mem.roles.find(rolename)
+  for rolename in SOW_RECORD.gifts when role = Mem.Query.roles.find(rolename)
     for subrolename in ["lonewolf"]
-      subrole = Mem.roles.find(subrolename)
+      subrole = Mem.Query.roles.find(subrolename)
       deploy role, (turn)->
         mob: "visiter"
         enemy: "evil"
@@ -96,11 +96,11 @@ deploy_samples = ->
         sheep: []
         love: null
 
-  forms = Mem.items.where(template: "form").list
-  Mem.rule.story.set [<%- JSON.stringify(TEST_VIL.story)  %>]
-  Mem.rule.event.set [<%- JSON.stringify(TEST_VIL.event)  %>]
-  Mem.rule.potof.set  <%- JSON.stringify(TEST_VIL.potofs) %>
-  Mem.rule.form.set forms
+  forms = Mem.Query.items.where(template: "form").list
+  Mem.Collection.story.set [<%- JSON.stringify(TEST_VIL.story)  %>]
+  Mem.Collection.event.set [<%- JSON.stringify(TEST_VIL.event)  %>]
+  Mem.Collection.potof.set  <%- JSON.stringify(TEST_VIL.potofs) %>
+  Mem.Collection.form.set forms
 
 if document.querySelector "#item-rolelist"
   deploy_samples()

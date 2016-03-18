@@ -64,42 +64,42 @@ export doc =
       ids = _.sortBy(ids, (id)-> - doc.seeing[id] )[0 to filter_size]
       if center?.subid == "S"
         ids = _.filter(ids, (id)-> 25 < doc.seeing[id] && id != center._id)
-        list = Mem.messages.finds(ids)
+        list = Mem.Query.messages.finds(ids)
         list.unshift center
       else
         ids = _.filter(ids, (id)-> 25 < doc.seeing[id])
-        list = Mem.messages.finds(ids)
+        list = Mem.Query.messages.finds(ids)
       list
 
     pins: ({story_id,pins})->
-      Mem.messages.pins(story_id(), pins())
+      Mem.Query.messages.pins(story_id(), pins())
     anchor: ({talk})->
-      Mem.messages.anchor(talk(), win.scroll.prop())
+      Mem.Query.messages.anchor(talk(), win.scroll.prop())
     home: ({home})->
-      Mem.messages.home(home())
+      Mem.Query.messages.home(home())
     talk: ({talk, open, potofs_hide, search})->
-      Mem.messages.talk(talk(), open(), potofs_hide(), search())
+      Mem.Query.messages.talk(talk(), open(), potofs_hide(), search())
     memo: ({memo, potofs_hide, search})->
-      Mem.messages.memo(memo(), true, potofs_hide(), search())
+      Mem.Query.messages.memo(memo(), true, potofs_hide(), search())
     history: ({memo, potofs_hide, search})->
-      Mem.messages.memo(memo(), false, potofs_hide(), search())
+      Mem.Query.messages.memo(memo(), false, potofs_hide(), search())
 
   security_modes: (prop)->
-    story = Mem.storys.list.first
-    mob = Mem.roles.find(story?.type.mob)
+    story = Mem.Query.storys.list.first
+    mob = Mem.Query.roles.find(story?.type.mob)
 
     grave_caption = []
-    grave_caption.push "墓下" if Mem.messages.has.grave
-    grave_caption.push mob.CAPTION if Mem.messages.has.vsay && mob.CAPTION
+    grave_caption.push "墓下" if Mem.Query.messages.has.grave
+    grave_caption.push mob.CAPTION if Mem.Query.messages.has.vsay && mob.CAPTION
 
     think_caption = []
-    think_caption.push "独り言" if Mem.messages.has.think
-    think_caption.push "内緒話" if Mem.messages.has.to
+    think_caption.push "独り言" if Mem.Query.messages.has.think
+    think_caption.push "内緒話" if Mem.Query.messages.has.to
 
     list = []
     list.push m "a", Btn.set({}, prop, "all"),   "すべて"
     list.push m "a", Btn.set({}, prop, "think"), think_caption.join("/") + "つき" if think_caption.length > 0
-    list.push m "a", Btn.set({}, prop, "clan"),  "仲間つき" if Mem.messages.has.clan
+    list.push m "a", Btn.set({}, prop, "clan"),  "仲間つき" if Mem.Query.messages.has.clan
     list.push m "a", Btn.set({}, prop, "open"),  "公開情報のみ"
     list.push m "a", Btn.set({}, prop, "main"),  "出席者のみ"
     list.push m "a", Btn.set({}, prop, "grave"), grave_caption.join("/") + "のみ" if grave_caption.length > 0
@@ -110,7 +110,7 @@ export doc =
 
   potofs: ->
     {potofs_desc, potofs_order, potofs_hide} = Url.prop
-    potofs = Mem.potofs.view(potofs_desc(), potofs_order()).list
+    potofs = Mem.Query.potofs.view(potofs_desc(), potofs_order()).list
     hides = potofs_hide()
     turn = win.scroll.center?.event?.turn || 0
 
@@ -118,9 +118,9 @@ export doc =
       m "h6", "キャラクターフィルタ"
       m "p",
         m "a", Btn.keys_reset({}, potofs_hide, []                  ), "全員表示"
-        m "a", Btn.keys_reset({}, potofs_hide, Mem.potofs.others() ), "参加者表示"
-        m "a", Btn.keys_reset({}, potofs_hide, Mem.potofs.potofs() ), "その他を表示"
-        m "a", Btn.keys_reset({}, potofs_hide, Mem.potofs.full()   ), "全員隠す"
+        m "a", Btn.keys_reset({}, potofs_hide, Mem.Query.potofs.others() ), "参加者表示"
+        m "a", Btn.keys_reset({}, potofs_hide, Mem.Query.potofs.potofs() ), "その他を表示"
+        m "a", Btn.keys_reset({}, potofs_hide, Mem.Query.potofs.full()   ), "全員隠す"
       m "hr.black"
 
 
@@ -143,9 +143,9 @@ export doc =
       m "hr.black"
 
   writer: ->
-    for o in Mem.writers.list
+    for o in Mem.Query.writers.list
       props = {form: o, log: ""}
-      Mem.rule.history.merge props
+      Mem.Collection.history.merge props
       o.vdom(o, props)
 
   items_module: (type)->
@@ -153,7 +153,7 @@ export doc =
     win.mount "\#item-#{type}", -> component
     component = doc.component["item_#{type}"] =
       controller: ->
-        @query = Mem.items.where({type})
+        @query = Mem.Query.items.where({type})
         switch type
           case 'rolelist'
             win.scroll.size = 10
