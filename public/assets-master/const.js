@@ -1840,9 +1840,9 @@
 
   new Mem.Rule("option").schema(function() {
     this.scope(function(all) {
-      all.form = function(params, list, attr) {
-        var hash, i, init, key, len, onsubmit, ref, type;
-        onsubmit = attr.onsubmit || function() {};
+      all.form = function(params, list, gesture) {
+        var attr, hash, i, init, key, len, ref, type;
+        attr = gesture.form({});
         hash = {
           attr: attr
         };
@@ -1859,20 +1859,13 @@
             }
           }
         };
-        hash.disable = function(b) {
+        gesture.disable = function(b) {
           var i, key, len;
           for (i = 0, len = list.length; i < len; i++) {
             key = list[i];
             hash[key].attr.disabled = b;
           }
           return attr.disabled = b;
-        };
-        attr.onsubmit = function() {
-          if (attr.disabled) {
-            return;
-          }
-          onsubmit();
-          return false;
         };
         for (i = 0, len = list.length; i < len; i++) {
           key = list[i];

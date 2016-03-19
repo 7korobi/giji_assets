@@ -43,8 +43,6 @@ keys_eq = (load, keys)->
   menu: ->  btns Btn.menu, arguments...
 
 @Btn =
-  base: btn
-
   bool: (style, prop)->
     btn style, is_true, prop, prop, !prop()
 
