@@ -1,8 +1,8 @@
 doc.component.header =
   controller: ->
     @params = {}
-    @form = Mem.Query.options.form @params, ["header_state"],
-      onchange: ->
+    @g = new win.gesture {}
+    @form = Mem.Query.options.form @params, ["header_state"], @g
     return
 
   view: ({form, params})->

@@ -123,14 +123,3 @@ if gon?.events? && gon.event?
     view: ->
       win.scroll.pager "div", doc.messages[menu.scope.state()](Url.prop).list, doc.template
 
-
-(o)->
-  anchor_num  = o.logid[2..] - 0 || 0
-  o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
-  unless o.updated_at
-    o.updated_at = new Date(o.date) - 0
-    delete o.date
-  if o.vdom
-    o.vdom(o)
-  else
-    m ".paragraph", JSON.stringify o

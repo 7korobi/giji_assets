@@ -9,6 +9,14 @@ error_and_info = (o)->
 
 doc.component.vmake_form =
   controller: (v)->
+    v.g = new win.gesture
+      check: ->
+        validate.cards v
+      do: (p)->
+        p
+        .then (e)->
+          v.submit v.params
+
     v.params =
       extra: []
       role:  []
@@ -35,15 +43,8 @@ doc.component.vmake_form =
       "player_count"
       "player_count_start"
     ]
-    v.form = Mem.Query.options.form v.params, fields,
-      oninput: ->
-        validate.cards v
-      onchange: ->
-        validate.cards v
-      onsubmit: ->
-        if validate.cards v
-          v.submit(v.params)
 
+    v.form = Mem.Query.options.form v.params, fields, v.g
     v.form.checkboxes =
       for chk in Mem.Query.options.checkbox().list
         v.params[chk._id] = Mem.unpack[chk.type] chk.init

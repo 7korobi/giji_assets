@@ -699,21 +699,6 @@
     });
   }
 
-  (function(o) {
-    var anchor_num;
-    anchor_num = o.logid.slice(2) - 0 || 0;
-    o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
-    if (!o.updated_at) {
-      o.updated_at = new Date(o.date) - 0;
-      delete o.date;
-    }
-    if (o.vdom) {
-      return o.vdom(o);
-    } else {
-      return m(".paragraph", JSON.stringify(o));
-    }
-  });
-
 }).call(this);
 
 (function(){
@@ -1488,9 +1473,8 @@
   doc.component.header = {
     controller: function() {
       this.params = {};
-      this.form = Mem.Query.options.form(this.params, ["header_state"], {
-        onchange: function() {}
-      });
+      this.g = new win.gesture({});
+      this.form = Mem.Query.options.form(this.params, ["header_state"], this.g);
     },
     view: function(arg) {
       var form, max_all, max_cafe, max_ciel, max_crazy, max_morphe, max_pan, max_vage, max_xebec, params, top_line_attr;
@@ -2115,40 +2099,44 @@
   ua = "javascript";
   doc.component.sow_auth = {
     controller: function(){
-      var error, refresh, deploy, logout, login, this$ = this;
+      var deploy, this$ = this;
       doc.user = this;
       this.url = gon.url;
       this.params = {
         ua: ua
       };
-      this.form = Mem.Query.options.form(this.params, ['uid', 'pwd'], {
-        oninput: function(){
-          return validate.sow_auth(this$);
-        },
-        onchange: function(){
-          return validate.sow_auth(this$);
-        },
-        onsubmit: function(){
+      this.g = new win.gesture({
+        timeout: 5000,
+        check: function(){
           if (doc.user.is_login) {
-            logout();
+            return true;
           } else {
-            login();
+            return validate.sow_auth(this$);
           }
-          return false;
+        },
+        'do': function(p){
+          return p.then(function(e){
+            var cmd;
+            if (doc.user.is_login) {
+              cmd = "logout";
+              return Submit.iframe(this$.url, {
+                cmd: cmd,
+                ua: ua
+              });
+            } else {
+              this$.params.cmd = "login";
+              return Submit.iframe(this$.url, this$.params);
+            }
+          }).then(function(gon){
+            var e;
+            if (e = gon.errors) {
+              this$.errors = e.login || e[""];
+            }
+            deploy(gon);
+          });
         }
       });
-      error = function(message){
-        this$.errors = [message];
-        return loading(false);
-      };
-      refresh = function(gon){
-        var e;
-        if (e = gon.errors) {
-          this$.errors = e.login || e[""];
-        } else {}
-        deploy(gon);
-        this$.form.disable(false);
-      };
+      this.form = Mem.Query.options.form(this.params, ['uid', 'pwd'], this.g);
       deploy = function(gon){
         var o;
         o = gon.sow_auth;
@@ -2159,22 +2147,6 @@
         doc.user.is_admin = o.is_admin > 0;
         validate.sow_auth(this$);
         this$.form.by_cookie();
-      };
-      logout = function(){
-        var cmd;
-        cmd = "logout";
-        this$.form.disable(true);
-        return Submit.iframe(this$.url, {
-          cmd: cmd,
-          ua: ua
-        }).then(refresh, error);
-      };
-      login = function(){
-        this$.params.cmd = "login";
-        if (validate.sow_auth(this$)) {
-          this$.form.disable(true);
-          return Submit.iframe(this$.url, this$.params).then(refresh, error);
-        }
       };
       deploy(gon);
     },
@@ -2189,8 +2161,8 @@
         };
       };
       return m("form", c.form.attr, c.is_login
-        ? m(".paragraph", !c.is_loading ? m("input", submit(c.params.uid + " がログアウト")) : void 8)
-        : m(".paragraph", c.form.uid.head(), c.form.uid.field(), c.form.pwd.head(), c.form.pwd.field(), !c.is_loading ? m("input", submit("ログイン")) : void 8), m(".paragraph", (function(){
+        ? m(".paragraph", !c.g.timer ? m("input", submit(c.params.uid + " がログアウト")) : void 8)
+        : m(".paragraph", c.form.uid.head(), c.form.uid.field(), c.form.pwd.head(), c.form.pwd.field(), !c.g.timer ? m("input", submit("ログイン")) : void 8), m(".paragraph", (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = c.errors).length; i$ < len$; ++i$) {
           msg = ref$[i$];
@@ -2698,6 +2670,16 @@
   doc.component.vmake_form = {
     controller: function(v) {
       var add_btn, chk, fields, pop_btn, vindex;
+      v.g = new win.gesture({
+        check: function() {
+          return validate.cards(v);
+        },
+        "do": function(p) {
+          return p.then(function(e) {
+            return v.submit(v.params);
+          });
+        }
+      });
       v.params = {
         extra: [],
         role: [],
@@ -2705,19 +2687,7 @@
         trap: []
       };
       fields = ["vil_name", "vil_comment", "rating", "trs_type", "say_count", "time", "interval", "entry_password", "chr_npc", "mob_type", "game_rule", "role_table", "player_count", "player_count_start"];
-      v.form = Mem.Query.options.form(v.params, fields, {
-        oninput: function() {
-          return validate.cards(v);
-        },
-        onchange: function() {
-          return validate.cards(v);
-        },
-        onsubmit: function() {
-          if (validate.cards(v)) {
-            return v.submit(v.params);
-          }
-        }
-      });
+      v.form = Mem.Query.options.form(v.params, fields, v.g);
       v.form.checkboxes = (function() {
         var i, len, ref, results;
         ref = Mem.Query.options.checkbox().list;

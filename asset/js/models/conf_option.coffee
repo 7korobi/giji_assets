@@ -73,9 +73,9 @@ input_attr = (e)->
 
 new Mem.Rule("option").schema ->
   @scope (all)->
-    all.form = (params, list, attr)->
-      onsubmit = attr.onsubmit or ->
-      hash = {attr}
+    all.form = (params, list, gesture)->
+      attr = gesture.form({})
+      hash = { attr }
       hash.by_cookie = ->
         for key in list
           {cookie, type} = all.hash[key]
@@ -85,15 +85,10 @@ new Mem.Rule("option").schema ->
               params[key] = Mem.unpack[type] decodeURI match[1]
         return
 
-      hash.disable = (b)->
+      gesture.disable = (b)->
         for key in list
           hash[key].attr.disabled = b
         attr.disabled = b
-
-      attr.onsubmit = ->
-        return if attr.disabled
-        onsubmit()
-        false
 
       for key in list
         {init, type} = all.hash[key]

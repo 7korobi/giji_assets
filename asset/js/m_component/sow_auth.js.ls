@@ -4,30 +4,32 @@ doc.component.sow_auth =
   controller: !->
     doc.user = @
     @url = gon.url
-
-    @params = {ua}
-    @form = Mem.Query.options.form @params, <[uid pwd]>,
-      oninput: ~>
-        validate.sow_auth @
-      onchange: ~>
-        validate.sow_auth @
-      onsubmit: ~>
+    @params = { ua }
+    @g = new win.gesture do
+      timeout: 5000
+      check: ~>
         if doc.user.is_login
-          logout()
+          true
         else
-          login()
-        false
+          validate.sow_auth @
 
-    error = (message)~>
-      @errors = [message]
-      loading false
+      do: (p)~>
+        p
+        .then (e)~>
+          if doc.user.is_login
+            cmd = "logout"
+            Submit.iframe @url, { cmd, ua }
 
-    refresh = (gon)!~>
-      if e = gon.errors
-        @errors = e.login || e[""]
-      else
-      deploy gon
-      @form.disable false
+          else
+            @params.cmd = "login"
+            Submit.iframe @url, @params
+
+        .then (gon)!~>
+          if e = gon.errors
+            @errors = e.login || e[""]
+          deploy gon
+
+    @form = Mem.Query.options.form @params, <[uid pwd]>, @g
 
     deploy = (gon)!~>
       o = gon.sow_auth
@@ -37,19 +39,6 @@ doc.component.sow_auth =
 
       validate.sow_auth @
       @form.by_cookie()
-
-    logout = ~>
-      cmd = "logout"
-      @form.disable true
-      Submit.iframe @url, {cmd, ua}
-      .then refresh, error
-
-    login = ~>
-      @params.cmd = "login"
-      if validate.sow_auth @
-        @form.disable true
-        Submit.iframe @url, @params
-        .then refresh, error
 
     deploy gon
 
@@ -63,7 +52,7 @@ doc.component.sow_auth =
     m "form", c.form.attr,
       if c.is_login
         m ".paragraph",
-          unless c.is_loading
+          unless c.g.timer
             m "input", submit "#{c.params.uid} がログアウト"
       else
         m ".paragraph",
@@ -71,7 +60,7 @@ doc.component.sow_auth =
           c.form.uid.field()
           c.form.pwd.head()
           c.form.pwd.field()
-          unless c.is_loading
+          unless c.g.timer
             m "input", submit "ログイン"
       m ".paragraph",
         for msg in c.errors

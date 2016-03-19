@@ -55,7 +55,7 @@ $action-border: 18px;
   }
 }
 
-@mixin width($base, $step, $h1_margin) {
+@mixin width($base, $step, $_) {
   $head-list:  458px, 458px, 458px, 458px, 458px, 458px, 580px, 580px, 580px, 580px, 770px, 770px, 770px, 770px, 770px, 770px, 770px, 770px, 770px, 770px, 770px, 770px, 99999px;
   $width-list: 290px, 320px, 350px, 380px, 410px, 440px, 470px, 500px, 530px, 560px, 590px, 620px, 650px, 680px, 710px, 740px, 770px, 800px, 830px, 860px, 890px, 920px, 99999px;
   @for $idx from 1 through 22 {
@@ -74,8 +74,11 @@ $action-border: 18px;
         }
       }
 
+      h1 img {
+        max-width: $content;
+        width: $head;
+      }
       h1,
-      h1 img,
       .memo,
       .talk {
         width: $content;
