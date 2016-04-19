@@ -1,4 +1,4 @@
-Url.define URL_PROPS, {}
+Url.define URL_PROPS
 
 Url.routes =
   hash:
@@ -14,15 +14,3 @@ Url.routes =
     search: new Url "/search/:search"
 
     potof: new Url "/potof/:potofs_order"
-
-  search:
-    css: new Url "css=:theme~:width~:layout~:font",
-      unmatch: "?"
-      change: (params)->
-        list =
-          for key in ["theme", "width", "layout", "font", "w", "item", "color"]
-            "#{Url.prop[key]()}-#{key}"
-        list.push "no-player" unless Url.prop.human()
-        GUI.header list
-        window.requestAnimationFrame ->
-          win.do.layout()

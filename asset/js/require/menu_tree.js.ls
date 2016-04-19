@@ -7,32 +7,39 @@ License: MIT
 
 export class MenuTree
   ->
+    @g = new win.gesture do
+      timeout: 200
+    @g.action = ->
+      do: (p)~>
+        p
+        .then ({message, value})~>
+          val = value
+          old = @state()
+          if old == val
+            @state ""
+          else
+            @state val
+            @nodes[val].open( @nodes[val].menu ) if @nodes[val]
+          @nodes[old].close( @nodes[old].menu ) if @nodes[old]
+
     @state = m.prop()
     @nodes = {}
-    @change = (val)~>
-      old = @state()
-      return old unless arguments.length
-
-      @state val
-      if old != val
-        @nodes[val].open( @nodes[val].menu )  if @nodes[val]
-        @nodes[old].close( @nodes[old].menu ) if @nodes[old]
+    @change = (val)->
+      @g.action(val)
+      @state()
 
   # open / close event.
   open: (node = @nodes[@state()])->
     node.open( node.menu ) if node
 
-  start: (style, mark)->
-    style.key = "start-#{mark}"
-    Btn.menu style, @change, mark
-
-  cancel: (style)->
-    style.key = "cancel-#{mark}"
-    Btn.set style, @change, ""
+  start: (mark, style)->
+    style.class ?= ""
+    style.class += " icon-#{mark}"
+    @g.menu mark, @state(), style
 
   view: (node = @nodes[@state()])->
     if node
-      [ node.view(node.menu)
+      [ m.component node
         node.menu.view()
       ]
     else
@@ -69,7 +76,10 @@ export class MenuTree
     order = list.sort (a,b)->
       order_by[b] - order_by[a]
 
-    Btns.radio style, prop, data, order
+    for key in order
+      attr = @g.menu key, prop(), style
+      caption = data[key]
+      m "span", attr, caption
 
   node: (id, options)->
     @nodes[id] ?= new MenuNode(id, options)
@@ -98,6 +108,8 @@ class MenuNode
     @menu = new MenuTree.Drill()
     for key, val of options
       @[key] = val
+    @controller ?= ~>
+      @menu
 
     @deploy(@menu)
 

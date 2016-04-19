@@ -1,9 +1,3 @@
-url_bind =
-  fname:
-    * fname: "test_mocha"
-      title: "基本"
-    * fname: "other"
-      title: "変更"
 
 url_props =
   aaa:
@@ -21,14 +15,12 @@ url_props =
   title: null
 
 Url.define url_props
-Url.binds  url_bind
 
 Url.routes =
   pathname:
     file:  new Url "/:fname.:ext"
   search:
-    param: new Url "param=:aaa~:bbb~:ccc~:ddd",
-      unmatch: "?"
+    param: new Url "param=:aaa~:bbb~:ccc~:ddd"
 
 describe "Url", (...)!->
   describe "should capture file name", (...)!->

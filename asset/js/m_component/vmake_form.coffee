@@ -9,21 +9,13 @@ error_and_info = (o)->
 
 doc.component.vmake_form =
   controller: (v)->
-    v.g = new win.gesture
-      check: ->
-        validate.cards v
-      do: (p)->
-        p
-        .then (e)->
-          v.submit v.params
-
     v.params =
       extra: []
       role:  []
       gift:  []
       trap:  []
 
-    fields = [
+    v.tie = Mem.Query.options.form v.params, [
       "vil_name"
       "vil_comment"
 
@@ -43,13 +35,15 @@ doc.component.vmake_form =
       "player_count"
       "player_count_start"
     ]
+    v.tie.check = ->
+      validate.cards v
 
-    v.form = Mem.Query.options.form v.params, fields, v.g
-    v.form.checkboxes =
-      for chk in Mem.Query.options.checkbox().list
-        v.params[chk._id] = Mem.unpack[chk.type] chk.init
-        chk.vdom v.params
+    v.tie.action = ->
+      v.submit v.params
 
+    v.tie.input.checkboxes =
+      for chk in Mem.Query.options.check_vil().list
+        v.tie.input[chk._id] = new Input v.tie, chk
 
     vindex = 0
     v.params.vil_comment = [
@@ -172,7 +166,7 @@ doc.component.vmake_form =
     else
       jobs = []
 
-    m "form", v.form.attr,
+    v.tie.form {},
       m ".vmake", {key: v._id},
         m ".INFOSP.info",
           m "p.text",
@@ -185,8 +179,8 @@ doc.component.vmake_form =
         m ".MAKER.plane",
           m "fieldset.msg",
             m "legend.emboss", "村の名前、説明、ルール"
-            v.form.vil_name.field()
-            v.form.vil_comment.field()
+            v.tie.input.vil_name.field()
+            v.tie.input.vil_comment.field()
 
             m "p", "■国のルール"
             RULE.nation.list.map (o)-> m "p", "#{++nindex}.#{o.head}"
@@ -202,36 +196,36 @@ doc.component.vmake_form =
           m "fieldset.msg",
             m "legend.emboss", "設定"
             m "p",
-              v.form.trs_type.field (o)-> o.CAPTION
-              v.form.trs_type.label (o)->
+              v.tie.input.trs_type.field (o)-> o.CAPTION
+              v.tie.input.trs_type.label (o)->
                 m "div",
                   m.trust o.HELP
 
             m "p",
-              v.form.rating.field (o)-> o.caption
-              v.form.rating.label (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
+              v.tie.input.rating.field (o)-> o.caption
+              v.tie.input.rating.label (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
 
             m "p",
-              v.form.say_count.field (o)-> o.CAPTION
-              v.form.say_count.label (o)-> m.trust o.HELP
+              v.tie.input.say_count.field (o)-> o.CAPTION
+              v.tie.input.say_count.label (o)-> m.trust o.HELP
 
-            v.form.time.field()
-            v.form.time.label()
+            v.tie.input.time.field()
+            v.tie.input.time.label()
             m "p",
-              v.form.interval.field (o)-> o.caption
-              v.form.interval.label()
+              v.tie.input.interval.field (o)-> o.caption
+              v.tie.input.interval.label()
             m "p",
-              v.form.entry_password.field()
-              v.form.entry_password.label()
+              v.tie.input.entry_password.field()
+              v.tie.input.entry_password.label()
 
         m ".SSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "ゲームルール"
-            v.form.game_rule.field (o)-> o.CAPTION
-            v.form.game_rule.label (o)->
+            v.tie.input.game_rule.field (o)-> o.CAPTION
+            v.tie.input.game_rule.label (o)->
               m "ul",
                 m.trust o.HELP
-            for chk in v.form.checkboxes
+            for chk in v.tie.input.checkboxes
               m "p",
                 chk.field()
                 chk.label()
@@ -240,11 +234,11 @@ doc.component.vmake_form =
           m "fieldset.msg",
             m "legend.emboss", "編成"
             m "p",
-              v.form.mob_type.field (o)-> o.name
-              v.form.mob_type.label (o)-> m.trust o.HELP
+              v.tie.input.mob_type.field (o)-> o.name
+              v.tie.input.mob_type.label (o)-> m.trust o.HELP
 
             m "p",
-              v.form.role_table.field (o)-> o.name
+              v.tie.input.role_table.field (o)-> o.name
 
             v.player_summary v.params
 
@@ -259,12 +253,12 @@ doc.component.vmake_form =
               m "fieldset.msg",
                 m "legend.emboss", "編成自由設定"
                 m "p",
-                  v.form.player_count.field()
-                  v.form.player_count.label()
+                  v.tie.input.player_count.field()
+                  v.tie.input.player_count.label()
                 if v.params.start_auto
                   m "p",
-                    v.form.player_count_start.field()
-                    v.form.player_count_start.label()
+                    v.tie.input.player_count_start.field()
+                    v.tie.input.player_count_start.label()
 
                 sets "config", v.sets.extra
                 sets "config", v.sets.role
@@ -302,12 +296,12 @@ doc.component.vmake_form =
               m "fieldset.msg",
                 m "legend.emboss", "編成詳細"
                 m "p",
-                  v.form.player_count.field()
-                  v.form.player_count.label()
+                  v.tie.input.player_count.field()
+                  v.tie.input.player_count.label()
                 if v.params.start_auto
                   m "p",
-                    v.form.player_count_start.field()
-                    v.form.player_count_start.label()
+                    v.tie.input.player_count_start.field()
+                    v.tie.input.player_count_start.label()
                 sets "config", v.sets.extra
                 sets "config", v.sets.role
                 sets "config", v.sets.gift
@@ -322,8 +316,8 @@ doc.component.vmake_form =
           m "fieldset.msg",
             m "legend.emboss", "登場人物"
             m "p",
-              v.form.chr_npc.field (o)-> o.caption
-              v.form.chr_npc.label()
+              v.tie.input.chr_npc.field (o)-> o.caption
+              v.tie.input.chr_npc.label()
 
         v.npc_says npc
         m ".minilist",
@@ -337,5 +331,5 @@ doc.component.vmake_form =
         m ".VSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "決定"
-            m "input", {type:"submit", value: "村の作成"}
+            v.tie.submit "村の作成"
             error_and_info v.http

@@ -1,28 +1,164 @@
+
+icon:
+  sean: menu
+  attr:
+    type: tree
+    style: icon
+  name: "アイコン"
+  init:
+  options:
+    cog:
+      tooltip: 画面表示を調整します。
+    home:
+      tooltip: 村の設定、アナウンスを表示します。
+    clock:
+      tooltip: メモの履歴を表示します。
+    mail:
+      tooltip: 最新のメモを表示します。
+    chat-alt:
+      tooltip: 発言を表示します。
+    search:
+      tooltip: 検索機能をつかいます。
+    resize-normal:
+      tooltip: 簡略な表記にします。
+    resize-full:
+      tooltip: 詳細な表記にします。
+    th-large:
+      tooltip: 条件で絞り込みます。
+    pencil:
+      tooltip: 書き込み機能
+
+
+scope:
+  sean: menu
+  attr:
+    type: tree
+    style: hide
+  name: "動作モード"
+  init:
+
+theme:
+  sean: cog
+  attr:
+    required: required
+    type: btns
+  name: スタイル
+  init: cinema
+  options:
+    cinema:  煉瓦
+    star:    蒼穹
+    night:   闇夜
+    moon:    月夜
+    wa:      和の国
+
+layout:
+  sean: cog
+  attr:
+    required: required
+    type: btns
+  name: 位置
+  init: center
+  options:
+    left:    左詰
+    center:  中央
+    right:   右詰
+
+width:
+  sean: cog
+  attr:
+    required: required
+    type: btns
+  name: 幅の広さ
+  init: std
+  options:
+    full:  最大
+    wide:  広域
+    std:   狭域
+
+font:
+  sean: cog
+  attr:
+    required: required
+    type: btns
+  name: 書体
+  init: std
+  options:
+    large:  大判
+    novel:  明朝
+    std:    ゴシック
+    small:  繊細
+
+show:
+  sean: message
+  attr:
+    required: required
+    type: btns
+  name: 表示設定
+  init: all
+  options:
+    all:   すべて
+    think: 独り言
+    clan:  仲間つき
+    open:  公開情報のみ
+    main:  出席者のみ
+    grave: 墓下のみ
+
+open:
+  sean: message
+  attr:
+    className: invisible
+    name: open
+    type: checkbox
+  name: 公開情報
+  help_on: 公開情報つき
+  help_off: 秘密のみ
+
+human:
+  sean: message
+  attr:
+    className: invisible
+    name: human
+    type: checkbox
+  name: "/*中の人*/"
+  help_on: "/*中の人*/"
+  help_off: "/**/"
+
+tag:
+  sean: chr
+  attr:
+    type: btns
+  name: タグ
+  init: all
+  options: {}
+
+
 header_state:
+  sean: top
   attr:
     className: invisible
     type: radio
   init: finish
 
 vote_sign:
+  sean: vil
   attr:
     name: votetype
     type: checkbox
-  query: {}
   name: 記名投票
   help_on: 記名で投票　※集計結果に投票者が記されます
   help_off: 匿名で投票　※集計結果は人数のみになります
 
 start_auto:
+  sean: vil
   attr:
     name: starttype
     type: checkbox
-  query: {}
   name: 自動開始
   help_on: 更新時に、最少催行人数が集まっていると開始
   help_off: 村立て人が開始ボタンを押すと開始
 
 seq_event:
+  sean: vil
   attr:
     name: seqevent
     type: checkbox
@@ -33,6 +169,7 @@ seq_event:
   help_off: 事件はランダムに選ばれる
 
 show_id:
+  sean: vil
   attr:
     name: showid
     type: checkbox
@@ -43,6 +180,7 @@ show_id:
   help_off: エピローグまで、ユーザーIDを秘密にする
 
 entrust:
+  sean: vil
   attr:
     name: entrust
     type: checkbox
@@ -54,6 +192,7 @@ entrust:
   help_off: 委任投票ができない
 
 not_select_role:
+  sean: vil
   attr:
     name: noselrole
     type: checkbox
@@ -65,6 +204,7 @@ not_select_role:
   help_off: 役職希望を受け付ける
 
 random_target:
+  sean: vil
   attr:
     name: randomtarget
     type: checkbox
@@ -75,6 +215,7 @@ random_target:
   help_off: 投票・能力の対象は「ランダム」にできない
 
 undead_talk:
+  sean: vil
   attr:
     name: undead
     type: checkbox
@@ -85,6 +226,7 @@ undead_talk:
   help_off: 狼・妖精と死者は会話を交わせない
 
 aiming_talk:
+  sean: vil
   attr:
     name: aiming
     type: checkbox
@@ -94,7 +236,19 @@ aiming_talk:
   help_on:  ふたりだけの内緒話をすることができる
   help_off: ふたりだけの内緒話は選べない
 
+search:
+  sean: chr_sets
+  attr:
+    name: search
+    type: text
+    size: 20
+    maxlength: 20
+  name:
+  help_on:
+  help_off:
+
 vil_name:
+  sean: vil
   attr:
     name: vname
     type: text
@@ -109,6 +263,7 @@ vil_name:
   help_off:
 
 vil_comment:
+  sean: vil
   attr:
     name: vcomment
     type: textarea
@@ -122,30 +277,31 @@ vil_comment:
   help_off:
 
 uid:
+  sean: vil
   attr:
     type: text
     name: uid
     size: 10
     maxlength: 20
-  query: {}
   name: アカウント
   cookie: true
   help_on:
   help_off:
 
 pwd:
+  sean: vil
   attr:
     type: password
     name: pwd
     size: 10
     maxlength: 20
-  query: {}
   name: パスワード
   cookie: true
   help_on:
   help_off:
 
 entry_password:
+  sean: vil
   attr:
     type: text
     name: entrypwd
@@ -159,6 +315,7 @@ entry_password:
   help_off: 参加制限しない　※パスワードをつけると、鍵付きの村になります。
 
 player_count:
+  sean: vil
   attr:
     type: number
     name: vplcnt
@@ -173,6 +330,7 @@ player_count:
   help_off: 定員　※入力してください。
 
 player_count_start:
+  sean: vil
   attr:
     type: number
     name: vplcntstart
@@ -187,18 +345,19 @@ player_count_start:
   help_off: 最少催行人数　※入力してください。
 
 time:
+  sean: vil
   attr:
     type: time
     name: time
     step: 1800
     required: required
-  query: {}
   init: "22:30"
   name: 更新時刻
   help_on:  に更新します。
   help_off: 更新時刻　※入力してください。
 
 interval:
+  sean: vil
   attr:
     type: select
     name: updinterval
@@ -207,20 +366,15 @@ interval:
     SOW: updinterval
   init: 1
   options:
-    3:
-      _id: 3
-      caption: 72時間
-    2:
-      _id: 2
-      caption: 48時間
-    1:
-      _id: 1
-      caption: 24時間
+    3: 72時間
+    2: 48時間
+    1: 24時間
   name: 更新間隔
   help_on:  ごとに更新します。
   help_off: ※入力してください。
 
 game_rule:
+  sean: vil
   attr:
     type: select
     name: game
@@ -232,6 +386,7 @@ game_rule:
   help_off: ※入力してください。
 
 rating:
+  sean: vil
   attr:
     type: select
     name: rating
@@ -244,26 +399,27 @@ rating:
   help_off: ※入力してください。
 
 chr_set:
+  sean: vil
   attr:
     type: select
     name: chr_set
     required: required
-  query: {}
   name: 登場人物
   help_on: ""
   help_off: ※入力してください。
 
 chr_npc:
+  sean: vil
   attr:
     type: select
     name: csid
     required: required
-  query: {}
   name: 登場人物とNPC
   help_on: ""
   help_off: ※入力してください。
 
 say_count:
+  sean: vil
   attr:
     type: select
     name: saycnttype
@@ -275,6 +431,7 @@ say_count:
   help_off: ※入力してください。
 
 role_table:
+  sean: vil
   attr:
     type: select
     name: roletable
@@ -287,6 +444,7 @@ role_table:
   help_off: ※入力してください。
 
 mob_type:
+  sean: vil
   attr:
     type: select
     name: mob
@@ -296,6 +454,7 @@ mob_type:
   help_off: ※入力してください。
 
 trs_type:
+  sean: vil
   attr:
     type: select
     name: trsid

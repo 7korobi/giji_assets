@@ -1,62 +1,46 @@
 doc.component.buttons =
   controller: ->
-    tap: (icon)-> menu.icon.start({class:"glass"}, icon)
-    helps:
-      "cog": "画面表示を調整します。"
-      "home":     "村の設定、アナウンスを表示します。"
-      "clock":    "メモの履歴を表示します。"
-      "mail":     "最新のメモを表示します。"
-      "chat-alt": "発言を表示します。"
-      "search":   "検索機能をつかいます。"
-      "resize-normal": "簡略な表記にします。"
-      "resize-full":   "詳細な表記にします。"
-      "th-large":      "条件で絞り込みます。"
-      "pencil":        "書き込み機能"
-
-  view: (c)->
-    vdoms = []
-    section = (icon)->
-      return unless menu.icon.nodes[icon]
-
-      help = c.helps[icon]
-      if help?
-        tag = """section.tooltip-right[data-tooltip="#{help}"]"""
-      else
-        tag = """section"""
-      vdom =
-        m tag, c.tap(icon),
-          m ".bigicon",
-            m ".icon-#{icon}", " "
-          m ".badge.pull-right", badges[icon]() if badges[icon]
-      vdoms.push vdom
-
     badges =
       "pin": ->
-        doc.messages.pins(Url.prop).list.length - Mem.Query.events.list.length
+        doc.messages.pins(Url.params).list.length - Mem.Query.events.list.length
       "home": ->
         Mem.Query.messages.home("announce").list.length - Mem.Query.events.list.length
       "mail": ->
-        prop = _.merge {}, Url.prop,
-          memo: -> "all"
-          uniq: -> true
-          search: -> ""
-        doc.messages.memo(prop).list.length - Mem.Query.events.list.length
+        params = _.merge {}, Url.params,
+          memo: "all"
+          uniq: true
+          search: ""
+        doc.messages.memo(params).list.length - Mem.Query.events.list.length
       "clock": ->
-        prop = _.merge {}, Url.prop,
-          talk: -> "all"
-          open: -> true
-          search: -> ""
-        doc.messages.history(prop).list.length - Mem.Query.events.list.length
+        params = _.merge {}, Url.params,
+          talk: "all"
+          open: true
+          search: ""
+        doc.messages.history(params).list.length - Mem.Query.events.list.length
       "chat-alt": ->
-        prop = _.merge {}, Url.prop,
-          talk: -> "all"
-          open: -> true
-          search: -> ""
-        doc.messages.talk(prop).list.length - Mem.Query.events.list.length
+        params = _.merge {}, Url.params,
+          talk: "all"
+          open: true
+          search: ""
+        doc.messages.talk(params).list.length - Mem.Query.events.list.length
       "th-large": ->
-        Mem.Query.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list.length
+        Mem.Query.map_faces.active(Url.params.order, Url.params.chr_set, Url.params.search).list.length
 
-    switch menu.scope.state()
+
+    for icon, option of Mem.Query.options.hash.icon.options
+      option.badge = badges[icon]
+
+    vdom = []
+    section = (icon)->
+      vdom.push menu.icon.item icon,
+        className: "glass tooltip-right"
+        tag: "bigicon"
+
+    { vdom, section }
+
+  view: ({section, vdom})->
+    vdom.length = 0
+    switch Url.params.scope
       when "pins"
         section "pin"
 
@@ -78,9 +62,9 @@ doc.component.buttons =
 
     section "pencil"
     section "th-large"
-    section "search" unless "pins" == menu.scope.state()
+    section "search" unless "pins" == Url.params.scope
     section "cog"
 
     m "table",
       m "tr",
-        m "td", vdoms
+        m "td", vdom

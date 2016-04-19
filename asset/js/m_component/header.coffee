@@ -1,11 +1,10 @@
 doc.component.header =
   controller: ->
-    @params = {}
-    @g = new win.gesture {}
-    @form = Mem.Query.options.form @params, ["header_state"], @g
-    return
+    tie = Mem.Query.options.btns Url.params, [
+      "header_state"
+    ]
 
-  view: ({form, params})->
+  view: ({input, params})->
     max_vage    = Mem.conf.folder.PERJURY.config.cfg.MAX_VILLAGES
     max_crazy   = Mem.conf.folder.CRAZY  .config.cfg.MAX_VILLAGES
     max_xebec   = Mem.conf.folder.XEBEC  .config.cfg.MAX_VILLAGES
@@ -27,13 +26,13 @@ doc.component.header =
                 m "strong", "進行中の村"
               m "th[colspan=2]", {key: "f"},
                 m "label.btn.edge",
-                  form.header_state.field "finish"
+                  input.header_state.item "finish"
                   "終了した村を見る"
           when "finish"
             m "tr", top_line_attr,
               m "th[colspan=2]", {key: "p"},
                 m "label.btn.edge",
-                  form.header_state.field "progress"
+                  input.header_state.item "progress"
                   "進行中の村を見る"
               m "th.choice[colspan=2]", {key: "f"},
                 m "strong", "終了した村"

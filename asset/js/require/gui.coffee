@@ -32,12 +32,6 @@ GUI =
     attr.src = GUI.img_head + "/portrate/#{face_id}.jpg"
     m "img", attr
 
-  header_style_p: ""
-  header: (keys)->
-    style = keys.join(" ")
-    html = document.documentElement
-    html.className = html.className.replace GUI.header_style_p, style
-    GUI.header_style_p = style
 
   attrs_to: (parent, query, base_attrs, cb)->
     vdom = m query

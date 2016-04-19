@@ -1,24 +1,5 @@
 (function(){
-  var change_pin, doc, out$ = typeof exports != 'undefined' && exports || this, slice$ = [].slice;
-  out$.change_pin = change_pin = function(id){
-    var target, target_at;
-    target = menu.scope.state();
-    switch (target) {
-    case "history":
-      target_at = Url.prop.memo_at;
-      break;
-    case "memo":
-    case "talk":
-    case "home":
-      target_at = Url.prop[target + "_at"];
-    }
-    if (target_at) {
-      target_at(id);
-      Url.prop.back(target);
-    }
-    Url.prop.scroll(id);
-    return menu.icon.change("pin");
-  };
+  var doc, out$ = typeof exports != 'undefined' && exports || this, slice$ = [].slice;
   out$.doc = doc = {
     delegate: {
       tap_identity: function(){
@@ -101,103 +82,33 @@
       pins: function(arg$){
         var story_id, pins;
         story_id = arg$.story_id, pins = arg$.pins;
-        return Mem.Query.messages.pins(story_id(), pins());
+        return Mem.Query.messages.pins(story_id, pins);
       },
       anchor: function(arg$){
         var talk;
         talk = arg$.talk;
-        return Mem.Query.messages.anchor(talk(), win.scroll.prop());
+        return Mem.Query.messages.anchor(talk, win.scroll.prop());
       },
       home: function(arg$){
         var home;
         home = arg$.home;
-        return Mem.Query.messages.home(home());
+        return Mem.Query.messages.home(home);
       },
       talk: function(arg$){
         var talk, open, potofs_hide, search;
         talk = arg$.talk, open = arg$.open, potofs_hide = arg$.potofs_hide, search = arg$.search;
-        return Mem.Query.messages.talk(talk(), open(), potofs_hide(), search());
+        return Mem.Query.messages.talk(talk, open, potofs_hide, search);
       },
       memo: function(arg$){
         var memo, potofs_hide, search;
         memo = arg$.memo, potofs_hide = arg$.potofs_hide, search = arg$.search;
-        return Mem.Query.messages.memo(memo(), true, potofs_hide(), search());
+        return Mem.Query.messages.memo(memo, true, potofs_hide, search);
       },
       history: function(arg$){
         var memo, potofs_hide, search;
         memo = arg$.memo, potofs_hide = arg$.potofs_hide, search = arg$.search;
-        return Mem.Query.messages.memo(memo(), false, potofs_hide(), search());
+        return Mem.Query.messages.memo(memo, false, potofs_hide, search);
       }
-    },
-    security_modes: function(prop){
-      var story, mob, grave_caption, think_caption, list;
-      story = Mem.Query.storys.list.first;
-      mob = Mem.Query.roles.find(story != null ? story.type.mob : void 8);
-      grave_caption = [];
-      if (Mem.Query.messages.has.grave) {
-        grave_caption.push("墓下");
-      }
-      if (Mem.Query.messages.has.vsay && mob.CAPTION) {
-        grave_caption.push(mob.CAPTION);
-      }
-      think_caption = [];
-      if (Mem.Query.messages.has.think) {
-        think_caption.push("独り言");
-      }
-      if (Mem.Query.messages.has.to) {
-        think_caption.push("内緒話");
-      }
-      list = [];
-      list.push(m("a", Btn.set({}, prop, "all"), "すべて"));
-      if (think_caption.length > 0) {
-        list.push(m("a", Btn.set({}, prop, "think"), think_caption.join("/") + "つき"));
-      }
-      if (Mem.Query.messages.has.clan) {
-        list.push(m("a", Btn.set({}, prop, "clan"), "仲間つき"));
-      }
-      list.push(m("a", Btn.set({}, prop, "open"), "公開情報のみ"));
-      list.push(m("a", Btn.set({}, prop, "main"), "出席者のみ"));
-      if (grave_caption.length > 0) {
-        list.push(m("a", Btn.set({}, prop, "grave"), grave_caption.join("/") + "のみ"));
-      }
-      list.push(m.trust("&nbsp;"));
-      list.push(m("a", Btn.bool({}, Url.prop.open), "公開情報"));
-      list.push(m("a", Btn.bool({}, Url.prop.human), "/*中の人*/"));
-      return m("p", list);
-    },
-    potofs: function(){
-      var ref$, potofs_desc, potofs_order, potofs_hide, potofs, hides, turn, ref1$, attr, o;
-      ref$ = Url.prop, potofs_desc = ref$.potofs_desc, potofs_order = ref$.potofs_order, potofs_hide = ref$.potofs_hide;
-      potofs = Mem.Query.potofs.view(potofs_desc(), potofs_order()).list;
-      hides = potofs_hide();
-      turn = ((ref$ = win.scroll.center) != null ? (ref1$ = ref$.event) != null ? ref1$.turn : void 8 : void 8) || 0;
-      return m(".minilist", m("h6", "キャラクターフィルタ"), m("p", m("a", Btn.keys_reset({}, potofs_hide, []), "全員表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.Query.potofs.others()), "参加者表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.Query.potofs.potofs()), "その他を表示"), m("a", Btn.keys_reset({}, potofs_hide, Mem.Query.potofs.full()), "全員隠す")), m("hr.black"), attr = function(o){
-        var cb, elem;
-        cb = function(){
-          hides[o.face_id] = !hides[o.face_id];
-          return potofs_hide(hides);
-        };
-        elem = null;
-        return {
-          className: hides[o.face_id] ? "filter-hide" : "",
-          config: function(_elem){
-            var elem;
-            return elem = _elem;
-          },
-          onclick: cb,
-          onmouseup: cb,
-          ontouchend: cb
-        };
-      }, (function(){
-        var i$, ref$, len$, results$ = [];
-        for (i$ = 0, len$ = (ref$ = potofs).length; i$ < len$; ++i$) {
-          o = ref$[i$];
-          results$.push(m(".chrbox", {
-            key: o._id
-          }, GUI.portrate(o.face_id, attr(o)), m(".bar." + o.live)));
-        }
-        return results$;
-      }()), m("hr.black"));
     },
     writer: function(){
       var i$, ref$, len$, o, props, results$ = [];
@@ -239,7 +150,7 @@
 }).call(this);
 
 (function() {
-  Url.define(URL_PROPS, {});
+  Url.define(URL_PROPS);
 
   Url.routes = {
     hash: {
@@ -252,31 +163,6 @@
       hides: new Url("/hides/:hide_ids"),
       search: new Url("/search/:search"),
       potof: new Url("/potof/:potofs_order")
-    },
-    search: {
-      css: new Url("css=:theme~:width~:layout~:font", {
-        unmatch: "?",
-        change: function(params) {
-          var key, list;
-          list = (function() {
-            var i, len, ref, results;
-            ref = ["theme", "width", "layout", "font", "w", "item", "color"];
-            results = [];
-            for (i = 0, len = ref.length; i < len; i++) {
-              key = ref[i];
-              results.push((Url.prop[key]()) + "-" + key);
-            }
-            return results;
-          })();
-          if (!Url.prop.human()) {
-            list.push("no-player");
-          }
-          GUI.header(list);
-          return window.requestAnimationFrame(function() {
-            return win["do"].layout();
-          });
-        }
-      })
     }
   };
 
@@ -302,46 +188,44 @@
         event = Mem.Query.events.find(folder + "-" + vid + "-" + turn);
         return doc.load.event(has_tap, event, function() {
           var pins;
-          pins = Url.prop.pins();
+          pins = Url.params.pins;
           pins[by_turn + "-" + by_logid] = true;
           pins[turn + "-" + logid] = true;
           return change_pin(by_id);
         });
       };
       doc.delegate.tap_identity = function(turn, logid, id) {
-        var pins;
         return;
-        pins = Url.prop.pins();
-        pins[turn + "-" + logid] = true;
+        Url.params.pins[turn + "-" + logid] = true;
         return change_pin(id);
       };
       menu.scope.node("history", {
         open: function() {
-          Url.prop.scroll("");
-          return win.scroll.rescroll(Url.prop.memo_at);
+          Url.params.scroll = "";
+          return ScrollSpy.go(Url.params.memo_at);
         }
       });
       menu.scope.node("memo", {
         open: function() {
-          Url.prop.scroll("");
-          return win.scroll.rescroll(Url.prop.memo_at);
+          Url.params.scroll = "";
+          return ScrollSpy.go(Url.params.memo_at);
         }
       });
       menu.scope.node("talk", {
         open: function() {
-          Url.prop.scroll("");
-          return win.scroll.rescroll(Url.prop.talk_at);
+          Url.params.scroll = "";
+          return ScrollSpy.go(Url.params.talk_at);
         }
       });
       menu.scope.node("home", {
         open: function() {
-          Url.prop.scroll("");
-          return win.scroll.rescroll(Url.prop.home_at);
+          Url.params.scroll = "";
+          return ScrollSpy.go(Url.params.home_at);
         }
       });
       menu.scope.node("pins", {
         open: function() {
-          return win.scroll.rescroll(Url.prop.scroll);
+          return ScrollSpy.go(Url.params.scroll);
         }
       });
       menu.icon.icon("pin", {
@@ -349,11 +233,11 @@
           return menu.scope.change("pins");
         },
         close: function() {
-          Url.prop.pins({});
-          return menu.scope.change(Url.prop.back());
+          Url.params.pins = {};
+          return menu.scope.change(Url.params.back);
         },
         view: function() {
-          return [m(".paragraph", doc.timeline())];
+          return m(".paragraph", doc.timeline());
         }
       });
       menu.icon.icon("home", {
@@ -361,7 +245,7 @@
           return menu.scope.change("home");
         },
         view: function() {
-          return [doc.timeline()];
+          return m(".paragraph", doc.timeline());
         }
       });
       menu.icon.icon("mail", {
@@ -369,7 +253,7 @@
           return menu.scope.change("memo");
         },
         view: function() {
-          return [m(".paragraph", doc.timeline(), m("h6", "貼り付けたメモを表示します。 - メモ"), doc.security_modes(Url.prop.memo)), doc.potofs()];
+          return m(".paragraph", doc.timeline(), m("h6", "貼り付けたメモを表示します。 - メモ"), m.component(doc.component.security_modes, Url.prop.memo), m.component(doc.component.potof_modes));
         }
       });
       menu.icon.icon("chat-alt", {
@@ -377,7 +261,7 @@
           return menu.scope.change("talk");
         },
         view: function() {
-          return [m(".paragraph", doc.timeline(), m("h6", "村内の発言を表示します。 - 発言"), doc.security_modes(Url.prop.talk)), doc.potofs()];
+          return m(".paragraph", doc.timeline(), m("h6", "村内の発言を表示します。 - 発言"), m.component(doc.component.security_modes, Url.prop.talk), m.component(doc.component.potof_modes));
         }
       });
       menu.icon.icon("clock", {
@@ -385,7 +269,7 @@
           return menu.scope.change("history");
         },
         view: function() {
-          return [m(".paragraph", doc.timeline(), m("h6", "メモを履歴形式で表示します。 - メモ"), doc.security_modes(Url.prop.memo)), doc.potofs()];
+          return m(".paragraph", doc.timeline(), m("h6", "メモを履歴形式で表示します。 - メモ"), m.component(doc.component.security_modes, Url.prop.memo), m.component(doc.component.potof_modes));
         }
       });
       menu.icon.icon("search", {
@@ -403,7 +287,7 @@
       return {
         controller: function() {},
         view: function() {
-          return win.scroll.pager("div", doc.messages[menu.scope.state()](Url.prop).list, doc.template);
+          return win.scroll.pager("div", doc.messages[menu.scope.state()](Url.params).list, doc.template);
         }
       };
     });
@@ -412,104 +296,95 @@
 }).call(this);
 
 (function(){
-  var menu, out$ = typeof exports != 'undefined' && exports || this;
-  out$.menu = menu = {
-    icon: new MenuTree.Icon,
-    scope: new MenuTree
+  var tie, menu, btns, out$ = typeof exports != 'undefined' && exports || this;
+  tie = Mem.Query.options.btns(Url.params, ["icon", "scope"]);
+  tie.change = function(key, val, old){
+    console.log([key, val, old]);
+    switch (key) {
+    case "icon":
+      switch (val) {
+      case "cog":
+        return null;
+      default:
+        return null;
+      }
+      break;
+    case "scope":
+      return null;
+    default:
+      return null;
+    }
   };
-  menu.icon.state = Url.prop.icon;
-  menu.scope.state = Url.prop.scope;
+  out$.menu = menu = tie.input;
+  btns = function(arg$){
+    var head, field;
+    head = arg$.head, field = arg$.field;
+    return [
+      head(), field(function(o){
+        return o.caption;
+      })
+    ];
+  };
+  menu.scope.change_pin = function(id){
+    var target, target_at;
+    target = menu.scope.state();
+    target_at = (function(){
+      switch (target) {
+      case "history":
+        return "memo_at";
+      case "memo":
+      case "talk":
+      case "home":
+        return target + "_at";
+      default:
+        return null;
+      }
+    }());
+    if (target_at) {
+      Url.params.back = target;
+      Url.params[target_at] = id;
+    }
+    Url.params.scroll = id;
+    Url.replacestate();
+    return menu.icon.change("pin");
+  };
   menu.icon.icon("cog", {
-    view: function(){
-      return m(".paragraph", m("h6", "スタイル"), Btns.radio({}, Url.prop.theme, {
-        cinema: "煉瓦",
-        star: "蒼穹",
-        night: "闇夜",
-        moon: "月夜",
-        wa: "和の国"
-      }), m("h6", "幅の広さ"), Btns.radio({}, Url.prop.width, {
-        full: "最大",
-        wide: "広域",
-        std: "狭域"
-      }), m("h6", "位置"), Btns.radio({}, Url.prop.layout, {
-        left: "左詰",
-        center: "中央",
-        right: "右詰"
-      }), m("h6", "位置"), Btns.radio({}, Url.prop.font, {
-        large: "大判",
-        novel: "明朝",
-        std: "ゴシック",
-        small: "繊細"
-      }));
+    controller: function(){
+      var tie;
+      tie = Url.tie;
+      return tie;
+    },
+    view: function(arg$){
+      var input;
+      input = arg$.input;
+      return m(".paragraph", btns(input.theme), btns(input.width), btns(input.layout), btns(input.font));
     }
   });
-  /*
-  map_reduce
-    menu.tree
-    menu.tree
-      icon th-large:
-        drill order:
-          radio all:
-          radio human:
-          radio wolf:
-          radio enemy:
-          radio pixi:
-          radio other:
-        drill chr_set:
-          radio Mem.Query.map_faces.reduce
-      icon cog:
-  
-  
-  character_tag
-    menu.tree
-    menu.tree
-      icon th-large:
-        drill ***:
-      icon cog:
-  
-  in_story
-    menu.tree
-      node full:
-      node normal:
-    menu.tree
-      icon resie-full:
-      icon resize-normal:
-      icon search:
-      icon resie-full:
-      icon resize-normal:
-      icon search:
-        drill rating:
-        drill game:
-        drill folder:
-        drill say_limit:
-        drill update_at:
-        drill update_interval:
-        drill event_type:
-        drill role_type:
-        drill player_length:
-      icon cog:
-  
-  in_vil
-    menu.tree
-      node home:
-      node talk:
-      node memo:
-      node history:
-      node pins:
-    menu.tree
-      icon pin:
-      icon home:
-      icon mail:
-      icon chat-alt:
-      icon clock:
-      icon search:
-      icon pencil:
-      icon cog:
-  */
 }).call(this);
 
 (function(){
-  win.scroll.prop = Url.prop.scroll;
+  win.scroll.prop = function(scroll){
+    var ref$, folder, vid, turn, logid, updated_at, ref1$;
+    if (arguments.length) {
+      if (!scroll) {
+        return;
+      }
+      ref$ = scroll.split("-"), folder = ref$[0], vid = ref$[1], turn = ref$[2], logid = ref$[3];
+      if (logid == null) {
+        return;
+      }
+      updated_at = ((ref$ = Mem.Query.messages.find(scroll)) != null ? ref$.updated_at : void 8) || 0;
+      Url.params.updated_at = updated_at;
+      Url.params.folder = folder;
+      Url.params.turn = turn;
+      Url.params.story_id = folder + "-" + vid;
+      Url.params.event_id = folder + "-" + vid + "-" + turn;
+      Url.params.message_id = folder + "-" + vid + "-" + turn + "-" + logid;
+      Url.replacestate();
+    } else {
+      return (ref1$ = win.scroll.center) != null ? ref1$._id : void 8;
+    }
+  };
   win.scroll.tick = function(center, sec){
     if (center.subid === "S") {
       doc.seeing_add(center._id, sec);
@@ -519,25 +394,18 @@
     }
   };
   win.on.resize.push(function(){
-    var ref$;
-    if (win.short < 380) {
-      head.browser.viewport = "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5";
-      return (ref$ = document.querySelector("meta[name=viewport]")) != null ? ref$.content = head.browser.viewport : void 8;
-    }
+    return m.redraw();
   });
   win.mount('title', function(){
     return doc.component.title;
+  });
+  win.mount('#character_tag', function(){
+    return doc.component.characters;
   });
   win.mount('#to_root', function(){
     return {
       controller: function(){},
       view: doc.view.banner
-    };
-  });
-  win.mount('#character_tag', function(){
-    return {
-      controller: function(){},
-      view: doc.view.characters
     };
   });
   win.mount('#buttons', function(dom){
@@ -547,13 +415,12 @@
     return doc.component.buttons;
   });
   win.mount('#topviewer', function(dom){
+    var layout;
+    layout = new win.layout(dom, 0, 1, false, 0);
     return {
-      controller: function(){
-        var layout;
-        return layout = new win.layout(dom, 0, 1, false, 0);
-      },
+      controller: function(){},
       view: function(){
-        return menu.icon.view();
+        return menu.icon.sub();
       }
     };
   });
@@ -561,7 +428,7 @@
     return {
       controller: function(){},
       view: function(){
-        return m.component(doc.component.sow_auth, Url.prop);
+        return m.component(doc.component.sow_auth, Url.params);
       }
     };
   });
@@ -585,34 +452,33 @@
     win.mount('#sayfilter', function(dom){
       return {
         controller: function(){
-          var layout, cb;
+          var layout, g;
           this.layout = layout = new win.layout(dom, -1, 1);
           layout.small_mode = true;
           layout.large_mode = function(){
             return !(menu.icon.state() || this.small_mode);
           };
-          cb = function(){
-            layout.small_mode = !layout.small_mode;
-            if (!layout.small_mode) {
-              menu.icon.state("");
+          g = new win.gesture({
+            'do': function(p){
+              return p.then(function(){
+                layout.small_mode = !layout.small_mode;
+                if (!layout.small_mode) {
+                  menu.icon.state("");
+                  return layout.translate();
+                }
+              });
             }
-            return window.requestAnimationFrame(function(){
-              return layout.translate();
-            });
-          };
-          this.wide_attr = {
-            className: "plane fine",
-            onclick: cb,
-            onmouseup: cb,
-            ontouchend: cb
-          };
+          });
+          this.wide_attr = g.tap({
+            className: "plane fine"
+          });
         },
         view: function(arg$){
           var click, wide_attr, layout, width, potofs, filter, event;
           click = arg$.click, wide_attr = arg$.wide_attr, layout = arg$.layout;
           width = doc.width.content();
           layout.width = (function(){
-            switch (Url.prop.layout()) {
+            switch (Url.params.layout) {
             case "right":
               return 0;
             case "center":
@@ -632,7 +498,7 @@
             potofs = doc.component.potofs;
             filter = doc.component.filter;
           }
-          event = Mem.Query.events.find(Url.prop.event_id());
+          event = Mem.Query.events.find(Url.params.event_id);
           return m("div", event != null
             ? m(".head", event.name)
             : m(".foot"), m("aside", m.component(potofs, wide_attr), m.component(filter)), m(".foot"));
@@ -669,100 +535,67 @@
 (function() {
   doc.component.buttons = {
     controller: function() {
-      return {
-        tap: function(icon) {
-          return menu.icon.start({
-            "class": "glass"
-          }, icon);
-        },
-        helps: {
-          "cog": "画面表示を調整します。",
-          "home": "村の設定、アナウンスを表示します。",
-          "clock": "メモの履歴を表示します。",
-          "mail": "最新のメモを表示します。",
-          "chat-alt": "発言を表示します。",
-          "search": "検索機能をつかいます。",
-          "resize-normal": "簡略な表記にします。",
-          "resize-full": "詳細な表記にします。",
-          "th-large": "条件で絞り込みます。",
-          "pencil": "書き込み機能"
-        }
-      };
-    },
-    view: function(c) {
-      var badges, section, vdoms;
-      vdoms = [];
-      section = function(icon) {
-        var help, tag, vdom;
-        if (!menu.icon.nodes[icon]) {
-          return;
-        }
-        help = c.helps[icon];
-        if (help != null) {
-          tag = "section.tooltip-right[data-tooltip=\"" + help + "\"]";
-        } else {
-          tag = "section";
-        }
-        vdom = m(tag, c.tap(icon), m(".bigicon", m(".icon-" + icon, " ")), badges[icon] ? m(".badge.pull-right", badges[icon]()) : void 0);
-        return vdoms.push(vdom);
-      };
+      var badges, icon, option, ref, section, vdom;
       badges = {
         "pin": function() {
-          return doc.messages.pins(Url.prop).list.length - Mem.Query.events.list.length;
+          return doc.messages.pins(Url.params).list.length - Mem.Query.events.list.length;
         },
         "home": function() {
           return Mem.Query.messages.home("announce").list.length - Mem.Query.events.list.length;
         },
         "mail": function() {
-          var prop;
-          prop = _.merge({}, Url.prop, {
-            memo: function() {
-              return "all";
-            },
-            uniq: function() {
-              return true;
-            },
-            search: function() {
-              return "";
-            }
+          var params;
+          params = _.merge({}, Url.params, {
+            memo: "all",
+            uniq: true,
+            search: ""
           });
-          return doc.messages.memo(prop).list.length - Mem.Query.events.list.length;
+          return doc.messages.memo(params).list.length - Mem.Query.events.list.length;
         },
         "clock": function() {
-          var prop;
-          prop = _.merge({}, Url.prop, {
-            talk: function() {
-              return "all";
-            },
-            open: function() {
-              return true;
-            },
-            search: function() {
-              return "";
-            }
+          var params;
+          params = _.merge({}, Url.params, {
+            talk: "all",
+            open: true,
+            search: ""
           });
-          return doc.messages.history(prop).list.length - Mem.Query.events.list.length;
+          return doc.messages.history(params).list.length - Mem.Query.events.list.length;
         },
         "chat-alt": function() {
-          var prop;
-          prop = _.merge({}, Url.prop, {
-            talk: function() {
-              return "all";
-            },
-            open: function() {
-              return true;
-            },
-            search: function() {
-              return "";
-            }
+          var params;
+          params = _.merge({}, Url.params, {
+            talk: "all",
+            open: true,
+            search: ""
           });
-          return doc.messages.talk(prop).list.length - Mem.Query.events.list.length;
+          return doc.messages.talk(params).list.length - Mem.Query.events.list.length;
         },
         "th-large": function() {
-          return Mem.Query.map_faces.active(Url.prop.order(), Url.prop.chr_set(), Url.prop.search()).list.length;
+          return Mem.Query.map_faces.active(Url.params.order, Url.params.chr_set, Url.params.search).list.length;
         }
       };
-      switch (menu.scope.state()) {
+      ref = Mem.Query.options.hash.icon.options;
+      for (icon in ref) {
+        option = ref[icon];
+        option.badge = badges[icon];
+      }
+      vdom = [];
+      section = function(icon) {
+        return vdom.push(menu.icon.item(icon, {
+          className: "glass tooltip-right",
+          tag: "bigicon"
+        }));
+      };
+      return {
+        vdom: vdom,
+        section: section
+      };
+    },
+    view: function(arg) {
+      var section, vdom;
+      section = arg.section, vdom = arg.vdom;
+      vdom.length = 0;
+      switch (Url.params.scope) {
         case "pins":
           section("pin");
           break;
@@ -787,11 +620,11 @@
       }
       section("pencil");
       section("th-large");
-      if ("pins" !== menu.scope.state()) {
+      if ("pins" !== Url.params.scope) {
         section("search");
       }
       section("cog");
-      return m("table", m("tr", m("td", vdoms)));
+      return m("table", m("tr", m("td", vdom)));
     }
   };
 
@@ -905,19 +738,31 @@
 
 (function() {
   doc.component.chr_sets = {
-    controller: function() {},
-    view: function() {
+    controller: function() {
+      var input, params, tie;
+      tie = Mem.Query.options.btns(Url.params, ["order", "search"]);
+      input = tie.input;
+      params = Url.params;
+      return {
+        params: params,
+        input: input
+      };
+    },
+    view: function(arg) {
+      var input, params;
+      params = arg.params, input = arg.input;
       return menu.icon.icon("th-large", {
         deploy: function(main_menu) {
           main_menu.drill("order", {
             caption: "並び順",
             view: function() {
-              var key, o, ref, results;
+              var attr, key, o, ref, results;
               ref = Mem.conf.map_faces_order;
               results = [];
               for (key in ref) {
                 o = ref[key];
-                results.push(m("span", Btn.set({}, Url.prop.order, key), o.caption));
+                attr = g.menu(key, params.order, {});
+                results.push(m("span", attr, o.caption));
               }
               return results;
             }
@@ -927,14 +772,14 @@
             view: function(sub_menu) {
               return sub_menu.radio({
                 "class": "chr_set"
-              }, Url.prop.chr_set, Mem.Query.map_faces.reduce, "chr_set", function(key) {
+              }, params.chr_set, Mem.Query.map_faces.reduce, "chr_set", function(key) {
                 return Mem.Query.chr_sets.find(key).caption;
               });
             }
           });
         },
         view: function(main_menu) {
-          return m(".paragraph", m("h6", "詳しく検索してみよう"), m("input.small", Txt.input(Url.prop.search)), m("span", "検索条件：キャラクター名 / 肩書き / プレイヤー "), m("h6", "キャラセットを選んでみよう"), main_menu.drills({}, ["order", "chr_set"]));
+          return m(".paragraph", m("h6", "詳しく検索してみよう"), m("input.small", input.search.field()), m("span", "検索条件：キャラクター名 / 肩書き / プレイヤー "), m("h6", "キャラセットを選んでみよう"), main_menu.drills({}, ["order", "chr_set"]));
         }
       });
     }
@@ -955,6 +800,29 @@
   doc.component.filter = {
     controller: function(){
       var ref$, talk_at, scroll, pins, this$ = this;
+      this.tie = Mem.Query.options.btns({}, []);
+      this.tie.change(function(id, value){
+        var ref$, key$, ref1$;
+        if (doc.seeing[o._id] >= day) {
+          return ref1$ = (ref$ = doc.seeing)[key$ = o._id], delete ref$[key$], ref1$;
+        } else {
+          return doc.seeing_add(o._id, day);
+        }
+      });
+      this.star = function(o){
+        var _id, attr, name;
+        _id = o._id;
+        attr = {
+          type: "checkbox_btn",
+          className: o.mestype
+        };
+        name = doc.seeing[o._id] >= day ? "★ " : "☆ ";
+        return tie.input_for({
+          _id: _id,
+          attr: attr,
+          name: name
+        });
+      };
       ref$ = Url.prop, talk_at = ref$.talk_at, scroll = ref$.scroll, pins = ref$.pins;
       this.click = {
         go: function(arg$){
@@ -993,29 +861,6 @@
             onmouseup: cb,
             ontouchend: cb
           };
-        },
-        star_off: function(o){
-          var cb;
-          cb = function(){
-            var ref$, key$, ref1$;
-            return ref1$ = (ref$ = doc.seeing)[key$ = o._id], delete ref$[key$], ref1$;
-          };
-          return {
-            onclick: cb,
-            onmouseup: cb,
-            ontouchend: cb
-          };
-        },
-        star_on: function(o){
-          var cb;
-          cb = function(){
-            return doc.seeing_add(o._id, day);
-          };
-          return {
-            onclick: cb,
-            onmouseup: cb,
-            ontouchend: cb
-          };
         }
       };
       this.day = 24 * 60 * 60;
@@ -1033,19 +878,12 @@
       };
     },
     view: function(arg$){
-      var seeing_top, seeing_measure, line_text_height, line_text_height_measure, click, day, center_id, filter_size, anchorview, seeingview, star, o, tag;
-      seeing_top = arg$.seeing_top, seeing_measure = arg$.seeing_measure, line_text_height = arg$.line_text_height, line_text_height_measure = arg$.line_text_height_measure, click = arg$.click, day = arg$.day;
+      var tie, star, seeing_top, seeing_measure, line_text_height, line_text_height_measure, click, day, center_id, filter_size, anchorview, seeingview, o, tag;
+      tie = arg$.tie, star = arg$.star, seeing_top = arg$.seeing_top, seeing_measure = arg$.seeing_measure, line_text_height = arg$.line_text_height, line_text_height_measure = arg$.line_text_height_measure, click = arg$.click, day = arg$.day;
       center_id = win.scroll.prop();
       filter_size = Math.floor((win.height - seeing_top) / line_text_height) - 3;
-      anchorview = doc.messages.anchor(Url.prop).list;
+      anchorview = doc.messages.anchor(Url.params).list;
       seeingview = doc.messages.seeing(filter_size, win.scroll.center);
-      star = function(o){
-        if (doc.seeing[o._id] >= day) {
-          return m("span." + o.mestype + ".btn.edge", click.star_off(o), "★ ");
-        } else {
-          return m("span." + o.mestype + ".btn.edge", click.star_on(o), "☆ ");
-        }
-      };
       return m("section.plane", m("h6", "参照されている", m("span.btn.edge.icon-pin", click.pin(anchorview, [win.scroll.center]))), (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = anchorview).length; i$ < len$; ++i$) {
@@ -1182,13 +1020,12 @@
 (function() {
   doc.component.header = {
     controller: function() {
-      this.params = {};
-      this.g = new win.gesture({});
-      this.form = Mem.Query.options.form(this.params, ["header_state"], this.g);
+      var tie;
+      return tie = Mem.Query.options.btns(Url.params, ["header_state"]);
     },
     view: function(arg) {
-      var form, max_all, max_cafe, max_ciel, max_crazy, max_morphe, max_pan, max_vage, max_xebec, params, top_line_attr;
-      form = arg.form, params = arg.params;
+      var input, max_all, max_cafe, max_ciel, max_crazy, max_morphe, max_pan, max_vage, max_xebec, params, top_line_attr;
+      input = arg.input, params = arg.params;
       max_vage = Mem.conf.folder.PERJURY.config.cfg.MAX_VILLAGES;
       max_crazy = Mem.conf.folder.CRAZY.config.cfg.MAX_VILLAGES;
       max_xebec = Mem.conf.folder.XEBEC.config.cfg.MAX_VILLAGES;
@@ -1207,11 +1044,11 @@
               key: "p"
             }, m("strong", "進行中の村")), m("th[colspan=2]", {
               key: "f"
-            }, m("label.btn.edge", form.header_state.field("finish"), "終了した村を見る")));
+            }, m("label.btn.edge", input.header_state.item("finish"), "終了した村を見る")));
           case "finish":
             return m("tr", top_line_attr, m("th[colspan=2]", {
               key: "p"
-            }, m("label.btn.edge", form.header_state.field("progress"), "進行中の村を見る")), m("th.choice[colspan=2]", {
+            }, m("label.btn.edge", input.header_state.item("progress"), "進行中の村を見る")), m("th.choice[colspan=2]", {
               key: "f"
             }, m("strong", "終了した村")));
         }
@@ -1810,43 +1647,44 @@
   doc.component.sow_auth = {
     controller: function(){
       var deploy, this$ = this;
-      doc.user = this;
-      this.url = gon.url;
       this.params = {
         ua: ua
       };
-      this.g = new win.gesture({
-        timeout: 5000,
-        check: function(){
-          if (doc.user.is_login) {
-            return true;
-          } else {
-            return validate.sow_auth(this$);
-          }
-        },
-        'do': function(p){
-          return p.then(function(e){
-            var cmd;
-            if (doc.user.is_login) {
-              cmd = "logout";
-              return Submit.iframe(this$.url, {
-                cmd: cmd,
-                ua: ua
-              });
-            } else {
-              this$.params.cmd = "login";
-              return Submit.iframe(this$.url, this$.params);
-            }
-          }).then(function(gon){
-            var e;
-            if (e = gon.errors) {
-              this$.errors = e.login || e[""];
-            }
-            deploy(gon);
-          });
+      this.tie = Mem.Query.options.form(this.params, ['uid', 'pwd']);
+      this.tie.timeout = 5000;
+      this.tie.disable = function(){
+        return m.endComputation();
+      };
+      this.tie.check = function(){
+        console.log([this$.params, this$.errors, this$.infos]);
+        if (doc.user.is_login) {
+          return true;
+        } else {
+          return validate.sow_auth(this$);
         }
-      });
-      this.form = Mem.Query.options.form(this.params, ['uid', 'pwd'], this.g);
+      };
+      this.tie.action = function(){
+        var cmd, params;
+        if (doc.user.is_login) {
+          cmd = "logout";
+          params = {
+            cmd: cmd,
+            ua: ua
+          };
+        } else {
+          params = this$.params;
+          params.cmd = "login";
+        }
+        return Submit.iframe(this$.url, params).then(function(gon){
+          var e;
+          if (e = gon.errors) {
+            this$.errors = e.login || e[""];
+          }
+          deploy(gon);
+        });
+      };
+      doc.user = this;
+      this.url = gon.url;
       deploy = function(gon){
         var o;
         o = gon.sow_auth;
@@ -1856,23 +1694,15 @@
         doc.user.is_login = this$.is_login = o.is_login > 0;
         doc.user.is_admin = o.is_admin > 0;
         validate.sow_auth(this$);
-        this$.form.by_cookie();
+        this$.tie.by_cookie();
       };
       deploy(gon);
     },
-    view: function(c, arg$){
-      var uid, pwd, submit, msg;
-      uid = arg$.uid, pwd = arg$.pwd;
-      submit = function(label){
-        return {
-          className: "btn edge",
-          value: label,
-          type: "submit"
-        };
-      };
-      return m("form", c.form.attr, c.is_login
-        ? m(".paragraph", !c.g.timer ? m("input", submit(c.params.uid + " がログアウト")) : void 8)
-        : m(".paragraph", c.form.uid.head(), c.form.uid.field(), c.form.pwd.head(), c.form.pwd.field(), !c.g.timer ? m("input", submit("ログイン")) : void 8), m(".paragraph", (function(){
+    view: function(c){
+      var msg;
+      return c.tie.form({}, c.is_login
+        ? m(".paragraph", c.tie.submit(c.params.uid + " がログアウト"))
+        : m(".paragraph", c.tie.input.uid.head(), c.tie.input.uid.field(), c.tie.input.pwd.head(), c.tie.input.pwd.field(), c.tie.submit("ログイン")), m(".paragraph", (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = c.errors).length; i$ < len$; ++i$) {
           msg = ref$[i$];
@@ -2294,12 +2124,43 @@
 
 (function() {
   doc.component.title = {
-    controller: function() {},
-    view: function() {
+    controller: function() {
+      var html, meta, old_snap, params;
+      params = Url.params;
+      html = document.querySelector("html");
+      meta = document.querySelector("meta[name=viewport]");
+      old_snap = "";
+      this.refresh = function() {
+        var base_style, key, list;
+        base_style = html.className.replace(old_snap, "").trim();
+        list = (function() {
+          var i, len, ref, results;
+          ref = ["theme", "width", "layout", "font", "item", "color"];
+          results = [];
+          for (i = 0, len = ref.length; i < len; i++) {
+            key = ref[i];
+            results.push(params[key] + "-" + key);
+          }
+          return results;
+        })();
+        if (!params.human) {
+          list.push("no-player");
+        }
+        old_snap = list.join(" ");
+        list.push(base_style);
+        html.className = list.join(" ");
+        meta.content = head.browser.viewport = win.short < 380 ? "width=device-width, maximum-scale=2.0, minimum-scale=0.5, initial-scale=0.5" : "width=device-width, maximum-scale=4.0, minimum-scale=1.0, initial-scale=1.0";
+        return window.requestAnimationFrame(function() {
+          return win["do"].layout();
+        });
+      };
+    },
+    view: function(c) {
       var event, event_id, ref, story, story_id;
-      ref = Url.prop, story_id = ref.story_id, event_id = ref.event_id;
-      story = Mem.Query.storys.find(story_id());
-      event = Mem.Query.events.find(event_id());
+      c.refresh();
+      ref = Url.params, story_id = ref.story_id, event_id = ref.event_id;
+      story = Mem.Query.storys.find(story_id);
+      event = Mem.Query.events.find(event_id);
       if ((story != null) && (event != null)) {
         return story.name + " " + event.name;
       } else {
@@ -2307,6 +2168,11 @@
       }
     }
   };
+
+}).call(this);
+
+(function() {
+
 
 }).call(this);
 
@@ -2379,33 +2245,27 @@
 
   doc.component.vmake_form = {
     controller: function(v) {
-      var add_btn, chk, fields, pop_btn, vindex;
-      v.g = new win.gesture({
-        check: function() {
-          return validate.cards(v);
-        },
-        "do": function(p) {
-          return p.then(function(e) {
-            return v.submit(v.params);
-          });
-        }
-      });
+      var add_btn, chk, pop_btn, vindex;
       v.params = {
         extra: [],
         role: [],
         gift: [],
         trap: []
       };
-      fields = ["vil_name", "vil_comment", "rating", "trs_type", "say_count", "time", "interval", "entry_password", "chr_npc", "mob_type", "game_rule", "role_table", "player_count", "player_count_start"];
-      v.form = Mem.Query.options.form(v.params, fields, v.g);
-      v.form.checkboxes = (function() {
+      v.tie = Mem.Query.options.form(v.params, ["vil_name", "vil_comment", "rating", "trs_type", "say_count", "time", "interval", "entry_password", "chr_npc", "mob_type", "game_rule", "role_table", "player_count", "player_count_start"]);
+      v.tie.check = function() {
+        return validate.cards(v);
+      };
+      v.tie.action = function() {
+        return v.submit(v.params);
+      };
+      v.tie.input.checkboxes = (function() {
         var i, len, ref, results;
-        ref = Mem.Query.options.checkbox().list;
+        ref = Mem.Query.options.check_vil().list;
         results = [];
         for (i = 0, len = ref.length; i < len; i++) {
           chk = ref[i];
-          v.params[chk._id] = Mem.unpack[chk.type](chk.init);
-          results.push(chk.vdom(v.params));
+          results.push(v.tie.input[chk._id] = new Input(v.tie, chk));
         }
         return results;
       })();
@@ -2568,55 +2428,55 @@
       } else {
         jobs = [];
       }
-      return m("form", v.form.attr, m(".vmake", {
+      return v.tie.form({}, m(".vmake", {
         key: v._id
-      }, m(".INFOSP.info", m("p.text", "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。", m("br"), "村作成から", m("span.mark", Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP + "日間"), "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。")), m(".MAKER.plane", m("fieldset.msg", m("legend.emboss", "村の名前、説明、ルール"), v.form.vil_name.field(), v.form.vil_comment.field(), m("p", "■国のルール"), RULE.nation.list.map(function(o) {
+      }, m(".INFOSP.info", m("p.text", "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。", m("br"), "村作成から", m("span.mark", Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP + "日間"), "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。")), m(".MAKER.plane", m("fieldset.msg", m("legend.emboss", "村の名前、説明、ルール"), v.tie.input.vil_name.field(), v.tie.input.vil_comment.field(), m("p", "■国のルール"), RULE.nation.list.map(function(o) {
         return m("p", (++nindex) + "." + o.head);
       }), m(".emboss", "以上の項目が、人狼議事の", m('a', {
         href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"
       }, "ルール"), "と", m('a', {
         href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"
-      }, "心構え"), "なんだ。編集していい部分は、自由に変更してかまわない。"))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "設定"), m("p", v.form.trs_type.field(function(o) {
+      }, "心構え"), "なんだ。編集していい部分は、自由に変更してかまわない。"))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "設定"), m("p", v.tie.input.trs_type.field(function(o) {
         return o.CAPTION;
-      }), v.form.trs_type.label(function(o) {
+      }), v.tie.input.trs_type.label(function(o) {
         return m("div", m.trust(o.HELP));
-      })), m("p", v.form.rating.field(function(o) {
+      })), m("p", v.tie.input.rating.field(function(o) {
         return o.caption;
-      }), v.form.rating.label(function(o) {
+      }), v.tie.input.rating.label(function(o) {
         return m("img", {
           src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_" + o._id + ".png"
         });
-      })), m("p", v.form.say_count.field(function(o) {
+      })), m("p", v.tie.input.say_count.field(function(o) {
         return o.CAPTION;
-      }), v.form.say_count.label(function(o) {
+      }), v.tie.input.say_count.label(function(o) {
         return m.trust(o.HELP);
-      })), v.form.time.field(), v.form.time.label(), m("p", v.form.interval.field(function(o) {
+      })), v.tie.input.time.field(), v.tie.input.time.label(), m("p", v.tie.input.interval.field(function(o) {
         return o.caption;
-      }), v.form.interval.label()), m("p", v.form.entry_password.field(), v.form.entry_password.label()))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "ゲームルール"), v.form.game_rule.field(function(o) {
+      }), v.tie.input.interval.label()), m("p", v.tie.input.entry_password.field(), v.tie.input.entry_password.label()))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "ゲームルール"), v.tie.input.game_rule.field(function(o) {
         return o.CAPTION;
-      }), v.form.game_rule.label(function(o) {
+      }), v.tie.input.game_rule.label(function(o) {
         return m("ul", m.trust(o.HELP));
       }), (function() {
         var i, len, ref, results;
-        ref = v.form.checkboxes;
+        ref = v.tie.input.checkboxes;
         results = [];
         for (i = 0, len = ref.length; i < len; i++) {
           chk = ref[i];
           results.push(m("p", chk.field(), chk.label()));
         }
         return results;
-      })())), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), m("p", v.form.mob_type.field(function(o) {
+      })())), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), m("p", v.tie.input.mob_type.field(function(o) {
         return o.name;
-      }), v.form.mob_type.label(function(o) {
+      }), v.tie.input.mob_type.label(function(o) {
         return m.trust(o.HELP);
-      })), m("p", v.form.role_table.field(function(o) {
+      })), m("p", v.tie.input.role_table.field(function(o) {
         return o.name;
       })), v.player_summary(v.params))), (function() {
         switch (v.params.role_table) {
           case void 0:
             return m(".WSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), m("p", "まずは、役職配分を選択してください。")));
           case "custom":
-            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成自由設定"), m("p", v.form.player_count.field(), v.form.player_count.label()), v.params.start_auto ? m("p", v.form.player_count_start.field(), v.form.player_count_start.label()) : void 0, sets("config", v.sets.extra), sets("config", v.sets.role), sets("config", v.sets.gift), v.params.seq_event ? sets("order", v.sets.trap) : sets("config", v.sets.trap), m("h6", "村側"), (function() {
+            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成自由設定"), m("p", v.tie.input.player_count.field(), v.tie.input.player_count.label()), v.params.start_auto ? m("p", v.tie.input.player_count_start.field(), v.tie.input.player_count_start.label()) : void 0, sets("config", v.sets.extra), sets("config", v.sets.role), sets("config", v.sets.gift), v.params.seq_event ? sets("order", v.sets.trap) : sets("config", v.sets.trap), m("h6", "村側"), (function() {
               var i, len, ref, results;
               ref = v.adds.human;
               results = [];
@@ -2690,7 +2550,7 @@
               return results;
             })()));
           default:
-            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), m("p", v.form.player_count.field(), v.form.player_count.label()), v.params.start_auto ? m("p", v.form.player_count_start.field(), v.form.player_count_start.label()) : void 0, sets("config", v.sets.extra), sets("config", v.sets.role), sets("config", v.sets.gift), v.params.seq_event ? sets("order", v.sets.trap) : sets("config", v.sets.trap), (function() {
+            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), m("p", v.tie.input.player_count.field(), v.tie.input.player_count.label()), v.params.start_auto ? m("p", v.tie.input.player_count_start.field(), v.tie.input.player_count_start.label()) : void 0, sets("config", v.sets.extra), sets("config", v.sets.role), sets("config", v.sets.gift), v.params.seq_event ? sets("order", v.sets.trap) : sets("config", v.sets.trap), (function() {
               var i, len, ref, results;
               ref = v.adds.mob;
               results = [];
@@ -2701,9 +2561,9 @@
               return results;
             })()));
         }
-      })(), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "登場人物"), m("p", v.form.chr_npc.field(function(o) {
+      })(), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "登場人物"), m("p", v.tie.input.chr_npc.field(function(o) {
         return o.caption;
-      }), v.form.chr_npc.label()))), v.npc_says(npc), m(".minilist", m("hr.black"), (function() {
+      }), v.tie.input.chr_npc.label()))), v.npc_says(npc), m(".minilist", m("hr.black"), (function() {
         var i, len, results;
         results = [];
         for (i = 0, len = jobs.length; i < len; i++) {
@@ -2713,10 +2573,7 @@
           }, GUI.portrate(o.face_id), m(".bar.live")));
         }
         return results;
-      })(), m("hr.black")), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "決定"), m("input", {
-        type: "submit",
-        value: "村の作成"
-      }), error_and_info(v.http)))));
+      })(), m("hr.black")), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "決定"), v.tie.submit("村の作成"), error_and_info(v.http)))));
     }
   };
 
@@ -2788,85 +2645,16 @@
 }).call(this);
 
 (function() {
-  var tag_dom, vdom;
-
-  vdom = function(name, val) {
-    return [m("span", name), m("span.emboss.pull-right", val)];
-  };
-
-  tag_dom = function(type) {
-    return vdom(Mem.conf.tag[type].name, Mem.Query.faces.reduce.tag[type].count);
-  };
-
-  doc.view.characters = function() {
-    var attr, cb, chr_job, chrs, job_name, o, set, tag;
-    tag = Url.prop.tag;
-    chrs = Mem.Query.faces.tag(tag()).list;
-    set = Mem.conf.tag[tag()];
-    return [
-      menu.icon.icon("th-large", {
-        view: function(main_menu) {
-          return m(".paragraph", m("h6", "タグを選んでみよう"), Btns.radio({
-            "class": "edge"
-          }, tag, {
-            all: vdom("- 全体 -", Mem.Query.faces.reduce.all.all.count),
-            giji: tag_dom("giji"),
-            shoji: tag_dom("shoji"),
-            travel: tag_dom("travel"),
-            stratos: tag_dom("stratos"),
-            myth: tag_dom("myth"),
-            asia: tag_dom("asia"),
-            marchen: tag_dom("marchen"),
-            kid: tag_dom("kid"),
-            young: tag_dom("young"),
-            middle: tag_dom("middle"),
-            elder: tag_dom("elder"),
-            river: tag_dom("river"),
-            road: tag_dom("road"),
-            immoral: tag_dom("immoral"),
-            guild: tag_dom("guild"),
-            elegant: tag_dom("elegant"),
-            ecclesia: tag_dom("ecclesia"),
-            medical: tag_dom("medical"),
-            market: tag_dom("market"),
-            apartment: tag_dom("apartment"),
-            servant: tag_dom("servant"),
-            farm: tag_dom("farm"),
-            government: tag_dom("government"),
-            god: tag_dom("god")
-          }));
-        }
-      }), m(".chrlist", m("div", m("h6", set.long), m(".GSAY.badge", set.name), "の" + chrs.length + "人を表示しています。"), m("hr.black"), (function() {
-        var i, len, results;
-        results = [];
-        for (i = 0, len = chrs.length; i < len; i++) {
-          o = chrs[i];
-          chr_job = Mem.Query.chr_jobs.find(set.chr_set_ids.last + "_" + o._id) || Mem.Query.chr_jobs.find("all_" + o._id);
-          job_name = chr_job.job;
-          cb = function() {};
-          attr = {
-            onmouseup: cb,
-            ontouchend: cb
-          };
-          results.push(m(".chrbox", {
-            key: o._id
-          }, GUI.portrate(o._id, attr), m(".chrblank.line2", m("div", job_name), m("div", o.name))));
-        }
-        return results;
-      })(), m("hr.black"))
-    ];
-  };
-
-}).call(this);
-
-(function() {
-  doc.view.css_changer = function() {
-    return m(".paragraph", m("a.menuicon.pull-right.icon-cog", menu.icon.start({}, "cog"), " "), Btns.radio({}, Url.prop.theme, {
-      cinema: "煉瓦",
-      star: "蒼穹",
-      night: "闇夜",
-      moon: "月夜",
-      wa: "和の国"
+  doc.view.css_changer = function(arg) {
+    var input;
+    input = arg.input;
+    return m(".paragraph", menu.icon.item("cog", {
+      className: "pull-right tooltip-left",
+      tag: "menuicon"
+    }), input.theme.field(function(arg1) {
+      var caption;
+      caption = arg1.caption;
+      return caption;
     }), m("hr.black"));
   };
 
@@ -3091,14 +2879,19 @@
 }).call(this);
 
 (function() {
-  doc.view.sow_css_changer = function(c) {
-    var pwd, ref, uid;
-    return m(".paragraph", m("a.menuicon.pull-right.icon-cog", menu.icon.start({}, "cog"), " "), c.url ? doc.user.is_login ? ((ref = Url.prop, uid = ref.uid, pwd = ref.pwd, ref), m("a.btn.edge[href=" + c.url + "?ua=mb&cmd=vindex&uid=" + (uid()) + "&pwd=" + (pwd()) + "]", "携帯")) : m("a.btn.edge[href=" + c.url + "?ua=mb]", "携帯") : void 0, Btns.radio({}, Url.prop.theme, {
-      cinema: "煉瓦",
-      star: "蒼穹",
-      night: "闇夜",
-      moon: "月夜",
-      wa: "和の国"
+  doc.view.sow_css_changer = function(arg) {
+    var input, pwd, ref, uid, url;
+    url = arg.url, input = arg.input;
+    return m(".paragraph", menu.icon.item("cog", {
+      className: "pull-right menuicon tooltip-left"
+    }), url ? doc.user.is_login ? ((ref = Url.prop, uid = ref.uid, pwd = ref.pwd, ref), m("a.btn.edge", {
+      href: url + "?ua=mb&cmd=vindex&uid=" + (uid()) + "&pwd=" + (pwd())
+    }, "携帯")) : m("a.btn.edge", {
+      href: url + "?ua=mb"
+    }, "携帯") : void 0, input.theme.field(function(arg1) {
+      var caption;
+      caption = arg1.caption;
+      return caption;
     }), m("hr.black"));
   };
 

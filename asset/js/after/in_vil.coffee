@@ -21,87 +21,82 @@ if gon?.events? && gon.event?
       has_tap = Mem.Query.messages.find(anker_id)
       event = Mem.Query.events.find("#{folder}-#{vid}-#{turn}")
       doc.load.event has_tap, event, ->
-        pins = Url.prop.pins()
+        pins = Url.params.pins
         pins["#{by_turn}-#{by_logid}"] = true
         pins["#{turn}-#{logid}"] = true
         change_pin(by_id)
 
     doc.delegate.tap_identity = (turn, logid, id)->
       return
-      pins = Url.prop.pins()
-      pins["#{turn}-#{logid}"] = true
+      Url.params.pins["#{turn}-#{logid}"] = true
       change_pin(id)
 
     menu.scope.node "history",
       open: ->
-        Url.prop.scroll ""
-        win.scroll.rescroll Url.prop.memo_at
+        Url.params.scroll = ""
+        ScrollSpy.go Url.params.memo_at
     menu.scope.node "memo",
       open: ->
-        Url.prop.scroll ""
-        win.scroll.rescroll Url.prop.memo_at
+        Url.params.scroll = ""
+        ScrollSpy.go Url.params.memo_at
     menu.scope.node "talk",
       open: ->
-        Url.prop.scroll ""
-        win.scroll.rescroll Url.prop.talk_at
+        Url.params.scroll = ""
+        ScrollSpy.go Url.params.talk_at
     menu.scope.node "home",
       open: ->
-        Url.prop.scroll ""
-        win.scroll.rescroll Url.prop.home_at
+        Url.params.scroll = ""
+        ScrollSpy.go Url.params.home_at
     menu.scope.node "pins",
       open: ->
-        win.scroll.rescroll Url.prop.scroll
+        ScrollSpy.go Url.params.scroll
 
     menu.icon.icon "pin",
       open: ->
         menu.scope.change "pins"
       close: ->
-        Url.prop.pins {}
-        menu.scope.change Url.prop.back()
+        Url.params.pins = {}
+        menu.scope.change Url.params.back
       view: ->
-        [ m ".paragraph",
-            doc.timeline()
-        ]
+        m ".paragraph",
+          doc.timeline()
 
     menu.icon.icon "home",
       open: ->
         menu.scope.change "home"
       view: ->
-        [ doc.timeline()
-        ]
+        m ".paragraph",
+          doc.timeline()
 
     menu.icon.icon "mail",
       open: ->
         menu.scope.change "memo"
       view: ->
-        [ m ".paragraph",
-            doc.timeline()
-            m "h6", "貼り付けたメモを表示します。 - メモ"
-            doc.security_modes Url.prop.memo
-          doc.potofs()
-        ]
+        m ".paragraph",
+          doc.timeline()
+          m "h6", "貼り付けたメモを表示します。 - メモ"
+          m.component doc.component.security_modes, Url.prop.memo
+          m.component doc.component.potof_modes
 
     menu.icon.icon "chat-alt",
       open: ->
         menu.scope.change "talk"
       view: ->
-        [ m ".paragraph",
-            doc.timeline()
-            m "h6", "村内の発言を表示します。 - 発言"
-            doc.security_modes Url.prop.talk
-          doc.potofs()
-        ]
+        m ".paragraph",
+          doc.timeline()
+          m "h6", "村内の発言を表示します。 - 発言"
+          m.component doc.component.security_modes, Url.prop.talk
+          m.component doc.component.potof_modes
 
     menu.icon.icon "clock",
       open: ->
         menu.scope.change "history"
       view: ->
-        [ m ".paragraph",
-            doc.timeline()
-            m "h6", "メモを履歴形式で表示します。 - メモ"
-            doc.security_modes Url.prop.memo
-          doc.potofs()
-        ]
+        m ".paragraph",
+          doc.timeline()
+          m "h6", "メモを履歴形式で表示します。 - メモ"
+          m.component doc.component.security_modes, Url.prop.memo
+          m.component doc.component.potof_modes
 
     menu.icon.icon "search",
       view: ->
@@ -121,5 +116,5 @@ if gon?.events? && gon.event?
 
     controller: ->
     view: ->
-      win.scroll.pager "div", doc.messages[menu.scope.state()](Url.prop).list, doc.template
+      win.scroll.pager "div", doc.messages[menu.scope.state()](Url.params).list, doc.template
 

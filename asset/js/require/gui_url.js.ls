@@ -1,34 +1,17 @@
-
-
-getter_setter =
-  callee: (store, current, parse, serial, key)->
-    prop = ->
-      if arguments.length
-        newval = parse(arguments[0])
-        newval ?= current
-        if store != newval
-          store := newval
-          Url.options[key].bind(store)
-          Url.replacestate()
-      store
-
-    prop.toJSON = -> serial(store)
-    prop
-
-do_define = (key, option)->
-  {parse, serial, current} = option
-  Url.options[key].bind ?= ->
-  Url.prop[key] = getter_setter.callee(current, current, parse, serial, key)
-
+define_prop = (key)->
+  (val)->
+    if arguments.length
+      Url.params[key] = val
+    else
+      Url.params[key]
 
 export class Url
   @routes = {}
-  @cookies = {}
+  @params = {}
   @prop = {}
 
+
   @location = ->
-#    storage:  window.localStorage
-    cookie:   document.cookie
     protocol: location.protocol
     host:     location.host
     pathname: location.pathname
@@ -43,31 +26,12 @@ export class Url
       o.url = Mem.Serial.url[o.type]
       o.parse = Mem.unpack[o.type]
       o.serial = Mem.pack[o.type]
-      o.current ?= o.parse("")
+      o.current ?= ""
 
-      do_define key, o
-
-  @binds = (binds)->
-    for key, list of binds
-      Url.bind key, list
-
-  @bind = (key, list)!->
-    Url.options[key].bind =
-      switch typeof! list
-        when \Function
-          list
-        when \Array
-          binder = Url.options[key].binder = {}
-          for subs in list
-            binder[subs[key]] = subs
-          (val)!->
-            for subkey, subval of binder[val]
-              console.log [subkey, subval, binder[val]] unless Url.prop[subkey]
-              Url.prop[subkey](subval) if key != subkey
-
+      Url.params[key] = o.current
+      Url.prop[key] = define_prop key
 
   @each = (cb)->
-    Url.routes.cookie = Url.cookies
     targets = Url.location()
     for target, data of targets
       for url_key, route of Url.routes[target]
@@ -111,16 +75,8 @@ export class Url
     link.protocol + "//" + link.host + link.pathname + link.search + link.hash
 
 
-  @cookie = (format, options)->
-    url = new Url(format)
-    url.options.cookie = options
-    url
-
   (@format, @options = {})->
     @keys_in_url = []
-
-    if @options.cookie
-      Url.cookies[Serial.ID.now()] = @
 
     @scanner = new RegExp @format.replace(/[.]/gi, (key)-> "\\#{key}" ).replace /:([a-z_]+)/gi, (_, key)~>
       @keys_in_url.push key
@@ -136,18 +92,16 @@ export class Url
       for key, i in @keys_in_url
         val = decodeURI @match[i]
         data[key] = val
-        Url.prop[key](val)
+        Url.params[key] = val
 
       @options.change?(data)
     Url.replacestate()
 
   replace: (path, target)->
-    if target == "cookie" && \Object == typeof! @options.cookie
-      return @set_cookie @serialize()
-
     if @scanner.exec(path)
       return path.replace @scanner, @serialize()
 
+    # todo
     if @options.unmatch
       path +=
         if path.length
@@ -161,26 +115,7 @@ export class Url
     path = @format
     for key in @keys_in_url
       serial = Url.options[key]?.serial
-      val = Url.prop[key]()
+      val = Url.params[key]
       path = path.replace //:#{key}//gi, serial(val)
     path
 
-  set_cookie: (value)->
-    ary = [value]
-
-    {time, domain, path, secure} = @options.cookie
-    if time
-      expires = new Date Math.min 2147397247000, _.now() + time * 3600000
-      ary.push "expires=#{expires.toUTCString()}"
-    if domain
-      ary.push "domain=#{domain}"
-    if path
-      ary.push "path=#{path}"
-    if secure
-      ary.push "secure"
-    document.cookie = ary.join("; ")
-
-  # obsolete
-  values: (diff = {})->
-    for key in @keys_in_url
-      diff[key] || Url.prop[key]()

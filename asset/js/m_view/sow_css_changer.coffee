@@ -1,16 +1,16 @@
-doc.view.sow_css_changer = (c)->
+doc.view.sow_css_changer = ({url, input})->
   m ".paragraph",
-    m "a.menuicon.pull-right.icon-cog", menu.icon.start({}, "cog"), " "
-    if c.url
+    menu.icon.item "cog",
+      className: "pull-right menuicon tooltip-left"
+    if url
       if doc.user.is_login
         {uid, pwd} = Url.prop
-        m "a.btn.edge[href=#{c.url}?ua=mb&cmd=vindex&uid=#{uid()}&pwd=#{pwd()}]", "携帯"
+        m "a.btn.edge",
+          href: "#{url}?ua=mb&cmd=vindex&uid=#{uid()}&pwd=#{pwd()}"
+        , "携帯"
       else
-        m "a.btn.edge[href=#{c.url}?ua=mb]", "携帯"
-    Btns.radio {}, Url.prop.theme,
-      cinema: "煉瓦"
-      star:   "蒼穹"
-      night:  "闇夜"
-      moon:   "月夜"
-      wa:     "和の国"
+        m "a.btn.edge",
+          href: "#{url}?ua=mb"
+        , "携帯"
+    input.theme.field ({caption})-> caption
     m "hr.black"
