@@ -1,10 +1,7 @@
-doc.view.css_changer = ->
+doc.view.css_changer = ({input})->
   m ".paragraph",
-    m "a.menuicon.pull-right.icon-cog", menu.icon.start({}, "cog"), " "
-    Btns.radio {}, Url.prop.theme,
-      cinema: "煉瓦"
-      star:   "蒼穹"
-      night:  "闇夜"
-      moon:   "月夜"
-      wa:     "和の国"
+    menu.icon.item "cog",
+      className: "pull-right tooltip-left"
+      tag: "menuicon"
+    input.theme.field ({caption})-> caption
     m "hr.black"

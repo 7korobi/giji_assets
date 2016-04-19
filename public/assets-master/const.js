@@ -1717,165 +1717,38 @@
 }).call(this);
 
 (function() {
-  var change_attr, checkbox, event, header, input, input_attr, labeler, radio, select, textarea;
-
-  radio = function(params, attr, arg) {
-    var _id, type, uri, val;
-    _id = arg._id, type = arg.type;
-    val = Mem.unpack[type];
-    uri = Mem.pack[type];
-    return function(value) {
-      var now_val;
-      now_val = params[_id];
-      attr.value = uri(value);
-      if (now_val === val(value)) {
-        attr.checked = "checked";
-      }
-      return m("input", attr);
-    };
-  };
-
-  checkbox = function(params, attr, arg) {
-    var _id;
-    _id = arg._id;
-    return function() {
-      var now_val;
-      now_val = params[_id];
-      if (now_val) {
-        attr.checked = "checked";
-      }
-      return m("input", attr);
-    };
-  };
-
-  input = function(params, attr, arg) {
-    var _id, attr_value;
-    _id = arg._id, attr_value = arg.attr_value;
-    return function() {
-      var now_val;
-      now_val = params[_id];
-      attr[attr_value] = now_val;
-      return m("input", attr);
-    };
-  };
-
-  textarea = function(params, attr, arg) {
-    var _id;
-    _id = arg._id;
-    return function() {
-      var now_val;
-      now_val = params[_id];
-      return m("textarea", attr, now_val);
-    };
-  };
-
-  select = function(params, attr, arg) {
-    var _id, init, name, options;
-    _id = arg._id, name = arg.name, options = arg.options, init = arg.init;
-    return function(data) {
-      var key, now_option, now_val, option, selected, value;
-      now_val = params[_id];
-      now_option = options[now_val];
-      selected = now_option ? null : "selected";
-      return m('select', attr, !(attr.required && init) ? m('option', {
-        selected: selected,
-        value: "",
-        key: name
-      }, "- " + name + " -") : void 0, (function() {
-        var results;
-        results = [];
-        for (value in options) {
-          option = options[value];
-          selected = now_val === value ? "selected" : null;
-          key = value;
-          results.push(m('option', {
-            selected: selected,
-            value: value,
-            key: key
-          }, data(option)));
-        }
-        return results;
-      })());
-    };
-  };
-
-  header = function(params, arg) {
-    var label_attr, name;
-    name = arg.name, label_attr = arg.label_attr;
-    return function() {
-      return m("label", label_attr, name);
-    };
-  };
-
-  labeler = function(params, arg) {
-    var _id, help_off, help_on, label_attr, options;
-    _id = arg._id, label_attr = arg.label_attr, options = arg.options, help_on = arg.help_on, help_off = arg.help_off;
-    return function(help) {
-      var now_val;
-      now_val = params[_id];
-      return m("label", label_attr, help && now_val ? options ? help(options[now_val]) : help(now_val) : void 0, help_on || help_off ? now_val ? help_on : help_off : void 0);
-    };
-  };
-
-  event = function(params, arg) {
-    var _id, attr_value, type, val;
-    _id = arg._id, type = arg.type, attr_value = arg.attr_value;
-    val = Mem.unpack[type];
-    return m.withAttr(attr_value, function(new_val) {
-      return params[_id] = val(new_val);
-    });
-  };
-
-  change_attr = function(e) {
-    return {
-      onchange: e
-    };
-  };
-
-  input_attr = function(e) {
-    return {
-      oninput: e
-    };
-  };
-
   new Mem.Rule("option").schema(function() {
     this.scope(function(all) {
-      all.form = function(params, list, gesture) {
-        var attr, hash, i, init, key, len, ref, type;
-        attr = gesture.form({});
-        hash = {
-          attr: attr
-        };
-        hash.by_cookie = function() {
-          var cookie, i, key, len, match, ref, type;
-          for (i = 0, len = list.length; i < len; i++) {
-            key = list[i];
-            ref = all.hash[key], cookie = ref.cookie, type = ref.type;
-            if (cookie) {
-              match = document.cookie.match(RegExp(key + "=([^;]+)"));
-              if ((match != null ? match[1] : void 0) != null) {
-                params[key] = Mem.unpack[type](decodeURI(match[1]));
-              }
-            }
-          }
-        };
-        gesture.disable = function(b) {
-          var i, key, len;
-          for (i = 0, len = list.length; i < len; i++) {
-            key = list[i];
-            hash[key].attr.disabled = b;
-          }
-          return attr.disabled = b;
-        };
-        for (i = 0, len = list.length; i < len; i++) {
-          key = list[i];
-          ref = all.hash[key], init = ref.init, type = ref.type;
-          hash[key] = all.hash[key].vdom(params);
-          params[key] = Mem.unpack[type](init);
-        }
-        return hash;
+      var timeout;
+      timeout = 1000;
+      all.btns = function(params, list) {
+        var inputs;
+        inputs = all.where({
+          _id: list
+        }).hash;
+        return InputTie.btns({
+          timeout: timeout,
+          inputs: inputs,
+          params: params
+        });
+      };
+      all.form = function(params, list) {
+        var inputs;
+        inputs = all.where({
+          _id: list
+        }).hash;
+        return InputTie.form({
+          timeout: timeout,
+          inputs: inputs,
+          params: params
+        });
       };
       return {
+        check_vil: function() {
+          return all.where(function(o) {
+            return o.attr.type === 'checkbox' && o.sean === "vil";
+          });
+        },
         checkbox: function() {
           return all.where(function(o) {
             return o.attr.type === 'checkbox';
@@ -1889,114 +1762,12 @@
       };
     });
     return this.deploy(function(o) {
-      var ref;
       o.option_id = o._id;
-      if ((ref = o.attr) != null ? ref.name : void 0) {
-        o.attr.key = o._id;
-        o.attr.id = o.attr.name;
+      o.attr.key = o._id;
+      if (o.query == null) {
+        o.query = {};
       }
-      o.label_attr = {
-        "for": o.attr.name
-      };
-      if (o.type == null) {
-        o.type = "String";
-      }
-      switch (o.attr.type) {
-        case "checkbox":
-          o.type = "Bool";
-          o.attr_value = "checked";
-          return o.vdom = function(params) {
-            var attr, field, head, label;
-            attr = change_attr(event(params, o));
-            attr = _.assign(o.attr, attr);
-            head = header(params, o);
-            label = labeler(params, o);
-            field = checkbox(params, attr, o);
-            return {
-              attr: attr,
-              head: head,
-              label: label,
-              field: field
-            };
-          };
-        case "radio":
-          o.attr_value = "value";
-          return o.vdom = function(params) {
-            var attr, field;
-            attr = change_attr(event(params, o));
-            attr = _.assign(o.attr, attr);
-            field = radio(params, attr, o);
-            return {
-              attr: attr,
-              field: field
-            };
-          };
-        case "select":
-          o.attr_value = "value";
-          return o.vdom = function(params) {
-            var attr, field, head, label;
-            attr = change_attr(event(params, o));
-            attr = _.assign(o.attr, attr);
-            head = header(params, o);
-            label = labeler(params, o);
-            field = select(params, attr, o);
-            return {
-              attr: attr,
-              head: head,
-              label: label,
-              field: field
-            };
-          };
-        case "textarea":
-          o.attr_value = "value";
-          return o.vdom = function(params) {
-            var attr, field, head, label;
-            attr = input_attr(event(params, o));
-            attr = _.assign(o.attr, attr);
-            head = header(params, o);
-            label = labeler(params, o);
-            field = textarea(params, attr, o);
-            return {
-              attr: attr,
-              head: head,
-              label: label,
-              field: field
-            };
-          };
-        case "number":
-          o.type = "Number";
-          o.attr_value = "value";
-          return o.vdom = function(params) {
-            var attr, field, head, label;
-            attr = input_attr(event(params, o));
-            attr = _.assign(o.attr, attr);
-            head = header(params, o);
-            label = labeler(params, o);
-            field = input(params, attr, o);
-            return {
-              attr: attr,
-              head: head,
-              label: label,
-              field: field
-            };
-          };
-        default:
-          o.attr_value = "value";
-          return o.vdom = function(params) {
-            var attr, field, head, label;
-            attr = input_attr(event(params, o));
-            attr = _.assign(o.attr, attr);
-            head = header(params, o);
-            label = labeler(params, o);
-            field = input(params, attr, o);
-            return {
-              attr: attr,
-              head: head,
-              label: label,
-              field: field
-            };
-          };
-      }
+      return Input.format(o);
     });
   });
 
@@ -3285,7 +3056,165 @@
   });
 
   Mem.Collection.option.set({
+    "icon": {
+      "sean": "menu",
+      "attr": {
+        "type": "tree",
+        "style": "icon"
+      },
+      "name": "アイコン",
+      "init": null,
+      "options": {
+        "cog": {
+          "tooltip": "画面表示を調整します。"
+        },
+        "home": {
+          "tooltip": "村の設定、アナウンスを表示します。"
+        },
+        "clock": {
+          "tooltip": "メモの履歴を表示します。"
+        },
+        "mail": {
+          "tooltip": "最新のメモを表示します。"
+        },
+        "chat-alt": {
+          "tooltip": "発言を表示します。"
+        },
+        "search": {
+          "tooltip": "検索機能をつかいます。"
+        },
+        "resize-normal": {
+          "tooltip": "簡略な表記にします。"
+        },
+        "resize-full": {
+          "tooltip": "詳細な表記にします。"
+        },
+        "th-large": {
+          "tooltip": "条件で絞り込みます。"
+        },
+        "pencil": {
+          "tooltip": "書き込み機能"
+        }
+      }
+    },
+    "scope": {
+      "sean": "menu",
+      "attr": {
+        "type": "tree",
+        "style": "hide"
+      },
+      "name": "動作モード",
+      "init": null
+    },
+    "theme": {
+      "sean": "cog",
+      "attr": {
+        "required": "required",
+        "type": "btns"
+      },
+      "name": "スタイル",
+      "init": "cinema",
+      "options": {
+        "cinema": "煉瓦",
+        "star": "蒼穹",
+        "night": "闇夜",
+        "moon": "月夜",
+        "wa": "和の国"
+      }
+    },
+    "layout": {
+      "sean": "cog",
+      "attr": {
+        "required": "required",
+        "type": "btns"
+      },
+      "name": "位置",
+      "init": "center",
+      "options": {
+        "left": "左詰",
+        "center": "中央",
+        "right": "右詰"
+      }
+    },
+    "width": {
+      "sean": "cog",
+      "attr": {
+        "required": "required",
+        "type": "btns"
+      },
+      "name": "幅の広さ",
+      "init": "std",
+      "options": {
+        "full": "最大",
+        "wide": "広域",
+        "std": "狭域"
+      }
+    },
+    "font": {
+      "sean": "cog",
+      "attr": {
+        "required": "required",
+        "type": "btns"
+      },
+      "name": "書体",
+      "init": "std",
+      "options": {
+        "large": "大判",
+        "novel": "明朝",
+        "std": "ゴシック",
+        "small": "繊細"
+      }
+    },
+    "show": {
+      "sean": "message",
+      "attr": {
+        "required": "required",
+        "type": "btns"
+      },
+      "name": "表示設定",
+      "init": "all",
+      "options": {
+        "all": "すべて",
+        "think": "独り言",
+        "clan": "仲間つき",
+        "open": "公開情報のみ",
+        "main": "出席者のみ",
+        "grave": "墓下のみ"
+      }
+    },
+    "open": {
+      "sean": "message",
+      "attr": {
+        "className": "invisible",
+        "name": "open",
+        "type": "checkbox"
+      },
+      "name": "公開情報",
+      "help_on": "公開情報つき",
+      "help_off": "秘密のみ"
+    },
+    "human": {
+      "sean": "message",
+      "attr": {
+        "className": "invisible",
+        "name": "human",
+        "type": "checkbox"
+      },
+      "name": "/*中の人*/",
+      "help_on": "/*中の人*/",
+      "help_off": "/**/"
+    },
+    "tag": {
+      "sean": "chr",
+      "attr": {
+        "type": "btns"
+      },
+      "name": "タグ",
+      "init": "all",
+      "options": {}
+    },
     "header_state": {
+      "sean": "top",
       "attr": {
         "className": "invisible",
         "type": "radio"
@@ -3293,26 +3222,27 @@
       "init": "finish"
     },
     "vote_sign": {
+      "sean": "vil",
       "attr": {
         "name": "votetype",
         "type": "checkbox"
       },
-      "query": {},
       "name": "記名投票",
       "help_on": "記名で投票　※集計結果に投票者が記されます",
       "help_off": "匿名で投票　※集計結果は人数のみになります"
     },
     "start_auto": {
+      "sean": "vil",
       "attr": {
         "name": "starttype",
         "type": "checkbox"
       },
-      "query": {},
       "name": "自動開始",
       "help_on": "更新時に、最少催行人数が集まっていると開始",
       "help_off": "村立て人が開始ボタンを押すと開始"
     },
     "seq_event": {
+      "sean": "vil",
       "attr": {
         "name": "seqevent",
         "type": "checkbox"
@@ -3325,6 +3255,7 @@
       "help_off": "事件はランダムに選ばれる"
     },
     "show_id": {
+      "sean": "vil",
       "attr": {
         "name": "showid",
         "type": "checkbox"
@@ -3337,6 +3268,7 @@
       "help_off": "エピローグまで、ユーザーIDを秘密にする"
     },
     "entrust": {
+      "sean": "vil",
       "attr": {
         "name": "entrust",
         "type": "checkbox"
@@ -3350,6 +3282,7 @@
       "help_off": "委任投票ができない"
     },
     "not_select_role": {
+      "sean": "vil",
       "attr": {
         "name": "noselrole",
         "type": "checkbox"
@@ -3363,6 +3296,7 @@
       "help_off": "役職希望を受け付ける"
     },
     "random_target": {
+      "sean": "vil",
       "attr": {
         "name": "randomtarget",
         "type": "checkbox"
@@ -3375,6 +3309,7 @@
       "help_off": "投票・能力の対象は「ランダム」にできない"
     },
     "undead_talk": {
+      "sean": "vil",
       "attr": {
         "name": "undead",
         "type": "checkbox"
@@ -3387,6 +3322,7 @@
       "help_off": "狼・妖精と死者は会話を交わせない"
     },
     "aiming_talk": {
+      "sean": "vil",
       "attr": {
         "name": "aiming",
         "type": "checkbox"
@@ -3398,7 +3334,20 @@
       "help_on": "ふたりだけの内緒話をすることができる",
       "help_off": "ふたりだけの内緒話は選べない"
     },
+    "search": {
+      "sean": "chr_sets",
+      "attr": {
+        "name": "search",
+        "type": "text",
+        "size": 20,
+        "maxlength": 20
+      },
+      "name": null,
+      "help_on": null,
+      "help_off": null
+    },
     "vil_name": {
+      "sean": "vil",
       "attr": {
         "name": "vname",
         "type": "text",
@@ -3415,6 +3364,7 @@
       "help_off": null
     },
     "vil_comment": {
+      "sean": "vil",
       "attr": {
         "name": "vcomment",
         "type": "textarea",
@@ -3430,32 +3380,33 @@
       "help_off": null
     },
     "uid": {
+      "sean": "vil",
       "attr": {
         "type": "text",
         "name": "uid",
         "size": 10,
         "maxlength": 20
       },
-      "query": {},
       "name": "アカウント",
       "cookie": true,
       "help_on": null,
       "help_off": null
     },
     "pwd": {
+      "sean": "vil",
       "attr": {
         "type": "password",
         "name": "pwd",
         "size": 10,
         "maxlength": 20
       },
-      "query": {},
       "name": "パスワード",
       "cookie": true,
       "help_on": null,
       "help_off": null
     },
     "entry_password": {
+      "sean": "vil",
       "attr": {
         "type": "text",
         "name": "entrypwd",
@@ -3471,6 +3422,7 @@
       "help_off": "参加制限しない　※パスワードをつけると、鍵付きの村になります。"
     },
     "player_count": {
+      "sean": "vil",
       "attr": {
         "type": "number",
         "name": "vplcnt",
@@ -3487,6 +3439,7 @@
       "help_off": "定員　※入力してください。"
     },
     "player_count_start": {
+      "sean": "vil",
       "attr": {
         "type": "number",
         "name": "vplcntstart",
@@ -3503,19 +3456,20 @@
       "help_off": "最少催行人数　※入力してください。"
     },
     "time": {
+      "sean": "vil",
       "attr": {
         "type": "time",
         "name": "time",
         "step": 1800,
         "required": "required"
       },
-      "query": {},
       "init": "22:30",
       "name": "更新時刻",
       "help_on": "に更新します。",
       "help_off": "更新時刻　※入力してください。"
     },
     "interval": {
+      "sean": "vil",
       "attr": {
         "type": "select",
         "name": "updinterval",
@@ -3526,24 +3480,16 @@
       },
       "init": 1,
       "options": {
-        "1": {
-          "_id": 1,
-          "caption": "24時間"
-        },
-        "2": {
-          "_id": 2,
-          "caption": "48時間"
-        },
-        "3": {
-          "_id": 3,
-          "caption": "72時間"
-        }
+        "1": "24時間",
+        "2": "48時間",
+        "3": "72時間"
       },
       "name": "更新間隔",
       "help_on": "ごとに更新します。",
       "help_off": "※入力してください。"
     },
     "game_rule": {
+      "sean": "vil",
       "attr": {
         "type": "select",
         "name": "game",
@@ -3557,6 +3503,7 @@
       "help_off": "※入力してください。"
     },
     "rating": {
+      "sean": "vil",
       "attr": {
         "type": "select",
         "name": "rating",
@@ -3571,28 +3518,29 @@
       "help_off": "※入力してください。"
     },
     "chr_set": {
+      "sean": "vil",
       "attr": {
         "type": "select",
         "name": "chr_set",
         "required": "required"
       },
-      "query": {},
       "name": "登場人物",
       "help_on": "",
       "help_off": "※入力してください。"
     },
     "chr_npc": {
+      "sean": "vil",
       "attr": {
         "type": "select",
         "name": "csid",
         "required": "required"
       },
-      "query": {},
       "name": "登場人物とNPC",
       "help_on": "",
       "help_off": "※入力してください。"
     },
     "say_count": {
+      "sean": "vil",
       "attr": {
         "type": "select",
         "name": "saycnttype",
@@ -3606,6 +3554,7 @@
       "help_off": "※入力してください。"
     },
     "role_table": {
+      "sean": "vil",
       "attr": {
         "type": "select",
         "name": "roletable",
@@ -3620,6 +3569,7 @@
       "help_off": "※入力してください。"
     },
     "mob_type": {
+      "sean": "vil",
       "attr": {
         "type": "select",
         "name": "mob",
@@ -3630,6 +3580,7 @@
       "help_off": "※入力してください。"
     },
     "trs_type": {
+      "sean": "vil",
       "attr": {
         "type": "select",
         "name": "trsid",
@@ -10698,8 +10649,8 @@
     });
     this['default'](function(){});
     this.deploy(function(o){
-      o.ables || (o.ables = []);
-      o.HELP || (o.HELP = "");
+      o.ables == null && (o.ables = []);
+      o.HELP == null && (o.HELP = "");
       o.role_idx = role_index.indexOf(o._id);
       o.gift_idx = gift_index.indexOf(o._id);
       o.order = order_index.indexOf(o._id);
@@ -12771,7 +12722,15 @@
 }).call(this);
 
 (function() {
-  var field;
+  var btn_data, field;
+
+  btn_data = function(type) {
+    return {
+      _id: type,
+      name: Mem.conf.tag[type].name,
+      badge: Mem.Query.faces.reduce.tag[type].count
+    };
+  };
 
   field = Mem.Query.options.hash;
 
@@ -12794,6 +12753,38 @@
   field.rating.options = Mem.Query.ratings.enable().hash;
 
   field.trs_type.options = Mem.Query.trss.enable().hash;
+
+  field.tag.options = {
+    all: {
+      _id: "all",
+      name: "- 全体 -",
+      badge: Mem.Query.faces.reduce.all.all.count
+    },
+    giji: btn_data("giji"),
+    shoji: btn_data("shoji"),
+    travel: btn_data("travel"),
+    stratos: btn_data("stratos"),
+    myth: btn_data("myth"),
+    asia: btn_data("asia"),
+    marchen: btn_data("marchen"),
+    kid: btn_data("kid"),
+    young: btn_data("young"),
+    middle: btn_data("middle"),
+    elder: btn_data("elder"),
+    river: btn_data("river"),
+    road: btn_data("road"),
+    immoral: btn_data("immoral"),
+    guild: btn_data("guild"),
+    elegant: btn_data("elegant"),
+    ecclesia: btn_data("ecclesia"),
+    medical: btn_data("medical"),
+    market: btn_data("market"),
+    apartment: btn_data("apartment"),
+    servant: btn_data("servant"),
+    farm: btn_data("farm"),
+    government: btn_data("government"),
+    god: btn_data("god")
+  };
 
 }).call(this);
 

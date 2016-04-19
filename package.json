@@ -1,4 +1,9 @@
 {
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-mocha-chai-sinon": "0.0.9"
+  },
   "dependencies": {
     "bounce.js": "^0.8.2",
     "browser-sync": "^2.11.0",

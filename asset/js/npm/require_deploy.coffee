@@ -19,7 +19,6 @@ deploy
 require 'headjs/dist/1.0.0/head'
 if head.browser?
   b = head.browser
-  b.viewport = "width=device-width, maximum-scale=4.0, minimum-scale=1.0, initial-scale=1.0"
 
   if -1 < navigator.userAgent.toLowerCase().indexOf 'windows'
     b.win = true
@@ -58,9 +57,8 @@ GUI.Animate = require 'gui_animate'
 GUI.form = require 'gui_form'
 
 deploy require 'base'
-deploy require 'menu_tree'
-deploy require 'form'
 deploy require 'timer'
-deploy require 'gui_url'
+deploy require 'input'
 
+deploy require 'gui_url'
 require '_ext'

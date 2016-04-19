@@ -1,3 +1,6 @@
 win.mount "#css_changer", (dom)->
-    controller: ->
-    view: doc.view.css_changer
+  controller: ->
+    { tie } = Url
+    tie
+
+  view: doc.view.css_changer

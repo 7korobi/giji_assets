@@ -34,6 +34,7 @@ doc.component.calc =
       says_count_lines.push says_count_line
       says_calc_lines.push says_calc_line
 
+
     [ m "table.info", win.scroll.mark("says_count"), says_count_lines
       m "table.info", win.scroll.mark("says_calc"), says_calc_lines
     ]

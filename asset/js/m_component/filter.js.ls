@@ -1,5 +1,21 @@
 doc.component.filter =
   controller: !->
+    @tie = Mem.Query.options.btns {}, []
+    @tie.change (id, value)->
+      if doc.seeing[o._id] >= day
+        delete doc.seeing[o._id]
+      else
+        doc.seeing_add o._id, day
+
+    @star = (o)->
+      _id = o._id
+      attr =
+        type: "checkbox_btn"
+        className: o.mestype
+      name = if doc.seeing[o._id] >= day then "★ " else "☆ "
+      tie.input_for {_id, attr, name}
+
+
     { talk_at, scroll, pins } = Url.prop
     @click =
       go: ({_id})->
@@ -25,20 +41,6 @@ doc.component.filter =
         onmouseup: cb
         ontouchend: cb
 
-      star_off: (o)->
-        cb = ->
-          delete doc.seeing[o._id]
-        onclick: cb
-        onmouseup: cb
-        ontouchend: cb
-
-      star_on: (o)->
-        cb = ->
-          doc.seeing_add o._id, day
-        onclick: cb
-        onmouseup: cb
-        ontouchend: cb
-
     @day = 24 * 60 * 60
     @seeing_top = 100
     @seeing_measure =
@@ -51,18 +53,12 @@ doc.component.filter =
         @line_text_height = elem.offsetHeight
 
 
-  view: ({seeing_top, seeing_measure, line_text_height, line_text_height_measure, click, day})->
+  view: ({tie, star, seeing_top, seeing_measure, line_text_height, line_text_height_measure, click, day})->
     center_id = win.scroll.prop()
     filter_size = Math.floor((win.height - seeing_top) / line_text_height) - 3
 
-    anchorview = doc.messages.anchor(Url.prop).list
+    anchorview = doc.messages.anchor(Url.params).list
     seeingview = doc.messages.seeing(filter_size, win.scroll.center)
-
-    star = (o)->
-      if doc.seeing[o._id] >= day
-        m "span.#{o.mestype}.btn.edge", click.star_off(o), "★ "
-      else
-        m "span.#{o.mestype}.btn.edge", click.star_on(o), "☆ "
 
     m "section.plane",
       m "h6",

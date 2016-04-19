@@ -20,7 +20,6 @@ form =
   controller: (f)->
   view: (c, f)->
 
-# menu.icon.icon "pencil",
 menu =
   open: ->
   close: ->
