@@ -1,6 +1,8 @@
 gulp = require 'gulp'
 $ = require('gulp-load-plugins')()
 
+
+# @@@ is not real dir.
 config =
   gulp: gulp
   $: $
@@ -20,6 +22,8 @@ config =
       image: 'public/**/*.{jpg,png,gif}'
       font:  'public/**/*.{svg,eot,ttf,woff}'
       gz:    'public/**/*.gz'
+      face:  '../../web_work/{@@@,images}/**/*'
+      old:   'public/{@@@,assets-show-fix}/*'
     manifest:
       list:  'public/{assets-master,font,images/auth,images/banner,images/icon,images/portrate,images/bg}/**/*'
       ignore: '!**/*.{html,gz,*_}'

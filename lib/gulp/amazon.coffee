@@ -25,3 +25,10 @@ module.exports = ({gulp, $, src, conf})->
       gulp
       .src [src.amazon.cache, src.amazon.gz, src.amazon.image, src.amazon.font]
       .pipe $.if "*.gz", $.rename extname: ""
+
+  gulp.task "amazon:face", ['config:yaml'], ->
+    headers =
+      'Cache-Control': 'max-age=315360000, no-transform, public'
+    amazon headers, ->
+      gulp
+      .src [src.amazon.face, src.amazon.old]

@@ -332,6 +332,41 @@
 }).call(this);
 
 (function() {
+  win.mount("#new_chrs_2015_04", function(dom) {
+    return {
+      controller: function() {
+        var chrs;
+        chrs = Mem.Query.chr_jobs.where({
+          chr_set_id: "time"
+        }).sort(false, function(o) {
+          return o.face.order;
+        }).list;
+        this.old_chrs = chrs.slice(0, 24);
+        this.new_chrs = chrs.slice(24);
+      },
+      view: doc.component.map_faces_new.view
+    };
+  });
+
+  win.mount("#new_chrs_2016_05", function(dom) {
+    return {
+      controller: function() {
+        var chrs;
+        chrs = Mem.Query.chr_jobs.where({
+          chr_set_id: "sf"
+        }).sort(false, function(o) {
+          return o.face.order;
+        }).list;
+        this.old_chrs = chrs.slice(0, 32);
+        this.new_chrs = chrs.slice(32);
+      },
+      view: doc.component.map_faces_new.view
+    };
+  });
+
+}).call(this);
+
+(function() {
   win.mount("#css_changer", function(dom) {
     return {
       controller: function() {},
