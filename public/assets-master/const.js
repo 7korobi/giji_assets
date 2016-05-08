@@ -6451,6 +6451,44 @@
       "comment": "ええじゃないかええじゃないかー！",
       "order": 20011,
       "tags": ["marchen"]
+    }, {
+      "_id": "sf033",
+      "face_id": "sf033",
+      "name": "イースター",
+      "comment": null,
+      "order": 80033,
+      "tags": ["stratos"]
+    }, {
+      "_id": "sf034",
+      "face_id": "sf034",
+      "name": "アニュ",
+      "order": 80034,
+      "tags": ["stratos"]
+    }, {
+      "_id": "sf035",
+      "face_id": "sf035",
+      "name": "キャンディ",
+      "comment": null,
+      "order": 80035,
+      "tags": ["stratos"]
+    }, {
+      "_id": "sf036",
+      "face_id": "sf036",
+      "name": "キカ",
+      "order": 80036,
+      "tags": ["stratos"]
+    }, {
+      "_id": "sf037",
+      "face_id": "sf037",
+      "name": "バンアレン",
+      "order": 80037,
+      "tags": ["stratos"]
+    }, {
+      "_id": "sf038",
+      "face_id": "sf038",
+      "name": "パラチーノ",
+      "order": 80038,
+      "tags": ["stratos"]
     }
   ]);
 
@@ -8673,7 +8711,7 @@
       "csid": "SF_sf10",
       "face_id": "sf10",
       "say_0": "f*ck！またチオチモリンと二酸化炭素分圧だし！\nエアコンがコンタミるしスタグるしf*ck'nオーロラの季節だし、ガルタイトもサクラダイトもf*ck'n高っけーし…\n\n<b>同日\n整備日誌\n　定期点検。ただちに健康に影響はないが、擦過痕…</b>",
-      "say_1": "よーf*ck'nおまえら。\nマジ聞け。エヴァってでかい１０円キズ見つけた。誰だし？\nマジ怒んねーから手ぇ挙げ\n\n<b>ぷつん</b>\n\nっと。瞬停った…。f*ck。\nちょっと外の様子見てくる。俺のプリン残しといてくれよ。\n ",
+      "say_1": "よーf*ck'nおまえら。\nマジ聞け。エヴァってでかい１０円キズ見つけた。誰だし？\nマジ怒んねーから手ぇ挙げ\n\n<b>ぷつん</b>\n\nっと。瞬停った…。f*ck。\nちょっと外の様子見てくる。俺のプリン残しといてくれよ。",
       "_id": "sf_sf10",
       "chr_set_id": "sf"
     }
@@ -8839,6 +8877,36 @@
       "face_id": "sf032",
       "job": "鉱滓地区",
       "_id": "sf_sf032",
+      "chr_set_id": "sf"
+    }, {
+      "face_id": "sf033",
+      "job": "重層培養",
+      "_id": "sf_sf033",
+      "chr_set_id": "sf"
+    }, {
+      "face_id": "sf034",
+      "job": "華美人",
+      "_id": "sf_sf034",
+      "chr_set_id": "sf"
+    }, {
+      "face_id": "sf035",
+      "job": "銀河ギャル",
+      "_id": "sf_sf035",
+      "chr_set_id": "sf"
+    }, {
+      "face_id": "sf036",
+      "job": "好奇診",
+      "_id": "sf_sf036",
+      "chr_set_id": "sf"
+    }, {
+      "face_id": "sf037",
+      "job": "執行隊",
+      "_id": "sf_sf037",
+      "chr_set_id": "sf"
+    }, {
+      "face_id": "sf038",
+      "job": "複眼レフ",
+      "_id": "sf_sf038",
       "chr_set_id": "sf"
     }
   ]);

@@ -2302,7 +2302,7 @@
 
 -   _id: mad09
     face_id: mad09
-    name: "カナビス"
+    name: カナビス
     comment: "ウパニシャッドの精神で"
     order: 20009
     tags:
@@ -2310,7 +2310,7 @@
 
 -   _id: mad10
     face_id: mad10
-    name: "ルグレ"
+    name: ルグレ
     comment: "後悔あとをたたず"
     order: 20010
     tags:
@@ -2318,13 +2318,58 @@
 
 -   _id: mad11
     face_id: mad11
-    name: "オルギア"
+    name: オルギア
     comment: "ええじゃないかええじゃないかー！"
     order: 20011
     tags:
       - marchen
 
+#########################
+# 2016-05-10 update
 
+-   _id: sf033
+    face_id: sf033
+    name: イースター
+    comment:
+    order: 80033
+    tags:
+      - stratos
+
+-   _id: sf034
+    face_id: sf034
+    name: アニュ
+    order: 80034
+    tags:
+      - stratos
+
+-   _id: sf035
+    face_id: sf035
+    name: キャンディ
+    comment:
+    order: 80035
+    tags:
+      - stratos
+
+-   _id: sf036
+    face_id: sf036
+    name: キカ
+    order: 80036
+    tags:
+      - stratos
+
+-   _id: sf037
+    face_id: sf037
+    name: バンアレン
+    order: 80037
+    tags:
+      - stratos
+
+-   _id: sf038
+    face_id: sf038
+    name: パラチーノ
+    order: 80038
+    tags:
+      - stratos
 
 #########################
 # xxxx-xx-xx update
