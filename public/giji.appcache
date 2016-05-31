@@ -1,11 +1,14 @@
 CACHE MANIFEST
-# Time: Fri May 06 2016 12:16:55 GMT+0900 (東京 (標準時))
+# Time: Tue May 31 2016 10:21:26 GMT+0900 (東京 (標準時))
 
 CACHE:
 assets-master/2016-05-new-chrs.js
 assets-master/application.css
+assets-master/application.js
 assets-master/base.js
+assets-master/boot.js
 assets-master/const.js
+assets-master/data.js
 assets-master/rails.js
 assets-master/scratch.js
 assets-master/sow.js

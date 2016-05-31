@@ -2484,6 +2484,55 @@
 }).call(this);
 
 (function() {
+  var vdom;
+
+  vdom = function(arg) {
+    var badge, name;
+    name = arg.name, badge = arg.badge;
+    return [m("span", name), m("span.emboss.pull-right", badge)];
+  };
+
+  doc.component.characters = {
+    controller: function() {
+      var tie;
+      return tie = Mem.Query.options.btns(Url.params, ["tag"]);
+    },
+    view: function(arg) {
+      var attr, cb, chr_job, chrs, input, job_name, o, params, set, tag;
+      input = arg.input, params = arg.params;
+      tag = params.tag;
+      chrs = Mem.Query.faces.tag(tag).list;
+      set = Mem.conf.tag[tag];
+      return [
+        menu.icon.icon("th-large", {
+          view: function(main_menu) {
+            return m(".paragraph", m("h6", "タグを選んでみよう"), input.tag.field(vdom));
+          }
+        }), m(".chrlist", m("div", m("h6", set.long), m(".GSAY.badge", set.name), "の" + chrs.length + "人を表示しています。"), m("hr.black"), (function() {
+          var i, len, results;
+          results = [];
+          for (i = 0, len = chrs.length; i < len; i++) {
+            o = chrs[i];
+            chr_job = Mem.Query.chr_jobs.find(set.chr_set_ids.last + "_" + o._id) || Mem.Query.chr_jobs.find("all_" + o._id);
+            job_name = chr_job.job;
+            cb = function() {};
+            attr = {
+              onmouseup: cb,
+              ontouchend: cb
+            };
+            results.push(m(".chrbox", {
+              key: o._id
+            }, GUI.portrate(o._id, attr), m(".chrblank.line2", m("div", job_name), m("div", o.name))));
+          }
+          return results;
+        })(), m("hr.black"))
+      ];
+    }
+  };
+
+}).call(this);
+
+(function() {
   doc.component.chr_name_lists = {
     controller: function() {},
     view: function() {
@@ -3012,6 +3061,65 @@
 
 }).call(this);
 
+(function() {
+  doc.component.potof_modes = {
+    controller: function() {
+      var face, keys, params;
+      params = {};
+      face = new win.gesture({
+        check: function(arg) {
+          var value;
+          value = arg.value;
+          params = Mem.unpack.Keys(value);
+          return Url.prop.potofs_hide(params);
+        }
+      });
+      keys = new win.gesture({
+        check: function(arg) {
+          var value;
+          value = arg.value;
+          params[value] = !params[value];
+          return Url.prop.potofs_hide(params);
+        }
+      });
+      return {
+        face: face,
+        keys: keys,
+        params: params
+      };
+    },
+    view: function(arg) {
+      var face, keys, o, params, potofs, potofs_desc, potofs_hide, potofs_order, ref, ref1, ref2, reset_key, turn;
+      face = arg.face, keys = arg.keys, params = arg.params;
+      ref = Url.prop, potofs_desc = ref.potofs_desc, potofs_order = ref.potofs_order, potofs_hide = ref.potofs_hide;
+      potofs = Mem.Query.potofs.view(potofs_desc(), potofs_order()).list;
+      turn = ((ref1 = win.scroll.center) != null ? (ref2 = ref1.event) != null ? ref2.turn : void 0 : void 0) || 0;
+      reset_key = function(value) {
+        var now, set;
+        now = Mem.pack.Keys(params);
+        set = Mem.pack.Keys(value);
+        return keys.tap(value, {
+          className: now === set ? "active" : ""
+        });
+      };
+      return m(".minilist", m("h6", "キャラクターフィルタ"), m("p", m("a", reset_key([]), "全員表示"), m("a", reset_key(Mem.Query.potofs.others()), "参加者表示"), m("a", reset_key(Mem.Query.potofs.potofs()), "その他を表示"), m("a", reset_key(Mem.Query.potofs.full()), "全員隠す")), m("hr.black"), (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = potofs.length; i < len; i++) {
+          o = potofs[i];
+          results.push(m(".chrbox", {
+            key: o._id
+          }, GUI.portrate(o.face_id, face.tap(o.face_id, {
+            className: params[o.face_id] ? "filter-hide" : ""
+          })), m(".bar." + o.live)));
+        }
+        return results;
+      })(), m("hr.black"));
+    }
+  };
+
+}).call(this);
+
 (function(){
   doc.component.potofs_hide = {
     controller: function(){},
@@ -3297,6 +3405,59 @@
   rule_accordion("maker");
 
   rule_accordion("player");
+
+}).call(this);
+
+(function() {
+  doc.component.security_modes = {
+    controller: function(prop) {
+      var input, options, refresh, tie;
+      tie = Mem.Query.options.btns(Url.params, ["show", "open", "human"]);
+      tie.check(function() {
+        prop(Url.params.show);
+        return Url.replacestate();
+      });
+      options = Mem.Query.options.hash.show.options;
+      refresh = function() {
+        var grave_caption, has, mob, story, think_caption;
+        has = Mem.Query.messages.has;
+        story = Mem.Query.storys.list.first;
+        mob = Mem.Query.roles.find(story != null ? story.type.mob : void 0);
+        grave_caption = [];
+        if (has.grave) {
+          grave_caption.push("墓下");
+        }
+        if (has.vsay && mob.CAPTION) {
+          grave_caption.push(mob.CAPTION);
+        }
+        options.grave.caption = grave_caption.join("/") + "つき";
+        think_caption = [];
+        if (has.think) {
+          think_caption.push("独り言");
+        }
+        if (has.to) {
+          think_caption.push("内緒話");
+        }
+        options.think.caption = think_caption.join("/") + "つき";
+        return options.clan._id = has.clan ? "clan" : null;
+      };
+      input = tie.input;
+      return {
+        input: input,
+        refresh: refresh
+      };
+    },
+    view: function(arg, prop) {
+      var input, refresh;
+      input = arg.input, refresh = arg.refresh;
+      refresh();
+      return m("p", input.show.field(function(arg1) {
+        var caption;
+        caption = arg1.caption;
+        return caption;
+      }), m.trust("&nbsp;"), input.open.field(), input.open.label(), input.human.field(), input.human.label());
+    }
+  };
 
 }).call(this);
 

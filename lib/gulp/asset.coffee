@@ -31,6 +31,14 @@ module.exports = ({gulp, $, src, dest,  yml})->
   gulp.task "asset:manifest", manifest
 
 
+  gulp.task "asset:legacy", ->
+    gulp
+    .src "public/assets-show-fix/*.js"
+    .pipe gulp.dest dest.public
+    .pipe $.gzip gzipOptions: level: 9
+    .pipe gulp.dest "public/assets-show-fix/"
+
+
   gulp.task "asset:html", ->
     locals = {}
     asset ->

@@ -1,0 +1,510 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 77.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"Package Control: install",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 827.0
+	},
+	"console":
+	{
+		"height": 219.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+	],
+	"file_history":
+	[
+		"/C/Dropbox/Titanium/pmang_app_titanium/pmang_app_titanium.sublime-workspace",
+		"/C/Dropbox/Titanium/pmang_app_titanium/pmang_app_titanium.sublime-project",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/styles/notice.stss",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/lib/ui/design.coffee",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/styles/_back.stss",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/styles/index.stss",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/styles/_shortcut.stss",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/styles/_root.stss",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/styles/_service.stss",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/lib/ui/picker.coffee",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/views/notice.jade",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/controllers/notice.coffee",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/styles/app.stss",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/User/ColorHighlighter.sublime-settings",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/views/_service.jade",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/views/_root.jade",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/views/_shortcut.jade",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/views/_back.jade",
+		"/C/Dropbox/Titanium/pmang_app_titanium/Gruntfile.coffee",
+		"/C/Dropbox/Titanium/pmang_app_titanium/bower.json",
+		"/C/Dropbox/Android/pmang_app_android/README.md",
+		"/C/Dropbox/styles.less",
+		"/C/Dropbox/Titanium/android/drawable-ldpi/ic_launcher.png",
+		"/C/tmp/news/[佐藤健太郎] 魔法少女・オブ・ジ・エンド 第11巻 [単ページ+見開き結合]/11_001.jpg",
+		"/C/tmp/news/[佐藤健太郎] 魔法少女・オブ・ジ・エンド 第11巻 [単ページ+見開き結合]/00_cover.png",
+		"/E/MEDIA/ttf/AGM-WIN.TTC",
+		"/Z/iPad/Videos/劇場版 [東堂いづみ] 映画 Precure/2014 人形の国のバレリーナ.mp4",
+		"/C/Users/7korobi/AppData/Local/Temp/~EXTMP00/EXEDIT.INI",
+		"/C/Users/7korobi/AppData/Local/Temp/~EXTMP00/lua.txt",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/User/GitGutter.sublime-settings",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/GitGutter/GitGutter.sublime-settings",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/Pretty JSON/Pretty JSON.sublime-settings",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/User/Pretty JSON.sublime-settings",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/User/bh_core.sublime-settings",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/BracketHighlighter/bh_core.sublime-settings",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/Color Highlighter/ColorHighlighter.sublime-settings",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/User/Preferences.sublime-settings",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Dropbox/Titanium/pmang_app_titanium/app/lib/portal.coffee",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/User/Distraction Free.sublime-settings",
+		"/C/Dropbox/Titanium/pmang_app_titanium/DefaultIcon.png",
+		"/C/Dropbox/www/giji_assets/asset/js/after/in_vil.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/@rails/vdom_css_changer.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/m_component/buttons.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/m_component/vmake_form.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/m_component/sow_auth.js.ls",
+		"/C/Dropbox/www/giji_assets/asset/js/m_component/security_modes.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/m_component/characters.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/m_component/header.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/@sow/vdom_css_changer.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/after/menu.js.ls",
+		"/C/Dropbox/www/giji_assets/asset/js/@rails/win.js.ls",
+		"/C/Dropbox/www/giji_assets/asset/js/before/doc.js.ls",
+		"/C/Dropbox/www/giji_assets/asset/js/after/win.js.ls",
+		"/C/Dropbox/www/giji_assets/asset/js/require/gui_url.js.ls",
+		"/C/Dropbox/www/giji_assets/asset/js/@scratch/_routes.coffee",
+		"/C/Dropbox/CentOS-KVM-settings.txt",
+		"/D/OneDrive/hand/7.連絡/週次投稿.txt",
+		"/C/Dropbox/www/npm-bower/mithril-giji/src/event.coffee",
+		"/C/Dropbox/www/npm-bower/mithril-giji/test/gesture_spec.coffee",
+		"/C/Dropbox/www/npm-bower/mithril-giji/src/gesture.coffee",
+		"/C/Dropbox/www/npm-bower/mithril-giji/package.json",
+		"/C/Dropbox/bin/subl.bat",
+		"/C/Dropbox/www/npm-bower/mithril-giji/test/_helper.coffee",
+		"/C/Dropbox/www/npm-bower/mithril-giji/src/_win.coffee",
+		"/C/Dropbox/www/npm-bower/mithril-giji/src/submit.coffee",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/User/Preferences.sublime-settings",
+		"/C/Dropbox/www/npm-bower/mithril-giji/test/mount_spec.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/src/finder.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/src/rule.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/test/sync_spec.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/src/web_storage.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/package.json",
+		"/C/Dropbox/www/npm-bower/memory-record/src/query.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/memory-record.js",
+		"/C/Dropbox/www/npm-bower/memory-record/src/model.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/src/serial.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/test/serial_spec.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/test/query_spec.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/test/scope_spec.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/test/crud_spec.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/test/finder_spec.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/test/map_reduce_spec.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/src/serial_url.coffee",
+		"/C/Dropbox/www/npm-bower/memory-record/src/_header.coffee",
+		"/C/Dropbox/Apache24/conf/httpd.conf",
+		"/C/Dropbox/www/sow-giji/master/sow.cgi",
+		"/D/Dropbox/ruby_motion/pmang_app_ios/result.rb",
+		"/D/Dropbox/ruby_motion/pmang_app_ios/result.txt",
+		"/D/Dropbox/SublimeText.x64/Data/Packages/RuboCop/RuboCop.sublime-settings",
+		"/D/Dropbox/SublimeText.x64/Data/Packages/User/Pretty JSON.sublime-settings",
+		"/C/USERS/T_ITO/APPDATA/LOCAL/TEMP/~EXTMP01/APNS-Production.pem",
+		"/D/Dropbox/SublimeText.x64/Data/Packages/Theme - Flatland/Flatland Dark.sublime-theme",
+		"/D/Dropbox/SublimeText.x64/.gitignore",
+		"/D/Dropbox/Titanium/pmang_app_titanium/bower.json",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/Theme - Flatland/Flatland Dark.sublime-theme",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/app/models/bbs_board.rb",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/app/controllers/bbs_board_controller.rb",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/resources/PmangApp.1.4.xcdatamodel/contents",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/resources/PmangApp.xcdatamodeld/PmangApp.xcdatamodel/contents",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/app/app_delegate.rb",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/app/models/user.rb",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/app/controllers/profile_controller.rb",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/app/cells/bbs_topic_cell.rb",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/.gitignore",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/app/cells/concerns/bbs_cellable.rb",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/app/controllers/concerns/dateable.rb",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/app/models/portal_api.rb",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/app/_core_data/store.rb",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/resources/migrates/PmangTalk.1.4.Model.xcmappingmodel/xcmapping.xml",
+		"/C/Dropbox/ruby_motion/pmang_app_ios/resources/PmangApp.momd/PmangApp.mom",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/User/Distraction Free.sublime-settings",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/User/Ruby.sublime-settings",
+		"/C/bin/subl.bat",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/User/trailing_spaces.sublime-settings",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/User/Tab Context.sublime-menu.jp",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/User/Indentation.sublime-menu.jp",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/SublimeCodeIntel/Default (Windows).sublime-mousemap",
+		"/C/Dropbox/SublimeText.x64/Packages/Default.sublime-package",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/Default/Default (Windows).sublime-keymap",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/Default/Preferences.sublime-settings",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/Theme - Flatland/Flatland Monokai.tmTheme",
+		"/c/Dropbox/SublimeText.x64/.gitignore",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/TrailingSpaces/trailing_spaces.sublime-settings",
+		"/C/Dropbox/SublimeText.x64/Data/Packages/Theme - Flatland/README.md"
+	],
+	"find":
+	{
+		"height": 60.0
+	},
+	"find_in_files":
+	{
+		"height": 172.0,
+		"where_history":
+		[
+			"app/**",
+			"asset/**",
+			"",
+			"Mem.Collection.",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"	",
+			"a20202",
+			"#navi",
+			"#menu",
+			"ItemTemplate",
+			"2",
+			"underline",
+			"+s",
+			"save",
+			"Url.prop",
+			"tie",
+			"Url.prop",
+			"prop",
+			"Url.prop",
+			"Url",
+			"tie.check",
+			"Url.prop",
+			"params",
+			"Url.prop",
+			"Url.prop.",
+			"messages",
+			"Url.prop",
+			"win.scroll.rescroll",
+			"prop",
+			"Url.prop",
+			"prop",
+			"change_pin",
+			"Url.replacestate()",
+			"change_pin",
+			"Url.prop",
+			"theme",
+			"Url.prop",
+			"Url.p",
+			"Url.prop",
+			"Url.prop[",
+			".bind",
+			"Url.options",
+			"current",
+			"unmatch",
+			"bind",
+			"Url.bind",
+			"Url.binds",
+			"getter_setter",
+			"do_define",
+			"dodefine",
+			"Url.define",
+			"do_define",
+			"Url.props",
+			"cookies",
+			"set_cookie",
+			"values",
+			"prop",
+			"@prop",
+			"timeout",
+			"debounce",
+			"do_",
+			"@popstate",
+			"state",
+			"popstate",
+			"pushstate",
+			"Url.prop",
+			"btn_attr",
+			"debounce",
+			"Mem.Query.options.",
+			"Mem.Query.options",
+			"do_select",
+			"submit",
+			".submit",
+			"@submit",
+			"tie.submit",
+			"tie.",
+			"submit",
+			"debounce",
+			"btn_attr",
+			"debounce",
+			"btn",
+			"tn",
+			"sysconfig/",
+			"tap ",
+			"tap",
+			"fail",
+			"value",
+			".start",
+			"check",
+			"on",
+			"window",
+			"type",
+			"fail",
+			"	",
+			"promise",
+			"sync",
+			"delay",
+			"	",
+			"call",
+			"	",
+			"win.layout",
+			"	",
+			"} = e",
+			"{",
+			"Mem[",
+			"belongs_to",
+			"base_obj",
+			"length",
+			"def",
+			"sync",
+			".scope",
+			".s",
+			".scope",
+			"scope",
+			"Finder",
+			"Mem.",
+			"sync",
+			"	",
+			"patch_size",
+			"Mem.",
+			"Mem.tests",
+			"Mem.",
+			"Mem.tests",
+			"Mem.",
+			"Mem.tests",
+			"tests",
+			"Mem.",
+			"Mem.rule.",
+			"Mem.rule",
+			"reset",
+			"all.",
+			"Mem.Sync",
+			"\n    "
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"Mem.Collection.",
+			""
+		],
+		"reverse": false,
+		"show_context": false,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 35.0
+	},
+	"input":
+	{
+		"height": 53.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.sftp":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "giji_assets.sublime-project",
+	"replace":
+	{
+		"height": 72.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"grunt.coffee",
+				"Gruntfile.coffee"
+			],
+			[
+				"back.stss",
+				"app\\styles\\_back.stss"
+			],
+			[
+				"app.stss",
+				"app\\styles\\app.stss"
+			],
+			[
+				"index.stss",
+				"app\\styles\\index.stss"
+			],
+			[
+				"back.jade",
+				"app\\views\\_back.jade"
+			],
+			[
+				"shortcut.stss",
+				"app\\styles\\_shortcut.stss"
+			],
+			[
+				"shortcut.jade",
+				"app\\views\\_shortcut.jade"
+			],
+			[
+				"root.stss",
+				"app\\styles\\_root.stss"
+			],
+			[
+				"root.jade",
+				"app\\views\\_root.jade"
+			],
+			[
+				"_service.jade",
+				"app\\views\\_service.jade"
+			],
+			[
+				"_service.stss",
+				"app\\styles\\_service.stss"
+			],
+			[
+				"_service",
+				"app\\styles\\_service.stss"
+			],
+			[
+				"design",
+				"app\\lib\\ui\\design.coffee"
+			],
+			[
+				"picker.coffee",
+				"app\\lib\\ui\\picker.coffee"
+			],
+			[
+				"notice.stss",
+				"app\\styles\\notice.stss"
+			],
+			[
+				"notice.jade",
+				"app\\views\\notice.jade"
+			],
+			[
+				"notice.coffee",
+				"app\\controllers\\notice.coffee"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 1000.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 760.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": false,
+	"side_bar_visible": true,
+	"side_bar_width": 385.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

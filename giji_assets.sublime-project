@@ -1,0 +1,29 @@
+{
+	"folders":
+	[
+    {
+      "path": "asset/yaml"
+    },
+    {
+      "path": "asset/html"
+    },
+    {
+      "path": "asset/sow"
+    },
+    {
+      "path": "asset/css"
+    },
+    {
+      "path": "asset/js"
+    },
+    {
+      "path": "config"
+    },
+    {
+      "path": "tmp/cache"
+    },
+		{
+			"path": "."
+		}
+	]
+}
