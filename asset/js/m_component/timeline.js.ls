@@ -17,7 +17,7 @@ mestype_orders = <[
 
 doc.component.timeline = Canvas ({size: [width, height]})->
   {talk, open, potofs_hide, talk_at, search} = Url.prop
-  return unless Mem.events.list.length
+  return unless Mem.Query.events.list.length
 
   graph_height = height - 50
 
@@ -27,11 +27,11 @@ doc.component.timeline = Canvas ({size: [width, height]})->
   x = y = max_height = time_width = 0
 
   view_port_x = ->
-    base := Mem.messages.talk(talk(), open(), potofs_hide())
+    base := Mem.Query.messages.talk(talk(), open(), potofs_hide())
     return false unless base.reduce
 
     masks := base.reduce.mask || {}
-    time_ids := _.sortBy Object.keys(masks), unpack.Date
+    time_ids := _.sortBy Object.keys(masks), Mem.unpack.Date
     time_width := time_ids.length
     x := width / time_width
     true
@@ -77,14 +77,14 @@ doc.component.timeline = Canvas ({size: [width, height]})->
     time = masks[time_ids[index]].all.min
     query =
       if graph_height < offset.y
-        Mem.messages.talk("open", false, {})
+        Mem.Query.messages.talk("open", false, {})
       else
         base
 
     choice_last query, time
 
   draw: ({ctx})->
-    focus = Mem.messages.find talk_at()
+    focus = Mem.Query.messages.find talk_at()
     return unless focus && view_port_x()
 
     offset = index_at(focus.updated_at)
@@ -117,7 +117,7 @@ doc.component.timeline = Canvas ({size: [width, height]})->
           ctx.fillRect x * left, y * top, 1 + x * count_width, y * count_height
 
     ctx.beginPath()
-    for event in Mem.events.list when event.created_at
+    for event in Mem.Query.events.list when event.created_at
       right = index_at event.updated_at
       left = index_at event.created_at
       ctx.strokeStyle = RAILS.log.colors.line

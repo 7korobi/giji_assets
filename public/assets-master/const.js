@@ -12450,7 +12450,7 @@
     function Validator(checks){
       this.checks = checks;
     }
-    prototype.validate = function(o){
+    Validator.prototype.validate = function(o){
       var helper, i$, ref$, len$, check;
       o.errors = [];
       o.infos = [];
@@ -12471,7 +12471,7 @@
       }
       return o.valid = helper.valid();
     };
-    prototype.and = function(checks){
+    Validator.prototype.and = function(checks){
       return new Validator(this.checks.concat(checks));
     };
     return Validator;

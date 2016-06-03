@@ -2458,7 +2458,7 @@
     var ref$, width, height, talk, open, potofs_hide, talk_at, search, graph_height, base, masks, time_ids, x, y, max_height, time_width, view_port_x, view_port_y, index_at, choice_last;
     ref$ = arg$.size, width = ref$[0], height = ref$[1];
     ref$ = Url.prop, talk = ref$.talk, open = ref$.open, potofs_hide = ref$.potofs_hide, talk_at = ref$.talk_at, search = ref$.search;
-    if (!Mem.events.list.length) {
+    if (!Mem.Query.events.list.length) {
       return;
     }
     graph_height = height - 50;
@@ -2467,12 +2467,12 @@
     time_ids = [];
     x = y = max_height = time_width = 0;
     view_port_x = function(){
-      base = Mem.messages.talk(talk(), open(), potofs_hide());
+      base = Mem.Query.messages.talk(talk(), open(), potofs_hide());
       if (!base.reduce) {
         return false;
       }
       masks = base.reduce.mask || {};
-      time_ids = _.sortBy(Object.keys(masks), unpack.Date);
+      time_ids = _.sortBy(Object.keys(masks), Mem.unpack.Date);
       time_width = time_ids.length;
       x = width / time_width;
       return true;
@@ -2537,13 +2537,13 @@
         search("");
         index = Math.floor(offset.x / x);
         time = masks[time_ids[index]].all.min;
-        query = graph_height < offset.y ? Mem.messages.talk("open", false, {}) : base;
+        query = graph_height < offset.y ? Mem.Query.messages.talk("open", false, {}) : base;
         return choice_last(query, time);
       },
       draw: function(arg$){
         var ctx, focus, offset;
         ctx = arg$.ctx;
-        focus = Mem.messages.find(talk_at());
+        focus = Mem.Query.messages.find(talk_at());
         if (!(focus && view_port_x())) {
           return;
         }
@@ -2584,7 +2584,7 @@
           }
         }
         ctx.beginPath();
-        for (i$ = 0, len$ = (ref$ = Mem.events.list).length; i$ < len$; ++i$) {
+        for (i$ = 0, len$ = (ref$ = Mem.Query.events.list).length; i$ < len$; ++i$) {
           event = ref$[i$];
           if (event.created_at) {
             right = index_at(event.updated_at);
@@ -3193,7 +3193,7 @@
 }).call(this);
 
 (function(){
-  var timer, dom, deco_action, identity_action, ext, slice$ = [].slice;
+  var timer, dom, deco_action, identity_action, ext;
   timer = function(query, o){
     var child, attr;
     child = "";
@@ -3269,8 +3269,12 @@
   };
   doc.ext = ext = {
     say_base: function(v){
-      var timer;
-      timer = slice$.call(arguments, 1);
+      var timer, res$, i$, to$;
+      res$ = [];
+      for (i$ = 1, to$ = arguments.length; i$ < to$; ++i$) {
+        res$.push(arguments[i$]);
+      }
+      timer = res$;
       return m("table." + v.mestype + ".talk", {
         key: v._id
       }, m("tr", m("th", GUI.portrate(v.face_id)), m("td", m(".msg", ext.talk_name(v.user_id, v.name, v.to), ext.talk_text(v._id, v.style, v.log), m("p.mes_date", timer)))));
