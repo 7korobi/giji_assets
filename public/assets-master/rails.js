@@ -534,42 +534,37 @@
 
 }).call(this);
 
-(function(){
-  var ref$;
-  win.mount('#chr_name_lists', function(){
-    return doc.component.chr_name_lists;
-  });
-  if ((typeof gon != 'undefined' && gon !== null ? gon.face : void 8) != null) {
-    catch_gon.face();
-    win.mount(summary + "", function(){
-      return doc.component.summary;
-    });
-    win.mount(calc + "", function(){
-      return doc.component.calc;
-    });
-    win.mount(village + "", function(){
-      return doc.component.villages;
-    });
-    win.mount(sow_user + "", function(){
-      return doc.component.sow_users;
-    });
-  }
-  if ((typeof gon != 'undefined' && gon !== null ? (ref$ = gon.map_reduce) != null ? ref$.faces : void 8 : void 8) != null) {
+(function() {
+  var ref;
+
+  win.mount((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null ? (catch_gon.face(), win.mount("#summary", function() {
+    return doc.component.summary;
+  }), win.mount("#calc", function() {
+    return doc.component.calc;
+  }), win.mount("#village", function() {
+    return doc.component.villages;
+  }), win.mount("#sow_user", function() {
+    return doc.component.sow_users;
+  })) : void 0);
+
+  if ((typeof gon !== "undefined" && gon !== null ? (ref = gon.map_reduce) != null ? ref.faces : void 0 : void 0) != null) {
     catch_gon.map_reduce_faces();
-    win.mount(map_faces + "", function(){
+    win.mount("#map_faces", function() {
       return doc.component.map_faces;
     });
-    win.mount(chr_sets + "", function(){
+    win.mount("#chr_sets", function() {
       return doc.component.chr_sets;
     });
   }
-  if ((typeof gon != 'undefined' && gon !== null ? gon.new_chr_faces : void 8) != null && (typeof gon != 'undefined' && gon !== null ? gon.new_chr_jobs : void 8) != null) {
+
+  if (((typeof gon !== "undefined" && gon !== null ? gon.new_chr_faces : void 0) != null) && ((typeof gon !== "undefined" && gon !== null ? gon.new_chr_jobs : void 0) != null)) {
     Mem.Collection.face.merge(gon.new_chr_faces);
     Mem.Collection.chr_job.merge(gon.new_chr_jobs);
-    win.mount(map_faces + "", function(dom){
+    win.mount("#map_faces", function(dom) {
       return doc.component.map_faces_new;
     });
   }
+
 }).call(this);
 
 (function() {
