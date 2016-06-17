@@ -25,6 +25,7 @@ export class Url
   @routes = {}
   @cookies = {}
   @prop = {}
+  @mode = "replaceState"
 
   @location = ->
 #    storage:  window.localStorage

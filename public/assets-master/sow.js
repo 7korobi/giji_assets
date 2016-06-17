@@ -2165,6 +2165,7 @@
 }).call(this);
 
 (function(){
+  var ref$, safari, mac;
   win.scroll.prop = Url.prop.scroll;
   win.scroll.tick = function(center, sec){
     if (center.subid === "S") {
@@ -2316,6 +2317,12 @@
         }
       });
       return doc.component.stories;
+    });
+  }
+  ref$ = head.browser, safari = ref$.safari, mac = ref$.mac;
+  if (safari && mac) {
+    win.on.load.push(function(){
+      return Url.popstate();
     });
   }
   win.deploy();

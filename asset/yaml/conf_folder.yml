@@ -83,6 +83,7 @@ PERL_GAME:
       - tiny
       - weak
       - juna
+      - say1
       - say5x200
       - say5x300
       - saving
@@ -719,7 +720,6 @@ CABALA:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
-#    is_angular: show-fix
 
 
 ALLSTAR:

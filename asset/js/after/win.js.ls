@@ -117,5 +117,9 @@ if gon?.stories?
         menu.scope.change "normal"
     doc.component.stories
 
+{ safari, mac } = head.browser
+if safari && mac
+  win.on.load.push ->
+    Url.popstate()
 win.deploy()
 m.endComputation()
