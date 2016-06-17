@@ -69,6 +69,7 @@ PERL_NEW:
       - TROUBLE
       - MISTERY
       - SECRET
+    is_angular: show-fix
 
 PERL_GAME:
   config: &config_game
@@ -83,6 +84,8 @@ PERL_GAME:
       - tiny
       - weak
       - juna
+      - vulcan
+      - say1
       - say5x200
       - say5x300
       - saving
@@ -476,15 +479,6 @@ MORPHE:
 
   config:
     <<: *config_game
-    saycnt:
-      - tiny
-      - weak
-      - juna
-      - vulcan
-      - say5x200
-      - say5x300
-      - saving
-      - euro
 
     enable:
       <<: *enable
@@ -704,7 +698,6 @@ CABALA:
 
   config:
     <<: *config_game
-    <<: *config_new
     enable:
       <<: *enable
       ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
@@ -719,7 +712,6 @@ CABALA:
     path:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
-#    is_angular: show-fix
 
 
 ALLSTAR:
