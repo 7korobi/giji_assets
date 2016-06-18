@@ -169,6 +169,7 @@ BRAID:
       - weak
       - juna
       - vulcan
+      - infinity
     game:  &game_braid
       - TABULA
       - MILLERHOLLOW
@@ -477,15 +478,6 @@ MORPHE:
 
   config:
     <<: *config_game
-    saycnt:
-      - tiny
-      - weak
-      - juna
-      - vulcan
-      - say5x200
-      - say5x300
-      - saving
-      - euro
 
     enable:
       <<: *enable
@@ -522,11 +514,6 @@ SOYBEAN:
   config:
     <<: *config_braid
     <<: *config_new
-    saycnt:
-      - weak
-      - juna
-      - vulcan
-      - infinity
     enable:
       <<: *enable_braid
       ENABLED_AIMING:       [1, "1:対象を指定した発言（内緒話）を含める"]
@@ -564,11 +551,6 @@ CIEL:
   config:
     <<: *config_braid
     <<: *config_new
-    saycnt:
-      - weak
-      - juna
-      - vulcan
-      - infinity
     enable:
       <<: *enable_braid
       ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
@@ -604,11 +586,6 @@ PERJURY:
 
   config:
     <<: *config_braid
-    saycnt:
-      - weak
-      - juna
-      - vulcan
-      - infinity
     cfg:
       <<: *cfg_braid
       URL_SW:         http://perjury.rulez.jp
@@ -640,6 +617,10 @@ XEBEC:
 
   config:
     <<: *config_braid
+    saycnt:
+      - weak
+      - juna
+      - vulcan
     cfg:
       <<: *cfg_braid
       URL_SW:         http://xebec.x0.to/xebec
@@ -705,7 +686,7 @@ CABALA:
 
   config:
     <<: *config_game
-    <<: *config_new
+
     enable:
       <<: *enable
       ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
