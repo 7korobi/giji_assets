@@ -38,7 +38,9 @@ sub GetConfig {
 <%	end	%>
 	);
 
-<%=	@saycnt	%>
+<%	@saycnt_data.each do |data|	%>
+<%= data %>
+<%  end %>
 
 	my %saycnt = (
 		ORDER    => \@saycnt_order,

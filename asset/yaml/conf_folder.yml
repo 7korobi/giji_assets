@@ -171,6 +171,7 @@ BRAID:
       - weak
       - juna
       - vulcan
+      - infinity
     game:  &game_braid
       - TABULA
       - MILLERHOLLOW
@@ -515,11 +516,6 @@ SOYBEAN:
   config:
     <<: *config_braid
     <<: *config_new
-    saycnt:
-      - weak
-      - juna
-      - vulcan
-      - infinity
     enable:
       <<: *enable_braid
       ENABLED_AIMING:       [1, "1:対象を指定した発言（内緒話）を含める"]
@@ -557,11 +553,6 @@ CIEL:
   config:
     <<: *config_braid
     <<: *config_new
-    saycnt:
-      - weak
-      - juna
-      - vulcan
-      - infinity
     enable:
       <<: *enable_braid
       ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
@@ -597,11 +588,6 @@ PERJURY:
 
   config:
     <<: *config_braid
-    saycnt:
-      - weak
-      - juna
-      - vulcan
-      - infinity
     cfg:
       <<: *cfg_braid
       URL_SW:         http://perjury.rulez.jp
@@ -633,6 +619,10 @@ XEBEC:
 
   config:
     <<: *config_braid
+    saycnt:
+      - weak
+      - juna
+      - vulcan
     cfg:
       <<: *cfg_braid
       URL_SW:         http://xebec.x0.to/xebec
