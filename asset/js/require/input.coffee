@@ -1,3 +1,6 @@
+Tie = require "./tie"
+
+
 setting = (list...)->
   tooltip:   list.find((o)-> o.tooltip   )?.tooltip || null
   className: list.map( (o)-> o.className ).join " "
@@ -86,7 +89,7 @@ select_multi_btn = (params, btn, o)->
 
 select_multi = (params, attr, o)->
   (data)->
-    { _id, name, options, init } = o
+    { _id, name, options, current } = o
 
     now_vals = params[_id]
     now_option = options[now_val]
@@ -101,7 +104,7 @@ select_multi = (params, attr, o)->
 
 select_btn = (params, btn, o)->
   (data)->
-    { _id, attr: {required}, options, init } = o
+    { _id, attr: {required}, options, current } = o
 
     now_val = params[_id]
     list =
@@ -112,7 +115,7 @@ select_btn = (params, btn, o)->
           data option
           m ".emboss.pull-right", option.badge() if option.badge
 
-    unless required && init
+    unless required && current
       attr = btn "" == now_val, _id, null, setting o.attr, { className: "icon-cancel-alt" }
       list.unshift m "span", attr, ""
     list
@@ -120,7 +123,7 @@ select_btn = (params, btn, o)->
 
 select = (params, attr, o)->
   (data)->
-    { _id, name, options, init } = o
+    { _id, name, options, current } = o
 
     now_val = params[_id]
     now_option = options[now_val]
@@ -129,7 +132,7 @@ select = (params, attr, o)->
     setting o.attr
 
     m 'select', attr,
-      unless attr.required && init
+      unless attr.required && current
         m 'option', { selected, value: "", key: name },
           "- #{name} -"
       for value, option of options when ! option.hidden
@@ -140,8 +143,7 @@ select = (params, attr, o)->
 
 
 
-checkboxes = (params, org_attr, o)->
-  attr = _.assign {}, org_attr
+checkboxes = (params, attr, o)->
   (value)->
     { _id, type } = o
 
@@ -246,22 +248,24 @@ form_attr = (tie, { attr })->
       false
 
 change_attr = (val, tie, { _id, attr })->
-  _.assign attr,
-    disabled: tie.disabled
-    onblur:     (e)-> tie.do_blur   _id, e
-    onfocus:    (e)-> tie.do_focus  _id, e
-    onchange:   (e)-> tie.do_change _id, val e
-    onselect:   (e)-> tie.do_select _id, e
-    oninvalid:  (e)-> tie.do_fail   _id, val e
+  ( setting )->
+    _.assign {}, attr, setting,
+      disabled: tie.disabled
+      onblur:     (e)-> tie.do_blur   _id, e
+      onfocus:    (e)-> tie.do_focus  _id, e
+      onchange:   (e)-> tie.do_change _id, val e
+      onselect:   (e)-> tie.do_select _id, e
+      oninvalid:  (e)-> tie.do_fail   _id, val e
 
 input_attr = (val, tie, { _id, attr })->
-  _.assign attr,
-    disabled: tie.disabled
-    onblur:    (e)-> tie.do_blur   _id, e
-    onfocus:   (e)-> tie.do_focus  _id, e
-    oninput:   (e)-> tie.do_change _id, val e
-    onselect:  (e)-> tie.do_select _id, e
-    oninvalid: (e)-> tie.do_fail   _id, val e
+  ( setting )->
+    _.assign {}, attr, setting,
+      disabled: tie.disabled
+      onblur:    (e)-> tie.do_blur   _id, e
+      onfocus:   (e)-> tie.do_focus  _id, e
+      oninput:   (e)-> tie.do_change _id, val e
+      onselect:  (e)-> tie.do_select _id, e
+      oninvalid: (e)-> tie.do_fail   _id, val e
 
 btn_attr = (val, tie, b)->
   (bool, _id, new_val, { className, tooltip })->
@@ -395,41 +399,29 @@ class InputTie
     @submit = @submit_for {}
     @
 
-  constructor: ({ @timeout, @params, inputs })->
+  constructor: ({ @timeout, @params, ids })->
     @off()
     @input = {}
 
-    @by_init = =>
-      for key, { init, type } of inputs
-        @params[key] = Mem.unpack[type] init
-      return
+    @tie = Tie.build_input ids, @params, @, Input
+    @prop = @tie.prop
 
-    @by_cookie = =>
-      for key, { cookie, type } of inputs
-        if cookie
-          match = document.cookie.match ///#{key}=([^;]+)///
-          if match?[1]?
-            @params[key] = Mem.unpack[type] decodeURI match[1]
-          @check @params
-      return
-
-    for key, o of inputs
-      @input[key] = new Input @, o
-
-    @by_init()
-
-  @form = (options)->
-    new InputTie options
+  @form = (params, ids)->
+    { timeout } = Input
+    new InputTie { timeout, ids, params }
     .init_submit
       form: (attr, vdom...)->
         m "form", form_attr(@, attr), vdom
 
-  @btns = (options)->
-    new InputTie options
+  @btns = (params, ids)->
+    { timeout } = Input
+    new InputTie { timeout, ids, params }
     .init_submit {}
 
 
 class Input
+  @timeout = 1000
+
   constructor: (tie, o)->
     params = tie.params
     now_val = -> tie.params[o._id]
@@ -459,7 +451,7 @@ class Input
             @start = (value, attr)=>
               attr
 
-      when "btns"     
+      when "btns"
         btn = btn_attr c_tap,      tie, @
         @head = h_header params, o
         if o.attr.multiple
@@ -467,7 +459,7 @@ class Input
         else
           @field = select_btn params, btn, o
 
-      when "checkbox_btn"     
+      when "checkbox_btn"
         btn = btn_attr c_tap,      tie, @
         @head = h_header params, o
         @field = checkbox_btn params, btn, o
@@ -508,6 +500,7 @@ class Input
       continue if caption._id?
       o.options[_id] =
         if "object" == typeof caption
+          caption._id = _id
           caption
         else
           { _id, caption }

@@ -150,32 +150,35 @@
 }).call(this);
 
 (function() {
-  var tie;
-
-  Url.define(URL_PROPS);
-
-  tie = Mem.Query.options.btns(Url.params, ["theme", "width", "layout", "font"]);
-
-  tie.check = function() {
-    return console.log(tie.params);
+  Store.cookie_options = {
+    time: 7 * 24 * 60 * 60 * 1000,
+    path: "/sow.cgi",
+    secure: false
   };
 
-  Url.tie = tie;
-
-  Url.routes = {
+  Url.maps({
     pathname: {
-      story: new Url("/sow.cgi")
+      story: "/sow.cgi"
     },
     hash: {
-      pin: new Url("pin=:back~:pins"),
-      mode: new Url("mode=:scope~:icon"),
-      potofs: new Url("ptf=:potofs_order~:potofs_desc~:potofs_hide")
+      pin: "pin=:back~:pins",
+      mode: "mode=:scope~:icon",
+      potofs: "ptf=:potofs_order~:potofs_desc~:potofs_hide"
     },
     search: {
-      messages: new Url("log=:home~:talk~:memo~:open~:human~:search"),
-      scroll: new Url("scr=:scroll~:talk_at~:memo_at")
+      village: "vid=:vid",
+      messages: "log=:home~:talk~:memo~:open~:human~:search",
+      scroll: "scr=:scroll~:talk_at~:memo_at"
     }
-  };
+  });
+
+  Store.maps({
+    session: ["theme", "width", "layout", "font"]
+  });
+
+  Url.tie = InputTie.btns(Url.params, ["theme", "width", "layout", "font"]);
+
+  Url.conf.scroll.current = true;
 
 }).call(this);
 
@@ -1753,7 +1756,7 @@
               hour: form.time.slice(0, 2),
               minite: form.time.slice(3, 5),
               eventcard: form.trap.join("/"),
-              csid: Mem.Query.options.hash.chr_npc.options[form.chr_npc].csid,
+              csid: Mem.Query.inputs.hash.chr_npc.options[form.chr_npc].csid,
               votetype: form.vote_sign ? "sign" : "anonymity",
               starttype: form.start_auto ? "wbbs" : "manual",
               entrylimit: form.entry_password ? 'password' : 'free'
@@ -1796,6 +1799,7 @@
 (function() {
   if (((typeof gon !== "undefined" && gon !== null ? gon.events : void 0) != null) && (gon.event != null)) {
     win.mount("#messages", function(dom) {
+      Url.conf.messages.current = true;
       win.scroll.size = 30;
       doc.delegate.tap_external = function(id, uri, protocol, host, path) {
         var message;
@@ -1922,7 +1926,7 @@
 
 (function(){
   var tie, menu, btns, out$ = typeof exports != 'undefined' && exports || this;
-  tie = Mem.Query.options.btns(Url.params, ["icon", "scope"]);
+  tie = InputTie.btns(Url.params, ["icon", "scope"]);
   tie.change = function(key, val, old){
     console.log([key, val, old]);
     switch (key) {
@@ -2153,6 +2157,17 @@
       return doc.component.stories;
     });
   }
+  window.addEventListener("hashchange", function(arg$){
+    var newURL, oldURL;
+    newURL = arg$.newURL, oldURL = arg$.oldURL;
+    return Url.popstate();
+  });
+  window.addEventListener("popstate", function(arg$){
+    var state;
+    state = arg$.state;
+    console.warn(state);
+    return Url.popstate();
+  });
   win.deploy();
   m.endComputation();
 }).call(this);
@@ -2199,7 +2214,7 @@
           return Mem.Query.map_faces.active(Url.params.order, Url.params.chr_set, Url.params.search).list.length;
         }
       };
-      ref = Mem.Query.options.hash.icon.options;
+      ref = Mem.Query.inputs.hash.icon.options;
       for (icon in ref) {
         option = ref[icon];
         option.badge = badges[icon];
@@ -2297,7 +2312,7 @@
   doc.component.characters = {
     controller: function() {
       var tie;
-      return tie = Mem.Query.options.btns(Url.params, ["tag"]);
+      return tie = InputTie.btns(Url.params, ["tag"]);
     },
     view: function(arg) {
       var attr, cb, chr_job, chrs, input, job_name, o, params, set, tag;
@@ -2365,7 +2380,7 @@
   doc.component.chr_sets = {
     controller: function() {
       var input, params, tie;
-      tie = Mem.Query.options.btns(Url.params, ["order", "search"]);
+      tie = InputTie.btns(Url.params, ["order", "search"]);
       input = tie.input;
       params = Url.params;
       return {
@@ -2425,7 +2440,7 @@
   doc.component.filter = {
     controller: function(){
       var ref$, talk_at, scroll, pins, this$ = this;
-      this.tie = Mem.Query.options.btns({}, []);
+      this.tie = InputTie.btns({}, []);
       this.tie.change(function(id, value){
         var ref$, key$, ref1$;
         if (doc.seeing[o._id] >= day) {
@@ -2646,7 +2661,7 @@
   doc.component.header = {
     controller: function() {
       var tie;
-      return tie = Mem.Query.options.btns(Url.params, ["header_state"]);
+      return tie = InputTie.btns(Url.params, ["header_state"]);
     },
     view: function(arg) {
       var input, max_all, max_cafe, max_ciel, max_crazy, max_morphe, max_pan, max_vage, max_xebec, params, top_line_attr;
@@ -3217,12 +3232,12 @@
   doc.component.security_modes = {
     controller: function(prop) {
       var input, options, refresh, tie;
-      tie = Mem.Query.options.btns(Url.params, ["show", "open", "human"]);
+      tie = InputTie.btns(Url.params, ["show", "open", "human"]);
       tie.check(function() {
         prop(Url.params.show);
         return Url.replacestate();
       });
-      options = Mem.Query.options.hash.show.options;
+      options = Mem.Query.inputs.hash.show.options;
       refresh = function() {
         var grave_caption, has, mob, story, think_caption;
         has = Mem.Query.messages.has;
@@ -3275,7 +3290,7 @@
       this.params = {
         ua: ua
       };
-      this.tie = Mem.Query.options.form(this.params, ['uid', 'pwd']);
+      this.tie = InputTie.form(this.params, ['uid', 'pwd']);
       this.tie.timeout = 5000;
       this.tie.disable = function(){
         return m.endComputation();
@@ -3319,7 +3334,7 @@
         doc.user.is_login = this$.is_login = o.is_login > 0;
         doc.user.is_admin = o.is_admin > 0;
         validate.sow_auth(this$);
-        this$.tie.by_cookie();
+        Store.cookie.save();
       };
       deploy(gon);
     },
@@ -3757,6 +3772,7 @@
       old_snap = "";
       this.refresh = function() {
         var base_style, key, list;
+        Url.replacestate();
         base_style = html.className.replace(old_snap, "").trim();
         list = (function() {
           var i, len, ref, results;
@@ -3793,11 +3809,6 @@
       }
     }
   };
-
-}).call(this);
-
-(function() {
-
 
 }).call(this);
 
@@ -3843,7 +3854,7 @@
 (function() {
   var error_and_info, field;
 
-  field = Mem.Query.options.hash;
+  field = Mem.Query.inputs.hash;
 
   error_and_info = function(o) {
     var msg;
@@ -3877,7 +3888,7 @@
         gift: [],
         trap: []
       };
-      v.tie = Mem.Query.options.form(v.params, ["vil_name", "vil_comment", "rating", "trs_type", "say_count", "time", "interval", "entry_password", "chr_npc", "mob_type", "game_rule", "role_table", "player_count", "player_count_start"]);
+      v.tie = InputTie.form(v.params, ["vil_name", "vil_comment", "rating", "trs_type", "say_count", "time", "interval", "entry_password", "chr_npc", "mob_type", "game_rule", "role_table", "player_count", "player_count_start"]);
       v.tie.check = function() {
         return validate.cards(v);
       };
@@ -3886,7 +3897,7 @@
       };
       v.tie.input.checkboxes = (function() {
         var i, len, ref, results;
-        ref = Mem.Query.options.check_vil().list;
+        ref = Mem.Query.inputs.check_vil().list;
         results = [];
         for (i = 0, len = ref.length; i < len; i++) {
           chk = ref[i];

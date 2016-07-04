@@ -1,6 +1,6 @@
 doc.component.filter =
   controller: !->
-    @tie = Mem.Query.options.btns {}, []
+    @tie = InputTie.btns {}, []
     @tie.change (id, value)->
       if doc.seeing[o._id] >= day
         delete doc.seeing[o._id]

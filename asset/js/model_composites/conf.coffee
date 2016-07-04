@@ -3,18 +3,20 @@ btn_data = (type)->
   name:  Mem.conf.tag[type].name
   badge: Mem.Query.faces.reduce.tag[type].count
 
-field = Mem.Query.options.hash
-field.role_table.options = Mem.Query.role_tables.enable().hash
-field.game_rule.options = Mem.Query.rules.enable().hash
-field.say_count.options = Mem.Query.says.enable().hash
-field.mob_type.options = Mem.Query.roles.mob().hash
-field.chr_npc.group_by = (o)-> o.chr_npcs().hash
-field.chr_npc.options = Mem.Query.chr_npcs.hash
-field.chr_set.options = field.chr_npc.groups = Mem.Query.chr_sets.hash
-field.rating.options = Mem.Query.ratings.enable().hash
-field.trs_type.options = Mem.Query.trss.enable().hash
 
-field.tag.options =
+h = Mem.Query.inputs.hash
+h.role_table.options = Mem.Query.role_tables.enable().hash
+h.game_rule.options = Mem.Query.rules.enable().hash
+h.say_count.options = Mem.Query.says.enable().hash
+h.mob_type.options = Mem.Query.roles.mob().hash
+h.chr_npc.group_by = (o)-> o.chr_npcs().hash
+h.chr_npc.options = Mem.Query.chr_npcs.hash
+h.chr_set.options = h.chr_npc.groups = Mem.Query.chr_sets.hash
+h.rating.options = Mem.Query.ratings.enable().hash
+h.trs_type.options = Mem.Query.trss.enable().hash
+
+
+h.tag.options =
   all:
     _id: "all"
     name: "- 全体 -"

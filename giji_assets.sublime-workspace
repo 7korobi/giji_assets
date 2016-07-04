@@ -7,6 +7,185 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "asset/js/require/url_store.coffee",
+			"settings":
+			{
+				"buffer_size": 2475,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/m_view/css_changer.coffee",
+			"settings":
+			{
+				"buffer_size": 205,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/m_view/sow_css_changer.coffee",
+			"settings":
+			{
+				"buffer_size": 457,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Store.cookie_options =\n  time: 7 * 24 * 60 * 60 * 1000\n  path: \"/\"\n  secure: false\n\nUrl.tie = Mem.Query.options.btns Url.params, [\"theme\", \"width\", \"layout\", \"font\"]\n\nUrl.maps\n  pathname:\n    root:   \"/\"\n    story:  \"/stories/:story_id\"\n    faces:  \"/map_reduce/faces\"\n    face:   \"/map_reduce/faces/:face_id\"\n    events: \"/:story_id/file\"\n    event:  \"/:story_id/:turn/messages\"\n\n  hash:\n    pin:    \"pin=:back~:pins\"\n    mode:   \"mode=:scope~:icon\"\n    potofs: \"ptf=:potofs_order~:potofs_desc~:potofs_hide\"\n\n  search:\n    faces:    \"face=:chr_set~:order~:search\"\n    scroll:   \"scr=:scroll~:talk_at~:memo_at\"\n    folder:   \"folder=:folder\"\n    stories:  \"story=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search\"\n    messages: \"log=:home~:talk~:memo~:open~:human~:search\"\n\nStore.maps\n  session: [\"theme\", \"width\", \"layout\", \"font\"]\n\nUrl.conf.scroll.current = true\n",
+			"file": "asset/js/@rails/_routes.coffee",
+			"file_size": 831,
+			"file_write_time": 131121178343522558,
+			"settings":
+			{
+				"buffer_size": 914,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/@rails/vdom_css_changer.coffee",
+			"settings":
+			{
+				"buffer_size": 107,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/models/conf_z.coffee.erb",
+			"settings":
+			{
+				"buffer_size": 659,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/before/doc.js.ls",
+			"settings":
+			{
+				"buffer_size": 2526,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/require/web_store.coffee",
+			"settings":
+			{
+				"buffer_size": 1045,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/models/conf_store.coffee",
+			"settings":
+			{
+				"buffer_size": 269,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "\nicon:\n  sean: menu\n  attr:\n    type: tree\n    style: icon\n  name: \"アイコン\"\n  current:\n  options:\n    cog:\n      tooltip: 画面表示を調整します。\n    home:\n      tooltip: 村の設定、アナウンスを表示します。\n    clock:\n      tooltip: メモの履歴を表示します。\n    mail:\n      tooltip: 最新のメモを表示します。\n    chat-alt:\n      tooltip: 発言を表示します。\n    search:\n      tooltip: 検索機能をつかいます。\n    resize-normal:\n      tooltip: 簡略な表記にします。\n    resize-full:\n      tooltip: 詳細な表記にします。\n    th-large:\n      tooltip: 条件で絞り込みます。\n    pencil:\n      tooltip: 書き込み機能\n\n\nscope:\n  sean: menu\n  attr:\n    type: tree\n    style: hide\n  name: \"動作モード\"\n  current:\n\ntheme:\n  sean: cog\n  attr:\n    required: required\n    type: btns\n  name: スタイル\n  current: cinema\n  options:\n    cinema:  煉瓦\n    star:    蒼穹\n    night:   闇夜\n    moon:    月夜\n    wa:      和の国\n\nlayout:\n  sean: cog\n  attr:\n    required: required\n    type: btns\n  name: 位置\n  current: center\n  options:\n    left:    左詰\n    center:  中央\n    right:   右詰\n\nwidth:\n  sean: cog\n  attr:\n    required: required\n    type: btns\n  name: 幅の広さ\n  current: wide\n  options:\n    full:  最大\n    wide:  広域\n    std:   狭域\n\nfont:\n  sean: cog\n  attr:\n    required: required\n    type: btns\n  name: 書体\n  current: std\n  options:\n    large:  大判\n    novel:  明朝\n    std:    ゴシック\n    small:  繊細\n\nshow:\n  sean: message\n  attr:\n    required: required\n    type: btns\n  name: 表示設定\n  current: all\n  options:\n    all:   すべて\n    think: 独り言\n    clan:  仲間つき\n    open:  公開情報のみ\n    main:  出席者のみ\n    grave: 墓下のみ\n\nopen:\n  sean: message\n  attr:\n    className: invisible\n    name: open\n    type: checkbox\n  name: 公開情報\n  help_on: 公開情報つき\n  help_off: 秘密のみ\n\nhuman:\n  sean: message\n  attr:\n    className: invisible\n    name: human\n    type: checkbox\n  name: \"/*中の人*/\"\n  help_on: \"/*中の人*/\"\n  help_off: \"/**/\"\n\ntag:\n  sean: chr\n  attr:\n    type: btns\n  name: タグ\n  current: all\n  options: {}\n\n\nheader_state:\n  sean: top\n  attr:\n    className: invisible\n    type: radio\n  current: finish\n\nvote_sign:\n  sean: vil\n  attr:\n    name: votetype\n    type: checkbox\n  name: 記名投票\n  help_on: 記名で投票　※集計結果に投票者が記されます\n  help_off: 匿名で投票　※集計結果は人数のみになります\n\nstart_auto:\n  sean: vil\n  attr:\n    name: starttype\n    type: checkbox\n  name: 自動開始\n  help_on: 更新時に、最少催行人数が集まっていると開始\n  help_off: 村立て人が開始ボタンを押すと開始\n\nseq_event:\n  sean: vil\n  attr:\n    name: seqevent\n    type: checkbox\n  query:\n    SOW: seqevent\n  name: 固定事件簿\n  help_on:  事件が順序どおりに発生する\n  help_off: 事件はランダムに選ばれる\n\nshow_id:\n  sean: vil\n  attr:\n    name: showid\n    type: checkbox\n  query:\n    SOW: showid\n  name: ID公開\n  help_on:  進行中にユーザーIDを公開する\n  help_off: エピローグまで、ユーザーIDを秘密にする\n\nentrust:\n  sean: vil\n  attr:\n    name: entrust\n    type: checkbox\n  query:\n    SOW: entrust\n  name: 委任投票\n  current: true\n  help_on:  委任投票ができる\n  help_off: 委任投票ができない\n\nnot_select_role:\n  sean: vil\n  attr:\n    name: noselrole\n    type: checkbox\n  query:\n    SOW: noselrole\n  name: 役職希望\n  current: true\n  help_on:  役職希望を無視する\n  help_off: 役職希望を受け付ける\n\nrandom_target:\n  sean: vil\n  attr:\n    name: randomtarget\n    type: checkbox\n  query:\n    SOW: randomtarget\n  name: ランダム\n  help_on:  投票・能力の対象に「ランダム」が選択できる\n  help_off: 投票・能力の対象は「ランダム」にできない\n\nundead_talk:\n  sean: vil\n  attr:\n    name: undead\n    type: checkbox\n  query:\n    SOW: undead\n  name: 幽界トーク\n  help_on:  狼・妖精と死者との間で、会話ができる\n  help_off: 狼・妖精と死者は会話を交わせない\n\naiming_talk:\n  sean: vil\n  attr:\n    name: aiming\n    type: checkbox\n  query:\n    SOW: aiming\n  name: 内緒話\n  help_on:  ふたりだけの内緒話をすることができる\n  help_off: ふたりだけの内緒話は選べない\n\nsearch:\n  sean: chr_sets\n  attr:\n    name: search\n    type: text\n    size: 20\n    maxlength: 20\n  name:\n  help_on:\n  help_off:\n\nvil_name:\n  sean: vil\n  attr:\n    name: vname\n    type: text\n    size: 20\n    maxlength: 20\n    required: required\n    pattern: \".{6,20}\"\n  query:\n    SOW: vname\n  name:\n  help_on:\n  help_off:\n\nvil_comment:\n  sean: vil\n  attr:\n    name: vcomment\n    type: textarea\n    cols: 30\n    rows: 10\n    style: \"width: 100%\"\n  query:\n    SOW: vcomment\n  name:\n  help_on:\n  help_off:\n\nuid:\n  sean: vil\n  attr:\n    type: text\n    name: uid\n    size: 10\n    maxlength: 20\n  name: アカウント\n  cookie: true\n  help_on:\n  help_off:\n\npwd:\n  sean: vil\n  attr:\n    type: password\n    name: pwd\n    size: 10\n    maxlength: 20\n  name: パスワード\n  cookie: true\n  help_on:\n  help_off:\n\nentry_password:\n  sean: vil\n  attr:\n    type: text\n    name: entrypwd\n    size: 8\n    maxlength: 8\n    pattern: \"[a-zA-Z0-9]{0,8}\"\n  query:\n    SOW: entrypwd\n  name: 参加制限\n  help_on:  参加者はパスワードを入力する\n  help_off: 参加制限しない　※パスワードをつけると、鍵付きの村になります。\n\nplayer_count:\n  sean: vil\n  attr:\n    type: number\n    name: vplcnt\n    min:  4\n    max: 20\n    step: 1\n    required: required\n  query:\n    SOW: vplcnt\n  name: 定員\n  help_on:  人が定員です。\n  help_off: 定員　※入力してください。\n\nplayer_count_start:\n  sean: vil\n  attr:\n    type: number\n    name: vplcntstart\n    min:  4\n    max: 20\n    step: 1\n    required: required\n  query:\n    SOW: vplcntstart\n  name: 最少催行人員\n  help_on:  人以上で開始します。\n  help_off: 最少催行人数　※入力してください。\n\ntime:\n  sean: vil\n  attr:\n    type: time\n    name: time\n    step: 1800\n    required: required\n  current: \"22:30\"\n  name: 更新時刻\n  help_on:  に更新します。\n  help_off: 更新時刻　※入力してください。\n\ninterval:\n  sean: vil\n  attr:\n    type: select\n    name: updinterval\n    required: required\n  query:\n    SOW: updinterval\n  current: 1\n  options:\n    3: 72時間\n    2: 48時間\n    1: 24時間\n  name: 更新間隔\n  help_on:  ごとに更新します。\n  help_off: ※入力してください。\n\ngame_rule:\n  sean: vil\n  attr:\n    type: select\n    name: game\n    required: required\n  query:\n    SOW: game\n  name: ゲームルール\n  help_on: \"\"\n  help_off: ※入力してください。\n\nrating:\n  sean: vil\n  attr:\n    type: select\n    name: rating\n    required: required\n  query:\n    SOW: rating\n  current: default\n  name: こだわり\n  help_on: \"\"\n  help_off: ※入力してください。\n\nchr_set:\n  sean: vil\n  attr:\n    type: select\n    name: chr_set\n    required: required\n  name: 登場人物\n  help_on: \"\"\n  help_off: ※入力してください。\n\nchr_npc:\n  sean: vil\n  attr:\n    type: select\n    name: csid\n    required: required\n  name: 登場人物とNPC\n  help_on: \"\"\n  help_off: ※入力してください。\n\nsay_count:\n  sean: vil\n  attr:\n    type: select\n    name: saycnttype\n    required: required\n  query:\n    SOW: saycnttype\n  name: 発言制限\n  help_on: \"\"\n  help_off: ※入力してください。\n\nrole_table:\n  sean: vil\n  attr:\n    type: select\n    name: roletable\n    required: required\n  query:\n    SOW: roletable\n  current: default\n  name: 役職配分\n  help_on: \"\"\n  help_off: ※入力してください。\n\nmob_type:\n  sean: vil\n  attr:\n    type: select\n    name: mob\n    required: required\n  name: 見物スタイル\n  help_on: \"\"\n  help_off: ※入力してください。\n\ntrs_type:\n  sean: vil\n  attr:\n    type: select\n    name: trsid\n    required: required\n  query:\n    SOW: trsid\n  current: all\n  name: 地の文章\n  help_on: \"\"\n  help_off: ※入力してください。\n",
+			"file": "asset/yaml/conf_option.yml",
+			"file_size": 8202,
+			"file_write_time": 131120090350714373,
+			"settings":
+			{
+				"buffer_size": 6579,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 341 files for \"Url.prop.theme\" (case sensitive)\n\nC:\\Dropbox\\www\\giji_assets\\asset\\js\\m_view\\banner.coffee:\n   20:   theme = Mem.conf.theme[Url.prop.theme()]\n\nC:\\Dropbox\\www\\giji_assets\\tmp\\cache\\gulp-asset\\rails.js:\n 2916:     theme = Mem.conf.theme[Url.prop.theme()];\n\nC:\\Dropbox\\www\\giji_assets\\tmp\\cache\\gulp-asset\\scratch.js:\n 2646:     theme = Mem.conf.theme[Url.prop.theme()];\n\nC:\\Dropbox\\www\\giji_assets\\tmp\\cache\\gulp-asset\\sow.js:\n 4272:     theme = Mem.conf.theme[Url.prop.theme()];\n\nC:\\Dropbox\\www\\giji_assets\\tmp\\cache\\gulp-js\\m_view\\banner.js:\n   32:     theme = Mem.conf.theme[Url.prop.theme()];\n\n5 matches across 5 files\n",
+			"settings":
+			{
+				"buffer_size": 646,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"contents": "pins:     { type: Keys }\nscroll:   { type: Text }\nback:     { type: Text }\nicon:     { type: Text }\nsearch:   { type: Text }\n\nvid:  { type: Number }\nturn: { type: Number }\n\nupdated_at: { type: Date }\n\nuid: {}\npwd: { type: Text }\nitem: {}\ncolor: {}\ntitle: {}\nnation: {}\nmessage_id: {}\nevent_id: {}\nstory_id: {}\nmode_id:  { current: talk }\n\ntag:      { current: all }\nwidth:    { current: wide }\nlayout:   { current: center }\nfont:     { current: std }\ntheme:    { current: cinema }\n\npotofs_hide:  { type: Keys }\npotofs_desc:  { type: Bool, current: true }\npotofs_order: { current: said_num }\n\nmemo_at:  { type: Text, current: \"\" }\ntalk_at:  { type: Text, current: \"\" }\nhome_at:  { type: Text, current: \"\" }\nopen:     { type: Bool, current: true }\nuniq:     { type: Bool, current: true }\nhuman:    { type: Bool, current: true }\nscope:    { current: home }\nmemo:     { current: all }\ntalk:     { current: open }\nhome:     { current: announce }\n\nroletable:       { current: ALL }\ncard_win:        { current: ALL }\n\nfolder:          { current: all }\nchr_set:         { current: all }\norder:           { current: all }\ngame:            { current: all }\nsay_limit:       { current: all }\nplayer_length:   { current: all }\nrating:          { current: all }\nconfig:          { current: all }\nevent_type:      { current: all }\ngift_type:       { current: all }\nrole_type:       { current: all }\nupdate_at:       { current: all }\nupdate_interval: { current: all }\n",
+			"file": "asset/yaml/conf_store.yml",
+			"file_size": 1454,
+			"file_write_time": 131120689768606157,
+			"settings":
+			{
+				"buffer_size": 1453,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/npm/require_deploy.coffee",
+			"settings":
+			{
+				"buffer_size": 1396,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/require/input.coffee",
+			"settings":
+			{
+				"buffer_size": 11347,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/models/conf_option.coffee",
+			"settings":
+			{
+				"buffer_size": 607,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "asset/js/after/menu.js.ls",
+			"settings":
+			{
+				"buffer_size": 926,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/require/tie.coffee",
+			"settings":
+			{
+				"buffer_size": 989,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/_helper.coffee",
+			"settings":
+			{
+				"buffer_size": 222,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "asset/js/m_component/title.coffee",
+			"settings":
+			{
+				"buffer_size": 1124,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/input_icon_spec.coffee",
+			"settings":
+			{
+				"buffer_size": 1287,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "test/url_store_spec.coffee",
+			"settings":
+			{
+				"buffer_size": 1727,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -48,9 +227,60 @@
 	},
 	"expanded_folders":
 	[
+		"/C/Dropbox/www/giji_assets/asset/yaml",
+		"/C/Dropbox/www/giji_assets/asset/js",
+		"/C/Dropbox/www/giji_assets/asset/js/@sow",
+		"/C/Dropbox/www/giji_assets/asset/js/after",
+		"/C/Dropbox/www/giji_assets/asset/js/before",
+		"/C/Dropbox/www/giji_assets/asset/js/models",
+		"/C/Dropbox/www/giji_assets/asset/js/require",
+		"/C/Dropbox/www/giji_assets/config",
+		"/C/Dropbox/www/giji_assets/config/deploy",
+		"/C/Dropbox/www/giji_assets/config/environments",
+		"/C/Dropbox/www/giji_assets/config/initializers",
+		"/C/Dropbox/www/giji_assets/test"
 	],
 	"file_history":
 	[
+		"/C/Dropbox/www/giji_assets/asset/js/after/win.js.ls",
+		"/C/Dropbox/www/giji_assets/asset/js/@sow/_routes.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/@scratch/_routes.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/@rails/_routes.coffee",
+		"/C/Dropbox/www/giji_assets/public/assets-master/base.js",
+		"/C/Dropbox/www/giji_assets/asset/js/m_component/sow_auth.js.ls",
+		"/C/Dropbox/www/giji_assets/asset/yaml/conf_store.yml",
+		"/C/Dropbox/www/giji_assets/asset/js/require/store.coffee",
+		"/C/Dropbox/www/giji_assets/gulpfile.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/require/tie.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/models/conf_z.coffee.erb",
+		"/C/Dropbox/www/giji_assets/asset/yaml/conf_url_prop.yml",
+		"/C/Dropbox/www/giji_assets/tmp/cache/gulp-js/models/conf_url_prop.js",
+		"/C/Dropbox/www/giji_assets/tmp/cache/gulp-asset/const.js",
+		"/C/Dropbox/www/giji_assets/asset/js/models/_json.coffee.erb",
+		"/C/Dropbox/www/giji_assets/asset/js/model_composites/conf.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/models/conf_url_prop.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/require/input.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/require/_tie.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/m_component/title.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/after/in_vil.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/before/doc.js.ls",
+		"/C/Dropbox/www/giji_assets/asset/js/models/conf_url.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/models/conf_option.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/@sow/vdom_make_vil.coffee",
+		"/C/Dropbox/www/giji_assets/asset/yaml/conf_url.yml",
+		"/C/Dropbox/www/giji_assets/asset/yaml/test_vil.yml",
+		"/C/Dropbox/www/giji_assets/asset/yaml/conf_option.yml",
+		"/C/Dropbox/www/giji_assets/asset/yaml/cs_ger.yml",
+		"/C/Dropbox/www/npm-bower/mithril-giji/package.json",
+		"/C/Dropbox/www/giji_assets/asset/js/@sow/vdom_css_changer.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/m_view/css_changer.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/m_view/sow_css_changer.coffee",
+		"/C/Dropbox/www/giji_assets/asset/js/@rails/vdom_css_changer.coffee",
+		"/C/Dropbox/www/giji_assets/lib/gulp/asset.coffee",
+		"/C/Dropbox/www/giji_assets/giji_assets.sublime-project",
+		"/C/Dropbox/www/giji_assets/Gruntfile.coffee",
+		"/C/Dropbox/www/giji_assets/taq",
+		"/C/Dropbox/www/giji_assets/giji_assets.sublime-workspace",
 		"/C/Dropbox/Titanium/pmang_app_titanium/pmang_app_titanium.sublime-workspace",
 		"/C/Dropbox/Titanium/pmang_app_titanium/pmang_app_titanium.sublime-project",
 		"/C/Dropbox/Titanium/pmang_app_titanium/app/styles/notice.stss",
@@ -93,27 +323,19 @@
 		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/User/Default (Windows).sublime-keymap",
 		"/C/Dropbox/bin/SublimeText.x64/Data/Packages/User/Distraction Free.sublime-settings",
 		"/C/Dropbox/Titanium/pmang_app_titanium/DefaultIcon.png",
-		"/C/Dropbox/www/giji_assets/asset/js/after/in_vil.coffee",
-		"/C/Dropbox/www/giji_assets/asset/js/@rails/vdom_css_changer.coffee",
 		"/C/Dropbox/www/giji_assets/asset/js/m_component/buttons.coffee",
 		"/C/Dropbox/www/giji_assets/asset/js/m_component/vmake_form.coffee",
-		"/C/Dropbox/www/giji_assets/asset/js/m_component/sow_auth.js.ls",
 		"/C/Dropbox/www/giji_assets/asset/js/m_component/security_modes.coffee",
 		"/C/Dropbox/www/giji_assets/asset/js/m_component/characters.coffee",
 		"/C/Dropbox/www/giji_assets/asset/js/m_component/header.coffee",
-		"/C/Dropbox/www/giji_assets/asset/js/@sow/vdom_css_changer.coffee",
 		"/C/Dropbox/www/giji_assets/asset/js/after/menu.js.ls",
 		"/C/Dropbox/www/giji_assets/asset/js/@rails/win.js.ls",
-		"/C/Dropbox/www/giji_assets/asset/js/before/doc.js.ls",
-		"/C/Dropbox/www/giji_assets/asset/js/after/win.js.ls",
 		"/C/Dropbox/www/giji_assets/asset/js/require/gui_url.js.ls",
-		"/C/Dropbox/www/giji_assets/asset/js/@scratch/_routes.coffee",
 		"/C/Dropbox/CentOS-KVM-settings.txt",
 		"/D/OneDrive/hand/7.連絡/週次投稿.txt",
 		"/C/Dropbox/www/npm-bower/mithril-giji/src/event.coffee",
 		"/C/Dropbox/www/npm-bower/mithril-giji/test/gesture_spec.coffee",
 		"/C/Dropbox/www/npm-bower/mithril-giji/src/gesture.coffee",
-		"/C/Dropbox/www/npm-bower/mithril-giji/package.json",
 		"/C/Dropbox/bin/subl.bat",
 		"/C/Dropbox/www/npm-bower/mithril-giji/test/_helper.coffee",
 		"/C/Dropbox/www/npm-bower/mithril-giji/src/_win.coffee",
@@ -147,38 +369,7 @@
 		"/C/USERS/T_ITO/APPDATA/LOCAL/TEMP/~EXTMP01/APNS-Production.pem",
 		"/D/Dropbox/SublimeText.x64/Data/Packages/Theme - Flatland/Flatland Dark.sublime-theme",
 		"/D/Dropbox/SublimeText.x64/.gitignore",
-		"/D/Dropbox/Titanium/pmang_app_titanium/bower.json",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/Theme - Flatland/Flatland Dark.sublime-theme",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/app/models/bbs_board.rb",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/app/controllers/bbs_board_controller.rb",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/resources/PmangApp.1.4.xcdatamodel/contents",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/resources/PmangApp.xcdatamodeld/PmangApp.xcdatamodel/contents",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/app/app_delegate.rb",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/app/models/user.rb",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/app/controllers/profile_controller.rb",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/app/cells/bbs_topic_cell.rb",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/.gitignore",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/app/cells/concerns/bbs_cellable.rb",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/app/controllers/concerns/dateable.rb",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/app/models/portal_api.rb",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/app/_core_data/store.rb",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/resources/migrates/PmangTalk.1.4.Model.xcmappingmodel/xcmapping.xml",
-		"/C/Dropbox/ruby_motion/pmang_app_ios/resources/PmangApp.momd/PmangApp.mom",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/User/Distraction Free.sublime-settings",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/User/Ruby.sublime-settings",
-		"/C/bin/subl.bat",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/User/trailing_spaces.sublime-settings",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/User/Tab Context.sublime-menu.jp",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/User/Default (Windows).sublime-keymap",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/User/Indentation.sublime-menu.jp",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/SublimeCodeIntel/Default (Windows).sublime-mousemap",
-		"/C/Dropbox/SublimeText.x64/Packages/Default.sublime-package",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/Default/Default (Windows).sublime-keymap",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/Default/Preferences.sublime-settings",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/Theme - Flatland/Flatland Monokai.tmTheme",
-		"/c/Dropbox/SublimeText.x64/.gitignore",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/TrailingSpaces/trailing_spaces.sublime-settings",
-		"/C/Dropbox/SublimeText.x64/Data/Packages/Theme - Flatland/README.md"
+		"/D/Dropbox/Titanium/pmang_app_titanium/bower.json"
 	],
 	"find":
 	{
@@ -189,6 +380,7 @@
 		"height": 172.0,
 		"where_history":
 		[
+			"",
 			"app/**",
 			"asset/**",
 			"",
@@ -201,134 +393,134 @@
 		"case_sensitive": true,
 		"find_history":
 		[
-			"	",
-			"a20202",
-			"#navi",
-			"#menu",
-			"ItemTemplate",
-			"2",
-			"underline",
-			"+s",
-			"save",
-			"Url.prop",
-			"tie",
-			"Url.prop",
-			"prop",
-			"Url.prop",
-			"Url",
-			"tie.check",
-			"Url.prop",
-			"params",
-			"Url.prop",
-			"Url.prop.",
-			"messages",
-			"Url.prop",
-			"win.scroll.rescroll",
-			"prop",
-			"Url.prop",
-			"prop",
-			"change_pin",
-			"Url.replacestate()",
-			"change_pin",
-			"Url.prop",
+			"Url.prop.theme",
+			"chr_set",
+			"potofs_hide",
+			"tag",
 			"theme",
-			"Url.prop",
-			"Url.p",
-			"Url.prop",
-			"Url.prop[",
-			".bind",
-			"Url.options",
-			"current",
-			"unmatch",
-			"bind",
-			"Url.bind",
-			"Url.binds",
-			"getter_setter",
-			"do_define",
-			"dodefine",
-			"Url.define",
-			"do_define",
-			"Url.props",
-			"cookies",
-			"set_cookie",
-			"values",
-			"prop",
-			"@prop",
-			"timeout",
-			"debounce",
-			"do_",
-			"@popstate",
-			"state",
+			"Url.tie",
+			"css_changer",
+			"Url.replacestate",
+			"mac",
+			"menu.scope.change_pin",
+			"Tie.global",
+			"Tie.global.deploy",
+			"Store.cookie",
+			"Store.",
+			"Store.cookie",
+			"\"html\"",
+			"console.warn",
+			"serialize",
+			"format",
+			"html",
+			"itml",
 			"popstate",
-			"pushstate",
-			"Url.prop",
-			"btn_attr",
-			"debounce",
-			"Mem.Query.options.",
-			"Mem.Query.options",
-			"do_select",
-			"submit",
-			".submit",
-			"@submit",
-			"tie.submit",
-			"tie.",
-			"submit",
-			"debounce",
-			"btn_attr",
-			"debounce",
-			"btn",
-			"tn",
-			"sysconfig/",
-			"tap ",
-			"tap",
-			"fail",
-			"value",
-			".start",
-			"check",
-			"on",
-			"window",
+			"@loc",
+			"@loc.view()",
+			"Url.location",
+			"console.warn",
+			"@location",
+			".location",
+			"Url.location",
+			"console.warn",
+			"check:",
+			"by_cookie",
+			"tie.type",
+			"tie.conf",
+			"_id",
+			"key",
+			"store",
+			"Tie.params",
+			"Url.type",
+			"tie.type",
 			"type",
-			"fail",
-			"	",
-			"promise",
-			"sync",
-			"delay",
-			"	",
-			"call",
-			"	",
-			"win.layout",
-			"	",
-			"} = e",
-			"{",
-			"Mem[",
-			"belongs_to",
-			"base_obj",
-			"length",
-			"def",
-			"sync",
-			".scope",
-			".s",
-			".scope",
-			"scope",
-			"Finder",
-			"Mem.",
-			"sync",
-			"	",
-			"patch_size",
-			"Mem.",
-			"Mem.tests",
-			"Mem.",
-			"Mem.tests",
-			"Mem.",
-			"Mem.tests",
-			"tests",
-			"Mem.",
-			"Mem.rule.",
-			"Mem.rule",
-			"reset",
-			"all.",
-			"Mem.Sync",
-			"\n    "
+			"conf",
+			"by_cookie",
+			"Tie.global",
+			"type",
+			"params",
+			"Tie.global",
+			"prop",
+			"@",
+			"@prop",
+			"@props",
+			"@params",
+			"Tie.deploy",
+			"Url.",
+			"Url",
+			"Url.prop",
+			"push",
+			"global.",
+			"hh",
+			"Tie.types.url",
+			"location_types",
+			"url_prop",
+			"parse",
+			"{ Tie }",
+			"LocationState",
+			"@loc",
+			"Mem.conf.url_prop",
+			"url_prop_id",
+			", current: {} ",
+			",  current: {}",
+			",  current: \"\"",
+			"vid",
+			"Mem.Serial",
+			"Mem.pack",
+			"input(key)",
+			"Mem.pack",
+			"define",
+			"serial",
+			"parse",
+			"Url.prop",
+			"parse",
+			"Mem.pack",
+			"inputs",
+			"by_current",
+			"fetch",
+			"state",
+			"@timer",
+			"location_keys",
+			"store",
+			"[\"protocol\", \"host\", \"pathname\", \"search\", \"hash\", \"href\"]",
+			"link.",
+			"inputs",
+			"define_prop",
+			"prop",
+			"route",
+			"input(",
+			"url_props",
+			"Mem.unpack",
+			"Tie",
+			"url.popstate",
+			"define_prop",
+			"Url.define",
+			"@define",
+			"Tie",
+			"route",
+			"catch_gon.messages",
+			"doc.messages",
+			"Url",
+			"catch_gon.messages",
+			"hash",
+			"@hash",
+			"data",
+			".popstate",
+			"data",
+			".location",
+			"@location",
+			"encode_uri",
+			"decodeURI",
+			"new_href",
+			"@each",
+			"@name",
+			"Mem.conf.url_props[key]",
+			"keys_in_url",
+			"@keys",
+			"Mem.conf",
+			"params",
+			".query",
+			"current"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -348,8 +540,2403 @@
 	"groups":
 	[
 		{
+			"selected": 10,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "asset/js/require/url_store.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2475,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								296,
+								296
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flatland Monokai.tmTheme",
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "asset/js/m_view/css_changer.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 205,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								205,
+								205
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "asset/js/m_view/sow_css_changer.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 457,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								457,
+								457
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "asset/js/@rails/_routes.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 914,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								166,
+								166
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "asset/js/@rails/vdom_css_changer.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 107,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								78,
+								78
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "asset/js/models/conf_z.coffee.erb",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 659,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								589,
+								589
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										654,
+										655
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										569,
+										570
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flatland Monokai.tmTheme",
+							"history_list_is_closing": true,
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "asset/js/before/doc.js.ls",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 2526,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/LiveScript/Syntaxes/LiveScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 21,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "asset/js/require/web_store.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1045,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								981,
+								981
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"incomplete_sync": null,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "asset/js/models/conf_store.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 269,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								267,
+								267
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flatland Monokai.tmTheme",
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "asset/yaml/conf_option.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6579,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5684,
+								5691
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flatland Monokai.tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/YAML/YAML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 10677.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 646,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										149,
+										163
+									],
+									[
+										260,
+										274
+									],
+									[
+										374,
+										388
+									],
+									[
+										484,
+										498
+									],
+									[
+										601,
+										615
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"detect_indentation": false,
+							"incomplete_sync": null,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([^ 	].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 11,
+					"file": "asset/yaml/conf_store.yml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1453,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								366,
+								366
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"history_list_is_closing": true,
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/YAML/YAML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "asset/js/npm/require_deploy.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1396,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								974,
+								974
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										973,
+										974
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										959,
+										960
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flatland Monokai.tmTheme",
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "asset/js/require/input.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11347,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								435,
+								435
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flatland Monokai.tmTheme",
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "asset/js/models/conf_option.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 607,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "asset/js/after/menu.js.ls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 926,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								255,
+								255
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/LiveScript/Syntaxes/LiveScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "asset/js/require/tie.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 989,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								989,
+								989
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flatland Monokai.tmTheme",
+							"history_list_is_closing": true,
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"sftp_duplicate_views": 0,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 17,
+					"file": "test/_helper.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 222,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								222,
+								222
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										221,
+										222
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										220,
+										221
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 20,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "asset/js/m_component/title.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1124,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								692,
+								692
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										709,
+										710
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										633,
+										634
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "asset/js/require/input.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11347,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8296,
+								8296
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flatland Monokai.tmTheme",
+							"incomplete_sync": null,
+							"origin_encoding": "ASCII",
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 10299.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "test/input_icon_spec.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1287,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								709,
+								709
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+									"1":
+									[
+										743,
+										744
+									]
+								},
+								"open":
+								{
+									"1":
+									[
+										690,
+										691
+									]
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flatland Monokai.tmTheme",
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "test/url_store_spec.coffee",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1727,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								772,
+								772
+							]
+						],
+						"settings":
+						{
+							"bracket_highlighter.busy": false,
+							"bracket_highlighter.locations":
+							{
+								"close":
+								{
+								},
+								"open":
+								{
+								},
+								"unmatched":
+								{
+								}
+							},
+							"bracket_highlighter.regions":
+							[
+								"bh_regex",
+								"bh_regex_center",
+								"bh_regex_open",
+								"bh_regex_close",
+								"bh_regex_content",
+								"bh_double_quote",
+								"bh_double_quote_center",
+								"bh_double_quote_open",
+								"bh_double_quote_close",
+								"bh_double_quote_content",
+								"bh_curly",
+								"bh_curly_center",
+								"bh_curly_open",
+								"bh_curly_close",
+								"bh_curly_content",
+								"bh_single_quote",
+								"bh_single_quote_center",
+								"bh_single_quote_open",
+								"bh_single_quote_close",
+								"bh_single_quote_content",
+								"bh_angle",
+								"bh_angle_center",
+								"bh_angle_open",
+								"bh_angle_close",
+								"bh_angle_content",
+								"bh_square",
+								"bh_square_center",
+								"bh_square_open",
+								"bh_square_close",
+								"bh_square_content",
+								"bh_tag",
+								"bh_tag_center",
+								"bh_tag_open",
+								"bh_tag_close",
+								"bh_tag_content",
+								"bh_round",
+								"bh_round_center",
+								"bh_round_open",
+								"bh_round_close",
+								"bh_round_content",
+								"bh_default",
+								"bh_default_center",
+								"bh_default_open",
+								"bh_default_close",
+								"bh_default_content",
+								"bh_unmatched",
+								"bh_unmatched_center",
+								"bh_unmatched_open",
+								"bh_unmatched_close",
+								"bh_unmatched_content",
+								"bh_c_define",
+								"bh_c_define_center",
+								"bh_c_define_open",
+								"bh_c_define_close",
+								"bh_c_define_content"
+							],
+							"color_scheme": "Packages/User/Color Highlighter/themes/Flatland Monokai.tmTheme",
+							"incomplete_sync": null,
+							"syntax": "Packages/Better CoffeeScript/CoffeeScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 372.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -370,11 +2957,25 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			],
+			[
+				2,
+				0,
+				3,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.411331403763,
+			0.66,
 			1.0
 		],
 		"rows":
@@ -405,6 +3006,110 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"input.coffee",
+				"js\\require\\input.coffee"
+			],
+			[
+				"conf_option.co",
+				"js\\models\\conf_option.coffee"
+			],
+			[
+				"routes.coffee",
+				"js\\@rails\\_routes.coffee"
+			],
+			[
+				"sow_css_changer",
+				"js\\m_view\\sow_css_changer.coffee"
+			],
+			[
+				"css_changer",
+				"js\\m_view\\css_changer.coffee"
+			],
+			[
+				"conf_z",
+				"js\\models\\conf_z.coffee.erb"
+			],
+			[
+				"win",
+				"js\\after\\win.js.ls"
+			],
+			[
+				"title.coffee",
+				"js\\m_component\\title.coffee"
+			],
+			[
+				"routes",
+				"js\\@scratch\\_routes.coffee"
+			],
+			[
+				"routes.",
+				"js\\@rails\\_routes.coffee"
+			],
+			[
+				"_routes",
+				"js\\@scratch\\_routes.coffee"
+			],
+			[
+				"_routes.",
+				"js\\@rails\\_routes.coffee"
+			],
+			[
+				"conf_store",
+				"yaml\\conf_store.yml"
+			],
+			[
+				"conf_url",
+				"yaml\\conf_url_prop.yml"
+			],
+			[
+				"tie.coffee",
+				"js\\require\\tie.coffee"
+			],
+			[
+				"url_prop",
+				"js\\models\\conf_url_prop.coffee"
+			],
+			[
+				"conf_url_",
+				"yaml\\conf_url_prop.yml"
+			],
+			[
+				"conf_url_prop.coffee",
+				"js\\models\\conf_url_prop.coffee"
+			],
+			[
+				"_tie.coffee",
+				"js\\require\\_tie.coffee"
+			],
+			[
+				"_routes.coffee",
+				"js\\@sow\\_routes.coffee"
+			],
+			[
+				"input.co",
+				"js\\require\\input.coffee"
+			],
+			[
+				"conf_option",
+				"js\\models\\conf_option.coffee"
+			],
+			[
+				"conf_option.coffee",
+				"js\\models\\conf_option.coffee"
+			],
+			[
+				"title",
+				"js\\m_component\\title.coffee"
+			],
+			[
+				"css_",
+				"js\\m_view\\sow_css_changer.coffee"
+			],
+			[
+				"url_store",
+				"js\\require\\url_store.coffee"
+			],
 			[
 				"grunt.coffee",
 				"Gruntfile.coffee"

@@ -3,7 +3,7 @@ ua = "javascript"
 doc.component.sow_auth =
   controller: !->
     @params = { ua }
-    @tie = Mem.Query.options.form @params, <[uid pwd]>
+    @tie = InputTie.form @params, <[uid pwd]>
     @tie.timeout = 5000
     @tie.disable = ~>
       m.endComputation()
@@ -39,7 +39,7 @@ doc.component.sow_auth =
       doc.user.is_admin = o.is_admin > 0
 
       validate.sow_auth @
-      @tie.by_cookie()
+      Store.cookie.save()
 
     deploy gon
 

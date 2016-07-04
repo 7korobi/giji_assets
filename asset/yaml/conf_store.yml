@@ -1,23 +1,23 @@
+pins:     { type: Keys }
+scroll:   { type: Text }
+back:     { type: Text }
+icon:     { type: Text }
+search:   { type: Text }
 
-pins:     { type: Keys,  current: {} }
-scroll:   { type: Text,  current: "" }
-back:     { type: Text,  current: "" }
-icon:     { type: Text,  current: "" }
-search:   { type: Text,  current: "" }
-
+vid:  { type: Number }
 turn: { type: Number }
 
 updated_at: { type: Date }
 
-uid:
+uid: {}
 pwd: { type: Text }
-item:
-color:
-title:
-nation:
-message_id:
-event_id:
-story_id:
+item: {}
+color: {}
+title: {}
+nation: {}
+message_id: {}
+event_id: {}
+story_id: {}
 mode_id:  { current: talk }
 
 tag:      { current: all }
@@ -27,7 +27,7 @@ layout:   { current: center }
 font:     { current: std }
 theme:    { current: cinema }
 
-potofs_hide:  { type: Keys, current: {} }
+potofs_hide:  { type: Keys }
 potofs_desc:  { type: Bool, current: true }
 potofs_order: { current: said_num }
 

@@ -1,16 +1,12 @@
-Url.define URL_PROPS
+Store.cookie_options =
+  time: 7 * 24 * 60 * 60 * 1000
+  path: "/"
+  secure: true
 
-Url.routes =
-  hash:
-    story: new Url "/on/:story_id"
-    timer: new Url "timer=:viewed_at"
+Url.maps
+  hash: {}
 
-    messages: new Url "/:event_id/messages/:message_ids/"
-    news:     new Url "/:event_id/:mode_id/news/:row/"
-    all:      new Url "/:event_id/:mode_id/all/"
-    page:     new Url "/:event_id/:mode_id/:page.of.:row/"
+Store.maps
+  session: []
 
-    hides:  new Url "/hides/:hide_ids"
-    search: new Url "/search/:search"
-
-    potof: new Url "/potof/:potofs_order"
+Url.conf.scroll.current = true

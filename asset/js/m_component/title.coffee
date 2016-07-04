@@ -6,6 +6,8 @@ doc.component.title =
 
     old_snap = ""
     @refresh = ->
+      Url.replacestate()
+
       base_style = html.className.replace(old_snap, "").trim()
       list =
         for key in ["theme", "width", "layout", "font", "item", "color"]

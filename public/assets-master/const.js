@@ -30,7 +30,8 @@
     "PERL_NEW": {
       "config": {
         "trsid": ["all", "star", "regend", "heavy", "complexx", "secret"],
-        "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"]
+        "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"],
+        "is_angular": "show-fix"
       }
     },
     "PERL_GAME": {
@@ -43,7 +44,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "vulcan", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -104,7 +105,7 @@
           "MAXSIZE_MEMOCNT": 2000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["weak", "juna", "vulcan"],
+        "saycnt": ["weak", "juna", "vulcan", "infinity"],
         "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "enable": {
@@ -218,7 +219,7 @@
           "MAXSIZE_MEMOCNT": 2000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["weak", "juna", "vulcan"],
+        "saycnt": ["weak", "juna", "vulcan", "infinity"],
         "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "enable": {
@@ -307,7 +308,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "vulcan", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -532,7 +533,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "vulcan", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "vulcan", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -636,6 +637,7 @@
           "NAME_HOME": "人狼議事 鯖の味噌煮",
           "MAX_VILLAGES": 2
         },
+        "is_angular": "show-fix",
         "path": {
           "DIR_LIB": "./lib",
           "DIR_HTML": "./html",
@@ -643,8 +645,7 @@
           "DIR_VIL": "./data/vil",
           "DIR_USER": "./data/user"
         },
-        "pl": "/www/giji_log/soy-bean/config.pl",
-        "is_angular": "show-fix"
+        "pl": "/www/giji_log/soy-bean/config.pl"
       }
     },
     "CIEL": {
@@ -704,6 +705,7 @@
           "MAX_VILLAGES": 2,
           "NAME_HOME": "人狼議事 ciel<br>- Role Play Cheat -"
         },
+        "is_angular": "show-fix",
         "path": {
           "DIR_LIB": "./lib",
           "DIR_HTML": "./html",
@@ -711,8 +713,7 @@
           "DIR_VIL": "./data/vil",
           "DIR_USER": "./data/user"
         },
-        "pl": "/www/giji_log/ciel/config.pl",
-        "is_angular": "show-fix"
+        "pl": "/www/giji_log/ciel/config.pl"
       }
     },
     "PERJURY": {
@@ -938,7 +939,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "vulcan", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -1105,6 +1106,7 @@
           "MAX_VILLAGES": 10,
           "MAX_LOG": 750
         },
+        "is_angular": "show-fix",
         "enable": {
           "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
           "ENABLED_DELETED": [1, "削除発言を表示するかどうか"],
@@ -1121,8 +1123,7 @@
           "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"],
           "ENABLED_SEQ_EVENT": [0, "0:ランダムイベント 1:順序通りのイベント"]
         },
-        "pl": "/www/giji_log/lobby/config.pl",
-        "is_angular": "show-fix"
+        "pl": "/www/giji_log/lobby/config.pl"
       }
     },
     "OFFPARTY": {
@@ -1148,156 +1149,6 @@
     "events": ["blank", "nothing", "aprilfool", "turnfink", "turnfairy", "eclipse", "cointoss", "force", "miracle", "prophecy", 10, "clamor", "fire", "nightmare", "ghost", 15, "seance", 17, 18, 19, null],
     "winners": ["WIN_NONE", "WIN_HUMAN", "WIN_WOLF", "WIN_GURU", "WIN_PIXI", "WIN_PIXI", "WIN_LONEWOLF", "WIN_LOVER", "WIN_HATER", null],
     "mestypes": [null, "INFOSP", "DELETEDADMIN", "CAST", "MAKER", "ADMIN", "QUEUE", "INFONOM", "DELETED", "SAY", "TSAY", "WSAY", "GSAY", "SPSAY", "XSAY", "VSAY", "MSAY", "AIM", "ANONYMOUS", "INFOWOLF", null]
-  };
-
-  this.URL_PROPS = {
-    "pins": {
-      "type": "Keys",
-      "current": {}
-    },
-    "scroll": {
-      "type": "Text",
-      "current": ""
-    },
-    "back": {
-      "type": "Text",
-      "current": ""
-    },
-    "icon": {
-      "type": "Text",
-      "current": ""
-    },
-    "search": {
-      "type": "Text",
-      "current": ""
-    },
-    "turn": {
-      "type": "Number"
-    },
-    "updated_at": {
-      "type": "Date"
-    },
-    "uid": null,
-    "pwd": {
-      "type": "Text"
-    },
-    "item": null,
-    "color": null,
-    "title": null,
-    "nation": null,
-    "message_id": null,
-    "event_id": null,
-    "story_id": null,
-    "mode_id": {
-      "current": "talk"
-    },
-    "tag": {
-      "current": "all"
-    },
-    "width": {
-      "current": "wide"
-    },
-    "layout": {
-      "current": "center"
-    },
-    "font": {
-      "current": "std"
-    },
-    "theme": {
-      "current": "cinema"
-    },
-    "potofs_hide": {
-      "type": "Keys",
-      "current": {}
-    },
-    "potofs_desc": {
-      "type": "Bool",
-      "current": true
-    },
-    "potofs_order": {
-      "current": "said_num"
-    },
-    "memo_at": {
-      "type": "Text",
-      "current": ""
-    },
-    "talk_at": {
-      "type": "Text",
-      "current": ""
-    },
-    "home_at": {
-      "type": "Text",
-      "current": ""
-    },
-    "open": {
-      "type": "Bool",
-      "current": true
-    },
-    "uniq": {
-      "type": "Bool",
-      "current": true
-    },
-    "human": {
-      "type": "Bool",
-      "current": true
-    },
-    "scope": {
-      "current": "home"
-    },
-    "memo": {
-      "current": "all"
-    },
-    "talk": {
-      "current": "open"
-    },
-    "home": {
-      "current": "announce"
-    },
-    "roletable": {
-      "current": "ALL"
-    },
-    "card_win": {
-      "current": "ALL"
-    },
-    "folder": {
-      "current": "all"
-    },
-    "chr_set": {
-      "current": "all"
-    },
-    "order": {
-      "current": "all"
-    },
-    "game": {
-      "current": "all"
-    },
-    "say_limit": {
-      "current": "all"
-    },
-    "player_length": {
-      "current": "all"
-    },
-    "rating": {
-      "current": "all"
-    },
-    "config": {
-      "current": "all"
-    },
-    "event_type": {
-      "current": "all"
-    },
-    "gift_type": {
-      "current": "all"
-    },
-    "role_type": {
-      "current": "all"
-    },
-    "update_at": {
-      "current": "all"
-    },
-    "update_interval": {
-      "current": "all"
-    }
   };
 
   this.RAILS = {
@@ -1717,32 +1568,41 @@
 }).call(this);
 
 (function() {
-  new Mem.Rule("option").schema(function() {
+  new Mem.Rule("input").schema(function() {
     this.scope(function(all) {
-      var timeout;
-      timeout = 1000;
-      all.btns = function(params, list) {
-        var inputs;
-        inputs = all.where({
-          _id: list
-        }).hash;
-        return InputTie.btns({
-          timeout: timeout,
-          inputs: inputs,
-          params: params
-        });
+      return {
+        check_vil: function() {
+          return all.where(function(o) {
+            return o.attr.type === 'checkbox' && o.sean === "vil";
+          });
+        },
+        checkbox: function() {
+          return all.where(function(o) {
+            return o.attr.type === 'checkbox';
+          });
+        },
+        text: function() {
+          return all.where(function(o) {
+            return o.attr.type === 'text';
+          });
+        }
       };
-      all.form = function(params, list) {
-        var inputs;
-        inputs = all.where({
-          _id: list
-        }).hash;
-        return InputTie.form({
-          timeout: timeout,
-          inputs: inputs,
-          params: params
-        });
-      };
+    });
+    return this.deploy(function(o) {
+      o.option_id = o._id;
+      o.attr.key = o._id;
+      if (o.query == null) {
+        o.query = {};
+      }
+      return Input.format(o);
+    });
+  });
+
+}).call(this);
+
+(function() {
+  new Mem.Rule("input").schema(function() {
+    this.scope(function(all) {
       return {
         check_vil: function() {
           return all.where(function(o) {
@@ -1786,6 +1646,61 @@
     });
     return this.deploy(function(o) {
       return o.say_id = o._id;
+    });
+  });
+
+}).call(this);
+
+(function() {
+  new Mem.Rule("store").schema(function() {
+    this.scope(function(all) {});
+    return this.deploy(function(o) {
+      o.store_id = o._id;
+      if (o.type == null) {
+        o.type = "String";
+      }
+      return o.current != null ? o.current : o.current = (function() {
+        switch (o.type) {
+          case "Keys":
+            return {};
+          case "Date":
+          case "Number":
+            return 0;
+          case "String":
+          case "Text":
+            return "";
+        }
+      })();
+    });
+  });
+
+}).call(this);
+
+(function() {
+  new Mem.Rule("url_prop").schema(function() {
+    this.scope(function(all) {
+      return all;
+    });
+    return this.deploy(function(o) {
+      o.url_prop_id = o._id;
+      if (o.type == null) {
+        o.type = "String";
+      }
+      if (o.current == null) {
+        o.current = (function() {
+          switch (o.type) {
+            case "Keys":
+              return {};
+            case "Date":
+            case "Number":
+              return 0;
+            case "String":
+            case "Text":
+              return "";
+          }
+        })();
+      }
+      return console.warn(o);
     });
   });
 
@@ -1863,7 +1778,8 @@
     "PERL_NEW": {
       "config": {
         "trsid": ["all", "star", "regend", "heavy", "complexx", "secret"],
-        "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"]
+        "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY", "SECRET"],
+        "is_angular": "show-fix"
       }
     },
     "PERL_GAME": {
@@ -1876,7 +1792,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "vulcan", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -1937,7 +1853,7 @@
           "MAXSIZE_MEMOCNT": 2000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["weak", "juna", "vulcan"],
+        "saycnt": ["weak", "juna", "vulcan", "infinity"],
         "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "enable": {
@@ -2051,7 +1967,7 @@
           "MAXSIZE_MEMOCNT": 2000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["weak", "juna", "vulcan"],
+        "saycnt": ["weak", "juna", "vulcan", "infinity"],
         "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "enable": {
@@ -2140,7 +2056,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "vulcan", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -2365,7 +2281,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "vulcan", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "vulcan", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -2469,6 +2385,7 @@
           "NAME_HOME": "人狼議事 鯖の味噌煮",
           "MAX_VILLAGES": 2
         },
+        "is_angular": "show-fix",
         "path": {
           "DIR_LIB": "./lib",
           "DIR_HTML": "./html",
@@ -2476,8 +2393,7 @@
           "DIR_VIL": "./data/vil",
           "DIR_USER": "./data/user"
         },
-        "pl": "/www/giji_log/soy-bean/config.pl",
-        "is_angular": "show-fix"
+        "pl": "/www/giji_log/soy-bean/config.pl"
       }
     },
     "CIEL": {
@@ -2537,6 +2453,7 @@
           "MAX_VILLAGES": 2,
           "NAME_HOME": "人狼議事 ciel<br>- Role Play Cheat -"
         },
+        "is_angular": "show-fix",
         "path": {
           "DIR_LIB": "./lib",
           "DIR_HTML": "./html",
@@ -2544,8 +2461,7 @@
           "DIR_VIL": "./data/vil",
           "DIR_USER": "./data/user"
         },
-        "pl": "/www/giji_log/ciel/config.pl",
-        "is_angular": "show-fix"
+        "pl": "/www/giji_log/ciel/config.pl"
       }
     },
     "PERJURY": {
@@ -2771,7 +2687,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "vulcan", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -2938,6 +2854,7 @@
           "MAX_VILLAGES": 10,
           "MAX_LOG": 750
         },
+        "is_angular": "show-fix",
         "enable": {
           "DEFAULT_VOTETYPE": ["anonymity", "標準の投票方法(sign: 記名、anonymity:無記名)"],
           "ENABLED_DELETED": [1, "削除発言を表示するかどうか"],
@@ -2954,8 +2871,7 @@
           "ENABLED_SUICIDE_VOTE": [1, "1:自殺投票"],
           "ENABLED_SEQ_EVENT": [0, "0:ランダムイベント 1:順序通りのイベント"]
         },
-        "pl": "/www/giji_log/lobby/config.pl",
-        "is_angular": "show-fix"
+        "pl": "/www/giji_log/lobby/config.pl"
       }
     },
     "OFFPARTY": {
@@ -2974,88 +2890,7 @@
     }
   });
 
-  Mem.Collection.live.set({
-    "live": {
-      "name": "生存者",
-      "order": 2
-    },
-    "executed": {
-      "name": "処刑",
-      "order": 3
-    },
-    "victim": {
-      "name": "襲撃",
-      "caption": "犠牲者",
-      "order": 4
-    },
-    "cursed": {
-      "name": "呪詛",
-      "caption": "犠牲者",
-      "order": 5
-    },
-    "droop": {
-      "name": "衰退",
-      "caption": "犠牲者",
-      "order": 6
-    },
-    "suicide": {
-      "name": "後追",
-      "caption": "犠牲者",
-      "order": 7
-    },
-    "feared": {
-      "name": "恐怖",
-      "caption": "犠牲者",
-      "order": 8
-    },
-    "mob": {
-      "name": "見物人",
-      "order": 10
-    },
-    "suddendead": {
-      "name": "突然死",
-      "order": 100
-    },
-    "leave": {
-      "name": "―",
-      "order": 101
-    }
-  });
-
-  Mem.Collection.map_faces_order.set({
-    "all": {
-      "caption": "登場",
-      "headline": "登場した",
-      "order": "合計"
-    },
-    "human": {
-      "caption": "村側",
-      "headline": "人間だった",
-      "order": "村人陣営"
-    },
-    "wolf": {
-      "caption": "狼側",
-      "headline": "人狼だった",
-      "order": "人狼陣営"
-    },
-    "enemy": {
-      "caption": "敵側",
-      "headline": "敵側の人間だった",
-      "order": "敵側の人間"
-    },
-    "pixi": {
-      "caption": "妖精",
-      "headline": "妖精だった",
-      "order": "妖精"
-    },
-    "other": {
-      "caption": "その他",
-      "headline": "その他だった",
-      "order": "その他"
-    }
-  });
-
-  Mem.Collection.option.set({
+  Mem.Collection.input.set({
     "icon": {
       "sean": "menu",
       "attr": {
@@ -3063,7 +2898,7 @@
         "style": "icon"
       },
       "name": "アイコン",
-      "init": null,
+      "current": null,
       "options": {
         "cog": {
           "tooltip": "画面表示を調整します。"
@@ -3104,7 +2939,7 @@
         "style": "hide"
       },
       "name": "動作モード",
-      "init": null
+      "current": null
     },
     "theme": {
       "sean": "cog",
@@ -3113,7 +2948,7 @@
         "type": "btns"
       },
       "name": "スタイル",
-      "init": "cinema",
+      "current": "cinema",
       "options": {
         "cinema": "煉瓦",
         "star": "蒼穹",
@@ -3129,7 +2964,7 @@
         "type": "btns"
       },
       "name": "位置",
-      "init": "center",
+      "current": "center",
       "options": {
         "left": "左詰",
         "center": "中央",
@@ -3143,7 +2978,7 @@
         "type": "btns"
       },
       "name": "幅の広さ",
-      "init": "std",
+      "current": "std",
       "options": {
         "full": "最大",
         "wide": "広域",
@@ -3157,7 +2992,7 @@
         "type": "btns"
       },
       "name": "書体",
-      "init": "std",
+      "current": "std",
       "options": {
         "large": "大判",
         "novel": "明朝",
@@ -3172,7 +3007,7 @@
         "type": "btns"
       },
       "name": "表示設定",
-      "init": "all",
+      "current": "all",
       "options": {
         "all": "すべて",
         "think": "独り言",
@@ -3210,7 +3045,7 @@
         "type": "btns"
       },
       "name": "タグ",
-      "init": "all",
+      "current": "all",
       "options": {}
     },
     "header_state": {
@@ -3219,7 +3054,7 @@
         "className": "invisible",
         "type": "radio"
       },
-      "init": "finish"
+      "current": "finish"
     },
     "vote_sign": {
       "sean": "vil",
@@ -3277,7 +3112,7 @@
         "SOW": "entrust"
       },
       "name": "委任投票",
-      "init": true,
+      "current": true,
       "help_on": "委任投票ができる",
       "help_off": "委任投票ができない"
     },
@@ -3291,7 +3126,7 @@
         "SOW": "noselrole"
       },
       "name": "役職希望",
-      "init": true,
+      "current": true,
       "help_on": "役職希望を無視する",
       "help_off": "役職希望を受け付ける"
     },
@@ -3463,7 +3298,7 @@
         "step": 1800,
         "required": "required"
       },
-      "init": "22:30",
+      "current": "22:30",
       "name": "更新時刻",
       "help_on": "に更新します。",
       "help_off": "更新時刻　※入力してください。"
@@ -3478,7 +3313,7 @@
       "query": {
         "SOW": "updinterval"
       },
-      "init": 1,
+      "current": 1,
       "options": {
         "1": "24時間",
         "2": "48時間",
@@ -3512,7 +3347,7 @@
       "query": {
         "SOW": "rating"
       },
-      "init": "default",
+      "current": "default",
       "name": "こだわり",
       "help_on": "",
       "help_off": "※入力してください。"
@@ -3563,7 +3398,7 @@
       "query": {
         "SOW": "roletable"
       },
-      "init": "default",
+      "current": "default",
       "name": "役職配分",
       "help_on": "",
       "help_off": "※入力してください。"
@@ -3589,10 +3424,91 @@
       "query": {
         "SOW": "trsid"
       },
-      "init": "all",
+      "current": "all",
       "name": "地の文章",
       "help_on": "",
       "help_off": "※入力してください。"
+    }
+  });
+
+  Mem.Collection.live.set({
+    "live": {
+      "name": "生存者",
+      "order": 2
+    },
+    "executed": {
+      "name": "処刑",
+      "order": 3
+    },
+    "victim": {
+      "name": "襲撃",
+      "caption": "犠牲者",
+      "order": 4
+    },
+    "cursed": {
+      "name": "呪詛",
+      "caption": "犠牲者",
+      "order": 5
+    },
+    "droop": {
+      "name": "衰退",
+      "caption": "犠牲者",
+      "order": 6
+    },
+    "suicide": {
+      "name": "後追",
+      "caption": "犠牲者",
+      "order": 7
+    },
+    "feared": {
+      "name": "恐怖",
+      "caption": "犠牲者",
+      "order": 8
+    },
+    "mob": {
+      "name": "見物人",
+      "order": 10
+    },
+    "suddendead": {
+      "name": "突然死",
+      "order": 100
+    },
+    "leave": {
+      "name": "―",
+      "order": 101
+    }
+  });
+
+  Mem.Collection.map_faces_order.set({
+    "all": {
+      "caption": "登場",
+      "headline": "登場した",
+      "order": "合計"
+    },
+    "human": {
+      "caption": "村側",
+      "headline": "人間だった",
+      "order": "村人陣営"
+    },
+    "wolf": {
+      "caption": "狼側",
+      "headline": "人狼だった",
+      "order": "人狼陣営"
+    },
+    "enemy": {
+      "caption": "敵側",
+      "headline": "敵側の人間だった",
+      "order": "敵側の人間"
+    },
+    "pixi": {
+      "caption": "妖精",
+      "headline": "妖精だった",
+      "order": "妖精"
+    },
+    "other": {
+      "caption": "その他",
+      "headline": "その他だった",
+      "order": "その他"
     }
   });
 
@@ -3864,6 +3780,26 @@
       "MAX_ADDSAY": 0,
       "MAX_MESCNT": 1000,
       "MAX_MESLINE": 20
+    },
+    "say1": {
+      "CAPTION": "静寂への挑戦",
+      "COST_SAY": "count",
+      "COST_MEMO": "none",
+      "COST_ACT": "count",
+      "RECOVERY": 1,
+      "MAX_SAY": 1,
+      "MAX_TSAY": 5,
+      "MAX_SPSAY": 1,
+      "MAX_WSAY": 2,
+      "MAX_GSAY": 10,
+      "MAX_PSAY": 10,
+      "MAX_ESAY": 999,
+      "MAX_SAY_ACT": 0,
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0,
+      "MAX_MESLINE": 10,
+      "HELP": "（24h回復） 300字x1回/0act'",
+      "MAX_MESCNT": 300
     },
     "say5x200": {
       "CAPTION": "寡黙への挑戦",
@@ -4147,6 +4083,153 @@
     }
   });
 
+  Mem.Collection.store.set({
+    "pins": {
+      "type": "Keys"
+    },
+    "scroll": {
+      "type": "Text"
+    },
+    "back": {
+      "type": "Text"
+    },
+    "icon": {
+      "type": "Text"
+    },
+    "search": {
+      "type": "Text"
+    },
+    "vid": {
+      "type": "Number"
+    },
+    "turn": {
+      "type": "Number"
+    },
+    "updated_at": {
+      "type": "Date"
+    },
+    "uid": {},
+    "pwd": {
+      "type": "Text"
+    },
+    "item": {},
+    "color": {},
+    "title": {},
+    "nation": {},
+    "message_id": {},
+    "event_id": {},
+    "story_id": {},
+    "mode_id": {
+      "current": "talk"
+    },
+    "tag": {
+      "current": "all"
+    },
+    "width": {
+      "current": "wide"
+    },
+    "layout": {
+      "current": "center"
+    },
+    "font": {
+      "current": "std"
+    },
+    "theme": {
+      "current": "cinema"
+    },
+    "potofs_hide": {
+      "type": "Keys"
+    },
+    "potofs_desc": {
+      "type": "Bool",
+      "current": true
+    },
+    "potofs_order": {
+      "current": "said_num"
+    },
+    "memo_at": {
+      "type": "Text",
+      "current": ""
+    },
+    "talk_at": {
+      "type": "Text",
+      "current": ""
+    },
+    "home_at": {
+      "type": "Text",
+      "current": ""
+    },
+    "open": {
+      "type": "Bool",
+      "current": true
+    },
+    "uniq": {
+      "type": "Bool",
+      "current": true
+    },
+    "human": {
+      "type": "Bool",
+      "current": true
+    },
+    "scope": {
+      "current": "home"
+    },
+    "memo": {
+      "current": "all"
+    },
+    "talk": {
+      "current": "open"
+    },
+    "home": {
+      "current": "announce"
+    },
+    "roletable": {
+      "current": "ALL"
+    },
+    "card_win": {
+      "current": "ALL"
+    },
+    "folder": {
+      "current": "all"
+    },
+    "chr_set": {
+      "current": "all"
+    },
+    "order": {
+      "current": "all"
+    },
+    "game": {
+      "current": "all"
+    },
+    "say_limit": {
+      "current": "all"
+    },
+    "player_length": {
+      "current": "all"
+    },
+    "rating": {
+      "current": "all"
+    },
+    "config": {
+      "current": "all"
+    },
+    "event_type": {
+      "current": "all"
+    },
+    "gift_type": {
+      "current": "all"
+    },
+    "role_type": {
+      "current": "all"
+    },
+    "update_at": {
+      "current": "all"
+    },
+    "update_interval": {
+      "current": "all"
+    }
+  });
+
   Mem.Collection.tag.set({
     "all": {
       "name": "すべて",
@@ -4412,11 +4495,11 @@
 
   Mem.conf.folder = Mem.Query.folders.hash;
 
+  Mem.conf.input = Mem.Query.inputs.hash;
+
   Mem.conf.live = Mem.Query.lives.hash;
 
   Mem.conf.map_faces_order = Mem.Query.map_faces_orders.hash;
-
-  Mem.conf.option = Mem.Query.options.hash;
 
   Mem.conf.rating = Mem.Query.ratings.hash;
 
@@ -4425,6 +4508,8 @@
   Mem.conf.rule = Mem.Query.rules.hash;
 
   Mem.conf.say = Mem.Query.says.hash;
+
+  Mem.conf.store = Mem.Query.stores.hash;
 
   Mem.conf.tag = Mem.Query.tags.hash;
 
@@ -12790,7 +12875,7 @@
 }).call(this);
 
 (function() {
-  var btn_data, field;
+  var btn_data, h;
 
   btn_data = function(type) {
     return {
@@ -12800,29 +12885,29 @@
     };
   };
 
-  field = Mem.Query.options.hash;
+  h = Mem.Query.inputs.hash;
 
-  field.role_table.options = Mem.Query.role_tables.enable().hash;
+  h.role_table.options = Mem.Query.role_tables.enable().hash;
 
-  field.game_rule.options = Mem.Query.rules.enable().hash;
+  h.game_rule.options = Mem.Query.rules.enable().hash;
 
-  field.say_count.options = Mem.Query.says.enable().hash;
+  h.say_count.options = Mem.Query.says.enable().hash;
 
-  field.mob_type.options = Mem.Query.roles.mob().hash;
+  h.mob_type.options = Mem.Query.roles.mob().hash;
 
-  field.chr_npc.group_by = function(o) {
+  h.chr_npc.group_by = function(o) {
     return o.chr_npcs().hash;
   };
 
-  field.chr_npc.options = Mem.Query.chr_npcs.hash;
+  h.chr_npc.options = Mem.Query.chr_npcs.hash;
 
-  field.chr_set.options = field.chr_npc.groups = Mem.Query.chr_sets.hash;
+  h.chr_set.options = h.chr_npc.groups = Mem.Query.chr_sets.hash;
 
-  field.rating.options = Mem.Query.ratings.enable().hash;
+  h.rating.options = Mem.Query.ratings.enable().hash;
 
-  field.trs_type.options = Mem.Query.trss.enable().hash;
+  h.trs_type.options = Mem.Query.trss.enable().hash;
 
-  field.tag.options = {
+  h.tag.options = {
     all: {
       _id: "all",
       name: "- 全体 -",

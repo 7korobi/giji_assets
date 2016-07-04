@@ -1,4 +1,4 @@
-field = Mem.Query.options.hash
+field = Mem.Query.inputs.hash
 
 error_and_info = (o)->
   m "p.mes_date",
@@ -15,7 +15,7 @@ doc.component.vmake_form =
       gift:  []
       trap:  []
 
-    v.tie = Mem.Query.options.form v.params, [
+    v.tie = InputTie.form v.params, [
       "vil_name"
       "vil_comment"
 
@@ -42,7 +42,7 @@ doc.component.vmake_form =
       v.submit v.params
 
     v.tie.input.checkboxes =
-      for chk in Mem.Query.options.check_vil().list
+      for chk in Mem.Query.inputs.check_vil().list
         v.tie.input[chk._id] = new Input v.tie, chk
 
     vindex = 0

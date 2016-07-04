@@ -1,6 +1,6 @@
 doc.component.security_modes =
   controller: (prop)->
-    tie = Mem.Query.options.btns Url.params, [
+    tie = InputTie.btns Url.params, [
       "show"
       "open"
       "human"
@@ -9,7 +9,7 @@ doc.component.security_modes =
       prop Url.params.show
       Url.replacestate()
 
-    options = Mem.Query.options.hash.show.options
+    options = Mem.Query.inputs.hash.show.options
     refresh = ->
       { has } = Mem.Query.messages
       story = Mem.Query.storys.list.first

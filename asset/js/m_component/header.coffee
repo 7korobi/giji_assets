@@ -1,6 +1,6 @@
 doc.component.header =
   controller: ->
-    tie = Mem.Query.options.btns Url.params, [
+    tie = InputTie.btns Url.params, [
       "header_state"
     ]
 

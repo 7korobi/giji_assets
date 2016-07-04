@@ -52,6 +52,8 @@ deploy
   DELAY: require 'delay.yml'
 
   GUI: require 'gui'
+  Url: require 'url_store'
+  Store: require 'web_store'
 
 GUI.Animate = require 'gui_animate'
 GUI.form = require 'gui_form'
@@ -60,5 +62,4 @@ deploy require 'base'
 deploy require 'timer'
 deploy require 'input'
 
-deploy require 'gui_url'
 require '_ext'

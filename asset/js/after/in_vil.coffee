@@ -1,5 +1,6 @@
 if gon?.events? && gon.event?
   win.mount "#messages", (dom)->
+    Url.conf.messages.current = true
     win.scroll.size = 30
 
     doc.delegate.tap_external = (id, uri, protocol, host, path)->

@@ -20,10 +20,10 @@
       "path": "config"
     },
     {
-      "path": "tmp/cache"
+      "path": "test"
     },
-		{
-			"path": "."
-		}
+    {
+      "path": "tmp/cache"
+    }
 	]
 }

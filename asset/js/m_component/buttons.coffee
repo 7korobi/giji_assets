@@ -27,7 +27,7 @@ doc.component.buttons =
         Mem.Query.map_faces.active(Url.params.order, Url.params.chr_set, Url.params.search).list.length
 
 
-    for icon, option of Mem.Query.options.hash.icon.options
+    for icon, option of Mem.Query.inputs.hash.icon.options
       option.badge = badges[icon]
 
     vdom = []

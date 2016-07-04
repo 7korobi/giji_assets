@@ -15,8 +15,9 @@ Mem.conf = {}
 
 <%
   for (key in confs) {
-    if ("option" == key) { continue; }
-    if ("say"  == key) { continue; }
+    if ("input" == key) { continue; }
+    if ("store" == key) { continue; }
+    if ("say" == key) { continue; }
     var data = confs[key];
  %>
 new Mem.Rule("<%= key %>").schema config("<%= key %>")

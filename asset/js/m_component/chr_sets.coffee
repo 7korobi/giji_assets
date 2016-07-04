@@ -1,6 +1,6 @@
 doc.component.chr_sets =
   controller: ->
-    tie = Mem.Query.options.btns Url.params, ["order", "search"]
+    tie = InputTie.btns Url.params, ["order", "search"]
     input = tie.input
     params = Url.params
     { params, input }

@@ -1,4 +1,4 @@
-tie = Mem.Query.options.btns Url.params, ["icon", "scope"]
+tie = InputTie.btns Url.params, ["icon", "scope"]
 tie.change = (key, val, old)->
   console.log [key, val, old]
   switch key

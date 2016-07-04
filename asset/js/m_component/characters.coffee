@@ -5,7 +5,7 @@ vdom = ({name, badge})->
 
 doc.component.characters =
   controller: ->
-    tie = Mem.Query.options.btns Url.params, [
+    tie = InputTie.btns Url.params, [
       "tag"
     ]
 
