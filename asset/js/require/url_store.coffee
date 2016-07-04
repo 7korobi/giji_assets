@@ -22,7 +22,6 @@ memory_prop = (params, key, unpack)->
 
 
 state = _.debounce ->
-  console.warn @mode
   params = Url.location()
   if decode(location.href) != decode(params.href)
     console.warn "url changed."
