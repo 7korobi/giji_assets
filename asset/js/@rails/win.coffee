@@ -2,7 +2,7 @@ win.mount "#css_changer", (dom)->
   controller: -> Url.tie
   view: doc.view.css_changer
 
-win.mount \#chr_name_lists, -> doc.component.chr_name_lists
+win.mount "#chr_name_lists", -> doc.component.chr_name_lists
 
 if gon?.face?
   catch_gon.face()

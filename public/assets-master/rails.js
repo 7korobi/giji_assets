@@ -165,10 +165,11 @@
 
 }).call(this);
 
-(function(){
-  doc.config = function(xhr, options){
+(function() {
+  doc.config = function(xhr, options) {
     return console.log(options);
   };
+
 }).call(this);
 
 (function() {
@@ -367,49 +368,55 @@
 
 }).call(this);
 
-(function(){
-  var ref$;
-  win.mount(css_changer + "", function(dom){
+(function() {
+  var ref;
+
+  win.mount("#css_changer", function(dom) {
     return {
-      controller: function(){
+      controller: function() {
         return Url.tie;
       },
       view: doc.view.css_changer
     };
   });
-  win.mount('#chr_name_lists', function(){
+
+  win.mount("#chr_name_lists", function() {
     return doc.component.chr_name_lists;
   });
-  if ((typeof gon != 'undefined' && gon !== null ? gon.face : void 8) != null) {
+
+  if ((typeof gon !== "undefined" && gon !== null ? gon.face : void 0) != null) {
     catch_gon.face();
-    win.mount(summary + "", function(){
+    win.mount("#summary", function() {
       return doc.component.summary;
     });
-    win.mount(calc + "", function(){
+    win.mount("#calc", function() {
       return doc.component.calc;
     });
-    win.mount(village + "", function(){
+    win.mount("#village", function() {
       return doc.component.villages;
     });
-    win.mount(sow_user + "", function(){
+    win.mount("#sow_user", function() {
       return doc.component.sow_users;
     });
   }
-  if ((typeof gon != 'undefined' && gon !== null ? (ref$ = gon.map_reduce) != null ? ref$.faces : void 8 : void 8) != null) {
+
+  if ((typeof gon !== "undefined" && gon !== null ? (ref = gon.map_reduce) != null ? ref.faces : void 0 : void 0) != null) {
     catch_gon.map_reduce_faces();
-    win.mount(map_faces + "", function(){
+    win.mount("#map_faces", function() {
       return doc.component.map_faces;
     });
-    win.mount(chr_sets + "", function(){
+    win.mount("#chr_sets", function() {
       return doc.component.chr_sets;
     });
   }
-  if ((typeof gon != 'undefined' && gon !== null ? gon.new_chr_faces : void 8) != null && (typeof gon != 'undefined' && gon !== null ? gon.new_chr_jobs : void 8) != null) {
+
+  if (((typeof gon !== "undefined" && gon !== null ? gon.new_chr_faces : void 0) != null) && ((typeof gon !== "undefined" && gon !== null ? gon.new_chr_jobs : void 0) != null)) {
     catch_gon.new_chrs();
-    win.mount(map_faces + "", function(dom){
+    win.mount("#map_faces", function(dom) {
       return doc.component.map_faces_new;
     });
   }
+
 }).call(this);
 
 (function() {
@@ -458,75 +465,78 @@
 
 }).call(this);
 
-(function(){
-  var menu, out$ = typeof exports != 'undefined' && exports || this;
-  out$.menu = menu = InputTie.btns(Url.params, ["icon", "scope"]);
-  menu.change = function(id, value, old_value){
+(function() {
+  var menu;
+
+  this.menu = menu = InputTie.btns(Url.params, ["icon", "scope"]);
+
+  menu.change = function(id, value, old_value) {
     switch (id) {
-    case "scope":
-      switch (value) {
-      case "history":
-      case "memo":
-        Url.params.scroll = "";
-        return ScrollSpy.go(Url.params.memo_at);
-      case "talk":
-        Url.params.scroll = "";
-        return ScrollSpy.go(Url.params.talk_at);
-      case "home":
-        Url.params.scroll = "";
-        return ScrollSpy.go(Url.params.home_at);
-      case "pins":
-        Url.params.scroll = "";
-        return ScrollSpy.go(Url.params.scroll);
-      }
-      break;
-    case "icon":
-      switch (value) {
-      case "pin":
-        menu.do_change("scope", "pins");
+      case "scope":
+        switch (value) {
+          case "history":
+          case "memo":
+            Url.params.scroll = "";
+            return ScrollSpy.go(Url.params.memo_at);
+          case "talk":
+            Url.params.scroll = "";
+            return ScrollSpy.go(Url.params.talk_at);
+          case "home":
+            Url.params.scroll = "";
+            return ScrollSpy.go(Url.params.home_at);
+          case "pins":
+            Url.params.scroll = "";
+            return ScrollSpy.go(Url.params.scroll);
+        }
         break;
-      case "home":
-        menu.do_change("scope", "home");
-        break;
-      case "mail":
-        menu.do_change("scope", "memo");
-        break;
-      case "chat-alt":
-        menu.do_change("scope", "talk");
-        break;
-      case "clock":
-        menu.do_change("scope", "history");
-        break;
-      case "resize-full":
-        win.scroll.size = 30;
-        menu.do_change("scope", "full");
-        break;
-      case "resize-normal":
-        win.scroll.size = 120;
-        menu.do_change("scope", "normal");
-      }
-      switch (old_value) {
-      case "pin":
-        Url.params.pins = {};
-        return menu.do_change("scope", Url.params.back);
-      }
+      case "icon":
+        switch (value) {
+          case "pin":
+            menu.do_change("scope", "pins");
+            break;
+          case "home":
+            menu.do_change("scope", "home");
+            break;
+          case "mail":
+            menu.do_change("scope", "memo");
+            break;
+          case "chat-alt":
+            menu.do_change("scope", "talk");
+            break;
+          case "clock":
+            menu.do_change("scope", "history");
+            break;
+          case "resize-full":
+            win.scroll.size = 30;
+            menu.do_change("scope", "full");
+            break;
+          case "resize-normal":
+            win.scroll.size = 120;
+            menu.do_change("scope", "normal");
+        }
+        switch (old_value) {
+          case "pin":
+            Url.params.pins = {};
+            return menu.do_change("scope", Url.params.back);
+        }
     }
   };
-  menu.input.scope.change_pin = function(id){
+
+  menu.input.scope.change_pin = function(id) {
     var target, target_at;
     target = Url.params.scope;
-    target_at = (function(){
+    target_at = (function() {
       switch (target) {
-      case "history":
-        return "memo_at";
-      case "memo":
-      case "talk":
-      case "home":
-        return target + "_at";
-      default:
-        return null;
+        case "history":
+          return "memo_at";
+        case "memo":
+        case "talk":
+        case "home":
+          return target + "_at";
+        default:
+          return null;
       }
-    }());
+    })();
     if (target_at) {
       Url.params.back = target;
       Url.params[target_at] = id;
@@ -534,16 +544,18 @@
     Url.params.scroll = id;
     return menu.do_change("icon", "pin");
   };
+
 }).call(this);
 
-(function(){
+(function() {
   win.scroll.prop = Url.prop.scroll;
-  win.on.tick.push(function(sec){
-    var ref$, subid, _id;
+
+  win.on.tick.push(function(sec) {
+    var _id, ref, subid;
     if (win.scroll.center == null) {
       return;
     }
-    ref$ = win.scroll.center, subid = ref$.subid, _id = ref$._id;
+    ref = win.scroll.center, subid = ref.subid, _id = ref._id;
     if (subid === "S") {
       doc.seeing_add(_id, sec);
       if (25 === doc.seeing[_id]) {
@@ -551,69 +563,79 @@
       }
     }
   });
-  win.on.resize.push(function(){
+
+  win.on.resize.push(function() {
     return m.redraw();
   });
-  win.mount('title', function(){
+
+  win.mount("title", function() {
     return doc.component.title;
   });
-  win.mount('#character_tag', function(){
+
+  win.mount("#character_tag", function() {
     return doc.component.characters;
   });
-  win.mount('#to_root', function(){
+
+  win.mount("#to_root", function() {
     return {
-      controller: function(){},
+      controller: function() {},
       view: doc.view.banner
     };
   });
-  win.mount('#buttons', function(dom){
+
+  win.mount("#buttons", function(dom) {
     var layout;
     layout = new win.layout(dom, 1, -1);
     layout.width = 5;
     return doc.component.buttons;
   });
-  win.mount('#topviewer', function(dom){
+
+  win.mount("#topviewer", function(dom) {
     var layout;
     layout = new win.layout(dom, 0, 1, false, 0);
     return doc.component.topviewer;
   });
-  win.mount('#sow_auth', function(){
+
+  win.mount("#sow_auth", function() {
     return {
-      controller: function(){},
-      view: function(){
+      controller: function() {},
+      view: function() {
         return m.component(doc.component.sow_auth, Url.params);
       }
     };
   });
-  win.mount('#head_navi', function(){
+
+  win.mount("#head_navi", function() {
     return {
-      controller: function(){},
-      view: function(){
+      controller: function() {},
+      view: function() {
         return m(".paragraph", m(".left_image"), m(".right_image"), m.component(doc.component.header));
       }
     };
   });
-  win.mount('#headline', function(){
+
+  win.mount("#headline", function() {
     return {
-      controller: function(){},
-      view: function(){
+      controller: function() {},
+      view: function() {
         return m(".choice", m.component(doc.component.header));
       }
     };
   });
-  if ((typeof gon != 'undefined' && gon !== null ? gon.potofs : void 8) != null) {
-    win.mount('#sayfilter', function(dom){
+
+  if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) {
+    win.mount("#sayfilter", function(dom) {
       return {
-        controller: function(){
-          var layout, g;
+        controller: !function() {
+          var g, layout;
           this.layout = layout = new win.layout(dom, -1, 1);
           layout.small_mode = true;
-          layout.large_mode = function(){
+          layout.large_mode = function() {
             return !(menu.params.icon || this.small_mode);
           };
           g = new win.gesture({
-            'do': function(p){
-              return p.then(function(){
+            "do": function(p) {
+              return p.then(function() {
                 layout.small_mode = !layout.small_mode;
                 if (!layout.small_mode) {
                   menu.prop.icon("");
@@ -622,24 +644,24 @@
               });
             }
           });
-          this.wide_attr = g.tap({
+          return this.wide_attr = g.tap({
             className: "plane fine"
           });
         },
-        view: function(arg$){
-          var click, wide_attr, layout, width, potofs, filter, event;
-          click = arg$.click, wide_attr = arg$.wide_attr, layout = arg$.layout;
+        view: function(arg) {
+          var click, event, filter, layout, potofs, wide_attr, width;
+          click = arg.click, wide_attr = arg.wide_attr, layout = arg.layout;
           width = doc.width.content();
-          layout.width = (function(){
+          layout.width = (function() {
             switch (Url.params.layout) {
-            case "right":
-              return 0;
-            case "center":
-              return (win.width - width - 4) / 2;
-            case "left":
-              return win.width - width - 4;
+              case "right":
+                return 0;
+              case "center":
+                return (win.width - width - 4) / 2;
+              case "left":
+                return win.width - width - 4;
             }
-          }());
+          })();
           if (layout.large_mode()) {
             layout.width += width;
           }
@@ -652,33 +674,37 @@
             filter = doc.component.filter;
           }
           event = Mem.Query.events.find(Url.params.event_id);
-          return m("div", event != null
-            ? m(".head", event.name)
-            : m(".foot"), m("aside", m.component(potofs, wide_attr), m.component(filter)), m(".foot"));
+          return m("div", event != null ? m(".head", event.name) : m(".foot"), m("aside", m.component(potofs, wide_attr), m.component(filter)), m(".foot"));
         }
       };
     });
   }
-  if ((typeof gon != 'undefined' && gon !== null ? gon.stories : void 8) != null) {
+
+  if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) {
     Mem.Collection.story.set(gon.stories);
-    win.mount('#stories', function(dom){
+    win.mount("#stories", function(dom) {
       menu.tie.do_change("icon", "resize-normal");
       return doc.component.stories;
     });
   }
-  window.addEventListener("hashchange", function(arg$){
+
+  window.addEventListener("hashchange", function(arg) {
     var newURL, oldURL;
-    newURL = arg$.newURL, oldURL = arg$.oldURL;
+    newURL = arg.newURL, oldURL = arg.oldURL;
     return Url.popstate();
   });
-  window.addEventListener("popstate", function(arg$){
+
+  window.addEventListener("popstate", function(arg) {
     var state;
-    state = arg$.state;
+    state = arg.state;
     console.warn(state);
     return Url.popstate();
   });
+
   win.deploy();
+
   m.endComputation();
+
 }).call(this);
 
 (function() {
@@ -892,13 +918,14 @@
 
 }).call(this);
 
-(function(){
+(function() {
   doc.component.filter_hide = {
-    controller: function(){},
-    view: function(){
+    controller: function() {},
+    view: function() {
       return m("div");
     }
   };
+
 }).call(this);
 
 (function(){
@@ -1791,7 +1818,8 @@
 }).call(this);
 
 (function(){
-  var mestype_orders;
+  var timespan, mestype_orders;
+  timespan = 1000 * 3600;
   mestype_orders = ['SAY', 'MSAY', 'VSAY', 'VGSAY', 'GSAY', 'SPSAY', 'WSAY', 'XSAY', 'BSAY', 'AIM', 'TSAY', 'MAKER', 'ADMIN'];
   doc.component.timeline = Canvas(function(arg$){
     var ref$, width, height, talk, open, potofs_hide, talk_at, search, icon, scope, scroll, graph_height, base, masks, time_ids, x, y, max_height, time_width, view_port_x, view_port_y, index_at, choice_last;
@@ -1806,11 +1834,21 @@
     time_ids = [];
     x = y = max_height = time_width = 0;
     view_port_x = function(){
+      var i$, ref$, len$, event, left, right;
       base = Mem.Query.messages.talk(talk(), open(), potofs_hide());
       if (!base.reduce) {
         return false;
       }
       masks = base.reduce.mask || {};
+      for (i$ = 0, len$ = (ref$ = Mem.Query.events.list).length; i$ < len$; ++i$) {
+        event = ref$[i$];
+        if (event.created_at) {
+          left = Mem.pack.Date(event.created_at / timespan);
+          right = Mem.pack.Date(event.updated_at / timespan);
+          masks[left] == null && (masks[left] = {});
+          masks[right] == null && (masks[right] = {});
+        }
+      }
       time_ids = _.sortBy(Object.keys(masks), Mem.unpack.Date);
       time_width = time_ids.length;
       x = width / time_width;
@@ -1829,24 +1867,9 @@
       return true;
     };
     index_at = function(updated_at){
-      var i$, ref$, len$, i, time_id, mask;
-      for (i$ = 0, len$ = (ref$ = time_ids).length; i$ < len$; ++i$) {
-        i = i$;
-        time_id = ref$[i$];
-        mask = masks[time_id];
-        if (updated_at <= mask.all.max) {
-          return i;
-        }
-      }
-      for (i$ = (ref$ = time_ids).length - 1; i$ >= 0; --i$) {
-        i = i$;
-        time_id = ref$[i$];
-        mask = masks[time_id];
-        if (mask.all.min <= updated_at) {
-          return i;
-        }
-      }
-      return 0;
+      var time_id;
+      time_id = Mem.pack.Date(updated_at / timespan);
+      return time_ids.indexOf(time_id);
     };
     choice_last = function(query, time){
       var i$, ref$, o;
