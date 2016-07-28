@@ -216,7 +216,7 @@ select = (params, change, o)->
     unless o.attr.required && current
       ma = _.assignIn o.attr, attr, option,
         className: option.className
-        selected: ! now_option
+        selected: ! now_val
         label: "- #{name} -"
         value: null
       # disabled

@@ -1,4 +1,5 @@
 
+*.sublime-workspace
 .rbx
 .DS_Store
 .bundle
