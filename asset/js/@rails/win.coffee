@@ -1,4 +1,4 @@
-win.mount \#chr_name_lists, -> doc.component.chr_name_lists
+win.mount "#chr_name_lists", -> doc.component.chr_name_lists
 
 if gon?.face?
   catch_gon.face()
