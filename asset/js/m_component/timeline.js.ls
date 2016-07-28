@@ -1,3 +1,4 @@
+timespan = 1000 * 3600
 
 mestype_orders = <[
   SAY
@@ -31,6 +32,12 @@ doc.component.timeline = Canvas ({size: [width, height]})->
     return false unless base.reduce
 
     masks := base.reduce.mask || {}
+    for event in Mem.Query.events.list when event.created_at
+      left  = Mem.pack.Date event.created_at / timespan
+      right = Mem.pack.Date event.updated_at / timespan
+      masks[left ] ?= {}
+      masks[right] ?= {}
+
     time_ids := _.sortBy Object.keys(masks), Mem.unpack.Date
     time_width := time_ids.length
     x := width / time_width
@@ -44,15 +51,8 @@ doc.component.timeline = Canvas ({size: [width, height]})->
     true
 
   index_at = (updated_at)->
-    for time_id, i in time_ids by 1
-      mask = masks[time_id]
-      if updated_at <= mask.all.max
-        return i
-    for time_id, i in time_ids by -1
-      mask = masks[time_id]
-      if mask.all.min <= updated_at
-        return i
-    return 0
+    time_id = Mem.pack.Date(updated_at / timespan)
+    time_ids.indexOf time_id
 
   choice_last = (query, time)->
     for o in query.list by -1
