@@ -43,7 +43,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -104,7 +104,7 @@
           "MAXSIZE_MEMOCNT": 2000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["weak", "juna", "vulcan"],
+        "saycnt": ["weak", "juna", "vulcan", "infinity"],
         "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "enable": {
@@ -218,7 +218,7 @@
           "MAXSIZE_MEMOCNT": 2000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["weak", "juna", "vulcan"],
+        "saycnt": ["weak", "juna", "vulcan", "infinity"],
         "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "enable": {
@@ -307,7 +307,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -532,7 +532,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "vulcan", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -938,7 +938,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -2112,7 +2112,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -2173,7 +2173,7 @@
           "MAXSIZE_MEMOCNT": 2000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["weak", "juna", "vulcan"],
+        "saycnt": ["weak", "juna", "vulcan", "infinity"],
         "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "enable": {
@@ -2287,7 +2287,7 @@
           "MAXSIZE_MEMOCNT": 2000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["weak", "juna", "vulcan"],
+        "saycnt": ["weak", "juna", "vulcan", "infinity"],
         "game": ["TABULA", "MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "enable": {
@@ -2376,7 +2376,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -2601,7 +2601,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "vulcan", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -3007,7 +3007,7 @@
           "MAXSIZE_MEMOCNT": 1000,
           "MAXSIZE_MEMOLINE": 25
         },
-        "saycnt": ["tiny", "weak", "juna", "say5x200", "say5x300", "saving", "euro"],
+        "saycnt": ["tiny", "weak", "juna", "say1", "say5x200", "say5x300", "saving", "euro"],
         "game": ["TABULA", "LIVE_TABULA", "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "TROUBLE", "MISTERY"],
         "trsid": ["all", "star", "regend", "heavy", "complexx"],
         "path": {
@@ -3920,6 +3920,26 @@
       "MAX_ADDSAY": 0,
       "MAX_MESCNT": 1000,
       "MAX_MESLINE": 20
+    },
+    "say1": {
+      "CAPTION": "静寂への挑戦",
+      "COST_SAY": "count",
+      "COST_MEMO": "none",
+      "COST_ACT": "count",
+      "RECOVERY": 1,
+      "MAX_SAY": 1,
+      "MAX_TSAY": 5,
+      "MAX_SPSAY": 1,
+      "MAX_WSAY": 2,
+      "MAX_GSAY": 10,
+      "MAX_PSAY": 10,
+      "MAX_ESAY": 999,
+      "MAX_SAY_ACT": 0,
+      "ADD_SAY": 0,
+      "MAX_ADDSAY": 0,
+      "MAX_MESLINE": 10,
+      "HELP": "（24h回復） 300字x1回/0act'",
+      "MAX_MESCNT": 300
     },
     "say5x200": {
       "CAPTION": "寡黙への挑戦",
