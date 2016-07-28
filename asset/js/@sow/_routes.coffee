@@ -1,4 +1,4 @@
-Store.cookie_options =
+WebStore.cookie_options =
   time: 7 * 24 * 60 * 60 * 1000
   path: "/sow.cgi"
   secure: false
@@ -17,7 +17,7 @@ Url.maps
     messages: "log=:home~:talk~:memo~:open~:human~:search"
     scroll:   "scr=:scroll~:talk_at~:memo_at"
 
-Store.maps
+WebStore.maps
   session: ["theme", "width", "layout", "font"]
 
 Url.tie = InputTie.btns Url.params, ["theme", "width", "layout", "font"]

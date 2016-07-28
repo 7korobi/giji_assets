@@ -1,6 +1,6 @@
 doc.view.sow_css_changer = ({url, input})->
   m ".paragraph",
-    menu.icon.item "cog",
+    menu.input.icon.item "cog",
       className: "pull-right menuicon tooltip-left"
     if url
       if doc.user.is_login

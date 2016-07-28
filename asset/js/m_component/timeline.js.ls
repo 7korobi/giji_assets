@@ -16,7 +16,7 @@ mestype_orders = <[
 ]>
 
 doc.component.timeline = Canvas ({size: [width, height]})->
-  {talk, open, potofs_hide, talk_at, search} = Url.prop
+  { talk, open, potofs_hide, talk_at, search, icon, scope, scroll } = Url.prop
   return unless Mem.Query.events.list.length
 
   graph_height = height - 50
@@ -58,9 +58,9 @@ doc.component.timeline = Canvas ({size: [width, height]})->
     for o in query.list by -1
       if time > o.updated_at
         talk_at o._id
-        menu.icon.change "search"
-        menu.scope.change "talk"
-        Url.prop.scroll ""
+        icon "search"
+        scope "talk"
+        scroll ""
         win.scroll.rescroll talk_at
         return
 

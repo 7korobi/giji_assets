@@ -1,8 +1,6 @@
 doc.component.header =
   controller: ->
-    tie = InputTie.btns Url.params, [
-      "header_state"
-    ]
+    InputTie.btns Url.params, ["header_state"]
 
   view: ({input, params})->
     max_vage    = Mem.conf.folder.PERJURY.config.cfg.MAX_VILLAGES

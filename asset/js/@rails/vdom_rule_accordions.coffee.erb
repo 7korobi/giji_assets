@@ -1,6 +1,0 @@
-Mem.Collection.item.set <%- JSON.stringify(MESSAGE.rails) %>
-if gon?.items?
-  Mem.Collection.item.merge gon.items
-
-for name in <%- JSON.stringify(MESSAGE.module.rails) %>
-  doc.items_module name

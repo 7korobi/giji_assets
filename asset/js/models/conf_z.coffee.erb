@@ -3,7 +3,7 @@ config = (key)->
     @scope (all)->
       enable: ->
         all.where (o)->
-          o.show
+          ! o.disabled
 
     @deploy (o)->
       o["#{key}_id"] = o._id
@@ -15,13 +15,16 @@ Mem.conf = {}
 
 <%
   for (key in confs) {
-    if ("input" == key) { continue; }
-    if ("store" == key) { continue; }
-    if ("say" == key) { continue; }
-    var data = confs[key];
+    switch (key) {
+      case "input":
+      case "store":
+      case "say":
+        continue;
+      default:
+        var data = confs[key];
  %>
 new Mem.Rule("<%= key %>").schema config("<%= key %>")
-<% } %>
+<% }} %>
 
 <%
   for (key in confs) {

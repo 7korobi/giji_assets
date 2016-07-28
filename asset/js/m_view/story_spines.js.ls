@@ -15,7 +15,7 @@ doc.view.story_spines = ({_id, link, name, view})->
       view.rating
 
   m "tr", {key: _id },
-    if menu.icon.state() == "resize-full"
+    if menu.params.icon == "resize-full"
       m "td",
         header
         m "table.detail",

@@ -1,12 +1,35 @@
 doc.component.title =
   controller: ->
-    params = Url.params
     html = document.querySelector "html"
     meta = document.querySelector "meta[name=viewport]"
 
+    WebStore.copyTo Url
+    Url.popstate()
+
+    params = Url.params
     old_snap = ""
+
+    @scroll_adjust = ->
+      scroll = win.scroll.prop()
+      return unless scroll
+      updated_at = Mem.Query.messages.find(scroll)?.updated_at || 0
+      Url.params.scroll = scroll
+      Url.params.updated_at = updated_at
+
+      [folder, vid, turn, logid] = scroll.split("-")
+      return unless logid?
+
+      Url.params.folder     = folder
+      Url.params.turn       = turn
+      Url.params.story_id   = "#{folder}-#{vid}"
+      Url.params.event_id   = "#{folder}-#{vid}-#{turn}"
+      Url.params.message_id = "#{folder}-#{vid}-#{turn}-#{logid}"
+
     @refresh = ->
+      @scroll_adjust()
+
       Url.replacestate()
+      WebStore.copyBy Url
 
       base_style = html.className.replace(old_snap, "").trim()
       list =

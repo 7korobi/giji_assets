@@ -1,40 +1,55 @@
 
+potofs_order:
+  sean: potof
+  attr:
+    type: btns
+  name: 並び順
+  current: said_num
+  options:
+    stat_at:    日程
+    stat_type:  状態
+    said_num:   発言
+    pt:         残り
+    urge:       促
+    select:     希望
+    win_result: 勝敗
+    win_side:   陣営
+    role:       役割
+    text:       補足
+
 icon:
   sean: menu
   attr:
-    type: tree
-    style: icon
+    type: icon
   name: "アイコン"
   current:
   options:
     cog:
-      tooltip: 画面表示を調整します。
+      data-tooltip: 画面表示を調整します。
     home:
-      tooltip: 村の設定、アナウンスを表示します。
+      data-tooltip: 村の設定、アナウンスを表示します。
     clock:
-      tooltip: メモの履歴を表示します。
+      data-tooltip: メモの履歴を表示します。
     mail:
-      tooltip: 最新のメモを表示します。
+      data-tooltip: 最新のメモを表示します。
     chat-alt:
-      tooltip: 発言を表示します。
+      data-tooltip: 発言を表示します。
     search:
-      tooltip: 検索機能をつかいます。
+      data-tooltip: 検索機能をつかいます。
     resize-normal:
-      tooltip: 簡略な表記にします。
+      data-tooltip: 簡略な表記にします。
     resize-full:
-      tooltip: 詳細な表記にします。
+      data-tooltip: 詳細な表記にします。
     th-large:
-      tooltip: 条件で絞り込みます。
+      data-tooltip: 条件で絞り込みます。
     pencil:
-      tooltip: 書き込み機能
-
+      data-tooltip: 書き込み機能
 
 scope:
   sean: menu
   attr:
-    type: tree
-    style: hide
-  name: "動作モード"
+    className: invisible
+    type: radio
   current:
 
 theme:

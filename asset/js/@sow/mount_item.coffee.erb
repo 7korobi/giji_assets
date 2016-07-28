@@ -1,6 +1,5 @@
 Mem.Collection.item.set <%- JSON.stringify(MESSAGE.sow) %>
-if gon?.items?
-  Mem.Collection.item.merge gon.items
+catch_gon.items()
 
 deploy_samples = ->
   deploy = (role, call)->
@@ -105,5 +104,5 @@ deploy_samples = ->
 if document.querySelector "#item-rolelist"
   deploy_samples()
 
-for name in <%- JSON.stringify(MESSAGE.module.sow) %>
-  doc.items_module name
+for type in <%- JSON.stringify(MESSAGE.module.sow) %>
+  doc.mount_item type

@@ -1568,72 +1568,6 @@
 }).call(this);
 
 (function() {
-  new Mem.Rule("input").schema(function() {
-    this.scope(function(all) {
-      return {
-        check_vil: function() {
-          return all.where(function(o) {
-            return o.attr.type === 'checkbox' && o.sean === "vil";
-          });
-        },
-        checkbox: function() {
-          return all.where(function(o) {
-            return o.attr.type === 'checkbox';
-          });
-        },
-        text: function() {
-          return all.where(function(o) {
-            return o.attr.type === 'text';
-          });
-        }
-      };
-    });
-    return this.deploy(function(o) {
-      o.option_id = o._id;
-      o.attr.key = o._id;
-      if (o.query == null) {
-        o.query = {};
-      }
-      return Input.format(o);
-    });
-  });
-
-}).call(this);
-
-(function() {
-  new Mem.Rule("input").schema(function() {
-    this.scope(function(all) {
-      return {
-        check_vil: function() {
-          return all.where(function(o) {
-            return o.attr.type === 'checkbox' && o.sean === "vil";
-          });
-        },
-        checkbox: function() {
-          return all.where(function(o) {
-            return o.attr.type === 'checkbox';
-          });
-        },
-        text: function() {
-          return all.where(function(o) {
-            return o.attr.type === 'text';
-          });
-        }
-      };
-    });
-    return this.deploy(function(o) {
-      o.option_id = o._id;
-      o.attr.key = o._id;
-      if (o.query == null) {
-        o.query = {};
-      }
-      return Input.format(o);
-    });
-  });
-
-}).call(this);
-
-(function() {
   new Mem.Rule("say").schema(function() {
     this.scope(function(all) {
       return {
@@ -1652,61 +1586,6 @@
 }).call(this);
 
 (function() {
-  new Mem.Rule("store").schema(function() {
-    this.scope(function(all) {});
-    return this.deploy(function(o) {
-      o.store_id = o._id;
-      if (o.type == null) {
-        o.type = "String";
-      }
-      return o.current != null ? o.current : o.current = (function() {
-        switch (o.type) {
-          case "Keys":
-            return {};
-          case "Date":
-          case "Number":
-            return 0;
-          case "String":
-          case "Text":
-            return "";
-        }
-      })();
-    });
-  });
-
-}).call(this);
-
-(function() {
-  new Mem.Rule("url_prop").schema(function() {
-    this.scope(function(all) {
-      return all;
-    });
-    return this.deploy(function(o) {
-      o.url_prop_id = o._id;
-      if (o.type == null) {
-        o.type = "String";
-      }
-      if (o.current == null) {
-        o.current = (function() {
-          switch (o.type) {
-            case "Keys":
-              return {};
-            case "Date":
-            case "Number":
-              return 0;
-            case "String":
-            case "Text":
-              return "";
-          }
-        })();
-      }
-      return console.warn(o);
-    });
-  });
-
-}).call(this);
-
-(function() {
   var config;
 
   config = function(key) {
@@ -1715,7 +1594,7 @@
         return {
           enable: function() {
             return all.where(function(o) {
-              return o.show;
+              return !o.disabled;
             });
           }
         };
@@ -2891,54 +2770,72 @@
   });
 
   Mem.Collection.input.set({
+    "potofs_order": {
+      "sean": "potof",
+      "attr": {
+        "type": "btns"
+      },
+      "name": "並び順",
+      "current": "said_num",
+      "options": {
+        "stat_at": "日程",
+        "stat_type": "状態",
+        "said_num": "発言",
+        "pt": "残り",
+        "urge": "促",
+        "select": "希望",
+        "win_result": "勝敗",
+        "win_side": "陣営",
+        "role": "役割",
+        "text": "補足"
+      }
+    },
     "icon": {
       "sean": "menu",
       "attr": {
-        "type": "tree",
-        "style": "icon"
+        "type": "icon"
       },
       "name": "アイコン",
       "current": null,
       "options": {
         "cog": {
-          "tooltip": "画面表示を調整します。"
+          "data-tooltip": "画面表示を調整します。"
         },
         "home": {
-          "tooltip": "村の設定、アナウンスを表示します。"
+          "data-tooltip": "村の設定、アナウンスを表示します。"
         },
         "clock": {
-          "tooltip": "メモの履歴を表示します。"
+          "data-tooltip": "メモの履歴を表示します。"
         },
         "mail": {
-          "tooltip": "最新のメモを表示します。"
+          "data-tooltip": "最新のメモを表示します。"
         },
         "chat-alt": {
-          "tooltip": "発言を表示します。"
+          "data-tooltip": "発言を表示します。"
         },
         "search": {
-          "tooltip": "検索機能をつかいます。"
+          "data-tooltip": "検索機能をつかいます。"
         },
         "resize-normal": {
-          "tooltip": "簡略な表記にします。"
+          "data-tooltip": "簡略な表記にします。"
         },
         "resize-full": {
-          "tooltip": "詳細な表記にします。"
+          "data-tooltip": "詳細な表記にします。"
         },
         "th-large": {
-          "tooltip": "条件で絞り込みます。"
+          "data-tooltip": "条件で絞り込みます。"
         },
         "pencil": {
-          "tooltip": "書き込み機能"
+          "data-tooltip": "書き込み機能"
         }
       }
     },
     "scope": {
       "sean": "menu",
       "attr": {
-        "type": "tree",
-        "style": "hide"
+        "className": "invisible",
+        "type": "radio"
       },
-      "name": "動作モード",
       "current": null
     },
     "theme": {
@@ -3515,211 +3412,192 @@
   Mem.Collection.rating.set({
     "0": {
       "caption": "0",
-      "alt": ""
+      "alt": "",
+      "disabled": true
     },
     "default": {
-      "caption": "とくになし",
-      "show": true
+      "caption": "とくになし"
     },
     "love": {
       "caption": "[愛] 恋愛を重視",
-      "alt": "愛",
-      "show": true
+      "alt": "愛"
     },
     "sexy": {
       "caption": "[性] 性表現あり",
-      "alt": "性",
-      "show": true
+      "alt": "性"
     },
     "sexylove": {
       "caption": "[性愛] 大人の恋愛",
-      "alt": "性愛",
-      "show": true
+      "alt": "性愛"
     },
     "violence": {
       "caption": "[暴] 暴力、グロ",
-      "alt": "暴",
-      "show": true
+      "alt": "暴"
     },
     "sexyviolence": {
       "caption": "[性暴] えろぐろ",
-      "alt": "性暴",
-      "show": true
+      "alt": "性暴"
     },
     "teller": {
       "caption": "[怖] 恐怖を煽る",
-      "alt": "怖",
-      "show": true
+      "alt": "怖"
     },
     "drunk": {
       "caption": "[楽] 享楽に耽る",
-      "alt": "楽",
-      "show": true
+      "alt": "楽"
     },
     "gamble": {
       "caption": "[賭] 賭博に耽る",
-      "alt": "賭",
-      "show": true
+      "alt": "賭"
     },
     "crime": {
       "caption": "[罪] 犯罪描写あり",
-      "alt": "罪",
-      "show": true
+      "alt": "罪"
     },
     "drug": {
       "caption": "[薬] 薬物表現あり",
-      "alt": "薬",
-      "show": true
+      "alt": "薬"
     },
     "word": {
       "caption": "[言] 殺伐、暴言あり",
-      "alt": "言",
-      "show": true
+      "alt": "言"
     },
     "fireplace": {
       "caption": "[暢] のんびり雑談",
-      "alt": "暢",
-      "show": true
+      "alt": "暢"
     },
     "appare": {
       "caption": "[遖] あっぱれネタ風味",
-      "alt": "遖",
-      "show": true
+      "alt": "遖"
     },
     "ukkari": {
       "caption": "[張] うっかりハリセン",
-      "alt": "張",
-      "show": true
+      "alt": "張"
     },
     "child": {
       "caption": "[全] 大人も子供も初心者も、みんな安心",
-      "alt": "全",
-      "show": true
+      "alt": "全"
     },
     "biohazard": {
       "caption": "[危] 無茶ぶり上等",
-      "alt": "危",
-      "show": true
+      "alt": "危"
     },
     "null": {
       "caption": "null",
-      "alt": ""
+      "alt": "",
+      "disabled": true
     },
     "r15": {
       "caption": "１５禁",
-      "alt": ""
+      "alt": "",
+      "disabled": true
     },
     "r18": {
       "caption": "１８禁",
-      "alt": ""
+      "alt": "",
+      "disabled": true
     },
     "gro": {
       "caption": "暴力、グロ",
-      "alt": ""
+      "alt": "",
+      "disabled": true
     },
     "view": {
-      "caption": "view"
+      "caption": "view",
+      "disabled": true
     },
     "alert": {
       "caption": "要注意",
-      "alt": ""
+      "alt": "",
+      "disabled": true
     }
   });
 
   Mem.Collection.role_table.set({
     "secret": {
-      "name": "詳細は黒幕だけが知っています。"
+      "name": "詳細は黒幕だけが知っています。",
+      "disabled": true
     },
     "ultimate": {
-      "name": "アルティメット"
+      "name": "アルティメット",
+      "disabled": true
     },
     "lover": {
-      "name": "恋愛天使"
+      "name": "恋愛天使",
+      "disabled": true
     },
     "hamster": {
-      "name": "ハムスター"
+      "name": "ハムスター",
+      "disabled": true
     },
     "random": {
-      "name": "ランダム"
+      "name": "ランダム",
+      "disabled": true
     },
     "custom": {
-      "name": "自由設定",
-      "show": true
+      "name": "自由設定"
     },
     "default": {
       "name": "標準",
-      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "fanatic", "medium", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "stigma"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "stigma", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "wisper", "medium", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager", "villager", "villager", "villager"]]
     },
     "mistery": {
       "name": "深い霧の夜",
-      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "lonewolf"], ["villager", "villager", "seer", "lonewolf", "alchemist"], ["villager", "villager", "guard", "lonewolf", "alchemist", "possess"], ["villager", "villager", "guard", "lonewolf", "alchemist", "decide", "possess", "fan"], ["villager", "villager", "guard", "wolf", "wolf", "alchemist", "decide", "aura", "doctor"], ["villager", "villager", "guard", "wolf", "wolf", "alchemist", "decide", "aura", "doctor", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "alchemist"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl", "fan"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl", "fan", "guru"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl", "fan", "guru", "alchemist"]]
     },
     "test1st": {
       "name": "人狼審問試験壱型",
-      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "possess", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "stigma"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "stigma", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "stigma", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "villager", "fm", "fm", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "villager", "fm", "fm", "possess", "villager"]]
     },
     "test2nd": {
       "name": "人狼審問試験弐型",
-      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager", "villager"]]
     },
     "wbbs_c": {
       "name": "人狼BBS-C国",
-      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager", "villager"]]
     },
     "wbbs_f": {
       "name": "人狼BBS-F国",
-      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager", "villager"]]
     },
     "wbbs_g": {
       "name": "人狼BBS-G国",
-      "show": true,
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager", "villager", "villager", "villager"]]
     }
   });
 
   Mem.Collection.rule.set({
     "TABULA": {
-      "show": true,
       "CAPTION": "タブラの人狼",
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"
     },
     "MILLERHOLLOW": {
-      "show": true,
       "CAPTION": "ミラーズホロウ",
       "HELP": "<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>すべての死者は役職が公開される。\n<li>狼を全滅させると、村勝利。\n<li>「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"
     },
     "LIVE_TABULA": {
-      "show": true,
       "CAPTION": "タブラの人狼（死んだら負け）",
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"
     },
     "LIVE_MILLERHOLLOW": {
-      "show": true,
       "CAPTION": "ミラーズホロウ（死んだら負け）",
       "HELP": "<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>「村人」を全滅させると、狼勝利。役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"
     },
     "TROUBLE": {
-      "show": true,
       "CAPTION": "Trouble☆Aliens",
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>守護者は、より大人数の人狼からは守りきることができず、身代わりに感染する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村側の生存者が勝利（村側は死んだら負ける）。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼と感染者の勝利。\n"
     },
     "MISTERY": {
-      "show": true,
       "CAPTION": "深い霧の夜",
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>村側は自分の役職を自覚しない。\n<li>村側は、能力の結果不審者を見かけることがある。\n<li>人狼の行動対象に選ばれると、不審者を見かける。\n<li>狼を全滅させると、村勝利。\n<li>役職「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"
     },
     "VOV": {
+      "disabled": true,
       "CAPTION": "狂犬病の谷",
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"
     },
     "SECRET": {
-      "show": true,
       "CAPTION": "陰謀に集う胡蝶",
       "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼の生存者が勝利。\n<li>いかなる場合も、死んでしまったものは敗北である。\n"
     }
@@ -4119,6 +3997,7 @@
     "message_id": {},
     "event_id": {},
     "story_id": {},
+    "face_id": {},
     "mode_id": {
       "current": "talk"
     },
@@ -4427,67 +4306,72 @@
 
   Mem.Collection.trs.set({
     "all": {
-      "show": true,
       "CAPTION": "オール☆スター",
       "HELP": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。"
     },
     "star": {
-      "show": true,
       "CAPTION": "Orbital☆Star",
       "HELP": "すべての役職、恩恵、事件を楽しむことができます。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>宇宙時代に突入した「全部入り」のセットです。村落共同体は渓谷や高原ではなく、小惑星帯や人工コロニー、移民船にあるでしょう。事件が始まるまでは、とても充実した近代的なインフラが整っていたのですが……"
     },
     "regend": {
-      "show": true,
       "CAPTION": "議事☆伝承",
       "HELP": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。アクション内容は穏当になり、未来的ですばらしいクローンも居ません。"
     },
     "heavy": {
-      "show": true,
       "CAPTION": "絶望☆議事",
       "HELP": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。たいへん重苦しい設定となっていて、未来的ですばらしいクローンも居ません。"
     },
     "complexx": {
-      "show": true,
       "CAPTION": "ParanoiA",
       "HELP": "ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"
     },
     "simple": {
+      "disabled": true,
       "CAPTION": "ラッキー☆スター",
       "HELP": "初心者向けの、シンプルな設定です。拡張設定の一部が固定になっています。"
     },
     "fool": {
+      "disabled": true,
       "CAPTION": "適当系",
       "HELP": "てきとーな感じ。"
     },
     "sow": {
+      "disabled": true,
       "CAPTION": "人狼物語",
       "HELP": "ウェブゲーム「人狼物語」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
     },
     "wbbs": {
+      "disabled": true,
       "CAPTION": "人狼BBS",
       "HELP": "ウェブゲーム「人狼BBS」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
     },
     "juna": {
+      "disabled": true,
       "CAPTION": "人狼審問",
       "HELP": "ウェブゲーム「人狼審問」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
     },
     "complex": {
+      "disabled": true,
       "CAPTION": "PARANOIA",
       "HELP": "ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"
     },
     "cabala": {
+      "disabled": true,
       "CAPTION": "ギロチン広場",
       "HELP": "権謀術数を弄び、虚実まじえた会話を楽しむためのセットです。"
     },
     "tabula": {
+      "disabled": true,
       "CAPTION": "タブラの人狼",
       "HELP": "カードゲーム「Lupus in Tabula」風の役職を楽しめます。ただし、疫病神、公証人、悪魔くん、には対応していません。"
     },
     "millerhollow": {
+      "disabled": true,
       "CAPTION": "ミラーズホロウ",
       "HELP": "カードゲーム「The Werewolves of Millers Hollow + New Moon」風の役職を楽しめます。ただし、愚か者には対応していません。守護者、笛吹きにすこし違いがあります。"
     },
     "ultimate": {
+      "disabled": true,
       "CAPTION": "アルティメット",
       "HELP": "カードゲーム「アルティメット人狼」風の役職を楽しめます。ただし、ドワーフ、ドッペルゲンガー、アル中、愚か者、倫理学者には対応していません。"
     }
@@ -9980,6 +9864,15 @@
         }
       }
       return Mem.Collection.writer.set(gon.form.texts);
+    },
+    items: function(){
+      if ((typeof gon != 'undefined' && gon !== null ? gon.items : void 8) != null) {
+        return Mem.Collection.item.merge(gon.items);
+      }
+    },
+    new_chrs: function(){
+      Mem.Collection.face.merge(gon.new_chr_faces);
+      return Mem.Collection.chr_job.merge(gon.new_chr_jobs);
     },
     map_reduce_faces: function(){
       Mem.Collection.chr_set.schema(function(){

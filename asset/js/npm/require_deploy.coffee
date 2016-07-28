@@ -53,7 +53,10 @@ deploy
 
   GUI: require 'gui'
   Url: require 'url_store'
-  Store: require 'web_store'
+  WebStore: require 'web_store'
+
+require "conf_input"
+require "conf_store"
 
 GUI.Animate = require 'gui_animate'
 GUI.form = require 'gui_form'

@@ -1,3 +1,5 @@
+Mem = require "memory-record"
+
 memory_prop = (params, key, unpack)->
   (val)->
     if arguments.length
@@ -42,12 +44,19 @@ class Tie
   deploy: (define, params, { _id, current, type })->
     unpack = Mem.unpack[type]
     pack   = Mem.pack[type]
-    params[_id] = unpack current
     @prop[_id] = define params, _id, unpack, pack
+    val = @prop[_id]()
+    if current
+      unless val
+        @prop[_id] val = current
 
-  save: ->
-    for key, prop of @prop
-      prop Url.prop key
+  copyBy: (source)->
+    for _id, prop of @prop
+      prop source.prop[_id]()
+
+  copyTo: (target)->
+    for _id, prop of @prop
+      target.prop[_id] prop()
 
 Tie.params = {}
 

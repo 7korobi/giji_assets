@@ -32,7 +32,7 @@ doc.component.buttons =
 
     vdom = []
     section = (icon)->
-      vdom.push menu.icon.item icon,
+      vdom.push menu.input.icon.item icon,
         className: "glass tooltip-right"
         tag: "bigicon"
 
@@ -62,7 +62,7 @@ doc.component.buttons =
 
     section "pencil"
     section "th-large"
-    section "search" unless "pins" == Url.params.scope
+    section "search" unless "pins" == menu.params.scope
     section "cog"
 
     m "table",

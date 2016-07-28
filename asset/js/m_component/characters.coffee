@@ -1,25 +1,15 @@
-vdom = ({name, badge})->
-  [ m "span", name
-    m "span.emboss.pull-right", badge
-  ]
-
 doc.component.characters =
   controller: ->
-    tie = InputTie.btns Url.params, [
-      "tag"
-    ]
+    InputTie.btns Url.params, ["tag"]
 
   view: ({ input, params })->
     {tag} = params
     chrs = Mem.Query.faces.tag(tag).list
     set = Mem.conf.tag[tag]
 
-    [ menu.icon.icon "th-large",
-        view: (main_menu)->
-          m ".paragraph",
-            m "h6", "タグを選んでみよう"
-            input.tag.field vdom
-
+    [ menu.input.icon.item "th-large",
+        menu: [input]
+        className: "glass tooltip-right"
       m ".chrlist",
         m "div",
           m "h6",

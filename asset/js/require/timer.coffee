@@ -1,3 +1,4 @@
+_ = require "lodash"
 
 class Timer
   @week = ["日","月","火","水","木","金","土"]
@@ -53,7 +54,7 @@ class Timer
   @tick = (cb)->
     action = ->
 #      m.startComputation()
-      tick = cb(_.now())
+      tick = cb Date.now()
       if tick
         setTimeout ->
           action()

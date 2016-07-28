@@ -1,26 +1,48 @@
-tie = InputTie.btns Url.params, ["icon", "scope"]
-tie.change = (key, val, old)->
-  console.log [key, val, old]
-  switch key
-    when "icon"
-      switch val
-        when "cog"
-          null
-        else
-          null
+export menu = InputTie.btns Url.params, ["icon", "scope"]
+menu.change = (id, value, old_value)->
+  switch id
     when "scope"
-      null
-    else
-      null
+      switch value
+        when "history", "memo"
+          Url.params.scroll = ""
+          ScrollSpy.go Url.params.memo_at
+        when "talk"
+          Url.params.scroll = ""
+          ScrollSpy.go Url.params.talk_at
+        when "home"
+          Url.params.scroll = ""
+          ScrollSpy.go Url.params.home_at
+        when "pins"
+          Url.params.scroll = ""
+          ScrollSpy.go Url.params.scroll
 
-export menu = tie.input
+    when "icon"
+      switch value
+        when "pin"
+          menu.do_change "scope", "pins"
+        when "home"
+          menu.do_change "scope", "home"
+        when "mail"
+          menu.do_change "scope", "memo"
+        when "chat-alt"
+          menu.do_change "scope", "talk"
+        when "clock"
+          menu.do_change "scope", "history"
 
+        when "resize-full"
+          win.scroll.size = 30
+          menu.do_change "scope", "full"
+        when "resize-normal"
+          win.scroll.size = 120
+          menu.do_change "scope", "normal"
 
-btns = ({head, field})->
-  [head(), field (o)-> o.caption ]
+      switch old_value
+        when "pin"
+          Url.params.pins = {}
+          menu.do_change "scope", Url.params.back
 
-menu.scope.change_pin = (id)->
-  target = menu.scope.state()
+menu.input.scope.change_pin = (id)->
+  target = Url.params.scope
   target_at =
     switch target
       when "history"
@@ -34,18 +56,4 @@ menu.scope.change_pin = (id)->
     Url.params.back = target
     Url.params[target_at] = id
   Url.params.scroll = id
-  Url.replacestate()
-  menu.icon.change "pin"
-
-
-menu.icon.icon "cog",
-  controller: ->
-    { tie } = Url
-    tie
-
-  view: ({ input })->
-    m ".paragraph",
-      btns input.theme
-      btns input.width
-      btns input.layout
-      btns input.font
+  menu.do_change "icon", "pin"

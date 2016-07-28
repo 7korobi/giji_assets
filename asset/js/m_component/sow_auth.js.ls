@@ -1,13 +1,12 @@
 ua = "javascript"
 
 doc.component.sow_auth =
-  controller: !->
-    @params = { ua }
+  controller: ->
+    url = gon.url
+    @params = { ua, cmd: "login" }
+
     @tie = InputTie.form @params, <[uid pwd]>
     @tie.timeout = 5000
-    @tie.disable = ~>
-      m.endComputation()
-
     @tie.check = ~>
       console.log [@params, @errors, @infos]
       if doc.user.is_login
@@ -21,25 +20,17 @@ doc.component.sow_auth =
         params = { cmd, ua }
       else
         params = @params
-        params.cmd = "login"
 
-      Submit.iframe @url, params
+      Submit.iframe url, params
       .then (gon)!~>
         if e = gon.errors
           @errors = e.login || e[""]
         deploy gon
 
-    doc.user = @
-    @url = gon.url
-
-    deploy = (gon)!~>
-      o = gon.sow_auth
-      return unless o
-      doc.user.is_login = @is_login = o.is_login > 0
-      doc.user.is_admin = o.is_admin > 0
-
+    deploy = ({ sow_auth })!~>
+      return unless sow_auth
+      { @is_login, @is_admin } = doc.user = sow_auth
       validate.sow_auth @
-      Store.cookie.save()
 
     deploy gon
 

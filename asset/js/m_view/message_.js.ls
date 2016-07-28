@@ -121,7 +121,7 @@ doc.view.head = (o)->
     m.trust o.log.deco_text_br
 
 doc.view.event = (o)->
-  switch menu.scope.state()
+  switch menu.params.scope
     when "home", "talk"
       switch o.logid
         when "EVENT-ASC"

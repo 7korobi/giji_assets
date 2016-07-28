@@ -1,29 +1,29 @@
 {
 	"folders":
 	[
-    {
-      "path": "asset/yaml"
-    },
-    {
-      "path": "asset/html"
-    },
-    {
-      "path": "asset/sow"
-    },
-    {
-      "path": "asset/css"
-    },
-    {
-      "path": "asset/js"
-    },
-    {
-      "path": "config"
-    },
-    {
-      "path": "test"
-    },
-    {
-      "path": "tmp/cache"
-    }
+		{
+			"path": "test"
+		},
+		{
+			"path": "asset\\yaml"
+		},
+		{
+			"path": "asset\\html"
+		},
+		{
+			"path": "asset\\sow"
+		},
+		{
+			"path": "asset\\css"
+		},
+		{
+			"path": "asset\\js"
+		},
+		{
+			"path": "config"
+		},
+		{
+			"path": "lib"
+		}
 	]
 }

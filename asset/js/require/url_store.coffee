@@ -1,3 +1,5 @@
+_ = require "lodash"
+Mem = require "memory-record"
 Tie = require "./tie"
 
 decode = (str)->
@@ -40,9 +42,11 @@ class LocationStore
     return
 
   each: (cb)->
-    for type in Tie.types.url when path = @[type]
-      for url in Url.type[type]
-        cb url, path, type
+    for type in Tie.types.url
+      path = @[type]
+      if path?
+        for url in Url.type[type]
+          cb url, path, type
     @
 
   fetch: ->
@@ -69,8 +73,8 @@ class Url
     @params = Tie.params
 
   @popstate: ->
-    @loc = LocationStore.now()
-    @loc.fetch()
+    @_loc = LocationStore.now()
+    @_loc.fetch()
     @mode = "replaceState"
 
   @pushstate: ->
@@ -81,17 +85,20 @@ class Url
     state()
 
   @location: ->
-    unless @loc?
+    unless @_loc?
       @popstate()
-    @loc.view()
+    @_loc.view()
 
   constructor: (@_id, @type, @format)->
     @keys = []
     regexp = @format
     .replace /[.]/gi, (key)-> "\\#{key}"
     .replace /:([a-z_]+)/gi, (_, key)=>
+      unless o = input(key)
+        console.error "undefined key : #{key}"
+        return
       @keys.push key
-      Mem.Serial.url[input(key).type]
+      Mem.Serial.url[o.type]
     , "i"
     @scanner = new RegExp regexp
 
@@ -101,6 +108,10 @@ class Url
       serial = Mem.pack[input(key).type]
       path = path.replace ///:#{key}///gi, serial Url.params[key]
     encode path
+
+  values: (hash)->
+    for key in @keys
+      hash[key] || Url.params[key]
 
   fetch: (path)->
     @match = @scanner.exec path

@@ -97,7 +97,7 @@ doc.component.vmake_form =
       chr_job = chr_set.chr_jobs.find "#{chr_set._id}_#{face_id}"
 
       return null unless chr_job
-      updated_at = _.now()
+      updated_at = Date.now()
       mestype = "SAY"
       user_id = "master"
       anchor = "0"

@@ -84,6 +84,14 @@ export catch_gon =
 
     Mem.Collection.writer.set gon.form.texts
 
+  items: ->
+    if gon?.items?
+      Mem.Collection.item.merge gon.items
+
+  new_chrs: ->
+    Mem.Collection.face.merge    gon.new_chr_faces
+    Mem.Collection.chr_job.merge gon.new_chr_jobs
+
   map_reduce_faces: ->
     Mem.Collection.chr_set.schema ->
       @order (o)->

@@ -1,7 +1,7 @@
 doc.component.filter =
   controller: !->
     @tie = InputTie.btns {}, []
-    @tie.change (id, value)->
+    @tie.change = (id, value)->
       if doc.seeing[o._id] >= day
         delete doc.seeing[o._id]
       else
@@ -16,14 +16,14 @@ doc.component.filter =
       tie.input_for {_id, attr, name}
 
 
-    { talk_at, scroll, pins } = Url.prop
+    { talk_at, scroll, pins, icon, scope } = Url.prop
     @click =
       go: ({_id})->
         cb = ->
           talk_at _id
           pins {}
-          menu.icon.change ""
-          menu.scope.change "talk"
+          icon ""
+          scope "talk"
           scroll ""
           win.scroll.rescroll talk_at
         onclick: cb
