@@ -1,6 +1,16 @@
 @mixin font($small, $size-base, $family) {
   $line-base: $size-base * 1.40;
 
+  [title],
+  [data-tooltip] {
+    &:after {
+      font-family: $family;
+      font-size:   $size-base;
+      line-height: $line-base;
+      height:      $line-base;
+    }
+  }
+
   html &,
   body,
   input,

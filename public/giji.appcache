@@ -1,6 +1,5 @@
-<<<<<<< 55f8b04fd120541051cecfd783ad77135e5b80c6
 CACHE MANIFEST
-# Time: Fri Jun 03 2016 14:46:21 GMT+0900 (東京 (標準時))
+# Time: Sun Jul 31 2016 17:38:06 GMT+0900 (東京 (標準時))
 
 CACHE:
 assets-master/2016-05-new-chrs.js
@@ -103,5 +102,3 @@ NETWORK:
 
 SETTINGS:
 prefer-online
-=======
->>>>>>> use Promise gesture.

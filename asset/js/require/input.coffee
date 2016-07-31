@@ -391,7 +391,6 @@ btn_attr = (val, tie, b)->
     css += " " + className if className
 
     btn_pick attrs,
-      "data-tooltip": o["data-tooltip"]
       className: css
       onclick: onchange
       onmouseup: onchange

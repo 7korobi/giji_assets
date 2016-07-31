@@ -127,6 +127,12 @@ TR.filter-hide .night-theme,
   color: #444;
 }
 
+.large-font [title]:after,
+.large-font [data-tooltip]:after {
+  font: 21px/29.4px serif;
+  height: 29.4px;
+}
+
 HTML .large-font,
 .large-font BODY,
 .large-font INPUT,
@@ -205,6 +211,12 @@ HTML .large-font,
 
 .large-font #head_navi #headline {
   width: 420px;
+}
+
+.novel-font [title]:after,
+.novel-font [data-tooltip]:after {
+  font: 15px/21px serif;
+  height: 21px;
 }
 
 HTML .novel-font,
@@ -287,6 +299,12 @@ HTML .novel-font,
   width: 320px;
 }
 
+.std-font [title]:after,
+.std-font [data-tooltip]:after {
+  font: 15px/21px sans-serif;
+  height: 21px;
+}
+
 HTML .std-font,
 .std-font BODY,
 .std-font INPUT,
@@ -365,6 +383,12 @@ HTML .std-font,
 
 .std-font #head_navi #headline {
   width: 320px;
+}
+
+.small-font [title]:after,
+.small-font [data-tooltip]:after {
+  font: 12px/16.8px sans-serif;
+  height: 16.8px;
 }
 
 HTML .small-font,
@@ -32451,7 +32475,6 @@ IMG + .chrF {
   display: block;
   opacity: 1;
   border-width: 6px;
-  height: auto;
 }
 
 .tooltip-bottom:after,
