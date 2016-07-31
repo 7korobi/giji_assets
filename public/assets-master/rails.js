@@ -1641,8 +1641,7 @@
       this.tie = InputTie.form(this.params, ['uid', 'pwd']);
       this.tie.timeout = 5000;
       this.tie.check = function(){
-        console.log([this$.params, this$.errors, this$.infos]);
-        if (doc.user.is_login) {
+        if (this$.is_login) {
           return true;
         } else {
           return validate.sow_auth(this$);
@@ -1650,7 +1649,7 @@
       };
       this.tie.action = function(){
         var cmd, params;
-        if (doc.user.is_login) {
+        if (this$.is_login) {
           cmd = "logout";
           params = {
             cmd: cmd,
@@ -1668,19 +1667,21 @@
         });
       };
       deploy = function(arg$){
-        var sow_auth, ref$;
+        var sow_auth;
         sow_auth = arg$.sow_auth;
         if (!sow_auth) {
           return;
         }
-        ref$ = doc.user = sow_auth, this$.is_login = ref$.is_login, this$.is_admin = ref$.is_admin;
+        doc.user == null && (doc.user = {});
+        doc.user.is_login = this$.is_login = 0 < sow_auth.is_login;
+        doc.user.is_admin = this$.is_admin = 0 < sow_auth.is_admin;
         validate.sow_auth(this$);
       };
       return deploy(gon);
     },
     view: function(c){
       var msg;
-      return c.tie.form({}, c.is_login
+      return c.tie.form({}, 0 < c.is_login
         ? m(".paragraph", c.tie.submit(c.params.uid + " がログアウト"))
         : m(".paragraph", c.tie.input.uid.head(), c.tie.input.uid.field(), c.tie.input.pwd.head(), c.tie.input.pwd.field(), c.tie.submit("ログイン")), m(".paragraph", (function(){
         var i$, ref$, len$, results$ = [];

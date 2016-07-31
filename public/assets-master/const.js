@@ -3120,7 +3120,6 @@
         "maxlength": 20
       },
       "name": "アカウント",
-      "cookie": true,
       "help_on": null,
       "help_off": null
     },
@@ -3133,7 +3132,6 @@
         "maxlength": 20
       },
       "name": "パスワード",
-      "cookie": true,
       "help_on": null,
       "help_off": null
     },
