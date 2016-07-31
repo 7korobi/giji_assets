@@ -44,4 +44,17 @@ class WebStore
     for store in Tie.types.store
       @[store].copyTo target
 
+  @format: (o)->
+    o.type ?= "String"
+    o.current ?=
+      switch o.type
+        when "Keys"
+          {}
+        when "Date", "Number"
+          0
+        when "String"
+          null
+        when "Text"
+          ""
+
 module.exports = WebStore

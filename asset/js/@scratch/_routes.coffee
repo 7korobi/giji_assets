@@ -3,6 +3,9 @@ WebStore.cookie_options =
   path: "/"
   secure: false
 
+Url.define = (key)->
+    Mem.Query.stores.hash[key]
+
 Url.maps
   hash:
     pin:    "pin=:back~:pins"
@@ -16,9 +19,9 @@ Url.maps
     stories:  "story=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search"
     messages: "log=:home~:talk~:memo~:open~:human~:search"
 
+Url.conf.scroll.current = true
+Url.tie = InputTie.btns Url.params, ["theme", "width", "layout", "font"]
+
 WebStore.maps
   session: ["theme", "width", "layout", "font"]
 
-Url.tie = InputTie.btns Url.params, ["theme", "width", "layout", "font"]
-
-Url.conf.scroll.current = true

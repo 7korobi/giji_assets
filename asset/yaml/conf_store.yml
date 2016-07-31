@@ -1,51 +1,54 @@
-pins:     { type: Keys }
-scroll:   { type: Text }
-back:     { type: Text }
-icon:     { type: Text }
-search:   { type: Text }
+uid: {}  # cookie(R)
+pwd: {}  # cookie(R)
 
-vid:  { type: Number }
-turn: { type: Number }
+search: { type: Text }
 
-updated_at: { type: Date }
-
-uid: {}
-pwd: { type: Text }
 item: {}
 color: {}
 title: {}
 nation: {}
+
+updated_at: { type: Date }
+
+vid:  { type: Number }
+turn: { type: Number }
+
 message_id: {}
 event_id: {}
 story_id: {}
 face_id: {}
-mode_id:  { current: talk }
+mode_id: { current: talk }
+pins: { type: Keys }
 
-tag:      { current: all }
+scroll: {}
+back:   {}
 
-width:    { current: wide }
-layout:   { current: center }
-font:     { current: std }
-theme:    { current: cinema }
-
-potofs_hide:  { type: Keys }
-potofs_desc:  { type: Bool, current: true }
-potofs_order: { current: said_num }
-
-memo_at:  { type: Text, current: "" }
-talk_at:  { type: Text, current: "" }
-home_at:  { type: Text, current: "" }
-open:     { type: Bool, current: true }
-uniq:     { type: Bool, current: true }
-human:    { type: Bool, current: true }
+icon:     {}
 scope:    { current: home }
 memo:     { current: all }
 talk:     { current: open }
 home:     { current: announce }
 
+width:    { current: wide }    # session
+layout:   { current: center }  # session
+font:     { current: std }     # session
+theme:    { current: cinema }  # session
+
+potofs_hide:  { type: Keys }
+potofs_desc:  { type: Bool, current: true }
+potofs_order: { current: said_num }
+
+memo_at:  { type: Text }
+talk_at:  { type: Text }
+home_at:  { type: Text }
+open:     { type: Bool, current: true }
+uniq:     { type: Bool, current: true }
+human:    { type: Bool, current: true }
+
 roletable:       { current: ALL }
 card_win:        { current: ALL }
 
+tag:             { current: all }
 folder:          { current: all }
 chr_set:         { current: all }
 order:           { current: all }

@@ -4,7 +4,7 @@ doc.view.sow_css_changer = ({url, input})->
       className: "pull-right menuicon tooltip-left"
     if url
       if doc.user.is_login
-        {uid, pwd} = Url.prop
+        {uid, pwd} = WebStore.cookie.prop
         m "a.btn.edge",
           href: "#{url}?ua=mb&cmd=vindex&uid=#{uid()}&pwd=#{pwd()}"
         , "携帯"

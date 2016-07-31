@@ -11,10 +11,6 @@ encode = (str)->
   .replace /%5D/g, ']'
 
 
-input = (key)->
-  Mem.Query.stores.hash[key]
-
-
 memory_prop = (params, key, unpack)->
   (val)->
     if arguments.length
@@ -67,6 +63,9 @@ class Url
   for type in Tie.types.url
     @type[type] = []
 
+  @define = (key)->
+    Mem.Query.stores.hash[key]
+
   @maps: (hh)->
     @tie = Tie.build_url hh, Tie.params, @
     @prop = @tie.prop
@@ -94,7 +93,7 @@ class Url
     regexp = @format
     .replace /[.]/gi, (key)-> "\\#{key}"
     .replace /:([a-z_]+)/gi, (_, key)=>
-      unless o = input(key)
+      unless o = Url.define(key)
         console.error "undefined key : #{key}"
         return
       @keys.push key
@@ -105,7 +104,7 @@ class Url
   serialize: ->
     path = @format
     for key in @keys
-      serial = Mem.pack[input(key).type]
+      serial = Mem.pack[Url.define(key).type]
       path = path.replace ///:#{key}///gi, serial Url.params[key]
     encode path
 

@@ -13,9 +13,9 @@ class Tie
     url: ["protocol", "host", "pathname", "search", "hash", "href"]
     store: ["session", "local", "cookie"]
 
-  @build_input: (ids, params, inputTie, Input)->
+  @build_input: (ids = [], params, inputTie, Input)->
     tie = new Tie
-    for o in Mem.Query.inputs.where(_id: ids || []).list
+    for o in Mem.Query.inputs.where(_id: ids).list
       inputTie.input[o._id] = new Input inputTie, o
       tie.deploy memory_prop, params, o
     tie
@@ -32,9 +32,9 @@ class Tie
       tie.deploy memory_prop, params, store
     tie
 
-  @build_store: (ids, define, params)->
+  @build_store: (ids = [], define, params)->
     tie = new Tie
-    for store in Mem.Query.stores.where(_id: ids || []).list
+    for store in Mem.Query.stores.where(_id: ids).list
       tie.deploy define, params, store
     tie
 

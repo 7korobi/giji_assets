@@ -22,7 +22,6 @@ win.mount "#make_vil", (dom)->
       data = params form, "SOW",
         ua: "javascript"
         cmd: "makevil"
-        trsid: form.chr_npc
         hour: form.time[0..1]
         minite: form.time[3..4]
         eventcard: form.trap.join("/")

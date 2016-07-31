@@ -3,6 +3,9 @@ WebStore.cookie_options =
   path: "/sow.cgi"
   secure: false
 
+Url.define = (key)->
+    Mem.Query.stores.hash[key]
+
 Url.maps
   pathname:
     story:  "/sow.cgi"
@@ -17,10 +20,12 @@ Url.maps
     messages: "log=:home~:talk~:memo~:open~:human~:search"
     scroll:   "scr=:scroll~:talk_at~:memo_at"
 
-WebStore.maps
-  session: ["theme", "width", "layout", "font"]
-
+Url.conf.scroll.current = true
 Url.tie = InputTie.btns Url.params, ["theme", "width", "layout", "font"]
 
-Url.conf.scroll.current = true
+WebStore.maps
+  session: ["theme", "width", "layout", "font"]
+  cookie:  ["uid", "pwd"]
+
+
 

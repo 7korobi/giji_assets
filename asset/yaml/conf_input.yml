@@ -299,7 +299,6 @@ uid:
     size: 10
     maxlength: 20
   name: アカウント
-  cookie: true
   help_on:
   help_off:
 
@@ -311,7 +310,6 @@ pwd:
     size: 10
     maxlength: 20
   name: パスワード
-  cookie: true
   help_on:
   help_off:
 
@@ -431,6 +429,8 @@ chr_npc:
     type: select
     name: csid
     required: true
+  query:
+    SOW: trsid
   name: 登場人物とNPC
   help_on: ""
   help_off: ※入力してください。

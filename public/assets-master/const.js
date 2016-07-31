@@ -3120,7 +3120,6 @@
         "maxlength": 20
       },
       "name": "アカウント",
-      "cookie": true,
       "help_on": null,
       "help_off": null
     },
@@ -3133,7 +3132,6 @@
         "maxlength": 20
       },
       "name": "パスワード",
-      "cookie": true,
       "help_on": null,
       "help_off": null
     },
@@ -3268,6 +3266,9 @@
         "type": "select",
         "name": "csid",
         "required": true
+      },
+      "query": {
+        "SOW": "trsid"
       },
       "name": "登場人物とNPC",
       "help_on": "",
@@ -3964,20 +3965,17 @@
   });
 
   Mem.Collection.store.set({
-    "pins": {
-      "type": "Keys"
-    },
-    "scroll": {
-      "type": "Text"
-    },
-    "back": {
-      "type": "Text"
-    },
-    "icon": {
-      "type": "Text"
-    },
+    "uid": {},
+    "pwd": {},
     "search": {
       "type": "Text"
+    },
+    "item": {},
+    "color": {},
+    "title": {},
+    "nation": {},
+    "updated_at": {
+      "type": "Date"
     },
     "vid": {
       "type": "Number"
@@ -3985,17 +3983,6 @@
     "turn": {
       "type": "Number"
     },
-    "updated_at": {
-      "type": "Date"
-    },
-    "uid": {},
-    "pwd": {
-      "type": "Text"
-    },
-    "item": {},
-    "color": {},
-    "title": {},
-    "nation": {},
     "message_id": {},
     "event_id": {},
     "story_id": {},
@@ -4003,8 +3990,23 @@
     "mode_id": {
       "current": "talk"
     },
-    "tag": {
+    "pins": {
+      "type": "Keys"
+    },
+    "scroll": {},
+    "back": {},
+    "icon": {},
+    "scope": {
+      "current": "home"
+    },
+    "memo": {
       "current": "all"
+    },
+    "talk": {
+      "current": "open"
+    },
+    "home": {
+      "current": "announce"
     },
     "width": {
       "current": "wide"
@@ -4029,16 +4031,13 @@
       "current": "said_num"
     },
     "memo_at": {
-      "type": "Text",
-      "current": ""
+      "type": "Text"
     },
     "talk_at": {
-      "type": "Text",
-      "current": ""
+      "type": "Text"
     },
     "home_at": {
-      "type": "Text",
-      "current": ""
+      "type": "Text"
     },
     "open": {
       "type": "Bool",
@@ -4052,23 +4051,14 @@
       "type": "Bool",
       "current": true
     },
-    "scope": {
-      "current": "home"
-    },
-    "memo": {
-      "current": "all"
-    },
-    "talk": {
-      "current": "open"
-    },
-    "home": {
-      "current": "announce"
-    },
     "roletable": {
       "current": "ALL"
     },
     "card_win": {
       "current": "ALL"
+    },
+    "tag": {
+      "current": "all"
     },
     "folder": {
       "current": "all"

@@ -42,7 +42,7 @@ doc.component.vmake_form =
       v.submit v.params
 
     v.tie.input.checkboxes =
-      for chk in Mem.Query.inputs.check_vil().list
+      for chk in Mem.Query.inputs.checkbox("vil").list
         v.tie.input[chk._id] = new Input v.tie, chk
 
     vindex = 0

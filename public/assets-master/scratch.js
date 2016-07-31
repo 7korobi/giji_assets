@@ -132,6 +132,10 @@
     secure: false
   };
 
+  Url.define = function(key) {
+    return Mem.Query.stores.hash[key];
+  };
+
   Url.maps({
     hash: {
       pin: "pin=:back~:pins",
@@ -147,13 +151,13 @@
     }
   });
 
-  WebStore.maps({
-    session: ["theme", "width", "layout", "font"]
-  });
+  Url.conf.scroll.current = true;
 
   Url.tie = InputTie.btns(Url.params, ["theme", "width", "layout", "font"]);
 
-  Url.conf.scroll.current = true;
+  WebStore.maps({
+    session: ["theme", "width", "layout", "font"]
+  });
 
 }).call(this);
 
@@ -1372,6 +1376,21 @@
     controller: function(){
       var url, deploy, this$ = this;
       url = gon.url;
+      doc.user = {};
+      deploy = function(arg$){
+        var sow_auth;
+        sow_auth = arg$.sow_auth;
+        if (!sow_auth) {
+          return;
+        }
+        doc.user.is_login = 0 < sow_auth.is_login;
+        doc.user.is_admin = 0 < sow_auth.is_admin;
+        doc.user.id = sow_auth.uid;
+        if (doc.user.is_login) {
+          WebStore.cookie.copyTo(this$.tie);
+        }
+        validate.sow_auth(this$);
+      };
       this.params = {
         ua: ua,
         cmd: "login"
@@ -1379,8 +1398,7 @@
       this.tie = InputTie.form(this.params, ['uid', 'pwd']);
       this.tie.timeout = 5000;
       this.tie.check = function(){
-        console.log([this$.params, this$.errors, this$.infos]);
-        if (doc.user.is_login) {
+        if (this$.is_login) {
           return true;
         } else {
           return validate.sow_auth(this$);
@@ -1405,21 +1423,12 @@
           deploy(gon);
         });
       };
-      deploy = function(arg$){
-        var sow_auth, ref$;
-        sow_auth = arg$.sow_auth;
-        if (!sow_auth) {
-          return;
-        }
-        ref$ = doc.user = sow_auth, this$.is_login = ref$.is_login, this$.is_admin = ref$.is_admin;
-        validate.sow_auth(this$);
-      };
-      return deploy(gon);
+      deploy(gon);
     },
     view: function(c){
       var msg;
-      return c.tie.form({}, c.is_login
-        ? m(".paragraph", c.tie.submit(c.params.uid + " がログアウト"))
+      return c.tie.form({}, doc.user.is_login
+        ? m(".paragraph", c.tie.submit(doc.user.id + " がログアウト"))
         : m(".paragraph", c.tie.input.uid.head(), c.tie.input.uid.field(), c.tie.input.pwd.head(), c.tie.input.pwd.field(), c.tie.submit("ログイン")), m(".paragraph", (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = c.errors).length; i$ < len$; ++i$) {
@@ -2057,7 +2066,7 @@
       };
       v.tie.input.checkboxes = (function() {
         var i, len, ref, results;
-        ref = Mem.Query.inputs.check_vil().list;
+        ref = Mem.Query.inputs.checkbox("vil").list;
         results = [];
         for (i = 0, len = ref.length; i < len; i++) {
           chk = ref[i];
@@ -2659,7 +2668,7 @@
     url = arg.url, input = arg.input;
     return m(".paragraph", menu.input.icon.item("cog", {
       className: "pull-right menuicon tooltip-left"
-    }), url ? doc.user.is_login ? ((ref = Url.prop, uid = ref.uid, pwd = ref.pwd, ref), m("a.btn.edge", {
+    }), url ? doc.user.is_login ? ((ref = WebStore.cookie.prop, uid = ref.uid, pwd = ref.pwd, ref), m("a.btn.edge", {
       href: url + "?ua=mb&cmd=vindex&uid=" + (uid()) + "&pwd=" + (pwd())
     }, "携帯")) : m("a.btn.edge", {
       href: url + "?ua=mb"

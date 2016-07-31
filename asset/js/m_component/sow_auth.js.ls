@@ -1,19 +1,26 @@
 ua = "javascript"
 
 doc.component.sow_auth =
-  controller: ->
-    url = gon.url
-    @params = { ua, cmd: "login" }
+  controller: !->
+    { url } = gon
+    doc.user = {}
+    deploy = ({ sow_auth })!~>
+      return unless sow_auth
+      doc.user.is_login = 0 < sow_auth.is_login
+      doc.user.is_admin = 0 < sow_auth.is_admin
+      doc.user.id       =     sow_auth.uid
+      if doc.user.is_login
+        WebStore.cookie.copyTo @tie
+      validate.sow_auth @
 
+    @params = { ua, cmd: "login" }
     @tie = InputTie.form @params, <[uid pwd]>
     @tie.timeout = 5000
     @tie.check = ~>
-      console.log [@params, @errors, @infos]
-      if doc.user.is_login
+      if @is_login
         true
       else
         validate.sow_auth @
-
     @tie.action = ~>
       if doc.user.is_login
         cmd = "logout"
@@ -27,19 +34,14 @@ doc.component.sow_auth =
           @errors = e.login || e[""]
         deploy gon
 
-    deploy = ({ sow_auth })!~>
-      return unless sow_auth
-      { @is_login, @is_admin } = doc.user = sow_auth
-      validate.sow_auth @
-
     deploy gon
 
 
   view: (c)->
     c.tie.form {},
-      if c.is_login
+      if doc.user.is_login
         m ".paragraph",
-          c.tie.submit "#{c.params.uid} がログアウト"
+          c.tie.submit "#{doc.user.id} がログアウト"
       else
         m ".paragraph",
           c.tie.input.uid.head()

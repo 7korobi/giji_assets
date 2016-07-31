@@ -528,8 +528,6 @@ class InputTie
 
 
 class Input
-  @timeout = 1000
-
   constructor: (tie, o)->
     params = tie.params
 
@@ -585,7 +583,10 @@ class Input
         attr = input_attr e_value, tie, o
         @field = input params, attr, o
 
-  @format = (o)->
+
+  @timeout: 1000
+
+  @format: (o)->
     o.label_attr ?= {}
     o.type ?= "String"
     if o.attr?.name
