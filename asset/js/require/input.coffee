@@ -346,6 +346,7 @@ input_pick = (attrs, last)->
 btn_pick = (attrs, last)->
   attrs = attrs.map (ma)->
     target = ["id", "className"]
+    target.push "title" if ma.title
     target.push "data-tooltip" if ma["data-tooltip"]?
     _.pick ma, target
   _.assignIn attrs..., last

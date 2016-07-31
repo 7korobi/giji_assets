@@ -1333,6 +1333,10 @@ SELECT.edge:checked,
   content: '\ff21';
 }
 
+LEGEND {
+  display: block!important;
+}
+
 .guide,
 .talk .msg,
 .memo .msg,
