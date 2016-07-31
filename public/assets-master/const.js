@@ -1235,10 +1235,10 @@
     "clearance": ["IR-", "R-", "O-", "Y-", "G-", "B-", "I-", "V-", "UV-"],
     "vote": {
       "sign": {
-        "CAPTION": "記名で投票"
+        "label": "記名で投票"
       },
       "anonymity": {
-        "CAPTION": "匿名で投票"
+        "label": "匿名で投票"
       }
     },
     "mes_text": ["mes_text", "mes_text_monospace", "mes_text_report"],
@@ -2841,7 +2841,7 @@
     "theme": {
       "sean": "cog",
       "attr": {
-        "required": "required",
+        "required": true,
         "type": "btns"
       },
       "name": "スタイル",
@@ -2857,7 +2857,7 @@
     "layout": {
       "sean": "cog",
       "attr": {
-        "required": "required",
+        "required": true,
         "type": "btns"
       },
       "name": "位置",
@@ -2871,7 +2871,7 @@
     "width": {
       "sean": "cog",
       "attr": {
-        "required": "required",
+        "required": true,
         "type": "btns"
       },
       "name": "幅の広さ",
@@ -2885,7 +2885,7 @@
     "font": {
       "sean": "cog",
       "attr": {
-        "required": "required",
+        "required": true,
         "type": "btns"
       },
       "name": "書体",
@@ -2900,7 +2900,7 @@
     "show": {
       "sean": "message",
       "attr": {
-        "required": "required",
+        "required": true,
         "type": "btns"
       },
       "name": "表示設定",
@@ -3085,7 +3085,7 @@
         "type": "text",
         "size": 20,
         "maxlength": 20,
-        "required": "required",
+        "required": true,
         "pattern": ".{6,20}"
       },
       "query": {
@@ -3161,8 +3161,9 @@
         "min": 4,
         "max": 20,
         "step": 1,
-        "required": "required"
+        "required": true
       },
+      "current": 8,
       "query": {
         "SOW": "vplcnt"
       },
@@ -3178,8 +3179,9 @@
         "min": 4,
         "max": 20,
         "step": 1,
-        "required": "required"
+        "required": true
       },
+      "current": 8,
       "query": {
         "SOW": "vplcntstart"
       },
@@ -3193,7 +3195,7 @@
         "type": "time",
         "name": "time",
         "step": 1800,
-        "required": "required"
+        "required": true
       },
       "current": "22:30",
       "name": "更新時刻",
@@ -3205,7 +3207,7 @@
       "attr": {
         "type": "select",
         "name": "updinterval",
-        "required": "required"
+        "required": true
       },
       "query": {
         "SOW": "updinterval"
@@ -3225,7 +3227,7 @@
       "attr": {
         "type": "select",
         "name": "game",
-        "required": "required"
+        "required": true
       },
       "query": {
         "SOW": "game"
@@ -3239,7 +3241,7 @@
       "attr": {
         "type": "select",
         "name": "rating",
-        "required": "required"
+        "required": true
       },
       "query": {
         "SOW": "rating"
@@ -3254,7 +3256,7 @@
       "attr": {
         "type": "select",
         "name": "chr_set",
-        "required": "required"
+        "required": true
       },
       "name": "登場人物",
       "help_on": "",
@@ -3265,7 +3267,7 @@
       "attr": {
         "type": "select",
         "name": "csid",
-        "required": "required"
+        "required": true
       },
       "name": "登場人物とNPC",
       "help_on": "",
@@ -3276,7 +3278,7 @@
       "attr": {
         "type": "select",
         "name": "saycnttype",
-        "required": "required"
+        "required": true
       },
       "query": {
         "SOW": "saycnttype"
@@ -3290,7 +3292,7 @@
       "attr": {
         "type": "select",
         "name": "roletable",
-        "required": "required"
+        "required": true
       },
       "query": {
         "SOW": "roletable"
@@ -3305,7 +3307,7 @@
       "attr": {
         "type": "select",
         "name": "mob",
-        "required": "required"
+        "required": true
       },
       "name": "見物スタイル",
       "help_on": "",
@@ -3316,7 +3318,7 @@
       "attr": {
         "type": "select",
         "name": "trsid",
-        "required": "required"
+        "required": true
       },
       "query": {
         "SOW": "trsid"
@@ -3330,80 +3332,80 @@
 
   Mem.Collection.live.set({
     "live": {
-      "name": "生存者",
+      "label": "生存者",
       "order": 2
     },
     "executed": {
-      "name": "処刑",
+      "label": "処刑",
       "order": 3
     },
     "victim": {
-      "name": "襲撃",
+      "label": "襲撃",
       "caption": "犠牲者",
       "order": 4
     },
     "cursed": {
-      "name": "呪詛",
+      "label": "呪詛",
       "caption": "犠牲者",
       "order": 5
     },
     "droop": {
-      "name": "衰退",
+      "label": "衰退",
       "caption": "犠牲者",
       "order": 6
     },
     "suicide": {
-      "name": "後追",
+      "label": "後追",
       "caption": "犠牲者",
       "order": 7
     },
     "feared": {
-      "name": "恐怖",
+      "label": "恐怖",
       "caption": "犠牲者",
       "order": 8
     },
     "mob": {
-      "name": "見物人",
+      "label": "見物人",
       "order": 10
     },
     "suddendead": {
-      "name": "突然死",
+      "label": "突然死",
       "order": 100
     },
     "leave": {
-      "name": "―",
+      "label": "―",
       "order": 101
     }
   });
 
   Mem.Collection.map_faces_order.set({
     "all": {
-      "caption": "登場",
+      "label": "登場",
       "headline": "登場した",
       "order": "合計"
     },
     "human": {
-      "caption": "村側",
+      "label": "村側",
       "headline": "人間だった",
       "order": "村人陣営"
     },
     "wolf": {
-      "caption": "狼側",
+      "label": "狼側",
       "headline": "人狼だった",
       "order": "人狼陣営"
     },
     "enemy": {
-      "caption": "敵側",
+      "label": "敵側",
       "headline": "敵側の人間だった",
       "order": "敵側の人間"
     },
     "pixi": {
-      "caption": "妖精",
+      "label": "妖精",
       "headline": "妖精だった",
       "order": "妖精"
     },
     "other": {
-      "caption": "その他",
+      "label": "その他",
       "headline": "その他だった",
       "order": "その他"
     }
@@ -3411,103 +3413,103 @@
 
   Mem.Collection.rating.set({
     "0": {
-      "caption": "0",
+      "label": "0",
       "alt": "",
       "disabled": true
     },
     "default": {
-      "caption": "とくになし"
+      "label": "とくになし"
     },
     "love": {
-      "caption": "[愛] 恋愛を重視",
+      "label": "[愛] 恋愛を重視",
       "alt": "愛"
     },
     "sexy": {
-      "caption": "[性] 性表現あり",
+      "label": "[性] 性表現あり",
       "alt": "性"
     },
     "sexylove": {
-      "caption": "[性愛] 大人の恋愛",
+      "label": "[性愛] 大人の恋愛",
       "alt": "性愛"
     },
     "violence": {
-      "caption": "[暴] 暴力、グロ",
+      "label": "[暴] 暴力、グロ",
       "alt": "暴"
     },
     "sexyviolence": {
-      "caption": "[性暴] えろぐろ",
+      "label": "[性暴] えろぐろ",
       "alt": "性暴"
     },
     "teller": {
-      "caption": "[怖] 恐怖を煽る",
+      "label": "[怖] 恐怖を煽る",
       "alt": "怖"
     },
     "drunk": {
-      "caption": "[楽] 享楽に耽る",
+      "label": "[楽] 享楽に耽る",
       "alt": "楽"
     },
     "gamble": {
-      "caption": "[賭] 賭博に耽る",
+      "label": "[賭] 賭博に耽る",
       "alt": "賭"
     },
     "crime": {
-      "caption": "[罪] 犯罪描写あり",
+      "label": "[罪] 犯罪描写あり",
       "alt": "罪"
     },
     "drug": {
-      "caption": "[薬] 薬物表現あり",
+      "label": "[薬] 薬物表現あり",
       "alt": "薬"
     },
     "word": {
-      "caption": "[言] 殺伐、暴言あり",
+      "label": "[言] 殺伐、暴言あり",
       "alt": "言"
     },
     "fireplace": {
-      "caption": "[暢] のんびり雑談",
+      "label": "[暢] のんびり雑談",
       "alt": "暢"
     },
     "appare": {
-      "caption": "[遖] あっぱれネタ風味",
+      "label": "[遖] あっぱれネタ風味",
       "alt": "遖"
     },
     "ukkari": {
-      "caption": "[張] うっかりハリセン",
+      "label": "[張] うっかりハリセン",
       "alt": "張"
     },
     "child": {
-      "caption": "[全] 大人も子供も初心者も、みんな安心",
+      "label": "[全] 大人も子供も初心者も、みんな安心",
       "alt": "全"
     },
     "biohazard": {
-      "caption": "[危] 無茶ぶり上等",
+      "label": "[危] 無茶ぶり上等",
       "alt": "危"
     },
     "null": {
-      "caption": "null",
+      "label": "null",
       "alt": "",
       "disabled": true
     },
     "r15": {
-      "caption": "１５禁",
+      "label": "１５禁",
       "alt": "",
       "disabled": true
     },
     "r18": {
-      "caption": "１８禁",
+      "label": "１８禁",
       "alt": "",
       "disabled": true
     },
     "gro": {
-      "caption": "暴力、グロ",
+      "label": "暴力、グロ",
       "alt": "",
       "disabled": true
     },
     "view": {
-      "caption": "view",
+      "label": "view",
       "disabled": true
     },
     "alert": {
-      "caption": "要注意",
+      "label": "要注意",
       "alt": "",
       "disabled": true
     }
@@ -3515,101 +3517,101 @@
 
   Mem.Collection.role_table.set({
     "secret": {
-      "name": "詳細は黒幕だけが知っています。",
+      "label": "詳細は黒幕だけが知っています。",
       "disabled": true
     },
     "ultimate": {
-      "name": "アルティメット",
+      "label": "アルティメット",
       "disabled": true
     },
     "lover": {
-      "name": "恋愛天使",
+      "label": "恋愛天使",
       "disabled": true
     },
     "hamster": {
-      "name": "ハムスター",
+      "label": "ハムスター",
       "disabled": true
     },
     "random": {
-      "name": "ランダム",
+      "label": "ランダム",
       "disabled": true
     },
     "custom": {
-      "name": "自由設定"
+      "label": "自由設定"
     },
     "default": {
-      "name": "標準",
+      "label": "標準",
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "fanatic", "medium", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "stigma"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "stigma", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "wisper", "medium", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "decide", "wolf", "guard", "possess", "medium", "villager", "possess", "fm", "fm", "villager", "villager", "villager", "villager", "villager", "villager"]]
     },
     "mistery": {
-      "name": "深い霧の夜",
+      "label": "深い霧の夜",
       "cards": [null, null, null, null, ["villager", "villager", "seer", "lonewolf"], ["villager", "villager", "seer", "lonewolf", "alchemist"], ["villager", "villager", "guard", "lonewolf", "alchemist", "possess"], ["villager", "villager", "guard", "lonewolf", "alchemist", "decide", "possess", "fan"], ["villager", "villager", "guard", "wolf", "wolf", "alchemist", "decide", "aura", "doctor"], ["villager", "villager", "guard", "wolf", "wolf", "alchemist", "decide", "aura", "doctor", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "villager"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "alchemist"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl", "fan"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl", "fan", "guru"], ["villager", "villager", "guard", "wolf", "childwolf", "alchemist", "decide", "aura", "doctor", "villager", "seer", "hunter", "medium", "jammer", "curse", "witch", "wolf", "girl", "fan", "guru", "alchemist"]]
     },
     "test1st": {
-      "name": "人狼審問試験壱型",
+      "label": "人狼審問試験壱型",
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "possess", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "stigma"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "stigma", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "stigma", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "villager", "fm", "fm", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "stigma", "villager", "wolf", "villager", "villager", "fm", "fm", "possess", "villager"]]
     },
     "test2nd": {
-      "name": "人狼審問試験弐型",
+      "label": "人狼審問試験弐型",
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "fanatic", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager", "villager"]]
     },
     "wbbs_c": {
-      "name": "人狼BBS-C国",
+      "label": "人狼BBS-C国",
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "wisper", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager", "villager"]]
     },
     "wbbs_f": {
-      "name": "人狼BBS-F国",
+      "label": "人狼BBS-F国",
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "villager", "wolf", "fm", "fm", "villager", "villager", "villager", "villager"]]
     },
     "wbbs_g": {
-      "name": "人狼BBS-G国",
+      "label": "人狼BBS-G国",
       "cards": [null, null, null, null, ["villager", "villager", "seer", "wolf"], ["villager", "villager", "seer", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager", "villager", "villager"], ["villager", "villager", "seer", "wolf", "villager", "villager", "villager", "wolf", "medium", "possess", "guard", "villager", "wolf", "villager", "villager", "villager", "villager", "villager", "villager", "villager"]]
     }
   });
 
   Mem.Collection.rule.set({
     "TABULA": {
-      "CAPTION": "タブラの人狼",
-      "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"
+      "label": "タブラの人狼",
+      "help": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"
     },
     "MILLERHOLLOW": {
-      "CAPTION": "ミラーズホロウ",
-      "HELP": "<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>すべての死者は役職が公開される。\n<li>狼を全滅させると、村勝利。\n<li>「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"
+      "label": "ミラーズホロウ",
+      "help": "<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>すべての死者は役職が公開される。\n<li>狼を全滅させると、村勝利。\n<li>「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"
     },
     "LIVE_TABULA": {
-      "CAPTION": "タブラの人狼（死んだら負け）",
-      "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"
+      "label": "タブラの人狼（死んだら負け）",
+      "help": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"
     },
     "LIVE_MILLERHOLLOW": {
-      "CAPTION": "ミラーズホロウ（死んだら負け）",
-      "HELP": "<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>「村人」を全滅させると、狼勝利。役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"
+      "label": "ミラーズホロウ（死んだら負け）",
+      "help": "<li>同数票の処刑候補が複数いた場合、処刑をとりやめる。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>「村人」を全滅させると、狼勝利。役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n<li>ただし、仲間が勝利していても、死んでしまった者は敗北である。\n"
     },
     "TROUBLE": {
-      "CAPTION": "Trouble☆Aliens",
-      "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>守護者は、より大人数の人狼からは守りきることができず、身代わりに感染する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村側の生存者が勝利（村側は死んだら負ける）。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼と感染者の勝利。\n"
+      "label": "Trouble☆Aliens",
+      "help": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>守護者は、より大人数の人狼からは守りきることができず、身代わりに感染する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村側の生存者が勝利（村側は死んだら負ける）。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼と感染者の勝利。\n"
     },
     "MISTERY": {
-      "CAPTION": "深い霧の夜",
-      "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>村側は自分の役職を自覚しない。\n<li>村側は、能力の結果不審者を見かけることがある。\n<li>人狼の行動対象に選ばれると、不審者を見かける。\n<li>狼を全滅させると、村勝利。\n<li>役職「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"
+      "label": "深い霧の夜",
+      "help": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>村側は自分の役職を自覚しない。\n<li>村側は、能力の結果不審者を見かけることがある。\n<li>人狼の行動対象に選ばれると、不審者を見かける。\n<li>狼を全滅させると、村勝利。\n<li>役職「村人」を全滅させると、狼勝利。<br>役職を持つ村側の生き残りは、勝利に直接は寄与しない。\n"
     },
     "VOV": {
       "disabled": true,
-      "CAPTION": "狂犬病の谷",
-      "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"
+      "label": "狂犬病の谷",
+      "help": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>１人の人狼が襲撃すると感染、複数の人狼や一匹狼、賞金稼ぎが襲撃すると死亡する。\n<li>狼を全滅させると、村勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼勝利。\n"
     },
     "SECRET": {
-      "CAPTION": "陰謀に集う胡蝶",
-      "HELP": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼の生存者が勝利。\n<li>いかなる場合も、死んでしまったものは敗北である。\n"
+      "label": "陰謀に集う胡蝶",
+      "help": "<li>同数票の処刑候補が複数いた場合、ランダムに処刑する。\n<li>人狼は会話できない。襲撃候補リストで判断できない。\n<li>襲撃先は翌日、犠牲候補と人狼に開示される。\n<li>狼を全滅させると、村側の生存者が勝利。\n<li>人≦狼、つまり人間と人狼を１対１にしたとき、人間が余計にいなくなったら、狼の生存者が勝利。\n<li>いかなる場合も、死んでしまったものは敗北である。\n"
     }
   });
 
   Mem.Collection.say.set({
     "sow": {
-      "CAPTION": "人狼物語",
-      "HELP": null
+      "label": "人狼物語",
+      "help": null
     },
     "say5": {
-      "CAPTION": "寡黙への挑戦",
+      "label": "寡黙への挑戦",
       "COST_SAY": "count",
       "COST_MEMO": "none",
       "COST_ACT": "count",
@@ -3640,8 +3642,8 @@
       "MAX_ADDSAY": 0
     },
     "lobby": {
-      "CAPTION": "ロビー",
-      "HELP": "∞pt/∞act",
+      "label": "ロビー",
+      "help": "∞pt/∞act",
       "COST_SAY": "none",
       "COST_MEMO": "none",
       "COST_ACT": "none",
@@ -3660,7 +3662,7 @@
       "MAX_MESLINE": 20
     },
     "say1": {
-      "CAPTION": "静寂への挑戦",
+      "label": "静寂への挑戦",
       "COST_SAY": "count",
       "COST_MEMO": "none",
       "COST_ACT": "count",
@@ -3676,11 +3678,11 @@
       "ADD_SAY": 0,
       "MAX_ADDSAY": 0,
       "MAX_MESLINE": 10,
-      "HELP": "（24h回復） 300字x1回/0act'",
+      "help": "（24h回復） 300字x1回/0act'",
       "MAX_MESCNT": 300
     },
     "say5x200": {
-      "CAPTION": "寡黙への挑戦",
+      "label": "寡黙への挑戦",
       "COST_SAY": "count",
       "COST_MEMO": "none",
       "COST_ACT": "count",
@@ -3696,11 +3698,11 @@
       "ADD_SAY": 0,
       "MAX_ADDSAY": 0,
       "MAX_MESLINE": 10,
-      "HELP": "（24h回復） 200字x5回/5act'",
+      "help": "（24h回復） 200字x5回/5act'",
       "MAX_MESCNT": 200
     },
     "say5x300": {
-      "CAPTION": "小論文への挑戦",
+      "label": "小論文への挑戦",
       "COST_SAY": "count",
       "COST_MEMO": "none",
       "COST_ACT": "count",
@@ -3716,7 +3718,7 @@
       "ADD_SAY": 0,
       "MAX_ADDSAY": 0,
       "MAX_MESLINE": 10,
-      "HELP": "（24h回復） 300字x5回/15act'",
+      "help": "（24h回復） 300字x5回/15act'",
       "MAX_MESCNT": 300
     },
     "saving": {
@@ -3725,8 +3727,8 @@
       "COST_ACT": "count",
       "ADD_SAY": 0,
       "MAX_ADDSAY": 0,
-      "CAPTION": "節約",
-      "HELP": "250字x20回/15act",
+      "label": "節約",
+      "help": "250字x20回/15act",
       "RECOVERY": 0,
       "MAX_SAY": 20,
       "MAX_TSAY": 10,
@@ -3745,8 +3747,8 @@
       "COST_ACT": "count",
       "ADD_SAY": 0,
       "MAX_ADDSAY": 0,
-      "CAPTION": "人狼BBS",
-      "HELP": "200字x20回",
+      "label": "人狼BBS",
+      "help": "200字x20回",
       "RECOVERY": 0,
       "MAX_SAY": 20,
       "MAX_TSAY": 5,
@@ -3765,8 +3767,8 @@
       "COST_ACT": "count",
       "ADD_SAY": 0,
       "MAX_ADDSAY": 0,
-      "CAPTION": "欧州",
-      "HELP": "（24h回復） 800字x30回/30act",
+      "label": "欧州",
+      "help": "（24h回復） 800字x30回/30act",
       "RECOVERY": 1,
       "MAX_SAY": 30,
       "MAX_TSAY": 999,
@@ -3784,8 +3786,8 @@
       "COST_MEMO": "point",
       "COST_ACT": "count",
       "MAX_ESAY": 9999,
-      "CAPTION": "たりない",
-      "HELP": "（24h回復）（メモは20pt） 333pt/9act",
+      "label": "たりない",
+      "help": "（24h回復）（メモは20pt） 333pt/9act",
       "RECOVERY": 1,
       "MAX_SAY": 333,
       "MAX_TSAY": 999,
@@ -3804,8 +3806,8 @@
       "COST_MEMO": "point",
       "COST_ACT": "count",
       "MAX_ESAY": 9999,
-      "CAPTION": "むりせず",
-      "HELP": "（24h回復）（メモは20pt） 777pt/15act",
+      "label": "むりせず",
+      "help": "（24h回復）（メモは20pt） 777pt/15act",
       "RECOVERY": 1,
       "MAX_SAY": 777,
       "MAX_TSAY": 777,
@@ -3824,8 +3826,8 @@
       "COST_MEMO": "count",
       "COST_ACT": "count",
       "MAX_ESAY": 9999,
-      "CAPTION": "しんもん",
-      "HELP": "（24h回復） 1200pt/24act",
+      "label": "しんもん",
+      "help": "（24h回復） 1200pt/24act",
       "RECOVERY": 1,
       "MAX_SAY": 1200,
       "MAX_TSAY": 700,
@@ -3844,8 +3846,8 @@
       "COST_MEMO": "count",
       "COST_ACT": "count",
       "MAX_ESAY": 9999,
-      "CAPTION": "いっぱい",
-      "HELP": "（24h回復） 1000pt+++300pt/36act",
+      "label": "いっぱい",
+      "help": "（24h回復） 1000pt+++300pt/36act",
       "RECOVERY": 1,
       "MAX_SAY": 1000,
       "MAX_TSAY": 1000,
@@ -3860,8 +3862,8 @@
       "MAX_MESLINE": 20
     },
     "infinity": {
-      "CAPTION": "むげん",
-      "HELP": "∞pt/∞act",
+      "label": "むげん",
+      "help": "∞pt/∞act",
       "COST_SAY": "none",
       "COST_MEMO": "none",
       "COST_ACT": "none",
@@ -3884,8 +3886,8 @@
       "COST_MEMO": "point",
       "COST_ACT": "count",
       "MAX_ESAY": 9999,
-      "CAPTION": "むりせず",
-      "HELP": "（24h回復）（メモは20pt） 600pt++100pt/15act",
+      "label": "むりせず",
+      "help": "（24h回復）（メモは20pt） 600pt++100pt/15act",
       "RECOVERY": 1,
       "MAX_SAY": 600,
       "MAX_TSAY": 600,
@@ -3904,8 +3906,8 @@
       "COST_MEMO": "count",
       "COST_ACT": "count",
       "MAX_ESAY": 9999,
-      "CAPTION": "しんもん",
-      "HELP": "（24h回復） 800pt++200pt/24act",
+      "label": "しんもん",
+      "help": "（24h回復） 800pt++200pt/24act",
       "RECOVERY": 1,
       "MAX_SAY": 800,
       "MAX_TSAY": 700,
@@ -3924,8 +3926,8 @@
       "COST_MEMO": "count",
       "COST_ACT": "count",
       "MAX_ESAY": 9999,
-      "CAPTION": "いっぱい",
-      "HELP": "（24h回復） 1000pt+++300pt/36act",
+      "label": "いっぱい",
+      "help": "（24h回復） 1000pt+++300pt/36act",
       "RECOVERY": 1,
       "MAX_SAY": 1000,
       "MAX_TSAY": 1000,
@@ -3940,8 +3942,8 @@
       "MAX_MESLINE": 20
     },
     "infinity_braid": {
-      "CAPTION": "むげん",
-      "HELP": "∞pt/∞act",
+      "label": "むげん",
+      "help": "∞pt/∞act",
       "COST_SAY": "none",
       "COST_MEMO": "none",
       "COST_ACT": "none",
@@ -4111,127 +4113,127 @@
 
   Mem.Collection.tag.set({
     "all": {
-      "name": "すべて",
+      "label": "すべて",
       "long": "「人狼議事 ちゃんぷる」のキャラクター",
       "chr_set_ids": ["all"]
     },
     "giji": {
-      "name": "人狼議事",
+      "label": "人狼議事",
       "long": "「人狼議事」のキャラクター",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "shoji": {
-      "name": "てやんでえ",
+      "label": "てやんでえ",
       "long": "「和の国てやんでえ」のキャラクター",
       "chr_set_ids": ["all", "wa"]
     },
     "travel": {
-      "name": "帰還者議事",
+      "label": "帰還者議事",
       "long": "「帰還者議事」のキャラクター",
       "chr_set_ids": ["all", "time"]
     },
     "stratos": {
-      "name": "明後日への道標",
+      "label": "明後日への道標",
       "long": "「明後日への道標」のキャラクター",
       "chr_set_ids": ["all", "SF"]
     },
     "myth": {
-      "name": "はおうのひろば",
+      "label": "はおうのひろば",
       "long": "「はおうのひろば」のキャラクター",
       "chr_set_ids": ["all", "changed"]
     },
     "asia": {
-      "name": "大陸議事",
+      "label": "大陸議事",
       "long": "「大陸議事」のキャラクター",
       "chr_set_ids": ["all", "ger"]
     },
     "marchen": {
-      "name": "狂騒議事",
+      "label": "狂騒議事",
       "long": "「狂騒議事」のキャラクター",
       "chr_set_ids": ["all", "mad"]
     },
     "kid": {
-      "name": "(児童)",
+      "label": "(児童)",
       "long": "児童のキャラクター",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "young": {
-      "name": "(若者)",
+      "label": "(若者)",
       "long": "若者のキャラクター",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "middle": {
-      "name": "(中年)",
+      "label": "(中年)",
       "long": "中年のキャラクター",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "elder": {
-      "name": "(老人)",
+      "label": "(老人)",
       "long": "老人のキャラクター",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "river": {
-      "name": "-運河-",
+      "label": "-運河-",
       "long": "往く人来る人休む人",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "road": {
-      "name": "-往来-",
+      "label": "-往来-",
       "long": "往く人来る人休む人",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "immoral": {
-      "name": "-裏道-",
+      "label": "-裏道-",
       "long": "街灯の裏の背徳達",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "guild": {
-      "name": "-商工会-",
+      "label": "-商工会-",
       "long": "商人と職人の集うギルド",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "elegant": {
-      "name": "-舞踏会-",
+      "label": "-舞踏会-",
       "long": "瀟洒な館の舞踏会",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "ecclesia": {
-      "name": "-公教会-",
+      "label": "-公教会-",
       "long": "信仰と道徳と学識の源泉",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "medical": {
-      "name": "-施療院-",
+      "label": "-施療院-",
       "long": "病苦毒霊と戦う砦",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "market": {
-      "name": "-歌劇酒場-",
+      "label": "-歌劇酒場-",
       "long": "芸の極みに華が咲く",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "apartment": {
-      "name": "-自室の窓-",
+      "label": "-自室の窓-",
       "long": "窓から外を眺めると",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "servant": {
-      "name": "-使用人-",
+      "label": "-使用人-",
       "long": "良家を支えるスタッフ",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "farm": {
-      "name": "-森の農場-",
+      "label": "-森の農場-",
       "long": "森に接する田畑",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "government": {
-      "name": "-統治公共-",
+      "label": "-統治公共-",
       "long": "所領を治める権能者",
       "chr_set_ids": ["all", "animal", "school", "ririnra"]
     },
     "god": {
-      "name": "-かみさま-",
+      "label": "-かみさま-",
       "long": "かみさま",
       "chr_set_ids": ["all"]
     }
@@ -4241,7 +4243,7 @@
     {
       "_id": "juna",
       "item": "box-msg",
-      "title": "審問",
+      "label": "審問",
       "width": {
         "458": ["b.jpg", "w.jpg"],
         "580": ["b.jpg", "w.jpg"],
@@ -4250,7 +4252,7 @@
     }, {
       "_id": "sow",
       "item": "box-msg",
-      "title": "物語",
+      "label": "物語",
       "width": {
         "458": ["r.jpg", "c.jpg"],
         "580": ["r.jpg", "c.jpg"],
@@ -4259,7 +4261,7 @@
     }, {
       "_id": "night",
       "item": "speech",
-      "title": "闇夜",
+      "label": "闇夜",
       "width": {
         "458": ["b.jpg", "w.jpg"],
         "580": ["b.jpg", "w.jpg"],
@@ -4268,7 +4270,7 @@
     }, {
       "_id": "moon",
       "item": "speech",
-      "title": "月夜",
+      "label": "月夜",
       "width": {
         "458": ["b.jpg", "w.jpg"],
         "580": ["b.jpg", "w.jpg"],
@@ -4277,7 +4279,7 @@
     }, {
       "_id": "cinema",
       "item": "speech",
-      "title": "煉瓦",
+      "label": "煉瓦",
       "width": {
         "458": ["b.jpg", "w.jpg"],
         "580": ["b.jpg", "w.jpg"],
@@ -4286,7 +4288,7 @@
     }, {
       "_id": "wa",
       "item": "speech",
-      "title": "和の国",
+      "label": "和の国",
       "width": {
         "458": ["b.jpg", "w.jpg"],
         "580": ["b.jpg", "w.jpg"],
@@ -4295,7 +4297,7 @@
     }, {
       "_id": "star",
       "item": "speech",
-      "title": "蒼穹",
+      "label": "蒼穹",
       "width": {
         "458": ["r.jpg", "c.jpg"],
         "580": ["r.jpg", "c.jpg"],
@@ -4306,74 +4308,74 @@
 
   Mem.Collection.trs.set({
     "all": {
-      "CAPTION": "オール☆スター",
-      "HELP": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。"
+      "label": "オール☆スター",
+      "help": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。"
     },
     "star": {
-      "CAPTION": "Orbital☆Star",
-      "HELP": "すべての役職、恩恵、事件を楽しむことができます。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>宇宙時代に突入した「全部入り」のセットです。村落共同体は渓谷や高原ではなく、小惑星帯や人工コロニー、移民船にあるでしょう。事件が始まるまでは、とても充実した近代的なインフラが整っていたのですが……"
+      "label": "Orbital☆Star",
+      "help": "すべての役職、恩恵、事件を楽しむことができます。また、進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>宇宙時代に突入した「全部入り」のセットです。村落共同体は渓谷や高原ではなく、小惑星帯や人工コロニー、移民船にあるでしょう。事件が始まるまでは、とても充実した近代的なインフラが整っていたのですが……"
     },
     "regend": {
-      "CAPTION": "議事☆伝承",
-      "HELP": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。アクション内容は穏当になり、未来的ですばらしいクローンも居ません。"
+      "label": "議事☆伝承",
+      "help": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。アクション内容は穏当になり、未来的ですばらしいクローンも居ません。"
     },
     "heavy": {
-      "CAPTION": "絶望☆議事",
-      "HELP": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。たいへん重苦しい設定となっていて、未来的ですばらしいクローンも居ません。"
+      "label": "絶望☆議事",
+      "help": "すべての役職、恩恵、事件を楽しむことができる、「全部入り」のセットです。たいへん重苦しい設定となっていて、未来的ですばらしいクローンも居ません。"
     },
     "complexx": {
-      "CAPTION": "ParanoiA",
-      "HELP": "ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"
+      "label": "ParanoiA",
+      "help": "ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"
     },
     "simple": {
       "disabled": true,
-      "CAPTION": "ラッキー☆スター",
-      "HELP": "初心者向けの、シンプルな設定です。拡張設定の一部が固定になっています。"
+      "label": "ラッキー☆スター",
+      "help": "初心者向けの、シンプルな設定です。拡張設定の一部が固定になっています。"
     },
     "fool": {
       "disabled": true,
-      "CAPTION": "適当系",
-      "HELP": "てきとーな感じ。"
+      "label": "適当系",
+      "help": "てきとーな感じ。"
     },
     "sow": {
       "disabled": true,
-      "CAPTION": "人狼物語",
-      "HELP": "ウェブゲーム「人狼物語」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
+      "label": "人狼物語",
+      "help": "ウェブゲーム「人狼物語」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
     },
     "wbbs": {
       "disabled": true,
-      "CAPTION": "人狼BBS",
-      "HELP": "ウェブゲーム「人狼BBS」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
+      "label": "人狼BBS",
+      "help": "ウェブゲーム「人狼BBS」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
     },
     "juna": {
       "disabled": true,
-      "CAPTION": "人狼審問",
-      "HELP": "ウェブゲーム「人狼審問」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
+      "label": "人狼審問",
+      "help": "ウェブゲーム「人狼審問」風の役職を楽しめます。ただし、細かい動作に違いがあります。"
     },
     "complex": {
       "disabled": true,
-      "CAPTION": "PARANOIA",
-      "HELP": "ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"
+      "label": "PARANOIA",
+      "help": "ようこそ、トラブルシューター。市民達は進行中以外はクローンにされたり、セキュリティ・クリアランスが変ったりします。<br>！注意！　入村直後の市民はクローンではありません。ただちに別れを告げてあげましょう。　！注意！"
     },
     "cabala": {
       "disabled": true,
-      "CAPTION": "ギロチン広場",
-      "HELP": "権謀術数を弄び、虚実まじえた会話を楽しむためのセットです。"
+      "label": "ギロチン広場",
+      "help": "権謀術数を弄び、虚実まじえた会話を楽しむためのセットです。"
     },
     "tabula": {
       "disabled": true,
-      "CAPTION": "タブラの人狼",
-      "HELP": "カードゲーム「Lupus in Tabula」風の役職を楽しめます。ただし、疫病神、公証人、悪魔くん、には対応していません。"
+      "label": "タブラの人狼",
+      "help": "カードゲーム「Lupus in Tabula」風の役職を楽しめます。ただし、疫病神、公証人、悪魔くん、には対応していません。"
     },
     "millerhollow": {
       "disabled": true,
-      "CAPTION": "ミラーズホロウ",
-      "HELP": "カードゲーム「The Werewolves of Millers Hollow + New Moon」風の役職を楽しめます。ただし、愚か者には対応していません。守護者、笛吹きにすこし違いがあります。"
+      "label": "ミラーズホロウ",
+      "help": "カードゲーム「The Werewolves of Millers Hollow + New Moon」風の役職を楽しめます。ただし、愚か者には対応していません。守護者、笛吹きにすこし違いがあります。"
     },
     "ultimate": {
       "disabled": true,
-      "CAPTION": "アルティメット",
-      "HELP": "カードゲーム「アルティメット人狼」風の役職を楽しめます。ただし、ドワーフ、ドッペルゲンガー、アル中、愚か者、倫理学者には対応していません。"
+      "label": "アルティメット",
+      "help": "カードゲーム「アルティメット人狼」風の役職を楽しめます。ただし、ドワーフ、ドッペルゲンガー、アル中、愚か者、倫理学者には対応していません。"
     }
   });
 
@@ -4462,13 +4464,13 @@
   });
 
   new Mem.Rule("chr_set").schema(function() {
-    this.order("caption");
+    this.order("label");
     this.has_many("chr_jobs");
     return this.has_many("chr_npcs");
   });
 
   new Mem.Rule("chr_npc").schema(function() {
-    this.order("caption");
+    this.order("label");
     this.belongs_to("chr_set", {
       dependent: true
     });
@@ -6410,14 +6412,14 @@
       "_id": "all",
       "admin": "闇の呟き",
       "maker": "天のお告げ",
-      "caption": "人狼議事 ちゃんぷる",
+      "label": "人狼議事 ちゃんぷる",
       "chr_set_id": "all"
     }
   ]);
 
   Mem.Collection.chr_npc.merge([
     {
-      "caption": "人狼議事 ちゃんぷる",
+      "label": "人狼議事 ちゃんぷる",
       "csid": "all",
       "face_id": "all",
       "say_0": "ちゃんとご注文通り、さまざまな人たちをお呼びしましたよ。\nいたるところから…そう、地平の果てや、宇宙の彼方からも。\n\n中には、主様を消してくださるような方もいらっしゃるかもしれません。",
@@ -6441,14 +6443,14 @@
       "_id": "animal",
       "admin": "大地の震動",
       "maker": "草原のざわめき",
-      "caption": "うきうきサバンナ",
+      "label": "うきうきサバンナ",
       "chr_set_id": "animal"
     }
   ]);
 
   Mem.Collection.chr_npc.merge([
     {
-      "caption": "うきうきサバンナ",
+      "label": "うきうきサバンナ",
       "csid": "animal",
       "face_id": "c99",
       "say_0": "嗚呼、聞こえる。やつの足音が聞こえる……。",
@@ -7012,14 +7014,14 @@
       "_id": "changed",
       "admin": "闇の呟き",
       "maker": "広場のお告げ",
-      "caption": "はおうの広場",
+      "label": "はおうの広場",
       "chr_set_id": "changed"
     }
   ]);
 
   Mem.Collection.chr_npc.merge([
     {
-      "caption": "とのさま広場",
+      "label": "とのさま広場",
       "csid": "changed",
       "face_id": "m08",
       "say_0": "じんろう？\nそんななまえのこ、いたかしら……",
@@ -7028,7 +7030,7 @@
       "chr_set_id": "changed"
     }, {
       "_id": "changed_m05",
-      "caption": "はおうの広場",
+      "label": "はおうの広場",
       "csid": "changed_m05",
       "face_id": "m05",
       "say_0": "ママ？ママなの？\n…もう大丈夫なの？ここには人狼なんていないのかい？\n\n…そっかあ…\n\n\n人狼だって？！",
@@ -7161,14 +7163,14 @@
       "_id": "ger",
       "admin": "闇の呟き",
       "maker": "馬頭琴の調",
-      "caption": "エクスパンション・セット「大陸議事」",
+      "label": "エクスパンション・セット「大陸議事」",
       "chr_set_id": "ger"
     }
   ]);
 
   Mem.Collection.chr_npc.merge([
     {
-      "caption": "エクスパンション・セット「大陸議事」",
+      "label": "エクスパンション・セット「大陸議事」",
       "csid": "ger",
       "face_id": "g03",
       "say_0": "まさか……これは……？\n\n真相が分かったわ！\n日が出たらすぐ、麓の皆に知らせないと！",
@@ -7232,14 +7234,14 @@
       "_id": "mad",
       "admin": "闇の呟き",
       "maker": "天上の調べ",
-      "caption": "エクスパンション・セット「狂騒議事」",
+      "label": "エクスパンション・セット「狂騒議事」",
       "chr_set_id": "mad"
     }
   ]);
 
   Mem.Collection.chr_npc.merge([
     {
-      "caption": "エクスパンション・セット「狂騒議事」",
+      "label": "エクスパンション・セット「狂騒議事」",
       "csid": "mad",
       "face_id": "c83",
       "say_0": "どうせ、殺されるわみんな。…みんな\n\n\n/* 死ねばいいのに */",
@@ -7247,7 +7249,7 @@
       "_id": "mad_c83",
       "chr_set_id": "mad"
     }, {
-      "caption": "エクスパンション・セット「狂騒議事」（ヤヘイ）",
+      "label": "エクスパンション・セット「狂騒議事」（ヤヘイ）",
       "csid": "mad_mad05",
       "face_id": "mad05",
       "say_0": "…うん。もうな、だいぶまえだ。\n借家住まいでさ、天井板がずれて、開いているから入り込んでみたんだ。\n\n結構広くてさ。奥へ、奥へ、這い進んでたら明かりが切れてさ。\nもう右も左もわからなくってさあ…。\n\n必死に暴れたら、明るいとこに出た。\n知らない街だった。",
@@ -7331,14 +7333,14 @@
       "_id": "ririnra",
       "admin": "闇の呟き",
       "maker": "天のお告げ",
-      "caption": "人狼議事",
+      "label": "人狼議事",
       "chr_set_id": "ririnra"
     }
   ]);
 
   Mem.Collection.chr_npc.merge([
     {
-      "caption": "人狼議事（キャサリン）",
+      "label": "人狼議事（キャサリン）",
       "csid": "ririnra_c05",
       "face_id": "c05",
       "say_0": "たいへん、たいへん、たいへん！",
@@ -7346,7 +7348,7 @@
       "_id": "ririnra_c05",
       "chr_set_id": "ririnra"
     }, {
-      "caption": "人狼議事（ベネット）",
+      "label": "人狼議事（ベネット）",
       "csid": "ririnra_c08",
       "face_id": "c08",
       "say_0": "壁の向こうだ、やつの足音が聞こえる。いよいよ隣室に迫る。\n明日は、もう……",
@@ -7354,7 +7356,7 @@
       "_id": "ririnra_c08",
       "chr_set_id": "ririnra"
     }, {
-      "caption": "人狼議事（タバサ）",
+      "label": "人狼議事（タバサ）",
       "csid": "ririnra_c19",
       "face_id": "c19",
       "say_0": "ねぇ、遊んでかない？今夜はあなたが狼よ……",
@@ -7362,7 +7364,7 @@
       "_id": "ririnra_c19",
       "chr_set_id": "ririnra"
     }, {
-      "caption": "人狼議事（ソフィア）",
+      "label": "人狼議事（ソフィア）",
       "csid": "ririnra_c67",
       "face_id": "c67",
       "say_0": "こんばんわ、こんな遅くにたいへんですね。\n\n………\n行っちゃった。へんなの。",
@@ -7370,7 +7372,7 @@
       "_id": "ririnra_c67",
       "chr_set_id": "ririnra"
     }, {
-      "caption": "人狼議事（ヨアヒム）",
+      "label": "人狼議事（ヨアヒム）",
       "csid": "ririnra_c68",
       "face_id": "c68",
       "say_0": "ふひ、ふひひ！人狼になど……くれてやるものかヨ！",
@@ -7378,7 +7380,7 @@
       "_id": "ririnra_c68",
       "chr_set_id": "ririnra"
     }, {
-      "caption": "人狼議事（ヴェスパタイン）",
+      "label": "人狼議事（ヴェスパタイン）",
       "csid": "ririnra_c72",
       "face_id": "c72",
       "say_0": "嗚呼、聞こえる。やつの足音が聞こえる……。",
@@ -7386,7 +7388,7 @@
       "_id": "ririnra_c72",
       "chr_set_id": "ririnra"
     }, {
-      "caption": "人狼議事（ヨーランダ）",
+      "label": "人狼議事（ヨーランダ）",
       "csid": "ririnra_c51",
       "face_id": "c51",
       "say_0": "夜風に乗って、遠くから声がとどきます。昨夜は幽かに。今夜は響き。きっと明日は……",
@@ -7394,7 +7396,7 @@
       "_id": "ririnra_c51",
       "chr_set_id": "ririnra"
     }, {
-      "caption": "人狼議事（グロリア）",
+      "label": "人狼議事（グロリア）",
       "csid": "ririnra_c20",
       "face_id": "c20",
       "say_0": "紳士ならびに淑女の皆様、わたくしの館へようこそ。\n世間の噂など唯の噂話、此処でひととき御寛ぎなさいな。",
@@ -7402,7 +7404,7 @@
       "_id": "ririnra_c20",
       "chr_set_id": "ririnra"
     }, {
-      "caption": "人狼議事（オスカー）",
+      "label": "人狼議事（オスカー）",
       "csid": "ririnra_c32",
       "face_id": "c32",
       "say_0": "…そっちじゃないよ、こっちだよ。\nここ、秘密基地なんだ。雨もへいきだし暖かいよ。",
@@ -7410,7 +7412,7 @@
       "_id": "ririnra_c32",
       "chr_set_id": "ririnra"
     }, {
-      "caption": "人狼議事",
+      "label": "人狼議事",
       "csid": "ririnra",
       "face_id": "c99",
       "say_0": "嗚呼、聞こえ る。やつの足音が聞こえる……。",
@@ -8034,14 +8036,14 @@
       "_id": "school",
       "admin": "校内放送",
       "maker": "校内放送",
-      "caption": "私立七転学園",
+      "label": "私立七転学園",
       "chr_set_id": "school"
     }
   ]);
 
   Mem.Collection.chr_npc.merge([
     {
-      "caption": "私立七転学園",
+      "label": "私立七転学園",
       "csid": "school",
       "face_id": "c99",
       "say_0": "嗚呼、聞こえる。やつの足音が聞こえる……。",
@@ -8605,14 +8607,14 @@
       "_id": "sf",
       "admin": "黒体放射のエヴェレット解釈",
       "maker": "重ね合せ猫のユニタリ変換",
-      "caption": "明後日への道標",
+      "label": "明後日への道標",
       "chr_set_id": "sf"
     }
   ]);
 
   Mem.Collection.chr_npc.merge([
     {
-      "caption": "明後日への道標",
+      "label": "明後日への道標",
       "csid": "SF",
       "face_id": "sf04",
       "say_0": "とたたたたんっ。\n\n<b>めざましい速さで木の洞に駆け込むと、じっと潜んだ暗闇に瞳がふたつ。\nいちど大好きな閉所に収まると、そうかんたんに出てはこないのだ。</b>",
@@ -8620,7 +8622,7 @@
       "_id": "sf_sf04",
       "chr_set_id": "sf"
     }, {
-      "caption": "明後日への道標（ナユタ）",
+      "label": "明後日への道標（ナユタ）",
       "csid": "SF_sf10",
       "face_id": "sf10",
       "say_0": "f*ck！またチオチモリンと二酸化炭素分圧だし！\nエアコンがコンタミるしスタグるしf*ck'nオーロラの季節だし、ガルタイトもサクラダイトもf*ck'n高っけーし…\n\n<b>同日\n整備日誌\n　定期点検。ただちに健康に影響はないが、擦過痕…</b>",
@@ -8829,14 +8831,14 @@
       "_id": "time",
       "admin": "第四の壁の深奥",
       "maker": "次元X式コンピューター",
-      "caption": "エクスパンション・セット「帰還者議事」",
+      "label": "エクスパンション・セット「帰還者議事」",
       "chr_set_id": "time"
     }
   ]);
 
   Mem.Collection.chr_npc.merge([
     {
-      "caption": "エクスパンション・セット「帰還者議事」",
+      "label": "エクスパンション・セット「帰還者議事」",
       "csid": "time",
       "face_id": "c10",
       "say_0": "M4ライフルを持ってさえいれば…、なーんて、思っててもしょうがないね。鍵かけとこう。",
@@ -9040,14 +9042,14 @@
       "_id": "wa",
       "admin": "闇の呟き",
       "maker": "稲荷のお告げ",
-      "caption": "和の国てやんでえ",
+      "label": "和の国てやんでえ",
       "chr_set_id": "wa"
     }
   ]);
 
   Mem.Collection.chr_npc.merge([
     {
-      "caption": "和の国てやんでえ",
+      "label": "和の国てやんでえ",
       "csid": "wa",
       "face_id": "w17",
       "say_0": "嗚呼、聞こえる。やつの足音が聞こえる……。",
@@ -9055,7 +9057,7 @@
       "_id": "wa_w17",
       "chr_set_id": "wa"
     }, {
-      "caption": "和の国てやんでえ（仁右衛門）",
+      "label": "和の国てやんでえ（仁右衛門）",
       "csid": "wa_w23",
       "face_id": "w23",
       "say_0": "なんと、これは奇っ怪……分かったゾ！",
@@ -9411,7 +9413,7 @@
               return {
                 pno: o.pno,
                 job: o.chr_job.job,
-                name: o.name
+                label: o.label
               };
             });
           } else {
@@ -9677,7 +9679,7 @@
       var i$, ref$, len$, target, text_on;
       o._id = o.form_id + "-" + o.mestype + "-" + o.format;
       o.format_name = formats[o.format];
-      o.mestype_name = Mem.Query.ables.find(o.mestype).name;
+      o.mestype_name = Mem.Query.ables.find(o.mestype).label;
       o.target_hash = {};
       o.text = m.prop("");
       o.target_at = function(value){
@@ -9712,7 +9714,7 @@
         form: function(){
           return {
             onchange: function(e){
-              e.target.name;
+              e.target.label;
               e.target.value;
               return console.log([e, o]);
             },
@@ -10522,7 +10524,7 @@
             }
         }
       }
-      stat_type = Mem.conf.live[o.live].name;
+      stat_type = Mem.conf.live[o.live].label;
       stat_order = Mem.conf.live[o.live].order;
       win_side_order = Mem.conf.winner["WIN_" + win].order;
       role_side_order = Mem.conf.winner["WIN_" + win_role].order;
@@ -10811,35 +10813,35 @@
       "change": "村の編集フォームを確認、修正します。",
       "at": "around",
       "cmd": "editvilform",
-      "HELP": ""
+      "help": ""
     },
     "muster": {
       "btn": "点呼！",
       "change": "全員を未発言状態にします。未発言者は１日そのまま発言がないと、自動退出します。",
       "at": "prologue",
       "cmd": "muster",
-      "HELP": ""
+      "help": ""
     },
     "update": {
       "btn": "更新！",
       "change": "ただちに更新し、次の日を迎えます。お覚悟はよろしいですか？",
       "at": "all",
       "cmd": "update",
-      "HELP": ""
+      "help": ""
     },
     "scrapvil": {
       "btn": "廃村！",
       "change": "ただちに村を廃村にします。廃村になった村はエピローグになります。",
       "at": "all",
       "cmd": "scrapvil",
-      "HELP": ""
+      "help": ""
     },
     "exit": {
       "btn": "退出…",
       "change": "村を立ち去ります。",
       "at": "prologue",
       "cmd": "exit",
-      "HELP": ""
+      "help": ""
     },
     "commit": {
       "sw": "時間を進める",
@@ -10847,28 +10849,28 @@
       "change": "時間を進めるかどうか、選択してください。",
       "at": "progress",
       "cmd": "commit",
-      "HELP": "全員が「時間を進める」を選ぶと前倒しで更新されます。\n<br>\n最低一発言して確定しないと、時間を進める事ができません。"
+      "help": "全員が「時間を進める」を選ぶと前倒しで更新されます。\n<br>\n最低一発言して確定しないと、時間を進める事ができません。"
     },
     "night": {
       "sw": "夜遊びする",
       "pass": "（夜遊びしない）",
       "change": "夜遊びをして、深夜の囁きを聞いてしまうかどうか、選択してください。",
       "at": "main",
-      "HELP": "あなたは二日目以降、夜に出歩くことができます。\n人狼の囁き、民の念話、共鳴者の共鳴を誰のものとも判別せず聞いちゃうので、朝になって昨日を振り返ると思い出せることでしょう。\n顔や名前はわかりませんが。\n<br>\nただしこのとき、もしあなたが人狼の、誰かひとりにでも襲撃される矛先に含まれていると、恐怖のあまり、実際に襲われる犠牲者とは別に死んでしまいます。\nこの死亡を護衛する方法はありません。また、息を引き取るあなたを尻目に、狼達は別の人物を襲撃するでしょう。"
+      "help": "あなたは二日目以降、夜に出歩くことができます。\n人狼の囁き、民の念話、共鳴者の共鳴を誰のものとも判別せず聞いちゃうので、朝になって昨日を振り返ると思い出せることでしょう。\n顔や名前はわかりませんが。\n<br>\nただしこのとき、もしあなたが人狼の、誰かひとりにでも襲撃される矛先に含まれていると、恐怖のあまり、実際に襲われる犠牲者とは別に死んでしまいます。\nこの死亡を護衛する方法はありません。また、息を引き取るあなたを尻目に、狼達は別の人物を襲撃するでしょう。"
     },
     "dish": {
       "sw": "跳ねる",
       "pass": "（跳ねない）",
       "change": "跳ねるアピールをするかどうか、選択してください。",
       "at": "progress",
-      "HELP": "美味しく食べて貰うことを悦びとし、活き活きと跳ねることができます。わたしをたべて、わたしをたべて、とアピールしましょう。"
+      "help": "美味しく食べて貰うことを悦びとし、活き活きと跳ねることができます。わたしをたべて、わたしをたべて、とアピールしましょう。"
     },
     "cling": {
       "sw": "飲薬する",
       "pass": "（飲薬しない）",
       "change": "あなたが殺害されたとしたら、犯人を道連れにするかどうか、選択してください。",
       "at": "main",
-      "HELP": "薬を服用した夜、もし処刑以外の要因で命を落とした場合、その犯人を道連れにします。人狼の襲撃の場合、襲撃実行者が対象となります。"
+      "help": "薬を服用した夜、もし処刑以外の要因で命を落とした場合、その犯人を道連れにします。人狼の襲撃の場合、襲撃実行者が対象となります。"
     },
     "guru": {
       "targets": "誘う",
@@ -10876,28 +10878,28 @@
       "change": "誘い込む犠牲者を選択してください。",
       "for": "live",
       "at": "progress",
-      "HELP": "毎晩ふたりずつ、好きな人物をひそかに誘い込むことができます。自分自身を誘うことはできません。\n<br>\n誘い込まれた当人たちは夜な夜な踊り明かし、そのことを覚えています。しかし、彼らの能力や所属陣営などに変化はありません。"
+      "help": "毎晩ふたりずつ、好きな人物をひそかに誘い込むことができます。自分自身を誘うことはできません。\n<br>\n誘い込まれた当人たちは夜な夜な踊り明かし、そのことを覚えています。しかし、彼らの能力や所属陣営などに変化はありません。"
     },
     "bitch": {
       "targets": "遊ぶ",
       "change": "絆を結ぶ相手と、弄ぶ遊び相手を選択してください。",
       "for": "live",
       "at": "start",
-      "HELP": "一日目、一人目に選択した人物を本命の恋人として“運命の絆”を結びつけ、二人目は絆を結ぶふりをして手玉にとります。\n“運命の絆”を結んだ二人は、片方が死亡すると後を追って死亡します。もう一人はどうでもよいのですが、そう思わせないこまめなケアが大切です。"
+      "help": "一日目、一人目に選択した人物を本命の恋人として“運命の絆”を結びつけ、二人目は絆を結ぶふりをして手玉にとります。\n“運命の絆”を結んだ二人は、片方が死亡すると後を追って死亡します。もう一人はどうでもよいのですが、そう思わせないこまめなケアが大切です。"
     },
     "bonds": {
       "targets": "結ぶ",
       "change": "絆で結ぶ二人を選択してください。",
       "for": "live",
       "at": "start",
-      "HELP": "一日目、好きな二人に“運命の絆”を結びつける事ができます。“運命の絆”を結んだ二人は、片方が死亡すると後を追って死亡します。"
+      "help": "一日目、好きな二人に“運命の絆”を結びつける事ができます。“運命の絆”を結んだ二人は、片方が死亡すると後を追って死亡します。"
     },
     "bond": {
       "target": "結ぶ",
       "change": "あなたとの絆を結ぶ相手を選択してください。",
       "for": "live",
       "at": "start",
-      "HELP": "一日目、あなたから好きな人に“運命の絆”を結びつける事ができます。“運命の絆”を結んだ相手が死亡すると、あなたは後を追って死亡します。"
+      "help": "一日目、あなたから好きな人に“運命の絆”を結びつける事ができます。“運命の絆”を結んだ相手が死亡すると、あなたは後を追って死亡します。"
     },
     "guard": {
       "target": "守る",
@@ -10905,7 +10907,7 @@
       "change": "守護する対象を選択してください。",
       "for": "live",
       "at": "main",
-      "HELP": "一人を狼の襲撃、もしくは付け狙う賞金稼の手から守ることが出来ます。\n<br>\n自分自身を守ることは出来ません。"
+      "help": "一人を狼の襲撃、もしくは付け狙う賞金稼の手から守ることが出来ます。\n<br>\n自分自身を守ることは出来ません。"
     },
     "see": {
       "target": "占う",
@@ -10913,7 +10915,7 @@
       "change": "正体を知りたい相手を選択してください。",
       "for": "live",
       "at": "progress",
-      "HELP": "ひとりを占い対象に指定します。"
+      "help": "ひとりを占い対象に指定します。"
     },
     "sneak": {
       "target": "狙う",
@@ -10921,7 +10923,7 @@
       "change": "付け狙う相手を選択してください。",
       "for": "live",
       "at": "progress",
-      "HELP": "殺害します。\nただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。\nまた、対象が半狼であれば彼は人狼になり、人犬、もしくは無傷の長老の場合は、即死はしませんが傷を負わせることができます。"
+      "help": "殺害します。\nただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。\nまた、対象が半狼であれば彼は人狼になり、人犬、もしくは無傷の長老の場合は、即死はしませんが傷を負わせることができます。"
     },
     "hunt": {
       "target": "襲う",
@@ -10929,7 +10931,7 @@
       "change": "殺害する相手を選択してください。",
       "for": "live",
       "at": "progress",
-      "HELP": "人狼全員で多数決をし、一人だけ殺害します。\nただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。\nまた、対象が半狼であれば彼は人狼になり、人犬、もしくは無傷の長老の場合は、即死はしませんが傷を負わせることができます。"
+      "help": "人狼全員で多数決をし、一人だけ殺害します。\nただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。\nまた、対象が半狼であれば彼は人狼になり、人犬、もしくは無傷の長老の場合は、即死はしませんが傷を負わせることができます。"
     },
     "kill": {
       "target": "襲う",
@@ -10937,7 +10939,7 @@
       "change": "殺害する相手を選択してください。",
       "for": "live",
       "at": "progress",
-      "HELP": "殺害します。\nただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。\nまた、対象が半狼であれば彼は人狼になり、人犬、もしくは無傷の長老の場合は、即死はしませんが傷を負わせることができます。"
+      "help": "殺害します。\nただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。\nまた、対象が半狼であれば彼は人狼になり、人犬、もしくは無傷の長老の場合は、即死はしませんが傷を負わせることができます。"
     },
     "cure": {
       "target": "診察",
@@ -10945,7 +10947,7 @@
       "change": "診察する相手を選択してください。",
       "for": "live",
       "at": "main",
-      "HELP": "ひとりを診察し、人狼の牙に感染しているかを確認します。その場合は治療します。治療した人は生存者として数えますが、能力は取り戻しません。"
+      "help": "ひとりを診察し、人狼の牙に感染しているかを確認します。その場合は治療します。治療した人は生存者として数えますが、能力は取り戻しません。"
     },
     "tangle": {
       "target": "憑依",
@@ -10953,7 +10955,7 @@
       "change": "付け狙う相手を選択してください。",
       "for": "dead",
       "at": "progress",
-      "HELP": "死者の埋葬地をうろつきまわっています。\n指定した故人の役職と勝利条件を写しとり、対象を蘇生させます。\nこのため、あなたは死亡しなくては、勝利がありません。"
+      "help": "死者の埋葬地をうろつきまわっています。\n指定した故人の役職と勝利条件を写しとり、対象を蘇生させます。\nこのため、あなたは死亡しなくては、勝利がありません。"
     },
     "analeptic": {
       "target": "投薬",
@@ -10962,7 +10964,7 @@
       "for": "dead",
       "require": "role1",
       "at": "progress",
-      "HELP": "死者に投薬して蘇生させます。\n蘇生は一度だけおこなうことができ、それっきり薬は失われます。"
+      "help": "死者に投薬して蘇生させます。\n蘇生は一度だけおこなうことができ、それっきり薬は失われます。"
     },
     "poison": {
       "target": "投薬",
@@ -10971,7 +10973,7 @@
       "for": "live",
       "require": "role2",
       "at": "progress",
-      "HELP": "生きている者に投薬して毒殺します。\n毒殺は一度ずつだけおこなうことができ、それっきり薬は失われます。"
+      "help": "生きている者に投薬して毒殺します。\n毒殺は一度ずつだけおこなうことができ、それっきり薬は失われます。"
     },
     "scapegoat": {
       "target": "疑う",
@@ -10979,7 +10981,7 @@
       "change": "あなたが最後になったとしたら、指差す相手を選択してください。",
       "for": "live",
       "at": "main",
-      "HELP": "もし投票数が同数になり処刑する相手が定まらないと、混乱した村人達に処刑されてしまいます。\nあなたが最後に指差した人は、後悔する村人達に翌日、処刑されるでしょう。皆、そうするより他にないのです。"
+      "help": "もし投票数が同数になり処刑する相手が定まらないと、混乱した村人達に処刑されてしまいます。\nあなたが最後に指差した人は、後悔する村人達に翌日、処刑されるでしょう。皆、そうするより他にないのです。"
     },
     "hike": {
       "target": "外出する",
@@ -10987,7 +10989,7 @@
       "change": "会いに行く相手を選択してください。",
       "for": "cast",
       "at": "progress",
-      "HELP": "特殊な能力があるかどうか自覚していません。夜は積極的に外出して、様子をさぐりましょう。"
+      "help": "特殊な能力があるかどうか自覚していません。夜は積極的に外出して、様子をさぐりましょう。"
     },
     "vote": {
       "target": "投票",
@@ -10996,7 +10998,7 @@
       "for": "live",
       "at": "main",
       "cmd": "vote",
-      "HELP": "全員で多数決をし、一人だけ処刑します。"
+      "help": "全員で多数決をし、一人だけ処刑します。"
     },
     "vote_role": {
       "target": "投票",
@@ -11004,7 +11006,7 @@
       "change": "処刑する相手を選択してください。",
       "for": "live",
       "at": "main",
-      "HELP": ""
+      "help": ""
     },
     "entrust": {
       "target": "委任",
@@ -11013,7 +11015,7 @@
       "for": "live",
       "at": "main",
       "cmd": "vote",
-      "HELP": "投票は棄権し、他人の投票と同じとすることができます。"
+      "help": "投票は棄権し、他人の投票と同じとすることができます。"
     },
     "jammer": {
       "target": "邪魔",
@@ -11021,7 +11023,7 @@
       "change": "占いから保護する相手を選択してください。",
       "for": "live",
       "at": "progress",
-      "HELP": "毎夜、一人をあらゆる占いから包み隠すことができます。\n<br>\n自分自身を隠すことはできません。"
+      "help": "毎夜、一人をあらゆる占いから包み隠すことができます。\n<br>\n自分自身を隠すことはできません。"
     },
     "snatch": {
       "target": "換わる",
@@ -11029,7 +11031,7 @@
       "change": "顔と名前を簒奪する相手を選択してください。",
       "for": "live",
       "at": "progress",
-      "HELP": "好きな人物の顔と名前を奪い、自身のそれと入れ替えることができます。この能力は非常に露顕しやすいので、行使には注意が必要です。\n<br>\nもしも夜の間に屍体になった人を対象に選んだなら、旧いあなたは命を落とし、あなたとなったその屍体は息を吹き返すでしょう。\nまた、結ばれた絆や、笛吹きに誘われたことは姿とともにあり、姿を移し替えたときに引き継ぐことがあります。\n一度移し替えた姿は、永遠にあなたのものです。二度と元には戻りません。"
+      "help": "好きな人物の顔と名前を奪い、自身のそれと入れ替えることができます。この能力は非常に露顕しやすいので、行使には注意が必要です。\n<br>\nもしも夜の間に屍体になった人を対象に選んだなら、旧いあなたは命を落とし、あなたとなったその屍体は息を吹き返すでしょう。\nまた、結ばれた絆や、笛吹きに誘われたことは姿とともにあり、姿を移し替えたときに引き継ぐことがあります。\n一度移し替えた姿は、永遠にあなたのものです。二度と元には戻りません。"
     },
     "gm_droop": {
       "target": "すぐに墓下へ",
@@ -11038,7 +11040,7 @@
       "for": "gm_live",
       "at": "all",
       "cmd": "gamemaster",
-      "HELP": ""
+      "help": ""
     },
     "gm_live": {
       "target": "すぐに表舞台へ",
@@ -11047,7 +11049,7 @@
       "for": "gm_dead",
       "at": "all",
       "cmd": "gamemaster",
-      "HELP": ""
+      "help": ""
     },
     "gm_disable_vote": {
       "target": "投票から保護する",
@@ -11056,7 +11058,7 @@
       "for": "live",
       "at": "all",
       "cmd": "gamemaster",
-      "HELP": ""
+      "help": ""
     },
     "gm_enable_vote": {
       "target": "投票を認可する",
@@ -11065,7 +11067,7 @@
       "for": "live",
       "at": "all",
       "cmd": "gamemaster",
-      "HELP": ""
+      "help": ""
     },
     "maker": {
       "target": "村を任せる",
@@ -11074,7 +11076,7 @@
       "for": "all",
       "at": "all",
       "cmd": "maker",
-      "HELP": ""
+      "help": ""
     },
     "kick": {
       "target": "退去！",
@@ -11083,241 +11085,241 @@
       "for": "all",
       "at": "prologue",
       "cmd": "kick",
-      "HELP": ""
+      "help": ""
     },
     "blind": {
-      "HELP": "（サーバーは、この役職を保有していることを本人に通知しません。）"
+      "help": "（サーバーは、この役職を保有していることを本人に通知しません。）"
     },
     "wolf": {
-      "HELP": "あなたは人狼と判定されます。"
+      "help": "あなたは人狼と判定されます。"
     },
     "pixi": {
-      "HELP": "占いの対象となると死亡します。勝利判定では人間にも人狼にも数えられません。"
+      "help": "占いの対象となると死亡します。勝利判定では人間にも人狼にも数えられません。"
     },
     "human": {
-      "HELP": "勝利判定では人間として数えられます。"
+      "help": "勝利判定では人間として数えられます。"
     },
     "evil": {
-      "HELP": "人間でありながら、人外に協力する裏切り者です。場合によっては敢えて死ぬ必要があります。"
+      "help": "人間でありながら、人外に協力する裏切り者です。場合によっては敢えて死ぬ必要があります。"
     },
     "circular": {
-      "HELP": "この贈り物は、次に渡す相手を選び渡すことになっています。\n<br>\n将来もしふたたびあなたの手に渡ったら、贈り物は消え去ってしまいます。"
+      "help": "この贈り物は、次に渡す相手を選び渡すことになっています。\n<br>\n将来もしふたたびあなたの手に渡ったら、贈り物は消え去ってしまいます。"
     },
     "friend": {
-      "HELP": "仲間に向けては能力を使いません。"
+      "help": "仲間に向けては能力を使いません。"
     },
     "once": {
-      "HELP": "能力を持ちますが、その能力はたった一度しか使うことができません。"
+      "help": "能力を持ちますが、その能力はたった一度しか使うことができません。"
     },
     "hate": {
-      "HELP": "絆の運命は悲しい殺し合いを強いるでしょう。彼らは本来の勝利条件ではなく、ただ一人生き残ることが勝利条件となります。"
+      "help": "絆の運命は悲しい殺し合いを強いるでしょう。彼らは本来の勝利条件ではなく、ただ一人生き残ることが勝利条件となります。"
     },
     "love": {
-      "HELP": "絆の運命は彼らを、愛で固く結ぶでしょう。彼らは本来の勝利条件ではなく、共存が勝利条件となります。"
+      "help": "絆の運命は彼らを、愛で固く結ぶでしょう。彼らは本来の勝利条件ではなく、共存が勝利条件となります。"
     },
     "droop": {
-      "HELP": "あなたは、生きた人狼の人数の二日後に、命を落とします。"
+      "help": "あなたは、生きた人狼の人数の二日後に、命を落とします。"
     },
     "curse": {
-      "HELP": "あなたを占ってしまった占い師は死亡します。"
+      "help": "あなたを占ってしまった占い師は死亡します。"
     },
     "aura": {
-      "HELP": "あなたはオーラを持ちます。"
+      "help": "あなたはオーラを持ちます。"
     },
     "rob": {
-      "HELP": "誰もならなかった残り役職をすべて知ります。\n次の夜、その中から運命の導くままひとつの役職を選び、仮面の役職に成り代わるでしょう。\n運命は、あなたになにを課すでしょうか？"
+      "help": "誰もならなかった残り役職をすべて知ります。\n次の夜、その中から運命の導くままひとつの役職を選び、仮面の役職に成り代わるでしょう。\n運命は、あなたになにを課すでしょうか？"
     },
     "grave": {
-      "HELP": "命を落とすと、能力を発揮することができます。"
+      "help": "命を落とすと、能力を発揮することができます。"
     },
     "armor": {
-      "HELP": "狼の襲撃や賞金稼の手により殺されることはありません。"
+      "help": "狼の襲撃や賞金稼の手により殺されることはありません。"
     },
     "medium": {
-      "HELP": "処刑や突然死で死んだ全員を対象にします。\n無惨な死体について判断することは出来ません。"
+      "help": "処刑や突然死で死んだ全員を対象にします。\n無惨な死体について判断することは出来ません。"
     },
     "spy_role": {
-      "HELP": "その人が持つ役職がわかります。恩恵は、役職とは別個のものです。このため半端者、悪鬼、妖精の子を直接見分けることはできません。\nまた、妖精を占うと呪殺します。ただし、呪人、呪狼を占ってしまうと、呪殺されてしまいます。\n邪魔之民に包み隠された相手を占うと、占いを実施しなかったことになり、結果を得たり、呪殺したりといった効能が得られません。"
+      "help": "その人が持つ役職がわかります。恩恵は、役職とは別個のものです。このため半端者、悪鬼、妖精の子を直接見分けることはできません。\nまた、妖精を占うと呪殺します。ただし、呪人、呪狼を占ってしまうと、呪殺されてしまいます。\n邪魔之民に包み隠された相手を占うと、占いを実施しなかったことになり、結果を得たり、呪殺したりといった効能が得られません。"
     },
     "spy_win": {
-      "HELP": "その人が持つ陣営（勝利条件）がわかります。多くは役職を思わせるものです。\nまた、妖精を占うと呪殺します。ただし、呪人、呪狼を占ってしまうと、呪殺されてしまいます。\n邪魔之民に包み隠された相手を占うと、占いを実施しなかったことになり、結果を得たり、呪殺したりといった効能が得られません。"
+      "help": "その人が持つ陣営（勝利条件）がわかります。多くは役職を思わせるものです。\nまた、妖精を占うと呪殺します。ただし、呪人、呪狼を占ってしまうと、呪殺されてしまいます。\n邪魔之民に包み隠された相手を占うと、占いを実施しなかったことになり、結果を得たり、呪殺したりといった効能が得られません。"
     },
     "spy_aura": {
-      "HELP": "その人が能力を持つか判別出来ます。あなたにとって、村人、人狼、白狼は能力のオーラを持ちませんが、そうでない人物は能力のオーラを纏っていると感じられます。"
+      "help": "その人が能力を持つか判別出来ます。あなたにとって、村人、人狼、白狼は能力のオーラを持ちませんが、そうでない人物は能力のオーラを纏っていると感じられます。"
     },
     "spy_wolf": {
-      "HELP": "その人が人間か人狼か判別できます。ただし狼血族は人狼と誤認し、白狼は人間と誤認してしまいます。\nまた、妖精を占うと呪殺します。ただし、呪人、呪狼を占ってしまうと、呪殺されてしまいます。\n邪魔之民に包み隠された相手を占うと、占いを実施しなかったことになり、結果を得たり、呪殺したりといった効能が得られません。"
+      "help": "その人が人間か人狼か判別できます。ただし狼血族は人狼と誤認し、白狼は人間と誤認してしまいます。\nまた、妖精を占うと呪殺します。ただし、呪人、呪狼を占ってしまうと、呪殺されてしまいます。\n邪魔之民に包み隠された相手を占うと、占いを実施しなかったことになり、結果を得たり、呪殺したりといった効能が得られません。"
     },
     "stigma": {
-      "HELP": "独特の印を持つため、あなたの正体は比較的信用されやすいでしょう。"
+      "help": "独特の印を持つため、あなたの正体は比較的信用されやすいでしょう。"
     },
     "fm": {
-      "HELP": "結社員・共鳴者が誰なのか知っています。"
+      "help": "結社員・共鳴者が誰なのか知っています。"
     },
     "fanatic": {
-      "HELP": "人狼にはあなたの正体はわかりませんが、あなたは人狼が誰か知っています。また、新たに人狼となったものを知ることもできます。\n<br>\nですが、あなたは狼血族や擬狼妖精も人狼であると誤認してしまいますし、一匹狼の正体を知ることはできません。"
+      "help": "人狼にはあなたの正体はわかりませんが、あなたは人狼が誰か知っています。また、新たに人狼となったものを知ることもできます。\n<br>\nですが、あなたは狼血族や擬狼妖精も人狼であると誤認してしまいますし、一匹狼の正体を知ることはできません。"
     },
     "tafness": {
-      "HELP": "あなたは狼の襲撃を受ける、もしくは賞金稼に道連れにされると傷を負うものの、一日だけ生き長らえます。"
+      "help": "あなたは狼の襲撃を受ける、もしくは賞金稼に道連れにされると傷を負うものの、一日だけ生き長らえます。"
     },
     "hurt": {
-      "name": "負傷",
-      "HELP": ""
+      "label": "負傷",
+      "help": ""
     },
     "sheep": {
-      "HELP": "踊り狂ったおぼろげな記憶がある。"
+      "help": "踊り狂ったおぼろげな記憶がある。"
     },
     "infected": {
-      "name": "感染",
-      "HELP": ""
+      "label": "感染",
+      "help": ""
     },
     "hide_for_vote": {
-      "name": "投票対象外",
+      "label": "投票対象外",
       "hide": ["vote"],
-      "HELP": ""
+      "help": ""
     },
     "hide_for_role": {
-      "name": "能力対象外",
+      "label": "能力対象外",
       "hide": ["role"],
-      "HELP": ""
+      "help": ""
     },
     "hide_for_gift": {
-      "name": "恩恵対象外",
+      "label": "恩恵対象外",
       "hide": ["gift"],
-      "HELP": ""
+      "help": ""
     },
     "disable_vote": {
-      "name": "<s>投票</s>",
+      "label": "<s>投票</s>",
       "disable": ["vote"],
-      "HELP": ""
+      "help": ""
     },
     "disable_special": {
-      "name": "<s>全能力</s>",
+      "label": "<s>全能力</s>",
       "disable": ["gift", "role"],
-      "HELP": "あなたはもう特殊能力を使うことができません。"
+      "help": "あなたはもう特殊能力を使うことができません。"
     },
     "disable_gift": {
-      "name": "<s>恩恵</s>",
+      "label": "<s>恩恵</s>",
       "disable": ["gift"],
-      "HELP": "あなたはもう恩恵能力を使うことができません。"
+      "help": "あなたはもう恩恵能力を使うことができません。"
     },
     "disable_role": {
-      "name": "<s>能力</s>",
+      "label": "<s>能力</s>",
       "disable": ["role"],
-      "HELP": "あなたはもう役職能力を使うことができません。"
+      "help": "あなたはもう役職能力を使うことができません。"
     },
     "disable_poison": {
-      "name": "<s>毒薬</s>",
+      "label": "<s>毒薬</s>",
       "disable": ["poison"],
-      "HELP": "あなたはもう毒薬を使うことができません。"
+      "help": "あなたはもう毒薬を使うことができません。"
     },
     "disable_analeptic": {
-      "name": "<s>蘇生薬</s>",
+      "label": "<s>蘇生薬</s>",
       "disable": ["analeptic"],
-      "HELP": "あなたはもう蘇生薬を使うことができません。"
+      "help": "あなたはもう蘇生薬を使うことができません。"
     },
     "twolife": {
-      "HELP": "あなたは狼の襲撃を受ける、もしくは賞金稼に道連れにされても、一度だけは命が助かります。"
+      "help": "あなたは狼の襲撃を受ける、もしくは賞金稼に道連れにされても、一度だけは命が助かります。"
     },
     "august": {
-      "HELP": "あなたが処刑されることに決まると一度だけは、その処刑はとりやめになります。"
+      "help": "あなたが処刑されることに決まると一度だけは、その処刑はとりやめになります。"
     },
     "revenge": {
-      "HELP": "どんな理由であれ、あなたが命を落とすと、その夜のうちに能力を発揮します。"
+      "help": "どんな理由であれ、あなたが命を落とすと、その夜のうちに能力を発揮します。"
     },
     "seal": {
-      "HELP": "ひとりの犯人が特定できるのであれば、犯人はいっさいの能力を行使できなくなります。"
+      "help": "ひとりの犯人が特定できるのであれば、犯人はいっさいの能力を行使できなくなります。"
     },
     "grudge": {
-      "HELP": "あなたが命を落とした翌日、人狼は二つの襲撃をおこない、二人を一度に殺害します。"
+      "help": "あなたが命を落とした翌日、人狼は二つの襲撃をおこない、二人を一度に殺害します。"
     },
     "riot": {
-      "HELP": "あなたが死亡した翌日は、村人達が暴力的に二つの投票をおこない、二人を一度に処刑します。"
+      "help": "あなたが死亡した翌日は、村人達が暴力的に二つの投票をおこない、二人を一度に処刑します。"
     },
     "wolfify": {
-      "HELP": "あなたは狼の襲撃を受ける、もしくは賞金稼に道連れにされると、あなたは人狼になります。"
+      "help": "あなたは狼の襲撃を受ける、もしくは賞金稼に道連れにされると、あなたは人狼になります。"
     },
     "chkGSAY": {
-      "HELP": "顔や名前はわかりませんが、あなたの耳には死者の声が届いちゃうことでしょう。"
+      "help": "顔や名前はわかりませんが、あなたの耳には死者の声が届いちゃうことでしょう。"
     },
     "ENTRY": {
-      "name": "導入",
+      "label": "導入",
       "text": "ENTRY",
       "cmd": "entry",
-      "HELP": "キャラクターを選択し、エントリーしましょう。"
+      "help": "キャラクターを選択し、エントリーしましょう。"
     },
     "MAKER": {
-      "name": "村立て話",
+      "label": "村立て話",
       "text": "MAKER",
       "cmd": "write",
-      "HELP": "あなたは村立て人です。"
+      "help": "あなたは村立て人です。"
     },
     "ADMIN": {
-      "name": "管理者話",
+      "label": "管理者話",
       "text": "ADMIN",
       "cmd": "write",
-      "HELP": "あなたは管理人です。"
+      "help": "あなたは管理人です。"
     },
     "SPSAY": {
-      "name": "共鳴",
+      "label": "共鳴",
       "text": "SPSAY",
       "cmd": "write",
-      "HELP": "あなたは、共鳴者同士にしか聞こえない会話が可能です。"
+      "help": "あなたは、共鳴者同士にしか聞こえない会話が可能です。"
     },
     "WSAY": {
-      "name": "囁き",
+      "label": "囁き",
       "text": "WSAY",
       "cmd": "write",
-      "HELP": "あなたは、人狼（と囁き狂人、擬狼妖精）同士にしか聞こえない会話が可能です。"
+      "help": "あなたは、人狼（と囁き狂人、擬狼妖精）同士にしか聞こえない会話が可能です。"
     },
     "XSAY": {
-      "name": "念話",
+      "label": "念話",
       "text": "XSAY",
       "cmd": "write",
-      "HELP": "あなたは、念波星でしか聞こえない会話が可能です。"
+      "help": "あなたは、念波星でしか聞こえない会話が可能です。"
     },
     "GSAY": {
-      "name": "会話",
+      "label": "会話",
       "text": "GSAY",
       "cmd": "write",
-      "HELP": "あなたは、死者にしか聞こえない会話が可能です。"
+      "help": "あなたは、死者にしか聞こえない会話が可能です。"
     },
     "MSAY": {
-      "name": "口借り",
+      "label": "口借り",
       "text": "MSAY",
       "cmd": "write",
-      "HELP": "あなたは<b>_NPC_</b>の口を借り、好きな言葉を伝えることができます。"
+      "help": "あなたは<b>_NPC_</b>の口を借り、好きな言葉を伝えることができます。"
     },
     "AIM": {
-      "name": "内緒話",
+      "label": "内緒話",
       "text": "AIM",
       "for": "near",
       "cmd": "write",
-      "HELP": null
+      "help": null
     },
     "TSAY": {
-      "name": "独り言",
+      "label": "独り言",
       "text": "TSAY",
       "cmd": "write",
-      "HELP": null
+      "help": null
     },
     "SAY": {
-      "name": "会話",
+      "label": "会話",
       "text": "SAY",
       "cmd": "write",
-      "HELP": null
+      "help": null
     },
     "VSAY": {
-      "name": "会話",
+      "label": "会話",
       "text": "VSAY",
       "cmd": "write",
-      "HELP": null
+      "help": null
     },
     "VGSAY": {
-      "name": "会話",
+      "label": "会話",
       "text": "VGSAY",
       "cmd": "write",
-      "HELP": null
+      "help": null
     }
   });
   for (mask in ref$ = RAILS.maskstates_to_able) {
@@ -11331,878 +11333,878 @@
   });
   Mem.Collection.trap.set({
     "blank": {
-      "name": "普通の日",
-      "HELP": ""
+      "label": "普通の日",
+      "help": ""
     },
     "nothing": {
-      "name": "普通の日",
+      "label": "普通の日",
       "cmd": "trap",
-      "HELP": "今日は、特別なことのない一日のようだ。さあ普段通り、誰かを処刑台にかけよう。"
+      "help": "今日は、特別なことのない一日のようだ。さあ普段通り、誰かを処刑台にかけよう。"
     },
     "aprilfool": {
-      "name": "四月馬鹿",
+      "label": "四月馬鹿",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_APRIL_FOOL\" TARGET=\"_blank\">四月馬鹿</A></b>\n<br>\n大変、大変、大変なことになった。きみの役職は変化しているかもしれない。もしも誰かと絆を結んでいるなら、急に相手が憎くなってしまい、絆の相手だけにしか投票できない。\nそして悟ってしまった。今夜だけは、相方の後を追うことはないと……。\n<br>\n<table class=\"table\">\n<tr>\n<th colspan=3>役職の変貌\n<th rowspan=4>※一日で元に戻る\n<tr>\n<td>賢者\n<td>←→\n<td>魔女\n<tr>\n<td>守護者\n<td>←→\n<td>長老\n<tr>\n<td>賞金稼\n<td>←→\n<td>少女\n</table>"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_APRIL_FOOL\" TARGET=\"_blank\">四月馬鹿</A></b>\n<br>\n大変、大変、大変なことになった。きみの役職は変化しているかもしれない。もしも誰かと絆を結んでいるなら、急に相手が憎くなってしまい、絆の相手だけにしか投票できない。\nそして悟ってしまった。今夜だけは、相方の後を追うことはないと……。\n<br>\n<table class=\"table\">\n<tr>\n<th colspan=3>役職の変貌\n<th rowspan=4>※一日で元に戻る\n<tr>\n<td>賢者\n<td>←→\n<td>魔女\n<tr>\n<td>守護者\n<td>←→\n<td>長老\n<tr>\n<td>賞金稼\n<td>←→\n<td>少女\n</table>"
     },
     "turnfink": {
-      "name": "二重スパイ",
+      "label": "二重スパイ",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_TURN_FINK\" TARGET=\"_blank\">二重スパイ</A></b>\n<br>\nなんということだろう！一人が村側を裏切り、狼に与する半端者になってしまった。明日以降も、彼は村人を裏切り続けるだろう……。\n<br>\n決定者や光の輪の持ち主なら、このときにその力を手放してしまう。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_TURN_FINK\" TARGET=\"_blank\">二重スパイ</A></b>\n<br>\nなんということだろう！一人が村側を裏切り、狼に与する半端者になってしまった。明日以降も、彼は村人を裏切り続けるだろう……。\n<br>\n決定者や光の輪の持ち主なら、このときにその力を手放してしまう。"
     },
     "turnfairy": {
-      "name": "妖精の輪",
+      "label": "妖精の輪",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_TURN_FAIRY\" TARGET=\"_blank\">妖精の輪</A></b>\n<br>\nなんということだろう！一人が森に立ち入り、妖精の養子になってしまった。明日以降も、彼は村人を裏切り続けるだろう……。\n<br>\n決定者や光の輪の持ち主なら、このときにその力を手放してしまう。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_TURN_FAIRY\" TARGET=\"_blank\">妖精の輪</A></b>\n<br>\nなんということだろう！一人が森に立ち入り、妖精の養子になってしまった。明日以降も、彼は村人を裏切り続けるだろう……。\n<br>\n決定者や光の輪の持ち主なら、このときにその力を手放してしまう。"
     },
     "eclipse": {
-      "name": "日蝕",
+      "label": "日蝕",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_ECLIPSE\" TARGET=\"_blank\">日蝕</A></b>\n<br>\n暗い日蝕が村中を覆い、お互い顔も名前も解らない。この闇夜は丸一日続くだろう。他人になりすまし、議論を混乱させることもできてしまうかもしれない。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_ECLIPSE\" TARGET=\"_blank\">日蝕</A></b>\n<br>\n暗い日蝕が村中を覆い、お互い顔も名前も解らない。この闇夜は丸一日続くだろう。他人になりすまし、議論を混乱させることもできてしまうかもしれない。"
     },
     "cointoss": {
-      "name": "Sir Cointoss",
+      "label": "Sir Cointoss",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_COINTOSS\" TARGET=\"_blank\">Sir Cointoss</A></b>\n<br>\nお控えなさい。お控えなさい。コイントス卿はこの村の投票結果に意見があるようでございます。\n卿の御意向によっては、投票結果に基づいた処刑を取り止めにすることもあります。\n五分五分くらいかな。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_COINTOSS\" TARGET=\"_blank\">Sir Cointoss</A></b>\n<br>\nお控えなさい。お控えなさい。コイントス卿はこの村の投票結果に意見があるようでございます。\n卿の御意向によっては、投票結果に基づいた処刑を取り止めにすることもあります。\n五分五分くらいかな。"
     },
     "force": {
-      "name": "影響力",
+      "label": "影響力",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_FORCE\" TARGET=\"_blank\">影響力</A></b>\n<br>\n今日の投票箱は無色透明だ。だれかが投票した瞬間にその内容はハッキリと見えるから、投票をセットするときは気を付けて！"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_FORCE\" TARGET=\"_blank\">影響力</A></b>\n<br>\n今日の投票箱は無色透明だ。だれかが投票した瞬間にその内容はハッキリと見えるから、投票をセットするときは気を付けて！"
     },
     "miracle": {
-      "name": "奇跡",
+      "label": "奇跡",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_MIRACLE\" TARGET=\"_blank\">奇跡</A></b>\n<br>\n帰ってきた！黄泉の国から、今日の襲撃で死んだ犠牲者がかえってきた！能力を失ったかもしれないけれど、それは些細なことだよ！ね！\n<br>\n人狼、一匹狼、賞金稼ぎなどに襲われた死者は生き返る。ただし、その能力は失われる。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_MIRACLE\" TARGET=\"_blank\">奇跡</A></b>\n<br>\n帰ってきた！黄泉の国から、今日の襲撃で死んだ犠牲者がかえってきた！能力を失ったかもしれないけれど、それは些細なことだよ！ね！\n<br>\n人狼、一匹狼、賞金稼ぎなどに襲われた死者は生き返る。ただし、その能力は失われる。"
     },
     "prophecy": {
-      "name": "聖者のお告げ",
+      "label": "聖者のお告げ",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_PROPHECY\" TARGET=\"_blank\">聖者のお告げ</A></b>\n<br>\n聖者は民の夢枕に告げられました。今の任より、<b>決定者</b>にふさわしい人物がいると。\n旧き任務は解かれ、あたらしい<b>決定者</b>は皆に喝采で迎え入れられるだろう。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_PROPHECY\" TARGET=\"_blank\">聖者のお告げ</A></b>\n<br>\n聖者は民の夢枕に告げられました。今の任より、<b>決定者</b>にふさわしい人物がいると。\n旧き任務は解かれ、あたらしい<b>決定者</b>は皆に喝采で迎え入れられるだろう。"
     },
     "clamor": {
-      "name": "不満",
+      "label": "不満",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_CLAMOR\" TARGET=\"_blank\">不満</A></b>\n<br>\n村には不満が鬱屈している。今夜の投票でまた人間を処刑してしまったら……悪夢が始まる。\nはじけた不満に背中を押され、話し合いもなしに、さらに一人の首を必要とするだろう。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_CLAMOR\" TARGET=\"_blank\">不満</A></b>\n<br>\n村には不満が鬱屈している。今夜の投票でまた人間を処刑してしまったら……悪夢が始まる。\nはじけた不満に背中を押され、話し合いもなしに、さらに一人の首を必要とするだろう。"
     },
     "fire": {
-      "name": "熱意",
+      "label": "熱意",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_FIRE\" TARGET=\"_blank\">熱意</A></b>\n<br>\n村には期待に満ちた熱意が渦巻いている。今夜の投票がひとならぬものを処刑できたなら……悪夢が始まるのだ。\nはじけた熱意に背中を押され、話し合いもなしに、さらに一人の首を必要とするだろう。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_FIRE\" TARGET=\"_blank\">熱意</A></b>\n<br>\n村には期待に満ちた熱意が渦巻いている。今夜の投票がひとならぬものを処刑できたなら……悪夢が始まるのだ。\nはじけた熱意に背中を押され、話し合いもなしに、さらに一人の首を必要とするだろう。"
     },
     "nightmare": {
-      "name": "悪夢",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_NIGHTMARE\" TARGET=\"_blank\">悪夢</A></b>\n<br>\n恐ろしい一日が始まる。今日は投票だけができる。発言も、能力も使えない。そして、突然死は発生しない。\n<br>\nさあ投票して、こんな日が早く過ぎ去ってしまうよう、ひとり祈りを捧げよう。"
+      "label": "悪夢",
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_NIGHTMARE\" TARGET=\"_blank\">悪夢</A></b>\n<br>\n恐ろしい一日が始まる。今日は投票だけができる。発言も、能力も使えない。そして、突然死は発生しない。\n<br>\nさあ投票して、こんな日が早く過ぎ去ってしまうよう、ひとり祈りを捧げよう。"
     },
     "ghost": {
-      "name": "亡霊",
+      "label": "亡霊",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_GHOST\" TARGET=\"_blank\">亡霊</A></b>\n<br>\n今夜、人狼に殺された人は人狼になる。また、襲撃を実行した人狼は命を落としてしまうだろう。人狼となった者は報復行動を行わない。ただし、命拾いをしたならば人狼にはならない。\n<br>\n一匹狼は亡霊を作らない。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_GHOST\" TARGET=\"_blank\">亡霊</A></b>\n<br>\n今夜、人狼に殺された人は人狼になる。また、襲撃を実行した人狼は命を落としてしまうだろう。人狼となった者は報復行動を行わない。ただし、命拾いをしたならば人狼にはならない。\n<br>\n一匹狼は亡霊を作らない。"
     },
     "escape": {
-      "name": "逃亡",
+      "label": "逃亡",
       "cmd": null,
-      "HELP": "<b>逃亡</b>\n<br>\nせめて一人だけでも、なんとかして逃がそう。今夜の投票で逃亡者を一人決め、夜中の処刑のかわりに密かに逃がすのだ。\n<br>\nしかし逃亡者は一日のあいだ逃亡生活を続け、ついに村へと帰還してしまう。帰還者の票は通常の三倍尊重されるだろう。\n実装がめんどうだから、このまま未定義にしておこうかな。"
+      "help": "<b>逃亡</b>\n<br>\nせめて一人だけでも、なんとかして逃がそう。今夜の投票で逃亡者を一人決め、夜中の処刑のかわりに密かに逃がすのだ。\n<br>\nしかし逃亡者は一日のあいだ逃亡生活を続け、ついに村へと帰還してしまう。帰還者の票は通常の三倍尊重されるだろう。\n実装がめんどうだから、このまま未定義にしておこうかな。"
     },
     "seance": {
-      "name": "降霊会",
+      "label": "降霊会",
       "cmd": "trap",
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_SEANSE\" TARGET=\"_blank\">降霊会</A></b>\n<br>\nこっくりさん、こっくりさん……<br>秘密の儀式で、墓場の霊魂がかえってきた。今日に限り、生者も姿の見えぬ死者も屋根を共にし、議論するだろう。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Event)EVENTID_SEANSE\" TARGET=\"_blank\">降霊会</A></b>\n<br>\nこっくりさん、こっくりさん……<br>秘密の儀式で、墓場の霊魂がかえってきた。今日に限り、生者も姿の見えぬ死者も屋根を共にし、議論するだろう。"
     }
   });
   Mem.Collection.role.set({
     "entry": {
-      "name": "エントリー",
+      "label": "エントリー",
       "win": null,
       "group": "TURN",
       "ables": ["ENTRY"],
-      "HELP": ""
+      "help": ""
     },
     "start": {
-      "name": "初日",
+      "label": "初日",
       "win": null,
       "group": "TURN",
       "ables": [],
-      "HELP": ""
+      "help": ""
     },
     "main": {
-      "name": "二日目以降",
+      "label": "二日目以降",
       "win": null,
       "group": "TURN",
       "ables": [],
-      "HELP": ""
+      "help": ""
     },
     "prologue": {
-      "name": "プロローグ",
+      "label": "プロローグ",
       "win": "NONE",
       "group": "TURN",
       "ables": ["exit"],
-      "HELP": ""
+      "help": ""
     },
     "epilogue": {
-      "name": "エピローグ",
+      "label": "エピローグ",
       "win": null,
       "group": "TURN",
       "ables": [],
-      "HELP": ""
+      "help": ""
     },
     "live": {
-      "name": "生存者",
+      "label": "生存者",
       "win": null,
       "group": "LIVE",
       "ables": ["SAY", "TSAY", "AIM", "commit"],
-      "HELP": ""
+      "help": ""
     },
     "executed": {
-      "name": "処刑",
+      "label": "処刑",
       "win": null,
       "group": "LIVE",
       "ables": ["GSAY", "TSAY"],
-      "HELP": ""
+      "help": ""
     },
     "victim": {
-      "name": "襲撃",
+      "label": "襲撃",
       "win": null,
       "group": "LIVE",
       "ables": ["GSAY", "TSAY"],
-      "HELP": ""
+      "help": ""
     },
     "cursed": {
-      "name": "呪詛",
+      "label": "呪詛",
       "win": null,
       "group": "LIVE",
       "ables": ["GSAY", "TSAY"],
-      "HELP": ""
+      "help": ""
     },
     "droop": {
-      "name": "衰退",
+      "label": "衰退",
       "win": null,
       "group": "LIVE",
       "ables": ["GSAY", "TSAY"],
-      "HELP": ""
+      "help": ""
     },
     "suicide": {
-      "name": "後追",
+      "label": "後追",
       "win": null,
       "group": "LIVE",
       "ables": ["GSAY", "TSAY"],
-      "HELP": ""
+      "help": ""
     },
     "feared": {
-      "name": "恐怖",
+      "label": "恐怖",
       "win": null,
       "group": "LIVE",
       "ables": ["GSAY", "TSAY"],
-      "HELP": ""
+      "help": ""
     },
     "suddendead": {
-      "name": "突然死",
+      "label": "突然死",
       "win": null,
       "group": "LIVE",
       "ables": ["GSAY", "TSAY"],
-      "HELP": ""
+      "help": ""
     },
     "leave": {
-      "name": "―",
+      "label": "―",
       "win": null,
       "group": null,
       "ables": [],
-      "HELP": ""
+      "help": ""
     },
     "none": {
-      "name": "",
+      "label": "",
       "win": null,
       "group": null,
       "ables": [],
-      "HELP": ""
+      "help": ""
     },
     "bind": {
-      "name": "―",
+      "label": "―",
       "win": null,
       "group": null,
       "ables": [],
-      "HELP": ""
+      "help": ""
     },
     "hide": {
-      "name": "？？？",
+      "label": "？？？",
       "win": null,
       "group": null,
       "ables": ["hike", "vote", "entrust"],
-      "HELP": "あなたは正体不明です。"
+      "help": "あなたは正体不明です。"
     },
     "mob": {
-      "name": "見物人",
+      "label": "見物人",
       "win": "MOB",
       "group": null,
-      "HELP": "見物人全般のための仮想役職です。"
+      "help": "見物人全般のための仮想役職です。"
     },
     "visiter": {
-      "name": "客席",
+      "label": "客席",
       "win": "MOB",
       "group": "MOB",
       "ables": ["VSAY", "TSAY"],
-      "HELP": "進行中会話は客席同士のみ"
+      "help": "進行中会話は客席同士のみ"
     },
     "grave": {
-      "name": "裏方",
+      "label": "裏方",
       "win": "MOB",
       "group": "MOB",
       "ables": ["VSAY", "TSAY"],
-      "HELP": "進行中会話は墓下と"
+      "help": "進行中会話は墓下と"
     },
     "alive": {
-      "name": "舞台",
+      "label": "舞台",
       "win": "MOB",
       "group": "MOB",
       "ables": ["VSAY", "TSAY"],
-      "HELP": "進行中会話は地上、墓下、両方と"
+      "help": "進行中会話は地上、墓下、両方と"
     },
     "juror": {
-      "name": "陪審",
+      "label": "陪審",
       "win": "HUMAN",
       "group": "MOB",
       "ables": ["VSAY", "TSAY", "vote", "entrust"],
-      "HELP": "進行中会話は陪審同士のみ。陪審（＆決定者）だけが投票する。"
+      "help": "進行中会話は陪審同士のみ。陪審（＆決定者）だけが投票する。"
     },
     "gamemaster": {
-      "name": "黒幕",
+      "label": "黒幕",
       "win": "MOB",
       "group": "MOB",
       "ables": ["gm_droop", "gm_live", "gm_disable_vote", "gm_enable_vote", "VSAY", "TSAY"],
-      "HELP": "進行中会話は地上、墓下、両方と。場を支配する特権をもつ。"
+      "help": "進行中会話は地上、墓下、両方と。場を支配する特権をもつ。"
     },
     "master": {
-      "name": "村立て人",
+      "label": "村立て人",
       "win": null,
       "group": "SPECIAL",
       "ables": ["maker", "kick", "muster", "editvilform", "update", "MAKER"]
     },
     "admin": {
-      "name": "管理人",
+      "label": "管理人",
       "win": null,
       "group": "SPECIAL",
       "ables": ["maker", "kick", "muster", "editvilform", "update", "scrapvil", "ADMIN"]
     },
     "lost": {
-      "name": "喪失",
+      "label": "喪失",
       "win": null,
       "group": "OTHER",
       "ables": [],
       "cmd": "gift",
-      "HELP": "あなたは贈り物を<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_LOST\" TARGET=\"_blank\">喪失</A>しました。\n<br>\nもう二度と手にすることはないでしょう。もしまたあなたの手に贈り物があっても、消え去ってしまいます。そして、あなたがそれに気付くことはないでしょう。"
+      "help": "あなたは贈り物を<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_LOST\" TARGET=\"_blank\">喪失</A>しました。\n<br>\nもう二度と手にすることはないでしょう。もしまたあなたの手に贈り物があっても、消え去ってしまいます。そして、あなたがそれに気付くことはないでしょう。"
     },
     "shield": {
-      "name": "光の輪",
+      "label": "光の輪",
       "win": null,
       "group": "OTHER",
       "ables": ["circular", "guard"],
       "cmd": "gift",
-      "HELP": "あなたを<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_SHIELD\" TARGET=\"_blank\">光の輪</A>が取り巻きます。\n<br>\nあなたはもし昨夜、襲撃されていたとしても守られました。\n<br>\n光の輪はひとりを一度しか守りません。"
+      "help": "あなたを<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_SHIELD\" TARGET=\"_blank\">光の輪</A>が取り巻きます。\n<br>\nあなたはもし昨夜、襲撃されていたとしても守られました。\n<br>\n光の輪はひとりを一度しか守りません。"
     },
     "glass": {
-      "name": "魔鏡",
+      "label": "魔鏡",
       "win": null,
       "group": "OTHER",
       "ables": ["circular", "see"],
       "cmd": "gift",
-      "HELP": "あなたを<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_GLASS\" TARGET=\"_blank\">魔鏡</A>が照らします。\n<br>\nあなたは、魔鏡を渡す相手を占います。\n魔鏡はひとりを一度しか照らしません。"
+      "help": "あなたを<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_GLASS\" TARGET=\"_blank\">魔鏡</A>が照らします。\n<br>\nあなたは、魔鏡を渡す相手を占います。\n魔鏡はひとりを一度しか照らしません。"
     },
     "ogre": {
-      "name": "悪鬼",
+      "label": "悪鬼",
       "win": "WOLF",
       "group": "WOLF",
       "ables": ["wolf", "hunt", "friend", "WSAY"],
       "cmd": "gift",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_OGRE\" TARGET=\"_blank\">悪鬼</A>です。\n<br>\n表向きは他の役目を帯びていますが、あなたは人を襲う悪い鬼なのです。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_OGRE\" TARGET=\"_blank\">悪鬼</A>です。\n<br>\n表向きは他の役目を帯びていますが、あなたは人を襲う悪い鬼なのです。"
     },
     "fairy": {
-      "name": "妖精の子",
+      "label": "妖精の子",
       "win": "PIXI",
       "group": "PIXI",
       "ables": ["pixi"],
       "cmd": "gift",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_FAIRY\" TARGET=\"_blank\">妖精から生まれた子</A>です。\n<br>\n表向きは他の役目を帯びていますが、あなたは人ならぬ存在なのです。\n占い師、霊能者にどう判別されるかは、もともとの役職によります。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_FAIRY\" TARGET=\"_blank\">妖精から生まれた子</A>です。\n<br>\n表向きは他の役目を帯びていますが、あなたは人ならぬ存在なのです。\n占い師、霊能者にどう判別されるかは、もともとの役職によります。"
     },
     "fink": {
-      "name": "半端者",
+      "label": "半端者",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["evil"],
       "cmd": "gift",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_FINK\" TARGET=\"_blank\">半端者</A>です。\n<br>\n表向きは他の役目を帯びていますが、あなたは人ともつかぬ、人狼ともつかぬ、半端な正体を隠しています。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_FINK\" TARGET=\"_blank\">半端者</A>です。\n<br>\n表向きは他の役目を帯びていますが、あなたは人ともつかぬ、人狼ともつかぬ、半端な正体を隠しています。"
     },
     "decide": {
-      "name": "決定者",
+      "label": "決定者",
       "win": null,
       "group": "OTHER",
       "able": "投票",
       "ables": ["vote_role"],
       "cmd": "gift",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_DECIDE\" TARGET=\"_blank\">決定者</A>です。\n<br>\nあなたは追加票を投じる権利を持ちつづけます。行使することで、健在を示すこともできるでしょう。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_DECIDE\" TARGET=\"_blank\">決定者</A>です。\n<br>\nあなたは追加票を投じる権利を持ちつづけます。行使することで、健在を示すこともできるでしょう。"
     },
     "seeronce": {
-      "name": "夢占師",
+      "label": "夢占師",
       "win": null,
       "group": "OTHER",
       "able": "占う",
       "ables": ["once", "see", "spy_wolf"],
       "cmd": "gift",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_SEERONCE\" TARGET=\"_blank\">夢占師</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_SEERONCE\" TARGET=\"_blank\">夢占師</A>です。"
     },
     "dipsy": {
-      "name": "酔払い",
+      "label": "酔払い",
       "win": null,
       "group": "OTHER",
       "ables": null,
       "cmd": "gift",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_DIPSY\" TARGET=\"_blank\">酔払い</A>です。\n<br>\nあなたが人外もしくは村人に相対するものであれば、自分の役割を見失うことはありません。\n<br>\nまた、光の輪や魔鏡といった贈り物を受け取った場合、酔いが醒めることでしょう。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Gift)GIFTID_DIPSY\" TARGET=\"_blank\">酔払い</A>です。\n<br>\nあなたが人外もしくは村人に相対するものであれば、自分の役割を見失うことはありません。\n<br>\nまた、光の輪や魔鏡といった贈り物を受け取った場合、酔いが醒めることでしょう。"
     },
     "lover": {
-      "name": "弟子",
+      "label": "弟子",
       "win": null,
       "group": "OTHER",
       "able": "入門",
       "ables": ["aura", "bond", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_LOVER\" TARGET=\"_blank\">弟子</A>です。\n<br>\n好きな人物を師匠として選び、弟子入りします。次の朝、あなたは頭角をあらわし、絆の師匠と同じ役職になっています。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_LOVER\" TARGET=\"_blank\">弟子</A>です。\n<br>\n好きな人物を師匠として選び、弟子入りします。次の朝、あなたは頭角をあらわし、絆の師匠と同じ役職になっています。"
     },
     "robber": {
-      "name": "盗賊",
+      "label": "盗賊",
       "win": null,
       "group": "OTHER",
       "ables": ["aura", "rob", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ROBBER\" TARGET=\"_blank\">盗賊</A>です。\n<br>"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ROBBER\" TARGET=\"_blank\">盗賊</A>です。\n<br>"
     },
     "tangle": {
-      "name": "怨念",
+      "label": "怨念",
       "win": null,
       "group": "OTHER",
       "ables": ["aura", "revenge", "tangle", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_TANGLE\" TARGET=\"_blank\">怨念</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_TANGLE\" TARGET=\"_blank\">怨念</A>です。"
     },
     "villager": {
-      "name": "村人",
+      "label": "村人",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_VILLAGER\" TARGET=\"_blank\">村人</A>です。\n<br>\n特殊な能力はもっていません。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_VILLAGER\" TARGET=\"_blank\">村人</A>です。\n<br>\n特殊な能力はもっていません。"
     },
     "stigma": {
-      "name": "聖痕者",
+      "label": "聖痕者",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "stigma", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_STIGMA\" TARGET=\"_blank\">_ROLESUBID_聖痕者</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_STIGMA\" TARGET=\"_blank\">_ROLESUBID_聖痕者</A>です。"
     },
     "fm": {
-      "name": "結社員",
+      "label": "結社員",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "fm", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FM\" TARGET=\"_blank\">結社員</A>です。\n<br>\n独自の人脈を持つ秘密結社の一員です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FM\" TARGET=\"_blank\">結社員</A>です。\n<br>\n独自の人脈を持つ秘密結社の一員です。"
     },
     "sympathy": {
-      "name": "共鳴者",
+      "label": "共鳴者",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "fm", "human", "vote", "entrust", "SPSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SYMPATHY\" TARGET=\"_blank\">共鳴者</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SYMPATHY\" TARGET=\"_blank\">共鳴者</A>です。"
     },
     "seer": {
-      "name": "占い師",
+      "label": "占い師",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "see", "spy_wolf", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEER\" TARGET=\"_blank\">占い師</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEER\" TARGET=\"_blank\">占い師</A>です。"
     },
     "seerwin": {
-      "name": "信仰占師",
+      "label": "信仰占師",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "see", "spy_win", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEERWIN\" TARGET=\"_blank\">信仰占師</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEERWIN\" TARGET=\"_blank\">信仰占師</A>です。"
     },
     "aura": {
-      "name": "気占師",
+      "label": "気占師",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "see", "spy_aura", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_AURA\" TARGET=\"_blank\">気（オーラ）占い師</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_AURA\" TARGET=\"_blank\">気（オーラ）占い師</A>です。"
     },
     "oura": {
-      "name": "気占師",
+      "label": "気占師",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "see", "spy_aura", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_AURA\" TARGET=\"_blank\">気（オーラ）占い師</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_AURA\" TARGET=\"_blank\">気（オーラ）占い師</A>です。"
     },
     "seerrole": {
-      "name": "賢者",
+      "label": "賢者",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "see", "spy_role", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEERROLE\" TARGET=\"_blank\">賢者</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEERROLE\" TARGET=\"_blank\">賢者</A>です。"
     },
     "guard": {
-      "name": "守護者",
+      "label": "守護者",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "guard", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_GUARD\" TARGET=\"_blank\">守護者</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_GUARD\" TARGET=\"_blank\">守護者</A>です。"
     },
     "medium": {
-      "name": "霊能者",
+      "label": "霊能者",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "medium", "spy_wolf", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MEDIUM\" TARGET=\"_blank\">霊能者</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MEDIUM\" TARGET=\"_blank\">霊能者</A>です。"
     },
     "mediumwin": {
-      "name": "信仰霊能者",
+      "label": "信仰霊能者",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "medium", "spy_win", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MEDIUMWIN\" TARGET=\"_blank\">信仰霊能者</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MEDIUMWIN\" TARGET=\"_blank\">信仰霊能者</A>です。"
     },
     "mediumrole": {
-      "name": "導師",
+      "label": "導師",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "medium", "spy_role", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MEDIUMROLE\" TARGET=\"_blank\">導師</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MEDIUMROLE\" TARGET=\"_blank\">導師</A>です。"
     },
     "necromancer": {
-      "name": "降霊者",
+      "label": "降霊者",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "chkGSAY", "medium", "spy_wolf", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_NECROMANCER\" TARGET=\"_blank\">降霊者</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_NECROMANCER\" TARGET=\"_blank\">降霊者</A>です。"
     },
     "follow": {
-      "name": "追従者",
+      "label": "追従者",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "human", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FOLLOW\" TARGET=\"_blank\">追従者</A>です。\n<br>\nだれかを信じ、委ねましょう。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FOLLOW\" TARGET=\"_blank\">追従者</A>です。\n<br>\nだれかを信じ、委ねましょう。"
     },
     "fan": {
-      "name": "煽動者",
+      "label": "煽動者",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "revenge", "riot", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FAN\" TARGET=\"_blank\">煽動者</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FAN\" TARGET=\"_blank\">煽動者</A>です。"
     },
     "hunter": {
-      "name": "賞金稼",
+      "label": "賞金稼",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "revenge", "sneak", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_HUNTER\" TARGET=\"_blank\">賞金稼</A>です。\n<br>\n毎夜、一人を付け狙います。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_HUNTER\" TARGET=\"_blank\">賞金稼</A>です。\n<br>\n毎夜、一人を付け狙います。"
     },
     "weredog": {
-      "name": "人犬",
+      "label": "人犬",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "tafness", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WEREDOG\" TARGET=\"_blank\">人犬</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WEREDOG\" TARGET=\"_blank\">人犬</A>です。"
     },
     "prince": {
-      "name": "王子様",
+      "label": "王子様",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "august", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_PRINCE\" TARGET=\"_blank\">王子様</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_PRINCE\" TARGET=\"_blank\">王子様</A>です。"
     },
     "rightwolf": {
-      "name": "狼血族",
+      "label": "狼血族",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "blind", "wolf", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_VILLAGER\" TARGET=\"_blank\">村人</A>です。\n<br>\n特殊な能力はもっていません。\n\n狼血族のあなたは、占い師、霊能者に人狼と判定されます。ですが、あなたは村人で、勝利条件も変わりません。\n勝利を目指して頑張りましょう。占われると、正体を自覚し表示が増えます。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_VILLAGER\" TARGET=\"_blank\">村人</A>です。\n<br>\n特殊な能力はもっていません。\n\n狼血族のあなたは、占い師、霊能者に人狼と判定されます。ですが、あなたは村人で、勝利条件も変わりません。\n勝利を目指して頑張りましょう。占われると、正体を自覚し表示が増えます。"
     },
     "doctor": {
-      "name": "医師",
+      "label": "医師",
       "win": "HUMAN",
       "group": "HUMAN",
       "able": "診察",
       "ables": ["aura", "cure", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DOCTOR\" TARGET=\"_blank\">医師</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DOCTOR\" TARGET=\"_blank\">医師</A>です。"
     },
     "curse": {
-      "name": "呪人",
+      "label": "呪人",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "curse", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CURSE\" TARGET=\"_blank\">呪人</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CURSE\" TARGET=\"_blank\">呪人</A>です。"
     },
     "dying": {
-      "name": "預言者",
+      "label": "預言者",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "droop", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DYING\" TARGET=\"_blank\">預言者</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DYING\" TARGET=\"_blank\">預言者</A>です。"
     },
     "invalid": {
-      "name": "病人",
+      "label": "病人",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "revenge", "seal", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_INVALID\" TARGET=\"_blank\">病人</A>です。\n<br>\nあなたが命を落としたとき、犯人は病気に感染します。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_INVALID\" TARGET=\"_blank\">病人</A>です。\n<br>\nあなたが命を落としたとき、犯人は病気に感染します。"
     },
     "alchemist": {
-      "name": "錬金術師",
+      "label": "錬金術師",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "once", "revenge", "cling", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ALCHEMIST\" TARGET=\"_blank\">錬金術師</A>です。\nあなたは一度だけ、薬を飲むことが出来ます。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ALCHEMIST\" TARGET=\"_blank\">錬金術師</A>です。\nあなたは一度だけ、薬を飲むことが出来ます。"
     },
     "witch": {
-      "name": "魔女",
+      "label": "魔女",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "analeptic", "poison", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WITCH\" TARGET=\"_blank\">魔女</A>です。\n<br>\nあなたは二日目に、毒薬と蘇生薬をひとつずつ完成させます。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WITCH\" TARGET=\"_blank\">魔女</A>です。\n<br>\nあなたは二日目に、毒薬と蘇生薬をひとつずつ完成させます。"
     },
     "girl": {
-      "name": "少女",
+      "label": "少女",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "night", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_GIRL\" TARGET=\"_blank\">少女</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_GIRL\" TARGET=\"_blank\">少女</A>です。"
     },
     "scapegoat": {
-      "name": "生贄",
+      "label": "生贄",
       "win": "HUMAN",
       "group": "HUMAN",
       "able": "疑う",
       "ables": ["aura", "scapegoat", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SCAPEGOAT\" TARGET=\"_blank\">生贄</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SCAPEGOAT\" TARGET=\"_blank\">生贄</A>です。"
     },
     "elder": {
-      "name": "長老",
+      "label": "長老",
       "win": "HUMAN",
       "group": "HUMAN",
       "ables": ["aura", "revenge", "seal", "twolife", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ELDER\" TARGET=\"_blank\">長老</A>です。\n<br>\nもしも命を落としたら、あなたの恨みは犯人を襲います。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ELDER\" TARGET=\"_blank\">長老</A>です。\n<br>\nもしも命を落としたら、あなたの恨みは犯人を襲います。"
     },
     "jammer": {
-      "name": "邪魔之民",
+      "label": "邪魔之民",
       "win": "EVIL",
       "group": "EVIL",
       "able": "隠す",
       "ables": ["aura", "jammer", "human", "evil", "vote", "entrust", "XSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_JAMMER\" TARGET=\"_blank\">邪魔之民</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_JAMMER\" TARGET=\"_blank\">邪魔之民</A>です。"
     },
     "snatch": {
-      "name": "宿借之民",
+      "label": "宿借之民",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "snatch", "human", "evil", "vote", "entrust", "XSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SNATCH\" TARGET=\"_blank\">宿借之民</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SNATCH\" TARGET=\"_blank\">宿借之民</A>です。"
     },
     "bat": {
-      "name": "念波之民",
+      "label": "念波之民",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "human", "evil", "vote", "entrust", "XSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BAT\" TARGET=\"_blank\">念波之民</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BAT\" TARGET=\"_blank\">念波之民</A>です。"
     },
     "possess": {
-      "name": "狂人",
+      "label": "狂人",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "human", "evil", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_POSSESS\" TARGET=\"_blank\">狂人</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_POSSESS\" TARGET=\"_blank\">狂人</A>です。"
     },
     "fanatic": {
-      "name": "狂信者",
+      "label": "狂信者",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "fanatic", "human", "evil", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FANATIC\" TARGET=\"_blank\">狂信者</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_FANATIC\" TARGET=\"_blank\">狂信者</A>です。"
     },
     "muppeting": {
-      "name": "人形使い",
+      "label": "人形使い",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "human", "evil", "vote", "entrust", "MSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MUPPETER\" TARGET=\"_blank\">人形使い</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MUPPETER\" TARGET=\"_blank\">人形使い</A>です。"
     },
     "wisper": {
-      "name": "囁き狂人",
+      "label": "囁き狂人",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "human", "evil", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WISPER\" TARGET=\"_blank\">囁き狂人</A>です。\n<br>\n少人数になると勝敗が確定する状況もあります、ですがこの場合も自動で終了することはありません。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WISPER\" TARGET=\"_blank\">囁き狂人</A>です。\n<br>\n少人数になると勝敗が確定する状況もあります、ですがこの場合も自動で終了することはありません。"
     },
     "cpossess": {
-      "name": "囁き狂人",
+      "label": "囁き狂人",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "human", "evil", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WISPER\" TARGET=\"_blank\">囁き狂人</A>です。\n<br>\n少人数になると勝敗が確定する状況もあります、ですがこの場合も自動で終了することはありません。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WISPER\" TARGET=\"_blank\">囁き狂人</A>です。\n<br>\n少人数になると勝敗が確定する状況もあります、ですがこの場合も自動で終了することはありません。"
     },
     "semiwolf": {
-      "name": "半狼",
+      "label": "半狼",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "wolfify", "human", "evil", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEMIWOLF\" TARGET=\"_blank\">半狼</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SEMIWOLF\" TARGET=\"_blank\">半狼</A>です。"
     },
     "dyingpossess": {
-      "name": "---",
+      "label": "---",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "human", "evil", "vote", "entrust"],
       "cmd": "role",
-      "HELP": ""
+      "help": ""
     },
     "oracle": {
-      "name": "魔神官",
+      "label": "魔神官",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "medium", "spy_role", "human", "evil", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ORACLE\" TARGET=\"_blank\">魔神官</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_ORACLE\" TARGET=\"_blank\">魔神官</A>です。"
     },
     "sorcerer": {
-      "name": "魔術師",
+      "label": "魔術師",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "see", "spy_role", "human", "evil", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SORCERER\" TARGET=\"_blank\">魔術師</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SORCERER\" TARGET=\"_blank\">魔術師</A>です。"
     },
     "walpurgis": {
-      "name": "魔法少年",
+      "label": "魔法少年",
       "win": "EVIL",
       "group": "EVIL",
       "ables": ["aura", "grave", "analeptic", "poison", "human", "evil", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WALPURGIS\" TARGET=\"_blank\">魔法少年</A>です。\n<br>\nやがて命を落とすと魔女になると宿命付けられています。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WALPURGIS\" TARGET=\"_blank\">魔法少年</A>です。\n<br>\nやがて命を落とすと魔女になると宿命付けられています。"
     },
     "headless": {
-      "name": "首無騎士",
+      "label": "首無騎士",
       "win": "WOLF",
       "group": "WOLF",
       "ables": ["aura", "wolf", "hunt", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_HEADLESS\" TARGET=\"_blank\">首のない騎士</A>です。\n<br>\nあなたは人狼仲間を斬り捨てることも厭いません。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_HEADLESS\" TARGET=\"_blank\">首のない騎士</A>です。\n<br>\nあなたは人狼仲間を斬り捨てることも厭いません。"
     },
     "wolf": {
-      "name": "人狼",
+      "label": "人狼",
       "win": "WOLF",
       "group": "WOLF",
       "ables": ["aura", "wolf", "hunt", "friend", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WOLF\" TARGET=\"_blank\">人狼</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WOLF\" TARGET=\"_blank\">人狼</A>です。"
     },
     "aurawolf": {
-      "name": "---",
+      "label": "---",
       "win": "WOLF",
       "group": "WOLF",
       "ables": ["aura", "wolf", "hunt", "friend", "spy_aura", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": ""
+      "help": ""
     },
     "intwolf": {
-      "name": "智狼",
+      "label": "智狼",
       "win": "WOLF",
       "group": "WOLF",
       "ables": ["aura", "wolf", "hunt", "friend", "spy_role", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_INTWOLF\" TARGET=\"_blank\">智狼</A>です。特殊な能力を持つ人狼です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_INTWOLF\" TARGET=\"_blank\">智狼</A>です。特殊な能力を持つ人狼です。"
     },
     "cwolf": {
-      "name": "呪狼",
+      "label": "呪狼",
       "win": "WOLF",
       "group": "WOLF",
       "ables": ["aura", "wolf", "curse", "hunt", "friend", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CURSEWOLF\" TARGET=\"_blank\">呪狼</A>です。特殊な能力を持つ人狼です。\n<br>"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CURSEWOLF\" TARGET=\"_blank\">呪狼</A>です。特殊な能力を持つ人狼です。\n<br>"
     },
     "cursewolf": {
-      "name": "呪狼",
+      "label": "呪狼",
       "win": "WOLF",
       "group": "WOLF",
       "ables": ["aura", "wolf", "curse", "hunt", "friend", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CURSEWOLF\" TARGET=\"_blank\">呪狼</A>です。特殊な能力を持つ人狼です。\n<br>"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CURSEWOLF\" TARGET=\"_blank\">呪狼</A>です。特殊な能力を持つ人狼です。\n<br>"
     },
     "whitewolf": {
-      "name": "白狼",
+      "label": "白狼",
       "win": "WOLF",
       "group": "WOLF",
       "able": "襲う",
       "ables": ["hunt", "friend", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WHITEWOLF\" TARGET=\"_blank\">白狼</A>です。特殊な能力を持つ人狼です。\n<br>\nあなたを占った占い師は、あなたを人間とみなします。あなたは能力者特有のオーラを発しません。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_WHITEWOLF\" TARGET=\"_blank\">白狼</A>です。特殊な能力を持つ人狼です。\n<br>\nあなたを占った占い師は、あなたを人間とみなします。あなたは能力者特有のオーラを発しません。"
     },
     "childwolf": {
-      "name": "仔狼",
+      "label": "仔狼",
       "win": "WOLF",
       "group": "WOLF",
       "ables": ["aura", "wolf", "revenge", "grudge", "hunt", "friend", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CHILDWOLF\" TARGET=\"_blank\">仔狼</A>です。特殊な能力を持つ人狼です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_CHILDWOLF\" TARGET=\"_blank\">仔狼</A>です。特殊な能力を持つ人狼です。"
     },
     "dyingwolf": {
-      "name": "衰狼",
+      "label": "衰狼",
       "win": "WOLF",
       "group": "WOLF",
       "ables": ["aura", "wolf", "droop", "hunt", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DYINGWOLF\" TARGET=\"_blank\">衰狼</A>です。特殊な能力を持つ人狼です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DYINGWOLF\" TARGET=\"_blank\">衰狼</A>です。特殊な能力を持つ人狼です。"
     },
     "silentwolf": {
-      "name": "黙狼",
+      "label": "黙狼",
       "win": "WOLF",
       "group": "WOLF",
       "ables": ["aura", "wolf", "hunt", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SILENTWOLF\" TARGET=\"_blank\">黙狼</A>です。\n<br>\n人狼の襲撃対象となることはありませんが、人狼（と囁き狂人、擬狼妖精）同士にしか聞こえない会話は、あなたには聞こえません。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_SILENTWOLF\" TARGET=\"_blank\">黙狼</A>です。\n<br>\n人狼の襲撃対象となることはありませんが、人狼（と囁き狂人、擬狼妖精）同士にしか聞こえない会話は、あなたには聞こえません。"
     },
     "hamster": {
-      "name": "栗鼠妖精",
+      "label": "栗鼠妖精",
       "win": "PIXI",
       "group": "PIXI",
       "ables": ["aura", "pixi", "armor", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_PIXI\" TARGET=\"_blank\">栗鼠妖精</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_PIXI\" TARGET=\"_blank\">栗鼠妖精</A>です。"
     },
     "werebat": {
-      "name": "蝙蝠妖精",
+      "label": "蝙蝠妖精",
       "win": "PIXI",
       "group": "PIXI",
       "ables": ["aura", "pixi", "armor", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BAT\" TARGET=\"_blank\">蝙蝠妖精</A>です。\n<br>\nあなたは他の妖精が誰であるか知っていますし、新たに生まれた妖精を知ることもできます。ただし、姿を換えてしまった宿借妖精の行方はわかりません。\n<br>\nまた、蝙蝠妖精同士にしか聞こえない会話が可能です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BAT\" TARGET=\"_blank\">蝙蝠妖精</A>です。\n<br>\nあなたは他の妖精が誰であるか知っていますし、新たに生まれた妖精を知ることもできます。ただし、姿を換えてしまった宿借妖精の行方はわかりません。\n<br>\nまた、蝙蝠妖精同士にしか聞こえない会話が可能です。"
     },
     "mimicry": {
-      "name": "擬狼妖精",
+      "label": "擬狼妖精",
       "win": "PIXI",
       "group": "PIXI",
       "ables": ["aura", "pixi", "armor", "vote", "entrust", "WSAY"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MIMICRY\" TARGET=\"_blank\">擬狼妖精</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MIMICRY\" TARGET=\"_blank\">擬狼妖精</A>です。"
     },
     "dyingpixi": {
-      "name": "風花妖精",
+      "label": "風花妖精",
       "win": "PIXI",
       "group": "PIXI",
       "ables": ["aura", "pixi", "armor", "droop", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DYINGPIXI\" TARGET=\"_blank\">風花妖精</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DYINGPIXI\" TARGET=\"_blank\">風花妖精</A>です。"
     },
     "trickster": {
-      "name": "悪戯妖精",
+      "label": "悪戯妖精",
       "win": "PIXI",
       "group": "PIXI",
       "ables": ["aura", "pixi", "armor", "bonds", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_TRICKSTER\" TARGET=\"_blank\">悪戯妖精</A>です。\n<br>\n結ばれた人たちにとっては、単なるはた迷惑な悪戯にすぎません。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_TRICKSTER\" TARGET=\"_blank\">悪戯妖精</A>です。\n<br>\n結ばれた人たちにとっては、単なるはた迷惑な悪戯にすぎません。"
     },
     "hatedevil": {
-      "name": "邪気悪魔",
+      "label": "邪気悪魔",
       "win": "HATER",
       "group": "OTHER",
       "ables": ["aura", "bonds", "hate", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_HATEDEVIL\" TARGET=\"_blank\">邪気悪魔</A>です。\n<br>\n結びつけた二人のうち、どちらか片方だけが生き延びれば、あなたの勝利となります。あなたにその絆が結ばれていない限り、あなた自身の死は勝敗には直接関係しません。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_HATEDEVIL\" TARGET=\"_blank\">邪気悪魔</A>です。\n<br>\n結びつけた二人のうち、どちらか片方だけが生き延びれば、あなたの勝利となります。あなたにその絆が結ばれていない限り、あなた自身の死は勝敗には直接関係しません。"
     },
     "loveangel": {
-      "name": "恋愛天使",
+      "label": "恋愛天使",
       "win": "LOVER",
       "group": "OTHER",
       "ables": ["aura", "bonds", "love", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_LOVEANGEL\" TARGET=\"_blank\">恋愛天使</A>です。\n<br>\n結びつけた二人が生き延びれば、あなたの勝利となります。あなたにその絆が結ばれていない限り、あなた自身の死は勝敗には直接関係しません。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_LOVEANGEL\" TARGET=\"_blank\">恋愛天使</A>です。\n<br>\n結びつけた二人が生き延びれば、あなたの勝利となります。あなたにその絆が結ばれていない限り、あなた自身の死は勝敗には直接関係しません。"
     },
     "passion": {
-      "name": "片思い",
+      "label": "片思い",
       "win": "LOVER",
       "group": "OTHER",
       "ables": ["aura", "bond", "love", "human", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_PASSION\" TARGET=\"_blank\">片想い</A>です。\n<br>\n選んだ人が生き延び、あなたが生き延びれば、あなたの勝利となります。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_PASSION\" TARGET=\"_blank\">片想い</A>です。\n<br>\n選んだ人が生き延び、あなたが生き延びれば、あなたの勝利となります。"
     },
     "lonewolf": {
-      "name": "一匹狼",
+      "label": "一匹狼",
       "win": "LONEWOLF",
       "group": "WOLF",
       "ables": ["aura", "wolf", "armor", "kill", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_LONEWOLF\" TARGET=\"_blank\">一匹狼</A>です。\n<br>\n襲撃先はあなた以外であれば誰でもかまいません。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_LONEWOLF\" TARGET=\"_blank\">一匹狼</A>です。\n<br>\n襲撃先はあなた以外であれば誰でもかまいません。"
     },
     "guru": {
-      "name": "笛吹き",
+      "label": "笛吹き",
       "win": "GURU",
       "group": "OTHER",
       "ables": ["aura", "human", "guru", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_GURU\" TARGET=\"_blank\">笛吹き</A>です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_GURU\" TARGET=\"_blank\">笛吹き</A>です。"
     },
     "dish": {
-      "name": "鱗魚人",
+      "label": "鱗魚人",
       "win": "DISH",
       "group": "OTHER",
       "ables": ["aura", "human", "dish", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DISH\" TARGET=\"_blank\">鱗魚人</A>です。新鮮なふぃーっしゅ。です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_DISH\" TARGET=\"_blank\">鱗魚人</A>です。新鮮なふぃーっしゅ。です。"
     },
     "bitch": {
-      "name": "遊び人",
+      "label": "遊び人",
       "win": "LOVER",
       "group": "OTHER",
       "ables": ["aura", "human", "bitch", "vote", "entrust"],
       "cmd": "role",
-      "HELP": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BITCH\" TARGET=\"_blank\">遊び人</A>です。\n本命とあなたが生き延びれば、あなたの勝利です。"
+      "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BITCH\" TARGET=\"_blank\">遊び人</A>です。\n本命とあなたが生き延びれば、あなたの勝利です。"
     }
   });
 }).call(this);
 
 (function() {
   new Mem.Rule("story").schema(function() {
-    var all_traps, caption;
+    var all_traps;
     this.scope(function(all) {
       return {
         menu: function(folder, game, rating, event_type, role_type, say_limit, player_length, update_at, update_interval, search) {
@@ -12265,15 +12267,6 @@
         }
       };
     });
-    caption = function(field, key) {
-      var data;
-      data = field[key];
-      if (data) {
-        return data.CAPTION;
-      } else {
-        return null;
-      }
-    };
     all_traps = Mem.Query.traps.ids;
     this.deploy(function(o) {
       var base, base1, mob, ref, ref1, ref2;
@@ -12328,9 +12321,9 @@
             return m(".emboss.WIN_" + win, "" + name);
           }
         }),
-        say_limit: ((ref = Mem.conf.say[o.type.say]) != null ? ref.CAPTION : void 0) || "――",
-        say_limit_help: ((ref1 = Mem.conf.say[o.type.say]) != null ? ref1.HELP : void 0) || "――",
-        game_rule: ((ref2 = Mem.conf.rule[o.type.game]) != null ? ref2.CAPTION : void 0) || "タブラの人狼"
+        say_limit_help: ((ref = Mem.conf.say[o.type.say]) != null ? ref.help : void 0) || "――",
+        say_limit: ((ref1 = Mem.conf.say[o.type.say]) != null ? ref1.label : void 0) || "――",
+        game_rule: ((ref2 = Mem.conf.rule[o.type.game]) != null ? ref2.label : void 0) || "タブラの人狼"
       };
       return o.search_words = o.name;
     });
@@ -12663,7 +12656,7 @@
       return {
         shows: function(){
           return all.where(function(o){
-            return o.name !== '―';
+            return o.label !== '―';
           });
         },
         sow: function(idx){
@@ -12677,91 +12670,91 @@
     this.deploy(function(o){
       var ref$;
       o.order = id_index.indexOf(o._id);
-      return (ref$ = o.name_human) != null
+      return (ref$ = o.label_human) != null
         ? ref$
-        : o.name_human = o.name;
+        : o.label_human = o.label;
     });
     return this.map_reduce(function(o){});
   });
   Mem.Collection.winner.set({
     "WIN_HUMAN": {
-      "name": "村人陣営",
-      "name_group": "村人陣営",
+      "label": "村人陣営",
+      "group": "村人陣営",
       "order": 1,
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_HUMAN\" TARGET=\"_blank\">村人陣営</A></b>\n<br>\n人間(妖精や人外の者を除く)の数が人狼以下になるまでに人狼と妖精が全滅すれば勝利です。\n<br>\nただし、狼を全滅させた時点で妖精、もしくは恋人が生き残っていると敗北になり、他にも横から勝利を掻っ攫うもの達が存在します。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_HUMAN\" TARGET=\"_blank\">村人陣営</A></b>\n<br>\n人間(妖精や人外の者を除く)の数が人狼以下になるまでに人狼と妖精が全滅すれば勝利です。\n<br>\nただし、狼を全滅させた時点で妖精、もしくは恋人が生き残っていると敗北になり、他にも横から勝利を掻っ攫うもの達が存在します。"
     },
     "WIN_EVIL": {
-      "name": "裏切りの陣営",
-      "name_group": "敵側の人間",
-      "name_human": "敵側の人間",
+      "label": "裏切りの陣営",
+      "group": "敵側の人間",
+      "label_human": "敵側の人間",
       "order": 2,
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_EVIL\" TARGET=\"_blank\">裏切りの陣営</A></b>\n<br>\n村人・恋人が敗北すれば勝利者の一員に加わります。\n<br>\nあなたは破滅を望んでいるのです。人狼や妖精やそれ以外の勝利、または、誰もいなくなることを目指しましょう。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_EVIL\" TARGET=\"_blank\">裏切りの陣営</A></b>\n<br>\n村人・恋人が敗北すれば勝利者の一員に加わります。\n<br>\nあなたは破滅を望んでいるのです。人狼や妖精やそれ以外の勝利、または、誰もいなくなることを目指しましょう。"
     },
     "WIN_WOLF": {
-      "name": "人狼陣営",
-      "name_group": "人狼陣営",
-      "name_human": "人狼陣営の人間",
+      "label": "人狼陣営",
+      "group": "人狼陣営",
+      "label_human": "人狼陣営の人間",
       "order": 3,
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_WOLF\" TARGET=\"_blank\">人狼陣営</A></b>\n<br>\nルール「タブラの人狼」「死んだら負け」「Trouble☆Aliens」では人間(妖精や人外の者を除く)の数を人狼と同数以下まで減らせば、ルール「ミラーズホロウ」「深い霧の夜」では役職「村人」を全滅させれば勝利です。\n<br>\nただし、最後まで妖精、もしくは恋人が生き残っていると敗北になり、他にも横から勝利を掻っ攫うもの達が存在します。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_WOLF\" TARGET=\"_blank\">人狼陣営</A></b>\n<br>\nルール「タブラの人狼」「死んだら負け」「Trouble☆Aliens」では人間(妖精や人外の者を除く)の数を人狼と同数以下まで減らせば、ルール「ミラーズホロウ」「深い霧の夜」では役職「村人」を全滅させれば勝利です。\n<br>\nただし、最後まで妖精、もしくは恋人が生き残っていると敗北になり、他にも横から勝利を掻っ攫うもの達が存在します。"
     },
     "WIN_LONEWOLF": {
-      "name": "一匹狼",
-      "name_group": "その他",
+      "label": "一匹狼",
+      "group": "その他",
       "order": 4,
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_LONEWOLF\" TARGET=\"_blank\">一匹狼陣営</A></b>\n<br>\nルール「タブラの人狼」「死んだら負け」「Trouble☆Aliens」では人間(妖精や人外の者を除く)の数を一匹狼と同数以下まで減らせば、ルール「ミラーズホロウ」「深い霧の夜」では役職「村人」を全滅させ、かつ、人狼陣営の狼が生きていなければ勝利です。\n<br>\nただし、最後まで妖精、もしくは恋人が生き残っていると敗北になり、他にも勝利を掻っ攫うもの達が存在します。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_LONEWOLF\" TARGET=\"_blank\">一匹狼陣営</A></b>\n<br>\nルール「タブラの人狼」「死んだら負け」「Trouble☆Aliens」では人間(妖精や人外の者を除く)の数を一匹狼と同数以下まで減らせば、ルール「ミラーズホロウ」「深い霧の夜」では役職「村人」を全滅させ、かつ、人狼陣営の狼が生きていなければ勝利です。\n<br>\nただし、最後まで妖精、もしくは恋人が生き残っていると敗北になり、他にも勝利を掻っ攫うもの達が存在します。"
     },
     "WIN_PIXI": {
-      "name": "妖精",
-      "name_group": "妖精",
+      "label": "妖精",
+      "group": "妖精",
       "order": 5,
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_PIXI\" TARGET=\"_blank\">妖精陣営</A></b>\n<br>\n人狼が全滅するか、人間(妖精や人外の者を除く)の数が人狼と同数以下まで減るまで「生き残れば」勝利です。\n<br>\nただし、恋人が生き残っていると敗北になり、他にも横から勝利を掻っ攫うもの達が存在します。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_PIXI\" TARGET=\"_blank\">妖精陣営</A></b>\n<br>\n人狼が全滅するか、人間(妖精や人外の者を除く)の数が人狼と同数以下まで減るまで「生き残れば」勝利です。\n<br>\nただし、恋人が生き残っていると敗北になり、他にも横から勝利を掻っ攫うもの達が存在します。"
     },
     "WIN_OTHER": {
-      "name": "その他",
-      "name_group": "その他",
+      "label": "その他",
+      "group": "その他",
       "order": 6
     },
     "WIN_GURU": {
-      "name": "笛吹き",
-      "name_group": "その他",
+      "label": "笛吹き",
+      "group": "その他",
       "order": 7,
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_GURU\" TARGET=\"_blank\">笛吹き</A></b>\n<br>\n笛吹き以外の生存者が勧誘された者だけになれば勝利となります。笛吹き自身は、最終的に生き残っていなくとも構いません。\n<br>\nただし、横から勝利を掻っ攫うもの達が存在します。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_GURU\" TARGET=\"_blank\">笛吹き</A></b>\n<br>\n笛吹き以外の生存者が勧誘された者だけになれば勝利となります。笛吹き自身は、最終的に生き残っていなくとも構いません。\n<br>\nただし、横から勝利を掻っ攫うもの達が存在します。"
     },
     "WIN_LOVER": {
-      "name": "恋人陣営",
-      "name_group": "その他",
+      "label": "恋人陣営",
+      "group": "その他",
       "order": 8,
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_LOVER\" TARGET=\"_blank\">恋人陣営</A></b>\n<br>\n恋人達だけが生き残る、もしくはいずこかの陣営が勝利を手にしたとき、絆の恋人達が生存していれば勝利です。\n<br>\nただし、ひとりだけ蘇生したなどの不幸で、恋を成就できない恋人は、勝利しません。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_LOVER\" TARGET=\"_blank\">恋人陣営</A></b>\n<br>\n恋人達だけが生き残る、もしくはいずこかの陣営が勝利を手にしたとき、絆の恋人達が生存していれば勝利です。\n<br>\nただし、ひとりだけ蘇生したなどの不幸で、恋を成就できない恋人は、勝利しません。"
     },
     "WIN_HATER": {
-      "name": "邪気陣営",
-      "name_group": "その他",
+      "label": "邪気陣営",
+      "group": "その他",
       "order": 9,
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_HATER\" TARGET=\"_blank\">邪気陣営</A></b>\n<br>\nいずこかの陣営が勝利を手にしたとき、運命に決着をつけていれば勝利します。決着とは、絆の天敵をすべて倒し、一人だけが生き残っていることです。\n殺し合いの絆を断ち切りましょう。絆の相手が死んでも、後を追うことはありません。\n<br>\n絆の天敵とは、たとえあなた自身には関係のなくとも、あらゆる絆を結んでいるもの全てを指します。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_HATER\" TARGET=\"_blank\">邪気陣営</A></b>\n<br>\nいずこかの陣営が勝利を手にしたとき、運命に決着をつけていれば勝利します。決着とは、絆の天敵をすべて倒し、一人だけが生き残っていることです。\n殺し合いの絆を断ち切りましょう。絆の相手が死んでも、後を追うことはありません。\n<br>\n絆の天敵とは、たとえあなた自身には関係のなくとも、あらゆる絆を結んでいるもの全てを指します。"
     },
     "WIN_DISH": {
-      "name": "据え膳",
-      "name_group": "その他",
+      "label": "据え膳",
+      "group": "その他",
       "order": 10,
-      "HELP": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_DISH\" TARGET=\"_blank\">据え膳</A></b>\n<br>\nすべてに決着がついたとき、あなたが狼の襲撃、もしくは賞金稼の道連れにより死亡していれば、勝利者の一員に加わります。"
+      "help": "<b><A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Text)WIN_DISH\" TARGET=\"_blank\">据え膳</A></b>\n<br>\nすべてに決着がついたとき、あなたが狼の襲撃、もしくは賞金稼の道連れにより死亡していれば、勝利者の一員に加わります。"
     },
     "WIN_NONE": {
-      "name": "―",
-      "name_group": "その他",
+      "label": "―",
+      "group": "その他",
       "order": 98,
-      "HELP": ""
+      "help": ""
     },
     "WIN_MOB": {
-      "name": "見物人",
-      "name_group": "その他",
+      "label": "見物人",
+      "group": "その他",
       "order": 99,
-      "HELP": "あなたは<b>_ROLE_の<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MOB\" TARGET=\"_blank\">見物人</A></b>です。いかなる陣営の人数にも含まれません。"
+      "help": "あなたは<b>_ROLE_の<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_MOB\" TARGET=\"_blank\">見物人</A></b>です。いかなる陣営の人数にも含まれません。"
     },
     "WIN_LEAVE": {
-      "name": "―",
-      "name_group": "その他",
+      "label": "―",
+      "group": "その他",
       "order": 100,
-      "HELP": "あなたは村を去りました。勝利したり、敗北したりといったことは、もうありません。"
+      "help": "あなたは村を去りました。勝利したり、敗北したりといったことは、もうありません。"
     }
   });
   Mem.conf.winner = Mem.Query.winners.hash;
@@ -12773,8 +12766,10 @@
   btn_data = function(type) {
     return {
       _id: type,
-      name: Mem.conf.tag[type].name,
-      badge: Mem.Query.faces.reduce.tag[type].count
+      label: Mem.conf.tag[type].label,
+      badge: function() {
+        return Mem.Query.faces.reduce.tag[type].count;
+      }
     };
   };
 
@@ -12803,7 +12798,7 @@
   h.tag.options = {
     all: {
       _id: "all",
-      name: "- 全体 -",
+      label: "- 全体 -",
       badge: Mem.Query.faces.reduce.all.all.count
     },
     giji: btn_data("giji"),

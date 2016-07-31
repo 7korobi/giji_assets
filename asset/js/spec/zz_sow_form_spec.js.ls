@@ -2,7 +2,7 @@
 describe "(sow) Mem.Query.forms" (...)!->
   for_all_forms = (call)->
     for live in <[live executed victim cursed droop suicide feared suddendead]>
-      live_name = Mem.Query.roles.find(live).name
+      live_name = Mem.Query.roles.find(live).label
       for turn in <[prologue start main epilogue]>
         it "#{live_name} #{turn}" (...)!->
           for role in Mem.Query.roles.list

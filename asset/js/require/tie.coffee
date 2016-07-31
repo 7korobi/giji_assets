@@ -41,14 +41,16 @@ class Tie
   constructor: ->
     @prop = {}
 
-  deploy: (define, params, { _id, current, type })->
+  deploy: (define, params, o)->
+    o.current ?= null
+    { _id, current, type } = o
     unpack = Mem.unpack[type]
     pack   = Mem.pack[type]
     @prop[_id] = define params, _id, unpack, pack
+
     val = @prop[_id]()
-    if current
-      unless val
-        @prop[_id] val = current
+    unless val?
+      @prop[_id] val = current
 
   copyBy: (source)->
     for _id, prop of @prop

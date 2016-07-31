@@ -89,9 +89,9 @@ clearance:
 
 vote:
   sign:
-    CAPTION: 記名で投票
+    label: 記名で投票
   anonymity:
-    CAPTION: 匿名で投票
+    label: 匿名で投票
 
 mes_text:
   - mes_text

@@ -62,7 +62,7 @@ form =
                   f.count
                   m "select.small", Txt.input(props.style), f.styles
               m "p",
-                f.caption
+                f.label
                 m "span.#{f.error}", f.valid_text
                 unless f.is_preview()
                   m "span", f.diary
@@ -95,7 +95,7 @@ form =
                 f.count
                 m "select.small", Txt.input(props.style), f.styles
             m "p",
-              f.caption
+              f.label
               m "span.#{f.error}", f.valid_text
               unless f.is_preview()
                 m "span", f.diary

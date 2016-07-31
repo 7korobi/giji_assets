@@ -111,13 +111,13 @@ doc.component.vmake_form =
         m "h3", "参加キャラクター"
       ]
 
-    add_btn = ({_id, cmd, win, name})->
+    add_btn = ({_id, cmd, win, label})->
       tap = ->
         v.params[cmd].push _id
       attr =
         onmouseup: tap
         ontouchend: tap
-      m "a.WIN_#{win}.btn.edge", attr, name
+      m "a.WIN_#{win}.btn.edge", attr, label
 
     pop_btn = (cmd)->
       tap = ->
@@ -145,7 +145,7 @@ doc.component.vmake_form =
         _id: "mob"
         cmd: "extra"
         win: "NONE"
-        name: "見物人"
+        label: "見物人"
       ].map add_btn
     v
 
@@ -153,11 +153,11 @@ doc.component.vmake_form =
     sets = (method, {attr, cmd})->
       m "div",
         m "a.btn.edge.icon-cancel-alt", attr, ""
-        GUI.names[method] v.params[cmd], (size, {name, win})->
+        GUI.names[method] v.params[cmd], (size, {label, win})->
           if size > 1
-            m "span.WIN_#{win}.emboss", "#{name}x#{size}"
+            m "span.WIN_#{win}.emboss", "#{label}x#{size}"
           else
-            m "span.WIN_#{win}.emboss", "#{name}"
+            m "span.WIN_#{win}.emboss", "#{label}"
 
     v.reset()
     nindex = 0
@@ -196,23 +196,23 @@ doc.component.vmake_form =
           m "fieldset.msg",
             m "legend.emboss", "設定"
             m "p",
-              v.tie.input.trs_type.field (o)-> o.CAPTION
+              v.tie.input.trs_type.field()
               v.tie.input.trs_type.label (o)->
                 m "div",
-                  m.trust o.HELP
+                  m.trust o.help
 
             m "p",
-              v.tie.input.rating.field (o)-> o.caption
+              v.tie.input.rating.field()
               v.tie.input.rating.label (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
 
             m "p",
-              v.tie.input.say_count.field (o)-> o.CAPTION
-              v.tie.input.say_count.label (o)-> m.trust o.HELP
+              v.tie.input.say_count.field()
+              v.tie.input.say_count.label (o)-> m.trust o.help
 
             v.tie.input.time.field()
             v.tie.input.time.label()
             m "p",
-              v.tie.input.interval.field (o)-> o.caption
+              v.tie.input.interval.field()
               v.tie.input.interval.label()
             m "p",
               v.tie.input.entry_password.field()
@@ -221,10 +221,10 @@ doc.component.vmake_form =
         m ".SSAY.plane",
           m "fieldset.msg",
             m "legend.emboss", "ゲームルール"
-            v.tie.input.game_rule.field (o)-> o.CAPTION
+            v.tie.input.game_rule.field()
             v.tie.input.game_rule.label (o)->
               m "ul",
-                m.trust o.HELP
+                m.trust o.help
             for chk in v.tie.input.checkboxes
               m "p",
                 chk.field()
@@ -234,11 +234,11 @@ doc.component.vmake_form =
           m "fieldset.msg",
             m "legend.emboss", "編成"
             m "p",
-              v.tie.input.mob_type.field (o)-> o.name
-              v.tie.input.mob_type.label (o)-> m.trust o.HELP
+              v.tie.input.mob_type.field()
+              v.tie.input.mob_type.label (o)-> m.trust o.help
 
             m "p",
-              v.tie.input.role_table.field (o)-> o.name
+              v.tie.input.role_table.field()
 
             v.player_summary v.params
 
@@ -316,7 +316,7 @@ doc.component.vmake_form =
           m "fieldset.msg",
             m "legend.emboss", "登場人物"
             m "p",
-              v.tie.input.chr_npc.field (o)-> o.caption
+              v.tie.input.chr_npc.field()
               v.tie.input.chr_npc.label()
 
         v.npc_says npc

@@ -129,16 +129,29 @@
   WebStore.cookie_options = {
     time: 7 * 24 * 60 * 60 * 1000,
     path: "/",
-    secure: true
+    secure: false
   };
 
   Url.maps({
-    hash: {}
+    hash: {
+      pin: "pin=:back~:pins",
+      mode: "mode=:scope~:icon",
+      potofs: "ptf=:potofs_order~:potofs_desc~:potofs_hide"
+    },
+    search: {
+      faces: "face=:chr_set~:order~:search",
+      scroll: "scr=:scroll~:talk_at~:memo_at",
+      folder: "folder=:folder",
+      stories: "story=:game~:rating~:event_type~:role_type~:say_limit~:player_length~:update_at~:update_interval~:search",
+      messages: "log=:home~:talk~:memo~:open~:human~:search"
+    }
   });
 
   WebStore.maps({
-    session: []
+    session: ["theme", "width", "layout", "font"]
   });
+
+  Url.tie = InputTie.btns(Url.params, ["theme", "width", "layout", "font"]);
 
   Url.conf.scroll.current = true;
 
@@ -422,7 +435,6 @@
   window.addEventListener("popstate", function(arg) {
     var state;
     state = arg.state;
-    console.warn(state);
     return Url.popstate();
   });
 
@@ -1066,7 +1078,7 @@
       chrs = Mem.Query.map_faces.active(order(), chr_set(), search()).list;
       headline = "";
       if (chrs != null ? chrs.length : void 0) {
-        headline = [m(".GSAY.badge", Mem.Query.chr_sets.find(chr_set()).caption), "の" + chrs.length + "人を、", m(".GSAY.badge", map_order_set.headline), "回数で並べています"];
+        headline = [m(".GSAY.badge", Mem.Query.chr_sets.find(chr_set()).label), "の" + chrs.length + "人を、", m(".GSAY.badge", map_order_set.headline), "回数で並べています"];
       }
       return [
         m("div", headline), m("hr.black"), (function() {
@@ -1107,7 +1119,7 @@
               key: o._id
             }, GUI.portrate(o.face_id, attr_main()), m(".chrblank.line4", attr, m("div", job_name), m("div", o.face.name), m("div", m("a.mark", {
               href: "/map_reduce/faces/" + o.face_id
-            }, map_order_set.caption + " " + o.win.value[map_order_set.order] + "回")), m("div", "♥" + o.sow_auth_id.max_is))));
+            }, map_order_set.label + " " + o.win.value[map_order_set.order] + "回")), m("div", "♥" + o.sow_auth_id.max_is))));
           }
           return results;
         })(), m("hr.black")
@@ -1315,26 +1327,26 @@
       });
       options = Mem.Query.inputs.hash.show.options;
       refresh = function() {
-        var grave_caption, has, mob, story, think_caption;
+        var grave_label, has, mob, story, think_label;
         has = Mem.Query.messages.has;
         story = Mem.Query.storys.list.first;
         mob = Mem.Query.roles.find(story != null ? story.type.mob : void 0);
-        grave_caption = [];
+        grave_label = [];
         if (has.grave) {
-          grave_caption.push("墓下");
+          grave_label.push("墓下");
         }
-        if (has.vsay && mob.CAPTION) {
-          grave_caption.push(mob.CAPTION);
+        if (has.vsay && mob.label) {
+          grave_label.push(mob.label);
         }
-        options.grave.caption = grave_caption.join("/") + "つき";
-        think_caption = [];
+        options.grave.label = grave_label.join("/") + "つき";
+        think_label = [];
         if (has.think) {
-          think_caption.push("独り言");
+          think_label.push("独り言");
         }
         if (has.to) {
-          think_caption.push("内緒話");
+          think_label.push("内緒話");
         }
-        options.think.caption = think_caption.join("/") + "つき";
+        options.think.label = think_label.join("/") + "つき";
         return options.clan._id = has.clan ? "clan" : null;
       };
       input = tie.input;
@@ -1347,11 +1359,7 @@
       var input, refresh;
       input = arg.input, refresh = arg.refresh;
       refresh();
-      return m("p", input.show.field(function(arg1) {
-        var caption;
-        caption = arg1.caption;
-        return caption;
-      }), m.trust("&nbsp;"), input.open.field(), input.open.label(), input.human.field(), input.human.label());
+      return m("p", input.show.field(), m.trust("&nbsp;"), input.open.field(), input.open.label(), input.human.field(), input.human.label());
     }
   };
 
@@ -1782,7 +1790,7 @@
       };
       return;
       main_menu.drill("order", {
-        caption: "並び順",
+        label: "並び順",
         view: function() {
           var attr, key, o, ref, results;
           ref = Mem.conf.map_faces_order;
@@ -1790,23 +1798,23 @@
           for (key in ref) {
             o = ref[key];
             attr = g.menu(key, params.order, {});
-            results.push(m("span", attr, o.caption));
+            results.push(m("span", attr, o.label));
           }
           return results;
         }
       });
       main_menu.drill("chr_set", {
-        caption: "キャラセット",
+        label: "キャラセット",
         view: function(sub_menu) {
           return sub_menu.radio({
             "class": "chr_set"
           }, params.chr_set, Mem.Query.map_faces.reduce, "chr_set", function(key) {
-            return Mem.Query.chr_sets.find(key).caption;
+            return Mem.Query.chr_sets.find(key).label;
           });
         }
       });
       main_menu.drill("rating", {
-        caption: "こだわり",
+        label: "こだわり",
         view: function(sub_menu) {
           return m(".paragraph", sub_menu.radio({
             "class": "edge rating"
@@ -1815,12 +1823,12 @@
           }), "rating", function(key, o) {
             return m("span", m("img.pull-left", {
               src: GUI.img_head + ("/icon/cd_" + o.min_is.rating + ".png")
-            }), Mem.conf.rating[key].caption);
+            }), Mem.conf.rating[key].label);
           }));
         }
       });
       main_menu.drill("game", {
-        caption: "ルール",
+        label: "ルール",
         view: function(sub_menu) {
           return m(".paragraph", sub_menu.radio({
             "class": "edge game"
@@ -1832,7 +1840,7 @@
         }
       });
       main_menu.drill("folder", {
-        caption: "州",
+        label: "州",
         view: function(sub_menu) {
           return m(".paragraph", sub_menu.radio({
             "class": "edge folder"
@@ -1843,7 +1851,7 @@
         }
       });
       main_menu.drill("say_limit", {
-        caption: "発言制限",
+        label: "発言制限",
         view: function(sub_menu) {
           return m(".paragraph", sub_menu.radio({
             "class": "edge say_limit"
@@ -1855,7 +1863,7 @@
         }
       });
       main_menu.drill("update_at", {
-        caption: "更新時刻",
+        label: "更新時刻",
         view: function(sub_menu) {
           return m(".paragraph", sub_menu.radio({
             "class": "edge update_at"
@@ -1867,7 +1875,7 @@
         }
       });
       main_menu.drill("update_interval", {
-        caption: "更新間隔",
+        label: "更新間隔",
         view: function(sub_menu) {
           return m(".paragraph", sub_menu.radio({
             "class": "edge update_interval"
@@ -1879,7 +1887,7 @@
         }
       });
       main_menu.drill("event_type", {
-        caption: "事件",
+        label: "事件",
         view: function(sub_menu) {
           return m(".paragraph", sub_menu.radio({
             "class": "edge event_type"
@@ -1891,7 +1899,7 @@
         }
       });
       main_menu.drill("role_type", {
-        caption: "役職",
+        label: "役職",
         view: function(sub_menu) {
           return m(".paragraph", sub_menu.radio({
             "class": "edge role_type"
@@ -1903,7 +1911,7 @@
         }
       });
       return main_menu.drill("player_length", {
-        caption: "人数",
+        label: "人数",
         view: function(sub_menu) {
           return m(".paragraph", sub_menu.radio({
             "class": "edge player_length"
@@ -1930,55 +1938,33 @@
               head = arg.head, field = arg.field;
               return [
                 head(), field(function(o) {
-                  return o.caption;
+                  return o.label;
                 })
               ];
             };
             input = Url.tie.input;
-            btns(input.theme);
-            btns(input.width);
-            btns(input.layout);
-            return btns(input.font);
+            return [btns(input.theme), btns(input.width), btns(input.layout), btns(input.font)];
           case "pin":
           case "home":
-            return timeline();
+            return [timeline()];
           case "mail":
-            timeline();
-            m("h6", "貼り付けたメモを表示します。 - メモ");
-            m.component(doc.component.security_modes, Url.prop.memo);
-            return m.component(doc.component.potof_modes);
+            return [timeline(), m("h6", "貼り付けたメモを表示します。 - メモ"), m.component(doc.component.security_modes, Url.prop.memo), m.component(doc.component.potof_modes)];
           case "chat-alt":
-            timeline();
-            m("h6", "村内の発言を表示します。 - 発言");
-            m.component(doc.component.security_modes, Url.prop.talk);
-            return m.component(doc.component.potof_modes);
+            return [timeline(), m("h6", "村内の発言を表示します。 - 発言"), m.component(doc.component.security_modes, Url.prop.talk), m.component(doc.component.potof_modes)];
           case "clock":
-            timeline();
-            m("h6", "メモを履歴形式で表示します。 - メモ");
-            m.component(doc.component.security_modes, Url.prop.memo);
-            return m.component(doc.component.potof_modes);
+            return [timeline(), m("h6", "メモを履歴形式で表示します。 - メモ"), m.component(doc.component.security_modes, Url.prop.memo), m.component(doc.component.potof_modes)];
           case "search":
-            timeline();
-            m("input.medium", Txt.input(Url.prop.search));
-            m("span", "発言中の言葉を検索します。");
-            m("hr.black");
-            m("h6", "検索する。");
-            m("input.mini", Txt.input(Url.prop.search));
-            return main_menu.drills({}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"]);
+            [timeline(), m("input.medium", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black")];
+            return [m("h6", "検索する。"), m("input.mini", Txt.input(Url.prop.search)), main_menu.drills({}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"])];
           case "th-large":
-            m("h6", "タグを選んでみよう");
-            input.tag.field(vdom);
-            m("h6", "詳しく検索してみよう");
-            input.search.field();
-            m("span", "検索条件：キャラクター名 / 肩書き / プレイヤー ");
-            m("h6", "キャラセットを選んでみよう");
-            return main_menu.drills({}, ["order", "chr_set"]);
+            [m("h6", "タグを選んでみよう"), input.tag.field(vdom)];
+            return [m("h6", "詳しく検索してみよう"), input.search.field(), m("span", "検索条件：キャラクター名 / 肩書き / プレイヤー "), m("h6", "キャラセットを選んでみよう"), main_menu.drills({}, ["order", "chr_set"])];
           case "resize-full":
-            return null;
+            return [];
           case "resize-normal":
-            return null;
+            return [];
           default:
-            return null;
+            return [];
         }
       })());
     }
@@ -2166,8 +2152,8 @@
         ];
       };
       add_btn = function(arg) {
-        var _id, attr, cmd, name, tap, win;
-        _id = arg._id, cmd = arg.cmd, win = arg.win, name = arg.name;
+        var _id, attr, cmd, label, tap, win;
+        _id = arg._id, cmd = arg.cmd, win = arg.win, label = arg.label;
         tap = function() {
           return v.params[cmd].push(_id);
         };
@@ -2175,7 +2161,7 @@
           onmouseup: tap,
           ontouchend: tap
         };
-        return m("a.WIN_" + win + ".btn.edge", attr, name);
+        return m("a.WIN_" + win + ".btn.edge", attr, label);
       };
       pop_btn = function(cmd) {
         var attr, tap;
@@ -2210,7 +2196,7 @@
             _id: "mob",
             cmd: "extra",
             win: "NONE",
-            name: "見物人"
+            label: "見物人"
           }
         ].map(add_btn)
       };
@@ -2222,12 +2208,12 @@
         var attr, cmd;
         attr = arg.attr, cmd = arg.cmd;
         return m("div", m("a.btn.edge.icon-cancel-alt", attr, ""), GUI.names[method](v.params[cmd], function(size, arg1) {
-          var name, win;
-          name = arg1.name, win = arg1.win;
+          var label, win;
+          label = arg1.label, win = arg1.win;
           if (size > 1) {
-            return m("span.WIN_" + win + ".emboss", name + "x" + size);
+            return m("span.WIN_" + win + ".emboss", label + "x" + size);
           } else {
-            return m("span.WIN_" + win + ".emboss", "" + name);
+            return m("span.WIN_" + win + ".emboss", "" + label);
           }
         }));
       };
@@ -2246,26 +2232,16 @@
         href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"
       }, "ルール"), "と", m('a', {
         href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"
-      }, "心構え"), "なんだ。編集していい部分は、自由に変更してかまわない。"))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "設定"), m("p", v.tie.input.trs_type.field(function(o) {
-        return o.CAPTION;
-      }), v.tie.input.trs_type.label(function(o) {
-        return m("div", m.trust(o.HELP));
-      })), m("p", v.tie.input.rating.field(function(o) {
-        return o.caption;
-      }), v.tie.input.rating.label(function(o) {
+      }, "心構え"), "なんだ。編集していい部分は、自由に変更してかまわない。"))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "設定"), m("p", v.tie.input.trs_type.field(), v.tie.input.trs_type.label(function(o) {
+        return m("div", m.trust(o.help));
+      })), m("p", v.tie.input.rating.field(), v.tie.input.rating.label(function(o) {
         return m("img", {
           src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_" + o._id + ".png"
         });
-      })), m("p", v.tie.input.say_count.field(function(o) {
-        return o.CAPTION;
-      }), v.tie.input.say_count.label(function(o) {
-        return m.trust(o.HELP);
-      })), v.tie.input.time.field(), v.tie.input.time.label(), m("p", v.tie.input.interval.field(function(o) {
-        return o.caption;
-      }), v.tie.input.interval.label()), m("p", v.tie.input.entry_password.field(), v.tie.input.entry_password.label()))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "ゲームルール"), v.tie.input.game_rule.field(function(o) {
-        return o.CAPTION;
-      }), v.tie.input.game_rule.label(function(o) {
-        return m("ul", m.trust(o.HELP));
+      })), m("p", v.tie.input.say_count.field(), v.tie.input.say_count.label(function(o) {
+        return m.trust(o.help);
+      })), v.tie.input.time.field(), v.tie.input.time.label(), m("p", v.tie.input.interval.field(), v.tie.input.interval.label()), m("p", v.tie.input.entry_password.field(), v.tie.input.entry_password.label()))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "ゲームルール"), v.tie.input.game_rule.field(), v.tie.input.game_rule.label(function(o) {
+        return m("ul", m.trust(o.help));
       }), (function() {
         var i, len, ref, results;
         ref = v.tie.input.checkboxes;
@@ -2275,13 +2251,9 @@
           results.push(m("p", chk.field(), chk.label()));
         }
         return results;
-      })())), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), m("p", v.tie.input.mob_type.field(function(o) {
-        return o.name;
-      }), v.tie.input.mob_type.label(function(o) {
-        return m.trust(o.HELP);
-      })), m("p", v.tie.input.role_table.field(function(o) {
-        return o.name;
-      })), v.player_summary(v.params))), (function() {
+      })())), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), m("p", v.tie.input.mob_type.field(), v.tie.input.mob_type.label(function(o) {
+        return m.trust(o.help);
+      })), m("p", v.tie.input.role_table.field()), v.player_summary(v.params))), (function() {
         switch (v.params.role_table) {
           case void 0:
             return m(".WSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), m("p", "まずは、役職配分を選択してください。")));
@@ -2371,9 +2343,7 @@
               return results;
             })()));
         }
-      })(), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "登場人物"), m("p", v.tie.input.chr_npc.field(function(o) {
-        return o.caption;
-      }), v.tie.input.chr_npc.label()))), v.npc_says(npc), m(".minilist", m("hr.black"), (function() {
+      })(), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "登場人物"), m("p", v.tie.input.chr_npc.field(), v.tie.input.chr_npc.label()))), v.npc_says(npc), m(".minilist", m("hr.black"), (function() {
         var i, len, results;
         results = [];
         for (i = 0, len = jobs.length; i < len; i++) {
@@ -2460,11 +2430,7 @@
     input = arg.input;
     return m(".paragraph", menu.input.icon.item("cog", {
       className: "pull-right tooltip-left"
-    }), input.theme.field(function(arg1) {
-      var caption;
-      caption = arg1.caption;
-      return caption;
-    }), m("hr.black"));
+    }), input.theme.field(), m("hr.black"));
   };
 
 }).call(this);
@@ -2697,11 +2663,7 @@
       href: url + "?ua=mb&cmd=vindex&uid=" + (uid()) + "&pwd=" + (pwd())
     }, "携帯")) : m("a.btn.edge", {
       href: url + "?ua=mb"
-    }, "携帯") : void 0, input.theme.field(function(arg1) {
-      var caption;
-      caption = arg1.caption;
-      return caption;
-    }), m("hr.black"));
+    }, "携帯") : void 0, input.theme.field(), m("hr.black"));
   };
 
 }).call(this);
@@ -2719,7 +2681,7 @@
           href: v.link
         }, v.name), m("span.note", m("br"), "〈", m('a', {
           href: v.link
-        }, "最新"), "〉", v.entry_limit === "password" ? m('img[src="#{GUI.img_head}/icon/key.png"][alt="[鍵]"]') : void 8), v.view.rating, m("span.note", m("br"), "　　人物 ： " + chr_set.caption, m("br"), "　　更新 ： " + v.view.update_at + " " + v.view.update_interval + "毎", m("br"), "　 ")), m("td", v.player_count), m("td", v.status + ""), m("td", v.trs, m("br"), v.view.game_rule), m("td", m("span.note", v.view.say_limit_help)));
+        }, "最新"), "〉", v.entry_limit === "password" ? m('img[src="#{GUI.img_head}/icon/key.png"][alt="[鍵]"]') : void 8), v.view.rating, m("span.note", m("br"), "　　人物 ： " + chr_set.label, m("br"), "　　更新 ： " + v.view.update_at + " " + v.view.update_interval + "毎", m("br"), "　 ")), m("td", v.player_count), m("td", v.status + ""), m("td", v.trs, m("br"), v.view.game_rule), m("td", m("span.note", v.view.say_limit_help)));
       }))));
   };
 }).call(this);
@@ -2736,7 +2698,7 @@
     trap_card = Mem.Query.traps.find(event.event);
     texts = [];
     if (event.winner && "WIN_NONE" !== event.winner) {
-      texts.push(Mem.Query.winners.find(event.winner).name + "の勝利です。");
+      texts.push(Mem.Query.winners.find(event.winner).label + "の勝利です。");
     }
     if (trap_card) {
       texts.push(m("kbd", trap_card));
@@ -2763,7 +2725,7 @@
       }
       return results$;
     }()), [
-      m("p.name", m("b", story.view.game_rule)), m("p.text", m("ul.note", m.trust(Mem.conf.rule[story.type.game].HELP)), m("ul.note", (function(){
+      m("p.name", m("b", story.view.game_rule)), m("p.text", m("ul.note", m.trust(Mem.conf.rule[story.type.game].help)), m("ul.note", (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = story.options).length; i$ < len$; ++i$) {
           option_id = ref$[i$];
@@ -2774,7 +2736,7 @@
           results$.push(m("li", option.help));
         }
         return results$;
-      }()))), m("p.name", m("b", roletable.name + " / " + story.view.player_length + "人")), m("p.text", m("div", m("code", "事件"), story.view.trap_cards), m("div", m("code", "役職"), story.view.role_cards), m("div", m("code", mob.name), m("kbd", mob.HELP + ""))), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black")
+      }()))), m("p.name", m("b", roletable.label + " / " + story.view.player_length + "人")), m("p.text", m("div", m("code", "事件"), story.view.trap_cards), m("div", m("code", "役職"), story.view.role_cards), m("div", m("code", mob.label), m("kbd", mob.help + ""))), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black")
     ]);
   };
 }).call(this);
@@ -2792,7 +2754,7 @@
       key: "STORY-RULE"
     }, m("p.name", m("b", "設定")), m("p.text", m("div", m("code", "こだわり"), m("img", {
       src: GUI.img_head + ("/icon/cd_" + story.rating + ".png")
-    }), m.trust(rating.caption)), m("div", m("code", "発言制限"), m.trust(saycnt.CAPTION + "<br>" + saycnt.HELP)), m("div", m("code", "更新"), story.view.update_at + "(" + story.view.update_interval + "ごと)")), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black"));
+    }), m.trust(rating.label)), m("div", m("code", "発言制限"), m.trust(saycnt.label + "<br>" + saycnt.help)), m("div", m("code", "更新"), story.view.update_at + "(" + story.view.update_interval + "ごと)")), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black"));
   };
 }).call(this);
 

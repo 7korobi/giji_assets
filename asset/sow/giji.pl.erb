@@ -238,7 +238,7 @@ sub GetConfig {
 <%	@ratings.each do |key, rating|	%>
 	my %cd_<%= key %> = (
 		FILE    => 'cd_<%= key %>.png',
-		CAPTION => '<%= @perl_change.call rating[:caption] %>',
+		CAPTION => '<%= @perl_change.call rating[:label] %>',
 		ALT     => '<%= @perl_change.call rating[:alt]     %>',
 		WIDTH   => 20,
 		HEIGHT  => 16,

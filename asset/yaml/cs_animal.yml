@@ -2,10 +2,10 @@ chr_set:
   _id: animal
   admin: "大地の震動"
   maker: "草原のざわめき"
-  caption: "うきうきサバンナ"
+  label: "うきうきサバンナ"
 
 chr_npc:
-  - caption: "うきうきサバンナ"
+  - label: "うきうきサバンナ"
     csid: animal
     face_id: c99
     say_0: |-

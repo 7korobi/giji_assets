@@ -1,9 +1,9 @@
 sow:
-  CAPTION: 人狼物語
-  HELP:
+  label: 人狼物語
+  help:
 
 say5: &SAY5
-  CAPTION: 寡黙への挑戦
+  label: 寡黙への挑戦
   COST_SAY:  count # 回数勘定
   COST_MEMO: none  # 無制限
   COST_ACT:  count # 回数勘定
@@ -34,8 +34,8 @@ count: &COUNT
   MAX_ADDSAY:     0 # 促しの回数
 
 lobby: &INFINITY
-  CAPTION: ロビー
-  HELP:    ∞pt/∞act
+  label: ロビー
+  help:    ∞pt/∞act
   COST_SAY:  none # 無制限
   COST_MEMO: none # 無制限
   COST_ACT:  none # 無制限
@@ -55,8 +55,8 @@ lobby: &INFINITY
 
 say1:
   <<: *SAY5
-  CAPTION: 静寂への挑戦
-  HELP:    （24h回復） 300字x1回/0act'
+  label: 静寂への挑戦
+  help:    （24h回復） 300字x1回/0act'
   MAX_MESCNT:   300 # 一発言の最大文字数
   MAX_SAY:        1 # 発言/憑依回数
   MAX_SPSAY:      1 # 共鳴発言回数
@@ -65,20 +65,20 @@ say1:
 
 say5x200:
   <<: *SAY5
-  CAPTION: 寡黙への挑戦
-  HELP:    （24h回復） 200字x5回/5act'
+  label: 寡黙への挑戦
+  help:    （24h回復） 200字x5回/5act'
   MAX_MESCNT:   200 # 一発言の最大文字数
 
 say5x300:
   <<: *SAY5
-  CAPTION: 小論文への挑戦
-  HELP:    （24h回復） 300字x5回/15act'
+  label: 小論文への挑戦
+  help:    （24h回復） 300字x5回/15act'
   MAX_MESCNT:   300 # 一発言の最大文字数
 
 saving:
   <<: *COUNT
-  CAPTION: 節約
-  HELP:    250字x20回/15act
+  label: 節約
+  help:    250字x20回/15act
   RECOVERY:       0 # 発言復活
   MAX_SAY:       20 # 発言/憑依回数
   MAX_TSAY:      10 # 独り言発言回数
@@ -93,8 +93,8 @@ saving:
 
 wbbs:
   <<: *COUNT
-  CAPTION: 人狼BBS
-  HELP:    200字x20回
+  label: 人狼BBS
+  help:    200字x20回
   COST_MEMO: none  # 無制限
   RECOVERY:       0 # 発言復活
   MAX_SAY:       20 # 発言/憑依回数
@@ -110,8 +110,8 @@ wbbs:
 
 euro:
   <<: *COUNT
-  CAPTION: 欧州
-  HELP:    （24h回復） 800字x30回/30act
+  label: 欧州
+  help:    （24h回復） 800字x30回/30act
   RECOVERY:       1 # 発言復活
   MAX_SAY:       30 # 発言/憑依回数
   MAX_TSAY:     999 # 独り言発言回数
@@ -127,8 +127,8 @@ euro:
 
 tiny:
   <<: *POINT
-  CAPTION: たりない
-  HELP:    （24h回復）（メモは20pt） 333pt/9act
+  label: たりない
+  help:    （24h回復）（メモは20pt） 333pt/9act
   COST_MEMO: point # 20pt勘定
   RECOVERY:       1 # 発言復活
   MAX_SAY:      333 # 発言/憑依回数
@@ -145,8 +145,8 @@ tiny:
 
 weak: &WEAK
   <<: *POINT
-  CAPTION: むりせず
-  HELP:    （24h回復）（メモは20pt） 777pt/15act
+  label: むりせず
+  help:    （24h回復）（メモは20pt） 777pt/15act
   COST_MEMO: point # 20pt勘定
   RECOVERY:       1 # 発言復活
   MAX_SAY:      777 # 発言/憑依回数
@@ -163,8 +163,8 @@ weak: &WEAK
 
 juna: &JUNA
   <<: *POINT
-  CAPTION: しんもん
-  HELP:    （24h回復） 1200pt/24act
+  label: しんもん
+  help:    （24h回復） 1200pt/24act
   RECOVERY:       1 # 発言復活
   MAX_SAY:     1200 # 発言/憑依回数
   MAX_TSAY:     700 # 独り言発言回数
@@ -180,8 +180,8 @@ juna: &JUNA
 
 vulcan: &VULCAN
   <<: *POINT
-  CAPTION: いっぱい
-  HELP:    （24h回復） 1000pt+++300pt/36act
+  label: いっぱい
+  help:    （24h回復） 1000pt+++300pt/36act
   RECOVERY:       1 # 発言復活
   MAX_SAY:     1000 # 発言/憑依回数
   MAX_TSAY:    1000 # 独り言発言回数
@@ -197,12 +197,12 @@ vulcan: &VULCAN
 
 infinity:
   <<: *INFINITY
-  CAPTION: むげん
+  label: むげん
 
 weak_braid:
   <<: *WEAK
-  CAPTION: むりせず
-  HELP:    （24h回復）（メモは20pt） 600pt++100pt/15act
+  label: むりせず
+  help:    （24h回復）（メモは20pt） 600pt++100pt/15act
   MAX_SAY:      600 # 発言/憑依回数
   MAX_TSAY:     600 # 独り言発言回数
   MAX_SPSAY:    600 # 共鳴発言回数
@@ -211,8 +211,8 @@ weak_braid:
 
 juna_braid:
   <<: *JUNA
-  CAPTION: しんもん
-  HELP:    （24h回復） 800pt++200pt/24act
+  label: しんもん
+  help:    （24h回復） 800pt++200pt/24act
   RECOVERY:       1 # 発言復活
   MAX_SAY:      800 # 発言/憑依回数
   ADD_SAY:      200 # 促しで増える発言回数
@@ -223,4 +223,4 @@ vulcan_braid:
 
 infinity_braid:
   <<: *INFINITY
-  CAPTION: むげん
+  label: むげん

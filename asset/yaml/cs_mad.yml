@@ -2,10 +2,10 @@ chr_set:
   _id: mad
   admin: "闇の呟き"
   maker: "天上の調べ"
-  caption: "エクスパンション・セット「狂騒議事」"
+  label: "エクスパンション・セット「狂騒議事」"
 
 chr_npc:
-  - caption: "エクスパンション・セット「狂騒議事」"
+  - label: "エクスパンション・セット「狂騒議事」"
     csid: mad
     face_id: c83
     say_0: |-
@@ -22,7 +22,7 @@ chr_npc:
 
       <b>日記はそこで途切れ、発見されるまで打ち捨てられていた。</b>
 
-  - caption: "エクスパンション・セット「狂騒議事」（ヤヘイ）"
+  - label: "エクスパンション・セット「狂騒議事」（ヤヘイ）"
     csid: mad_mad05
     face_id: mad05
     say_0: |-

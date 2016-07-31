@@ -12,5 +12,5 @@ doc.view.sow_css_changer = ({url, input})->
         m "a.btn.edge",
           href: "#{url}?ua=mb"
         , "携帯"
-    input.theme.field ({caption})-> caption
+    input.theme.field()
     m "hr.black"

@@ -20,7 +20,7 @@ new Mem.Rule("form_text").schema ->
   @deploy (o)->
     o._id = "#{o.form_id}-#{o.mestype}-#{o.format}"
     o.format_name = formats[o.format]
-    o.mestype_name = Mem.Query.ables.find(o.mestype).name
+    o.mestype_name = Mem.Query.ables.find(o.mestype).label
     o.target_hash = {}
     o.text = m.prop("")
 
@@ -50,7 +50,7 @@ new Mem.Rule("form_text").schema ->
     o.attr =
       form: ->
         onchange: (e)->
-          e.target.name
+          e.target.label
           e.target.value
           console.log [e, o]
         onreset: (e)->

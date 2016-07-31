@@ -158,7 +158,7 @@ new Mem.Rule("potof").schema ->
           win_result = "敗北" if is_lone_lose && _.some o.bonds, (o)-> o.live != 'live' && _.some o.bonds, o.pno
           win_result = "参加" if "NONE" == win
 
-    stat_type = Mem.conf.live[o.live].name
+    stat_type = Mem.conf.live[o.live].label
     stat_order = Mem.conf.live[o.live].order
     win_side_order = Mem.conf.winner["WIN_" + win].order
     role_side_order = Mem.conf.winner["WIN_" + win_role].order

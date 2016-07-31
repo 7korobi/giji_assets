@@ -1,7 +1,7 @@
 btn_data = (type)->
   _id: type
-  name:  Mem.conf.tag[type].name
-  badge: Mem.Query.faces.reduce.tag[type].count
+  label:  Mem.conf.tag[type].label
+  badge: -> Mem.Query.faces.reduce.tag[type].count
 
 
 h = Mem.Query.inputs.hash
@@ -19,7 +19,7 @@ h.trs_type.options = Mem.Query.trss.enable().hash
 h.tag.options =
   all:
     _id: "all"
-    name: "- 全体 -"
+    label: "- 全体 -"
     badge: Mem.Query.faces.reduce.all.all.count
   giji:      btn_data "giji"
   shoji:     btn_data "shoji"

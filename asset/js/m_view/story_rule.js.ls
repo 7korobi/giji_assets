@@ -12,10 +12,10 @@ doc.view.story_rule = ({event, story})->
         m "code", "こだわり"
         m "img",
           src: GUI.img_head + "/icon/cd_#{story.rating}.png"
-        m.trust rating.caption
+        m.trust rating.label
       m "div",
         m "code", "発言制限"
-        m.trust saycnt.CAPTION + "<br>" + saycnt.HELP
+        m.trust saycnt.label + "<br>" + saycnt.help
       m "div",
         m "code", "更新"
         story.view.update_at + "(" + story.view.update_interval + "ごと)"

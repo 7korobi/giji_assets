@@ -33,12 +33,12 @@ new Mem.Rule("face").schema ->
 
 
 new Mem.Rule("chr_set").schema ->
-  @order "caption"
+  @order "label"
   @has_many "chr_jobs"
   @has_many "chr_npcs"
 
 new Mem.Rule("chr_npc").schema ->
-  @order "caption"
+  @order "label"
   @belongs_to "chr_set", dependent: true
   @belongs_to "face", dependent: true
 

@@ -2,10 +2,10 @@ chr_set:
   _id: sf
   admin: "黒体放射のエヴェレット解釈"
   maker: "重ね合せ猫のユニタリ変換"
-  caption: "明後日への道標"
+  label: "明後日への道標"
 
 chr_npc:
-  - caption: "明後日への道標"
+  - label: "明後日への道標"
     csid: SF
     face_id: sf04
     say_0: |-
@@ -20,7 +20,7 @@ chr_npc:
 
       <b>がりがり、がりがり。ケージの縁をひっかくと、うろうろ、うろうろ右へ左へ駆け回る。木の洞に目もくれず、夜中じゅう走り続けるのだった……</b>
 
-  - caption: "明後日への道標（ナユタ）"
+  - label: "明後日への道標（ナユタ）"
     csid: SF_sf10
     face_id: sf10
     say_0: |-

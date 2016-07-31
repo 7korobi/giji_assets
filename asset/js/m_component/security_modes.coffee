@@ -15,15 +15,15 @@ doc.component.security_modes =
       story = Mem.Query.storys.list.first
       mob = Mem.Query.roles.find(story?.type.mob)
 
-      grave_caption = []
-      grave_caption.push "墓下" if has.grave
-      grave_caption.push mob.CAPTION if has.vsay && mob.CAPTION
-      options.grave.caption = grave_caption.join("/") + "つき"
+      grave_label = []
+      grave_label.push "墓下" if has.grave
+      grave_label.push mob.label if has.vsay && mob.label
+      options.grave.label = grave_label.join("/") + "つき"
 
-      think_caption = []
-      think_caption.push "独り言" if has.think
-      think_caption.push "内緒話" if has.to
-      options.think.caption = think_caption.join("/") + "つき"
+      think_label = []
+      think_label.push "独り言" if has.think
+      think_label.push "内緒話" if has.to
+      options.think.label = think_label.join("/") + "つき"
 
       options.clan._id = if has.clan then "clan" else null
 
@@ -33,7 +33,7 @@ doc.component.security_modes =
   view: ({input, refresh}, prop)->
     refresh()
     m "p",
-      input.show.field ({caption})-> caption
+      input.show.field()
       m.trust "&nbsp;"
       input.open.field()
       input.open.label()

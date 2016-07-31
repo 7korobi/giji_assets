@@ -1,101 +1,101 @@
 
 default:
-  caption: とくになし
+  label: とくになし
 
 love:
-  caption: "[愛] 恋愛を重視"
+  label: "[愛] 恋愛を重視"
   alt: 愛
 
 sexy:
-  caption: "[性] 性表現あり"
+  label: "[性] 性表現あり"
   alt: 性
 
 sexylove:
-  caption: "[性愛] 大人の恋愛"
+  label: "[性愛] 大人の恋愛"
   alt: 性愛
 
 violence:
-  caption: "[暴] 暴力、グロ"
+  label: "[暴] 暴力、グロ"
   alt: 暴
 
 sexyviolence:
-  caption: "[性暴] えろぐろ"
+  label: "[性暴] えろぐろ"
   alt: 性暴
 
 teller:
-  caption: "[怖] 恐怖を煽る"
+  label: "[怖] 恐怖を煽る"
   alt: 怖
 
 drunk:
-  caption: "[楽] 享楽に耽る"
+  label: "[楽] 享楽に耽る"
   alt: 楽
 
 gamble:
-  caption: "[賭] 賭博に耽る"
+  label: "[賭] 賭博に耽る"
   alt: 賭
 
 crime:
-  caption: "[罪] 犯罪描写あり"
+  label: "[罪] 犯罪描写あり"
   alt: 罪
 
 drug:
-  caption: "[薬] 薬物表現あり"
+  label: "[薬] 薬物表現あり"
   alt: 薬
 
 word:
-  caption: "[言] 殺伐、暴言あり"
+  label: "[言] 殺伐、暴言あり"
   alt: 言
 
 fireplace:
-  caption: "[暢] のんびり雑談"
+  label: "[暢] のんびり雑談"
   alt: 暢
 
 appare:
-  caption: "[遖] あっぱれネタ風味"
+  label: "[遖] あっぱれネタ風味"
   alt: 遖
 
 ukkari:
-  caption: "[張] うっかりハリセン"
+  label: "[張] うっかりハリセン"
   alt: 張
 
 child:
-  caption: "[全] 大人も子供も初心者も、みんな安心"
+  label: "[全] 大人も子供も初心者も、みんな安心"
   alt: 全
 
 biohazard:
-  caption: "[危] 無茶ぶり上等"
+  label: "[危] 無茶ぶり上等"
   alt: 危
 
 null:
-  caption: "null"
+  label: "null"
   alt: ""
   disabled: true
 
 0:
-  caption: "0"
+  label: "0"
   alt: ""
   disabled: true
 
 r15:
-  caption: "１５禁"
+  label: "１５禁"
   alt: ""
   disabled: true
 
 r18:
-  caption: "１８禁"
+  label: "１８禁"
   alt: ""
   disabled: true
 
 gro:
-  caption: "暴力、グロ"
+  label: "暴力、グロ"
   alt: ""
   disabled: true
 
 view:
-  caption: view
+  label: view
   disabled: true
 
 alert:
-  caption: "要注意"
+  label: "要注意"
   alt: ""
   disabled: true

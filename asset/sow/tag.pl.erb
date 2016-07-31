@@ -9,9 +9,9 @@ sub GetTag {
   # タグの名前
   my %tag_name = (
 <%  @tags.each do |tag, o|  %>
-    '<%= tag %>' => '<%= o.name %>',
+    '<%= tag %>' => '<%= o.label %>',
 <%  end %>
-  );  
+  );
 
   my %tagset = (
     TAG_NAME       => \%tag_name,

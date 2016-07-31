@@ -2,10 +2,10 @@ chr_set:
   _id: ger
   admin: "闇の呟き"
   maker: "馬頭琴の調"
-  caption: "エクスパンション・セット「大陸議事」"
+  label: "エクスパンション・セット「大陸議事」"
 
 chr_npc:
-  - caption: "エクスパンション・セット「大陸議事」"
+  - label: "エクスパンション・セット「大陸議事」"
     csid: ger
     face_id: g03
     say_0: |-

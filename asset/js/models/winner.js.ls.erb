@@ -4,7 +4,7 @@ new Mem.Rule("winner").schema ->
   @scope (all)->
     shows: ->
       all.where (o)->
-        o.name != '―'
+        o.label != '―'
 
     sow: (idx)->
       all.where((o)-> o.order == idx).list.first
@@ -14,7 +14,7 @@ new Mem.Rule("winner").schema ->
 
   @deploy (o)->
     o.order = id_index.indexOf o._id
-    o.name_human ?= o.name
+    o.label_human ?= o.label
 
   @map_reduce (o)->
 

@@ -1,7 +1,7 @@
 
 describe "(sow) Mem.Query.roles" (...)!->
   do_test_mob = (role)->
-    it "#{role.name}" (...)!->
+    it "#{role.label}" (...)!->
       expect(role.ables).to.include.members ["VSAY"]
 
   describe " has VSAY" (...)!->

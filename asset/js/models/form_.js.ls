@@ -14,7 +14,7 @@ new Mem.Rule("form").schema ->
           Mem.Query.potofs.where(cb).list.map (o)->
             pno: o.pno,
             job: o.chr_job.job,
-            name: o.name
+            label: o.label
         else
           []
 

@@ -337,7 +337,7 @@
   describe("(sow) Mem.Query.roles", function(){
     var do_test_mob;
     do_test_mob = function(role){
-      return it(role.name + "", function(){
+      return it(role.label + "", function(){
         expect(role.ables).to.include.members(["VSAY"]);
       });
     };
@@ -361,7 +361,7 @@
       for (i$ = 0, len$ = (ref$ = ['live', 'executed', 'victim', 'cursed', 'droop', 'suicide', 'feared', 'suddendead']).length; i$ < len$; ++i$) {
         live = ref$[i$];
         lresult$ = [];
-        live_name = Mem.Query.roles.find(live).name;
+        live_name = Mem.Query.roles.find(live).label;
         for (j$ = 0, len1$ = (ref1$ = ['prologue', 'start', 'main', 'epilogue']).length; j$ < len1$; ++j$) {
           turn = ref1$[j$];
           lresult$.push(it(live_name + " " + turn, fn$));

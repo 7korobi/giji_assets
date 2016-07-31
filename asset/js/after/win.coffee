@@ -106,7 +106,6 @@ window.addEventListener "hashchange", ({ newURL, oldURL })->
   Url.popstate()
 
 window.addEventListener "popstate", ({ state })->
-  console.warn state
   Url.popstate()
 
 win.deploy()

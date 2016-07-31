@@ -31,7 +31,7 @@ doc.view.sow_stories = (v)->
                 v.view.rating
                 m "span.note",
                   m "br"
-                  "　　人物 ： #{chr_set.caption}"
+                  "　　人物 ： #{chr_set.label}"
                   m "br"
                   "　　更新 ： #{v.view.update_at} #{v.view.update_interval}毎"
                   m "br"

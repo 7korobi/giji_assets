@@ -12,7 +12,9 @@ new Mem.Rule("store").schema ->
           {}
         when "Date", "Number"
           0
-        when "String", "Text"
+        when "String"
+          null
+        when "Text"
           ""
 
 

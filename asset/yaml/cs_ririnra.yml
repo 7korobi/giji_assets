@@ -2,10 +2,10 @@ chr_set:
   _id: ririnra
   admin: "闇の呟き"
   maker: "天のお告げ"
-  caption: "人狼議事"
+  label: "人狼議事"
 
 chr_npc:
-  - caption: "人狼議事（キャサリン）"
+  - label: "人狼議事（キャサリン）"
     csid: ririnra_c05
     face_id: c05
     say_0: |-
@@ -13,7 +13,7 @@ chr_npc:
     say_1: |-
       大変、人狼が出たよ！　いつもは嘘だけど、今度は本当の本当に本当！
 
-  - caption: "人狼議事（ベネット）"
+  - label: "人狼議事（ベネット）"
     csid: ririnra_c08
     face_id: c08
     say_0: |-
@@ -24,7 +24,7 @@ chr_npc:
       
       <b>日記はそこで途切れ、発見されるまで打ち捨てられていた。</b>
 
-  - caption: "人狼議事（タバサ）"
+  - label: "人狼議事（タバサ）"
     csid: ririnra_c19
     face_id: c19
     say_0: |-
@@ -32,7 +32,7 @@ chr_npc:
     say_1: |-
       人狼なんているわけないじゃん？みんな大げさなのさ。
 
-  - caption: "人狼議事（ソフィア）"
+  - label: "人狼議事（ソフィア）"
     csid: ririnra_c67
     face_id: c67
     say_0: |-
@@ -44,7 +44,7 @@ chr_npc:
       まさかあの時、あのひとが……？
       人殺しと一緒にいるなんて……！へや…、部屋に戻らせてもらいます！
 
-  - caption: "人狼議事（ヨアヒム）"
+  - label: "人狼議事（ヨアヒム）"
     csid: ririnra_c68
     face_id: c68
     say_0: |-
@@ -52,7 +52,7 @@ chr_npc:
     say_1: |-
       人殺しと一緒にいるなんてごめんだヨ！へ…へっ、部屋に戻らせてもらうヨ！
 
-  - caption: "人狼議事（ヴェスパタイン）"
+  - label: "人狼議事（ヴェスパタイン）"
     csid: ririnra_c72
     face_id: c72
     say_0: |-
@@ -60,7 +60,7 @@ chr_npc:
     say_1: |-
       逃げろ。逃げろ！おまえらだけでも逃げろ。
 
-  - caption: "人狼議事（ヨーランダ）"
+  - label: "人狼議事（ヨーランダ）"
     csid: ririnra_c51
     face_id: c51
     say_0: |-
@@ -69,7 +69,7 @@ chr_npc:
       ……あの、わたし。この騒ぎが落ち着いたら此処を出たいんです。
       幼馴染から手紙が来たの。お金を貯めたから、遠くで一緒に暮らそうって。
 
-  - caption: "人狼議事（グロリア）"
+  - label: "人狼議事（グロリア）"
     csid: ririnra_c20
     face_id: c20
     say_0: |-
@@ -79,7 +79,7 @@ chr_npc:
       ちょっと！そこの貴方、何をしているの！
       聞いたでしょう人狼がいるのよ、はやく見つけて処刑なさい！
 
-  - caption: "人狼議事（オスカー）"
+  - label: "人狼議事（オスカー）"
     csid: ririnra_c32
     face_id: c32
     say_0: |-
@@ -89,7 +89,7 @@ chr_npc:
       ねえ。見て見て。パン持ってきたんだ。
       みんなにはナイショだよ？
 
-  - caption: "人狼議事"
+  - label: "人狼議事"
     csid: ririnra
     face_id: c99
     say_0: |-

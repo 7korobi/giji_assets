@@ -1,25 +1,25 @@
 
 all:
-  caption: 登場
+  label: 登場
   headline: 登場した
   order: 合計
 human:
-  caption: 村側
+  label: 村側
   headline: 人間だった
   order: 村人陣営
 wolf:
-  caption: 狼側
+  label: 狼側
   headline: 人狼だった
   order: 人狼陣営
 enemy:
-  caption: 敵側
+  label: 敵側
   headline: 敵側の人間だった
   order: 敵側の人間
 pixi:
-  caption: 妖精
+  label: 妖精
   headline: 妖精だった
   order: 妖精
 other:
-  caption: その他
+  label: その他
   headline: その他だった
   order: その他

@@ -55,7 +55,7 @@ scope:
 theme:
   sean: cog
   attr:
-    required: required
+    required: true
     type: btns
   name: スタイル
   current: cinema
@@ -69,7 +69,7 @@ theme:
 layout:
   sean: cog
   attr:
-    required: required
+    required: true
     type: btns
   name: 位置
   current: center
@@ -81,7 +81,7 @@ layout:
 width:
   sean: cog
   attr:
-    required: required
+    required: true
     type: btns
   name: 幅の広さ
   current: std
@@ -93,7 +93,7 @@ width:
 font:
   sean: cog
   attr:
-    required: required
+    required: true
     type: btns
   name: 書体
   current: std
@@ -106,7 +106,7 @@ font:
 show:
   sean: message
   attr:
-    required: required
+    required: true
     type: btns
   name: 表示設定
   current: all
@@ -269,7 +269,7 @@ vil_name:
     type: text
     size: 20
     maxlength: 20
-    required: required
+    required: true
     pattern: ".{6,20}"
   query:
     SOW: vname
@@ -337,7 +337,8 @@ player_count:
     min:  4
     max: 20
     step: 1
-    required: required
+    required: true
+  current: 8
   query:
     SOW: vplcnt
   name: 定員
@@ -352,7 +353,8 @@ player_count_start:
     min:  4
     max: 20
     step: 1
-    required: required
+    required: true
+  current: 8
   query:
     SOW: vplcntstart
   name: 最少催行人員
@@ -365,7 +367,7 @@ time:
     type: time
     name: time
     step: 1800
-    required: required
+    required: true
   current: "22:30"
   name: 更新時刻
   help_on:  に更新します。
@@ -376,7 +378,7 @@ interval:
   attr:
     type: select
     name: updinterval
-    required: required
+    required: true
   query:
     SOW: updinterval
   current: 1
@@ -393,7 +395,7 @@ game_rule:
   attr:
     type: select
     name: game
-    required: required
+    required: true
   query:
     SOW: game
   name: ゲームルール
@@ -405,7 +407,7 @@ rating:
   attr:
     type: select
     name: rating
-    required: required
+    required: true
   query:
     SOW: rating
   current: default
@@ -418,7 +420,7 @@ chr_set:
   attr:
     type: select
     name: chr_set
-    required: required
+    required: true
   name: 登場人物
   help_on: ""
   help_off: ※入力してください。
@@ -428,7 +430,7 @@ chr_npc:
   attr:
     type: select
     name: csid
-    required: required
+    required: true
   name: 登場人物とNPC
   help_on: ""
   help_off: ※入力してください。
@@ -438,7 +440,7 @@ say_count:
   attr:
     type: select
     name: saycnttype
-    required: required
+    required: true
   query:
     SOW: saycnttype
   name: 発言制限
@@ -450,7 +452,7 @@ role_table:
   attr:
     type: select
     name: roletable
-    required: required
+    required: true
   query:
     SOW: roletable
   current: default
@@ -463,7 +465,7 @@ mob_type:
   attr:
     type: select
     name: mob
-    required: required
+    required: true
   name: 見物スタイル
   help_on: ""
   help_off: ※入力してください。
@@ -473,7 +475,7 @@ trs_type:
   attr:
     type: select
     name: trsid
-    required: required
+    required: true
   query:
     SOW: trsid
   current: all

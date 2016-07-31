@@ -27,13 +27,6 @@ new Mem.Rule("story").schema ->
       all.where(mode: "dispose")
 
 
-  caption = (field, key)->
-    data = field[key]
-    if data
-      data.CAPTION
-    else
-      null
-
   all_traps = Mem.Query.traps.ids
 
   @deploy (o)->
@@ -75,9 +68,9 @@ new Mem.Rule("story").schema ->
             m ".emboss.WIN_#{win}", "#{name}x#{size}"
           else
             m ".emboss.WIN_#{win}", "#{name}"
-      say_limit: Mem.conf.say[   o.type.say ]?.CAPTION || "――"
-      say_limit_help: Mem.conf.say[   o.type.say ]?.HELP || "――"
-      game_rule: Mem.conf.rule[o.type.game]?.CAPTION || "タブラの人狼"
+      say_limit_help: Mem.conf.say[ o.type.say ]?.help || "――"
+      say_limit: Mem.conf.say[  o.type.say  ]?.label || "――"
+      game_rule: Mem.conf.rule[ o.type.game ]?.label || "タブラの人狼"
 
     o.search_words = o.name
 

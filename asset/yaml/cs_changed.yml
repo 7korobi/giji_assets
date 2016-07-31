@@ -2,10 +2,10 @@ chr_set:
   _id: changed
   admin: "闇の呟き"
   maker: "広場のお告げ"
-  caption: "はおうの広場"
+  label: "はおうの広場"
 
 chr_npc:
-  - caption: "とのさま広場"
+  - label: "とのさま広場"
     csid: changed
     face_id: m08
     say_0: |-
@@ -15,7 +15,7 @@ chr_npc:
       さあ、ぼうやたちいらっしゃい。ごはんのじかんよ。
 
   - _id: m05
-    caption: "はおうの広場"
+    label: "はおうの広場"
     csid: changed_m05
     face_id: m05
     say_0: |-

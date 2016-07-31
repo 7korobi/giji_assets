@@ -1,44 +1,44 @@
 live:
-  name: 生存者
+  label: 生存者
   order: 2
 
 executed:
-  name: 処刑
+  label: 処刑
   order: 3
 
 victim:
-  name: 襲撃
+  label: 襲撃
   caption: 犠牲者
   order: 4
 
 cursed:
-  name: 呪詛
+  label: 呪詛
   caption: 犠牲者
   order: 5
 
 droop:
-  name: 衰退
+  label: 衰退
   caption: 犠牲者
   order: 6
 
 suicide:
-  name: 後追
+  label: 後追
   caption: 犠牲者
   order: 7
 
 feared:
-  name: 恐怖
+  label: 恐怖
   caption: 犠牲者
   order: 8
 
 mob:
-  name: 見物人
+  label: 見物人
   order: 10
 
 suddendead:
-  name: 突然死
+  label: 突然死
   order: 100
 
 leave:
-  name: ―
+  label: ―
   order: 101

@@ -8,7 +8,7 @@ doc.component.map_faces =
 
     if chrs?.length
       headline = [
-        m ".GSAY.badge", Mem.Query.chr_sets.find(chr_set()).caption
+        m ".GSAY.badge", Mem.Query.chr_sets.find(chr_set()).label
         "の#{chrs.length}人を、"
         m ".GSAY.badge", map_order_set.headline
         "回数で並べています"
@@ -47,7 +47,7 @@ doc.component.map_faces =
             m "div",
               m "a.mark",
                 href: "/map_reduce/faces/#{o.face_id}"
-              , "#{map_order_set.caption} #{o.win.value[map_order_set.order]}回"
+              , "#{map_order_set.label} #{o.win.value[map_order_set.order]}回"
             m "div", "♥#{o.sow_auth_id.max_is}"
       m "hr.black"
     ]
