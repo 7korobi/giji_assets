@@ -2,14 +2,8 @@ _ = require "lodash"
 Mem = require "memory-record"
 Tie = require "./tie"
 
-decode = (str)->
-  decodeURI str
-
-encode = (str)->
-  encodeURI str
-  .replace /%5B/g, '['
-  .replace /%5D/g, ']'
-
+decode = Mem.unpack.Url
+encode = Mem.pack.Url
 
 memory_prop = (params, key, unpack)->
   (val)->

@@ -49,8 +49,9 @@ class Tie
     @prop[_id] = define params, _id, unpack, pack
 
     val = @prop[_id]()
-    unless val?
-      @prop[_id] val = current
+    switch val
+      when undefined, null, ""
+        @prop[_id] val = current
 
   copyBy: (source)->
     for _id, prop of @prop

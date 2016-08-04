@@ -42,7 +42,7 @@
     "licensify": "^2.0.1",
     "livescript": "^1.4.0",
     "lodash": "^4.0.0",
-    "memory-record": "*",
+    "memory-record": "0.1.4",
     "merge-stream": "~1.0.0",
     "mithril": "^0.2.0",
     "mithril-canvas": "*",
