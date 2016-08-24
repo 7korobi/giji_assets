@@ -13,7 +13,7 @@ doc.component.filter =
         type: "checkbox_btn"
         className: o.mestype
       name = if doc.seeing[o._id] >= day then "★ " else "☆ "
-      tie.input_for {_id, attr, name}
+      tie.bundle {_id, attr, name}
 
 
     { talk_at, scroll, pins, icon, scope } = Url.prop

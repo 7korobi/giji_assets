@@ -952,7 +952,7 @@
           className: o.mestype
         };
         name = doc.seeing[o._id] >= day ? "★ " : "☆ ";
-        return tie.input_for({
+        return tie.bundle({
           _id: _id,
           attr: attr,
           name: name
@@ -2425,7 +2425,7 @@
         results = [];
         for (i = 0, len = ref.length; i < len; i++) {
           chk = ref[i];
-          results.push(v.tie.input[chk._id] = new Input(v.tie, chk));
+          results.push(v.tie.bundle(chk));
         }
         return results;
       })();

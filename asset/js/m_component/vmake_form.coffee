@@ -97,7 +97,7 @@ doc.component.vmake_form =
 
     v.tie.input.checkboxes =
       for chk in Mem.Query.inputs.checkbox("vil").list
-        v.tie.input[chk._id] = new Input v.tie, chk
+        v.tie.bundle chk
 
     vindex = 0
     v.params.vil_comment = [

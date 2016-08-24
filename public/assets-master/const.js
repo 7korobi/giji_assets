@@ -3380,6 +3380,30 @@
       "current": "default",
       "name": "こだわり"
     },
+    "extra": {
+      "sean": "vil",
+      "attr": {
+        "type": "btns"
+      }
+    },
+    "role": {
+      "sean": "vil",
+      "attr": {
+        "type": "btns"
+      }
+    },
+    "gift": {
+      "sean": "vil",
+      "attr": {
+        "type": "btns"
+      }
+    },
+    "trap": {
+      "sean": "vil",
+      "attr": {
+        "type": "btns"
+      }
+    },
     "chr_set": {
       "sean": "vil",
       "attr": {
