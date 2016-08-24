@@ -203,7 +203,6 @@ doc.component.vmake_form =
         win: "NONE"
         label: "見物人"
       ].map add_btn
-    console.warn v.tie
     v
 
   view: (v)->

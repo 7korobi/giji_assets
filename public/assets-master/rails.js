@@ -2566,7 +2566,6 @@
           }
         ].map(add_btn)
       };
-      console.warn(v.tie);
       return v;
     },
     view: function(v) {

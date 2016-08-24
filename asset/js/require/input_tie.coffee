@@ -313,7 +313,6 @@ class InputTie
     InputTie.format format
     type = InputTie.type[format.attr.type]
     type = type.multiple if format.attr.multiple
-    console.warn "bundle #{format._id} #{format.attr.type}"
     @input[format._id] = new type @, format
 
   init_submit: ({@form})->
@@ -325,10 +324,9 @@ class InputTie
     @
 
   constructor: ({ @timeout, @params, ids })->
+    console.info "construct for #{ids}"
     @off()
     @input = {}
-
-    console.warn "construct for #{ids}"
     @tie = Tie.build_input ids, @params, @
     @prop = @tie.prop
 
@@ -403,7 +401,6 @@ class Input
     @dom?.setCustomValidity msg
 
   constructor: (tie, format)->
-    console.warn tie
     @format = format
     @tie    = tie
     params  = tie.params

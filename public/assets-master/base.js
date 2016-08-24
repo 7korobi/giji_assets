@@ -24926,7 +24926,6 @@ module.exports = Vector2D;
       if (format.attr.multiple) {
         type = type.multiple;
       }
-      console.warn("bundle " + format._id + " " + format.attr.type);
       return this.input[format._id] = new type(this, format);
     };
 
@@ -24939,9 +24938,9 @@ module.exports = Vector2D;
     function InputTie(arg) {
       var ids;
       this.timeout = arg.timeout, this.params = arg.params, ids = arg.ids;
+      console.info("construct for " + ids);
       this.off();
       this.input = {};
-      console.warn("construct for " + ids);
       this.tie = Tie.build_input(ids, this.params, this);
       this.prop = this.tie.prop;
     }
@@ -25078,7 +25077,6 @@ module.exports = Vector2D;
 
     function Input(tie, format) {
       var attr, now_val, params;
-      console.warn(tie);
       this.format = format;
       this.tie = tie;
       params = tie.params;
