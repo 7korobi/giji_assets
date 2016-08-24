@@ -94,7 +94,7 @@ doc.view.helps = (t)->
       for o in t.list || []
         m "li",
           m "code", m.trust o.name
-          m "kbd", m.trust o.HELP
+          m "kbd", m.trust o.help
 
 doc.view.table = (t)->
   m ".paragraph.#{t.mestype}", {key: t._id},

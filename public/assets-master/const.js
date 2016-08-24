@@ -9687,7 +9687,7 @@
         var role, i$, ref$, len$, able_id, able, results$ = [];
         role = Mem.Query.roles.find(role_id);
         role_names.push(role.name);
-        role_helps.push(role.HELP);
+        role_helps.push(role.help);
         if (in$("grave", role.ables)) {
           can_use = !can_use;
         }
@@ -9702,7 +9702,7 @@
       };
       able_scan = function(role, able){
         var mestype, attr;
-        able_helps.push(able.HELP);
+        able_helps.push(able.help);
         if (mestype = able.text) {
           if (mestype === 'SAY' || mestype === 'GSAY' || mestype === 'VSAY') {
             text(mestype, "act", able);
@@ -10831,7 +10831,7 @@
     this['default'](function(){});
     this.deploy(function(o){
       o.ables == null && (o.ables = []);
-      o.HELP == null && (o.HELP = "");
+      o.help == null && (o.help = "");
       o.role_idx = role_index.indexOf(o._id);
       o.gift_idx = gift_index.indexOf(o._id);
       o.order = order_index.indexOf(o._id);

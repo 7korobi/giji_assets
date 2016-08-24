@@ -76,7 +76,7 @@ new Mem.Rule("role").schema ->
 
   @deploy (o)->
     o.ables ?= []
-    o.HELP ?= ""
+    o.help ?= ""
 
     o.role_idx = role_index.indexOf o._id
     o.gift_idx = gift_index.indexOf o._id

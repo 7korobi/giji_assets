@@ -270,17 +270,17 @@
       "log": "力を合わせて、悪者達を撃退しましょう。彼らは特別なことがない限り、村人陣営として活躍します。"
     }, {
       "_id": "howto-paragraph--23",
-      "object": "winners find WIN_HUMAN HELP"
+      "object": "winners find WIN_HUMAN help"
     }, {
       "_id": "howto-table-WIN_HUMAN-24",
       "query": "roles is human",
       "heads": ["役職", "解説"],
-      "cols": ["name", "HELP"]
+      "cols": ["name", "help"]
     }, {
       "_id": "howto-table-WIN_EVIL-39",
       "query": "roles is evil",
       "heads": ["役職", "解説"],
-      "cols": ["name", "HELP"]
+      "cols": ["name", "help"]
     }, {
       "_id": "howto-head-h3-41",
       "log": "人狼側の能力者"
@@ -289,12 +289,12 @@
       "log": "村には善良な村人達の他に、彼らになりすまして村人を襲う人狼や、人間でありながら人狼に協力する裏切り者達もいます。夜はあなたたちの時間です。"
     }, {
       "_id": "howto-paragraph--43",
-      "object": "winners find WIN_WOLF HELP"
+      "object": "winners find WIN_WOLF help"
     }, {
       "_id": "howto-table-WIN_WOLF-49",
       "query": "roles is wolf",
       "heads": ["役職", "解説"],
-      "cols": ["name", "HELP"]
+      "cols": ["name", "help"]
     }, {
       "_id": "howto-head-h3-51",
       "log": "第三勢力の能力者"
@@ -303,12 +303,12 @@
       "log": "村には村側にも人狼側にも属さない者達がいます。村人側か人狼側が勝利する条件を満たした時、彼らは横から勝利を浚っていきます。"
     }, {
       "_id": "howto-paragraph--53",
-      "object": "winners find WIN_PIXI HELP"
+      "object": "winners find WIN_PIXI help"
     }, {
       "_id": "howto-table-WIN_PIXI-59",
       "query": "roles is pixi",
       "heads": ["役職", "解説"],
-      "cols": ["name", "HELP"]
+      "cols": ["name", "help"]
     }, {
       "_id": "howto-head-h3-61",
       "log": "それ以外の能力者"
@@ -319,7 +319,7 @@
       "_id": "howto-table-WIN_NONE-69",
       "query": "roles is other",
       "heads": ["役職", "解説"],
-      "cols": ["name", "HELP"]
+      "cols": ["name", "help"]
     }, {
       "_id": "howto-head-h3-71",
       "log": "役職以外の能力"
@@ -330,7 +330,7 @@
       "_id": "howto-table-gift-79",
       "query": "roles is gift",
       "heads": ["恩恵", "解説"],
-      "cols": ["name", "HELP"]
+      "cols": ["name", "help"]
     }, {
       "_id": "howto-head-h3-81",
       "log": "村が始まったら"
@@ -347,7 +347,7 @@
       "_id": "howto-table-INFONOM-79",
       "query": "traps",
       "heads": ["事件", "解説"],
-      "cols": ["name", "HELP"]
+      "cols": ["name", "help"]
     }, {
       "_id": "howto-head-h3-91",
       "log": "死亡"
@@ -370,7 +370,7 @@
       "_id": "howto-table--97",
       "query": "winners shows",
       "heads": ["勝利", "勝利条件"],
-      "cols": ["name", "HELP"]
+      "cols": ["name", "help"]
     }, {
       "_id": "howto-paragraph--101",
       "log": "ここからはエピローグの時間です。明かされた全ての発言などを話の種にして、みんなで色々笑ったり嘆いたりしましょう。\n楽しくて別れ難いなら、村建て人さんは更新を延長してもいいでしょう。お疲れ様でした。"
@@ -4255,7 +4255,7 @@
       var i$, ref$, len$, results$ = [];
       for (i$ = 0, len$ = (ref$ = t.list || []).length; i$ < len$; ++i$) {
         o = ref$[i$];
-        results$.push(m("li", m("code", m.trust(o.name)), m("kbd", m.trust(o.HELP))));
+        results$.push(m("li", m("code", m.trust(o.name)), m("kbd", m.trust(o.help))));
       }
       return results$;
     }())));

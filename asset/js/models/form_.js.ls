@@ -93,7 +93,7 @@ new Mem.Rule("form").schema ->
     role_scan = (role_id, can_use)->
       role = Mem.Query.roles.find role_id
       role_names.push role.name
-      role_helps.push role.HELP
+      role_helps.push role.help
 
       if "grave" in role.ables
         can_use = ! can_use
@@ -103,7 +103,7 @@ new Mem.Rule("form").schema ->
           able_scan role, able
 
     able_scan = (role, able)->
-      able_helps.push able.HELP
+      able_helps.push able.help
 
 
       if mestype = able.text

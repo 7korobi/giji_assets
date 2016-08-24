@@ -2649,7 +2649,7 @@
       var i$, ref$, len$, results$ = [];
       for (i$ = 0, len$ = (ref$ = t.list || []).length; i$ < len$; ++i$) {
         o = ref$[i$];
-        results$.push(m("li", m("code", m.trust(o.name)), m("kbd", m.trust(o.HELP))));
+        results$.push(m("li", m("code", m.trust(o.name)), m("kbd", m.trust(o.help))));
       }
       return results$;
     }())));
