@@ -3,71 +3,19 @@ m = require "mithril"
 _ = require "lodash"
 
 
-btn_item = (params, btn, o)->
-  (value, m_attr = {})->
-    { _id, options, attr } = o
-
-    now_val = params[_id]
-    option = options[value]
-
-    label = option.label
-
-    ma = btn _id, attr, m_attr, option,
-      className: [option?.className, m_attr.className, attr.className].join(" ")
-      selected: value == now_val
-      value:    value
-    # data-tooltip, disabled
-    m "span", ma,
-      label
-      m ".emboss.pull-right", option.badge() if option.badge
-
-checkbox_multi_item = (params, change, o)->
-  (value, m_attr = {})->
-    { _id, type, options, attr } = o
-
-    # TODO: change value for Set
-    now_vals = params[_id]
-    option = options[value]
-
-    val = Mem.unpack[type]
-    uri = Mem.pack[type]
-
-    ma = change _id, attr, m_attr, option,
-      className: [option.className, m_attr.className, attr.className].join(" ")
-      type: "checkbox"
-      name: "[#{_id}]#{value}"
-      value: uri value
-      checked: now_vals[value]
-    # data-tooltip, disabled
-    m "input", ma
-
-
-h_label = (params, o)->
+label_head = (params, join, o)->
   (m_attr = {})->
-    { name, label_attr, attr } = o
+    { name } = o
 
-    ma = _.assignIn label_attr, m_attr
+    ma = join m_attr
     m "label", ma, name
 
-h_header = (params, o)->
+h6_head = (params, join, o)->
   (m_attr = {})->
-    { name, label_attr, attr } = o
+    { name } = o
 
-    ma = _.assignIn label_attr, m_attr
+    ma = join m_attr
     m "h6", ma, name
-
-
-labeler = (params, o)->
-  ->
-    { _id, options, info, attr, label } = o
-
-    now_val = params[_id]
-    if info
-      text = info.label if info.label
-      text = info.off   if info.off   && ! now_val
-      text = info.on    if info.on    && now_val
-      text = info.valid if info.valid && now_val
-      m "label", label.attr, text
 
 
 submit_form = (tie, attr)->
@@ -127,7 +75,6 @@ btn_pick = (attrs, last)->
     _.pick ma, target
   _.assignIn attrs..., last
 
-
 option_attr = (val, tie)->
   ( _id, attrs... )->
     option_pick attrs
@@ -175,6 +122,10 @@ btn_attr = (val, tie, b)->
       onclick: onchange
       onmouseup: onchange
       ontouchend: onchange
+
+label_attr = (val, tie, b)->
+  ( _id, attrs...)->
+    _.assignIn attrs...
 
 c_icon      = (bool, new_val)-> if bool then null else new_val
 c_tap       = (bool, new_val)-> new_val
@@ -405,17 +356,32 @@ class Input
 
     now_val = -> tie.params[format._id]
 
-    attr   = @_attr @_value, tie, @
-    @label = @_label params, format if @_label
-    @head  = @_head  params, format if @_head
-    @item  = @_item  params, attr, format if @_item
-    @field = @_field params, attr, format if @_field
+    attr_label = @_attr_label @_value, tie, @
+    @label = @_label params, attr_label, format if @_label
+    @head  = @_head  params, attr_label, format if @_head
+
+    attr_item  = @_attr @_value, tie, @
+    @item  = @_item  params, attr_item, format if @_item
+    @field = @_field params, attr_item, format if @_field
     return
 
   @timeout: 1000
   timeout: 100
-  _head:  h_label
-  _label: labeler
+  _head:  label_head
+  _attr_label: label_attr
+
+  _label: (params, join, o)->
+    (m_attr = {})->
+      { _id, options, info, attr, label } = o
+
+      now_val = params[_id]
+      if info
+        text = info.label if info.label
+        text = info.off   if info.off   && ! now_val
+        text = info.on    if info.on    && now_val
+        text = info.valid if info.valid && now_val
+        ma = join m_attr, label.attr
+        m "label", ma, text
 
 
 class basic_input extends Input
@@ -564,7 +530,7 @@ class InputTie.type.select.multiple extends Input
 
 
 class InputTie.type.checkbox_btn extends Input
-  _head:  h_header
+  _head:  h6_head
   _value: c_tap
   _attr:  btn_attr
   _field: (params, btn, o)->
@@ -581,8 +547,61 @@ class InputTie.type.checkbox_btn extends Input
       m "span", ma, name
 
 
+class InputTie.type.icon extends Input
+  _head:  h6_head
+  _value: c_icon
+  _attr:  btn_attr
+  _item:  (params, btn, o)->
+    (value, m_attr = {})->
+      { _id, options, attr } = o
+
+      now_val = params[_id]
+      option = options[value]
+
+      tag = m_attr.tag || "menuicon"
+
+      ma = btn _id, attr, m_attr, option,
+        className: [option?.className, m_attr.className, attr.className].join(" ")
+        selected: value == now_val
+        value:    value
+      # data-tooltip, disabled
+      tags[tag] value, ma, option
+
+  menuicon = (icon, attr, option)->
+    m "a.menuicon", attr,
+      m "span.icon-#{icon}"
+      m ".emboss.pull-right", option.badge() if option.badge
+
+  bigicon = (icon, attr, option)->
+    m "section", attr,
+      m ".bigicon",
+        m "span.icon-#{icon}"
+      m ".badge.pull-right", option.badge() if option.badge
+
+  tags = { menuicon, bigicon }
+
+
+btn_item = (params, btn, o)->
+  (value, m_attr = {})->
+    { _id, options, attr } = o
+
+    now_val = params[_id]
+    option = options[value]
+
+    label = option.label
+
+    ma = btn _id, attr, m_attr, option,
+      className: [option?.className, m_attr.className, attr.className].join(" ")
+      selected: value == now_val
+      value:    value
+    # data-tooltip, disabled
+    m "span", ma,
+      label
+      m ".emboss.pull-right", option.badge() if option.badge
+
+
 class InputTie.type.btns extends Input
-  _head:  h_header
+  _head:  h6_head
   _value: c_tap
   _attr:  btn_attr
   _item:  btn_item
@@ -615,7 +634,7 @@ class InputTie.type.btns extends Input
       list
 
 class InputTie.type.btns.multiple extends Input
-  _head:  h_header
+  _head:  h6_head
   _value: c_tap
   _attr:  btn_attr
   _item:  btn_item
@@ -639,37 +658,24 @@ class InputTie.type.btns.multiple extends Input
           m ".emboss.pull-right", option.badge() if option.badge
 
 
-class InputTie.type.icon extends Input
-  _head:  h_header
-  _value: c_icon
-  _attr:  btn_attr
-  _item:  (params, btn, o)->
-    (value, m_attr = {})->
-      { _id, options, attr } = o
+checkbox_multi_item = (params, change, o)->
+  (value, m_attr = {})->
+    { _id, type, options, attr } = o
 
-      now_val = params[_id]
-      option = options[value]
+    # TODO: change value for Set
+    now_vals = params[_id]
+    option = options[value]
 
-      tag = m_attr.tag || "menuicon"
+    val = Mem.unpack[type]
+    uri = Mem.pack[type]
 
-      ma = btn _id, attr, m_attr, option,
-        className: [option?.className, m_attr.className, attr.className].join(" ")
-        selected: value == now_val
-        value:    value
-      # data-tooltip, disabled
-      tags[tag] value, ma, option
-
-  menuicon = (icon, attr, option)->
-    m "a.menuicon", attr,
-      m "span.icon-#{icon}"
-      m ".emboss.pull-right", option.badge() if option.badge
-
-  bigicon = (icon, attr, option)->
-    m "section", attr,
-      m ".bigicon",
-        m "span.icon-#{icon}"
-      m ".badge.pull-right", option.badge() if option.badge
-
-  tags = { menuicon, bigicon }
+    ma = change _id, attr, m_attr, option,
+      className: [option.className, m_attr.className, attr.className].join(" ")
+      type: "checkbox"
+      name: "[#{_id}]#{value}"
+      value: uri value
+      checked: now_vals[value]
+    # data-tooltip, disabled
+    m "input", ma
 
 module.exports = InputTie

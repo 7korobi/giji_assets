@@ -24418,7 +24418,7 @@ module.exports = Vector2D;
 
 },{}],17:[function(require,module,exports){
 (function() {
-  var Input, InputTie, Tie, _, basic_input, btn_attr, btn_item, btn_pick, c_icon, c_tap, change_attr, checkbox_multi_item, custom_validity, debounce, e_checked, e_selected, e_value, form_attr, h_header, h_label, i, input_attr, input_pick, key, labeler, len, m, mithril_config, option_attr, option_pick, ref, submit_btn, submit_form, validity_attr,
+  var Input, InputTie, Tie, _, basic_input, btn_attr, btn_item, btn_pick, c_icon, c_tap, change_attr, checkbox_multi_item, custom_validity, debounce, e_checked, e_selected, e_value, form_attr, h6_head, i, input_attr, input_pick, key, label_attr, label_head, len, m, mithril_config, option_attr, option_pick, ref, submit_btn, submit_form, validity_attr,
     slice = [].slice,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -24429,91 +24429,27 @@ module.exports = Vector2D;
 
   _ = require("lodash");
 
-  btn_item = function(params, btn, o) {
-    return function(value, m_attr) {
-      var _id, attr, label, ma, now_val, option, options;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      _id = o._id, options = o.options, attr = o.attr;
-      now_val = params[_id];
-      option = options[value];
-      label = option.label;
-      ma = btn(_id, attr, m_attr, option, {
-        className: [option != null ? option.className : void 0, m_attr.className, attr.className].join(" "),
-        selected: value === now_val,
-        value: value
-      });
-      return m("span", ma, label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
-    };
-  };
-
-  checkbox_multi_item = function(params, change, o) {
-    return function(value, m_attr) {
-      var _id, attr, ma, now_vals, option, options, type, uri, val;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      _id = o._id, type = o.type, options = o.options, attr = o.attr;
-      now_vals = params[_id];
-      option = options[value];
-      val = Mem.unpack[type];
-      uri = Mem.pack[type];
-      ma = change(_id, attr, m_attr, option, {
-        className: [option.className, m_attr.className, attr.className].join(" "),
-        type: "checkbox",
-        name: "[" + _id + "]" + value,
-        value: uri(value),
-        checked: now_vals[value]
-      });
-      return m("input", ma);
-    };
-  };
-
-  h_label = function(params, o) {
+  label_head = function(params, join, o) {
     return function(m_attr) {
-      var attr, label_attr, ma, name;
+      var ma, name;
       if (m_attr == null) {
         m_attr = {};
       }
-      name = o.name, label_attr = o.label_attr, attr = o.attr;
-      ma = _.assignIn(label_attr, m_attr);
+      name = o.name;
+      ma = join(m_attr);
       return m("label", ma, name);
     };
   };
 
-  h_header = function(params, o) {
+  h6_head = function(params, join, o) {
     return function(m_attr) {
-      var attr, label_attr, ma, name;
+      var ma, name;
       if (m_attr == null) {
         m_attr = {};
       }
-      name = o.name, label_attr = o.label_attr, attr = o.attr;
-      ma = _.assignIn(label_attr, m_attr);
+      name = o.name;
+      ma = join(m_attr);
       return m("h6", ma, name);
-    };
-  };
-
-  labeler = function(params, o) {
-    return function() {
-      var _id, attr, info, label, now_val, options, text;
-      _id = o._id, options = o.options, info = o.info, attr = o.attr, label = o.label;
-      now_val = params[_id];
-      if (info) {
-        if (info.label) {
-          text = info.label;
-        }
-        if (info.off && !now_val) {
-          text = info.off;
-        }
-        if (info.on && now_val) {
-          text = info.on;
-        }
-        if (info.valid && now_val) {
-          text = info.valid;
-        }
-        return m("label", label.attr, text);
-      }
     };
   };
 
@@ -24697,6 +24633,14 @@ module.exports = Vector2D;
         onmouseup: onchange,
         ontouchend: onchange
       });
+    };
+  };
+
+  label_attr = function(val, tie, b) {
+    return function() {
+      var _id, attrs;
+      _id = arguments[0], attrs = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+      return _.assignIn.apply(_, attrs);
     };
   };
 
@@ -25074,25 +25018,26 @@ module.exports = Vector2D;
     };
 
     function Input(tie, format) {
-      var attr, now_val, params;
+      var attr_item, attr_label, now_val, params;
       this.format = format;
       this.tie = tie;
       params = tie.params;
       now_val = function() {
         return tie.params[format._id];
       };
-      attr = this._attr(this._value, tie, this);
+      attr_label = this._attr_label(this._value, tie, this);
       if (this._label) {
-        this.label = this._label(params, format);
+        this.label = this._label(params, attr_label, format);
       }
       if (this._head) {
-        this.head = this._head(params, format);
+        this.head = this._head(params, attr_label, format);
       }
+      attr_item = this._attr(this._value, tie, this);
       if (this._item) {
-        this.item = this._item(params, attr, format);
+        this.item = this._item(params, attr_item, format);
       }
       if (this._field) {
-        this.field = this._field(params, attr, format);
+        this.field = this._field(params, attr_item, format);
       }
       return;
     }
@@ -25101,9 +25046,36 @@ module.exports = Vector2D;
 
     Input.prototype.timeout = 100;
 
-    Input.prototype._head = h_label;
+    Input.prototype._head = label_head;
 
-    Input.prototype._label = labeler;
+    Input.prototype._attr_label = label_attr;
+
+    Input.prototype._label = function(params, join, o) {
+      return function(m_attr) {
+        var _id, attr, info, label, ma, now_val, options, text;
+        if (m_attr == null) {
+          m_attr = {};
+        }
+        _id = o._id, options = o.options, info = o.info, attr = o.attr, label = o.label;
+        now_val = params[_id];
+        if (info) {
+          if (info.label) {
+            text = info.label;
+          }
+          if (info.off && !now_val) {
+            text = info.off;
+          }
+          if (info.on && now_val) {
+            text = info.on;
+          }
+          if (info.valid && now_val) {
+            text = info.valid;
+          }
+          ma = join(m_attr, label.attr);
+          return m("label", ma, text);
+        }
+      };
+    };
 
     return Input;
 
@@ -25367,7 +25339,7 @@ module.exports = Vector2D;
       return checkbox_btn.__super__.constructor.apply(this, arguments);
     }
 
-    checkbox_btn.prototype._head = h_header;
+    checkbox_btn.prototype._head = h6_head;
 
     checkbox_btn.prototype._value = c_tap;
 
@@ -25394,6 +25366,76 @@ module.exports = Vector2D;
 
   })(Input);
 
+  InputTie.type.icon = (function(superClass) {
+    var bigicon, menuicon, tags;
+
+    extend(icon, superClass);
+
+    function icon() {
+      return icon.__super__.constructor.apply(this, arguments);
+    }
+
+    icon.prototype._head = h6_head;
+
+    icon.prototype._value = c_icon;
+
+    icon.prototype._attr = btn_attr;
+
+    icon.prototype._item = function(params, btn, o) {
+      return function(value, m_attr) {
+        var _id, attr, ma, now_val, option, options, tag;
+        if (m_attr == null) {
+          m_attr = {};
+        }
+        _id = o._id, options = o.options, attr = o.attr;
+        now_val = params[_id];
+        option = options[value];
+        tag = m_attr.tag || "menuicon";
+        ma = btn(_id, attr, m_attr, option, {
+          className: [option != null ? option.className : void 0, m_attr.className, attr.className].join(" "),
+          selected: value === now_val,
+          value: value
+        });
+        return tags[tag](value, ma, option);
+      };
+    };
+
+    menuicon = function(icon, attr, option) {
+      return m("a.menuicon", attr, m("span.icon-" + icon), option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
+    };
+
+    bigicon = function(icon, attr, option) {
+      return m("section", attr, m(".bigicon", m("span.icon-" + icon)), option.badge ? m(".badge.pull-right", option.badge()) : void 0);
+    };
+
+    tags = {
+      menuicon: menuicon,
+      bigicon: bigicon
+    };
+
+    return icon;
+
+  })(Input);
+
+  btn_item = function(params, btn, o) {
+    return function(value, m_attr) {
+      var _id, attr, label, ma, now_val, option, options;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      _id = o._id, options = o.options, attr = o.attr;
+      now_val = params[_id];
+      option = options[value];
+      label = option.label;
+      ma = btn(_id, attr, m_attr, option, {
+        className: [option != null ? option.className : void 0, m_attr.className, attr.className].join(" "),
+        selected: value === now_val,
+        value: value
+      });
+      return m("span", ma, label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
+    };
+  };
+
   InputTie.type.btns = (function(superClass) {
     extend(btns, superClass);
 
@@ -25401,7 +25443,7 @@ module.exports = Vector2D;
       return btns.__super__.constructor.apply(this, arguments);
     }
 
-    btns.prototype._head = h_header;
+    btns.prototype._head = h6_head;
 
     btns.prototype._value = c_tap;
 
@@ -25459,7 +25501,7 @@ module.exports = Vector2D;
       return multiple.__super__.constructor.apply(this, arguments);
     }
 
-    multiple.prototype._head = h_header;
+    multiple.prototype._head = h6_head;
 
     multiple.prototype._value = c_tap;
 
@@ -25497,56 +25539,27 @@ module.exports = Vector2D;
 
   })(Input);
 
-  InputTie.type.icon = (function(superClass) {
-    var bigicon, menuicon, tags;
-
-    extend(icon, superClass);
-
-    function icon() {
-      return icon.__super__.constructor.apply(this, arguments);
-    }
-
-    icon.prototype._head = h_header;
-
-    icon.prototype._value = c_icon;
-
-    icon.prototype._attr = btn_attr;
-
-    icon.prototype._item = function(params, btn, o) {
-      return function(value, m_attr) {
-        var _id, attr, ma, now_val, option, options, tag;
-        if (m_attr == null) {
-          m_attr = {};
-        }
-        _id = o._id, options = o.options, attr = o.attr;
-        now_val = params[_id];
-        option = options[value];
-        tag = m_attr.tag || "menuicon";
-        ma = btn(_id, attr, m_attr, option, {
-          className: [option != null ? option.className : void 0, m_attr.className, attr.className].join(" "),
-          selected: value === now_val,
-          value: value
-        });
-        return tags[tag](value, ma, option);
-      };
+  checkbox_multi_item = function(params, change, o) {
+    return function(value, m_attr) {
+      var _id, attr, ma, now_vals, option, options, type, uri, val;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      _id = o._id, type = o.type, options = o.options, attr = o.attr;
+      now_vals = params[_id];
+      option = options[value];
+      val = Mem.unpack[type];
+      uri = Mem.pack[type];
+      ma = change(_id, attr, m_attr, option, {
+        className: [option.className, m_attr.className, attr.className].join(" "),
+        type: "checkbox",
+        name: "[" + _id + "]" + value,
+        value: uri(value),
+        checked: now_vals[value]
+      });
+      return m("input", ma);
     };
-
-    menuicon = function(icon, attr, option) {
-      return m("a.menuicon", attr, m("span.icon-" + icon), option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
-    };
-
-    bigicon = function(icon, attr, option) {
-      return m("section", attr, m(".bigicon", m("span.icon-" + icon)), option.badge ? m(".badge.pull-right", option.badge()) : void 0);
-    };
-
-    tags = {
-      menuicon: menuicon,
-      bigicon: bigicon
-    };
-
-    return icon;
-
-  })(Input);
+  };
 
   module.exports = InputTie;
 
