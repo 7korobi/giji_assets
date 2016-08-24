@@ -24768,14 +24768,12 @@ module.exports = Vector2D;
       }
       if (elem.checkValidity == null) {
         elem.checkValidity = function() {
-          console.warn(id + " button validity");
           return this.validity.valid;
         };
       }
       if (elem.setCustomValidity == null) {
         elem.setCustomValidity = function(validationMessage) {
           this.validationMessage = validationMessage;
-          console.warn(id + " button set error " + this.validationMessage);
           if (this.validationMessage) {
             this.validity.customError = true;
             return this.validity.valid = false;

@@ -213,10 +213,8 @@ class InputTie
     elem.validity ?=
       valid: true
     elem.checkValidity ?= ->
-      console.warn "#{id} button validity"
       @validity.valid
     elem.setCustomValidity ?= (@validationMessage)->
-      console.warn "#{id} button set error #{@validationMessage}"
       if @validationMessage
         @validity.customError = true
         @validity.valid = false
