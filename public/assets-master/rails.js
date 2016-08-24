@@ -2458,6 +2458,23 @@
         }
         return results;
       };
+      v.tie.input.say_count.label_for = function(o) {
+        return m.trust(o.help);
+      };
+      v.tie.input.mob_type.label_for = function(o) {
+        return m.trust(o.help);
+      };
+      v.tie.input.game_rule.label_for = function(o) {
+        return m("ul", m.trust(o.help));
+      };
+      v.tie.input.trs_type.label_for = function(o) {
+        return m("div", m.trust(o.help));
+      };
+      v.tie.input.rating.label_for = function(o) {
+        return m("img", {
+          src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_" + o._id + ".png"
+        });
+      };
       v.player_summary = function(form) {
         var extra, human, minus, player, ref, vdoms;
         vdoms = [];
@@ -2598,17 +2615,7 @@
         href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"
       }, "ルール"), "と", m('a', {
         href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"
-      }, "心構え"), "なんだ。編集していい部分は、自由に変更してかまわない。"))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "設定"), m("p", v.tie.input.trs_type.field(), v.tie.input.trs_type.label(function(o) {
-        return m("div", m.trust(o.help));
-      })), m("p", v.tie.input.rating.field(), v.tie.input.rating.label(function(o) {
-        return m("img", {
-          src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_" + o._id + ".png"
-        });
-      })), m("p", v.tie.input.say_count.field(), v.tie.input.say_count.label(function(o) {
-        return m.trust(o.help);
-      })), v.tie.input.time.field(), v.tie.input.time.label(), m("p", v.tie.input.interval.field(), v.tie.input.interval.label()), m("p", v.tie.input.entry_password.field(), v.tie.input.entry_password.label()))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "ゲームルール"), v.tie.input.game_rule.field(), v.tie.input.game_rule.label(function(o) {
-        return m("ul", m.trust(o.help));
-      }), (function() {
+      }, "心構え"), "なんだ。編集していい部分は、自由に変更してかまわない。"))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "設定"), m("p", v.tie.input.trs_type.field(), v.tie.input.trs_type.label()), m("p", v.tie.input.rating.field(), v.tie.input.rating.label()), m("p", v.tie.input.say_count.field(), v.tie.input.say_count.label()), v.tie.input.time.field(), v.tie.input.time.label(), m("p", v.tie.input.interval.field(), v.tie.input.interval.label()), m("p", v.tie.input.entry_password.field(), v.tie.input.entry_password.label()))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "ゲームルール"), v.tie.input.game_rule.field(), v.tie.input.game_rule.label(), (function() {
         var i, len, ref, results;
         ref = v.tie.input.checkboxes;
         results = [];
@@ -2617,9 +2624,7 @@
           results.push(m("p", chk.field(), chk.label()));
         }
         return results;
-      })())), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), m("p", v.tie.input.mob_type.field(), v.tie.input.mob_type.label(function(o) {
-        return m.trust(o.help);
-      })), m("p", v.tie.input.role_table.field()), v.player_summary(v.params))), (function() {
+      })())), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), m("p", v.tie.input.mob_type.field(), v.tie.input.mob_type.label()), m("p", v.tie.input.role_table.field()), v.player_summary(v.params))), (function() {
         switch (v.params.role_table) {
           case void 0:
             return m(".WSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), m("p", "まずは、役職配分を選択してください。")));

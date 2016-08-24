@@ -25046,35 +25046,47 @@ module.exports = Vector2D;
 
     Input.prototype.timeout = 100;
 
+    Input.prototype.label_for = function(o) {};
+
     Input.prototype._head = label_head;
 
     Input.prototype._attr_label = label_attr;
 
     Input.prototype._label = function(params, join, o) {
-      return function(m_attr) {
-        var _id, attr, info, label, ma, now_val, options, text;
-        if (m_attr == null) {
-          m_attr = {};
-        }
-        _id = o._id, options = o.options, info = o.info, attr = o.attr, label = o.label;
-        now_val = params[_id];
-        if (info) {
-          if (info.label) {
-            text = info.label;
+      return (function(_this) {
+        return function(m_attr) {
+          var _id, attr, info, label, ma, now_val, option, options, text;
+          if (m_attr == null) {
+            m_attr = {};
           }
-          if (info.off && !now_val) {
-            text = info.off;
+          _id = o._id, options = o.options, info = o.info, attr = o.attr, label = o.label;
+          now_val = params[_id];
+          if (options) {
+            option = options[now_val];
           }
-          if (info.on && now_val) {
-            text = info.on;
+          if (option && _this.label_for) {
+            if (option && _this.label_for) {
+              return _this.label_for(option);
+            }
           }
-          if (info.valid && now_val) {
-            text = info.valid;
+          if (info) {
+            if (info.label) {
+              text = info.label;
+            }
+            if (info.off && !now_val) {
+              text = info.off;
+            }
+            if (info.on && now_val) {
+              text = info.on;
+            }
+            if (info.valid && now_val) {
+              text = info.valid;
+            }
+            ma = join(_id, m_attr, label.attr);
+            return m("label", ma, text);
           }
-          ma = join(m_attr, label.attr);
-          return m("label", ma, text);
-        }
-      };
+        };
+      })(this);
     };
 
     return Input;

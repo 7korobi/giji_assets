@@ -122,6 +122,16 @@ doc.component.vmake_form =
       for o in Mem.Query.roles.finds cards
         v.params[o.cmd].push o._id
 
+    v.tie.input.say_count.label_for = (o)-> m.trust o.help
+    v.tie.input.mob_type.label_for = (o)-> m.trust o.help
+    v.tie.input.game_rule.label_for = (o)->
+      m "ul",
+        m.trust o.help
+    v.tie.input.trs_type.label_for = (o)->
+      m "div",
+        m.trust o.help
+    v.tie.input.rating.label_for = (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
+
     v.player_summary = (form)->
       vdoms = []
       if v.size
@@ -253,17 +263,15 @@ doc.component.vmake_form =
             m "legend.emboss", "設定"
             m "p",
               v.tie.input.trs_type.field()
-              v.tie.input.trs_type.label (o)->
-                m "div",
-                  m.trust o.help
+              v.tie.input.trs_type.label()
 
             m "p",
               v.tie.input.rating.field()
-              v.tie.input.rating.label (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
+              v.tie.input.rating.label()
 
             m "p",
               v.tie.input.say_count.field()
-              v.tie.input.say_count.label (o)-> m.trust o.help
+              v.tie.input.say_count.label()
 
             v.tie.input.time.field()
             v.tie.input.time.label()
@@ -278,9 +286,7 @@ doc.component.vmake_form =
           m "fieldset.msg",
             m "legend.emboss", "ゲームルール"
             v.tie.input.game_rule.field()
-            v.tie.input.game_rule.label (o)->
-              m "ul",
-                m.trust o.help
+            v.tie.input.game_rule.label()
             for chk in v.tie.input.checkboxes
               m "p",
                 chk.field()
@@ -291,7 +297,7 @@ doc.component.vmake_form =
             m "legend.emboss", "編成"
             m "p",
               v.tie.input.mob_type.field()
-              v.tie.input.mob_type.label (o)-> m.trust o.help
+              v.tie.input.mob_type.label()
 
             m "p",
               v.tie.input.role_table.field()

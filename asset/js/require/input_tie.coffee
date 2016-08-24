@@ -367,20 +367,24 @@ class Input
 
   @timeout: 1000
   timeout: 100
+  label_for: (o)->
   _head:  label_head
   _attr_label: label_attr
-
   _label: (params, join, o)->
-    (m_attr = {})->
+    (m_attr = {})=>
       { _id, options, info, attr, label } = o
 
       now_val = params[_id]
+      option = options[now_val] if options
+
+      if option && @label_for
+        return @label_for(option) if option && @label_for
       if info
         text = info.label if info.label
         text = info.off   if info.off   && ! now_val
         text = info.on    if info.on    && now_val
         text = info.valid if info.valid && now_val
-        ma = join m_attr, label.attr
+        ma = join _id, m_attr, label.attr
         m "label", ma, text
 
 
