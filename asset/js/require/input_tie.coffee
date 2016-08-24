@@ -439,10 +439,8 @@ class basic_input extends Input
       # data-tooltip, disabled
       m "input", ma
 
-InputTie.type.password = basic_input
-InputTie.type.number = basic_input
-InputTie.type.time = basic_input
-InputTie.type.text = basic_input
+for key in ["hidden", "text", "search", "tel", "url", "email", "password", "datetime", "date", "month", "week", "time", "datetime-local", "number", "range", "color"]
+  InputTie.type[key] = basic_input
 
 
 class InputTie.type.textarea extends Input

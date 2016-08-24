@@ -24418,7 +24418,7 @@ module.exports = Vector2D;
 
 },{}],17:[function(require,module,exports){
 (function() {
-  var Input, InputTie, Tie, _, basic_input, btn_attr, btn_item, btn_pick, c_icon, c_tap, change_attr, checkbox_multi_item, custom_validity, debounce, e_checked, e_selected, e_value, form_attr, h_header, h_label, input_attr, input_pick, labeler, m, mithril_config, option_attr, option_pick, submit_btn, submit_form, validity_attr,
+  var Input, InputTie, Tie, _, basic_input, btn_attr, btn_item, btn_pick, c_icon, c_tap, change_attr, checkbox_multi_item, custom_validity, debounce, e_checked, e_selected, e_value, form_attr, h_header, h_label, i, input_attr, input_pick, key, labeler, len, m, mithril_config, option_attr, option_pick, ref, submit_btn, submit_form, validity_attr,
     slice = [].slice,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -25145,13 +25145,11 @@ module.exports = Vector2D;
 
   })(Input);
 
-  InputTie.type.password = basic_input;
-
-  InputTie.type.number = basic_input;
-
-  InputTie.type.time = basic_input;
-
-  InputTie.type.text = basic_input;
+  ref = ["hidden", "text", "search", "tel", "url", "email", "password", "datetime", "date", "month", "week", "time", "datetime-local", "number", "range", "color"];
+  for (i = 0, len = ref.length; i < len; i++) {
+    key = ref[i];
+    InputTie.type[key] = basic_input;
+  }
 
   InputTie.type.textarea = (function(superClass) {
     extend(textarea, superClass);
