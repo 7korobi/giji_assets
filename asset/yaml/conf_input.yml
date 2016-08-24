@@ -1,4 +1,56 @@
 
+menu: &menu
+  sean: menu
+  attr:
+    required: true
+    type: btns
+  current: all
+
+menu_order:
+  <<: *menu
+  name: 並び順
+
+menu_chr_set:
+  <<: *menu
+  name: キャラセット
+
+menu_rating:
+  <<: *menu
+  name: こだわり
+
+menu_game:
+  <<: *menu
+  name: ルール
+
+menu_folder:
+  <<: *menu
+  name: 州
+
+menu_say_limit:
+  <<: *menu
+  name: 発言制限
+
+menu_update_at:
+  <<: *menu
+  name: 更新時刻
+
+menu_update_interval:
+  <<: *menu
+  name: 更新間隔
+
+menu_event_type:
+  <<: *menu
+  name: 事件
+
+menu_role_type:
+  <<: *menu
+  name: 役職
+
+menu_player_length:
+  <<: *menu
+  name: 人数
+
+
 potofs_order:
   sean: potof
   attr:
@@ -125,8 +177,9 @@ open:
     name: open
     type: checkbox
   name: 公開情報
-  help_on: 公開情報つき
-  help_off: 秘密のみ
+  info:
+    on: 公開情報つき
+    off: 秘密のみ
 
 human:
   sean: message
@@ -135,8 +188,9 @@ human:
     name: human
     type: checkbox
   name: "/*中の人*/"
-  help_on: "/*中の人*/"
-  help_off: "/**/"
+  info:
+    on: "/*中の人*/"
+    off: "/**/"
 
 tag:
   sean: chr
@@ -160,8 +214,10 @@ vote_sign:
     name: votetype
     type: checkbox
   name: 記名投票
-  help_on: 記名で投票　※集計結果に投票者が記されます
-  help_off: 匿名で投票　※集計結果は人数のみになります
+  options:
+  info:
+    on: 記名で投票　※集計結果に投票者が記されます
+    off: 匿名で投票　※集計結果は人数のみになります
 
 start_auto:
   sean: vil
@@ -169,8 +225,9 @@ start_auto:
     name: starttype
     type: checkbox
   name: 自動開始
-  help_on: 更新時に、最少催行人数が集まっていると開始
-  help_off: 村立て人が開始ボタンを押すと開始
+  info:
+    on: 更新時に、最少催行人数が集まっていると開始
+    off: 村立て人が開始ボタンを押すと開始
 
 seq_event:
   sean: vil
@@ -180,8 +237,9 @@ seq_event:
   query:
     SOW: seqevent
   name: 固定事件簿
-  help_on:  事件が順序どおりに発生する
-  help_off: 事件はランダムに選ばれる
+  info:
+    on:  事件が順序どおりに発生する
+    off: 事件はランダムに選ばれる
 
 show_id:
   sean: vil
@@ -191,8 +249,9 @@ show_id:
   query:
     SOW: showid
   name: ID公開
-  help_on:  進行中にユーザーIDを公開する
-  help_off: エピローグまで、ユーザーIDを秘密にする
+  info:
+    on:  進行中にユーザーIDを公開する
+    off: エピローグまで、ユーザーIDを秘密にする
 
 entrust:
   sean: vil
@@ -203,8 +262,9 @@ entrust:
     SOW: entrust
   name: 委任投票
   current: true
-  help_on:  委任投票ができる
-  help_off: 委任投票ができない
+  info:
+    on:  委任投票ができる
+    off: 委任投票ができない
 
 not_select_role:
   sean: vil
@@ -215,8 +275,9 @@ not_select_role:
     SOW: noselrole
   name: 役職希望
   current: true
-  help_on:  役職希望を無視する
-  help_off: 役職希望を受け付ける
+  info:
+    on:  役職希望を無視する
+    off: 役職希望を受け付ける
 
 random_target:
   sean: vil
@@ -226,8 +287,9 @@ random_target:
   query:
     SOW: randomtarget
   name: ランダム
-  help_on:  投票・能力の対象に「ランダム」が選択できる
-  help_off: 投票・能力の対象は「ランダム」にできない
+  info:
+    on:  投票・能力の対象に「ランダム」が選択できる
+    off: 投票・能力の対象は「ランダム」にできない
 
 undead_talk:
   sean: vil
@@ -237,8 +299,9 @@ undead_talk:
   query:
     SOW: undead
   name: 幽界トーク
-  help_on:  狼・妖精と死者との間で、会話ができる
-  help_off: 狼・妖精と死者は会話を交わせない
+  info:
+    on:  狼・妖精と死者との間で、会話ができる
+    off: 狼・妖精と死者は会話を交わせない
 
 aiming_talk:
   sean: vil
@@ -248,8 +311,9 @@ aiming_talk:
   query:
     SOW: aiming
   name: 内緒話
-  help_on:  ふたりだけの内緒話をすることができる
-  help_off: ふたりだけの内緒話は選べない
+  info:
+    on:  ふたりだけの内緒話をすることができる
+    off: ふたりだけの内緒話は選べない
 
 search:
   sean: chr_sets
@@ -259,8 +323,8 @@ search:
     size: 20
     maxlength: 20
   name:
-  help_on:
-  help_off:
+  info:
+    label: 発言中の言葉を検索します。
 
 vil_name:
   sean: vil
@@ -268,14 +332,13 @@ vil_name:
     name: vname
     type: text
     size: 20
+    minlength:  6
     maxlength: 20
     required: true
-    pattern: ".{6,20}"
   query:
     SOW: vname
   name:
-  help_on:
-  help_off:
+  info:
 
 vil_comment:
   sean: vil
@@ -288,8 +351,6 @@ vil_comment:
   query:
     SOW: vcomment
   name:
-  help_on:
-  help_off:
 
 uid:
   sean: vil
@@ -297,10 +358,10 @@ uid:
     type: text
     name: uid
     size: 10
+    minlength:  2
     maxlength: 20
+    required: true
   name: アカウント
-  help_on:
-  help_off:
 
 pwd:
   sean: vil
@@ -308,10 +369,10 @@ pwd:
     type: password
     name: pwd
     size: 10
+    minlength:  3
     maxlength: 20
+    required: true
   name: パスワード
-  help_on:
-  help_off:
 
 entry_password:
   sean: vil
@@ -319,13 +380,15 @@ entry_password:
     type: text
     name: entrypwd
     size: 8
+    minlength: 1
     maxlength: 8
-    pattern: "[a-zA-Z0-9]{0,8}"
+    pattern: "[a-zA-Z0-9]+"
   query:
     SOW: entrypwd
   name: 参加制限
-  help_on:  参加者はパスワードを入力する
-  help_off: 参加制限しない　※パスワードをつけると、鍵付きの村になります。
+  info:
+    valid: 参加者はパスワードを入力する　※鍵付きの村です。
+    off: 参加制限しない　※パスワードをつけると、鍵付きの村になります。
 
 player_count:
   sean: vil
@@ -340,8 +403,8 @@ player_count:
   query:
     SOW: vplcnt
   name: 定員
-  help_on:  人が定員です。
-  help_off: 定員　※入力してください。
+  info:
+    label: 人が定員です。
 
 player_count_start:
   sean: vil
@@ -356,8 +419,8 @@ player_count_start:
   query:
     SOW: vplcntstart
   name: 最少催行人員
-  help_on:  人以上で開始します。
-  help_off: 最少催行人数　※入力してください。
+  info:
+    label: 人以上で開始します。
 
 time:
   sean: vil
@@ -368,8 +431,8 @@ time:
     required: true
   current: "22:30"
   name: 更新時刻
-  help_on:  に更新します。
-  help_off: 更新時刻　※入力してください。
+  info:
+    label: に更新します。
 
 interval:
   sean: vil
@@ -385,8 +448,8 @@ interval:
     2: 48時間
     1: 24時間
   name: 更新間隔
-  help_on:  ごとに更新します。
-  help_off: ※入力してください。
+  info:
+    label: ごとに更新します。
 
 game_rule:
   sean: vil
@@ -397,8 +460,6 @@ game_rule:
   query:
     SOW: game
   name: ゲームルール
-  help_on: ""
-  help_off: ※入力してください。
 
 rating:
   sean: vil
@@ -410,8 +471,19 @@ rating:
     SOW: rating
   current: default
   name: こだわり
-  help_on: ""
-  help_off: ※入力してください。
+
+extra:
+  sean: vil
+  attr:
+    type:
+role:
+  sean: vil
+
+gift:
+  sean: vil
+
+trap:
+  sean: vil
 
 chr_set:
   sean: vil
@@ -420,8 +492,6 @@ chr_set:
     name: chr_set
     required: true
   name: 登場人物
-  help_on: ""
-  help_off: ※入力してください。
 
 chr_npc:
   sean: vil
@@ -432,8 +502,6 @@ chr_npc:
   query:
     SOW: trsid
   name: 登場人物とNPC
-  help_on: ""
-  help_off: ※入力してください。
 
 say_count:
   sean: vil
@@ -444,8 +512,6 @@ say_count:
   query:
     SOW: saycnttype
   name: 発言制限
-  help_on: ""
-  help_off: ※入力してください。
 
 role_table:
   sean: vil
@@ -457,8 +523,6 @@ role_table:
     SOW: roletable
   current: default
   name: 役職配分
-  help_on: ""
-  help_off: ※入力してください。
 
 mob_type:
   sean: vil
@@ -467,8 +531,6 @@ mob_type:
     name: mob
     required: true
   name: 見物スタイル
-  help_on: ""
-  help_off: ※入力してください。
 
 trs_type:
   sean: vil
@@ -480,5 +542,3 @@ trs_type:
     SOW: trsid
   current: all
   name: 地の文章
-  help_on: ""
-  help_off: ※入力してください。

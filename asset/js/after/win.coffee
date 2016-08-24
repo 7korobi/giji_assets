@@ -98,7 +98,7 @@ if gon?.potofs?
 if gon?.stories?
   Mem.Collection.story.set gon.stories
   win.mount "#stories", (dom)->
-    menu.tie.do_change "icon", "resize-normal"
+    menu.do_change "icon", "resize-normal"
     doc.component.stories
 
 

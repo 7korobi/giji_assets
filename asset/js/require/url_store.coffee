@@ -102,7 +102,7 @@ class Url
       path = path.replace ///:#{key}///gi, serial Url.params[key]
     encode path
 
-  values: (hash)->
+  values: (hash = {})->
     for key in @keys
       hash[key] || Url.params[key]
 

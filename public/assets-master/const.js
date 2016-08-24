@@ -2770,6 +2770,113 @@
   });
 
   Mem.Collection.input.set({
+    "menu": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all"
+    },
+    "menu_order": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all",
+      "name": "並び順"
+    },
+    "menu_chr_set": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all",
+      "name": "キャラセット"
+    },
+    "menu_rating": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all",
+      "name": "こだわり"
+    },
+    "menu_game": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all",
+      "name": "ルール"
+    },
+    "menu_folder": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all",
+      "name": "州"
+    },
+    "menu_say_limit": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all",
+      "name": "発言制限"
+    },
+    "menu_update_at": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all",
+      "name": "更新時刻"
+    },
+    "menu_update_interval": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all",
+      "name": "更新間隔"
+    },
+    "menu_event_type": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all",
+      "name": "事件"
+    },
+    "menu_role_type": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all",
+      "name": "役職"
+    },
+    "menu_player_length": {
+      "sean": "menu",
+      "attr": {
+        "required": true,
+        "type": "btns"
+      },
+      "current": "all",
+      "name": "人数"
+    },
     "potofs_order": {
       "sean": "potof",
       "attr": {
@@ -2922,8 +3029,10 @@
         "type": "checkbox"
       },
       "name": "公開情報",
-      "help_on": "公開情報つき",
-      "help_off": "秘密のみ"
+      "info": {
+        "on": "公開情報つき",
+        "off": "秘密のみ"
+      }
     },
     "human": {
       "sean": "message",
@@ -2933,8 +3042,10 @@
         "type": "checkbox"
       },
       "name": "/*中の人*/",
-      "help_on": "/*中の人*/",
-      "help_off": "/**/"
+      "info": {
+        "on": "/*中の人*/",
+        "off": "/**/"
+      }
     },
     "tag": {
       "sean": "chr",
@@ -2960,8 +3071,11 @@
         "type": "checkbox"
       },
       "name": "記名投票",
-      "help_on": "記名で投票　※集計結果に投票者が記されます",
-      "help_off": "匿名で投票　※集計結果は人数のみになります"
+      "options": null,
+      "info": {
+        "on": "記名で投票　※集計結果に投票者が記されます",
+        "off": "匿名で投票　※集計結果は人数のみになります"
+      }
     },
     "start_auto": {
       "sean": "vil",
@@ -2970,8 +3084,10 @@
         "type": "checkbox"
       },
       "name": "自動開始",
-      "help_on": "更新時に、最少催行人数が集まっていると開始",
-      "help_off": "村立て人が開始ボタンを押すと開始"
+      "info": {
+        "on": "更新時に、最少催行人数が集まっていると開始",
+        "off": "村立て人が開始ボタンを押すと開始"
+      }
     },
     "seq_event": {
       "sean": "vil",
@@ -2983,8 +3099,10 @@
         "SOW": "seqevent"
       },
       "name": "固定事件簿",
-      "help_on": "事件が順序どおりに発生する",
-      "help_off": "事件はランダムに選ばれる"
+      "info": {
+        "on": "事件が順序どおりに発生する",
+        "off": "事件はランダムに選ばれる"
+      }
     },
     "show_id": {
       "sean": "vil",
@@ -2996,8 +3114,10 @@
         "SOW": "showid"
       },
       "name": "ID公開",
-      "help_on": "進行中にユーザーIDを公開する",
-      "help_off": "エピローグまで、ユーザーIDを秘密にする"
+      "info": {
+        "on": "進行中にユーザーIDを公開する",
+        "off": "エピローグまで、ユーザーIDを秘密にする"
+      }
     },
     "entrust": {
       "sean": "vil",
@@ -3010,8 +3130,10 @@
       },
       "name": "委任投票",
       "current": true,
-      "help_on": "委任投票ができる",
-      "help_off": "委任投票ができない"
+      "info": {
+        "on": "委任投票ができる",
+        "off": "委任投票ができない"
+      }
     },
     "not_select_role": {
       "sean": "vil",
@@ -3024,8 +3146,10 @@
       },
       "name": "役職希望",
       "current": true,
-      "help_on": "役職希望を無視する",
-      "help_off": "役職希望を受け付ける"
+      "info": {
+        "on": "役職希望を無視する",
+        "off": "役職希望を受け付ける"
+      }
     },
     "random_target": {
       "sean": "vil",
@@ -3037,8 +3161,10 @@
         "SOW": "randomtarget"
       },
       "name": "ランダム",
-      "help_on": "投票・能力の対象に「ランダム」が選択できる",
-      "help_off": "投票・能力の対象は「ランダム」にできない"
+      "info": {
+        "on": "投票・能力の対象に「ランダム」が選択できる",
+        "off": "投票・能力の対象は「ランダム」にできない"
+      }
     },
     "undead_talk": {
       "sean": "vil",
@@ -3050,8 +3176,10 @@
         "SOW": "undead"
       },
       "name": "幽界トーク",
-      "help_on": "狼・妖精と死者との間で、会話ができる",
-      "help_off": "狼・妖精と死者は会話を交わせない"
+      "info": {
+        "on": "狼・妖精と死者との間で、会話ができる",
+        "off": "狼・妖精と死者は会話を交わせない"
+      }
     },
     "aiming_talk": {
       "sean": "vil",
@@ -3063,8 +3191,10 @@
         "SOW": "aiming"
       },
       "name": "内緒話",
-      "help_on": "ふたりだけの内緒話をすることができる",
-      "help_off": "ふたりだけの内緒話は選べない"
+      "info": {
+        "on": "ふたりだけの内緒話をすることができる",
+        "off": "ふたりだけの内緒話は選べない"
+      }
     },
     "search": {
       "sean": "chr_sets",
@@ -3075,8 +3205,9 @@
         "maxlength": 20
       },
       "name": null,
-      "help_on": null,
-      "help_off": null
+      "info": {
+        "label": "発言中の言葉を検索します。"
+      }
     },
     "vil_name": {
       "sean": "vil",
@@ -3084,16 +3215,15 @@
         "name": "vname",
         "type": "text",
         "size": 20,
+        "minlength": 6,
         "maxlength": 20,
-        "required": true,
-        "pattern": ".{6,20}"
+        "required": true
       },
       "query": {
         "SOW": "vname"
       },
       "name": null,
-      "help_on": null,
-      "help_off": null
+      "info": null
     },
     "vil_comment": {
       "sean": "vil",
@@ -3107,9 +3237,7 @@
       "query": {
         "SOW": "vcomment"
       },
-      "name": null,
-      "help_on": null,
-      "help_off": null
+      "name": null
     },
     "uid": {
       "sean": "vil",
@@ -3117,11 +3245,11 @@
         "type": "text",
         "name": "uid",
         "size": 10,
-        "maxlength": 20
+        "minlength": 2,
+        "maxlength": 20,
+        "required": true
       },
-      "name": "アカウント",
-      "help_on": null,
-      "help_off": null
+      "name": "アカウント"
     },
     "pwd": {
       "sean": "vil",
@@ -3129,11 +3257,11 @@
         "type": "password",
         "name": "pwd",
         "size": 10,
-        "maxlength": 20
+        "minlength": 3,
+        "maxlength": 20,
+        "required": true
       },
-      "name": "パスワード",
-      "help_on": null,
-      "help_off": null
+      "name": "パスワード"
     },
     "entry_password": {
       "sean": "vil",
@@ -3141,15 +3269,18 @@
         "type": "text",
         "name": "entrypwd",
         "size": 8,
+        "minlength": 1,
         "maxlength": 8,
-        "pattern": "[a-zA-Z0-9]{0,8}"
+        "pattern": "[a-zA-Z0-9]+"
       },
       "query": {
         "SOW": "entrypwd"
       },
       "name": "参加制限",
-      "help_on": "参加者はパスワードを入力する",
-      "help_off": "参加制限しない　※パスワードをつけると、鍵付きの村になります。"
+      "info": {
+        "valid": "参加者はパスワードを入力する　※鍵付きの村です。",
+        "off": "参加制限しない　※パスワードをつけると、鍵付きの村になります。"
+      }
     },
     "player_count": {
       "sean": "vil",
@@ -3166,8 +3297,9 @@
         "SOW": "vplcnt"
       },
       "name": "定員",
-      "help_on": "人が定員です。",
-      "help_off": "定員　※入力してください。"
+      "info": {
+        "label": "人が定員です。"
+      }
     },
     "player_count_start": {
       "sean": "vil",
@@ -3184,8 +3316,9 @@
         "SOW": "vplcntstart"
       },
       "name": "最少催行人員",
-      "help_on": "人以上で開始します。",
-      "help_off": "最少催行人数　※入力してください。"
+      "info": {
+        "label": "人以上で開始します。"
+      }
     },
     "time": {
       "sean": "vil",
@@ -3197,8 +3330,9 @@
       },
       "current": "22:30",
       "name": "更新時刻",
-      "help_on": "に更新します。",
-      "help_off": "更新時刻　※入力してください。"
+      "info": {
+        "label": "に更新します。"
+      }
     },
     "interval": {
       "sean": "vil",
@@ -3217,8 +3351,9 @@
         "3": "72時間"
       },
       "name": "更新間隔",
-      "help_on": "ごとに更新します。",
-      "help_off": "※入力してください。"
+      "info": {
+        "label": "ごとに更新します。"
+      }
     },
     "game_rule": {
       "sean": "vil",
@@ -3230,9 +3365,7 @@
       "query": {
         "SOW": "game"
       },
-      "name": "ゲームルール",
-      "help_on": "",
-      "help_off": "※入力してください。"
+      "name": "ゲームルール"
     },
     "rating": {
       "sean": "vil",
@@ -3245,9 +3378,7 @@
         "SOW": "rating"
       },
       "current": "default",
-      "name": "こだわり",
-      "help_on": "",
-      "help_off": "※入力してください。"
+      "name": "こだわり"
     },
     "chr_set": {
       "sean": "vil",
@@ -3256,9 +3387,7 @@
         "name": "chr_set",
         "required": true
       },
-      "name": "登場人物",
-      "help_on": "",
-      "help_off": "※入力してください。"
+      "name": "登場人物"
     },
     "chr_npc": {
       "sean": "vil",
@@ -3270,9 +3399,7 @@
       "query": {
         "SOW": "trsid"
       },
-      "name": "登場人物とNPC",
-      "help_on": "",
-      "help_off": "※入力してください。"
+      "name": "登場人物とNPC"
     },
     "say_count": {
       "sean": "vil",
@@ -3284,9 +3411,7 @@
       "query": {
         "SOW": "saycnttype"
       },
-      "name": "発言制限",
-      "help_on": "",
-      "help_off": "※入力してください。"
+      "name": "発言制限"
     },
     "role_table": {
       "sean": "vil",
@@ -3299,9 +3424,7 @@
         "SOW": "roletable"
       },
       "current": "default",
-      "name": "役職配分",
-      "help_on": "",
-      "help_off": "※入力してください。"
+      "name": "役職配分"
     },
     "mob_type": {
       "sean": "vil",
@@ -3310,9 +3433,7 @@
         "name": "mob",
         "required": true
       },
-      "name": "見物スタイル",
-      "help_on": "",
-      "help_off": "※入力してください。"
+      "name": "見物スタイル"
     },
     "trs_type": {
       "sean": "vil",
@@ -3325,9 +3446,7 @@
         "SOW": "trsid"
       },
       "current": "all",
-      "name": "地の文章",
-      "help_on": "",
-      "help_off": "※入力してください。"
+      "name": "地の文章"
     }
   });
 
@@ -12348,7 +12467,7 @@
 }).call(this);
 
 (function(){
-  var Validator, point, text, summary, required, secret, no_player, action, cards, input, sow_auth, sow_auth_validator, input_validator, cards_validator, announce, character, relative, combat, validate, slice$ = [].slice, out$ = typeof exports != 'undefined' && exports || this;
+  var Validator, point, text, summary, required, secret, no_player, action, input, input_validator, announce, character, relative, combat, validate, out$ = typeof exports != 'undefined' && exports || this;
   Validator = (function(){
     Validator.displayName = 'Validator';
     var prototype = Validator.prototype, constructor = Validator;
@@ -12459,95 +12578,6 @@
       }
     }
   };
-  cards = function(arg$){
-    var error, info, ref$, role, gift, extra, mob_type, game_rule, start_auto, player_count, player_count_start, full, minus, player;
-    error = arg$.error, info = arg$.info;
-    ref$ = this.params, role = ref$.role, gift = ref$.gift, extra = ref$.extra, mob_type = ref$.mob_type, game_rule = ref$.game_rule, start_auto = ref$.start_auto, player_count = ref$.player_count, player_count_start = ref$.player_count_start;
-    full = slice$.call(role).concat(slice$.call(gift));
-    minus = 0;
-    minus += 2 * Mem.Query.roles.minus2(role).length;
-    minus += 1 * Mem.Query.roles.minus1(full).length;
-    player = Mem.Query.roles.players(role).length;
-    this.size = {
-      drop: player - player_count,
-      wolf: Mem.Query.roles.wolfs(full).length,
-      minus: minus,
-      extra: extra.length,
-      human: Mem.Query.roles.humans(role).length - minus,
-      player: player,
-      robber: Mem.Query.roles.robbers(role).length,
-      villager: Mem.Query.roles.villagers(role).length,
-      gift_sides: Mem.Query.roles.gift_sides(gift).length,
-      gift_items: Mem.Query.roles.gift_items(gift).length,
-      gift_appends: Mem.Query.roles.gift_appends(gift).length
-    };
-    switch (mob_type) {
-    case "juror":
-      if (!(this.size.extra || in$("decide", gift))) {
-        error("投票する人物が必要です。見物人（陪審）または、決定者を割り当てましょう。");
-      }
-      break;
-    case "gamemaster":
-      if (!this.size.extra) {
-        info("見物人（黒幕）を割り当てましょう。");
-      }
-    }
-    switch (game_rule) {
-    case "TABULA":
-    case "LIVE_TABULA":
-    case "TROUBLE":
-      if (!(0 < (ref$ = this.size.wolf) && ref$ < this.size.human)) {
-        error("人間(" + this.size.human + "人)は人狼(" + this.size.wolf + "人)より多く必要です。");
-      }
-      break;
-    case "MILLERHOLLOW":
-    case "LIVE_MILLERHOLLOW":
-    case "MISTERY":
-      if (!(1 < this.size.villager)) {
-        error("村人(" + this.size.villager + "人)が足りません。");
-      }
-      if (!(0 < this.size.wolf)) {
-        error("人狼(" + this.size.wolf + "人)が足りません。");
-      }
-    }
-    if (start_auto) {
-      if (!(player_count_start <= player_count)) {
-        error("ゲームが開始できません。");
-      }
-      if (!(3 < player_count_start)) {
-        error("最少催行人数が少なすぎます。");
-      }
-    }
-    if (game_rule === "LIVE_TABULA" || game_rule === "LIVE_MILLERHOLLOW") {
-      if (in$("dish", role)) {
-        error("鱗魚人が勝利できません。");
-      }
-    }
-    if (this.size.robber) {
-      if (this.size.player < player_count) {
-        error("役職(" + this.size.player + "人)が足りません。盗賊(" + this.size.robber + "人)には余り札が必要です。");
-      }
-      if (this.size.wolf <= this.size.robber) {
-        error("人狼(" + this.size.wolf + "人)が足りません。盗賊(" + this.size.robber + "人)より多くないと、人狼がいない村になる可能性があります。");
-      }
-    } else {
-      if (this.size.drop < 0) {
-        error("役職(" + this.size.player + "人)が足りません。定員以上にしましょう。");
-      }
-    }
-    if (0 < this.size.drop) {
-      info("役職配布時、余り札（" + this.size.drop + "枚）は捨て去ります。");
-    }
-    if (this.size.gift_sides + this.size.gift_appends && this.size.gift_items) {
-      error("光の輪や魔鏡と、能力や勝利条件を付与する恩恵は共存できません。");
-    }
-    if (this.size.gift_sides && this.size.gift_appends) {
-      error("能力を加える恩恵と、勝利条件が変わる恩恵は共存できません。");
-    }
-    if (!in$("villager", role)) {
-      return error("NPCのために、村人をひとつ入れてください。");
-    }
-  };
   input = function(arg$){
     var info;
     info = arg$.info;
@@ -12555,27 +12585,7 @@
       return info(this.able.change);
     }
   };
-  sow_auth = function(arg$){
-    var error, info, ref$, uid, pwd, uid_size, pwd_size;
-    error = arg$.error, info = arg$.info;
-    ref$ = this.params, uid = ref$.uid, pwd = ref$.pwd;
-    if (this.is_login) {
-      return info("OK.");
-    } else {
-      uid_size = (uid != null ? uid.length : void 8) || 0;
-      pwd_size = (pwd != null ? pwd.length : void 8) || 0;
-      if ((1 < uid_size && uid_size < 21) && (2 < pwd_size && pwd_size < 21)) {
-        if (uid === pwd) {
-          return error("パスワードとIDが同じです。");
-        }
-      } else {
-        return error("IDとパスワードを入力してください。( 3〜20 byte)");
-      }
-    }
-  };
-  sow_auth_validator = new Validator([sow_auth]);
   input_validator = new Validator([input]);
-  cards_validator = new Validator([cards]);
   announce = {
     memo: new Validator([text, required, summary]),
     talk: new Validator([text, required, summary]),
@@ -12597,12 +12607,6 @@
     act: new Validator([text, required, secret, no_player, action, summary])
   };
   out$.validate = validate = {
-    sow_auth: function(target){
-      return sow_auth_validator.validate(target);
-    },
-    cards: function(target){
-      return cards_validator.validate(target);
-    },
     input: function(target){
       return input_validator.validate(target);
     },
@@ -12631,11 +12635,6 @@
       return o[format].validate(target);
     }
   };
-  function in$(x, xs){
-    var i = -1, l = xs.length >>> 0;
-    while (++i < l) if (x === xs[i]) return true;
-    return false;
-  }
 }).call(this);
 
 (function(){

@@ -11,27 +11,30 @@ doc.component.sow_auth =
       doc.user.id       =     sow_auth.uid
       if doc.user.is_login
         WebStore.cookie.copyTo @tie
-      validate.sow_auth @
 
     @params = { ua, cmd: "login" }
     @tie = InputTie.form @params, <[uid pwd]>
     @tie.timeout = 5000
-    @tie.check = ~>
-      if @is_login
-        true
-      else
-        validate.sow_auth @
+    @tie.validate = (e)~>
+      {uid, pwd} = @params
+      is_same =
+        if uid == pwd
+          "パスワードとIDが同じです。"
+      @tie.input.pwd.error is_same
+
+
     @tie.action = ~>
-      if doc.user.is_login
-        cmd = "logout"
-        params = { cmd, ua }
-      else
-        params = @params
+      params =
+        if doc.user.is_login
+          cmd = "logout"
+          { cmd, ua }
+        else
+          @params
 
       Submit.iframe url, params
       .then (gon)!~>
         if e = gon.errors
-          @errors = e.login || e[""]
+          @tie.input.pwd.error e.login || e[""]
         deploy gon
 
     deploy gon
@@ -50,7 +53,7 @@ doc.component.sow_auth =
           c.tie.input.pwd.field()
           c.tie.submit "ログイン"
       m ".paragraph",
-        for msg in c.errors
-          m ".WSAY", m ".emboss", msg
-        for msg in c.infos
+        c.tie.infos (msg)->
           m ".TSAY", m ".emboss", msg
+        c.tie.errors (msg)->
+          m ".WSAY", m ".emboss", msg

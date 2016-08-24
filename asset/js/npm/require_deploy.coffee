@@ -66,3 +66,6 @@ deploy require 'timer'
 deploy require 'input'
 
 require '_ext'
+
+if head.browser.chrome
+  Input.skip_minlength = true

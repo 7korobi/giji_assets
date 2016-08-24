@@ -13,9 +13,6 @@ win.mount "#make_vil", (dom)->
   controller: ->
     _id: "new"
     is_loading: false
-    http:
-      errors: []
-      infos: []
     mestype: "SSAY"
     submit: (form)->
       @is_loading = true
@@ -41,10 +38,9 @@ win.mount "#make_vil", (dom)->
 
         {errors} = o
         if errors
-          @http =
-            errors: errors.makevil
-            infos: ["作成に失敗しました。"]
-        unless errors
+          @tie.input.role_table.error errors.makevil
+          @tie.input.role_table.info "村の作成に失敗しました。"
+        else
           console.log o
 
   view: (v)->

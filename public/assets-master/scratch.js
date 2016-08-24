@@ -425,7 +425,7 @@
   if ((typeof gon !== "undefined" && gon !== null ? gon.stories : void 0) != null) {
     Mem.Collection.story.set(gon.stories);
     win.mount("#stories", function(dom) {
-      menu.tie.do_change("icon", "resize-normal");
+      menu.do_change("icon", "resize-normal");
       return doc.component.stories;
     });
   }
@@ -1389,7 +1389,6 @@
         if (doc.user.is_login) {
           WebStore.cookie.copyTo(this$.tie);
         }
-        validate.sow_auth(this$);
       };
       this.params = {
         ua: ua,
@@ -1397,28 +1396,24 @@
       };
       this.tie = InputTie.form(this.params, ['uid', 'pwd']);
       this.tie.timeout = 5000;
-      this.tie.check = function(){
-        if (this$.is_login) {
-          return true;
-        } else {
-          return validate.sow_auth(this$);
-        }
+      this.tie.validate = function(e){
+        var ref$, uid, pwd, is_same;
+        ref$ = this$.params, uid = ref$.uid, pwd = ref$.pwd;
+        is_same = uid === pwd ? "パスワードとIDが同じです。" : void 8;
+        return this$.tie.input.pwd.error(is_same);
       };
       this.tie.action = function(){
-        var cmd, params;
-        if (doc.user.is_login) {
-          cmd = "logout";
-          params = {
+        var params, cmd;
+        params = doc.user.is_login
+          ? (cmd = "logout", {
             cmd: cmd,
             ua: ua
-          };
-        } else {
-          params = this$.params;
-        }
+          })
+          : this$.params;
         return Submit.iframe(url, params).then(function(gon){
           var e;
           if (e = gon.errors) {
-            this$.errors = e.login || e[""];
+            this$.tie.input.pwd.error(e.login || e[""]);
           }
           deploy(gon);
         });
@@ -1426,24 +1421,13 @@
       deploy(gon);
     },
     view: function(c){
-      var msg;
       return c.tie.form({}, doc.user.is_login
         ? m(".paragraph", c.tie.submit(doc.user.id + " がログアウト"))
-        : m(".paragraph", c.tie.input.uid.head(), c.tie.input.uid.field(), c.tie.input.pwd.head(), c.tie.input.pwd.field(), c.tie.submit("ログイン")), m(".paragraph", (function(){
-        var i$, ref$, len$, results$ = [];
-        for (i$ = 0, len$ = (ref$ = c.errors).length; i$ < len$; ++i$) {
-          msg = ref$[i$];
-          results$.push(m(".WSAY", m(".emboss", msg)));
-        }
-        return results$;
-      }()), (function(){
-        var i$, ref$, len$, results$ = [];
-        for (i$ = 0, len$ = (ref$ = c.infos).length; i$ < len$; ++i$) {
-          msg = ref$[i$];
-          results$.push(m(".TSAY", m(".emboss", msg)));
-        }
-        return results$;
-      }())));
+        : m(".paragraph", c.tie.input.uid.head(), c.tie.input.uid.field(), c.tie.input.pwd.head(), c.tie.input.pwd.field(), c.tie.submit("ログイン")), m(".paragraph", c.tie.infos(function(msg){
+        return m(".TSAY", m(".emboss", msg));
+      }), c.tie.errors(function(msg){
+        return m(".WSAY", m(".emboss", msg));
+      })));
     }
   };
 }).call(this);
@@ -1792,11 +1776,46 @@
 
   doc.component.topviewer = {
     controller: function() {
-      var reduce;
-      reduce = function(h) {
-        var ref;
-        return (ref = Mem.Query.storys).menu.apply(ref, [Url.params.folder].concat(slice.call(Url.conf.stories.values(h)))).reduce;
+      var deploy, inputs, story;
+      inputs = [];
+      deploy = function(type, hash) {
+        inputs.push(type);
+        return Mem.Query.inputs.hash[type].options = hash;
       };
+      deploy("menu_order", Mem.conf.map_faces_order);
+      deploy("menu_chr_set", Mem.Query.map_faces.reduce);
+      if (Url.conf.stories) {
+        story = function(h) {
+          var ref;
+          return (ref = Mem.Query.storys).menu.apply(ref, [Url.params.folder].concat(slice.call(Url.conf.stories.values(h)))).reduce;
+        };
+        deploy("menu_folder", story());
+        deploy("menu_game", story({
+          game: "all"
+        }));
+        deploy("menu_rating", story({
+          rating: "all"
+        }));
+        deploy("menu_say_limit", story({
+          say_limit: "all"
+        }));
+        deploy("menu_update_at", story({
+          update_at: "all"
+        }));
+        deploy("menu_role_type", story({
+          role_type: "all"
+        }));
+        deploy("menu_event_type", story({
+          event_type: "all"
+        }));
+        deploy("menu_player_length", story({
+          player_length: "all"
+        }));
+        deploy("menu_update_interval", story({
+          update_interval: "all"
+        }));
+      }
+      this.tie = InputTie.btns(Url.params, inputs);
       return;
       main_menu.drill("order", {
         label: "並び順",
@@ -1963,8 +1982,10 @@
           case "clock":
             return [timeline(), m("h6", "メモを履歴形式で表示します。 - メモ"), m.component(doc.component.security_modes, Url.prop.memo), m.component(doc.component.potof_modes)];
           case "search":
-            [timeline(), m("input.medium", Txt.input(Url.prop.search)), m("span", "発言中の言葉を検索します。"), m("hr.black")];
-            return [m("h6", "検索する。"), m("input.mini", Txt.input(Url.prop.search)), main_menu.drills({}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"])];
+            input = Url.tie.input;
+            input.search;
+            [timeline(), input.search.field(), input.search.label(), m("hr.black")];
+            return [m("h6", "検索する。"), input.search.field(), main_menu.drills({}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"])];
           case "th-large":
             [m("h6", "タグを選んでみよう"), input.tag.field(vdom)];
             return [m("h6", "詳しく検索してみよう"), input.search.field(), m("span", "検索条件：キャラクター名 / 肩書き / プレイヤー "), m("h6", "キャラセットを選んでみよう"), main_menu.drills({}, ["order", "chr_set"])];
@@ -2021,31 +2042,18 @@
 }).call(this);
 
 (function() {
-  var error_and_info, field;
+  var error_and_info, field,
+    slice = [].slice,
+    indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   field = Mem.Query.inputs.hash;
 
-  error_and_info = function(o) {
-    var msg;
-    return m("p.mes_date", (function() {
-      var i, len, ref, results;
-      ref = o.errors;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        msg = ref[i];
-        results.push(m(".WSAY", m(".emboss", msg)));
-      }
-      return results;
-    })(), (function() {
-      var i, len, ref, results;
-      ref = o.infos;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        msg = ref[i];
-        results.push(m(".TSAY", m(".emboss", msg)));
-      }
-      return results;
-    })());
+  error_and_info = function(v) {
+    return m("p.mes_date", v.tie.errors(function(msg) {
+      return m(".WSAY", m(".emboss", msg));
+    }), v.tie.infos(function(msg) {
+      return m(".TSAY", m(".emboss", msg));
+    }));
   };
 
   doc.component.vmake_form = {
@@ -2058,8 +2066,93 @@
         trap: []
       };
       v.tie = InputTie.form(v.params, ["vil_name", "vil_comment", "rating", "trs_type", "say_count", "time", "interval", "entry_password", "chr_npc", "mob_type", "game_rule", "role_table", "player_count", "player_count_start"]);
-      v.tie.check = function() {
-        return validate.cards(v);
+      v.tie.validate = function(e) {
+        var extra, full, game_rule, gift, minus, mob_type, player, player_count, player_count_start, ref, ref1, role, start_auto;
+        ref = v.params, role = ref.role, gift = ref.gift, extra = ref.extra, mob_type = ref.mob_type, game_rule = ref.game_rule, start_auto = ref.start_auto, player_count = ref.player_count, player_count_start = ref.player_count_start;
+        full = slice.call(role).concat(slice.call(gift));
+        minus = 0;
+        minus += 2 * Mem.Query.roles.minus2(role).length;
+        minus += 1 * Mem.Query.roles.minus1(full).length;
+        player = Mem.Query.roles.players(role).length;
+        v.size = {
+          drop: player - player_count,
+          wolf: Mem.Query.roles.wolfs(full).length,
+          minus: minus,
+          extra: extra.length,
+          human: Mem.Query.roles.humans(role).length - minus,
+          player: player,
+          robber: Mem.Query.roles.robbers(role).length,
+          villager: Mem.Query.roles.villagers(role).length,
+          gift_sides: Mem.Query.roles.gift_sides(gift).length,
+          gift_items: Mem.Query.roles.gift_items(gift).length,
+          gift_appends: Mem.Query.roles.gift_appends(gift).length
+        };
+        switch (mob_type) {
+          case "juror":
+            if (!(v.size.extra || (indexOf.call(gift, "decide") >= 0))) {
+              v.tie.input.role_table.error("投票する人物が必要です。見物人（陪審）または、決定者を割り当てましょう。");
+            }
+            break;
+          case "gamemaster":
+            if (!v.size.extra) {
+              v.tie.input.mob_type.info("見物人（黒幕）を割り当てましょう。");
+            }
+        }
+        switch (game_rule) {
+          case "TABULA":
+          case "LIVE_TABULA":
+          case "TROUBLE":
+            if (!((0 < (ref1 = v.size.wolf) && ref1 < v.size.human))) {
+              v.tie.input.role_table.error("人間(" + v.size.human + "人)は人狼(" + v.size.wolf + "人)より多く必要です。");
+            }
+            break;
+          case "MILLERHOLLOW":
+          case "LIVE_MILLERHOLLOW":
+          case "MISTERY":
+            if (!(1 < v.size.villager)) {
+              v.tie.input.role_table.error("村人(" + v.size.villager + "人)が足りません。");
+            }
+            if (!(0 < v.size.wolf)) {
+              v.tie.input.role_table.error("人狼(" + v.size.wolf + "人)が足りません。");
+            }
+        }
+        if (start_auto) {
+          if (!(player_count_start <= player_count)) {
+            v.tie.input.player_count_start.error("ゲームが開始できません。");
+          }
+          if (!(3 < player_count_start)) {
+            v.tie.input.player_count_start.error("最少催行人数が少なすぎます。");
+          }
+        }
+        if (game_rule === "LIVE_TABULA" || game_rule === "LIVE_MILLERHOLLOW") {
+          if (indexOf.call(role, "dish") >= 0) {
+            v.tie.input.role_table.error("鱗魚人が勝利できません。");
+          }
+        }
+        if (v.size.robber) {
+          if (v.size.player < player_count) {
+            v.tie.input.role_table.error("役職(" + v.size.player + "人)が足りません。盗賊(" + v.size.robber + "人)には余り札が必要です。");
+          }
+          if (v.size.wolf <= v.size.robber) {
+            v.tie.input.role_table.error("人狼(" + v.size.wolf + "人)が足りません。盗賊(" + v.size.robber + "人)より多くないと、人狼がいない村になる可能性があります。");
+          }
+        } else {
+          if (v.size.drop < 0) {
+            v.tie.input.role_table.error("役職(" + v.size.player + "人)が足りません。定員以上にしましょう。");
+          }
+        }
+        if (0 < v.size.drop) {
+          v.tie.input.role_table.info("役職配布時、余り札（" + v.size.drop + "枚）は捨て去ります。");
+        }
+        if ((v.size.gift_sides + v.size.gift_appends) && v.size.gift_items) {
+          v.tie.input.role_table.error("光の輪や魔鏡と、能力や勝利条件を付与する恩恵は共存できません。");
+        }
+        if (v.size.gift_sides && v.size.gift_appends) {
+          v.tie.input.role_table.error("能力を加える恩恵と、勝利条件が変わる恩恵は共存できません。");
+        }
+        if (indexOf.call(role, "villager") < 0) {
+          return v.tie.input.role_table.error("NPCのために、村人をひとつ入れてください。");
+        }
       };
       v.tie.action = function() {
         return v.submit(v.params);
@@ -2106,7 +2199,7 @@
       v.player_summary = function(form) {
         var extra, human, minus, player, ref, vdoms;
         vdoms = [];
-        if (validate.cards(v)) {
+        if (v.size) {
           ref = v.size, player = ref.player, extra = ref.extra, human = ref.human, minus = ref.minus;
           vdoms.push("最大 ");
           vdoms.push(m("span.mark.SSAY", player + "人"));
@@ -2164,7 +2257,8 @@
         var _id, attr, cmd, label, tap, win;
         _id = arg._id, cmd = arg.cmd, win = arg.win, label = arg.label;
         tap = function() {
-          return v.params[cmd].push(_id);
+          v.params[cmd].push(_id);
+          return v.tie.do_change("role_table", v.params.role_table, v.tie.input.role_table.format);
         };
         attr = {
           onmouseup: tap,
@@ -2175,7 +2269,8 @@
       pop_btn = function(cmd) {
         var attr, tap;
         tap = function() {
-          return v.params[cmd].pop();
+          v.params[cmd].pop();
+          return v.tie.do_change("role_table", v.params.role_table, v.tie.input.role_table.format);
         };
         attr = {
           onmouseup: tap,
@@ -2209,6 +2304,7 @@
           }
         ].map(add_btn)
       };
+      console.warn(v.tie);
       return v;
     },
     view: function(v) {
@@ -2362,7 +2458,7 @@
           }, GUI.portrate(o.face_id), m(".bar.live")));
         }
         return results;
-      })(), m("hr.black")), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "決定"), v.tie.submit("村の作成"), error_and_info(v.http)))));
+      })(), m("hr.black")), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "決定"), v.tie.submit("村の作成"), error_and_info(v)))));
     }
   };
 

@@ -1,7 +1,27 @@
 doc.component.topviewer =
   controller: ->
-    reduce = (h)->
-      Mem.Query.storys.menu(Url.params.folder, Url.conf.stories.values(h)...).reduce
+
+    inputs = []
+    deploy = (type, hash)->
+      inputs.push type
+      Mem.Query.inputs.hash[type].options = hash
+
+    deploy "menu_order",           Mem.conf.map_faces_order
+    deploy "menu_chr_set",         Mem.Query.map_faces.reduce
+    if Url.conf.stories
+      story = (h)->
+        Mem.Query.storys.menu(Url.params.folder, Url.conf.stories.values(h)...).reduce
+
+      deploy "menu_folder",          story()
+      deploy "menu_game",            story game: "all"
+      deploy "menu_rating",          story rating: "all"
+      deploy "menu_say_limit",       story say_limit: "all"
+      deploy "menu_update_at",       story update_at: "all"
+      deploy "menu_role_type",       story role_type: "all"
+      deploy "menu_event_type",      story event_type: "all"
+      deploy "menu_player_length",   story player_length: "all"
+      deploy "menu_update_interval", story update_interval: "all"
+    @tie = InputTie.btns Url.params, inputs
     return
 
     main_menu.drill "order",
@@ -115,17 +135,20 @@ doc.component.topviewer =
             m.component doc.component.potof_modes
           ]
         when "search"
+          input = Url.tie.input
+          input.search
+
           [
             timeline()
-            m "input.medium", Txt.input Url.prop.search
-            m "span", "発言中の言葉を検索します。"
+            input.search.field()
+            input.search.label()
             m "hr.black"
           ]
 
           # search
           [
             m "h6", "検索する。"
-            m "input.mini", Txt.input(Url.prop.search)
+            input.search.field()
             main_menu.drills {}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"]
           ]
 

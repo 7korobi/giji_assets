@@ -1,10 +1,10 @@
 field = Mem.Query.inputs.hash
 
-error_and_info = (o)->
+error_and_info = (v)->
   m "p.mes_date",
-    for msg in o.errors
+    v.tie.errors (msg)->
       m ".WSAY", m ".emboss", msg
-    for msg in o.infos
+    v.tie.infos (msg)->
       m ".TSAY", m ".emboss", msg
 
 doc.component.vmake_form =
@@ -35,8 +35,62 @@ doc.component.vmake_form =
       "player_count"
       "player_count_start"
     ]
-    v.tie.check = ->
-      validate.cards v
+    v.tie.validate = (e)->
+      { role, gift, extra, mob_type, game_rule, start_auto, player_count, player_count_start } = v.params
+      full = [role..., gift...]
+
+      minus = 0
+      minus += 2 * Mem.Query.roles.minus2(role).length
+      minus += 1 * Mem.Query.roles.minus1(full).length
+
+      player = Mem.Query.roles.players(role).length
+
+      v.size =
+        drop: player - player_count
+        wolf: Mem.Query.roles.wolfs(full).length
+        minus: minus
+        extra: extra.length
+        human: Mem.Query.roles.humans(role).length - minus
+        player: player
+        robber: Mem.Query.roles.robbers(role).length
+        villager: Mem.Query.roles.villagers(role).length
+        gift_sides: Mem.Query.roles.gift_sides(gift).length
+        gift_items: Mem.Query.roles.gift_items(gift).length
+        gift_appends: Mem.Query.roles.gift_appends(gift).length
+
+      switch mob_type
+        when "juror"
+          v.tie.input.role_table.error "投票する人物が必要です。見物人（陪審）または、決定者を割り当てましょう。" unless v.size.extra || ("decide" in gift)
+
+        when "gamemaster"
+          v.tie.input.mob_type.info "見物人（黒幕）を割り当てましょう。" unless v.size.extra
+
+      switch game_rule
+        when "TABULA", "LIVE_TABULA", "TROUBLE"
+          v.tie.input.role_table.error "人間(#{v.size.human}人)は人狼(#{v.size.wolf}人)より多く必要です。" unless 0 < v.size.wolf < v.size.human
+
+        when "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "MISTERY"
+          v.tie.input.role_table.error "村人(#{v.size.villager}人)が足りません。" unless 1 < v.size.villager
+          v.tie.input.role_table.error "人狼(#{v.size.wolf}人)が足りません。"     unless 0 < v.size.wolf
+
+      if start_auto
+        v.tie.input.player_count_start.error "ゲームが開始できません。"     unless     player_count_start <= player_count
+        v.tie.input.player_count_start.error "最少催行人数が少なすぎます。" unless 3 < player_count_start
+
+      if game_rule in ["LIVE_TABULA", "LIVE_MILLERHOLLOW"]
+        v.tie.input.role_table.error "鱗魚人が勝利できません。" if "dish" in role
+
+      if v.size.robber
+        v.tie.input.role_table.error "役職(#{v.size.player}人)が足りません。盗賊(#{v.size.robber}人)には余り札が必要です。"                               if v.size.player < player_count
+        v.tie.input.role_table.error "人狼(#{v.size.wolf}人)が足りません。盗賊(#{v.size.robber}人)より多くないと、人狼がいない村になる可能性があります。" if v.size.wolf <= v.size.robber
+
+      else
+        v.tie.input.role_table.error "役職(#{v.size.player}人)が足りません。定員以上にしましょう。" if v.size.drop < 0
+
+      v.tie.input.role_table.info  "役職配布時、余り札（#{v.size.drop}枚）は捨て去ります。"          if 0 < v.size.drop
+      v.tie.input.role_table.error "光の輪や魔鏡と、能力や勝利条件を付与する恩恵は共存できません。" if (v.size.gift_sides + v.size.gift_appends) && v.size.gift_items
+      v.tie.input.role_table.error "能力を加える恩恵と、勝利条件が変わる恩恵は共存できません。"     if v.size.gift_sides && v.size.gift_appends
+      v.tie.input.role_table.error "NPCのために、村人をひとつ入れてください。"                  unless "villager" in role
 
     v.tie.action = ->
       v.submit v.params
@@ -70,7 +124,7 @@ doc.component.vmake_form =
 
     v.player_summary = (form)->
       vdoms = []
-      if validate.cards v
+      if v.size
         {player, extra, human, minus} = v.size
         vdoms.push "最大 "
         vdoms.push m "span.mark.SSAY", "#{player}人"
@@ -114,6 +168,7 @@ doc.component.vmake_form =
     add_btn = ({_id, cmd, win, label})->
       tap = ->
         v.params[cmd].push _id
+        v.tie.do_change "role_table", v.params.role_table, v.tie.input.role_table.format
       attr =
         onmouseup: tap
         ontouchend: tap
@@ -122,6 +177,7 @@ doc.component.vmake_form =
     pop_btn = (cmd)->
       tap = ->
         v.params[cmd].pop()
+        v.tie.do_change "role_table", v.params.role_table, v.tie.input.role_table.format
       attr =
         onmouseup: tap
         ontouchend: tap
@@ -147,6 +203,7 @@ doc.component.vmake_form =
         win: "NONE"
         label: "見物人"
       ].map add_btn
+    console.warn v.tie
     v
 
   view: (v)->
@@ -332,4 +389,4 @@ doc.component.vmake_form =
           m "fieldset.msg",
             m "legend.emboss", "決定"
             v.tie.submit "村の作成"
-            error_and_info v.http
+            error_and_info v

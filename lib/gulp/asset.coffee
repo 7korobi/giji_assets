@@ -81,7 +81,7 @@ module.exports = ({gulp, $, src, dest,  yml})->
         entries: [dest.asset.asset + "/base.js"]
         extensions: [""]
         paths: src.asset.require
-      .transform { global: true }, "uglifyify"
+      #.transform { global: true }, "uglifyify"
       .transform "yamlify"
       .bundle()
       .pipe source 'base.js'
