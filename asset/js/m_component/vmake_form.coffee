@@ -91,6 +91,14 @@ doc.component.vmake_form =
       v.tie.input.role_table.error "光の輪や魔鏡と、能力や勝利条件を付与する恩恵は共存できません。" if (v.size.gift_sides + v.size.gift_appends) && v.size.gift_items
       v.tie.input.role_table.error "能力を加える恩恵と、勝利条件が変わる恩恵は共存できません。"     if v.size.gift_sides && v.size.gift_appends
       v.tie.input.role_table.error "NPCのために、村人をひとつ入れてください。"                  unless "villager" in role
+      if v.size.human
+        human_count =
+          if minus
+            "#{v.size.human}人以上は村人です。"
+          else
+            "#{v.size.human}人は村人です。"
+        v.tie.input.player_count.info human_count
+
 
     v.tie.action = ->
       v.submit v.params
@@ -100,7 +108,7 @@ doc.component.vmake_form =
         v.tie.bundle chk
 
     vindex = 0
-    v.params.vil_comment = [
+    v.tie.prop.vil_comment [
       "（村のルールは、自由に編集できるよ！）"
       " "
       "■村のルール"
@@ -142,11 +150,6 @@ doc.component.vmake_form =
           vdoms.push m "span.mark.VSAY", "+#{extra}人"
 
         vdoms.push " が参加できます。"
-        if human
-          vdoms.push m "span",
-            m "span.mark.TSAY", "#{human}人"
-            "以上" if minus
-            "は村人です。"
 
       m "div",
         vdoms
@@ -247,6 +250,8 @@ doc.component.vmake_form =
             m "legend.emboss", "村の名前、説明、ルール"
             v.tie.input.vil_name.field()
             v.tie.input.vil_comment.field()
+            m "p.mes_date",
+              v.tie.input.vil_comment.foot()
 
             m "p", "■国のルール"
             RULE.nation.list.map (o)-> m "p", "#{++nindex}.#{o.head}"

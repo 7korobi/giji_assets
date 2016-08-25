@@ -3232,6 +3232,7 @@
         "type": "textarea",
         "cols": 30,
         "rows": 10,
+        "required": true,
         "style": "width: 100%"
       },
       "query": {

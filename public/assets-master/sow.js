@@ -3673,7 +3673,7 @@
       };
       v.tie = InputTie.form(v.params, ["vil_name", "vil_comment", "rating", "trs_type", "say_count", "time", "interval", "entry_password", "chr_npc", "mob_type", "game_rule", "role_table", "player_count", "player_count_start"]);
       v.tie.validate = function(e) {
-        var extra, full, game_rule, gift, minus, mob_type, player, player_count, player_count_start, ref, ref1, role, start_auto;
+        var extra, full, game_rule, gift, human_count, minus, mob_type, player, player_count, player_count_start, ref, ref1, role, start_auto;
         ref = v.params, role = ref.role, gift = ref.gift, extra = ref.extra, mob_type = ref.mob_type, game_rule = ref.game_rule, start_auto = ref.start_auto, player_count = ref.player_count, player_count_start = ref.player_count_start;
         full = slice.call(role).concat(slice.call(gift));
         minus = 0;
@@ -3757,7 +3757,11 @@
           v.tie.input.role_table.error("能力を加える恩恵と、勝利条件が変わる恩恵は共存できません。");
         }
         if (indexOf.call(role, "villager") < 0) {
-          return v.tie.input.role_table.error("NPCのために、村人をひとつ入れてください。");
+          v.tie.input.role_table.error("NPCのために、村人をひとつ入れてください。");
+        }
+        if (v.size.human) {
+          human_count = minus ? v.size.human + "人以上は村人です。" : v.size.human + "人は村人です。";
+          return v.tie.input.player_count.info(human_count);
         }
       };
       v.tie.action = function() {
@@ -3774,9 +3778,9 @@
         return results;
       })();
       vindex = 0;
-      v.params.vil_comment = ["（村のルールは、自由に編集できるよ！）", " ", "■村のルール"].concat(RULE.village.list.map(function(o) {
+      v.tie.prop.vil_comment(["（村のルールは、自由に編集できるよ！）", " ", "■村のルール"].concat(RULE.village.list.map(function(o) {
         return (++vindex) + "." + o.head;
-      })).join("\r\n");
+      })).join("\r\n"));
       v.reset = function() {
         var cards, cards_set, i, len, o, player_count, ref, results, role_table;
         player_count = v.params.player_count;
@@ -3830,9 +3834,6 @@
             vdoms.push(m("span.mark.VSAY", "+" + extra + "人"));
           }
           vdoms.push(" が参加できます。");
-          if (human) {
-            vdoms.push(m("span", m("span.mark.TSAY", human + "人"), minus ? "以上" : void 0, "は村人です。"));
-          }
         }
         return m("div", vdoms, error_and_info(v));
       };
@@ -3953,7 +3954,7 @@
       }
       return v.tie.form({}, m(".vmake", {
         key: v._id
-      }, m(".INFOSP.info", m("p.text", "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。", m("br"), "村作成から", m("span.mark", Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP + "日間"), "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。")), m(".MAKER.plane", m("fieldset.msg", m("legend.emboss", "村の名前、説明、ルール"), v.tie.input.vil_name.field(), v.tie.input.vil_comment.field(), m("p", "■国のルール"), RULE.nation.list.map(function(o) {
+      }, m(".INFOSP.info", m("p.text", "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。", m("br"), "村作成から", m("span.mark", Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP + "日間"), "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。")), m(".MAKER.plane", m("fieldset.msg", m("legend.emboss", "村の名前、説明、ルール"), v.tie.input.vil_name.field(), v.tie.input.vil_comment.field(), m("p.mes_date", v.tie.input.vil_comment.foot()), m("p", "■国のルール"), RULE.nation.list.map(function(o) {
         return m("p", (++nindex) + "." + o.head);
       }), m(".emboss", "以上の項目が、人狼議事の", m('a', {
         href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"

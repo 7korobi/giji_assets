@@ -23,51 +23,10 @@ class Validator
 
 ### text section
 
-point = (size)->
-  pt = 20
-  pt += (size - 50)/14 if 50 < size
-  Math.floor pt
-
-text = ->
-  text = @text()
-  @size = text.sjis_length
-  @point = point @size
-  @lines = text.split("\n").length
-
 summary = ({valid})->
-  if 'point' == @max.unit
-    mark = "#{@point}pt "
-  else
-    mark = ""
-  mark = "⊘" unless valid()
-  @summary = [
-    m "span.emboss", mark
-    " #{@size}"
-    m "sub", "/#{@max.size}字"
-    " #{@lines}"
-    m "sub", "/#{@max.line}行"
-  ]
-
 required = ({error})->
-  text = @text()
-  if text
-    error "入力しましょう。" unless 3 < @size && text.match(/\S/)
-    error "#{@max.size}字以下にしましょう。" if @max.size < @size
-    error "#{@max.line}行以下にしましょう。" if @max.line < @lines
-  else
-    error "入力しましょう。"
-
-
 secret = ({error})->
-  text = @text()
-  error "あぶない！秘密会話へのアンカーがあります！" if text.match />>[\=\*\!]\d+/g
-
-
 no_player = ({info})->
-  text = @text()
-  info "/*中の人の発言があります。*/" if text.match /\/\*|\*\//g
-
-
 action = ({error})->
   tap_target = -1 == @target()
   if @action

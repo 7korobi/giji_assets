@@ -18,7 +18,7 @@ h6_head = (params, join, o)->
     m "h6", ma, name
 
 
-submit_form = (tie, attr)->
+form_submit = (tie, attr)->
   (label)->
     tag =  "button.btn"
     tag += ".edge" unless tie.disabled
@@ -29,7 +29,7 @@ submit_form = (tie, attr)->
       disabled: tie.disabled
     m tag, ma, label
 
-submit_btn = (tie, attr)->
+btn_submit = (tie, attr)->
   tie.do_view null, {}
   submit = attr.onsubmit or (e)->
     tie.do_submit()
@@ -267,9 +267,9 @@ class InputTie
   init_submit: ({@form})->
     @submit =
       if @form
-        submit_form @, {}
+        form_submit @, {}
       else
-        submit_btn @, {}
+        btn_submit  @, {}
     @
 
   constructor: ({ @timeout, @params, ids })->
@@ -323,24 +323,25 @@ validity_attr =
   rangeUnderflow: "min"
   rangeOverflow: "max"
   stepMismatch: "step"
+  tooLines: "max_line"
   tooLong: "maxlength"
   tooShort: "minlength"
+  hasSecret: "not_secret"
+  hasPlayer: "not_player"
 
 custom_validity = (validity, key, text)->
-  return null unless validity
+  return text unless validity
   validity[validity_attr[key]] || text
+
 
 class Input
   do_view: (@dom)->
-  do_change: (value, { minlength, maxlength, min, max, step, pattern, type, required })->
+  do_change: (value, attr)->
     if @dom
       @info ""
       @error ""
       @dom.checkValidity()
-      if minlength && 0 < value.length < minlength
-        # for firefox, safari.
-        unless InputTie.skip_minlength
-          @error custom_validity @format.error, "tooShort", "このテキストは #{minlength} 文字以上で指定してください（現在は #{value.length} 文字です）。"
+
       if @format.error
         for key, val of @dom.validity when val
           @error custom_validity @format.error, key
@@ -359,6 +360,7 @@ class Input
     attr_label = @_attr_label @_value, tie, @
     @label = @_label params, attr_label, format if @_label
     @head  = @_head  params, attr_label, format if @_head
+    @foot  = @_foot  params, attr_label, format if @_foot
 
     attr_item  = @_attr @_value, tie, @
     @item  = @_item  params, attr_item, format if @_item
@@ -367,7 +369,7 @@ class Input
 
   @timeout: 1000
   timeout: 100
-  label_for: (o)->
+  calc: {}
   _head:  label_head
   _attr_label: label_attr
   _label: (params, join, o)->
@@ -375,10 +377,12 @@ class Input
       { _id, options, info, attr, label } = o
 
       now_val = params[_id]
-      option = options[now_val] if options
 
-      if option && @label_for
-        return @label_for(option) if option && @label_for
+      if @label_for
+        if options
+          option = options[now_val]
+          if option && @label_for
+            return @label_for option
       if info
         text = info.label if info.label
         text = info.off   if info.off   && ! now_val
@@ -388,29 +392,111 @@ class Input
         m "label", ma, text
 
 
+basic_field = (params, area, o)->
+  (m_attr = {})->
+    { _id, attr } = o
+
+    now_val = params[_id]
+
+    ma = area _id, attr, m_attr,
+      className: [attr.className, attr.className].join(" ")
+      name: attr.name || _id
+      value: now_val
+    # data-tooltip, disabled
+    m "input", ma
+
 class basic_input extends Input
   _value: e_value
   _attr:  input_attr
-  _field: (params, area, o)->
-    (m_attr = {})->
-      { _id, attr } = o
+  _field: basic_field
 
-      now_val = params[_id]
 
-      ma = area _id, attr, m_attr,
-        className: [attr.className, attr.className].join(" ")
-        name: attr.name || _id
-        value: now_val
-      # data-tooltip, disabled
-      m "input", ma
+text_point = (size)->
+  pt = 20
+  pt += (size - 50)/14 if 50 < size
+  Math.floor pt
 
-for key in ["hidden", "text", "search", "tel", "url", "email", "password", "datetime", "date", "month", "week", "time", "datetime-local", "number", "range", "color"]
+text_foot = (params, join, o)->
+  (m_attr = {})=>
+    { _id, attr } = o
+
+    if @calc.point
+      mark = m "span.emboss", "#{@calc.point}pt "
+    else
+      mark = ""
+    if ! @dom || @dom.validationMessage
+      mark = m "span.WSAY.emboss", "⊘"
+
+    ma = join _id, attr, m_attr
+    [
+      mark
+      " #{@calc.sjis}"
+      m "sub", "/#{ma.max_sjis}" if ma.max_sjis
+      m "sub", "字"
+      " #{@calc.line}"
+      m "sub", "/#{ma.max_line}" if ma.max_line
+      m "sub", "行"
+    ]
+
+text_change = (value, { not_secret, not_player, unit, max_sjis, max_line, minlength, maxlength, min, max, step, pattern, type, required })->
+  if @dom
+    @info ""
+    @error ""
+    @dom.checkValidity()
+
+    line = value.split("\n").length
+    sjis = value.sjis_length
+    if "point" == unit
+      point = text_point sjis
+    @calc = { point, line, sjis }
+
+    if not_secret && match_secret = value.match />>[\=\*\!]\d+/g
+      @error custom_validity @format.error, "hasSecret", "あぶない！秘密会話へのアンカーがあります！"
+
+    if not_player && match_player = value.match /\/\*|\*\//g
+      @error custom_validity @format.error, "hasPlayer", "/*中の人の発言があります。*/"
+
+    if max_line && max_line < line
+      @error custom_validity @format.error, "tooLines", "このテキストを #{max_line} 行以下にしてください。"
+
+    if max_sjis && max_sjis < sjis
+      @error custom_validity @format.error, "tooLong", "このテキストを #{max_sjis} 文字以下にしてください。"
+
+    if minlength && 0 < value.length < minlength
+      # for firefox, safari.
+      unless InputTie.skip_minlength
+        @error custom_validity @format.error, "tooShort", "このテキストは #{minlength} 文字以上で指定してください（現在は #{value.length} 文字です）。"
+
+    if @format.error
+      for key, val of @dom.validity when val
+        @error custom_validity @format.error, key
+
+class text_input extends Input
+  do_change: text_change
+  _value: e_value
+  _attr:  input_attr
+  _foot:  text_foot
+  _field: basic_field
+  calc:
+    sjis: 0
+    line: 0
+
+
+for key in ["hidden", "tel", "password", "datetime", "date", "month", "week", "time", "datetime-local", "number", "range", "color"]
   InputTie.type[key] = basic_input
+
+for key in ["text", "search", "url", "email"]
+  InputTie.type[key] = text_input
 
 
 class InputTie.type.textarea extends Input
+  do_change: text_change
   _value: e_value
   _attr:  input_attr
+  _foot:  text_foot
+  calc:
+    sjis: 0
+    line: 0
   _field: (params, area, o)->
     (m_attr = {})->
       { _id, attr } = o

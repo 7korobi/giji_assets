@@ -24418,7 +24418,7 @@ module.exports = Vector2D;
 
 },{}],17:[function(require,module,exports){
 (function() {
-  var Input, InputTie, Tie, _, basic_input, btn_attr, btn_item, btn_pick, c_icon, c_tap, change_attr, checkbox_multi_item, custom_validity, debounce, e_checked, e_selected, e_value, form_attr, h6_head, i, input_attr, input_pick, key, label_attr, label_head, len, m, mithril_config, option_attr, option_pick, ref, submit_btn, submit_form, validity_attr,
+  var Input, InputTie, Tie, _, basic_field, basic_input, btn_attr, btn_item, btn_pick, btn_submit, c_icon, c_tap, change_attr, checkbox_multi_item, custom_validity, debounce, e_checked, e_selected, e_value, form_attr, form_submit, h6_head, i, input_attr, input_pick, j, key, label_attr, label_head, len, len1, m, mithril_config, option_attr, option_pick, ref, ref1, text_change, text_foot, text_input, text_point, validity_attr,
     slice = [].slice,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -24453,7 +24453,7 @@ module.exports = Vector2D;
     };
   };
 
-  submit_form = function(tie, attr) {
+  form_submit = function(tie, attr) {
     return function(label) {
       var ma, tag;
       tag = "button.btn";
@@ -24471,7 +24471,7 @@ module.exports = Vector2D;
     };
   };
 
-  submit_btn = function(tie, attr) {
+  btn_submit = function(tie, attr) {
     var submit;
     tie.do_view(null, {});
     submit = attr.onsubmit || function(e) {
@@ -24873,7 +24873,7 @@ module.exports = Vector2D;
 
     InputTie.prototype.init_submit = function(arg) {
       this.form = arg.form;
-      this.submit = this.form ? submit_form(this, {}) : submit_btn(this, {});
+      this.submit = this.form ? form_submit(this, {}) : btn_submit(this, {});
       return this;
     };
 
@@ -24963,13 +24963,16 @@ module.exports = Vector2D;
     rangeUnderflow: "min",
     rangeOverflow: "max",
     stepMismatch: "step",
+    tooLines: "max_line",
     tooLong: "maxlength",
-    tooShort: "minlength"
+    tooShort: "minlength",
+    hasSecret: "not_secret",
+    hasPlayer: "not_player"
   };
 
   custom_validity = function(validity, key, text) {
     if (!validity) {
-      return null;
+      return text;
     }
     return validity[validity_attr[key]] || text;
   };
@@ -24979,23 +24982,17 @@ module.exports = Vector2D;
       this.dom = dom1;
     };
 
-    Input.prototype.do_change = function(value, arg) {
-      var key, max, maxlength, min, minlength, pattern, ref, ref1, required, results, step, type, val;
-      minlength = arg.minlength, maxlength = arg.maxlength, min = arg.min, max = arg.max, step = arg.step, pattern = arg.pattern, type = arg.type, required = arg.required;
+    Input.prototype.do_change = function(value, attr) {
+      var key, ref, results, val;
       if (this.dom) {
         this.info("");
         this.error("");
         this.dom.checkValidity();
-        if (minlength && (0 < (ref = value.length) && ref < minlength)) {
-          if (!InputTie.skip_minlength) {
-            this.error(custom_validity(this.format.error, "tooShort", "このテキストは " + minlength + " 文字以上で指定してください（現在は " + value.length + " 文字です）。"));
-          }
-        }
         if (this.format.error) {
-          ref1 = this.dom.validity;
+          ref = this.dom.validity;
           results = [];
-          for (key in ref1) {
-            val = ref1[key];
+          for (key in ref) {
+            val = ref[key];
             if (val) {
               results.push(this.error(custom_validity(this.format.error, key)));
             }
@@ -25032,6 +25029,9 @@ module.exports = Vector2D;
       if (this._head) {
         this.head = this._head(params, attr_label, format);
       }
+      if (this._foot) {
+        this.foot = this._foot(params, attr_label, format);
+      }
       attr_item = this._attr(this._value, tie, this);
       if (this._item) {
         this.item = this._item(params, attr_item, format);
@@ -25046,7 +25046,7 @@ module.exports = Vector2D;
 
     Input.prototype.timeout = 100;
 
-    Input.prototype.label_for = function(o) {};
+    Input.prototype.calc = {};
 
     Input.prototype._head = label_head;
 
@@ -25061,12 +25061,12 @@ module.exports = Vector2D;
           }
           _id = o._id, options = o.options, info = o.info, attr = o.attr, label = o.label;
           now_val = params[_id];
-          if (options) {
-            option = options[now_val];
-          }
-          if (option && _this.label_for) {
-            if (option && _this.label_for) {
-              return _this.label_for(option);
+          if (_this.label_for) {
+            if (options) {
+              option = options[now_val];
+              if (option && _this.label_for) {
+                return _this.label_for(option);
+              }
             }
           }
           if (info) {
@@ -25093,6 +25093,23 @@ module.exports = Vector2D;
 
   })();
 
+  basic_field = function(params, area, o) {
+    return function(m_attr) {
+      var _id, attr, ma, now_val;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      _id = o._id, attr = o.attr;
+      now_val = params[_id];
+      ma = area(_id, attr, m_attr, {
+        className: [attr.className, attr.className].join(" "),
+        name: attr.name || _id,
+        value: now_val
+      });
+      return m("input", ma);
+    };
+  };
+
   basic_input = (function(superClass) {
     extend(basic_input, superClass);
 
@@ -25104,31 +25121,127 @@ module.exports = Vector2D;
 
     basic_input.prototype._attr = input_attr;
 
-    basic_input.prototype._field = function(params, area, o) {
-      return function(m_attr) {
-        var _id, attr, ma, now_val;
-        if (m_attr == null) {
-          m_attr = {};
-        }
-        _id = o._id, attr = o.attr;
-        now_val = params[_id];
-        ma = area(_id, attr, m_attr, {
-          className: [attr.className, attr.className].join(" "),
-          name: attr.name || _id,
-          value: now_val
-        });
-        return m("input", ma);
-      };
-    };
+    basic_input.prototype._field = basic_field;
 
     return basic_input;
 
   })(Input);
 
-  ref = ["hidden", "text", "search", "tel", "url", "email", "password", "datetime", "date", "month", "week", "time", "datetime-local", "number", "range", "color"];
+  text_point = function(size) {
+    var pt;
+    pt = 20;
+    if (50 < size) {
+      pt += (size - 50) / 14;
+    }
+    return Math.floor(pt);
+  };
+
+  text_foot = function(params, join, o) {
+    return (function(_this) {
+      return function(m_attr) {
+        var _id, attr, ma, mark;
+        if (m_attr == null) {
+          m_attr = {};
+        }
+        _id = o._id, attr = o.attr;
+        if (_this.calc.point) {
+          mark = m("span.emboss", _this.calc.point + "pt ");
+        } else {
+          mark = "";
+        }
+        if (!_this.dom || _this.dom.validationMessage) {
+          mark = m("span.WSAY.emboss", "⊘");
+        }
+        ma = join(_id, attr, m_attr);
+        return [mark, " " + _this.calc.sjis, ma.max_sjis ? m("sub", "/" + ma.max_sjis) : void 0, m("sub", "字"), " " + _this.calc.line, ma.max_line ? m("sub", "/" + ma.max_line) : void 0, m("sub", "行")];
+      };
+    })(this);
+  };
+
+  text_change = function(value, arg) {
+    var key, line, match_player, match_secret, max, max_line, max_sjis, maxlength, min, minlength, not_player, not_secret, pattern, point, ref, ref1, required, results, sjis, step, type, unit, val;
+    not_secret = arg.not_secret, not_player = arg.not_player, unit = arg.unit, max_sjis = arg.max_sjis, max_line = arg.max_line, minlength = arg.minlength, maxlength = arg.maxlength, min = arg.min, max = arg.max, step = arg.step, pattern = arg.pattern, type = arg.type, required = arg.required;
+    if (this.dom) {
+      this.info("");
+      this.error("");
+      this.dom.checkValidity();
+      line = value.split("\n").length;
+      sjis = value.sjis_length;
+      if ("point" === unit) {
+        point = text_point(sjis);
+      }
+      this.calc = {
+        point: point,
+        line: line,
+        sjis: sjis
+      };
+      if (not_secret && (match_secret = value.match(/>>[\=\*\!]\d+/g))) {
+        this.error(custom_validity(this.format.error, "hasSecret", "あぶない！秘密会話へのアンカーがあります！"));
+      }
+      if (not_player && (match_player = value.match(/\/\*|\*\//g))) {
+        this.error(custom_validity(this.format.error, "hasPlayer", "/*中の人の発言があります。*/"));
+      }
+      if (max_line && max_line < line) {
+        this.error(custom_validity(this.format.error, "tooLines", "このテキストを " + max_line + " 行以下にしてください。"));
+      }
+      if (max_sjis && max_sjis < sjis) {
+        this.error(custom_validity(this.format.error, "tooLong", "このテキストを " + max_sjis + " 文字以下にしてください。"));
+      }
+      if (minlength && (0 < (ref = value.length) && ref < minlength)) {
+        if (!InputTie.skip_minlength) {
+          this.error(custom_validity(this.format.error, "tooShort", "このテキストは " + minlength + " 文字以上で指定してください（現在は " + value.length + " 文字です）。"));
+        }
+      }
+      if (this.format.error) {
+        ref1 = this.dom.validity;
+        results = [];
+        for (key in ref1) {
+          val = ref1[key];
+          if (val) {
+            results.push(this.error(custom_validity(this.format.error, key)));
+          }
+        }
+        return results;
+      }
+    }
+  };
+
+  text_input = (function(superClass) {
+    extend(text_input, superClass);
+
+    function text_input() {
+      return text_input.__super__.constructor.apply(this, arguments);
+    }
+
+    text_input.prototype.do_change = text_change;
+
+    text_input.prototype._value = e_value;
+
+    text_input.prototype._attr = input_attr;
+
+    text_input.prototype._foot = text_foot;
+
+    text_input.prototype._field = basic_field;
+
+    text_input.prototype.calc = {
+      sjis: 0,
+      line: 0
+    };
+
+    return text_input;
+
+  })(Input);
+
+  ref = ["hidden", "tel", "password", "datetime", "date", "month", "week", "time", "datetime-local", "number", "range", "color"];
   for (i = 0, len = ref.length; i < len; i++) {
     key = ref[i];
     InputTie.type[key] = basic_input;
+  }
+
+  ref1 = ["text", "search", "url", "email"];
+  for (j = 0, len1 = ref1.length; j < len1; j++) {
+    key = ref1[j];
+    InputTie.type[key] = text_input;
   }
 
   InputTie.type.textarea = (function(superClass) {
@@ -25138,9 +25251,18 @@ module.exports = Vector2D;
       return textarea.__super__.constructor.apply(this, arguments);
     }
 
+    textarea.prototype.do_change = text_change;
+
     textarea.prototype._value = e_value;
 
     textarea.prototype._attr = input_attr;
+
+    textarea.prototype._foot = text_foot;
+
+    textarea.prototype.calc = {
+      sjis: 0,
+      line: 0
+    };
 
     textarea.prototype._field = function(params, area, o) {
       return function(m_attr) {
