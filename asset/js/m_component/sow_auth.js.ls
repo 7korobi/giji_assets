@@ -15,7 +15,7 @@ doc.component.sow_auth =
     @params = { ua, cmd: "login" }
     @tie = InputTie.form @params, <[uid pwd]>
     @tie.timeout = 5000
-    @tie.validate = (e)~>
+    @tie.do_draw = ~>
       {uid, pwd} = @params
       is_same =
         if uid == pwd
@@ -40,20 +40,21 @@ doc.component.sow_auth =
     deploy gon
 
 
-  view: (c)->
-    c.tie.form {},
+  view: ({ tie })->
+    tie.draw()
+    tie.form {},
       if doc.user.is_login
         m ".paragraph",
-          c.tie.submit "#{doc.user.id} がログアウト"
+          tie.submit "#{doc.user.id} がログアウト"
       else
         m ".paragraph",
-          c.tie.input.uid.head()
-          c.tie.input.uid.field()
-          c.tie.input.pwd.head()
-          c.tie.input.pwd.field()
-          c.tie.submit "ログイン"
+          tie.input.uid.head()
+          tie.input.uid.field()
+          tie.input.pwd.head()
+          tie.input.pwd.field()
+          tie.submit "ログイン"
       m ".paragraph",
-        c.tie.infos (msg)->
+        tie.infos (msg)->
           m ".TSAY", m ".emboss", msg
-        c.tie.errors (msg)->
+        tie.errors (msg)->
           m ".WSAY", m ".emboss", msg

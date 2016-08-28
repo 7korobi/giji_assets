@@ -9,13 +9,21 @@ error_and_info = (v)->
 
 doc.component.vmake_form =
   controller: (v)->
-    v.params =
-      extra: []
-      role:  []
-      gift:  []
-      trap:  []
+    vindex = 0
+    vil_comment = [
+      "（村のルールは、自由に編集できるよ！）"
+      " "
+      "■村のルール"
+    ].concat(RULE.village.list.map (o)-> "#{++vindex}.#{o.head}").join("\r\n")
+
+    v.params = { vil_comment }
 
     v.tie = InputTie.form v.params, [
+      "extra"
+      "role"
+      "gift"
+      "trap"
+
       "vil_name"
       "vil_comment"
 
@@ -35,101 +43,6 @@ doc.component.vmake_form =
       "player_count"
       "player_count_start"
     ]
-    v.tie.validate = (e)->
-      { role, gift, extra, mob_type, game_rule, start_auto, player_count, player_count_start } = v.params
-      full = [role..., gift...]
-
-      minus = 0
-      minus += 2 * Mem.Query.roles.minus2(role).length
-      minus += 1 * Mem.Query.roles.minus1(full).length
-
-      player = Mem.Query.roles.players(role).length
-
-      v.size =
-        drop: player - player_count
-        wolf: Mem.Query.roles.wolfs(full).length
-        minus: minus
-        extra: extra.length
-        human: Mem.Query.roles.humans(role).length - minus
-        player: player
-        robber: Mem.Query.roles.robbers(role).length
-        villager: Mem.Query.roles.villagers(role).length
-        gift_sides: Mem.Query.roles.gift_sides(gift).length
-        gift_items: Mem.Query.roles.gift_items(gift).length
-        gift_appends: Mem.Query.roles.gift_appends(gift).length
-
-      switch mob_type
-        when "juror"
-          v.tie.input.role_table.error "投票する人物が必要です。見物人（陪審）または、決定者を割り当てましょう。" unless v.size.extra || ("decide" in gift)
-
-        when "gamemaster"
-          v.tie.input.mob_type.info "見物人（黒幕）を割り当てましょう。" unless v.size.extra
-
-      switch game_rule
-        when "TABULA", "LIVE_TABULA", "TROUBLE"
-          v.tie.input.role_table.error "人間(#{v.size.human}人)は人狼(#{v.size.wolf}人)より多く必要です。" unless 0 < v.size.wolf < v.size.human
-
-        when "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "MISTERY"
-          v.tie.input.role_table.error "村人(#{v.size.villager}人)が足りません。" unless 1 < v.size.villager
-          v.tie.input.role_table.error "人狼(#{v.size.wolf}人)が足りません。"     unless 0 < v.size.wolf
-
-      if start_auto
-        v.tie.input.player_count_start.error "ゲームが開始できません。"     unless     player_count_start <= player_count
-        v.tie.input.player_count_start.error "最少催行人数が少なすぎます。" unless 3 < player_count_start
-
-      if game_rule in ["LIVE_TABULA", "LIVE_MILLERHOLLOW"]
-        v.tie.input.role_table.error "鱗魚人が勝利できません。" if "dish" in role
-
-      if v.size.robber
-        v.tie.input.role_table.error "役職(#{v.size.player}人)が足りません。盗賊(#{v.size.robber}人)には余り札が必要です。"                               if v.size.player < player_count
-        v.tie.input.role_table.error "人狼(#{v.size.wolf}人)が足りません。盗賊(#{v.size.robber}人)より多くないと、人狼がいない村になる可能性があります。" if v.size.wolf <= v.size.robber
-
-      else
-        v.tie.input.role_table.error "役職(#{v.size.player}人)が足りません。定員以上にしましょう。" if v.size.drop < 0
-
-      v.tie.input.role_table.info  "役職配布時、余り札（#{v.size.drop}枚）は捨て去ります。"          if 0 < v.size.drop
-      v.tie.input.role_table.error "光の輪や魔鏡と、能力や勝利条件を付与する恩恵は共存できません。" if (v.size.gift_sides + v.size.gift_appends) && v.size.gift_items
-      v.tie.input.role_table.error "能力を加える恩恵と、勝利条件が変わる恩恵は共存できません。"     if v.size.gift_sides && v.size.gift_appends
-      v.tie.input.role_table.error "NPCのために、村人をひとつ入れてください。"                  unless "villager" in role
-      if v.size.human
-        human_count =
-          if minus
-            "#{v.size.human}人以上は村人です。"
-          else
-            "#{v.size.human}人は村人です。"
-        v.tie.input.player_count.info human_count
-
-
-    v.tie.action = ->
-      v.submit v.params
-
-    v.tie.input.checkboxes =
-      for chk in Mem.Query.inputs.checkbox("vil").list
-        v.tie.bundle chk
-
-    vindex = 0
-    v.tie.prop.vil_comment [
-      "（村のルールは、自由に編集できるよ！）"
-      " "
-      "■村のルール"
-    ].concat(RULE.village.list.map (o)-> "#{++vindex}.#{o.head}").join("\r\n")
-
-    v.reset = ->
-      {player_count} = v.params
-      role_table = Mem.Query.role_tables.find v.params.role_table
-
-      return null unless role_table
-      cards_set = role_table.cards
-
-      return null unless cards_set
-      v.params.role = []
-      v.params.gift = []
-      cards = cards_set[player_count]
-
-      return null unless cards
-      for o in Mem.Query.roles.finds cards
-        v.params[o.cmd].push o._id
-
     v.tie.input.say_count.label_for = (o)-> m.trust o.help
     v.tie.input.mob_type.label_for = (o)-> m.trust o.help
     v.tie.input.game_rule.label_for = (o)->
@@ -140,22 +53,46 @@ doc.component.vmake_form =
         m.trust o.help
     v.tie.input.rating.label_for = (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
 
-    v.player_summary = (form)->
-      vdoms = []
-      if v.size
-        {player, extra, human, minus} = v.size
-        vdoms.push "最大 "
-        vdoms.push m "span.mark.SSAY", "#{player}人"
-        if extra
-          vdoms.push m "span.mark.VSAY", "+#{extra}人"
 
-        vdoms.push " が参加できます。"
+    v.tie.action = ->
+      v.submit v.params
 
-      m "div",
-        vdoms
-        error_and_info v
+    v.tie.input.checkboxes =
+      for chk in Mem.Query.inputs.checkbox("vil").list
+        v.tie.bundle chk
 
-    v.npc_says = (chr_npc)->
+    ###
+    v.tie.validate =
+      extra:
+      role:
+      gift:
+      trap:
+      player_count:
+      role_table:
+      game_rule:
+    ###
+
+    v.tie.do_draw ->
+      role_table = Mem.Query.role_tables.find v.params.role_table
+
+      return unless role_table
+      cards_set = role_table.cards
+
+      return unless cards_set
+      v.params.role.length = 0
+      v.params.gift.length = 0
+      cards = cards_set[v.params.player_count]
+
+      return unless cards
+      for o in Mem.Query.roles.finds cards
+        v.params[o.cmd].push o._id
+
+    v.tie.do_draw ->
+      if chr_npc = Mem.Query.chr_npcs.find v.params.chr_npc
+        v.jobs = chr_npc.chr_set.chr_jobs.list
+      else
+        v.jobs = []
+
       return null unless chr_npc
       chr_set = chr_npc.chr_set
 
@@ -171,36 +108,101 @@ doc.component.vmake_form =
       face = Mem.Query.faces.find face_id
       name = "#{chr_job.job} #{face.name}"
 
-      [ m "h3", "プロローグ"
-        doc.view.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_0.deco_text_lf}
-        m "h3", "１日目"
-        doc.view.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_1.deco_text_lf}
-        m "h3", "参加キャラクター"
-      ]
+      v.npc_says =
+        [ m "h3", "プロローグ"
+          doc.view.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_0.deco_text_lf}
+          m "h3", "１日目"
+          doc.view.talk {face_id, user_id, anchor, name, mestype, updated_at, log: say_1.deco_text_lf}
+          m "h3", "参加キャラクター"
+        ]
+
+    v.tie.do_draw ->
+      { role, gift, extra, mob_type, game_rule, start_auto, player_count, player_count_start } = v.params
+      full = [role..., gift...]
+
+      extra = extra.length
+      minus = 0
+      minus += 2 * Mem.Query.roles.minus2(role).length
+      minus += 1 * Mem.Query.roles.minus1(full).length
+
+      wolf = Mem.Query.roles.wolfs(full).length
+      human = Mem.Query.roles.humans(role).length - minus
+      player = Mem.Query.roles.players(role).length
+      robber = Mem.Query.roles.robbers(role).length
+      villager = Mem.Query.roles.villagers(role).length
+      gift_sides = Mem.Query.roles.gift_sides(gift).length
+      gift_items = Mem.Query.roles.gift_items(gift).length
+      gift_appends = Mem.Query.roles.gift_appends(gift).length
+
+      drop = player - player_count
+
+      vdoms = []
+      vdoms.push "最大 "
+      vdoms.push m "span.mark.SSAY", "#{player}人"
+      if extra
+        vdoms.push m "span.mark.VSAY", "+#{extra}人"
+
+      vdoms.push " が参加できます。"
+
+      v.player_summary = m "div",
+        vdoms
+        error_and_info v
+
+      switch mob_type
+        when "juror"
+          role_table_error = "投票する人物が必要です。見物人（陪審）または、決定者を割り当てましょう。" unless extra || ("decide" in gift)
+
+        when "gamemaster"
+          mob_type_info = "見物人（黒幕）を割り当てましょう。" unless extra
+
+      switch game_rule
+        when "TABULA", "LIVE_TABULA", "TROUBLE"
+          role_table_error = "人間(#{human}人)は人狼(#{wolf}人)より多く必要です。" unless 0 < wolf < human
+
+        when "MILLERHOLLOW", "LIVE_MILLERHOLLOW", "MISTERY"
+          role_table_error = "村人(#{villager}人)が足りません。" unless 1 < villager
+          role_table_error = "人狼(#{wolf}人)が足りません。"     unless 0 < wolf
+
+      if start_auto
+        player_count_start_error = "ゲームが開始できません。"     unless     player_count_start <= player_count
+        player_count_start_error = "最少催行人数が少なすぎます。" unless 3 < player_count_start
+
+      if game_rule in ["LIVE_TABULA", "LIVE_MILLERHOLLOW"]
+        role_table_error = "鱗魚人が勝利できません。" if "dish" in role
+
+      if robber
+        role_table_error = "役職(#{player}人)が足りません。盗賊(#{robber}人)には余り札が必要です。"                               if player < player_count
+        role_table_error = "人狼(#{wolf}人)が足りません。盗賊(#{robber}人)より多くないと、人狼がいない村になる可能性があります。" if wolf <= robber
+
+      else
+        role_table_error = "役職(#{player}人)が足りません。定員以上にしましょう。" if drop < 0
+
+      role_table_error = "光の輪や魔鏡と、能力や勝利条件を付与する恩恵は共存できません。" if (gift_sides + gift_appends) && gift_items
+      role_table_error = "能力を加える恩恵と、勝利条件が変わる恩恵は共存できません。"     if gift_sides && gift_appends
+      role_table_error = "NPCのために、村人をひとつ入れてください。"                  unless "villager" in role
+
+      role_table_info =
+        if 0 < drop
+          "役職配布時、余り札（#{drop}枚）は捨て去ります。"
+
+      if human
+        human_count =
+          if minus
+            "#{human}人以上は村人です。"
+          else
+            "#{human}人は村人です。"
+
+      v.tie.input.player_count_start.error player_count_start_error
+      v.tie.input.player_count.info human_count
+      v.tie.input.role_table.error role_table_error
+      v.tie.input.role_table.info role_table_info
+      v.tie.input.mob_type.info mob_type_info
+
 
     add_btn = ({_id, cmd, win, label})->
-      tap = ->
-        v.params[cmd].push _id
-        v.tie.do_change "role_table", v.params.role_table, v.tie.input.role_table.format
-      attr =
-        onmouseup: tap
-        ontouchend: tap
-      m "a.WIN_#{win}.btn.edge", attr, label
-
-    pop_btn = (cmd)->
-      tap = ->
-        v.params[cmd].pop()
-        v.tie.do_change "role_table", v.params.role_table, v.tie.input.role_table.format
-      attr =
-        onmouseup: tap
-        ontouchend: tap
-      {attr, cmd}
-
-    v.sets =
-      extra: pop_btn "extra"
-      role:  pop_btn "role"
-      gift:  pop_btn "gift"
-      trap:  pop_btn "trap"
+      v.tie.input[cmd].format.options[_id] = { _id, label }
+      v.tie.input[cmd].item _id,
+        className: "WIN_#{win}"
 
     v.adds =
       human: Mem.Query.roles.is("human").list.map add_btn
@@ -219,22 +221,17 @@ doc.component.vmake_form =
     v
 
   view: (v)->
-    sets = (method, {attr, cmd})->
+    sets = (method, cmd)->
       m "div",
-        m "a.btn.edge.icon-cancel-alt", attr, ""
+        v.tie.input[cmd].back()
         GUI.names[method] v.params[cmd], (size, {label, win})->
           if size > 1
             m "span.WIN_#{win}.emboss", "#{label}x#{size}"
           else
             m "span.WIN_#{win}.emboss", "#{label}"
 
-    v.reset()
     nindex = 0
-    if npc = Mem.Query.chr_npcs.find v.params.chr_npc
-      jobs = npc.chr_set.chr_jobs.list
-    else
-      jobs = []
-
+    v.tie.draw()
     v.tie.form {},
       m ".vmake", {key: v._id},
         m ".INFOSP.info",
@@ -307,7 +304,7 @@ doc.component.vmake_form =
             m "p",
               v.tie.input.role_table.field()
 
-            v.player_summary v.params
+            v.player_summary
 
         switch v.params.role_table
           when undefined
@@ -327,36 +324,36 @@ doc.component.vmake_form =
                     v.tie.input.player_count_start.field()
                     v.tie.input.player_count_start.label()
 
-                sets "config", v.sets.extra
-                sets "config", v.sets.role
-                sets "config", v.sets.gift
+                sets "config", "extra"
+                sets "config", "role"
+                sets "config", "gift"
                 if v.params.seq_event
-                  sets "order", v.sets.trap
+                  sets "order", "trap"
                 else
-                  sets "config", v.sets.trap
+                  sets "config", "trap"
 
 
                 m "h6", "村側"
-                btn for btn in v.adds.human
+                v.adds.human
 
                 m "h6", "敵方の人間"
-                btn for btn in v.adds.evil
+                v.adds.evil
 
                 m "h6", "人狼"
-                btn for btn in v.adds.wolf
+                v.adds.wolf
 
                 m "h6", "妖精"
-                btn for btn in v.adds.pixi
+                v.adds.pixi
 
                 m "h6", "その他"
-                btn for btn in v.adds.other
-                btn for btn in v.adds.mob
+                v.adds.other
+                v.adds.mob
 
                 m "h6", "恩恵"
-                btn for btn in v.adds.gift
+                v.adds.gift
 
                 m "h6", "事件"
-                btn for btn in v.adds.trap
+                v.adds.trap
 
           else
             m ".VSAY.plane",
@@ -369,15 +366,15 @@ doc.component.vmake_form =
                   m "p",
                     v.tie.input.player_count_start.field()
                     v.tie.input.player_count_start.label()
-                sets "config", v.sets.extra
-                sets "config", v.sets.role
-                sets "config", v.sets.gift
+                sets "config", "extra"
+                sets "config", "role"
+                sets "config", "gift"
                 if v.params.seq_event
-                  sets "order", v.sets.trap
+                  sets "order", "trap"
                 else
-                  sets "config", v.sets.trap
+                  sets "config", "trap"
 
-                btn for btn in v.adds.mob
+                v.adds.mob
 
         m ".SSAY.plane",
           m "fieldset.msg",
@@ -386,10 +383,10 @@ doc.component.vmake_form =
               v.tie.input.chr_npc.field()
               v.tie.input.chr_npc.label()
 
-        v.npc_says npc
+        v.npc_says
         m ".minilist",
           m "hr.black"
-          for o in jobs
+          for o in v.jobs
             m ".chrbox", {key: o.face_id},
               GUI.portrate o.face_id
               m ".bar.live",

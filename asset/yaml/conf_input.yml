@@ -476,22 +476,34 @@ rating:
 extra:
   sean: vil
   attr:
-    type: btns
+    type: stack
+  current: []
+  options: {}
+  name: 見物人リスト
 
 role:
   sean: vil
   attr:
-    type: btns
+    type: stack
+  current: []
+  options: {}
+  name: 役職リスト
 
 gift:
   sean: vil
   attr:
-    type: btns
+    type: stack
+  current: []
+  options: {}
+  name: 恩恵リスト
 
 trap:
   sean: vil
   attr:
-    type: btns
+    type: stack
+  current: []
+  options: {}
+  name: 事件リスト
 
 chr_set:
   sean: vil

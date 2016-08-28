@@ -22,11 +22,8 @@ class Validator
 
 
 ### text section
-
-summary = ({valid})->
-required = ({error})->
-secret = ({error})->
-no_player = ({info})->
+not_secret = ({error})->
+not_player = ({info})->
 action = ({error})->
   tap_target = -1 == @target()
   if @action
@@ -48,24 +45,24 @@ input = ({info})->
 input_validator = new Validator [input]
 
 announce =
-  memo: new Validator [text, required, summary]
-  talk: new Validator [text, required, summary]
-  act: new Validator  [text, required, action, summary]
+  memo: new Validator []
+  talk: new Validator []
+  act: new Validator  [action]
 
 character =
-  memo: new Validator [text, required, summary]
-  talk: new Validator [text, required, no_player, summary]
-  act: new Validator  [text, required, no_player, action, summary]
+  memo: new Validator []
+  talk: new Validator [not_player]
+  act: new Validator  [not_player, action]
 
 relative =
-  memo: new Validator [text, required, summary]
-  talk: new Validator [text, required, no_player, summary]
-  act: new Validator  [text, required, no_player, action, summary]
+  memo: new Validator []
+  talk: new Validator [not_player]
+  act: new Validator  [not_player, action]
 
 combat =
-  memo: new Validator [text, required, secret, summary]
-  talk: new Validator [text, required, secret, no_player, summary]
-  act: new Validator  [text, required, secret, no_player, action, summary]
+  memo: new Validator [not_secret]
+  talk: new Validator [not_secret, not_player]
+  act: new Validator  [not_secret, not_player, action]
 
 
 export validate =

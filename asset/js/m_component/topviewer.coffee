@@ -100,8 +100,8 @@ doc.component.topviewer =
     m ".paragraph",
       switch menu.params.icon
         when "cog"
-          btns = ({head, field})->
-            [head(), field (o)-> o.label ]
+          btns = (btn)->
+            [btn.head(), btn.field() ]
           input = Url.tie.input
           [
             btns input.theme

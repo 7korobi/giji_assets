@@ -3384,26 +3384,38 @@
     "extra": {
       "sean": "vil",
       "attr": {
-        "type": "btns"
-      }
+        "type": "stack"
+      },
+      "current": [],
+      "options": {},
+      "name": "見物人リスト"
     },
     "role": {
       "sean": "vil",
       "attr": {
-        "type": "btns"
-      }
+        "type": "stack"
+      },
+      "current": [],
+      "options": {},
+      "name": "役職リスト"
     },
     "gift": {
       "sean": "vil",
       "attr": {
-        "type": "btns"
-      }
+        "type": "stack"
+      },
+      "current": [],
+      "options": {},
+      "name": "恩恵リスト"
     },
     "trap": {
       "sean": "vil",
       "attr": {
-        "type": "btns"
-      }
+        "type": "stack"
+      },
+      "current": [],
+      "options": {},
+      "name": "事件リスト"
     },
     "chr_set": {
       "sean": "vil",
@@ -12492,7 +12504,7 @@
 }).call(this);
 
 (function(){
-  var Validator, point, text, summary, required, secret, no_player, action, input, input_validator, announce, character, relative, combat, validate, out$ = typeof exports != 'undefined' && exports || this;
+  var Validator, not_secret, not_player, action, input, input_validator, announce, character, relative, combat, validate, out$ = typeof exports != 'undefined' && exports || this;
   Validator = (function(){
     Validator.displayName = 'Validator';
     var prototype = Validator.prototype, constructor = Validator;
@@ -12525,67 +12537,13 @@
     };
     return Validator;
   }());
-  point = function(size){
-    var pt;
-    pt = 20;
-    if (50 < size) {
-      pt += (size - 50) / 14;
-    }
-    return Math.floor(pt);
-  };
-  text = function(){
-    var text;
-    text = this.text();
-    this.size = text.sjis_length;
-    this.point = point(this.size);
-    return this.lines = text.split("\n").length;
-  };
-  summary = function(arg$){
-    var valid, mark;
-    valid = arg$.valid;
-    if ('point' === this.max.unit) {
-      mark = this.point + "pt ";
-    } else {
-      mark = "";
-    }
-    if (!valid()) {
-      mark = "⊘";
-    }
-    return this.summary = [m("span.emboss", mark), " " + this.size, m("sub", "/" + this.max.size + "字"), " " + this.lines, m("sub", "/" + this.max.line + "行")];
-  };
-  required = function(arg$){
-    var error, text;
+  not_secret = function(arg$){
+    var error;
     error = arg$.error;
-    text = this.text();
-    if (text) {
-      if (!(3 < this.size && text.match(/\S/))) {
-        error("入力しましょう。");
-      }
-      if (this.max.size < this.size) {
-        error(this.max.size + "字以下にしましょう。");
-      }
-      if (this.max.line < this.lines) {
-        return error(this.max.line + "行以下にしましょう。");
-      }
-    } else {
-      return error("入力しましょう。");
-    }
   };
-  secret = function(arg$){
-    var error, text;
-    error = arg$.error;
-    text = this.text();
-    if (text.match(/>>[\=\*\!]\d+/g)) {
-      return error("あぶない！秘密会話へのアンカーがあります！");
-    }
-  };
-  no_player = function(arg$){
-    var info, text;
+  not_player = function(arg$){
+    var info;
     info = arg$.info;
-    text = this.text();
-    if (text.match(/\/\*|\*\//g)) {
-      return info("/*中の人の発言があります。*/");
-    }
   };
   action = function(arg$){
     var error, tap_target;
@@ -12612,24 +12570,24 @@
   };
   input_validator = new Validator([input]);
   announce = {
-    memo: new Validator([text, required, summary]),
-    talk: new Validator([text, required, summary]),
-    act: new Validator([text, required, action, summary])
+    memo: new Validator([]),
+    talk: new Validator([]),
+    act: new Validator([action])
   };
   character = {
-    memo: new Validator([text, required, summary]),
-    talk: new Validator([text, required, no_player, summary]),
-    act: new Validator([text, required, no_player, action, summary])
+    memo: new Validator([]),
+    talk: new Validator([not_player]),
+    act: new Validator([not_player, action])
   };
   relative = {
-    memo: new Validator([text, required, summary]),
-    talk: new Validator([text, required, no_player, summary]),
-    act: new Validator([text, required, no_player, action, summary])
+    memo: new Validator([]),
+    talk: new Validator([not_player]),
+    act: new Validator([not_player, action])
   };
   combat = {
-    memo: new Validator([text, required, secret, summary]),
-    talk: new Validator([text, required, secret, no_player, summary]),
-    act: new Validator([text, required, secret, no_player, action, summary])
+    memo: new Validator([not_secret]),
+    talk: new Validator([not_secret, not_player]),
+    act: new Validator([not_secret, not_player, action])
   };
   out$.validate = validate = {
     input: function(target){

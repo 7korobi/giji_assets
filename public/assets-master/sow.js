@@ -3002,7 +3002,7 @@
       };
       this.tie = InputTie.form(this.params, ['uid', 'pwd']);
       this.tie.timeout = 5000;
-      this.tie.validate = function(e){
+      this.tie.do_draw = function(){
         var ref$, uid, pwd, is_same;
         ref$ = this$.params, uid = ref$.uid, pwd = ref$.pwd;
         is_same = uid === pwd ? "パスワードとIDが同じです。" : void 8;
@@ -3026,12 +3026,15 @@
       };
       deploy(gon);
     },
-    view: function(c){
-      return c.tie.form({}, doc.user.is_login
-        ? m(".paragraph", c.tie.submit(doc.user.id + " がログアウト"))
-        : m(".paragraph", c.tie.input.uid.head(), c.tie.input.uid.field(), c.tie.input.pwd.head(), c.tie.input.pwd.field(), c.tie.submit("ログイン")), m(".paragraph", c.tie.infos(function(msg){
+    view: function(arg$){
+      var tie;
+      tie = arg$.tie;
+      tie.draw();
+      return tie.form({}, doc.user.is_login
+        ? m(".paragraph", tie.submit(doc.user.id + " がログアウト"))
+        : m(".paragraph", tie.input.uid.head(), tie.input.uid.field(), tie.input.pwd.head(), tie.input.pwd.field(), tie.submit("ログイン")), m(".paragraph", tie.infos(function(msg){
         return m(".TSAY", m(".emboss", msg));
-      }), c.tie.errors(function(msg){
+      }), tie.errors(function(msg){
         return m(".WSAY", m(".emboss", msg));
       })));
     }
@@ -3567,14 +3570,8 @@
       return m(".paragraph", (function() {
         switch (menu.params.icon) {
           case "cog":
-            btns = function(arg) {
-              var field, head;
-              head = arg.head, field = arg.field;
-              return [
-                head(), field(function(o) {
-                  return o.label;
-                })
-              ];
+            btns = function(btn) {
+              return [btn.head(), btn.field()];
             };
             input = Url.tie.input;
             return [btns(input.theme), btns(input.width), btns(input.layout), btns(input.font)];
@@ -3664,148 +3661,15 @@
 
   doc.component.vmake_form = {
     controller: function(v) {
-      var add_btn, chk, pop_btn, vindex;
-      v.params = {
-        extra: [],
-        role: [],
-        gift: [],
-        trap: []
-      };
-      v.tie = InputTie.form(v.params, ["vil_name", "vil_comment", "rating", "trs_type", "say_count", "time", "interval", "entry_password", "chr_npc", "mob_type", "game_rule", "role_table", "player_count", "player_count_start"]);
-      v.tie.validate = function(e) {
-        var extra, full, game_rule, gift, human_count, minus, mob_type, player, player_count, player_count_start, ref, ref1, role, start_auto;
-        ref = v.params, role = ref.role, gift = ref.gift, extra = ref.extra, mob_type = ref.mob_type, game_rule = ref.game_rule, start_auto = ref.start_auto, player_count = ref.player_count, player_count_start = ref.player_count_start;
-        full = slice.call(role).concat(slice.call(gift));
-        minus = 0;
-        minus += 2 * Mem.Query.roles.minus2(role).length;
-        minus += 1 * Mem.Query.roles.minus1(full).length;
-        player = Mem.Query.roles.players(role).length;
-        v.size = {
-          drop: player - player_count,
-          wolf: Mem.Query.roles.wolfs(full).length,
-          minus: minus,
-          extra: extra.length,
-          human: Mem.Query.roles.humans(role).length - minus,
-          player: player,
-          robber: Mem.Query.roles.robbers(role).length,
-          villager: Mem.Query.roles.villagers(role).length,
-          gift_sides: Mem.Query.roles.gift_sides(gift).length,
-          gift_items: Mem.Query.roles.gift_items(gift).length,
-          gift_appends: Mem.Query.roles.gift_appends(gift).length
-        };
-        switch (mob_type) {
-          case "juror":
-            if (!(v.size.extra || (indexOf.call(gift, "decide") >= 0))) {
-              v.tie.input.role_table.error("投票する人物が必要です。見物人（陪審）または、決定者を割り当てましょう。");
-            }
-            break;
-          case "gamemaster":
-            if (!v.size.extra) {
-              v.tie.input.mob_type.info("見物人（黒幕）を割り当てましょう。");
-            }
-        }
-        switch (game_rule) {
-          case "TABULA":
-          case "LIVE_TABULA":
-          case "TROUBLE":
-            if (!((0 < (ref1 = v.size.wolf) && ref1 < v.size.human))) {
-              v.tie.input.role_table.error("人間(" + v.size.human + "人)は人狼(" + v.size.wolf + "人)より多く必要です。");
-            }
-            break;
-          case "MILLERHOLLOW":
-          case "LIVE_MILLERHOLLOW":
-          case "MISTERY":
-            if (!(1 < v.size.villager)) {
-              v.tie.input.role_table.error("村人(" + v.size.villager + "人)が足りません。");
-            }
-            if (!(0 < v.size.wolf)) {
-              v.tie.input.role_table.error("人狼(" + v.size.wolf + "人)が足りません。");
-            }
-        }
-        if (start_auto) {
-          if (!(player_count_start <= player_count)) {
-            v.tie.input.player_count_start.error("ゲームが開始できません。");
-          }
-          if (!(3 < player_count_start)) {
-            v.tie.input.player_count_start.error("最少催行人数が少なすぎます。");
-          }
-        }
-        if (game_rule === "LIVE_TABULA" || game_rule === "LIVE_MILLERHOLLOW") {
-          if (indexOf.call(role, "dish") >= 0) {
-            v.tie.input.role_table.error("鱗魚人が勝利できません。");
-          }
-        }
-        if (v.size.robber) {
-          if (v.size.player < player_count) {
-            v.tie.input.role_table.error("役職(" + v.size.player + "人)が足りません。盗賊(" + v.size.robber + "人)には余り札が必要です。");
-          }
-          if (v.size.wolf <= v.size.robber) {
-            v.tie.input.role_table.error("人狼(" + v.size.wolf + "人)が足りません。盗賊(" + v.size.robber + "人)より多くないと、人狼がいない村になる可能性があります。");
-          }
-        } else {
-          if (v.size.drop < 0) {
-            v.tie.input.role_table.error("役職(" + v.size.player + "人)が足りません。定員以上にしましょう。");
-          }
-        }
-        if (0 < v.size.drop) {
-          v.tie.input.role_table.info("役職配布時、余り札（" + v.size.drop + "枚）は捨て去ります。");
-        }
-        if ((v.size.gift_sides + v.size.gift_appends) && v.size.gift_items) {
-          v.tie.input.role_table.error("光の輪や魔鏡と、能力や勝利条件を付与する恩恵は共存できません。");
-        }
-        if (v.size.gift_sides && v.size.gift_appends) {
-          v.tie.input.role_table.error("能力を加える恩恵と、勝利条件が変わる恩恵は共存できません。");
-        }
-        if (indexOf.call(role, "villager") < 0) {
-          v.tie.input.role_table.error("NPCのために、村人をひとつ入れてください。");
-        }
-        if (v.size.human) {
-          human_count = minus ? v.size.human + "人以上は村人です。" : v.size.human + "人は村人です。";
-          return v.tie.input.player_count.info(human_count);
-        }
-      };
-      v.tie.action = function() {
-        return v.submit(v.params);
-      };
-      v.tie.input.checkboxes = (function() {
-        var i, len, ref, results;
-        ref = Mem.Query.inputs.checkbox("vil").list;
-        results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          chk = ref[i];
-          results.push(v.tie.bundle(chk));
-        }
-        return results;
-      })();
+      var add_btn, chk, vil_comment, vindex;
       vindex = 0;
-      v.tie.prop.vil_comment(["（村のルールは、自由に編集できるよ！）", " ", "■村のルール"].concat(RULE.village.list.map(function(o) {
+      vil_comment = ["（村のルールは、自由に編集できるよ！）", " ", "■村のルール"].concat(RULE.village.list.map(function(o) {
         return (++vindex) + "." + o.head;
-      })).join("\r\n"));
-      v.reset = function() {
-        var cards, cards_set, i, len, o, player_count, ref, results, role_table;
-        player_count = v.params.player_count;
-        role_table = Mem.Query.role_tables.find(v.params.role_table);
-        if (!role_table) {
-          return null;
-        }
-        cards_set = role_table.cards;
-        if (!cards_set) {
-          return null;
-        }
-        v.params.role = [];
-        v.params.gift = [];
-        cards = cards_set[player_count];
-        if (!cards) {
-          return null;
-        }
-        ref = Mem.Query.roles.finds(cards);
-        results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          o = ref[i];
-          results.push(v.params[o.cmd].push(o._id));
-        }
-        return results;
+      })).join("\r\n");
+      v.params = {
+        vil_comment: vil_comment
       };
+      v.tie = InputTie.form(v.params, ["extra", "role", "gift", "trap", "vil_name", "vil_comment", "rating", "trs_type", "say_count", "time", "interval", "entry_password", "chr_npc", "mob_type", "game_rule", "role_table", "player_count", "player_count_start"]);
       v.tie.input.say_count.label_for = function(o) {
         return m.trust(o.help);
       };
@@ -3823,22 +3687,61 @@
           src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_" + o._id + ".png"
         });
       };
-      v.player_summary = function(form) {
-        var extra, human, minus, player, ref, vdoms;
-        vdoms = [];
-        if (v.size) {
-          ref = v.size, player = ref.player, extra = ref.extra, human = ref.human, minus = ref.minus;
-          vdoms.push("最大 ");
-          vdoms.push(m("span.mark.SSAY", player + "人"));
-          if (extra) {
-            vdoms.push(m("span.mark.VSAY", "+" + extra + "人"));
-          }
-          vdoms.push(" が参加できます。");
-        }
-        return m("div", vdoms, error_and_info(v));
+      v.tie.action = function() {
+        return v.submit(v.params);
       };
-      v.npc_says = function(chr_npc) {
-        var anchor, chr_job, chr_set, face, face_id, mestype, name, say_0, say_1, updated_at, user_id;
+      v.tie.input.checkboxes = (function() {
+        var i, len, ref, results;
+        ref = Mem.Query.inputs.checkbox("vil").list;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          chk = ref[i];
+          results.push(v.tie.bundle(chk));
+        }
+        return results;
+      })();
+
+      /*
+      v.tie.validate =
+        extra:
+        role:
+        gift:
+        trap:
+        player_count:
+        role_table:
+        game_rule:
+       */
+      v.tie.do_draw(function() {
+        var cards, cards_set, i, len, o, ref, results, role_table;
+        role_table = Mem.Query.role_tables.find(v.params.role_table);
+        if (!role_table) {
+          return;
+        }
+        cards_set = role_table.cards;
+        if (!cards_set) {
+          return;
+        }
+        v.params.role.length = 0;
+        v.params.gift.length = 0;
+        cards = cards_set[v.params.player_count];
+        if (!cards) {
+          return;
+        }
+        ref = Mem.Query.roles.finds(cards);
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          o = ref[i];
+          results.push(v.params[o.cmd].push(o._id));
+        }
+        return results;
+      });
+      v.tie.do_draw(function() {
+        var anchor, chr_job, chr_npc, chr_set, face, face_id, mestype, name, say_0, say_1, updated_at, user_id;
+        if (chr_npc = Mem.Query.chr_npcs.find(v.params.chr_npc)) {
+          v.jobs = chr_npc.chr_set.chr_jobs.list;
+        } else {
+          v.jobs = [];
+        }
         if (!chr_npc) {
           return null;
         }
@@ -3857,7 +3760,7 @@
         anchor = "0";
         face = Mem.Query.faces.find(face_id);
         name = chr_job.job + " " + face.name;
-        return [
+        return v.npc_says = [
           m("h3", "プロローグ"), doc.view.talk({
             face_id: face_id,
             user_id: user_id,
@@ -3876,40 +3779,115 @@
             log: say_1.deco_text_lf
           }), m("h3", "参加キャラクター")
         ];
-      };
+      });
+      v.tie.do_draw(function() {
+        var drop, extra, full, game_rule, gift, gift_appends, gift_items, gift_sides, human, human_count, minus, mob_type, mob_type_info, player, player_count, player_count_start, player_count_start_error, ref, robber, role, role_table_error, role_table_info, start_auto, vdoms, villager, wolf;
+        ref = v.params, role = ref.role, gift = ref.gift, extra = ref.extra, mob_type = ref.mob_type, game_rule = ref.game_rule, start_auto = ref.start_auto, player_count = ref.player_count, player_count_start = ref.player_count_start;
+        full = slice.call(role).concat(slice.call(gift));
+        extra = extra.length;
+        minus = 0;
+        minus += 2 * Mem.Query.roles.minus2(role).length;
+        minus += 1 * Mem.Query.roles.minus1(full).length;
+        wolf = Mem.Query.roles.wolfs(full).length;
+        human = Mem.Query.roles.humans(role).length - minus;
+        player = Mem.Query.roles.players(role).length;
+        robber = Mem.Query.roles.robbers(role).length;
+        villager = Mem.Query.roles.villagers(role).length;
+        gift_sides = Mem.Query.roles.gift_sides(gift).length;
+        gift_items = Mem.Query.roles.gift_items(gift).length;
+        gift_appends = Mem.Query.roles.gift_appends(gift).length;
+        drop = player - player_count;
+        vdoms = [];
+        vdoms.push("最大 ");
+        vdoms.push(m("span.mark.SSAY", player + "人"));
+        if (extra) {
+          vdoms.push(m("span.mark.VSAY", "+" + extra + "人"));
+        }
+        vdoms.push(" が参加できます。");
+        v.player_summary = m("div", vdoms, error_and_info(v));
+        switch (mob_type) {
+          case "juror":
+            if (!(extra || (indexOf.call(gift, "decide") >= 0))) {
+              role_table_error = "投票する人物が必要です。見物人（陪審）または、決定者を割り当てましょう。";
+            }
+            break;
+          case "gamemaster":
+            if (!extra) {
+              mob_type_info = "見物人（黒幕）を割り当てましょう。";
+            }
+        }
+        switch (game_rule) {
+          case "TABULA":
+          case "LIVE_TABULA":
+          case "TROUBLE":
+            if (!((0 < wolf && wolf < human))) {
+              role_table_error = "人間(" + human + "人)は人狼(" + wolf + "人)より多く必要です。";
+            }
+            break;
+          case "MILLERHOLLOW":
+          case "LIVE_MILLERHOLLOW":
+          case "MISTERY":
+            if (!(1 < villager)) {
+              role_table_error = "村人(" + villager + "人)が足りません。";
+            }
+            if (!(0 < wolf)) {
+              role_table_error = "人狼(" + wolf + "人)が足りません。";
+            }
+        }
+        if (start_auto) {
+          if (!(player_count_start <= player_count)) {
+            player_count_start_error = "ゲームが開始できません。";
+          }
+          if (!(3 < player_count_start)) {
+            player_count_start_error = "最少催行人数が少なすぎます。";
+          }
+        }
+        if (game_rule === "LIVE_TABULA" || game_rule === "LIVE_MILLERHOLLOW") {
+          if (indexOf.call(role, "dish") >= 0) {
+            role_table_error = "鱗魚人が勝利できません。";
+          }
+        }
+        if (robber) {
+          if (player < player_count) {
+            role_table_error = "役職(" + player + "人)が足りません。盗賊(" + robber + "人)には余り札が必要です。";
+          }
+          if (wolf <= robber) {
+            role_table_error = "人狼(" + wolf + "人)が足りません。盗賊(" + robber + "人)より多くないと、人狼がいない村になる可能性があります。";
+          }
+        } else {
+          if (drop < 0) {
+            role_table_error = "役職(" + player + "人)が足りません。定員以上にしましょう。";
+          }
+        }
+        if ((gift_sides + gift_appends) && gift_items) {
+          role_table_error = "光の輪や魔鏡と、能力や勝利条件を付与する恩恵は共存できません。";
+        }
+        if (gift_sides && gift_appends) {
+          role_table_error = "能力を加える恩恵と、勝利条件が変わる恩恵は共存できません。";
+        }
+        if (indexOf.call(role, "villager") < 0) {
+          role_table_error = "NPCのために、村人をひとつ入れてください。";
+        }
+        role_table_info = 0 < drop ? "役職配布時、余り札（" + drop + "枚）は捨て去ります。" : void 0;
+        if (human) {
+          human_count = minus ? human + "人以上は村人です。" : human + "人は村人です。";
+        }
+        v.tie.input.player_count_start.error(player_count_start_error);
+        v.tie.input.player_count.info(human_count);
+        v.tie.input.role_table.error(role_table_error);
+        v.tie.input.role_table.info(role_table_info);
+        return v.tie.input.mob_type.info(mob_type_info);
+      });
       add_btn = function(arg) {
-        var _id, attr, cmd, label, tap, win;
+        var _id, cmd, label, win;
         _id = arg._id, cmd = arg.cmd, win = arg.win, label = arg.label;
-        tap = function() {
-          v.params[cmd].push(_id);
-          return v.tie.do_change("role_table", v.params.role_table, v.tie.input.role_table.format);
+        v.tie.input[cmd].format.options[_id] = {
+          _id: _id,
+          label: label
         };
-        attr = {
-          onmouseup: tap,
-          ontouchend: tap
-        };
-        return m("a.WIN_" + win + ".btn.edge", attr, label);
-      };
-      pop_btn = function(cmd) {
-        var attr, tap;
-        tap = function() {
-          v.params[cmd].pop();
-          return v.tie.do_change("role_table", v.params.role_table, v.tie.input.role_table.format);
-        };
-        attr = {
-          onmouseup: tap,
-          ontouchend: tap
-        };
-        return {
-          attr: attr,
-          cmd: cmd
-        };
-      };
-      v.sets = {
-        extra: pop_btn("extra"),
-        role: pop_btn("role"),
-        gift: pop_btn("gift"),
-        trap: pop_btn("trap")
+        return v.tie.input[cmd].item(_id, {
+          className: "WIN_" + win
+        });
       };
       v.adds = {
         human: Mem.Query.roles.is("human").list.map(add_btn),
@@ -3931,13 +3909,11 @@
       return v;
     },
     view: function(v) {
-      var btn, chk, jobs, nindex, npc, o, sets;
-      sets = function(method, arg) {
-        var attr, cmd;
-        attr = arg.attr, cmd = arg.cmd;
-        return m("div", m("a.btn.edge.icon-cancel-alt", attr, ""), GUI.names[method](v.params[cmd], function(size, arg1) {
+      var chk, nindex, o, sets;
+      sets = function(method, cmd) {
+        return m("div", v.tie.input[cmd].back(), GUI.names[method](v.params[cmd], function(size, arg) {
           var label, win;
-          label = arg1.label, win = arg1.win;
+          label = arg.label, win = arg.win;
           if (size > 1) {
             return m("span.WIN_" + win + ".emboss", label + "x" + size);
           } else {
@@ -3945,13 +3921,8 @@
           }
         }));
       };
-      v.reset();
       nindex = 0;
-      if (npc = Mem.Query.chr_npcs.find(v.params.chr_npc)) {
-        jobs = npc.chr_set.chr_jobs.list;
-      } else {
-        jobs = [];
-      }
+      v.tie.draw();
       return v.tie.form({}, m(".vmake", {
         key: v._id
       }, m(".INFOSP.info", m("p.text", "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。", m("br"), "村作成から", m("span.mark", Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP + "日間"), "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。")), m(".MAKER.plane", m("fieldset.msg", m("legend.emboss", "村の名前、説明、ルール"), v.tie.input.vil_name.field(), v.tie.input.vil_comment.field(), m("p.mes_date", v.tie.input.vil_comment.foot()), m("p", "■国のルール"), RULE.nation.list.map(function(o) {
@@ -3969,101 +3940,21 @@
           results.push(m("p", chk.field(), chk.label()));
         }
         return results;
-      })())), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), m("p", v.tie.input.mob_type.field(), v.tie.input.mob_type.label()), m("p", v.tie.input.role_table.field()), v.player_summary(v.params))), (function() {
+      })())), m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成"), m("p", v.tie.input.mob_type.field(), v.tie.input.mob_type.label()), m("p", v.tie.input.role_table.field()), v.player_summary)), (function() {
         switch (v.params.role_table) {
           case void 0:
             return m(".WSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), m("p", "まずは、役職配分を選択してください。")));
           case "custom":
-            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成自由設定"), m("p", v.tie.input.player_count.field(), v.tie.input.player_count.label()), v.params.start_auto ? m("p", v.tie.input.player_count_start.field(), v.tie.input.player_count_start.label()) : void 0, sets("config", v.sets.extra), sets("config", v.sets.role), sets("config", v.sets.gift), v.params.seq_event ? sets("order", v.sets.trap) : sets("config", v.sets.trap), m("h6", "村側"), (function() {
-              var i, len, ref, results;
-              ref = v.adds.human;
-              results = [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                btn = ref[i];
-                results.push(btn);
-              }
-              return results;
-            })(), m("h6", "敵方の人間"), (function() {
-              var i, len, ref, results;
-              ref = v.adds.evil;
-              results = [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                btn = ref[i];
-                results.push(btn);
-              }
-              return results;
-            })(), m("h6", "人狼"), (function() {
-              var i, len, ref, results;
-              ref = v.adds.wolf;
-              results = [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                btn = ref[i];
-                results.push(btn);
-              }
-              return results;
-            })(), m("h6", "妖精"), (function() {
-              var i, len, ref, results;
-              ref = v.adds.pixi;
-              results = [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                btn = ref[i];
-                results.push(btn);
-              }
-              return results;
-            })(), m("h6", "その他"), (function() {
-              var i, len, ref, results;
-              ref = v.adds.other;
-              results = [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                btn = ref[i];
-                results.push(btn);
-              }
-              return results;
-            })(), (function() {
-              var i, len, ref, results;
-              ref = v.adds.mob;
-              results = [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                btn = ref[i];
-                results.push(btn);
-              }
-              return results;
-            })(), m("h6", "恩恵"), (function() {
-              var i, len, ref, results;
-              ref = v.adds.gift;
-              results = [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                btn = ref[i];
-                results.push(btn);
-              }
-              return results;
-            })(), m("h6", "事件"), (function() {
-              var i, len, ref, results;
-              ref = v.adds.trap;
-              results = [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                btn = ref[i];
-                results.push(btn);
-              }
-              return results;
-            })()));
+            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成自由設定"), m("p", v.tie.input.player_count.field(), v.tie.input.player_count.label()), v.params.start_auto ? m("p", v.tie.input.player_count_start.field(), v.tie.input.player_count_start.label()) : void 0, sets("config", "extra"), sets("config", "role"), sets("config", "gift"), v.params.seq_event ? sets("order", "trap") : sets("config", "trap"), m("h6", "村側"), v.adds.human, m("h6", "敵方の人間"), v.adds.evil, m("h6", "人狼"), v.adds.wolf, m("h6", "妖精"), v.adds.pixi, m("h6", "その他"), v.adds.other, v.adds.mob, m("h6", "恩恵"), v.adds.gift, m("h6", "事件"), v.adds.trap));
           default:
-            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), m("p", v.tie.input.player_count.field(), v.tie.input.player_count.label()), v.params.start_auto ? m("p", v.tie.input.player_count_start.field(), v.tie.input.player_count_start.label()) : void 0, sets("config", v.sets.extra), sets("config", v.sets.role), sets("config", v.sets.gift), v.params.seq_event ? sets("order", v.sets.trap) : sets("config", v.sets.trap), (function() {
-              var i, len, ref, results;
-              ref = v.adds.mob;
-              results = [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                btn = ref[i];
-                results.push(btn);
-              }
-              return results;
-            })()));
+            return m(".VSAY.plane", m("fieldset.msg", m("legend.emboss", "編成詳細"), m("p", v.tie.input.player_count.field(), v.tie.input.player_count.label()), v.params.start_auto ? m("p", v.tie.input.player_count_start.field(), v.tie.input.player_count_start.label()) : void 0, sets("config", "extra"), sets("config", "role"), sets("config", "gift"), v.params.seq_event ? sets("order", "trap") : sets("config", "trap"), v.adds.mob));
         }
-      })(), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "登場人物"), m("p", v.tie.input.chr_npc.field(), v.tie.input.chr_npc.label()))), v.npc_says(npc), m(".minilist", m("hr.black"), (function() {
-        var i, len, results;
+      })(), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "登場人物"), m("p", v.tie.input.chr_npc.field(), v.tie.input.chr_npc.label()))), v.npc_says, m(".minilist", m("hr.black"), (function() {
+        var i, len, ref, results;
+        ref = v.jobs;
         results = [];
-        for (i = 0, len = jobs.length; i < len; i++) {
-          o = jobs[i];
+        for (i = 0, len = ref.length; i < len; i++) {
+          o = ref[i];
           results.push(m(".chrbox", {
             key: o.face_id
           }, GUI.portrate(o.face_id), m(".bar.live")));
