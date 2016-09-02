@@ -1,4 +1,6 @@
-InputTie = require 'input_tie'
+InputTie = require './input_tie'
+m = require "mithril"
+_ = require "lodash"
 
 
 _pick = (attrs, last)->

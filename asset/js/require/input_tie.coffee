@@ -496,5 +496,5 @@ class InputTie.type.select.multiple extends basic_input
 
 module.exports = InputTie
 
-require "input_tie_text"
-require "input_tie_btn"
+require "./input_tie_text"
+require "./input_tie_btn"
