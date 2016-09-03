@@ -11,11 +11,14 @@ doc.component.sow_auth =
       doc.user.id       =     sow_auth.uid
       if doc.user.is_login
         WebStore.cookie.copyTo @tie
+      console.warn sow_auth
+      console.warn doc.user
+      console.warn @tie.params
 
     @params = { ua, cmd: "login" }
     @tie = InputTie.form @params, <[uid pwd]>
     @tie.timeout = 5000
-    @tie.do_draw = ~>
+    @tie.do_draw ~>
       {uid, pwd} = @params
       is_same =
         if uid == pwd
@@ -34,7 +37,8 @@ doc.component.sow_auth =
       Submit.iframe url, params
       .then (gon)!~>
         if e = gon.errors
-          @tie.input.pwd.error e.login || e[""]
+          msgs = e.login || e[""]
+          @tie.input.uid.error msgs
         deploy gon
 
     deploy gon

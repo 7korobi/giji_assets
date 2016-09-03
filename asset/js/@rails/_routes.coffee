@@ -21,6 +21,7 @@ Url.maps
     potofs: "ptf=:potofs_order~:potofs_desc~:potofs_hide"
 
   search:
+    tag:      "tag=:tag"
     faces:    "face=:chr_set~:order~:search"
     scroll:   "scr=:scroll~:talk_at~:memo_at"
     folder:   "folder=:folder"

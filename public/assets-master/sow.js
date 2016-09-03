@@ -2185,19 +2185,21 @@
 (function() {
   doc.component.characters = {
     controller: function() {
-      return InputTie.btns(Url.params, ["tag"]);
+      var tie;
+      Url.conf.tag.current = true;
+      this.tie = tie = InputTie.btns(Url.params, ["tag"]);
+      menu.input.icon["with"]("th-large", function() {
+        return m(".paragraph", m("h6", "タグを選んでみよう"), tie.input.tag.field());
+      });
     },
     view: function(arg) {
-      var attr, cb, chr_job, chrs, input, job_name, o, params, set, tag;
-      input = arg.input, params = arg.params;
+      var attr, cb, chr_job, chrs, input, job_name, o, params, ref, set, tag;
+      ref = arg.tie, input = ref.input, params = ref.params;
       tag = params.tag;
       chrs = Mem.Query.faces.tag(tag).list;
       set = Mem.conf.tag[tag];
       return [
-        menu.input.icon.item("th-large", {
-          menu: [input],
-          className: "glass tooltip-right"
-        }), m(".chrlist", m("div", m("h6", set.long), m(".GSAY.badge", set.name), "の" + chrs.length + "人を表示しています。"), m("hr.black"), (function() {
+        menu.input.icon["with"]("th-large", false), m(".chrlist", m("div", m("h6", set.long), m(".GSAY.badge", set.label), "の" + chrs.length + "人を表示しています。"), m("hr.black"), (function() {
           var i, len, results;
           results = [];
           for (i = 0, len = chrs.length; i < len; i++) {
@@ -2995,6 +2997,9 @@
         if (doc.user.is_login) {
           WebStore.cookie.copyTo(this$.tie);
         }
+        console.warn(sow_auth);
+        console.warn(doc.user);
+        console.warn(this$.tie.params);
       };
       this.params = {
         ua: ua,
@@ -3002,12 +3007,12 @@
       };
       this.tie = InputTie.form(this.params, ['uid', 'pwd']);
       this.tie.timeout = 5000;
-      this.tie.do_draw = function(){
+      this.tie.do_draw(function(){
         var ref$, uid, pwd, is_same;
         ref$ = this$.params, uid = ref$.uid, pwd = ref$.pwd;
         is_same = uid === pwd ? "パスワードとIDが同じです。" : void 8;
         return this$.tie.input.pwd.error(is_same);
-      };
+      });
       this.tie.action = function(){
         var params, cmd;
         params = doc.user.is_login
@@ -3017,9 +3022,10 @@
           })
           : this$.params;
         return Submit.iframe(url, params).then(function(gon){
-          var e;
+          var e, msgs;
           if (e = gon.errors) {
-            this$.tie.input.pwd.error(e.login || e[""]);
+            msgs = e.login || e[""];
+            this$.tie.input.uid.error(msgs);
           }
           deploy(gon);
         });
@@ -3560,46 +3566,54 @@
         }
       });
     },
-    view: function() {
+    view: function(arg) {
       var btns, input, timeline;
+      input = arg.tie.input;
       timeline = function() {
         return m.component(doc.component.timeline, "#timeline", {
           size: [2 * doc.width.content(), 150]
         });
       };
-      return m(".paragraph", (function() {
-        switch (menu.params.icon) {
-          case "cog":
-            btns = function(btn) {
-              return [btn.head(), btn.field()];
-            };
-            input = Url.tie.input;
-            return [btns(input.theme), btns(input.width), btns(input.layout), btns(input.font)];
-          case "pin":
-          case "home":
-            return [timeline()];
-          case "mail":
-            return [timeline(), m("h6", "貼り付けたメモを表示します。 - メモ"), m.component(doc.component.security_modes, Url.prop.memo), m.component(doc.component.potof_modes)];
-          case "chat-alt":
-            return [timeline(), m("h6", "村内の発言を表示します。 - 発言"), m.component(doc.component.security_modes, Url.prop.talk), m.component(doc.component.potof_modes)];
-          case "clock":
-            return [timeline(), m("h6", "メモを履歴形式で表示します。 - メモ"), m.component(doc.component.security_modes, Url.prop.memo), m.component(doc.component.potof_modes)];
-          case "search":
-            input = Url.tie.input;
-            input.search;
-            [timeline(), input.search.field(), input.search.label(), m("hr.black")];
-            return [m("h6", "検索する。"), input.search.field(), main_menu.drills({}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"])];
-          case "th-large":
-            [m("h6", "タグを選んでみよう"), input.tag.field(vdom)];
-            return [m("h6", "詳しく検索してみよう"), input.search.field(), m("span", "検索条件：キャラクター名 / 肩書き / プレイヤー "), m("h6", "キャラセットを選んでみよう"), main_menu.drills({}, ["order", "chr_set"])];
-          case "resize-full":
-            return [];
-          case "resize-normal":
-            return [];
-          default:
-            return [];
-        }
-      })());
+      switch (menu.params.icon) {
+        case "cog":
+          btns = function(btn) {
+            return [btn.head(), btn.field()];
+          };
+          input = Url.tie.input;
+          return m(".paragraph", btns(input.theme), btns(input.width), btns(input.layout), btns(input.font));
+        case "pin":
+        case "home":
+          return m(".paragraph", timeline());
+        case "mail":
+          return m(".paragraph", timeline(), m("h6", "貼り付けたメモを表示します。 - メモ"), m.component(doc.component.security_modes, Url.prop.memo), m.component(doc.component.potof_modes));
+        case "chat-alt":
+          return m(".paragraph", timeline(), m("h6", "村内の発言を表示します。 - 発言"), m.component(doc.component.security_modes, Url.prop.talk), m.component(doc.component.potof_modes));
+        case "clock":
+          return m(".paragraph", timeline(), m("h6", "メモを履歴形式で表示します。 - メモ"), m.component(doc.component.security_modes, Url.prop.memo), m.component(doc.component.potof_modes));
+        case "search":
+          input = Url.tie.input;
+          input.search;
+          m(".paragraph", timeline(), input.search.field(), input.search.label(), m("hr.black"));
+          return m(".paragraph", m("h6", "検索する。"), input.search.field(), main_menu.drills({}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"]));
+        case "th-large":
+          return menu.input.icon["with"]("th-large", true);
+
+          /* chr_sets
+          [
+            m "h6", "詳しく検索してみよう"
+            input.search.field()
+            m "span", "検索条件：キャラクター名 / 肩書き / プレイヤー "
+            m "h6", "キャラセットを選んでみよう"
+            main_menu.drills {}, ["order", "chr_set"]
+          ]
+           */
+        case "resize-full":
+          return [];
+        case "resize-normal":
+          return [];
+        default:
+          return [];
+      }
     }
   };
 

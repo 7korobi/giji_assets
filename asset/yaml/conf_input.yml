@@ -196,6 +196,7 @@ tag:
   sean: chr
   attr:
     type: btns
+    required: true
   name: タグ
   current: all
   options: {}

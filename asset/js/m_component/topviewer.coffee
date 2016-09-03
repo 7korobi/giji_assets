@@ -93,84 +93,73 @@ doc.component.topviewer =
           sub_menu.radio {class:"edge player_length"}, Url.prop.player_length, reduce(player_length: "all"), "player_length", (key, o)->
             o.min_is.view.player_length + "人"
 
-  view: ->
+  view: ({ tie: { input } })->
     timeline = ->
       m.component doc.component.timeline, "#timeline", size: [2 * doc.width.content(), 150]
 
-    m ".paragraph",
-      switch menu.params.icon
-        when "cog"
-          btns = (btn)->
-            [btn.head(), btn.field() ]
-          input = Url.tie.input
-          [
-            btns input.theme
-            btns input.width
-            btns input.layout
-            btns input.font
-          ]
-        when "pin", "home"
-          [
-            timeline()
-          ]
-        when "mail"
-          [
-            timeline()
-            m "h6", "貼り付けたメモを表示します。 - メモ"
-            m.component doc.component.security_modes, Url.prop.memo
-            m.component doc.component.potof_modes
-          ]
-        when "chat-alt"
-          [
-            timeline()
-            m "h6", "村内の発言を表示します。 - 発言"
-            m.component doc.component.security_modes, Url.prop.talk
-            m.component doc.component.potof_modes
-          ]
-        when "clock"
-          [
-            timeline()
-            m "h6", "メモを履歴形式で表示します。 - メモ"
-            m.component doc.component.security_modes, Url.prop.memo
-            m.component doc.component.potof_modes
-          ]
-        when "search"
-          input = Url.tie.input
-          input.search
+    switch menu.params.icon
+      when "cog"
+        btns = (btn)->
+          [btn.head(), btn.field() ]
+        input = Url.tie.input
+        m ".paragraph",
+          btns input.theme
+          btns input.width
+          btns input.layout
+          btns input.font
+      when "pin", "home"
+        m ".paragraph",
+          timeline()
+      when "mail"
+        m ".paragraph",
+          timeline()
+          m "h6", "貼り付けたメモを表示します。 - メモ"
+          m.component doc.component.security_modes, Url.prop.memo
+          m.component doc.component.potof_modes
+      when "chat-alt"
+        m ".paragraph",
+          timeline()
+          m "h6", "村内の発言を表示します。 - 発言"
+          m.component doc.component.security_modes, Url.prop.talk
+          m.component doc.component.potof_modes
+      when "clock"
+        m ".paragraph",
+          timeline()
+          m "h6", "メモを履歴形式で表示します。 - メモ"
+          m.component doc.component.security_modes, Url.prop.memo
+          m.component doc.component.potof_modes
+      when "search"
+        input = Url.tie.input
+        input.search
 
-          [
-            timeline()
-            input.search.field()
-            input.search.label()
-            m "hr.black"
-          ]
+        m ".paragraph",
+          timeline()
+          input.search.field()
+          input.search.label()
+          m "hr.black"
 
-          # search
-          [
-            m "h6", "検索する。"
-            input.search.field()
-            main_menu.drills {}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"]
-          ]
+        # search
+        m ".paragraph",
+          m "h6", "検索する。"
+          input.search.field()
+          main_menu.drills {}, ["folder", "game", "event_type", "role_type", "rating", "say_limit", "player_length", "update_at", "update_interval"]
 
-        when "th-large"
-          # characters
-          [
-            m "h6", "タグを選んでみよう"
-            input.tag.field vdom
-          ]
+      when "th-large"
+        menu.input.icon.with "th-large", true
 
-          # chr_sets
-          [
-            m "h6", "詳しく検索してみよう"
-            input.search.field()
-            m "span", "検索条件：キャラクター名 / 肩書き / プレイヤー "
-            m "h6", "キャラセットを選んでみよう"
-            main_menu.drills {}, ["order", "chr_set"]
-          ]
-        when "resize-full"
-          []
-        when "resize-normal"
-          []
-        else
-          []
+        ### chr_sets
+        [
+          m "h6", "詳しく検索してみよう"
+          input.search.field()
+          m "span", "検索条件：キャラクター名 / 肩書き / プレイヤー "
+          m "h6", "キャラセットを選んでみよう"
+          main_menu.drills {}, ["order", "chr_set"]
+        ]
+        ###
+      when "resize-full"
+        []
+      when "resize-normal"
+        []
+      else
+        []
 

@@ -1,21 +1,26 @@
 doc.component.characters =
   controller: ->
-    InputTie.btns Url.params, ["tag"]
+    Url.conf.tag.current = true
+    @tie = tie = InputTie.btns Url.params, ["tag"]
+    menu.input.icon.with "th-large", ->
+      m ".paragraph",
+        m "h6", "タグを選んでみよう"
+        tie.input.tag.field()
+    return
 
-  view: ({ input, params })->
-    {tag} = params
+
+  view: ({ tie: { input, params } })->
+    { tag } = params
     chrs = Mem.Query.faces.tag(tag).list
     set = Mem.conf.tag[tag]
 
-    [ menu.input.icon.item "th-large",
-        menu: [input]
-        className: "glass tooltip-right"
+    [ menu.input.icon.with "th-large", false
       m ".chrlist",
         m "div",
           m "h6",
             set.long
           m ".GSAY.badge",
-            set.name
+            set.label
           "の#{chrs.length}人を表示しています。"
         m "hr.black"
         for o in chrs

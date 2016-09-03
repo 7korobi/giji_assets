@@ -85,6 +85,21 @@ class InputTie.type.checkbox_btn extends btn_input
 class InputTie.type.icon extends btn_input
   _value: c_icon
   field: null
+  with: (value, mode)->
+    { _id, options, attr } = @format
+
+    now_val = @tie.params[_id]
+    bool = now_val == value
+
+    switch mode
+      when bool
+        @_with[value]()
+      when ! bool
+        null        
+      else
+        @_with = {}
+        @_with[value] = mode
+
   item: (value, m_attr = {})->
     { _id, options, attr } = @format
 

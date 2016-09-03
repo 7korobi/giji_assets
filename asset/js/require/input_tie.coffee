@@ -139,7 +139,6 @@ class InputTie
   do_submit: ->
     return if @timer
     return unless @dom.checkValidity()
-    console.log "do_submit"
 
     p_timer = @_debounce()
 
@@ -304,6 +303,8 @@ class basic_input
     @dom?.setCustomValidity msg
 
   do_view: (@dom)->
+
+  do_fail: (value)->
 
   do_change: (value)->
     { not_secret, not_player, unit, max_sjis, max_line, minlength, maxlength, min, max, step, pattern, type, required } = @attr

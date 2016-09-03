@@ -3050,7 +3050,8 @@
     "tag": {
       "sean": "chr",
       "attr": {
-        "type": "btns"
+        "type": "btns",
+        "required": true
       },
       "name": "タグ",
       "current": "all",
@@ -12771,7 +12772,9 @@
     all: {
       _id: "all",
       label: "- 全体 -",
-      badge: Mem.Query.faces.reduce.all.all.count
+      badge: function() {
+        return Mem.Query.faces.reduce.all.all.count;
+      }
     },
     giji: btn_data("giji"),
     shoji: btn_data("shoji"),

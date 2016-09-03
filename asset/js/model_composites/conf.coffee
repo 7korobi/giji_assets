@@ -20,7 +20,7 @@ h.tag.options =
   all:
     _id: "all"
     label: "- 全体 -"
-    badge: Mem.Query.faces.reduce.all.all.count
+    badge: -> Mem.Query.faces.reduce.all.all.count
   giji:      btn_data "giji"
   shoji:     btn_data "shoji"
   travel:    btn_data "travel"
