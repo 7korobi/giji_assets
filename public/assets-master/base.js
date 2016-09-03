@@ -26355,13 +26355,11 @@ module.exports = Vector2D;
       ref = Tie.types.url;
       for (j = 0, len = ref.length; j < len; j++) {
         type = ref[j];
-        path = this[type];
-        if (path != null) {
-          ref1 = Url.type[type];
-          for (k = 0, len1 = ref1.length; k < len1; k++) {
-            url = ref1[k];
-            cb(url, path, type);
-          }
+        ref1 = Url.type[type];
+        for (k = 0, len1 = ref1.length; k < len1; k++) {
+          url = ref1[k];
+          path = this[type];
+          cb(url, path, type);
         }
       }
       return this;

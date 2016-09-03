@@ -1,15 +1,17 @@
 doc.component.characters =
   controller: ->
+    Url.tie.bundle Mem.conf.input.tag
     Url.conf.tag.current = true
-    @tie = tie = InputTie.btns Url.params, ["tag"]
+
     menu.input.icon.with "th-large", ->
       m ".paragraph",
         m "h6", "タグを選んでみよう"
-        tie.input.tag.field()
+        Url.tie.input.tag.field()
     return
 
 
-  view: ({ tie: { input, params } })->
+  view: ->
+    { input, params } = Url.tie
     { tag } = params
     chrs = Mem.Query.faces.tag(tag).list
     set = Mem.conf.tag[tag]

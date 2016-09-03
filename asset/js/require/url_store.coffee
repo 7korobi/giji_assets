@@ -33,10 +33,9 @@ class LocationStore
 
   each: (cb)->
     for type in Tie.types.url
-      path = @[type]
-      if path?
-        for url in Url.type[type]
-          cb url, path, type
+      for url in Url.type[type]
+        path = @[type]
+        cb url, path, type
     @
 
   fetch: ->

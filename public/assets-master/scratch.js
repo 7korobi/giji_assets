@@ -579,16 +579,15 @@
 (function() {
   doc.component.characters = {
     controller: function() {
-      var tie;
+      Url.tie.bundle(Mem.conf.input.tag);
       Url.conf.tag.current = true;
-      this.tie = tie = InputTie.btns(Url.params, ["tag"]);
       menu.input.icon["with"]("th-large", function() {
-        return m(".paragraph", m("h6", "タグを選んでみよう"), tie.input.tag.field());
+        return m(".paragraph", m("h6", "タグを選んでみよう"), Url.tie.input.tag.field());
       });
     },
-    view: function(arg) {
+    view: function() {
       var attr, cb, chr_job, chrs, input, job_name, o, params, ref, set, tag;
-      ref = arg.tie, input = ref.input, params = ref.params;
+      ref = Url.tie, input = ref.input, params = ref.params;
       tag = params.tag;
       chrs = Mem.Query.faces.tag(tag).list;
       set = Mem.conf.tag[tag];
