@@ -18,8 +18,8 @@ c_stack = (bool, new_val, target)->
     new_val.pop()
   new_val
 
-c_icon      = (bool, new_val)-> if bool then null else new_val
-c_tap       = (bool, new_val)-> new_val
+c_icon = (bool, new_val)-> if bool then null else new_val
+c_tap  = (bool, new_val)-> new_val
 
 
 class btn_input extends InputTie.type.hidden
@@ -69,6 +69,7 @@ class btn_input extends InputTie.type.hidden
 
 class InputTie.type.checkbox_btn extends btn_input
   _value: c_tap
+
   field: (m_attr = {})->
     ma = @_attr @_id, @attr, m_attr,
       className: [@attr.className, m_attr.className].join(" ")
@@ -80,7 +81,10 @@ class InputTie.type.checkbox_btn extends btn_input
 
 class InputTie.type.icon extends btn_input
   _value: c_icon
-  field: null
+
+  field: (m_attr = {})->
+    throw "not implement"
+
   with: (value, mode)->
     bool = @__value == value
 
@@ -95,7 +99,7 @@ class InputTie.type.icon extends btn_input
         @_with[value] = mode
 
   item: (value, m_attr = {})->
-    option = @options[value]
+    option = @option value
     tag = m_attr.tag || "menuicon"
 
     ma = @_attr @_id, @attr, m_attr, option,
@@ -121,15 +125,9 @@ class InputTie.type.icon extends btn_input
 
 class InputTie.type.btns extends btn_input
   _value: c_tap
-  item: (value, m_attr = {})->
-    option =
-      if value
-        @options?[value] || {}
-      else
-        className: "icon-cancel-alt"
-        label:     ""
-        "data-tooltip": "選択しない"
 
+  item: (value, m_attr = {})->
+    option = @option value
     ma = @_attr @_id, @attr, m_attr, option,
       className: [@attr.className, option.className, m_attr.className].join(" ")
       selected: value == @__value
@@ -151,15 +149,9 @@ class InputTie.type.btns extends btn_input
 
 class InputTie.type.btns.multiple extends btn_input
   _value: c_tap
-  item: (value, m_attr = {})->
-    option =
-      if value
-        @options?[value] || {}
-      else
-        className: "icon-cancel-alt"
-        label:     ""
-        "data-tooltip": "選択しない"
 
+  item: (value, m_attr = {})->
+    option = @option value
     ma = @_attr @_id, @attr, m_attr, option,
       className: [@attr.className, option.className, m_attr.className].join(" ")
       selected: @__value[value]
@@ -181,15 +173,16 @@ class InputTie.type.btns.multiple extends btn_input
 
 class InputTie.type.stack extends btn_input
   _value: c_stack
-  item: (target, m_attr = {})->
-    option =
-      if value
-        @options?[value] || {}
-      else
-        className: "icon-cancel-alt"
-        label:     ""
-        "data-tooltip": "操作を戻す"
+  default_option:
+    className: "icon-cancel-alt"
+    label:     ""
+    "data-tooltip": "操作を戻す"
 
+  field: (m_attr = {})->
+    throw "not implement"
+
+  item: (target, m_attr = {})->
+    option = @option value
     ma = @_attr @_id, @attr, m_attr, option,
       className: [@attr.className, option.className, m_attr.className].join(" ")
       target: target
@@ -201,6 +194,3 @@ class InputTie.type.stack extends btn_input
 
   back: (m_attr = {})->
     @item "", m_attr
-
-  field: (m_attr = {})->
-    @format

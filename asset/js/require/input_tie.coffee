@@ -297,6 +297,11 @@ class basic_input
   _debounce: _debounce
   timeout: 100
 
+  default_option:
+    className: "icon-cancel-alt"
+    label:     ""
+    "data-tooltip": "選択しない"
+
   constructor: (@tie, @format)->
     { @_id, @options, @attr, @type, @name } = @format
     @__uri = Mem.pack[@type]
@@ -327,8 +332,14 @@ class basic_input
             @error msg
             return
 
+  option: (value)->
+    if value
+      @options?[value] || {}
+    else
+      @default_option
+
   item: (value, m_attr = {})->
-    option = @options[value]
+    option = @option value
     ma = option_pick @attr, m_attr, option,
       className: [option.className, m_attr.className].join(" ")
       value: @__uri value
@@ -336,9 +347,8 @@ class basic_input
       # label, disabled
     m 'option', ma, ma.label
 
-
   datalist: (m_attr = {})->
-    throw "not now"
+    throw "not implement"
 
   head: (m_attr = {})->
     ma = @_attr_label m_attr
@@ -348,7 +358,7 @@ class basic_input
     if @label_for
       if @options
         option = @options[@__value]
-        if option && @label_for
+        if option
           return @label_for option
     if info
       text = info.label if info.label
@@ -393,18 +403,11 @@ class InputTie.type.radio extends basic_input
         @item value, m_attr
 
     unless attr.required && current
-      @item "", m_attr
+      list.unshift @item "", m_attr
     list
 
   item: (value, m_attr = {})->
-    option =
-      if value
-        @options?[value] || {}
-      else
-        className: "icon-cancel-alt"
-        label:     ""
-        "data-tooltip": "選択しない"
-
+    option = @option value
     ma = @_attr @_id, @attr, m_attr, option,
       className: [@attr.className, option.className, m_attr.className].join(" ")
       type: "radio"
@@ -420,14 +423,17 @@ class InputTie.type.radio extends basic_input
 class InputTie.type.select extends basic_input
   _value: e_value
   _attr:  change_attr
+  default_option:
+    className: ""
+    label:　"ーーー"
+
   field: (m_attr = {})->
     list =
       for value, option of @options when ! option.hidden
-        @item value
+        @item value, m_attr
 
     unless attr.required && current
-      list.unshift @item "",
-        label: "- #{name} -"
+      list.unshift @item "", m_attr
       # disabled
 
     ma = @_attr @_id, @attr, m_attr,
@@ -450,7 +456,7 @@ class InputTie.type.select.multiple extends basic_input
         @item value
 
   item: (value, m_attr = {})->
-    option = @options[value]
+    option = @option value
     ma = option_pick @attr, m_attr, option,
       className: [option.className, m_attr.className].join(" ")
       value: @__uri value
