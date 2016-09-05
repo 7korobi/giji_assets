@@ -1687,7 +1687,7 @@
     var key, name, ref, ref1, val;
     for (key in form) {
       val = form[key];
-      if (name = (ref = Mem.conf.option[key]) != null ? (ref1 = ref.query) != null ? ref1[type] : void 0 : void 0) {
+      if (name = (ref = Mem.conf.input[key]) != null ? (ref1 = ref.query) != null ? ref1[type] : void 0 : void 0) {
         o[name] = val;
       }
     }
@@ -4338,7 +4338,8 @@
           if (!option) {
             continue;
           }
-          results$.push(m("li", option.help));
+          console.warn(option);
+          results$.push(m("li", option.label));
         }
         return results$;
       }()))), m("p.name", m("b", roletable.label + " / " + story.view.player_length + "人")), m("p.text", m("div", m("code", "事件"), story.view.trap_cards), m("div", m("code", "役職"), story.view.role_cards), m("div", m("code", mob.label), m("kbd", mob.help + ""))), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black")

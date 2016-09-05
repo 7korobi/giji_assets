@@ -1,5 +1,5 @@
 params = (form, type, o)->
-  for key, val of form when name = Mem.conf.option[key]?.query?[type]
+  for key, val of form when name = Mem.conf.input[key]?.query?[type]
     o[name] = val
   o
 

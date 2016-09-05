@@ -26,7 +26,7 @@ doc.view.story_game = ({event, story})->
           for option_id in story.options
             option = Mem.conf.option[option_id]
             continue unless option
-            m "li", option.help
+            m "li", option.label
 
       m "p.name",
         m "b", "#{roletable.label} / #{story.view.player_length}人"

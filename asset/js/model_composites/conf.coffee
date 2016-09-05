@@ -15,6 +15,9 @@ h.chr_set.options = h.chr_npc.groups = Mem.Query.chr_sets.hash
 h.rating.options = Mem.Query.ratings.enable().hash
 h.trs_type.options = Mem.Query.trss.enable().hash
 
+Mem.conf.option =
+  "select-role":
+    label: h.not_select_role.info.off
 
 h.tag.options =
   all:

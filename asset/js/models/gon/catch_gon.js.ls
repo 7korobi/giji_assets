@@ -128,6 +128,6 @@ export catch_gon =
       if turn != event.turn
         set_event_without_messages event
 
-    Url.prop.talk_at doc.messages.talk(Url.prop).list.first._id unless Url.prop.talk_at()
-    Url.prop.memo_at doc.messages.memo(Url.prop).list.first._id unless Url.prop.memo_at()
-    Url.prop.home_at doc.messages.home(Url.prop).list.first._id unless Url.prop.home_at()
+    Url.params.talk_at = doc.messages.talk(Url.params).list.first._id unless Url.params.talk_at
+    Url.params.memo_at = doc.messages.memo(Url.params).list.first._id unless Url.params.memo_at
+    Url.params.home_at = doc.messages.home(Url.params).list.first._id unless Url.params.home_at

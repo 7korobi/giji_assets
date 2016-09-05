@@ -10039,14 +10039,14 @@
           set_event_without_messages(event);
         }
       }
-      if (!Url.prop.talk_at()) {
-        Url.prop.talk_at(doc.messages.talk(Url.prop).list.first._id);
+      if (!Url.params.talk_at) {
+        Url.params.talk_at = doc.messages.talk(Url.params).list.first._id;
       }
-      if (!Url.prop.memo_at()) {
-        Url.prop.memo_at(doc.messages.memo(Url.prop).list.first._id);
+      if (!Url.params.memo_at) {
+        Url.params.memo_at = doc.messages.memo(Url.params).list.first._id;
       }
-      if (!Url.prop.home_at()) {
-        return Url.prop.home_at(doc.messages.home(Url.prop).list.first._id);
+      if (!Url.params.home_at) {
+        return Url.params.home_at = doc.messages.home(Url.params).list.first._id;
       }
     }
   };
@@ -12943,6 +12943,12 @@
   h.rating.options = Mem.Query.ratings.enable().hash;
 
   h.trs_type.options = Mem.Query.trss.enable().hash;
+
+  Mem.conf.option = {
+    "select-role": {
+      label: h.not_select_role.info.off
+    }
+  };
 
   h.tag.options = {
     all: {
