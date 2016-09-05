@@ -173,10 +173,6 @@ class InputTie.type.btns.multiple extends btn_input
 
 class InputTie.type.stack extends btn_input
   _value: c_stack
-  default_option:
-    className: "icon-cancel-alt"
-    label:     null
-    "data-tooltip": "操作を戻す"
 
   field: (m_attr = {})->
     throw "not implement"
@@ -188,7 +184,7 @@ class InputTie.type.stack extends btn_input
       target: target
       value: @__value
     # data-tooltip, disabled
-    m "a", ma,
+    m "span", ma,
       option.label
       m ".emboss.pull-right", option.badge() if option.badge
 

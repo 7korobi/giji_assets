@@ -297,7 +297,6 @@ class basic_input
   default_option:
     className: "icon-cancel-alt"
     label:     ""
-    "data-tooltip": "選択しない"
 
   constructor: (@tie, @format)->
     { @_id, @options, @attr, @type, @name, info } = @format

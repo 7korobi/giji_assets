@@ -25033,8 +25033,7 @@ module.exports = Vector2D;
 
     basic_input.prototype.default_option = {
       className: "icon-cancel-alt",
-      label: "",
-      "data-tooltip": "選択しない"
+      label: ""
     };
 
     function basic_input(tie1, format1) {
@@ -25694,12 +25693,6 @@ module.exports = Vector2D;
 
     stack.prototype._value = c_stack;
 
-    stack.prototype.default_option = {
-      className: "icon-cancel-alt",
-      label: null,
-      "data-tooltip": "操作を戻す"
-    };
-
     stack.prototype.field = function(m_attr) {
       if (m_attr == null) {
         m_attr = {};
@@ -25718,7 +25711,7 @@ module.exports = Vector2D;
         target: target,
         value: this.__value
       });
-      return m("a", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
+      return m("span", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
     };
 
     stack.prototype.back = function(m_attr) {
