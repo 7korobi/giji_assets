@@ -53,21 +53,21 @@ new Mem.Rule("story").schema ->
       player_length:
         o.vpl.last
       role_types:
-        GUI.names.config o.card.role, (size, {name})-> name
+        GUI.names.config o.card.role, (size, {label})-> label
       event_types:
-        GUI.names.config o.card.event, (size, {name})-> name
+        GUI.names.config o.card.event, (size, {label})-> label
       role_cards:
-        GUI.names.config o.card.role, (size, {name, win})->
+        GUI.names.config o.card.role, (size, {label, win})->
           if size > 1
-            m ".emboss.WIN_#{win}", "#{name}x#{size}"
+            m ".emboss.WIN_#{win}", "#{label}x#{size}"
           else
-            m ".emboss.WIN_#{win}", "#{name}"
+            m ".emboss.WIN_#{win}", "#{label}"
       trap_cards:
-        GUI.names.config o.card.event, (size, {name, win})->
+        GUI.names.config o.card.event, (size, {label, win})->
           if size > 1
-            m ".emboss.WIN_#{win}", "#{name}x#{size}"
+            m ".emboss.WIN_#{win}", "#{label}x#{size}"
           else
-            m ".emboss.WIN_#{win}", "#{name}"
+            m ".emboss.WIN_#{win}", "#{label}"
       say_limit_help: Mem.conf.say[ o.type.say ]?.help || "――"
       say_limit: Mem.conf.say[  o.type.say  ]?.label || "――"
       game_rule: Mem.conf.rule[ o.type.game ]?.label || "タブラの人狼"
