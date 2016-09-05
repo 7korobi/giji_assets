@@ -10,13 +10,7 @@ new Mem.Rule("form").schema ->
   @deploy (o)->
     listup = (state, live, mob)->
       option = (cb)->
-        if Mem.Query.potofs
-          Mem.Query.potofs.where(cb).list.map (o)->
-            pno: o.pno,
-            job: o.chr_job.job,
-            label: o.label
-        else
-          []
+        Mem.Query.potofs?.where(cb).list || []
 
       switch state
         when "dead"
@@ -52,43 +46,44 @@ new Mem.Rule("form").schema ->
         else
           []
 
-    text = (mestype, format, able)->
-      form_id = o._id
-      targets = listup("near", o.live, o.mob)
-      if mestype in <[SAY GSAY VSAY TSAY]>
-        targets.push job: "―――", name: "", pno: -1
-      if targets.length
-        Mem.Collection.form_text.merge [{form_id, mestype, format, targets, able}]
+    target_for = (options)->
+      { target } = Mem.Query.inputs.hash
+      h = {}
+      for { name, job, pno } in options
+        h[pno] =
+          _id: pno
+          label: "#{job} #{name}"
+      target.options = h
+      console.warn target
 
-    input = (role, able)->
-      target = m.prop(-1)
-      old = m.prop(-1)
-      targets = listup(able.for, o.live, o.mob)
+    text_for = (format, able)->
+      { _id, text } = able
+      options = listup("near", o.live, o.mob)
+      if _id in <[SAY GSAY VSAY TSAY]>
+        options.push job: "―――", name: "", pno: -1
+      if options.length
+        area = Mem.Query.inputs.hash[format]
+        target_for options
+
+      tie = InputTie.form {}, [text, "target"]
+      tie.inputs.target.options = options
+      o.texts[_id] = { tie }
+
+    input_for = (role, able)->
+      cmd = able.cmd || role.cmd
+      options = listup(able.for, o.live, o.mob)
       if able.sw
-        targets.push name: "", pno: o.pno || 1, job: able.sw
+        options.push name: "", pno: o.pno || 1, job: able.sw
       if able.pass
-        targets.push name: "", pno: -1, job: able.pass || "（パス）"
+        options.push name: "", pno: -1, job: able.pass || "（パス）"
+      if options.length
+        select = Mem.Query.inputs.hash.target
+        target_for options
 
-      obj = {able, old, target, targets}
-      obj.cmd = able.cmd || role.cmd
-      obj.attr =
-          form: ->
-            onchange: (e)->
-              console.log [e.target]
-              e.target.name
-              e.target.value
-            onreset: (e)->
-            onsubmit: (e)->
-              console.log [e, role, able, o]
-              false
+      tie = InputTie.form {}, ["target"]
+      tie.inputs.target.options = options
+      o.selects[_id] = { tie }
 
-          target: ->
-            value: target()
-            onchange: m.withAttr "value", (value)->
-              target value
-              validate.input obj
-      validate.input obj
-      obj
 
     role_scan = (role_id, can_use)->
       role = Mem.Query.roles.find role_id
@@ -104,44 +99,23 @@ new Mem.Rule("form").schema ->
 
     able_scan = (role, able)->
       able_helps.push able.help
-
-
-      if mestype = able.text
-        if mestype in <[SAY GSAY VSAY]>
-          text mestype, "act", able
-          o.mestype = mestype
-        text mestype, "memo", able
-        text mestype, "talk", able
-        o.texts.push mestype
+      { _id } = able
+      if able.text?
+        text_for format, able
 
       if able.at?
         if able.at[o.turn]
-          attr =
-            able: able
-            input: input role, able
-          o.selects.push attr
+          input_for role, able
 
-
-    o.format = "talk"
-    o.format_on = (format)->
-      choice_on = ->
-        o.format = format
-      onmouseup: choice_on
-      ontouchend: choice_on
-
-    o.mestype_on = (mestype)->
-      choice_on = ->
-        o.mestype = mestype
-      onmouseup: choice_on
-      ontouchend: choice_on
+    o.tie = InputTie.form o.params, ["format", "mestype"]
 
     role_names = []
     role_helps = []
     able_helps = []
     o.form = {}
 
-    o.texts = []
-    o.selects = []
+    o.texts = {}
+    o.selects = {}
 
     o.ext ?= []
 

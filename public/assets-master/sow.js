@@ -2390,9 +2390,12 @@
 
 (function(){
   doc.component.form = {
-    controller: function(v){},
+    controller: function(v){
+      console.warn(v);
+    },
     view: function(c, v){
-      var error_and_info, select, chr_job, face, vv, form_text, target, able, input;
+      var params, tie, error_and_info, select, chr_job, face, form_text, target, able, input;
+      params = v.params, tie = v.tie;
       error_and_info = function(o){
         var list, i$, ref$, len$, msg;
         list = [];
@@ -2461,21 +2464,7 @@
       face = chr_job.face;
       return m("div", {
         key: v._id
-      }, m("h6", m.trust(v.role_name)), m("table." + v.mestype + ".talk", m("tr", m("th"), m("td", m(".msg", (function(){
-        var i$, ref$, len$, results$ = [];
-        for (i$ = 0, len$ = (ref$ = Mem.Query.form_texts.formats(v._id, v.mestype).list).length; i$ < len$; ++i$) {
-          vv = ref$[i$];
-          results$.push(m("span.btn.edge", v.format_on(vv.format), vv.format_name));
-        }
-        return results$;
-      }()), (function(){
-        var i$, ref$, len$, results$ = [];
-        for (i$ = 0, len$ = (ref$ = Mem.Query.form_texts.mestypes(v._id, v.format).list).length; i$ < len$; ++i$) {
-          vv = ref$[i$];
-          results$.push(m("span.btn.edge", v.mestype_on(vv.mestype), vv.mestype_name));
-        }
-        return results$;
-      }()))))), (form_text = Mem.Query.form_texts.find(v._id + "-" + v.mestype + "-" + v.format)) ? (function(){
+      }, m("h6", m.trust(v.role_name)), m("table." + v.mestype + ".talk", m("tr", m("th"), m("td", m(".msg", tie.input.format.field(), tie.input.mestype.field())))), (form_text = Mem.Query.form_texts.find(v._id + "-" + v.mestype + "-" + v.format)) ? (function(){
         switch (v.format) {
         case "act":
           target = form_text.target_at(form_text.target());

@@ -86,7 +86,7 @@ class InputTie.type.icon extends btn_input
   _value: c_icon
   field: null
   with: (value, mode)->
-    { _id, options, attr } = @format
+    { _id, attr } = @format
 
     now_val = @tie.params[_id]
     bool = now_val == value
@@ -101,10 +101,10 @@ class InputTie.type.icon extends btn_input
         @_with[value] = mode
 
   item: (value, m_attr = {})->
-    { _id, options, attr } = @format
+    { _id, attr } = @format
 
     now_val = @tie.params[_id]
-    option = options[value]
+    option = @options[value]
 
     tag = m_attr.tag || "menuicon"
 
@@ -130,10 +130,10 @@ class InputTie.type.icon extends btn_input
 
 
 item = (value, m_attr = {})->
-  { _id, options, attr } = @format
+  { _id, attr } = @format
 
   now_val = @tie.params[_id]
-  option = options[value]
+  option = @options[value]
   label = option.label
 
   ma = @_attr _id, attr, m_attr, option,
@@ -150,12 +150,12 @@ class InputTie.type.btns extends btn_input
   _value: c_tap
   item:  item
   field: (m_attr = {})->
-    { _id, options, current, attr } = @format
+    { _id, current, attr } = @format
 
     now_val = @tie.params[_id]
 
     list =
-      for value, option of options when ! option.hidden
+      for value, option of @options when ! option.hidden
         label = option.label
 
         ma = @_attr _id, attr, m_attr, option,
@@ -181,12 +181,12 @@ class InputTie.type.btns.multiple extends btn_input
   _value: c_tap
   item:  item
   field: (m_attr = {})->
-    { _id, options, attr } = @format
+    { _id, attr } = @format
 
     # TODO: change value for Set
     now_vals = @tie.params[_id]
 
-    for value, option of options when ! option.hidden
+    for value, option of @options when ! option.hidden
       label = option.label
 
       ma = @_attr _id, attr, m_attr, option,
@@ -202,10 +202,10 @@ class InputTie.type.btns.multiple extends btn_input
 class InputTie.type.stack extends btn_input
   _value: c_stack
   item: (target, m_attr = {})->
-    { _id, options, attr } = @format
+    { _id, attr } = @format
 
     now_val = @tie.params[_id]
-    option = options[target]
+    option = @options[target]
     label = option.label
 
     ma = @_attr _id, attr, m_attr, option,

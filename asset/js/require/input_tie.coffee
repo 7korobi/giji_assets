@@ -298,6 +298,8 @@ class basic_input
   timeout: 100
 
   constructor: (@tie, @format)->
+    { @options } = @format
+
   info: (@info_msg = "")->
   error: (msg = "")->
     @dom?.setCustomValidity msg
@@ -318,6 +320,14 @@ class basic_input
             @error msg
             return
 
+  option: (m_attr = {})->
+
+  data: (m_attr = {})->
+    { name } = @format
+
+    ma = @_attr_label m_attr
+    m "label", ma, @options.map @option
+
   head: (m_attr = {})->
     { name } = @format
 
@@ -325,13 +335,13 @@ class basic_input
     m "label", ma, name
 
   label: (m_attr = {})->
-    { _id, options, info, attr, label } = @format
+    { _id, info, attr, label } = @format
 
     now_val = @tie.params[_id]
 
     if @label_for
-      if options
-        option = options[now_val]
+      if @options
+        option = @options[now_val]
         if option && @label_for
           return @label_for option
     if info
@@ -383,14 +393,14 @@ class InputTie.type.radio extends basic_input
   _value: e_value
   _attr:  change_attr
   field: (m_attr = {})->
-    { _id, type, name, options, current, attr } = @format
+    { _id, type, name, current, attr } = @format
 
     now_val = @tie.params[_id]
     val = Mem.unpack[type]
     uri = Mem.pack[type]
 
     list =
-      for value, option of options when ! option.hidden
+      for value, option of @options when ! option.hidden
         label = option.label
         ma = @_attr _id, attr, m_attr, option,
           className: [option.className, m_attr.className, attr.className].join(" ")
@@ -415,10 +425,10 @@ class InputTie.type.radio extends basic_input
     list
 
   item: (value, m_attr = {})->
-    { _id, type, options, attr } = @format
+    { _id, type, attr } = @format
 
     now_val = @tie.params[_id]
-    option = options?[value]
+    option = @options?[value]
 
     val = Mem.unpack[type]
     uri = Mem.pack[type]
@@ -438,7 +448,7 @@ class InputTie.type.select extends basic_input
   _value: e_value
   _attr:  change_attr
   field: (m_attr = {})->
-    { _id, type, name, options, current, attr } = @format
+    { _id, type, name, current, attr } = @format
 
     now_val = @tie.params[_id]
 
@@ -446,7 +456,7 @@ class InputTie.type.select extends basic_input
     uri = Mem.pack[type]
 
     list =
-      for value, option of options when ! option.hidden
+      for value, option of @options when ! option.hidden
         label = option.label
 
         ma = _attr_option attr, m_attr, option,
@@ -476,7 +486,7 @@ class InputTie.type.select.multiple extends basic_input
   _value: e_value
   _attr:  change_attr
   field: (m_attr = {})->
-    { _id, type, name, options, current, attr } = @format
+    { _id, type, name, current, attr } = @format
 
     # TODO: change value for Set
     now_vals = @tie.params[_id]
@@ -486,7 +496,7 @@ class InputTie.type.select.multiple extends basic_input
 
     mma = @_attr _id
     m 'select', mma,
-      for value, option of options when ! option.hidden
+      for value, option of @options when ! option.hidden
         ma = _attr_option attr, m_attr, option,
           className: [option.className, m_attr.className, attr.className].join(" ")
           selected: now_vals[value]

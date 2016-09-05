@@ -1,6 +1,10 @@
 doc.component.form =
   controller: (v)->
+    console.warn v
+    return
+
   view: (c, v)->
+    { params, tie } = v
     error_and_info = (o)->
       list = []
       for msg in o.errors
@@ -61,7 +65,7 @@ doc.component.form =
       vdoms
 
     chr_job = Mem.Query.chr_jobs.find(v.chr_job_id)
-    face = chr_job.face
+    { face } = chr_job
     m "div", {key: v._id},
       m "h6", m.trust v.role_name
       m "table.#{v.mestype}.talk",
@@ -69,10 +73,8 @@ doc.component.form =
           m "th"
           m "td",
             m ".msg",
-              for vv in Mem.Query.form_texts.formats(v._id, v.mestype).list
-                m "span.btn.edge", v.format_on(vv.format), vv.format_name
-              for vv in Mem.Query.form_texts.mestypes(v._id, v.format).list
-                m "span.btn.edge", v.mestype_on(vv.mestype), vv.mestype_name
+              tie.input.format.field()
+              tie.input.mestype.field()
 
       if form_text = Mem.Query.form_texts.find("#{v._id}-#{v.mestype}-#{v.format}")
         switch v.format

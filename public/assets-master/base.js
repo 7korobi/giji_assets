@@ -25037,6 +25037,7 @@ module.exports = Vector2D;
     function basic_input(tie1, format1) {
       this.tie = tie1;
       this.format = format1;
+      this.options = this.format.options;
     }
 
     basic_input.prototype.info = function(info_msg1) {
@@ -25078,6 +25079,22 @@ module.exports = Vector2D;
       }
     };
 
+    basic_input.prototype.option = function(m_attr) {
+      if (m_attr == null) {
+        m_attr = {};
+      }
+    };
+
+    basic_input.prototype.data = function(m_attr) {
+      var ma, name;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      name = this.format.name;
+      ma = this._attr_label(m_attr);
+      return m("label", ma, this.options.map(this.option));
+    };
+
     basic_input.prototype.head = function(m_attr) {
       var ma, name;
       if (m_attr == null) {
@@ -25089,15 +25106,15 @@ module.exports = Vector2D;
     };
 
     basic_input.prototype.label = function(m_attr) {
-      var _id, attr, info, label, ma, now_val, option, options, ref, text;
+      var _id, attr, info, label, ma, now_val, option, ref, text;
       if (m_attr == null) {
         m_attr = {};
       }
-      ref = this.format, _id = ref._id, options = ref.options, info = ref.info, attr = ref.attr, label = ref.label;
+      ref = this.format, _id = ref._id, info = ref.info, attr = ref.attr, label = ref.label;
       now_val = this.tie.params[_id];
       if (this.label_for) {
-        if (options) {
-          option = options[now_val];
+        if (this.options) {
+          option = this.options[now_val];
           if (option && this.label_for) {
             return this.label_for(option);
           }
@@ -25192,19 +25209,20 @@ module.exports = Vector2D;
     radio.prototype._attr = change_attr;
 
     radio.prototype.field = function(m_attr) {
-      var _id, attr, current, label, list, ma, name, now_val, option, options, ref1, type, uri, val, value;
+      var _id, attr, current, label, list, ma, name, now_val, option, ref1, type, uri, val, value;
       if (m_attr == null) {
         m_attr = {};
       }
-      ref1 = this.format, _id = ref1._id, type = ref1.type, name = ref1.name, options = ref1.options, current = ref1.current, attr = ref1.attr;
+      ref1 = this.format, _id = ref1._id, type = ref1.type, name = ref1.name, current = ref1.current, attr = ref1.attr;
       now_val = this.tie.params[_id];
       val = Mem.unpack[type];
       uri = Mem.pack[type];
       list = (function() {
-        var results;
+        var ref2, results;
+        ref2 = this.options;
         results = [];
-        for (value in options) {
-          option = options[value];
+        for (value in ref2) {
+          option = ref2[value];
           if (!(!option.hidden)) {
             continue;
           }
@@ -25235,13 +25253,13 @@ module.exports = Vector2D;
     };
 
     radio.prototype.item = function(value, m_attr) {
-      var _id, attr, label, ma, now_val, option, options, ref1, type, uri, val;
+      var _id, attr, label, ma, now_val, option, ref1, ref2, type, uri, val;
       if (m_attr == null) {
         m_attr = {};
       }
-      ref1 = this.format, _id = ref1._id, type = ref1.type, options = ref1.options, attr = ref1.attr;
+      ref1 = this.format, _id = ref1._id, type = ref1.type, attr = ref1.attr;
       now_val = this.tie.params[_id];
-      option = options != null ? options[value] : void 0;
+      option = (ref2 = this.options) != null ? ref2[value] : void 0;
       val = Mem.unpack[type];
       uri = Mem.pack[type];
       label = option != null ? option.label : void 0;
@@ -25271,19 +25289,20 @@ module.exports = Vector2D;
     select.prototype._attr = change_attr;
 
     select.prototype.field = function(m_attr) {
-      var _id, attr, current, label, list, ma, name, now_val, option, options, ref1, type, uri, val, value;
+      var _id, attr, current, label, list, ma, name, now_val, option, ref1, type, uri, val, value;
       if (m_attr == null) {
         m_attr = {};
       }
-      ref1 = this.format, _id = ref1._id, type = ref1.type, name = ref1.name, options = ref1.options, current = ref1.current, attr = ref1.attr;
+      ref1 = this.format, _id = ref1._id, type = ref1.type, name = ref1.name, current = ref1.current, attr = ref1.attr;
       now_val = this.tie.params[_id];
       val = Mem.unpack[type];
       uri = Mem.pack[type];
       list = (function() {
-        var results;
+        var ref2, results;
+        ref2 = this.options;
         results = [];
-        for (value in options) {
-          option = options[value];
+        for (value in ref2) {
+          option = ref2[value];
           if (!(!option.hidden)) {
             continue;
           }
@@ -25296,7 +25315,7 @@ module.exports = Vector2D;
           results.push(m('option', ma, ma.label));
         }
         return results;
-      })();
+      }).call(this);
       if (!(attr.required && current)) {
         ma = _attr_option(attr, m_attr, option, {
           className: option.className,
@@ -25329,20 +25348,21 @@ module.exports = Vector2D;
     multiple.prototype._attr = change_attr;
 
     multiple.prototype.field = function(m_attr) {
-      var _id, attr, current, ma, mma, name, now_vals, option, options, ref1, type, uri, val, value;
+      var _id, attr, current, ma, mma, name, now_vals, option, ref1, type, uri, val, value;
       if (m_attr == null) {
         m_attr = {};
       }
-      ref1 = this.format, _id = ref1._id, type = ref1.type, name = ref1.name, options = ref1.options, current = ref1.current, attr = ref1.attr;
+      ref1 = this.format, _id = ref1._id, type = ref1.type, name = ref1.name, current = ref1.current, attr = ref1.attr;
       now_vals = this.tie.params[_id];
       val = Mem.unpack[type];
       uri = Mem.pack[type];
       mma = this._attr(_id);
       return m('select', mma, (function() {
-        var results;
+        var ref2, results;
+        ref2 = this.options;
         results = [];
-        for (value in options) {
-          option = options[value];
+        for (value in ref2) {
+          option = ref2[value];
           if (!(!option.hidden)) {
             continue;
           }
@@ -25354,7 +25374,7 @@ module.exports = Vector2D;
           results.push(m('option', ma, ma.label));
         }
         return results;
-      })());
+      }).call(this));
     };
 
     return multiple;
@@ -25534,8 +25554,8 @@ module.exports = Vector2D;
     icon.prototype.field = null;
 
     icon.prototype["with"] = function(value, mode) {
-      var _id, attr, bool, now_val, options, ref;
-      ref = this.format, _id = ref._id, options = ref.options, attr = ref.attr;
+      var _id, attr, bool, now_val, ref;
+      ref = this.format, _id = ref._id, attr = ref.attr;
       now_val = this.tie.params[_id];
       bool = now_val === value;
       switch (mode) {
@@ -25550,13 +25570,13 @@ module.exports = Vector2D;
     };
 
     icon.prototype.item = function(value, m_attr) {
-      var _id, attr, ma, now_val, option, options, ref, tag;
+      var _id, attr, ma, now_val, option, ref, tag;
       if (m_attr == null) {
         m_attr = {};
       }
-      ref = this.format, _id = ref._id, options = ref.options, attr = ref.attr;
+      ref = this.format, _id = ref._id, attr = ref.attr;
       now_val = this.tie.params[_id];
-      option = options[value];
+      option = this.options[value];
       tag = m_attr.tag || "menuicon";
       ma = this._attr(_id, attr, m_attr, option, {
         className: [option != null ? option.className : void 0, m_attr.className, attr.className].join(" "),
@@ -25584,13 +25604,13 @@ module.exports = Vector2D;
   })(btn_input);
 
   item = function(value, m_attr) {
-    var _id, attr, label, ma, now_val, option, options, ref;
+    var _id, attr, label, ma, now_val, option, ref;
     if (m_attr == null) {
       m_attr = {};
     }
-    ref = this.format, _id = ref._id, options = ref.options, attr = ref.attr;
+    ref = this.format, _id = ref._id, attr = ref.attr;
     now_val = this.tie.params[_id];
-    option = options[value];
+    option = this.options[value];
     label = option.label;
     ma = this._attr(_id, attr, m_attr, option, {
       className: [option != null ? option.className : void 0, m_attr.className, attr.className].join(" "),
@@ -25612,17 +25632,18 @@ module.exports = Vector2D;
     btns.prototype.item = item;
 
     btns.prototype.field = function(m_attr) {
-      var _id, attr, current, label, list, ma, now_val, option, options, ref, value;
+      var _id, attr, current, label, list, ma, now_val, option, ref, value;
       if (m_attr == null) {
         m_attr = {};
       }
-      ref = this.format, _id = ref._id, options = ref.options, current = ref.current, attr = ref.attr;
+      ref = this.format, _id = ref._id, current = ref.current, attr = ref.attr;
       now_val = this.tie.params[_id];
       list = (function() {
-        var results;
+        var ref1, results;
+        ref1 = this.options;
         results = [];
-        for (value in options) {
-          option = options[value];
+        for (value in ref1) {
+          option = ref1[value];
           if (!(!option.hidden)) {
             continue;
           }
@@ -25664,15 +25685,16 @@ module.exports = Vector2D;
     multiple.prototype.item = item;
 
     multiple.prototype.field = function(m_attr) {
-      var _id, attr, label, ma, now_vals, option, options, ref, results, value;
+      var _id, attr, label, ma, now_vals, option, ref, ref1, results, value;
       if (m_attr == null) {
         m_attr = {};
       }
-      ref = this.format, _id = ref._id, options = ref.options, attr = ref.attr;
+      ref = this.format, _id = ref._id, attr = ref.attr;
       now_vals = this.tie.params[_id];
+      ref1 = this.options;
       results = [];
-      for (value in options) {
-        option = options[value];
+      for (value in ref1) {
+        option = ref1[value];
         if (!(!option.hidden)) {
           continue;
         }
@@ -25701,13 +25723,13 @@ module.exports = Vector2D;
     stack.prototype._value = c_stack;
 
     stack.prototype.item = function(target, m_attr) {
-      var _id, attr, label, ma, now_val, option, options, ref;
+      var _id, attr, label, ma, now_val, option, ref;
       if (m_attr == null) {
         m_attr = {};
       }
-      ref = this.format, _id = ref._id, options = ref.options, attr = ref.attr;
+      ref = this.format, _id = ref._id, attr = ref.attr;
       now_val = this.tie.params[_id];
-      option = options[target];
+      option = this.options[target];
       label = option.label;
       ma = this._attr(_id, attr, m_attr, option, {
         className: [option != null ? option.className : void 0, m_attr.className, attr.className].join(" "),

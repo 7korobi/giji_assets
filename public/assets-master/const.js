@@ -2877,6 +2877,66 @@
       "current": "all",
       "name": "人数"
     },
+    "act": {
+      "sean": "form",
+      "attr": {
+        "type": "text",
+        "unit": "count",
+        "minlength": 4
+      },
+      "name": "アクション",
+      "current": ""
+    },
+    "memo": {
+      "sean": "form",
+      "attr": {
+        "type": "textarea",
+        "unit": "point",
+        "minlength": 4
+      },
+      "name": "メモ",
+      "current": ""
+    },
+    "talk": {
+      "sean": "form",
+      "attr": {
+        "type": "textarea",
+        "unit": "point",
+        "minlength": 4
+      },
+      "name": "発言",
+      "current": ""
+    },
+    "target": {
+      "sean": "form",
+      "attr": {
+        "type": "select"
+      },
+      "name": "対象",
+      "current": -1
+    },
+    "format": {
+      "sean": "form",
+      "attr": {
+        "type": "btns"
+      },
+      "name": "フォーム形式",
+      "current": "talk",
+      "options": {
+        "act": "アクション",
+        "memo": "メモ",
+        "talk": "発言"
+      }
+    },
+    "mestype": {
+      "sean": "form",
+      "attr": {
+        "type": "btns"
+      },
+      "name": "メッセージ種別",
+      "current": "SAY",
+      "options": {}
+    },
     "potofs_order": {
       "sean": "potof",
       "attr": {
@@ -9797,16 +9857,6 @@
 
 (function(){
   new Mem.Rule("form_text").schema(function(){
-    var formats;
-    formats = {
-      talk: "発言",
-      memo: "メモ",
-      act: "アクション"
-    };
-    this.belongs_to("form");
-    this.order(function(o){
-      return o._id;
-    });
     this.scope(function(all){
       return {
         formats: function(form_id, mestype){
@@ -9823,85 +9873,8 @@
     });
     this['default'](function(){});
     return this.deploy(function(o){
-      var i$, ref$, len$, target, text_on;
       o._id = o.form_id + "-" + o.mestype + "-" + o.format;
-      o.format_name = formats[o.format];
-      o.mestype_name = Mem.Query.ables.find(o.mestype).label;
-      o.target_hash = {};
-      o.text = m.prop("");
-      o.target_at = function(value){
-        return o.target_hash[value];
-      };
-      for (i$ = 0, len$ = (ref$ = o.targets).length; i$ < len$; ++i$) {
-        target = ref$[i$];
-        o.target_hash[target.pno] = target;
-      }
-      o.target = m.prop(o.targets.last.pno);
-      switch (o.format) {
-      case 'act':
-        o.max = {
-          unit: 'count',
-          line: 1,
-          size: 100
-        };
-        break;
-      default:
-        o.max = {
-          unit: 'point',
-          line: 5,
-          size: 100
-        };
-      }
-      text_on = m.withAttr("value", function(value){
-        o.text(value);
-        return validate.talk(o);
-      });
-      validate.talk(o);
-      return o.attr = {
-        form: function(){
-          return {
-            onchange: function(e){
-              e.target.label;
-              e.target.value;
-              return console.log([e, o]);
-            },
-            onreset: function(e){},
-            onsubmit: function(e){
-              console.log([e, o]);
-              return false;
-            }
-          };
-        },
-        action: function(){
-          return {
-            onchange: m.withAttr("value", function(index){
-              var act;
-              act = Mem.Query.actions.find(index);
-              o.action = act;
-              if (act) {
-                o.text(act.text);
-              }
-              return validate.talk(o);
-            })
-          };
-        },
-        text: function(){
-          return {
-            value: o.text(),
-            onkeyup: text_on,
-            onchange: text_on
-          };
-        },
-        target: function(){
-          return {
-            value: o.target(),
-            onchange: m.withAttr("value", function(value){
-              o.target(Mem.unpack.Number(value));
-              return validate.talk(o);
-            })
-          };
-        }
-      };
+      return o.mestype_name = Mem.Query.ables.find(o.mestype).label;
     });
   });
 }).call(this);
@@ -10956,282 +10929,282 @@
   });
   Mem.Collection.able.set({
     "editvilform": {
-      "btn": "村を編集する",
-      "change": "村の編集フォームを確認、修正します。",
       "at": "around",
       "cmd": "editvilform",
+      "btn": "村を編集する",
+      "change": "村の編集フォームを確認、修正します。",
       "help": ""
     },
     "muster": {
-      "btn": "点呼！",
-      "change": "全員を未発言状態にします。未発言者は１日そのまま発言がないと、自動退出します。",
       "at": "prologue",
       "cmd": "muster",
+      "btn": "点呼！",
+      "change": "全員を未発言状態にします。未発言者は１日そのまま発言がないと、自動退出します。",
       "help": ""
     },
     "update": {
-      "btn": "更新！",
-      "change": "ただちに更新し、次の日を迎えます。お覚悟はよろしいですか？",
       "at": "all",
       "cmd": "update",
+      "btn": "更新！",
+      "change": "ただちに更新し、次の日を迎えます。お覚悟はよろしいですか？",
       "help": ""
     },
     "scrapvil": {
-      "btn": "廃村！",
-      "change": "ただちに村を廃村にします。廃村になった村はエピローグになります。",
       "at": "all",
       "cmd": "scrapvil",
+      "btn": "廃村！",
+      "change": "ただちに村を廃村にします。廃村になった村はエピローグになります。",
       "help": ""
     },
     "exit": {
-      "btn": "退出…",
-      "change": "村を立ち去ります。",
       "at": "prologue",
       "cmd": "exit",
+      "btn": "退出…",
+      "change": "村を立ち去ります。",
       "help": ""
     },
     "commit": {
+      "at": "progress",
+      "cmd": "commit",
       "sw": "時間を進める",
       "pass": "（時間を進めない）",
       "change": "時間を進めるかどうか、選択してください。",
-      "at": "progress",
-      "cmd": "commit",
       "help": "全員が「時間を進める」を選ぶと前倒しで更新されます。\n<br>\n最低一発言して確定しないと、時間を進める事ができません。"
     },
     "night": {
+      "at": "main",
       "sw": "夜遊びする",
       "pass": "（夜遊びしない）",
       "change": "夜遊びをして、深夜の囁きを聞いてしまうかどうか、選択してください。",
-      "at": "main",
       "help": "あなたは二日目以降、夜に出歩くことができます。\n人狼の囁き、民の念話、共鳴者の共鳴を誰のものとも判別せず聞いちゃうので、朝になって昨日を振り返ると思い出せることでしょう。\n顔や名前はわかりませんが。\n<br>\nただしこのとき、もしあなたが人狼の、誰かひとりにでも襲撃される矛先に含まれていると、恐怖のあまり、実際に襲われる犠牲者とは別に死んでしまいます。\nこの死亡を護衛する方法はありません。また、息を引き取るあなたを尻目に、狼達は別の人物を襲撃するでしょう。"
     },
     "dish": {
+      "at": "progress",
       "sw": "跳ねる",
       "pass": "（跳ねない）",
       "change": "跳ねるアピールをするかどうか、選択してください。",
-      "at": "progress",
       "help": "美味しく食べて貰うことを悦びとし、活き活きと跳ねることができます。わたしをたべて、わたしをたべて、とアピールしましょう。"
     },
     "cling": {
+      "at": "main",
       "sw": "飲薬する",
       "pass": "（飲薬しない）",
       "change": "あなたが殺害されたとしたら、犯人を道連れにするかどうか、選択してください。",
-      "at": "main",
       "help": "薬を服用した夜、もし処刑以外の要因で命を落とした場合、その犯人を道連れにします。人狼の襲撃の場合、襲撃実行者が対象となります。"
     },
     "guru": {
+      "for": "live",
+      "at": "progress",
       "targets": "誘う",
       "pass": "（パス）",
       "change": "誘い込む犠牲者を選択してください。",
-      "for": "live",
-      "at": "progress",
       "help": "毎晩ふたりずつ、好きな人物をひそかに誘い込むことができます。自分自身を誘うことはできません。\n<br>\n誘い込まれた当人たちは夜な夜な踊り明かし、そのことを覚えています。しかし、彼らの能力や所属陣営などに変化はありません。"
     },
     "bitch": {
-      "targets": "遊ぶ",
-      "change": "絆を結ぶ相手と、弄ぶ遊び相手を選択してください。",
       "for": "live",
       "at": "start",
+      "targets": "遊ぶ",
+      "change": "絆を結ぶ相手と、弄ぶ遊び相手を選択してください。",
       "help": "一日目、一人目に選択した人物を本命の恋人として“運命の絆”を結びつけ、二人目は絆を結ぶふりをして手玉にとります。\n“運命の絆”を結んだ二人は、片方が死亡すると後を追って死亡します。もう一人はどうでもよいのですが、そう思わせないこまめなケアが大切です。"
     },
     "bonds": {
-      "targets": "結ぶ",
-      "change": "絆で結ぶ二人を選択してください。",
       "for": "live",
       "at": "start",
+      "targets": "結ぶ",
+      "change": "絆で結ぶ二人を選択してください。",
       "help": "一日目、好きな二人に“運命の絆”を結びつける事ができます。“運命の絆”を結んだ二人は、片方が死亡すると後を追って死亡します。"
     },
     "bond": {
-      "target": "結ぶ",
-      "change": "あなたとの絆を結ぶ相手を選択してください。",
       "for": "live",
       "at": "start",
+      "target": "結ぶ",
+      "change": "あなたとの絆を結ぶ相手を選択してください。",
       "help": "一日目、あなたから好きな人に“運命の絆”を結びつける事ができます。“運命の絆”を結んだ相手が死亡すると、あなたは後を追って死亡します。"
     },
     "guard": {
+      "for": "live",
+      "at": "main",
       "target": "守る",
       "pass": "（パス）",
       "change": "守護する対象を選択してください。",
-      "for": "live",
-      "at": "main",
       "help": "一人を狼の襲撃、もしくは付け狙う賞金稼の手から守ることが出来ます。\n<br>\n自分自身を守ることは出来ません。"
     },
     "see": {
+      "for": "live",
+      "at": "progress",
       "target": "占う",
       "pass": "（パス）",
       "change": "正体を知りたい相手を選択してください。",
-      "for": "live",
-      "at": "progress",
       "help": "ひとりを占い対象に指定します。"
     },
     "sneak": {
+      "for": "live",
+      "at": "progress",
       "target": "狙う",
       "pass": "（パス）",
       "change": "付け狙う相手を選択してください。",
-      "for": "live",
-      "at": "progress",
       "help": "殺害します。\nただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。\nまた、対象が半狼であれば彼は人狼になり、人犬、もしくは無傷の長老の場合は、即死はしませんが傷を負わせることができます。"
     },
     "hunt": {
+      "for": "live",
+      "at": "progress",
       "target": "襲う",
       "pass": "（パス）",
       "change": "殺害する相手を選択してください。",
-      "for": "live",
-      "at": "progress",
       "help": "人狼全員で多数決をし、一人だけ殺害します。\nただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。\nまた、対象が半狼であれば彼は人狼になり、人犬、もしくは無傷の長老の場合は、即死はしませんが傷を負わせることができます。"
     },
     "kill": {
+      "for": "live",
+      "at": "progress",
       "target": "襲う",
       "pass": "（パス）",
       "change": "殺害する相手を選択してください。",
-      "for": "live",
-      "at": "progress",
       "help": "殺害します。\nただし、対象が護衛されているか、光の輪を渡されているか、妖精、もしくは一匹狼であれば、効力は発揮しません。\nまた、対象が半狼であれば彼は人狼になり、人犬、もしくは無傷の長老の場合は、即死はしませんが傷を負わせることができます。"
     },
     "cure": {
+      "for": "live",
+      "at": "main",
       "target": "診察",
       "pass": "（パス）",
       "change": "診察する相手を選択してください。",
-      "for": "live",
-      "at": "main",
       "help": "ひとりを診察し、人狼の牙に感染しているかを確認します。その場合は治療します。治療した人は生存者として数えますが、能力は取り戻しません。"
     },
     "tangle": {
+      "for": "dead",
+      "at": "progress",
       "target": "憑依",
       "pass": "（パス）",
       "change": "付け狙う相手を選択してください。",
-      "for": "dead",
-      "at": "progress",
       "help": "死者の埋葬地をうろつきまわっています。\n指定した故人の役職と勝利条件を写しとり、対象を蘇生させます。\nこのため、あなたは死亡しなくては、勝利がありません。"
     },
     "analeptic": {
+      "for": "dead",
+      "at": "progress",
+      "require": "role1",
       "target": "投薬",
       "pass": "（パス）",
       "change": "薬を投与する相手を選択してください。",
-      "for": "dead",
-      "require": "role1",
-      "at": "progress",
       "help": "死者に投薬して蘇生させます。\n蘇生は一度だけおこなうことができ、それっきり薬は失われます。"
     },
     "poison": {
+      "for": "live",
+      "at": "progress",
+      "require": "role2",
       "target": "投薬",
       "pass": "（パス）",
       "change": "薬を投与する相手を選択してください。",
-      "for": "live",
-      "require": "role2",
-      "at": "progress",
       "help": "生きている者に投薬して毒殺します。\n毒殺は一度ずつだけおこなうことができ、それっきり薬は失われます。"
     },
     "scapegoat": {
+      "for": "live",
+      "at": "main",
       "target": "疑う",
       "pass": "（パス）",
       "change": "あなたが最後になったとしたら、指差す相手を選択してください。",
-      "for": "live",
-      "at": "main",
       "help": "もし投票数が同数になり処刑する相手が定まらないと、混乱した村人達に処刑されてしまいます。\nあなたが最後に指差した人は、後悔する村人達に翌日、処刑されるでしょう。皆、そうするより他にないのです。"
     },
     "hike": {
+      "for": "cast",
+      "at": "progress",
       "target": "外出する",
       "pass": "（パス）",
       "change": "会いに行く相手を選択してください。",
-      "for": "cast",
-      "at": "progress",
       "help": "特殊な能力があるかどうか自覚していません。夜は積極的に外出して、様子をさぐりましょう。"
     },
     "vote": {
+      "for": "live",
+      "at": "main",
+      "cmd": "vote",
       "target": "投票",
       "pass": "（委任する）",
       "change": "処刑する相手を選択してください。",
-      "for": "live",
-      "at": "main",
-      "cmd": "vote",
       "help": "全員で多数決をし、一人だけ処刑します。"
     },
     "vote_role": {
+      "for": "live",
+      "at": "main",
       "target": "投票",
       "pass": "（パス）",
       "change": "処刑する相手を選択してください。",
-      "for": "live",
-      "at": "main",
       "help": ""
     },
     "entrust": {
-      "target": "委任",
-      "pass": "（投票する）",
-      "change": "処刑を棄権し、一票を委ねる相手を選択してください。",
       "for": "live",
       "at": "main",
       "cmd": "vote",
+      "target": "委任",
+      "pass": "（投票する）",
+      "change": "処刑を棄権し、一票を委ねる相手を選択してください。",
       "help": "投票は棄権し、他人の投票と同じとすることができます。"
     },
     "jammer": {
+      "for": "live",
+      "at": "progress",
       "target": "邪魔",
       "pass": "（パス）",
       "change": "占いから保護する相手を選択してください。",
-      "for": "live",
-      "at": "progress",
       "help": "毎夜、一人をあらゆる占いから包み隠すことができます。\n<br>\n自分自身を隠すことはできません。"
     },
     "snatch": {
+      "for": "live",
+      "at": "progress",
       "target": "換わる",
       "pass": "（パス）",
       "change": "顔と名前を簒奪する相手を選択してください。",
-      "for": "live",
-      "at": "progress",
       "help": "好きな人物の顔と名前を奪い、自身のそれと入れ替えることができます。この能力は非常に露顕しやすいので、行使には注意が必要です。\n<br>\nもしも夜の間に屍体になった人を対象に選んだなら、旧いあなたは命を落とし、あなたとなったその屍体は息を吹き返すでしょう。\nまた、結ばれた絆や、笛吹きに誘われたことは姿とともにあり、姿を移し替えたときに引き継ぐことがあります。\n一度移し替えた姿は、永遠にあなたのものです。二度と元には戻りません。"
     },
     "gm_droop": {
-      "target": "すぐに墓下へ",
-      "pass": "―――",
-      "change": "参加者として死なせる相手を選択してください。",
       "for": "gm_live",
       "at": "all",
       "cmd": "gamemaster",
+      "target": "すぐに墓下へ",
+      "pass": "―――",
+      "change": "参加者として死なせる相手を選択してください。",
       "help": ""
     },
     "gm_live": {
-      "target": "すぐに表舞台へ",
-      "pass": "―――",
-      "change": "参加者として蘇生させる相手を選択してください。",
       "for": "gm_dead",
       "at": "all",
       "cmd": "gamemaster",
+      "target": "すぐに表舞台へ",
+      "pass": "―――",
+      "change": "参加者として蘇生させる相手を選択してください。",
       "help": ""
     },
     "gm_disable_vote": {
+      "for": "live",
+      "at": "all",
+      "cmd": "gamemaster",
       "target": "投票から保護する",
       "pass": "―――",
       "change": "投票対象に選ぶことを認めない相手を選択してください。",
-      "for": "live",
-      "at": "all",
-      "cmd": "gamemaster",
       "help": ""
     },
     "gm_enable_vote": {
-      "target": "投票を認可する",
-      "pass": "―――",
-      "change": "投票対象に選ぶこと許可する相手を選択してください。",
       "for": "live",
       "at": "all",
       "cmd": "gamemaster",
+      "target": "投票を認可する",
+      "pass": "―――",
+      "change": "投票対象に選ぶこと許可する相手を選択してください。",
       "help": ""
     },
     "maker": {
-      "target": "村を任せる",
-      "pass": "―――",
-      "change": "村の管理を任せる相手を選択してください。",
       "for": "all",
       "at": "all",
       "cmd": "maker",
+      "target": "村を任せる",
+      "pass": "―――",
+      "change": "村の管理を任せる相手を選択してください。",
       "help": ""
     },
     "kick": {
-      "target": "退去！",
-      "pass": "―――",
-      "change": "退去いただこう、かな…、と思った相手を選択してください。",
       "for": "all",
       "at": "prologue",
       "cmd": "kick",
+      "target": "退去！",
+      "pass": "―――",
+      "change": "退去いただこう、かな…、と思った相手を選択してください。",
       "help": ""
     },
     "blind": {
@@ -11321,48 +11294,48 @@
       "help": ""
     },
     "hide_for_vote": {
-      "label": "投票対象外",
       "hide": ["vote"],
+      "label": "投票対象外",
       "help": ""
     },
     "hide_for_role": {
-      "label": "能力対象外",
       "hide": ["role"],
+      "label": "能力対象外",
       "help": ""
     },
     "hide_for_gift": {
-      "label": "恩恵対象外",
       "hide": ["gift"],
+      "label": "恩恵対象外",
       "help": ""
     },
     "disable_vote": {
-      "label": "<s>投票</s>",
       "disable": ["vote"],
+      "label": "<s>投票</s>",
       "help": ""
     },
     "disable_special": {
-      "label": "<s>全能力</s>",
       "disable": ["gift", "role"],
+      "label": "<s>全能力</s>",
       "help": "あなたはもう特殊能力を使うことができません。"
     },
     "disable_gift": {
-      "label": "<s>恩恵</s>",
       "disable": ["gift"],
+      "label": "<s>恩恵</s>",
       "help": "あなたはもう恩恵能力を使うことができません。"
     },
     "disable_role": {
-      "label": "<s>能力</s>",
       "disable": ["role"],
+      "label": "<s>能力</s>",
       "help": "あなたはもう役職能力を使うことができません。"
     },
     "disable_poison": {
-      "label": "<s>毒薬</s>",
       "disable": ["poison"],
+      "label": "<s>毒薬</s>",
       "help": "あなたはもう毒薬を使うことができません。"
     },
     "disable_analeptic": {
-      "label": "<s>蘇生薬</s>",
       "disable": ["analeptic"],
+      "label": "<s>蘇生薬</s>",
       "help": "あなたはもう蘇生薬を使うことができません。"
     },
     "twolife": {
@@ -11390,82 +11363,82 @@
       "help": "顔や名前はわかりませんが、あなたの耳には死者の声が届いちゃうことでしょう。"
     },
     "ENTRY": {
-      "label": "導入",
-      "text": "ENTRY",
       "cmd": "entry",
+      "text": ["talk"],
+      "label": "導入",
       "help": "キャラクターを選択し、エントリーしましょう。"
     },
     "MAKER": {
-      "label": "村立て話",
-      "text": "MAKER",
       "cmd": "write",
+      "text": ["talk", "memo", "act"],
+      "label": "村立て話",
       "help": "あなたは村立て人です。"
     },
     "ADMIN": {
-      "label": "管理者話",
-      "text": "ADMIN",
       "cmd": "write",
+      "text": ["talk", "memo", "act"],
+      "label": "管理者話",
       "help": "あなたは管理人です。"
     },
     "SPSAY": {
-      "label": "共鳴",
-      "text": "SPSAY",
       "cmd": "write",
+      "text": ["talk", "memo"],
+      "label": "共鳴",
       "help": "あなたは、共鳴者同士にしか聞こえない会話が可能です。"
     },
     "WSAY": {
-      "label": "囁き",
-      "text": "WSAY",
       "cmd": "write",
+      "text": ["talk", "memo"],
+      "label": "囁き",
       "help": "あなたは、人狼（と囁き狂人、擬狼妖精）同士にしか聞こえない会話が可能です。"
     },
     "XSAY": {
-      "label": "念話",
-      "text": "XSAY",
       "cmd": "write",
+      "text": ["talk", "memo"],
+      "label": "念話",
       "help": "あなたは、念波星でしか聞こえない会話が可能です。"
     },
     "GSAY": {
-      "label": "会話",
-      "text": "GSAY",
       "cmd": "write",
+      "text": ["talk", "memo", "act"],
+      "label": "会話",
       "help": "あなたは、死者にしか聞こえない会話が可能です。"
     },
     "MSAY": {
-      "label": "口借り",
-      "text": "MSAY",
       "cmd": "write",
+      "text": ["talk", "memo"],
+      "label": "口借り",
       "help": "あなたは<b>_NPC_</b>の口を借り、好きな言葉を伝えることができます。"
     },
     "AIM": {
-      "label": "内緒話",
-      "text": "AIM",
       "for": "near",
       "cmd": "write",
+      "text": ["talk", "memo"],
+      "label": "内緒話",
       "help": null
     },
     "TSAY": {
-      "label": "独り言",
-      "text": "TSAY",
       "cmd": "write",
+      "text": ["talk", "memo"],
+      "label": "独り言",
       "help": null
     },
     "SAY": {
-      "label": "会話",
-      "text": "SAY",
       "cmd": "write",
+      "text": ["talk", "memo", "act"],
+      "label": "会話",
       "help": null
     },
     "VSAY": {
-      "label": "会話",
-      "text": "VSAY",
       "cmd": "write",
+      "text": ["talk", "memo", "act"],
+      "label": "会話",
       "help": null
     },
     "VGSAY": {
-      "label": "会話",
-      "text": "VGSAY",
       "cmd": "write",
+      "text": ["talk", "memo", "act"],
+      "label": "会話",
       "help": null
     }
   });
@@ -12347,6 +12320,209 @@
       "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BITCH\" TARGET=\"_blank\">遊び人</A>です。\n本命とあなたが生き延びれば、あなたの勝利です。"
     }
   });
+}).call(this);
+
+(function(){
+  new Mem.Rule("form").schema(function(){
+    this.belongs_to("chr_job");
+    this.order(function(o){
+      return o.index;
+    });
+    this.scope(function(all){});
+    this['default'](function(){});
+    this.deploy(function(o){
+      var listup, target_for, text_for, input_for, role_scan, able_scan, role_names, role_helps, able_helps, i$, ref$, len$, role_id, can_use, able;
+      listup = function(state, live, mob){
+        var option;
+        option = function(cb){
+          var ref$;
+          return ((ref$ = Mem.Query.potofs) != null ? ref$.where(cb).list : void 8) || [];
+        };
+        switch (state) {
+        case "dead":
+          return option(function(o){
+            var ref$;
+            return !((ref$ = o.live) === "live" || ref$ === "mob");
+          });
+        case "gm_live":
+          return option(function(o){
+            var ref$;
+            return (ref$ = o.live) === "live" || ref$ === "mob";
+          });
+        case "gm_dead":
+          return option(function(o){
+            return o.live !== "live";
+          });
+        case "live":
+          return option(function(o){
+            return o.live === "live";
+          });
+        case "cast":
+          return option(function(o){
+            return o.live !== "mob";
+          });
+        case "mob":
+          return option(function(o){
+            return o.live === "mob";
+          });
+        case "all":
+          return option(function(){
+            return true;
+          });
+        case "near":
+          switch (live) {
+          case "mob":
+            switch (mob) {
+            case "grave":
+              return listup("dead");
+            case "alive":
+              return listup("live");
+            case "gamemaster":
+              return listup("all");
+            default:
+              return listup("mob");
+            }
+            break;
+          case "live":
+            return listup("live");
+          default:
+            return listup("dead");
+          }
+          break;
+        default:
+          return [];
+        }
+      };
+      target_for = function(options){
+        var target, h, i$, len$, ref$, name, job, pno;
+        target = Mem.Query.inputs.hash.target;
+        h = {};
+        for (i$ = 0, len$ = options.length; i$ < len$; ++i$) {
+          ref$ = options[i$], name = ref$.name, job = ref$.job, pno = ref$.pno;
+          h[pno] = {
+            _id: pno,
+            label: job + " " + name
+          };
+        }
+        target.options = h;
+        return console.warn(target);
+      };
+      text_for = function(format, able){
+        var _id, text, options, area, tie;
+        _id = able._id, text = able.text;
+        options = listup("near", o.live, o.mob);
+        if (_id === 'SAY' || _id === 'GSAY' || _id === 'VSAY' || _id === 'TSAY') {
+          options.push({
+            job: "―――",
+            name: "",
+            pno: -1
+          });
+        }
+        if (options.length) {
+          area = Mem.Query.inputs.hash[format];
+          target_for(options);
+        }
+        tie = InputTie.form({}, [text, "target"]);
+        tie.inputs.target.options = options;
+        return o.texts[_id] = {
+          tie: tie
+        };
+      };
+      input_for = function(role, able){
+        var cmd, options, select, tie;
+        cmd = able.cmd || role.cmd;
+        options = listup(able['for'], o.live, o.mob);
+        if (able.sw) {
+          options.push({
+            name: "",
+            pno: o.pno || 1,
+            job: able.sw
+          });
+        }
+        if (able.pass) {
+          options.push({
+            name: "",
+            pno: -1,
+            job: able.pass || "（パス）"
+          });
+        }
+        if (options.length) {
+          select = Mem.Query.inputs.hash.target;
+          target_for(options);
+        }
+        tie = InputTie.form({}, ["target"]);
+        tie.inputs.target.options = options;
+        return o.selects[_id] = {
+          tie: tie
+        };
+      };
+      role_scan = function(role_id, can_use){
+        var role, i$, ref$, len$, able_id, able, results$ = [];
+        role = Mem.Query.roles.find(role_id);
+        role_names.push(role.name);
+        role_helps.push(role.help);
+        if (in$("grave", role.ables)) {
+          can_use = !can_use;
+        }
+        if (can_use) {
+          for (i$ = 0, len$ = (ref$ = role.ables).length; i$ < len$; ++i$) {
+            able_id = ref$[i$];
+            able = Mem.Query.ables.find(able_id);
+            results$.push(able_scan(role, able));
+          }
+          return results$;
+        }
+      };
+      able_scan = function(role, able){
+        var _id;
+        able_helps.push(able.help);
+        _id = able._id;
+        if (able.text != null) {
+          text_for(format, able);
+        }
+        if (able.at != null) {
+          if (able.at[o.turn]) {
+            return input_for(role, able);
+          }
+        }
+      };
+      o.tie = InputTie.form(o.params, ["format", "mestype"]);
+      role_names = [];
+      role_helps = [];
+      able_helps = [];
+      o.form = {};
+      o.texts = {};
+      o.selects = {};
+      o.ext == null && (o.ext = []);
+      for (i$ = 0, len$ = (ref$ = o.ext).length; i$ < len$; ++i$) {
+        role_id = ref$[i$];
+        role_scan(role_id, true);
+      }
+      role_scan(o.turn, true);
+      if (o.live !== "mob") {
+        can_use = "live" === o.live;
+        role_scan(o.live, true);
+        for (i$ = 0, len$ = (ref$ = o.role).length; i$ < len$; ++i$) {
+          role_id = ref$[i$];
+          role_scan(role_id, can_use);
+        }
+      }
+      for (i$ = 0, len$ = (ref$ = Mem.Query.ables.by_rolestate(o.rolestate)).length; i$ < len$; ++i$) {
+        able = ref$[i$];
+        role_names.push(able.name);
+        able_scan({}, able);
+      }
+      o.role_name = role_names.join("、");
+      o.role_help = _.uniq(_.compact(role_helps)).join("\n<br>\n");
+      return o.able_help = _.uniq(_.compact(able_helps)).join("\n<br>\n");
+    });
+    return this.map_reduce(function(o){});
+  });
+  function in$(x, xs){
+    var i = -1, l = xs.length >>> 0;
+    while (++i < l) if (x === xs[i]) return true;
+    return false;
+  }
 }).call(this);
 
 (function() {
