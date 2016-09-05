@@ -24,14 +24,14 @@ c_tap  = (bool, new_val)-> new_val
 
 class btn_input extends InputTie.type.hidden
   _attr: ( _id, attrs..., last )->
-    { _value, tie } = b = @
-    { className, disabled, selected, value, target, attr } = last
+    { _id, tie } = b = @
+    { className, disabled, selected, value, target } = last
     onchange = ->
       return if b.timer
       b._debounce()
       .catch ->
         b.timer = null
-      value = _value selected, value, target
+      value = b._value selected, value, target
       tie.do_change _id, value, ma
       tie.do_fail   _id, value, ma unless b.dom.validity.valid
 
@@ -40,7 +40,7 @@ class btn_input extends InputTie.type.hidden
     css += " active" if selected
     css += " " + className if className
 
-    @attr = ma = _pick attrs,
+    ma = _pick attrs,
       config: tie._config _id
       className: css
       onclick: onchange
@@ -142,7 +142,7 @@ class InputTie.type.btns extends btn_input
       for value, option of @options when ! option.hidden
         @item value, m_attr
 
-    unless attr.required && current
+    unless @attr.required && @format.current
       list.unshift @item "", m_attr
     list
 
@@ -175,14 +175,14 @@ class InputTie.type.stack extends btn_input
   _value: c_stack
   default_option:
     className: "icon-cancel-alt"
-    label:     ""
+    label:     null
     "data-tooltip": "操作を戻す"
 
   field: (m_attr = {})->
     throw "not implement"
 
   item: (target, m_attr = {})->
-    option = @option value
+    option = @option target
     ma = @_attr @_id, @attr, m_attr, option,
       className: [@attr.className, option.className, m_attr.className].join(" ")
       target: target

@@ -1672,13 +1672,7 @@
   win.mount("#css_changer", function(dom) {
     return {
       controller: function() {
-        var input, ref, url;
-        url = (ref = window.gon) != null ? ref.url : void 0;
-        input = Url.tie.input;
-        return {
-          url: url,
-          input: input
-        };
+        return Url.tie;
       },
       view: doc.view.sow_css_changer
     };
@@ -2117,6 +2111,7 @@
       var section, vdom;
       section = arg.section, vdom = arg.vdom;
       vdom.length = 0;
+      menu.draw();
       switch (Url.params.scope) {
         case "pins":
           section("pin");
@@ -2254,12 +2249,11 @@
     controller: function() {
       return InputTie.btns(Url.params, ["order", "search"]);
     },
-    view: function(arg) {
-      var input;
-      input = arg.input;
+    view: function(tie) {
+      tie.draw();
       return menu.input.icon.item("th-large", {
         className: "glass tooltip-right",
-        menu: [input]
+        menu: [tie.input]
       });
     }
   };
@@ -2364,6 +2358,7 @@
       filter_size = Math.floor((win.height - seeing_top) / line_text_height) - 3;
       anchorview = doc.messages.anchor(Url.params).list;
       seeingview = doc.messages.seeing(filter_size, win.scroll.center);
+      tie.draw();
       return m("section.plane", m("h6", "参照されている", m("span.btn.edge.icon-pin", click.pin(anchorview, [win.scroll.center]))), (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = anchorview).length; i$ < len$; ++i$) {
@@ -2491,9 +2486,9 @@
     controller: function() {
       return InputTie.btns(Url.params, ["header_state"]);
     },
-    view: function(arg) {
+    view: function(tie) {
       var input, max_all, max_cafe, max_ciel, max_crazy, max_morphe, max_pan, max_vage, max_xebec, params, top_line_attr;
-      input = arg.input, params = arg.params;
+      input = tie.input, params = tie.params;
       max_vage = Mem.conf.folder.PERJURY.config.cfg.MAX_VILLAGES;
       max_crazy = Mem.conf.folder.CRAZY.config.cfg.MAX_VILLAGES;
       max_xebec = Mem.conf.folder.XEBEC.config.cfg.MAX_VILLAGES;
@@ -2505,6 +2500,7 @@
       top_line_attr = {
         style: "height: 4em; vertical-align: bottom;"
       };
+      tie.draw();
       return m("table.board#headline", m("thead", (function() {
         switch (params.header_state) {
           case "progress":
@@ -2808,11 +2804,13 @@
       tie.stay = function(id, value){
         return Url.prop.potofs_desc(!Url.params.potofs_desc);
       };
-      return tie.input.potofs_order;
+      return tie;
     },
-    view: function(c, wide_attr){
-      var ref$, potofs_order, potofs_desc, potofs_hide, o, className;
+    view: function(tie, wide_attr){
+      var c, ref$, potofs_order, potofs_desc, potofs_hide, o, className;
+      c = tie.input.potofs_order;
       ref$ = Url.params, potofs_order = ref$.potofs_order, potofs_desc = ref$.potofs_desc, potofs_hide = ref$.potofs_hide;
+      tie.draw();
       return m("section.table-swipe", m("table", m("tfoot", m("tr.center", m("th[colspan=2]", m("sup", "(スクロールします。)")), m("th", m("a", c.item("stat_at"))), m("th", m("a", c.item("stat_type"))), m("th", m("a", c.item("said_num"))), m("th", m("a", c.item("pt"))), m("th", m("a", c.item("urge"))), m("th", m("span.icon-user", " ")), m("th", m("a", c.item("select"))), m("th", m("a", c.item("win_result"))), m("th", m("a", c.item("win_side"))), m("th", m("a", c.item("role"))), m("th", m("a", c.item("text"))))), m("tbody.plane", wide_attr, (function(){
         var i$, ref$, len$, results$ = [];
         for (i$ = 0, len$ = (ref$ = Mem.Query.potofs.view(potofs_desc, potofs_order).list).length; i$ < len$; ++i$) {
@@ -2919,14 +2917,14 @@
 (function() {
   doc.component.security_modes = {
     controller: function(prop) {
-      var input, options, refresh, tie;
+      var options, tie;
       tie = InputTie.btns(Url.params, ["show", "open", "human"]);
       tie.check(function() {
         prop(Url.params.show);
         return Url.replacestate();
       });
       options = Mem.Query.inputs.hash.show.options;
-      refresh = function() {
+      tie.do_draw(function() {
         var grave_label, has, mob, story, think_label;
         has = Mem.Query.messages.has;
         story = Mem.Query.storys.list.first;
@@ -2948,17 +2946,13 @@
         }
         options.think.label = think_label.join("/") + "つき";
         return options.clan._id = has.clan ? "clan" : null;
-      };
-      input = tie.input;
-      return {
-        input: input,
-        refresh: refresh
-      };
+      });
+      return tie;
     },
-    view: function(arg, prop) {
-      var input, refresh;
-      input = arg.input, refresh = arg.refresh;
-      refresh();
+    view: function(tie, prop) {
+      var input;
+      input = tie.input;
+      tie.draw();
       return m("p", input.show.field(), m.trust("&nbsp;"), input.open.field(), input.open.label(), input.human.field(), input.human.label());
     }
   };
@@ -2985,9 +2979,6 @@
         if (doc.user.is_login) {
           WebStore.cookie.copyTo(this$.tie);
         }
-        console.warn(sow_auth);
-        console.warn(doc.user);
-        console.warn(this$.tie.params);
       };
       this.params = {
         ua: ua,
@@ -3555,8 +3546,9 @@
       });
     },
     view: function(arg) {
-      var btns, input, timeline;
-      input = arg.tie.input;
+      var btns, input, tie, timeline;
+      tie = arg.tie;
+      input = tie.input;
       timeline = function() {
         return m.component(doc.component.timeline, "#timeline", {
           size: [2 * doc.width.content(), 150]
@@ -3880,10 +3872,11 @@
         v.tie.input.role_table.info(role_table_info);
         return v.tie.input.mob_type.info(mob_type_info);
       });
+      v.tie.draw();
       add_btn = function(arg) {
         var _id, cmd, label, win;
         _id = arg._id, cmd = arg.cmd, win = arg.win, label = arg.label;
-        v.tie.input[cmd].format.options[_id] = {
+        v.tie.input[cmd].options[_id] = {
           _id: _id,
           label: label
         };
@@ -4034,9 +4027,10 @@
 }).call(this);
 
 (function() {
-  doc.view.css_changer = function(arg) {
+  doc.view.css_changer = function(tie) {
     var input;
-    input = arg.input;
+    input = tie.input;
+    tie.draw();
     return m(".paragraph", menu.input.icon.item("cog", {
       className: "pull-right tooltip-left"
     }), input.theme.field(), m("hr.black"));
@@ -4263,12 +4257,14 @@
 }).call(this);
 
 (function() {
-  doc.view.sow_css_changer = function(arg) {
-    var input, pwd, ref, uid, url;
-    url = arg.url, input = arg.input;
+  doc.view.sow_css_changer = function(tie) {
+    var input, pwd, ref, ref1, uid, url;
+    input = tie.input;
+    url = (ref = window.gon) != null ? ref.url : void 0;
+    tie.draw();
     return m(".paragraph", menu.input.icon.item("cog", {
       className: "pull-right menuicon tooltip-left"
-    }), url ? doc.user.is_login ? ((ref = WebStore.cookie.prop, uid = ref.uid, pwd = ref.pwd, ref), m("a.btn.edge", {
+    }), url ? doc.user.is_login ? ((ref1 = WebStore.cookie.prop, uid = ref1.uid, pwd = ref1.pwd, ref1), m("a.btn.edge", {
       href: url + "?ua=mb&cmd=vindex&uid=" + (uid()) + "&pwd=" + (pwd())
     }, "携帯")) : m("a.btn.edge", {
       href: url + "?ua=mb"

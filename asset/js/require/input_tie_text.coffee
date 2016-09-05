@@ -10,7 +10,7 @@ text_point = (size)->
 
 class text_input extends InputTie.type.hidden
   draw: ->
-    { info, label } = @format
+    { unit } = @attr
     @__name = @attr.name || @_id
     @__value = @tie.params[@_id]
     line = @__value.split("\n").length
@@ -63,7 +63,7 @@ class text_input extends InputTie.type.hidden
 
 class InputTie.type.textarea extends text_input
   field: (m_attr = {})->
-    ma = @_attr_label @_id, m_attr
+    ma = @_attr @_id, @attr, m_attr,
       className: [@attr.className, m_attr.className].join(" ")
       name:  @__name
     # data-tooltip, disabled

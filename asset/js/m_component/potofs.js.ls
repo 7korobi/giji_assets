@@ -6,10 +6,13 @@ doc.component.potofs =
     tie.stay = (id, value)->
       Url.prop.potofs_desc ! Url.params.potofs_desc
 
-    tie.input.potofs_order
+    tie
 
-  view: (c, wide_attr)->
+  view: (tie, wide_attr)->
+    c = tie.input.potofs_order
     { potofs_order, potofs_desc, potofs_hide } = Url.params
+
+    tie.draw()
     m "section.table-swipe",
       m "table",
         m "tfoot",

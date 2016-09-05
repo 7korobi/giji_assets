@@ -11,9 +11,6 @@ doc.component.sow_auth =
       doc.user.id       =     sow_auth.uid
       if doc.user.is_login
         WebStore.cookie.copyTo @tie
-      console.warn sow_auth
-      console.warn doc.user
-      console.warn @tie.params
 
     @params = { ua, cmd: "login" }
     @tie = InputTie.form @params, <[uid pwd]>

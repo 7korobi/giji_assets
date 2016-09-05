@@ -2,7 +2,8 @@ doc.component.header =
   controller: ->
     InputTie.btns Url.params, ["header_state"]
 
-  view: ({input, params})->
+  view: (tie)->
+    { input, params } = tie
     max_vage    = Mem.conf.folder.PERJURY.config.cfg.MAX_VILLAGES
     max_crazy   = Mem.conf.folder.CRAZY  .config.cfg.MAX_VILLAGES
     max_xebec   = Mem.conf.folder.XEBEC  .config.cfg.MAX_VILLAGES
@@ -15,6 +16,8 @@ doc.component.header =
     top_line_attr =
       style: "height: 4em; vertical-align: bottom;"
 
+
+    tie.draw()
     m "table.board#headline",
       m "thead",
         switch params.header_state

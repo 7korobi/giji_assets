@@ -199,6 +199,7 @@ doc.component.vmake_form =
       v.tie.input.mob_type.info mob_type_info
 
 
+    v.tie.draw()
     add_btn = ({_id, cmd, win, label})->
       v.tie.input[cmd].options[_id] = { _id, label }
       v.tie.input[cmd].item _id,

@@ -1,4 +1,7 @@
-doc.view.css_changer = ({input})->
+doc.view.css_changer = (tie)->
+  { input } = tie
+
+  tie.draw()
   m ".paragraph",
     menu.input.icon.item "cog",
       className: "pull-right tooltip-left"

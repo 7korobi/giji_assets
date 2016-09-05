@@ -1,4 +1,8 @@
-doc.view.sow_css_changer = ({url, input})->
+doc.view.sow_css_changer = (tie)->
+  { input } = tie
+  url = window.gon?.url
+
+  tie.draw()
   m ".paragraph",
     menu.input.icon.item "cog",
       className: "pull-right menuicon tooltip-left"

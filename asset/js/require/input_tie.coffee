@@ -27,13 +27,12 @@ _attr_form = (tie, { attr })->
       false
 
 _attr_label = ( _id, attrs...)->
-  { _value, tie } = b = @
   _.assignIn attrs...
 
 
 change_attr = ( _id, attrs... )->
   { _value, tie } = b = @
-  @attr = ma = input_pick attrs,
+  ma = input_pick attrs,
     config: tie._config _id
     disabled: tie.disabled
     onblur:     (e)-> tie.do_blur   _id, e
@@ -44,7 +43,7 @@ change_attr = ( _id, attrs... )->
 
 input_attr = ( _id, attrs... )->
   { _value, tie } = b = @
-  @attr = ma = input_pick attrs,
+  ma = input_pick attrs,
     config: tie._config _id
     disabled: tie.disabled
     onblur:    (e)-> tie.do_blur   _id, e
@@ -102,7 +101,7 @@ class InputTie
 
   do_change: (id, value)->
     input = @input[id]
-    value = Mem.unpack[input.format.type] value
+    value = input.__val value
     old = @params[id]
     if old == value
       @stay id, value
@@ -116,7 +115,7 @@ class InputTie
 
   do_fail: (id, value)->
     input = @input[id]
-    value = Mem.unpack[input.format.type] value
+    value = input.__val value
 
     input.do_fail value
 
@@ -193,8 +192,6 @@ class InputTie
     m tag, ma, children...
 
   draw: ->
-    for input in inputs
-      input.draw()
     for draw in @_draw
       draw()
 
@@ -303,9 +300,11 @@ class basic_input
     "data-tooltip": "選択しない"
 
   constructor: (@tie, @format)->
-    { @_id, @options, @attr, @type, @name } = @format
+    { @_id, @options, @attr, @type, @name, info } = @format
+    @__info = info
     @__uri = Mem.pack[@type]
     @__val = Mem.unpack[@type]
+    @tie.do_draw @draw.bind @
 
   draw: ->
     { info, label } = @format
@@ -360,7 +359,7 @@ class basic_input
         option = @options[@__value]
         if option
           return @label_for option
-    if info
+    if info = @__info
       text = info.label if info.label
       text = info.off   if info.off   && ! @__value
       text = info.on    if info.on    && @__value
@@ -402,7 +401,7 @@ class InputTie.type.radio extends basic_input
       for value, option of @options when ! option.hidden
         @item value, m_attr
 
-    unless attr.required && current
+    unless @attr.required && @format.current
       list.unshift @item "", m_attr
     list
 
@@ -412,8 +411,8 @@ class InputTie.type.radio extends basic_input
       className: [@attr.className, option.className, m_attr.className].join(" ")
       type: "radio"
       name:  @__name
-      value: @__uri @__value
-      checked: (value == @__val @__value)
+      value: @__uri value
+      checked: (value == @__value)
     # data-tooltip, disabled
     m "input", ma,
       option.label
@@ -432,7 +431,7 @@ class InputTie.type.select extends basic_input
       for value, option of @options when ! option.hidden
         @item value, m_attr
 
-    unless attr.required && current
+    unless @attr.required && @format.current
       list.unshift @item "", m_attr
       # disabled
 

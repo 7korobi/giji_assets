@@ -40,6 +40,7 @@ doc.component.buttons =
 
   view: ({section, vdom})->
     vdom.length = 0
+    menu.draw()
     switch Url.params.scope
       when "pins"
         section "pin"

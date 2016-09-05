@@ -60,6 +60,8 @@ doc.component.filter =
     anchorview = doc.messages.anchor(Url.params).list
     seeingview = doc.messages.seeing(filter_size, win.scroll.center)
 
+    tie.draw()
+
     m "section.plane",
       m "h6",
         "参照されている"

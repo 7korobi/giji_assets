@@ -10,7 +10,7 @@ doc.component.security_modes =
       Url.replacestate()
 
     options = Mem.Query.inputs.hash.show.options
-    refresh = ->
+    tie.do_draw ->
       { has } = Mem.Query.messages
       story = Mem.Query.storys.list.first
       mob = Mem.Query.roles.find(story?.type.mob)
@@ -27,11 +27,12 @@ doc.component.security_modes =
 
       options.clan._id = if has.clan then "clan" else null
 
-    input = tie.input
-    { input, refresh }
+    tie
 
-  view: ({input, refresh}, prop)->
-    refresh()
+  view: (tie, prop)->
+    { input } = tie
+    tie.draw()
+
     m "p",
       input.show.field()
       m.trust "&nbsp;"

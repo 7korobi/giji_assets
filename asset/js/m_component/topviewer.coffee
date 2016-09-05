@@ -93,7 +93,8 @@ doc.component.topviewer =
           sub_menu.radio {class:"edge player_length"}, Url.prop.player_length, reduce(player_length: "all"), "player_length", (key, o)->
             o.min_is.view.player_length + "人"
 
-  view: ({ tie: { input } })->
+  view: ({ tie })->
+    { input } = tie
     timeline = ->
       m.component doc.component.timeline, "#timeline", size: [2 * doc.width.content(), 150]
 
