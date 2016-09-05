@@ -200,7 +200,7 @@ doc.component.vmake_form =
 
 
     add_btn = ({_id, cmd, win, label})->
-      v.tie.input[cmd].format.options[_id] = { _id, label }
+      v.tie.input[cmd].options[_id] = { _id, label }
       v.tie.input[cmd].item _id,
         className: "WIN_#{win}"
 

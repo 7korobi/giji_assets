@@ -31,9 +31,9 @@ class btn_input extends InputTie.type.hidden
       b._debounce()
       .catch ->
         b.timer = null
-      now_val = _value selected, value, target
-      tie.do_change _id, now_val, ma
-      tie.do_fail   _id, now_val, ma unless b.dom.validity.valid
+      value = _value selected, value, target
+      tie.do_change _id, value, ma
+      tie.do_fail   _id, value, ma unless b.dom.validity.valid
 
     css = "btn"
     css += " edge" unless disabled || tie.disabled
@@ -70,14 +70,10 @@ class btn_input extends InputTie.type.hidden
 class InputTie.type.checkbox_btn extends btn_input
   _value: c_tap
   field: (m_attr = {})->
-    { _id, name, attr } = @format
-
-    now_val = @tie.params[_id]
-
-    ma = @_attr _id, attr, m_attr,
-      className: [attr.className, attr.className].join(" ")
-      selected: now_val
-      value:    now_val
+    ma = @_attr @_id, @attr, m_attr,
+      className: [@attr.className, m_attr.className].join(" ")
+      selected: @__value
+      value:    @__value
     # data-tooltip, disabled
     m "span", ma, name
 
@@ -86,10 +82,7 @@ class InputTie.type.icon extends btn_input
   _value: c_icon
   field: null
   with: (value, mode)->
-    { _id, attr } = @format
-
-    now_val = @tie.params[_id]
-    bool = now_val == value
+    bool = @__value == value
 
     switch mode
       when bool
@@ -97,20 +90,17 @@ class InputTie.type.icon extends btn_input
       when ! bool
         null        
       else
+        # define mode function.
         @_with = {}
         @_with[value] = mode
 
   item: (value, m_attr = {})->
-    { _id, attr } = @format
-
-    now_val = @tie.params[_id]
     option = @options[value]
-
     tag = m_attr.tag || "menuicon"
 
-    ma = @_attr _id, attr, m_attr, option,
-      className: [option?.className, m_attr.className, attr.className].join(" ")
-      selected: value == now_val
+    ma = @_attr @_id, @attr, m_attr, option,
+      className: [@attr.className, m_attr.className, option.className].join(" ")
+      selected: value == @__value
       value:    value
     # data-tooltip, disabled
     tags[tag] value, ma, option
@@ -129,104 +119,88 @@ class InputTie.type.icon extends btn_input
   tags = { menuicon, bigicon }
 
 
-item = (value, m_attr = {})->
-  { _id, attr } = @format
-
-  now_val = @tie.params[_id]
-  option = @options[value]
-  label = option.label
-
-  ma = @_attr _id, attr, m_attr, option,
-    className: [option?.className, m_attr.className, attr.className].join(" ")
-    selected: value == now_val
-    value:    value
-  # data-tooltip, disabled
-  m "span", ma,
-    label
-    m ".emboss.pull-right", option.badge() if option.badge
-
-
 class InputTie.type.btns extends btn_input
   _value: c_tap
-  item:  item
+  item: (value, m_attr = {})->
+    option =
+      if value
+        @options?[value] || {}
+      else
+        className: "icon-cancel-alt"
+        label:     ""
+        "data-tooltip": "選択しない"
+
+    ma = @_attr @_id, @attr, m_attr, option,
+      className: [@attr.className, option.className, m_attr.className].join(" ")
+      selected: value == @__value
+      value:    value
+    # data-tooltip, disabled
+    m "span", ma,
+      option.label
+      m ".emboss.pull-right", option.badge() if option.badge
+
   field: (m_attr = {})->
-    { _id, current, attr } = @format
-
-    now_val = @tie.params[_id]
-
     list =
       for value, option of @options when ! option.hidden
-        label = option.label
-
-        ma = @_attr _id, attr, m_attr, option,
-          className: [option.className, m_attr.className, attr.className].join(" ")
-          selected: value == now_val
-          value: value
-        # data-tooltip, disabled
-        m "span", ma,
-          label
-          m ".emboss.pull-right", option.badge() if option.badge
+        @item value, m_attr
 
     unless attr.required && current
-      ma = @_attr _id, attr, m_attr,
-        className: [attr.className, attr.className, "icon-cancel-alt"].join(" ")
-        selected: ! now_val
-        value: null
-        "data-tooltip": "選択しない"
-      list.unshift m "span", ma, ""
+      list.unshift @item "", m_attr
     list
 
 
 class InputTie.type.btns.multiple extends btn_input
   _value: c_tap
-  item:  item
+  item: (value, m_attr = {})->
+    option =
+      if value
+        @options?[value] || {}
+      else
+        className: "icon-cancel-alt"
+        label:     ""
+        "data-tooltip": "選択しない"
+
+    ma = @_attr @_id, @attr, m_attr, option,
+      className: [@attr.className, option.className, m_attr.className].join(" ")
+      selected: @__value[value]
+      value:    @__value[value]
+    # data-tooltip, disabled
+    m "span", ma,
+      option.label
+      m ".emboss.pull-right", option.badge() if option.badge
+
   field: (m_attr = {})->
     { _id, attr } = @format
 
     # TODO: change value for Set
-    now_vals = @tie.params[_id]
+    @__values = @tie.params[_id]
 
     for value, option of @options when ! option.hidden
-      label = option.label
-
-      ma = @_attr _id, attr, m_attr, option,
-        className: [option.className, m_attr.className, attr.className].join(" ")
-        selected: now_vals[value]
-        value:    now_vals[value]
-      # data-tooltip, disabled
-      m "span", ma,
-        label
-        m ".emboss.pull-right", option.badge() if option.badge
+      @item value, m_attr
 
 
 class InputTie.type.stack extends btn_input
   _value: c_stack
   item: (target, m_attr = {})->
-    { _id, attr } = @format
+    option =
+      if value
+        @options?[value] || {}
+      else
+        className: "icon-cancel-alt"
+        label:     ""
+        "data-tooltip": "操作を戻す"
 
-    now_val = @tie.params[_id]
-    option = @options[target]
-    label = option.label
-
-    ma = @_attr _id, attr, m_attr, option,
-      className: [option?.className, m_attr.className, attr.className].join(" ")
+    ma = @_attr @_id, @attr, m_attr, option,
+      className: [@attr.className, option.className, m_attr.className].join(" ")
       target: target
-      value: now_val
+      value: @__value
     # data-tooltip, disabled
     m "a", ma,
-      label
+      option.label
       m ".emboss.pull-right", option.badge() if option.badge
 
   back: (m_attr = {})->
-    { _id, attr } = @format
-
-    now_val = @tie.params[_id]
-
-    ma = @_attr _id, attr, m_attr,
-      className: [m_attr.className, attr.className, "icon-cancel-alt"].join(" ")
-      value: now_val
-    # data-tooltip, disabled
-    m "a", ma
+    @item "", m_attr
 
   field: (m_attr = {})->
     @format

@@ -9,7 +9,7 @@ submit_pick = (attrs...)->
 input_pick = (attrs, last)->
   _.assignIn {}, attrs..., last
 
-option_pick = (attrs)->
+option_pick = (attrs...)->
   attrs = attrs.map (ma)->
     target = ["id", "className", "selected", "disabled", "value", "label"]
     target.push "badge" if ma.badge
@@ -24,9 +24,6 @@ _attr_form = (tie, { attr })->
     onsubmit: (e)->
       tie.do_submit()
       false
-
-_attr_option = ( _id, attrs... )->
-    option_pick attrs
 
 _attr_label = ( _id, attrs...)->
   { _value, tie } = b = @
@@ -195,6 +192,8 @@ class InputTie
     m tag, ma, children...
 
   draw: ->
+    for input in inputs
+      input.draw()
     for draw in @_draw
       draw()
 
@@ -298,7 +297,14 @@ class basic_input
   timeout: 100
 
   constructor: (@tie, @format)->
-    { @options } = @format
+    { @_id, @options, @attr, @type, @name } = @format
+    @__uri = Mem.pack[@type]
+    @__val = Mem.unpack[@type]
+
+  draw: ->
+    { info, label } = @format
+    @__name = @attr.name || @_id
+    @__value = @tie.params[@_id]
 
   info: (@info_msg = "")->
   error: (msg = "")->
@@ -320,47 +326,42 @@ class basic_input
             @error msg
             return
 
-  option: (m_attr = {})->
+  item: (value, m_attr = {})->
+    option = @options[value]
+    ma = option_pick @attr, m_attr, option,
+      className: [option.className, m_attr.className].join(" ")
+      value: @__uri value
+      selected: value == @__value
+      # label, disabled
+    m 'option', ma, ma.label
 
-  data: (m_attr = {})->
-    { name } = @format
 
-    ma = @_attr_label m_attr
-    m "label", ma, @options.map @option
+  datalist: (m_attr = {})->
+    throw "not now"
 
   head: (m_attr = {})->
-    { name } = @format
-
     ma = @_attr_label m_attr
-    m "label", ma, name
+    m "label", ma, @name
 
   label: (m_attr = {})->
-    { _id, info, attr, label } = @format
-
-    now_val = @tie.params[_id]
-
     if @label_for
       if @options
-        option = @options[now_val]
+        option = @options[@__value]
         if option && @label_for
           return @label_for option
     if info
       text = info.label if info.label
-      text = info.off   if info.off   && ! now_val
-      text = info.on    if info.on    && now_val
-      text = info.valid if info.valid && now_val
-      ma = @_attr_label _id, m_attr, label.attr
+      text = info.off   if info.off   && ! @__value
+      text = info.on    if info.on    && @__value
+      text = info.valid if info.valid && @__value
+      ma = @_attr_label @_id, m_attr, @format.label.attr
       m "label", ma, text
 
   field: (m_attr = {})->
-    { _id, attr } = @format
-
-    now_val = @tie.params[_id]
-
-    ma = @_attr _id, attr, m_attr,
-      className: [attr.className, attr.className].join(" ")
-      name: attr.name || _id
-      value: now_val
+    ma = @_attr @_id, @attr, m_attr,
+      className: [@attr.className, m_attr.className].join(" ")
+      name:  @__name
+      value: @__value
     # data-tooltip, disabled
     m "input", ma
 
@@ -372,19 +373,12 @@ class InputTie.type.checkbox extends basic_input
   _value: e_checked
   _attr:  change_attr
   field: (m_attr = {})->
-    { _id, type, attr } = @format
-
-    now_val = @tie.params[_id]
-
-    val = Mem.unpack[type]
-    uri = Mem.pack[type]
-
-    ma = @_attr _id, attr, m_attr,
-      className: [attr.className, attr.className].join(" ")
+    ma = @_attr @_id, @attr, m_attr,
+      className: [@attr.className, m_attr.className].join(" ")
       type: "checkbox"
-      name: attr.name || _id
-      value: uri now_val
-      checked: now_val
+      name:  @__name
+      value: @__uri @__value
+      checked: @__value
     # data-tooltip, disabled
     m "input", ma
 
@@ -393,117 +387,75 @@ class InputTie.type.radio extends basic_input
   _value: e_value
   _attr:  change_attr
   field: (m_attr = {})->
-    { _id, type, name, current, attr } = @format
-
-    now_val = @tie.params[_id]
-    val = Mem.unpack[type]
-    uri = Mem.pack[type]
-
     list =
       for value, option of @options when ! option.hidden
-        label = option.label
-        ma = @_attr _id, attr, m_attr, option,
-          className: [option.className, m_attr.className, attr.className].join(" ")
-          type: "radio"
-          name: attr.name || _id
-          value: uri value
-          checked: (now_val == val value)
-        # data-tooltip, disabled
-        m "input", ma,
-          label
-          m ".emboss.pull-right", option.badge() if option.badge
+        @item value, m_attr
 
     unless attr.required && current
-      ma = @_attr _id, attr, m_attr,
-        className: [attr.className, attr.className, "icon-cancel-alt"].join(" ")
-        type: "radio"
-        name: attr.name || _id
-        value: null
-        checked: ! now_val
-        "data-tooltip": "選択しない"
-      m "input", ma
+      @item "", m_attr
     list
 
   item: (value, m_attr = {})->
-    { _id, type, attr } = @format
+    option =
+      if value
+        @options?[value] || {}
+      else
+        className: "icon-cancel-alt"
+        label:     ""
+        "data-tooltip": "選択しない"
 
-    now_val = @tie.params[_id]
-    option = @options?[value]
-
-    val = Mem.unpack[type]
-    uri = Mem.pack[type]
-
-    label = option?.label
-    ma = @_attr _id, attr, m_attr, option,
-      className: [option?.className, m_attr.className, attr.className].join(" ")
+    ma = @_attr @_id, @attr, m_attr, option,
+      className: [@attr.className, option.className, m_attr.className].join(" ")
       type: "radio"
-      name: attr.name || _id
-      value: uri value
-      checked: (now_val == val value)
+      name:  @__name
+      value: @__uri @__value
+      checked: (value == @__val @__value)
     # data-tooltip, disabled
-    m "input", ma, label
+    m "input", ma,
+      option.label
+      m ".emboss.pull-right", option.badge() if option.badge
 
 
 class InputTie.type.select extends basic_input
   _value: e_value
   _attr:  change_attr
   field: (m_attr = {})->
-    { _id, type, name, current, attr } = @format
-
-    now_val = @tie.params[_id]
-
-    val = Mem.unpack[type]
-    uri = Mem.pack[type]
-
     list =
       for value, option of @options when ! option.hidden
-        label = option.label
-
-        ma = _attr_option attr, m_attr, option,
-          className: option.className
-          selected: value == now_val
-          value: uri value
-        # label, disabled
-        m 'option', ma, ma.label
+        @item value
 
     unless attr.required && current
-      ma = _attr_option attr, m_attr, option,
-        className: option.className
-        selected: ! now_val
+      list.unshift @item "",
         label: "- #{name} -"
-        value: uri null
       # disabled
-      list.unshift m 'option', ma, ma.label
 
-    ma = @_attr _id, attr, m_attr,
-      className: [attr.className, attr.className].join(" ")
-      name: attr.name || _id
+    ma = @_attr @_id, @attr, m_attr,
+      className: [@attr.className, m_attr.className].join(" ")
+      name: @__name
     # data-tooltip, disabled
     m 'select', ma, list
 
 
 class InputTie.type.select.multiple extends basic_input
-  _value: e_value
+  _value: e_selected
   _attr:  change_attr
   field: (m_attr = {})->
-    { _id, type, name, current, attr } = @format
-
-    # TODO: change value for Set
-    now_vals = @tie.params[_id]
-
-    val = Mem.unpack[type]
-    uri = Mem.pack[type]
-
-    mma = @_attr _id
-    m 'select', mma,
+    ma = @_attr @_id, @attr, m_attr,
+      className: [@attr.className, m_attr.className].join(" ")
+      name: @__name
+    # data-tooltip, disabled
+    m 'select', ma,
       for value, option of @options when ! option.hidden
-        ma = _attr_option attr, m_attr, option,
-          className: [option.className, m_attr.className, attr.className].join(" ")
-          selected: now_vals[value]
-          value: uri value
-        # label, disabled
-        m 'option', ma, ma.label
+        @item value
 
+  item: (value, m_attr = {})->
+    option = @options[value]
+    ma = option_pick @attr, m_attr, option,
+      className: [option.className, m_attr.className].join(" ")
+      value: @__uri value
+      selected: @__value[value]
+      # label, disabled
+    m 'option', ma, ma.label
 
 module.exports = InputTie
 

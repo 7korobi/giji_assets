@@ -9,15 +9,18 @@ text_point = (size)->
 
 
 class text_input extends InputTie.type.hidden
-  do_change: (value)->
-    { not_secret, not_player, unit, max_sjis, max_line, minlength, maxlength, pattern, required } = @attr
-
-    line = value.split("\n").length
-    sjis = value.sjis_length
+  draw: ->
+    { info, label } = @format
+    @__name = @attr.name || @_id
+    @__value = @tie.params[@_id]
+    line = @__value.split("\n").length
+    sjis = @__value.sjis_length
     if "point" == unit
       point = text_point sjis
     @calc = { point, line, sjis }
 
+  do_change: (value)->
+    { not_secret, not_player, unit, max_sjis, max_line, minlength, maxlength, pattern, required } = @attr
     if @dom
       if not_secret && value.match />>[\=\*\!]\d+/g
         error = "あぶない！秘密会話へのアンカーがあります！"
@@ -39,11 +42,6 @@ class text_input extends InputTie.type.hidden
     super
 
   foot: (m_attr = {})->
-    { _id, attr } = @format
-    unless @calc
-      value = @tie.params[_id]
-      @do_change value
-
     if @calc.point
       mark = m "span.emboss", "#{@calc.point}pt "
     else
@@ -51,7 +49,7 @@ class text_input extends InputTie.type.hidden
     if ! @dom || @dom.validationMessage
       mark = m "span.WSAY.emboss", "⊘"
 
-    ma = @_attr_label _id, attr, m_attr
+    ma = @_attr_label @_id, m_attr
     [
       mark
       " #{@calc.sjis}"
@@ -65,15 +63,11 @@ class text_input extends InputTie.type.hidden
 
 class InputTie.type.textarea extends text_input
   field: (m_attr = {})->
-    { _id, attr } = @format
-
-    now_val = @tie.params[_id]
-
-    ma = @_attr _id, attr, m_attr,
-      className: [attr.className, attr.className].join(" ")
-      name: attr.name || _id
+    ma = @_attr_label @_id, m_attr
+      className: [@attr.className, m_attr.className].join(" ")
+      name:  @__name
     # data-tooltip, disabled
-    m "textarea", ma, now_val
+    m "textarea", ma, @__value
 
 
 for key in ["text", "search", "url", "email"]
