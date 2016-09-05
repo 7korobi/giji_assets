@@ -1,4 +1,5 @@
 Tie = require "./tie"
+Mem = require "memory-record"
 m = require "mithril"
 _ = require "lodash"
 
