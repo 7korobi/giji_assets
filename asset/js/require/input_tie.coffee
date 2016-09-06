@@ -69,6 +69,21 @@ _debounce = ->
     , @timeout
 
 
+validity_attr =
+  valid: "valid"
+  valueMissing: "required"
+  typeMismatch: "type"
+  patternMismatch: "pattern"
+  rangeUnderflow: "min"
+  rangeOverflow: "max"
+  stepMismatch: "step"
+  tooLines: "max_line"
+  tooLong: "maxlength"
+  tooShort: "minlength"
+  hasSecret: "not_secret"
+  hasPlayer: "not_player"
+
+
 class InputTie
   timeout: 1000
 
@@ -248,7 +263,6 @@ class InputTie
   @format: (o)->
     o.label ?= {}
     o.label.attr ?= {}
-    o.type ?= "String"
     if o.attr?.name
       o.attr.id ?= o.attr.name
       o.label.attr.for = o.attr.name
@@ -261,45 +275,23 @@ class InputTie
         else
           { _id, label }
 
-    switch o.attr.type
-      when "stack"
-        o.type = "Array"
-      when "checkbox_btn", "checkbox"
-        o.type = "Bool"
-      when "number"
-        o.type = "Number"
-
   @type = {}
-
-validity_attr =
-  valid: "valid"
-  valueMissing: "required"
-  typeMismatch: "type"
-  patternMismatch: "pattern"
-  rangeUnderflow: "min"
-  rangeOverflow: "max"
-  stepMismatch: "step"
-  tooLines: "max_line"
-  tooLong: "maxlength"
-  tooShort: "minlength"
-  hasSecret: "not_secret"
-  hasPlayer: "not_player"
 
 
 class basic_input
   _attr_label: _attr_label
   _value: e_value
   _attr:  input_attr
-
   _debounce: _debounce
   timeout: 100
+  type: "String"
 
   default_option:
     className: "icon-cancel-alt"
     label:     ""
 
   constructor: (@tie, @format)->
-    { @_id, @options, @attr, @type, @name, info } = @format
+    { @_id, @options, @attr, @name, info } = @format
     @__info = info
     @__uri = Mem.pack[@type]
     @__val = Mem.unpack[@type]
@@ -374,14 +366,25 @@ class basic_input
     # data-tooltip, disabled
     m "input", ma
 
-for key in ["hidden", "tel", "password", "datetime", "date", "month", "week", "time", "datetime-local", "number", "range", "color"]
-  InputTie.type[key] = basic_input
+class number_input extends basic_input
+  type: "Number"
 
+for key in ["hidden", "tel", "password", "datetime", "date", "month", "week", "time", "datetime-local", "color"]
+  InputTie.type[key] = basic_input
+for key in ["number", "range"]
+  InputTie.type[key] = number_input
 
 class InputTie.type.checkbox extends basic_input
   _value: e_checked
   _attr:  change_attr
+  type: "Bool"
+
+  option: (value)->
+    sw = if value then "on" else "off"
+    @options?[sw] || {}
+
   field: (m_attr = {})->
+    option = @option @__value
     ma = @_attr @_id, @attr, m_attr,
       className: [@attr.className, m_attr.className].join(" ")
       type: "checkbox"

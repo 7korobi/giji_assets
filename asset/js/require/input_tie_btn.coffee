@@ -18,8 +18,8 @@ c_stack = (bool, new_val, target)->
     new_val.pop()
   new_val
 
-c_icon = (bool, new_val)-> if bool then null else new_val
 c_tap  = (bool, new_val)-> new_val
+c_icon  = (bool, new_val)-> if bool then null else new_val
 
 
 class btn_input extends InputTie.type.hidden
@@ -67,16 +67,39 @@ class btn_input extends InputTie.type.hidden
     m "h6", ma, name
 
 
-class InputTie.type.checkbox_btn extends btn_input
+class InputTie.type.toggle extends btn_input
   _value: c_tap
 
   field: (m_attr = {})->
+    next = @__value
+    option = @option next
+    ma = @_attr @_id, @attr, m_attr,
+      className: [@attr.className, m_attr.className].join(" ")
+      value: next
+    # data-tooltip, disabled
+    m "span", ma,
+      option.label
+      m ".emboss.pull-right", option.badge() if option.badge
+
+
+class InputTie.type.checkbox_btn extends btn_input
+  _value: c_tap
+  type: "Bool"
+
+  option: (value)->
+    sw = if value then "on" else "off"
+    @options?[sw] || {}
+
+  field: (m_attr = {})->
+    option = @option @__value
     ma = @_attr @_id, @attr, m_attr,
       className: [@attr.className, m_attr.className].join(" ")
       selected: @__value
       value:    @__value
     # data-tooltip, disabled
-    m "span", ma, name
+    m "span", ma,
+      @__name
+      m ".emboss.pull-right", option.badge() if option.badge
 
 
 class InputTie.type.icon extends btn_input
@@ -173,6 +196,7 @@ class InputTie.type.btns.multiple extends btn_input
 
 class InputTie.type.stack extends btn_input
   _value: c_stack
+  type: "Array"
 
   field: (m_attr = {})->
     throw "not implement"
