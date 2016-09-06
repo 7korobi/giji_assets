@@ -254,6 +254,15 @@ tag:
   current: all
   options: {}
 
+sayfilter:
+  sean: layout
+  attr:
+    type: toggle
+  name: モード
+  current: small
+  options:
+    small: 小枠
+    large: 全面
 
 header_state:
   sean: top

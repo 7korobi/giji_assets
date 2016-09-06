@@ -48,26 +48,23 @@ win.mount "#headline", ->
 
 if gon?.potofs?
   win.mount "#sayfilter", (dom)->
-    controller: !->
+    controller: ->
       @layout = layout = new win.layout dom, -1, 1
-      layout.small_mode = true
       layout.large_mode = ->
-        ! (menu.params.icon || @small_mode)
+        ! (menu.params.icon || "small" == tie.params.sayfilter)
 
-      g = new win.gesture
-        do: (p)->
-          p
-          .then ->
-            layout.small_mode = ! layout.small_mode
-            unless layout.small_mode
-              menu.prop.icon ""
-              layout.translate()
+      @params = {}
+      @tie = tie = InputTie.btns @params, ["sayfilter"]
+      @tie.change = (id, value, old)->
+        switch id
+          when "sayfilter"
+            menu.params.icon = ""
+            layout.translate()
 
-      @wide_attr = g.tap
-        className: "plane fine"
+      return
 
 
-    view: ({click, wide_attr, layout})->
+    view: ({tie, layout})->
       width = doc.width.content()
 
       layout.width = switch Url.params.layout
@@ -85,13 +82,16 @@ if gon?.potofs?
         filter = doc.component.filter
 
       event = Mem.Query.events.find Url.params.event_id
+      tie.draw()
+      { attr } = tie.input.sayfilter.field
+        className: "plane fine"
       m "div",
         if event?
           m ".head", event.name
         else
           m ".foot"
         m "aside",
-          m.component potofs, wide_attr
+          m.component potofs, attr
           m.component filter
         m ".foot"
 

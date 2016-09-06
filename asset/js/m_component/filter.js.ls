@@ -1,7 +1,7 @@
 doc.component.filter =
   controller: !->
-    @tie = InputTie.btns {}, []
-    @tie.change = (id, value)->
+    @tie = tie = InputTie.btns {}, []
+    tie.change = (id, value)->
       if doc.seeing[o._id] >= day
         delete doc.seeing[o._id]
       else
@@ -41,7 +41,7 @@ doc.component.filter =
         onmouseup: cb
         ontouchend: cb
 
-    @day = 24 * 60 * 60
+    @day = day = 24 * 60 * 60
     @seeing_top = 100
     @seeing_measure =
       config: (elem)~>
