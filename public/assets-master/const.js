@@ -3117,15 +3117,6 @@
       "current": "all",
       "options": {}
     },
-    "star": {
-      "sean": "filter",
-      "attr": {
-        "type": "btns",
-        "multiple": true
-      },
-      "name": "注目",
-      "current": {}
-    },
     "sayfilter": {
       "sean": "layout",
       "attr": {

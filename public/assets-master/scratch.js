@@ -672,7 +672,7 @@
   doc.component.filter = {
     controller: function(){
       var tie, ref$, talk_at, scroll, pins, icon, scope, day, this$ = this;
-      this.tie = tie = InputTie.btns({}, ["star"]);
+      this.tie = tie = InputTie.btns({}, []);
       tie.change = function(id, value){
         var ref$, key$, ref1$;
         if (doc.seeing[o._id] >= day) {

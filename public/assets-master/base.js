@@ -24544,7 +24544,7 @@ module.exports = Vector2D;
 
 },{}],17:[function(require,module,exports){
 (function() {
-  var InputTie, Mem, Tie, _, _attr_form, _attr_label, _debounce, basic_input, change_attr, e_checked, e_selected, e_value, i, input_attr, input_pick, key, len, m, option_pick, ref, submit_pick, validity_attr,
+  var InputTie, Mem, Tie, _, _attr_form, _attr_label, _debounce, basic_input, change_attr, e_checked, e_selected, e_value, i, input_attr, input_pick, j, key, len, len1, m, number_input, option_pick, ref, ref1, submit_pick, validity_attr,
     slice = [].slice,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -24678,6 +24678,21 @@ module.exports = Vector2D;
         }, _this.timeout);
       };
     })(this));
+  };
+
+  validity_attr = {
+    valid: "valid",
+    valueMissing: "required",
+    typeMismatch: "type",
+    patternMismatch: "pattern",
+    rangeUnderflow: "min",
+    rangeOverflow: "max",
+    stepMismatch: "step",
+    tooLines: "max_line",
+    tooLong: "maxlength",
+    tooShort: "minlength",
+    hasSecret: "not_secret",
+    hasPlayer: "not_player"
   };
 
   InputTie = (function() {
@@ -24856,7 +24871,11 @@ module.exports = Vector2D;
       for (id in ref) {
         info_msg = ref[id].info_msg;
         if (info_msg) {
-          results.push(cb(info_msg));
+          if (info_msg) {
+            results.push(cb(info_msg));
+          } else {
+            results.push(void 0);
+          }
         }
       }
       return results;
@@ -24892,13 +24911,16 @@ module.exports = Vector2D;
     };
 
     InputTie.prototype.bundle = function(format) {
-      var type;
+      var _id, attr, input, type;
+      _id = format._id, attr = format.attr;
       InputTie.format(format);
-      type = InputTie.type[format.attr.type];
-      if (format.attr.multiple) {
+      type = InputTie.type[attr.type];
+      if (attr.multiple) {
         type = type.multiple;
       }
-      return this.input[format._id] = new type(this, format);
+      this.input[_id] = input = new type(this, format);
+      Tie.build_input(this.tie, _id, this.params, input);
+      return this.do_change(_id, this.params[_id]);
     };
 
     InputTie.prototype._submit = function(arg) {
@@ -24931,14 +24953,18 @@ module.exports = Vector2D;
     };
 
     function InputTie(arg) {
-      var ids;
+      var i, id, ids, len;
       this.params = arg.params, ids = arg.ids;
-      console.info("construct for " + ids);
       this.off();
       this._draw = [];
       this.input = {};
-      this.tie = Tie.build_input(ids, this.params, this);
+      this.tie = new Tie;
       this.prop = this.tie.prop;
+      for (i = 0, len = ids.length; i < len; i++) {
+        id = ids[i];
+        this.bundle(Mem.Query.inputs.find(id));
+      }
+      return;
     }
 
     InputTie.form = function(params, ids) {
@@ -24962,15 +24988,12 @@ module.exports = Vector2D;
     };
 
     InputTie.format = function(o) {
-      var _id, base, base1, label, ref, ref1;
+      var _id, base, base1, label, ref, ref1, results;
       if (o.label == null) {
         o.label = {};
       }
       if ((base = o.label).attr == null) {
         base.attr = {};
-      }
-      if (o.type == null) {
-        o.type = "String";
       }
       if ((ref = o.attr) != null ? ref.name : void 0) {
         if ((base1 = o.attr).id == null) {
@@ -24979,24 +25002,17 @@ module.exports = Vector2D;
         o.label.attr["for"] = o.attr.name;
       }
       ref1 = o.options;
+      results = [];
       for (_id in ref1) {
         label = ref1[_id];
         if (!label._id) {
-          o.options[_id] = "object" === typeof label ? (label._id = _id, label) : {
+          results.push(o.options[_id] = "object" === typeof label ? (label._id = _id, label) : {
             _id: _id,
             label: label
-          };
+          });
         }
       }
-      switch (o.attr.type) {
-        case "stack":
-          return o.type = "Array";
-        case "checkbox_btn":
-        case "checkbox":
-          return o.type = "Bool";
-        case "number":
-          return o.type = "Number";
-      }
+      return results;
     };
 
     InputTie.type = {};
@@ -25004,21 +25020,6 @@ module.exports = Vector2D;
     return InputTie;
 
   })();
-
-  validity_attr = {
-    valid: "valid",
-    valueMissing: "required",
-    typeMismatch: "type",
-    patternMismatch: "pattern",
-    rangeUnderflow: "min",
-    rangeOverflow: "max",
-    stepMismatch: "step",
-    tooLines: "max_line",
-    tooLong: "maxlength",
-    tooShort: "minlength",
-    hasSecret: "not_secret",
-    hasPlayer: "not_player"
-  };
 
   basic_input = (function() {
     basic_input.prototype._attr_label = _attr_label;
@@ -25031,6 +25032,8 @@ module.exports = Vector2D;
 
     basic_input.prototype.timeout = 100;
 
+    basic_input.prototype.type = "String";
+
     basic_input.prototype.default_option = {
       className: "icon-cancel-alt",
       label: ""
@@ -25040,7 +25043,7 @@ module.exports = Vector2D;
       var info, ref;
       this.tie = tie1;
       this.format = format1;
-      ref = this.format, this._id = ref._id, this.options = ref.options, this.attr = ref.attr, this.type = ref.type, this.name = ref.name, info = ref.info;
+      ref = this.format, this._id = ref._id, this.options = ref.options, this.attr = ref.attr, this.name = ref.name, this.current = ref.current, info = ref.info;
       this.__info = info;
       this.__uri = Mem.pack[this.type];
       this.__val = Mem.unpack[this.type];
@@ -25180,10 +25183,29 @@ module.exports = Vector2D;
 
   })();
 
-  ref = ["hidden", "tel", "password", "datetime", "date", "month", "week", "time", "datetime-local", "number", "range", "color"];
+  number_input = (function(superClass) {
+    extend(number_input, superClass);
+
+    function number_input() {
+      return number_input.__super__.constructor.apply(this, arguments);
+    }
+
+    number_input.prototype.type = "Number";
+
+    return number_input;
+
+  })(basic_input);
+
+  ref = ["hidden", "tel", "password", "datetime", "date", "month", "week", "time", "datetime-local", "color"];
   for (i = 0, len = ref.length; i < len; i++) {
     key = ref[i];
     InputTie.type[key] = basic_input;
+  }
+
+  ref1 = ["number", "range"];
+  for (j = 0, len1 = ref1.length; j < len1; j++) {
+    key = ref1[j];
+    InputTie.type[key] = number_input;
   }
 
   InputTie.type.checkbox = (function(superClass) {
@@ -25197,10 +25219,12 @@ module.exports = Vector2D;
 
     checkbox.prototype._attr = change_attr;
 
+    checkbox.prototype.type = "Bool";
+
     checkbox.prototype.option = function(value) {
-      var ref1, sw;
+      var ref2, sw;
       sw = value ? "on" : "off";
-      return ((ref1 = this.options) != null ? ref1[sw] : void 0) || {};
+      return ((ref2 = this.options) != null ? ref2[sw] : void 0) || {};
     };
 
     checkbox.prototype.field = function(m_attr) {
@@ -25240,11 +25264,11 @@ module.exports = Vector2D;
         m_attr = {};
       }
       list = (function() {
-        var ref1, results;
-        ref1 = this.options;
+        var ref2, results;
+        ref2 = this.options;
         results = [];
-        for (value in ref1) {
-          option = ref1[value];
+        for (value in ref2) {
+          option = ref2[value];
           if (!option.hidden) {
             results.push(this.item(value, m_attr));
           }
@@ -25299,11 +25323,11 @@ module.exports = Vector2D;
         m_attr = {};
       }
       list = (function() {
-        var ref1, results;
-        ref1 = this.options;
+        var ref2, results;
+        ref2 = this.options;
         results = [];
-        for (value in ref1) {
-          option = ref1[value];
+        for (value in ref2) {
+          option = ref2[value];
           if (!option.hidden) {
             results.push(this.item(value, m_attr));
           }
@@ -25345,11 +25369,11 @@ module.exports = Vector2D;
         name: this.__name
       });
       return m('select', ma, (function() {
-        var ref1, results;
-        ref1 = this.options;
+        var ref2, results;
+        ref2 = this.options;
         results = [];
-        for (value in ref1) {
-          option = ref1[value];
+        for (value in ref2) {
+          option = ref2[value];
           if (!option.hidden) {
             results.push(this.item(value));
           }
@@ -25542,6 +25566,8 @@ module.exports = Vector2D;
 
     checkbox_btn.prototype._value = c_tap;
 
+    checkbox_btn.prototype.type = "Bool";
+
     checkbox_btn.prototype.option = function(value) {
       var ref, sw;
       sw = value ? "on" : "off";
@@ -25576,6 +25602,12 @@ module.exports = Vector2D;
     }
 
     icon.prototype._value = c_icon;
+
+    icon.prototype.default_option = {
+      className: "",
+      label: "",
+      "data-tooltip": "選択しない"
+    };
 
     icon.prototype.field = function(m_attr) {
       if (m_attr == null) {
@@ -25734,6 +25766,8 @@ module.exports = Vector2D;
 
     stack.prototype._value = c_stack;
 
+    stack.prototype.type = "Array";
+
     stack.prototype.field = function(m_attr) {
       if (m_attr == null) {
         m_attr = {};
@@ -25797,19 +25831,21 @@ module.exports = Vector2D;
     }
 
     text_input.prototype.draw = function() {
-      var line, point, sjis, unit;
+      var line, point, size, sjis, unit;
       unit = this.attr.unit;
       this.__name = this.attr.name || this._id;
       this.__value = this.tie.params[this._id];
-      line = this.__value.split("\n").length;
+      size = this.__value.length;
       sjis = this.__value.sjis_length;
+      line = this.__value.split("\n").length;
       if ("point" === unit) {
         point = text_point(sjis);
       }
       return this.calc = {
         point: point,
         line: line,
-        sjis: sjis
+        sjis: sjis,
+        size: size
       };
     };
 
@@ -25840,9 +25876,18 @@ module.exports = Vector2D;
     };
 
     text_input.prototype.foot = function(m_attr) {
-      var ma, mark;
+      var ma, mark, max_size, size;
       if (m_attr == null) {
         m_attr = {};
+      }
+      ma = this._attr_label(this._id, this.attr, m_attr);
+      size = this.calc.size;
+      if (ma.maxlength) {
+        max_size = ma.maxlength;
+      }
+      if (ma.max_sjis) {
+        size = this.calc.sjis;
+        max_size = ma.max_sjis;
       }
       if (this.calc.point) {
         mark = m("span.emboss", this.calc.point + "pt ");
@@ -25852,8 +25897,7 @@ module.exports = Vector2D;
       if (!this.dom || this.dom.validationMessage) {
         mark = m("span.WSAY.emboss", "⊘");
       }
-      ma = this._attr_label(this._id, m_attr);
-      return [mark, " " + this.calc.sjis, ma.max_sjis ? m("sub", "/" + ma.max_sjis) : void 0, m("sub", "字"), " " + this.calc.line, ma.max_line ? m("sub", "/" + ma.max_line) : void 0, m("sub", "行")];
+      return [mark, " " + size, max_size != null ? m("sub", "/" + max_size) : void 0, m("sub", "字"), " " + this.calc.line, ma.max_line != null ? m("sub", "/" + ma.max_line) : void 0, m("sub", "行")];
     };
 
     return text_input;
@@ -26046,20 +26090,8 @@ module.exports = Vector2D;
       store: ["session", "local", "cookie"]
     };
 
-    Tie.build_input = function(ids, params, inputTie) {
-      var i, len, o, ref, tie;
-      if (ids == null) {
-        ids = [];
-      }
-      tie = new Tie;
-      ref = Mem.Query.inputs.where({
-        _id: ids
-      }).list;
-      for (i = 0, len = ref.length; i < len; i++) {
-        o = ref[i];
-        inputTie.bundle(o);
-        tie.deploy(memory_prop, params, o);
-      }
+    Tie.build_input = function(tie, id, params, input) {
+      tie.deploy(memory_prop, params, input);
       return tie;
     };
 
@@ -26106,12 +26138,12 @@ module.exports = Vector2D;
       this.prop = {};
     }
 
-    Tie.prototype.deploy = function(define, params, o) {
+    Tie.prototype.deploy = function(define, params, arg) {
       var _id, current, pack, type, unpack, val;
-      if (o.current == null) {
-        o.current = null;
+      _id = arg._id, current = arg.current, type = arg.type;
+      if (current == null) {
+        current = null;
       }
-      _id = o._id, current = o.current, type = o.type;
       unpack = Mem.unpack[type];
       pack = Mem.pack[type];
       this.prop[_id] = define(params, _id, unpack, pack);
