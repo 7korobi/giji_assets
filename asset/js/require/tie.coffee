@@ -13,11 +13,8 @@ class Tie
     url: ["protocol", "host", "pathname", "search", "hash", "href"]
     store: ["session", "local", "cookie"]
 
-  @build_input: (ids = [], params, inputTie)->
-    tie = new Tie
-    for o in Mem.Query.inputs.where(_id: ids).list
-      inputTie.bundle o
-      tie.deploy memory_prop, params, o
+  @build_input: (tie, id, params, input)->
+    tie.deploy memory_prop, params, input
     tie
 
 
@@ -41,9 +38,8 @@ class Tie
   constructor: ->
     @prop = {}
 
-  deploy: (define, params, o)->
-    o.current ?= null
-    { _id, current, type } = o
+  deploy: (define, params, { _id, current, type })->
+    current ?= null
     unpack = Mem.unpack[type]
     pack   = Mem.pack[type]
     @prop[_id] = define params, _id, unpack, pack

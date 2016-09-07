@@ -25197,11 +25197,18 @@ module.exports = Vector2D;
 
     checkbox.prototype._attr = change_attr;
 
+    checkbox.prototype.option = function(value) {
+      var ref1, sw;
+      sw = value ? "on" : "off";
+      return ((ref1 = this.options) != null ? ref1[sw] : void 0) || {};
+    };
+
     checkbox.prototype.field = function(m_attr) {
-      var ma;
+      var ma, option;
       if (m_attr == null) {
         m_attr = {};
       }
+      option = this.option(this.__value);
       ma = this._attr(this._id, this.attr, m_attr, {
         className: [this.attr.className, m_attr.className].join(" "),
         type: "checkbox",
@@ -25414,16 +25421,16 @@ module.exports = Vector2D;
     return new_val;
   };
 
+  c_tap = function(bool, new_val) {
+    return new_val;
+  };
+
   c_icon = function(bool, new_val) {
     if (bool) {
       return null;
     } else {
       return new_val;
     }
-  };
-
-  c_tap = function(bool, new_val) {
-    return new_val;
   };
 
   btn_input = (function(superClass) {
@@ -25499,6 +25506,33 @@ module.exports = Vector2D;
 
   })(InputTie.type.hidden);
 
+  InputTie.type.toggle = (function(superClass) {
+    extend(toggle, superClass);
+
+    function toggle() {
+      return toggle.__super__.constructor.apply(this, arguments);
+    }
+
+    toggle.prototype._value = c_tap;
+
+    toggle.prototype.field = function(m_attr) {
+      var ma, next, option;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      next = this.__value;
+      option = this.option(next);
+      ma = this._attr(this._id, this.attr, m_attr, {
+        className: [this.attr.className, m_attr.className].join(" "),
+        value: next
+      });
+      return m("span", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
+    };
+
+    return toggle;
+
+  })(btn_input);
+
   InputTie.type.checkbox_btn = (function(superClass) {
     extend(checkbox_btn, superClass);
 
@@ -25508,17 +25542,24 @@ module.exports = Vector2D;
 
     checkbox_btn.prototype._value = c_tap;
 
+    checkbox_btn.prototype.option = function(value) {
+      var ref, sw;
+      sw = value ? "on" : "off";
+      return ((ref = this.options) != null ? ref[sw] : void 0) || {};
+    };
+
     checkbox_btn.prototype.field = function(m_attr) {
-      var ma;
+      var ma, option;
       if (m_attr == null) {
         m_attr = {};
       }
+      option = this.option(this.__value);
       ma = this._attr(this._id, this.attr, m_attr, {
         className: [this.attr.className, m_attr.className].join(" "),
         selected: this.__value,
         value: this.__value
       });
-      return m("span", ma, name);
+      return m("span", ma, this.__name, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
     };
 
     return checkbox_btn;

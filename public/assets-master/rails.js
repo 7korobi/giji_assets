@@ -631,31 +631,25 @@
   if ((typeof gon !== "undefined" && gon !== null ? gon.potofs : void 0) != null) {
     win.mount("#sayfilter", function(dom) {
       return {
-        controller: !function() {
-          var g, layout;
+        controller: function() {
+          var layout, tie;
           this.layout = layout = new win.layout(dom, -1, 1);
-          layout.small_mode = true;
           layout.large_mode = function() {
-            return !(menu.params.icon || this.small_mode);
+            return !(menu.params.icon || "small" === tie.params.sayfilter);
           };
-          g = new win.gesture({
-            "do": function(p) {
-              return p.then(function() {
-                layout.small_mode = !layout.small_mode;
-                if (!layout.small_mode) {
-                  menu.prop.icon("");
-                  return layout.translate();
-                }
-              });
+          this.params = {};
+          this.tie = tie = InputTie.btns(this.params, ["sayfilter"]);
+          this.tie.change = function(id, value, old) {
+            switch (id) {
+              case "sayfilter":
+                menu.params.icon = "";
+                return layout.translate();
             }
-          });
-          return this.wide_attr = g.tap({
-            className: "plane fine"
-          });
+          };
         },
         view: function(arg) {
-          var click, event, filter, layout, potofs, wide_attr, width;
-          click = arg.click, wide_attr = arg.wide_attr, layout = arg.layout;
+          var attr, event, filter, layout, potofs, tie, width;
+          tie = arg.tie, layout = arg.layout;
           width = doc.width.content();
           layout.width = (function() {
             switch (Url.params.layout) {
@@ -679,7 +673,11 @@
             filter = doc.component.filter;
           }
           event = Mem.Query.events.find(Url.params.event_id);
-          return m("div", event != null ? m(".head", event.name) : m(".foot"), m("aside", m.component(potofs, wide_attr), m.component(filter)), m(".foot"));
+          tie.draw();
+          attr = tie.input.sayfilter.field({
+            className: "plane fine"
+          }).attr;
+          return m("div", event != null ? m(".head", event.name) : m(".foot"), m("aside", m.component(potofs, attr), m.component(filter)), m(".foot"));
         }
       };
     });
@@ -936,9 +934,9 @@
 (function(){
   doc.component.filter = {
     controller: function(){
-      var ref$, talk_at, scroll, pins, icon, scope, this$ = this;
-      this.tie = InputTie.btns({}, []);
-      this.tie.change = function(id, value){
+      var tie, ref$, talk_at, scroll, pins, icon, scope, day, this$ = this;
+      this.tie = tie = InputTie.btns({}, ["star"]);
+      tie.change = function(id, value){
         var ref$, key$, ref1$;
         if (doc.seeing[o._id] >= day) {
           return ref1$ = (ref$ = doc.seeing)[key$ = o._id], delete ref$[key$], ref1$;
@@ -1000,7 +998,7 @@
           };
         }
       };
-      this.day = 24 * 60 * 60;
+      this.day = day = 24 * 60 * 60;
       this.seeing_top = 100;
       this.seeing_measure = {
         config: function(elem){
@@ -3001,7 +2999,6 @@
           if (!option) {
             continue;
           }
-          console.warn(option);
           results$.push(m("li", option.label));
         }
         return results$;

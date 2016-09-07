@@ -196,7 +196,8 @@ class InputTie
 
   infos: (cb)->
     for id, { info_msg } of @input when info_msg
-      cb info_msg
+      if info_msg
+        cb info_msg
 
   submit: (children...)->
     tag =  "button.btn"
@@ -214,10 +215,13 @@ class InputTie
     @_draw.push cb
 
   bundle: (format)->
+    { _id, attr } = format
     InputTie.format format
-    type = InputTie.type[format.attr.type]
-    type = type.multiple if format.attr.multiple
-    @input[format._id] = new type @, format
+    type = InputTie.type[attr.type]
+    type = type.multiple if attr.multiple
+    @input[_id] = input = new type @, format
+    Tie.build_input @tie, _id, @params, input
+    @do_change _id, @params[_id]
 
   _submit: ({@form})->
     attr = {}
@@ -243,12 +247,14 @@ class InputTie
     @
 
   constructor: ({ @params, ids })->
-    console.info "construct for #{ids}"
     @off()
     @_draw = []
     @input = {}
-    @tie = Tie.build_input ids, @params, @
+    @tie = new Tie
     @prop = @tie.prop
+    for id in ids
+      @bundle Mem.Query.inputs.find id
+    return
 
   @form: (params, ids)->
     new InputTie { ids, params }
@@ -291,7 +297,7 @@ class basic_input
     label:     ""
 
   constructor: (@tie, @format)->
-    { @_id, @options, @attr, @name, info } = @format
+    { @_id, @options, @attr, @name, @current, info } = @format
     @__info = info
     @__uri = Mem.pack[@type]
     @__val = Mem.unpack[@type]

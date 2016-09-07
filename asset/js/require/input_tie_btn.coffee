@@ -104,6 +104,10 @@ class InputTie.type.checkbox_btn extends btn_input
 
 class InputTie.type.icon extends btn_input
   _value: c_icon
+  default_option:
+    className: ""
+    label: ""
+    "data-tooltip":　"選択しない"
 
   field: (m_attr = {})->
     throw "not implement"

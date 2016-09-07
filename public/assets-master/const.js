@@ -3117,6 +3117,27 @@
       "current": "all",
       "options": {}
     },
+    "star": {
+      "sean": "filter",
+      "attr": {
+        "type": "btns",
+        "multiple": true
+      },
+      "name": "注目",
+      "current": {}
+    },
+    "sayfilter": {
+      "sean": "layout",
+      "attr": {
+        "type": "toggle"
+      },
+      "name": "モード",
+      "current": "small",
+      "options": {
+        "small": "小枠",
+        "large": "全面"
+      }
+    },
     "header_state": {
       "sean": "top",
       "attr": {
@@ -12617,31 +12638,31 @@
         update_interval: (o.upd.interval * 24) + "時間",
         player_length: o.vpl.last,
         role_types: GUI.names.config(o.card.role, function(size, arg) {
-          var name;
-          name = arg.name;
-          return name;
+          var label;
+          label = arg.label;
+          return label;
         }),
         event_types: GUI.names.config(o.card.event, function(size, arg) {
-          var name;
-          name = arg.name;
-          return name;
+          var label;
+          label = arg.label;
+          return label;
         }),
         role_cards: GUI.names.config(o.card.role, function(size, arg) {
-          var name, win;
-          name = arg.name, win = arg.win;
+          var label, win;
+          label = arg.label, win = arg.win;
           if (size > 1) {
-            return m(".emboss.WIN_" + win, name + "x" + size);
+            return m(".emboss.WIN_" + win, label + "x" + size);
           } else {
-            return m(".emboss.WIN_" + win, "" + name);
+            return m(".emboss.WIN_" + win, "" + label);
           }
         }),
         trap_cards: GUI.names.config(o.card.event, function(size, arg) {
-          var name, win;
-          name = arg.name, win = arg.win;
+          var label, win;
+          label = arg.label, win = arg.win;
           if (size > 1) {
-            return m(".emboss.WIN_" + win, name + "x" + size);
+            return m(".emboss.WIN_" + win, label + "x" + size);
           } else {
-            return m(".emboss.WIN_" + win, "" + name);
+            return m(".emboss.WIN_" + win, "" + label);
           }
         }),
         say_limit_help: ((ref = Mem.conf.say[o.type.say]) != null ? ref.help : void 0) || "――",

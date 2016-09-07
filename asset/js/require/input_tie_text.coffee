@@ -13,11 +13,12 @@ class text_input extends InputTie.type.hidden
     { unit } = @attr
     @__name = @attr.name || @_id
     @__value = @tie.params[@_id]
-    line = @__value.split("\n").length
+    size = @__value.length
     sjis = @__value.sjis_length
+    line = @__value.split("\n").length
     if "point" == unit
       point = text_point sjis
-    @calc = { point, line, sjis }
+    @calc = { point, line, sjis, size }
 
   do_change: (value)->
     { not_secret, not_player, unit, max_sjis, max_line, minlength, maxlength, pattern, required } = @attr
@@ -42,6 +43,16 @@ class text_input extends InputTie.type.hidden
     super
 
   foot: (m_attr = {})->
+    ma = @_attr_label @_id, @attr, m_attr
+    size = @calc.size
+
+    if ma.maxlength
+      max_size = ma.maxlength
+
+    if ma.max_sjis
+      size     = @calc.sjis
+      max_size = ma.max_sjis
+
     if @calc.point
       mark = m "span.emboss", "#{@calc.point}pt "
     else
@@ -49,14 +60,13 @@ class text_input extends InputTie.type.hidden
     if ! @dom || @dom.validationMessage
       mark = m "span.WSAY.emboss", "⊘"
 
-    ma = @_attr_label @_id, m_attr
     [
       mark
-      " #{@calc.sjis}"
-      m "sub", "/#{ma.max_sjis}" if ma.max_sjis
+      " #{size}"
+      m "sub", "/#{max_size}"    if max_size?
       m "sub", "字"
       " #{@calc.line}"
-      m "sub", "/#{ma.max_line}" if ma.max_line
+      m "sub", "/#{ma.max_line}" if ma.max_line?
       m "sub", "行"
     ]
 
