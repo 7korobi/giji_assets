@@ -85,22 +85,7 @@ unhtml = (log)->
 Number.MAX_INT32 = 0x7fffffff
 Number.MAX_BITS  = 0xffffffff
 
-
-defines = (obj, hash)!->
-  configurable = false
-  enumerable = false
-  for key, {get, set} of hash
-    Object.defineProperty obj.prototype, key, {configurable, enumerable, get, set}
-
-defines Array,
-  last:
-    get: -> @[@.length - 1]
-
-  first:
-    get: -> @[0]
-
-
-defines String,
+Object.defineProperties String.prototype,
   deco_preview:
     get: ->
       br space player anchor_preview link random_preview unhtml @
