@@ -1,10 +1,10 @@
 doc.component.form =
   controller: (v)->
-    console.warn v
     return
 
   view: (c, v)->
     { params, tie } = v
+    console.warn v
     error_and_info = (o)->
       list = []
       for msg in o.errors

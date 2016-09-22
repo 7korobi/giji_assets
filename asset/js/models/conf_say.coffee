@@ -3,5 +3,7 @@ new Mem.Rule("say").schema ->
     enable: ->
       all.where _id: Mem.conf.folder.PERJURY.config.saycnt
 
-  @deploy (o)->
-    o.say_id = o._id
+  class @model extends @model
+    constructor: ->
+      @say_id = @_id
+

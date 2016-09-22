@@ -2242,7 +2242,7 @@ module.exports = Vector2D;
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.15.0';
+  var VERSION = '4.16.1';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -2252,6 +2252,9 @@ module.exports = Vector2D;
 
   /** Used to stand-in for `undefined` hash values. */
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
+
+  /** Used as the maximum memoize cache size. */
+  var MAX_MEMOIZE_SIZE = 500;
 
   /** Used as the internal argument placeholder. */
   var PLACEHOLDER = '__lodash_placeholder__';
@@ -2277,7 +2280,7 @@ module.exports = Vector2D;
       DEFAULT_TRUNC_OMISSION = '...';
 
   /** Used to detect hot functions by number of calls within a span of milliseconds. */
-  var HOT_COUNT = 150,
+  var HOT_COUNT = 500,
       HOT_SPAN = 16;
 
   /** Used to indicate the type of lazy iteratees. */
@@ -2346,8 +2349,8 @@ module.exports = Vector2D;
       reEmptyStringTrailing = /(__e\(.*?\)|\b__t\)) \+\n'';/g;
 
   /** Used to match HTML entities and HTML characters. */
-  var reEscapedHtml = /&(?:amp|lt|gt|quot|#39|#96);/g,
-      reUnescapedHtml = /[&<>"'`]/g,
+  var reEscapedHtml = /&(?:amp|lt|gt|quot|#39);/g,
+      reUnescapedHtml = /[&<>"']/g,
       reHasEscapedHtml = RegExp(reEscapedHtml.source),
       reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
 
@@ -2393,9 +2396,6 @@ module.exports = Vector2D;
 
   /** Used to match `RegExp` flags from their coerced string values. */
   var reFlags = /\w*$/;
-
-  /** Used to detect hexadecimal string values. */
-  var reHasHexPrefix = /^0x/i;
 
   /** Used to detect bad signed hexadecimal string values. */
   var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
@@ -2591,7 +2591,7 @@ module.exports = Vector2D;
     '\u017a': 'z',  '\u017c': 'z', '\u017e': 'z',
     '\u0132': 'IJ', '\u0133': 'ij',
     '\u0152': 'Oe', '\u0153': 'oe',
-    '\u0149': "'n", '\u017f': 'ss'
+    '\u0149': "'n", '\u017f': 's'
   };
 
   /** Used to map characters to HTML entities. */
@@ -2600,8 +2600,7 @@ module.exports = Vector2D;
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
-    "'": '&#39;',
-    '`': '&#96;'
+    "'": '&#39;'
   };
 
   /** Used to map HTML entities to characters. */
@@ -2610,8 +2609,7 @@ module.exports = Vector2D;
     '&lt;': '<',
     '&gt;': '>',
     '&quot;': '"',
-    '&#39;': "'",
-    '&#96;': '`'
+    '&#39;': "'"
   };
 
   /** Used to escape characters for inclusion in compiled string literals. */
@@ -3052,18 +3050,9 @@ module.exports = Vector2D;
    * @returns {number} Returns the index of the matched value, else `-1`.
    */
   function baseIndexOf(array, value, fromIndex) {
-    if (value !== value) {
-      return baseFindIndex(array, baseIsNaN, fromIndex);
-    }
-    var index = fromIndex - 1,
-        length = array.length;
-
-    while (++index < length) {
-      if (array[index] === value) {
-        return index;
-      }
-    }
-    return -1;
+    return value === value
+      ? strictIndexOf(array, value, fromIndex)
+      : baseFindIndex(array, baseIsNaN, fromIndex);
   }
 
   /**
@@ -3268,7 +3257,7 @@ module.exports = Vector2D;
   }
 
   /**
-   * Checks if a cache value for `key` exists.
+   * Checks if a `cache` value for `key` exists.
    *
    * @private
    * @param {Object} cache The cache to query.
@@ -3326,7 +3315,7 @@ module.exports = Vector2D;
 
     while (length--) {
       if (array[length] === placeholder) {
-        result++;
+        ++result;
       }
     }
     return result;
@@ -3394,25 +3383,6 @@ module.exports = Vector2D;
    */
   function hasUnicodeWord(string) {
     return reHasUnicodeWord.test(string);
-  }
-
-  /**
-   * Checks if `value` is a host object in IE < 9.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
-   */
-  function isHostObject(value) {
-    // Many host objects are `Object` objects that can coerce to strings
-    // despite having improperly defined `toString` methods.
-    var result = false;
-    if (value != null && typeof value.toString != 'function') {
-      try {
-        result = !!(value + '');
-      } catch (e) {}
-    }
-    return result;
   }
 
   /**
@@ -3523,6 +3493,48 @@ module.exports = Vector2D;
   }
 
   /**
+   * A specialized version of `_.indexOf` which performs strict equality
+   * comparisons of values, i.e. `===`.
+   *
+   * @private
+   * @param {Array} array The array to inspect.
+   * @param {*} value The value to search for.
+   * @param {number} fromIndex The index to search from.
+   * @returns {number} Returns the index of the matched value, else `-1`.
+   */
+  function strictIndexOf(array, value, fromIndex) {
+    var index = fromIndex - 1,
+        length = array.length;
+
+    while (++index < length) {
+      if (array[index] === value) {
+        return index;
+      }
+    }
+    return -1;
+  }
+
+  /**
+   * A specialized version of `_.lastIndexOf` which performs strict equality
+   * comparisons of values, i.e. `===`.
+   *
+   * @private
+   * @param {Array} array The array to inspect.
+   * @param {*} value The value to search for.
+   * @param {number} fromIndex The index to search from.
+   * @returns {number} Returns the index of the matched value, else `-1`.
+   */
+  function strictLastIndexOf(array, value, fromIndex) {
+    var index = fromIndex + 1;
+    while (index--) {
+      if (array[index] === value) {
+        return index;
+      }
+    }
+    return index;
+  }
+
+  /**
    * Gets the number of symbols in `string`.
    *
    * @private
@@ -3567,7 +3579,7 @@ module.exports = Vector2D;
   function unicodeSize(string) {
     var result = reUnicode.lastIndex = 0;
     while (reUnicode.test(string)) {
-      result++;
+      ++result;
     }
     return result;
   }
@@ -3622,17 +3634,10 @@ module.exports = Vector2D;
    * lodash.isFunction(lodash.bar);
    * // => true
    *
-   * // Use `context` to stub `Date#getTime` use in `_.now`.
-   * var stubbed = _.runInContext({
-   *   'Date': function() {
-   *     return { 'getTime': stubGetTime };
-   *   }
-   * });
-   *
    * // Create a suped-up `defer` in Node.js.
    * var defer = _.runInContext({ 'setTimeout': setImmediate }).defer;
    */
-  function runInContext(context) {
+  var runInContext = (function runInContext(context) {
     context = context ? _.defaults(root.Object(), context, _.pick(root, contextProps)) : root;
 
     /** Built-in constructor references. */
@@ -3692,6 +3697,7 @@ module.exports = Vector2D;
     var Buffer = moduleExports ? context.Buffer : undefined,
         Symbol = context.Symbol,
         Uint8Array = context.Uint8Array,
+        defineProperty = Object.defineProperty,
         getPrototype = overArg(Object.getPrototypeOf, Object),
         iteratorSymbol = Symbol ? Symbol.iterator : undefined,
         objectCreate = Object.create,
@@ -3714,6 +3720,7 @@ module.exports = Vector2D;
         nativeKeys = overArg(Object.keys, Object),
         nativeMax = Math.max,
         nativeMin = Math.min,
+        nativeNow = Date.now,
         nativeParseInt = context.parseInt,
         nativeRandom = Math.random,
         nativeReverse = arrayProto.reverse;
@@ -3724,21 +3731,11 @@ module.exports = Vector2D;
         Promise = getNative(context, 'Promise'),
         Set = getNative(context, 'Set'),
         WeakMap = getNative(context, 'WeakMap'),
-        nativeCreate = getNative(Object, 'create');
-
-    /* Used to set `toString` methods. */
-    var defineProperty = (function() {
-      var func = getNative(Object, 'defineProperty'),
-          name = getNative.name;
-
-      return (name && name.length > 2) ? func : undefined;
-    }());
+        nativeCreate = getNative(Object, 'create'),
+        nativeDefineProperty = getNative(Object, 'defineProperty');
 
     /** Used to store function metadata. */
     var metaMap = WeakMap && new WeakMap;
-
-    /** Detect if properties shadowing those on `Object.prototype` are non-enumerable. */
-    var nonEnumShadows = !propertyIsEnumerable.call({ 'valueOf': 1 }, 'valueOf');
 
     /** Used to lookup unminified function names. */
     var realNames = {};
@@ -4127,6 +4124,7 @@ module.exports = Vector2D;
      */
     function hashClear() {
       this.__data__ = nativeCreate ? nativeCreate(null) : {};
+      this.size = 0;
     }
 
     /**
@@ -4140,7 +4138,9 @@ module.exports = Vector2D;
      * @returns {boolean} Returns `true` if the entry was removed, else `false`.
      */
     function hashDelete(key) {
-      return this.has(key) && delete this.__data__[key];
+      var result = this.has(key) && delete this.__data__[key];
+      this.size -= result ? 1 : 0;
+      return result;
     }
 
     /**
@@ -4187,6 +4187,7 @@ module.exports = Vector2D;
      */
     function hashSet(key, value) {
       var data = this.__data__;
+      this.size += this.has(key) ? 0 : 1;
       data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
       return this;
     }
@@ -4227,6 +4228,7 @@ module.exports = Vector2D;
      */
     function listCacheClear() {
       this.__data__ = [];
+      this.size = 0;
     }
 
     /**
@@ -4251,6 +4253,7 @@ module.exports = Vector2D;
       } else {
         splice.call(data, index, 1);
       }
+      --this.size;
       return true;
     }
 
@@ -4298,6 +4301,7 @@ module.exports = Vector2D;
           index = assocIndexOf(data, key);
 
       if (index < 0) {
+        ++this.size;
         data.push([key, value]);
       } else {
         data[index][1] = value;
@@ -4340,6 +4344,7 @@ module.exports = Vector2D;
      * @memberOf MapCache
      */
     function mapCacheClear() {
+      this.size = 0;
       this.__data__ = {
         'hash': new Hash,
         'map': new (Map || ListCache),
@@ -4357,7 +4362,9 @@ module.exports = Vector2D;
      * @returns {boolean} Returns `true` if the entry was removed, else `false`.
      */
     function mapCacheDelete(key) {
-      return getMapData(this, key)['delete'](key);
+      var result = getMapData(this, key)['delete'](key);
+      this.size -= result ? 1 : 0;
+      return result;
     }
 
     /**
@@ -4397,7 +4404,11 @@ module.exports = Vector2D;
      * @returns {Object} Returns the map cache instance.
      */
     function mapCacheSet(key, value) {
-      getMapData(this, key).set(key, value);
+      var data = getMapData(this, key),
+          size = data.size;
+
+      data.set(key, value);
+      this.size += data.size == size ? 0 : 1;
       return this;
     }
 
@@ -4470,7 +4481,8 @@ module.exports = Vector2D;
      * @param {Array} [entries] The key-value pairs to cache.
      */
     function Stack(entries) {
-      this.__data__ = new ListCache(entries);
+      var data = this.__data__ = new ListCache(entries);
+      this.size = data.size;
     }
 
     /**
@@ -4482,6 +4494,7 @@ module.exports = Vector2D;
      */
     function stackClear() {
       this.__data__ = new ListCache;
+      this.size = 0;
     }
 
     /**
@@ -4494,7 +4507,11 @@ module.exports = Vector2D;
      * @returns {boolean} Returns `true` if the entry was removed, else `false`.
      */
     function stackDelete(key) {
-      return this.__data__['delete'](key);
+      var data = this.__data__,
+          result = data['delete'](key);
+
+      this.size = data.size;
+      return result;
     }
 
     /**
@@ -4534,16 +4551,18 @@ module.exports = Vector2D;
      * @returns {Object} Returns the stack cache instance.
      */
     function stackSet(key, value) {
-      var cache = this.__data__;
-      if (cache instanceof ListCache) {
-        var pairs = cache.__data__;
+      var data = this.__data__;
+      if (data instanceof ListCache) {
+        var pairs = data.__data__;
         if (!Map || (pairs.length < LARGE_ARRAY_SIZE - 1)) {
           pairs.push([key, value]);
+          this.size = ++data.size;
           return this;
         }
-        cache = this.__data__ = new MapCache(pairs);
+        data = this.__data__ = new MapCache(pairs);
       }
-      cache.set(key, value);
+      data.set(key, value);
+      this.size = data.size;
       return this;
     }
 
@@ -4584,6 +4603,44 @@ module.exports = Vector2D;
     }
 
     /**
+     * A specialized version of `_.sample` for arrays without support for iteratee
+     * shorthands.
+     *
+     * @private
+     * @param {Array} array The array to sample.
+     * @returns {*} Returns the random element.
+     */
+    function arraySample(array) {
+      var length = array.length;
+      return length ? array[baseRandom(0, length - 1)] : undefined;
+    }
+
+    /**
+     * A specialized version of `_.sampleSize` for arrays.
+     *
+     * @private
+     * @param {Array} array The array to sample.
+     * @param {number} n The number of elements to sample.
+     * @returns {Array} Returns the random elements.
+     */
+    function arraySampleSize(array, n) {
+      var result = arrayShuffle(array);
+      result.length = baseClamp(n, 0, result.length);
+      return result;
+    }
+
+    /**
+     * A specialized version of `_.shuffle` for arrays.
+     *
+     * @private
+     * @param {Array} array The array to shuffle.
+     * @returns {Array} Returns the new shuffled array.
+     */
+    function arrayShuffle(array) {
+      return shuffleSelf(copyArray(array));
+    }
+
+    /**
      * Used by `_.defaults` to customize its `_.assignIn` use.
      *
      * @private
@@ -4613,7 +4670,7 @@ module.exports = Vector2D;
     function assignMergeValue(object, key, value) {
       if ((value !== undefined && !eq(object[key], value)) ||
           (typeof key == 'number' && value === undefined && !(key in object))) {
-        object[key] = value;
+        baseAssignValue(object, key, value);
       }
     }
 
@@ -4631,7 +4688,7 @@ module.exports = Vector2D;
       var objValue = object[key];
       if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||
           (value === undefined && !(key in object))) {
-        object[key] = value;
+        baseAssignValue(object, key, value);
       }
     }
 
@@ -4682,6 +4739,28 @@ module.exports = Vector2D;
      */
     function baseAssign(object, source) {
       return object && copyObject(source, keys(source), object);
+    }
+
+    /**
+     * The base implementation of `assignValue` and `assignMergeValue` without
+     * value checks.
+     *
+     * @private
+     * @param {Object} object The object to modify.
+     * @param {string} key The key of the property to assign.
+     * @param {*} value The value to assign.
+     */
+    function baseAssignValue(object, key, value) {
+      if (key == '__proto__' && defineProperty) {
+        defineProperty(object, key, {
+          'configurable': true,
+          'enumerable': true,
+          'value': value,
+          'writable': true
+        });
+      } else {
+        object[key] = value;
+      }
     }
 
     /**
@@ -4764,9 +4843,6 @@ module.exports = Vector2D;
           return cloneBuffer(value, isDeep);
         }
         if (tag == objectTag || tag == argsTag || (isFunc && !object)) {
-          if (isHostObject(value)) {
-            return object ? value : {};
-          }
           result = initCloneObject(isFunc ? {} : value);
           if (!isDeep) {
             return copySymbols(value, baseAssign(result, value));
@@ -5410,8 +5486,8 @@ module.exports = Vector2D;
         othTag = getTag(other);
         othTag = othTag == argsTag ? objectTag : othTag;
       }
-      var objIsObj = objTag == objectTag && !isHostObject(object),
-          othIsObj = othTag == objectTag && !isHostObject(other),
+      var objIsObj = objTag == objectTag,
+          othIsObj = othTag == objectTag,
           isSameTag = objTag == othTag;
 
       if (isSameTag && !objIsObj) {
@@ -5516,7 +5592,7 @@ module.exports = Vector2D;
       if (!isObject(value) || isMasked(value)) {
         return false;
       }
-      var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+      var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
       return pattern.test(toSource(value));
     }
 
@@ -5874,7 +5950,7 @@ module.exports = Vector2D;
             value = object[key];
 
         if (predicate(value, key)) {
-          result[key] = value;
+          baseAssignValue(result, key, value);
         }
       }
       return result;
@@ -6040,24 +6116,7 @@ module.exports = Vector2D;
      * @returns {Function} Returns the new function.
      */
     function baseRest(func, start) {
-      start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
-      return function() {
-        var args = arguments,
-            index = -1,
-            length = nativeMax(args.length - start, 0),
-            array = Array(length);
-
-        while (++index < length) {
-          array[index] = args[start + index];
-        }
-        index = -1;
-        var otherArgs = Array(start + 1);
-        while (++index < start) {
-          otherArgs[index] = args[index];
-        }
-        otherArgs[start] = array;
-        return apply(func, this, otherArgs);
-      };
+      return setToString(overRest(func, start, identity), func + '');
     }
 
     /**
@@ -6101,7 +6160,7 @@ module.exports = Vector2D;
     }
 
     /**
-     * The base implementation of `setData` without support for hot loop detection.
+     * The base implementation of `setData` without support for hot loop shorting.
      *
      * @private
      * @param {Function} func The function to associate metadata with.
@@ -6111,6 +6170,23 @@ module.exports = Vector2D;
     var baseSetData = !metaMap ? identity : function(func, data) {
       metaMap.set(func, data);
       return func;
+    };
+
+    /**
+     * The base implementation of `setToString` without support for hot loop shorting.
+     *
+     * @private
+     * @param {Function} func The function to modify.
+     * @param {Function} string The `toString` result.
+     * @returns {Function} Returns `func`.
+     */
+    var baseSetToString = !nativeDefineProperty ? identity : function(func, string) {
+      return nativeDefineProperty(func, 'toString', {
+        'configurable': true,
+        'enumerable': false,
+        'value': constant(string),
+        'writable': true
+      });
     };
 
     /**
@@ -6528,6 +6604,17 @@ module.exports = Vector2D;
     }
 
     /**
+     * A `baseRest` alias which can be replaced with `identity` by module
+     * replacement plugins.
+     *
+     * @private
+     * @type {Function}
+     * @param {Function} func The function to apply a rest parameter to.
+     * @returns {Function} Returns the new function.
+     */
+    var castRest = baseRest;
+
+    /**
      * Casts `array` to a slice if it's needed.
      *
      * @private
@@ -6841,6 +6928,7 @@ module.exports = Vector2D;
      * @returns {Object} Returns `object`.
      */
     function copyObject(source, props, object, customizer) {
+      var isNew = !object;
       object || (object = {});
 
       var index = -1,
@@ -6853,7 +6941,14 @@ module.exports = Vector2D;
           ? customizer(object[key], source[key], key, object, source)
           : undefined;
 
-        assignValue(object, key, newValue === undefined ? source[key] : newValue);
+        if (newValue === undefined) {
+          newValue = source[key];
+        }
+        if (isNew) {
+          baseAssignValue(object, key, newValue);
+        } else {
+          assignValue(object, key, newValue);
+        }
       }
       return object;
     }
@@ -7132,9 +7227,7 @@ module.exports = Vector2D;
      * @returns {Function} Returns the new flow function.
      */
     function createFlow(fromRight) {
-      return baseRest(function(funcs) {
-        funcs = baseFlatten(funcs, 1);
-
+      return flatRest(function(funcs) {
         var length = funcs.length,
             index = length,
             prereq = LodashWrapper.prototype.thru;
@@ -7317,11 +7410,8 @@ module.exports = Vector2D;
      * @returns {Function} Returns the new over function.
      */
     function createOver(arrayFunc) {
-      return baseRest(function(iteratees) {
-        iteratees = (iteratees.length == 1 && isArray(iteratees[0]))
-          ? arrayMap(iteratees[0], baseUnary(getIteratee()))
-          : arrayMap(baseFlatten(iteratees, 1), baseUnary(getIteratee()));
-
+      return flatRest(function(iteratees) {
+        iteratees = arrayMap(iteratees, baseUnary(getIteratee()));
         return baseRest(function(args) {
           var thisArg = this;
           return arrayFunc(iteratees, function(iteratee) {
@@ -7664,9 +7754,9 @@ module.exports = Vector2D;
         // Recursively compare arrays (susceptible to call stack limits).
         if (seen) {
           if (!arraySome(other, function(othValue, othIndex) {
-                if (!seen.has(othIndex) &&
+                if (!cacheHas(seen, othIndex) &&
                     (arrValue === othValue || equalFunc(arrValue, othValue, customizer, bitmask, stack))) {
-                  return seen.add(othIndex);
+                  return seen.push(othIndex);
                 }
               })) {
             result = false;
@@ -7847,6 +7937,17 @@ module.exports = Vector2D;
     }
 
     /**
+     * A specialized version of `baseRest` which flattens the rest array.
+     *
+     * @private
+     * @param {Function} func The function to apply a rest parameter to.
+     * @returns {Function} Returns the new function.
+     */
+    function flatRest(func) {
+      return setToString(overRest(func, undefined, flatten), func + '');
+    }
+
+    /**
      * Creates an array of own enumerable property names and symbols of `object`.
      *
      * @private
@@ -8014,8 +8115,7 @@ module.exports = Vector2D;
      */
     var getTag = baseGetTag;
 
-    // Fallback for data views, maps, sets, and weak maps in IE 11,
-    // for data views in Edge < 14, and promises in Node.js.
+    // Fallback for data views, maps, sets, and weak maps in IE 11 and promises in Node.js < 6.
     if ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag) ||
         (Map && getTag(new Map) != mapTag) ||
         (Promise && getTag(Promise.resolve()) != promiseTag) ||
@@ -8091,9 +8191,9 @@ module.exports = Vector2D;
     function hasPath(object, path, hasFunc) {
       path = isKey(path, object) ? [path] : castPath(path);
 
-      var result,
-          index = -1,
-          length = path.length;
+      var index = -1,
+          length = path.length,
+          result = false;
 
       while (++index < length) {
         var key = toKey(path[index]);
@@ -8102,10 +8202,10 @@ module.exports = Vector2D;
         }
         object = object[key];
       }
-      if (result) {
+      if (result || ++index != length) {
         return result;
       }
-      var length = object ? object.length : 0;
+      length = object ? object.length : 0;
       return !!length && isLength(length) && isIndex(key, length) &&
         (isArray(object) || isArguments(object));
     }
@@ -8200,9 +8300,11 @@ module.exports = Vector2D;
      * @returns {string} Returns the modified source.
      */
     function insertWrapDetails(source, details) {
-      var length = details.length,
-          lastIndex = length - 1;
-
+      var length = details.length;
+      if (!length) {
+        return source;
+      }
+      var lastIndex = length - 1;
       details[lastIndex] = (length > 1 ? '& ' : '') + details[lastIndex];
       details = details.join(length > 2 ? ', ' : ' ');
       return source.replace(reWrapComment, '{\n/* [wrapped with ' + details + '] */\n');
@@ -8382,6 +8484,26 @@ module.exports = Vector2D;
     }
 
     /**
+     * A specialized version of `_.memoize` which clears the memoized function's
+     * cache when it exceeds `MAX_MEMOIZE_SIZE`.
+     *
+     * @private
+     * @param {Function} func The function to have its output memoized.
+     * @returns {Function} Returns the new memoized function.
+     */
+    function memoizeCapped(func) {
+      var result = memoize(func, function(key) {
+        if (cache.size === MAX_MEMOIZE_SIZE) {
+          cache.clear();
+        }
+        return key;
+      });
+
+      var cache = result.cache;
+      return result;
+    }
+
+    /**
      * Merges the function metadata of `source` into `data`.
      *
      * Merging metadata reduces the number of wrappers used to invoke a function.
@@ -8495,6 +8617,36 @@ module.exports = Vector2D;
     }
 
     /**
+     * A specialized version of `baseRest` which transforms the rest array.
+     *
+     * @private
+     * @param {Function} func The function to apply a rest parameter to.
+     * @param {number} [start=func.length-1] The start position of the rest parameter.
+     * @param {Function} transform The rest array transform.
+     * @returns {Function} Returns the new function.
+     */
+    function overRest(func, start, transform) {
+      start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+      return function() {
+        var args = arguments,
+            index = -1,
+            length = nativeMax(args.length - start, 0),
+            array = Array(length);
+
+        while (++index < length) {
+          array[index] = args[start + index];
+        }
+        index = -1;
+        var otherArgs = Array(start + 1);
+        while (++index < start) {
+          otherArgs[index] = args[index];
+        }
+        otherArgs[start] = transform(array);
+        return apply(func, this, otherArgs);
+      };
+    }
+
+    /**
      * Gets the parent value at `path` of `object`.
      *
      * @private
@@ -8542,25 +8694,7 @@ module.exports = Vector2D;
      * @param {*} data The metadata.
      * @returns {Function} Returns `func`.
      */
-    var setData = (function() {
-      var count = 0,
-          lastCalled = 0;
-
-      return function(key, value) {
-        var stamp = now(),
-            remaining = HOT_SPAN - (stamp - lastCalled);
-
-        lastCalled = stamp;
-        if (remaining > 0) {
-          if (++count >= HOT_COUNT) {
-            return key;
-          }
-        } else {
-          count = 0;
-        }
-        return baseSetData(key, value);
-      };
-    }());
+    var setData = shortOut(baseSetData);
 
     /**
      * A simple wrapper around the global [`setTimeout`](https://mdn.io/setTimeout).
@@ -8575,6 +8709,16 @@ module.exports = Vector2D;
     };
 
     /**
+     * Sets the `toString` method of `func` to return `string`.
+     *
+     * @private
+     * @param {Function} func The function to modify.
+     * @param {Function} string The `toString` result.
+     * @returns {Function} Returns `func`.
+     */
+    var setToString = shortOut(baseSetToString);
+
+    /**
      * Sets the `toString` method of `wrapper` to mimic the source of `reference`
      * with wrapper details in a comment at the top of the source body.
      *
@@ -8584,14 +8728,61 @@ module.exports = Vector2D;
      * @param {number} bitmask The bitmask flags. See `createWrap` for more details.
      * @returns {Function} Returns `wrapper`.
      */
-    var setWrapToString = !defineProperty ? identity : function(wrapper, reference, bitmask) {
+    function setWrapToString(wrapper, reference, bitmask) {
       var source = (reference + '');
-      return defineProperty(wrapper, 'toString', {
-        'configurable': true,
-        'enumerable': false,
-        'value': constant(insertWrapDetails(source, updateWrapDetails(getWrapDetails(source), bitmask)))
-      });
-    };
+      return setToString(wrapper, insertWrapDetails(source, updateWrapDetails(getWrapDetails(source), bitmask)));
+    }
+
+    /**
+     * Creates a function that'll short out and invoke `identity` instead
+     * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
+     * milliseconds.
+     *
+     * @private
+     * @param {Function} func The function to restrict.
+     * @returns {Function} Returns the new shortable function.
+     */
+    function shortOut(func) {
+      var count = 0,
+          lastCalled = 0;
+
+      return function() {
+        var stamp = nativeNow(),
+            remaining = HOT_SPAN - (stamp - lastCalled);
+
+        lastCalled = stamp;
+        if (remaining > 0) {
+          if (++count >= HOT_COUNT) {
+            return arguments[0];
+          }
+        } else {
+          count = 0;
+        }
+        return func.apply(undefined, arguments);
+      };
+    }
+
+    /**
+     * A specialized version of `arrayShuffle` which mutates `array`.
+     *
+     * @private
+     * @param {Array} array The array to shuffle.
+     * @returns {Array} Returns `array`.
+     */
+    function shuffleSelf(array) {
+      var index = -1,
+          length = array.length,
+          lastIndex = length - 1;
+
+      while (++index < length) {
+        var rand = baseRandom(index, lastIndex),
+            value = array[rand];
+
+        array[rand] = array[index];
+        array[index] = value;
+      }
+      return array;
+    }
 
     /**
      * Converts `string` to a property path array.
@@ -8600,7 +8791,7 @@ module.exports = Vector2D;
      * @param {string} string The string to convert.
      * @returns {Array} Returns the property path array.
      */
-    var stringToPath = memoize(function(string) {
+    var stringToPath = memoizeCapped(function(string) {
       string = toString(string);
 
       var result = [];
@@ -8779,24 +8970,25 @@ module.exports = Vector2D;
      * // => [1]
      */
     function concat() {
-      var length = arguments.length,
-          args = Array(length ? length - 1 : 0),
+      var length = arguments.length;
+      if (!length) {
+        return [];
+      }
+      var args = Array(length - 1),
           array = arguments[0],
           index = length;
 
       while (index--) {
         args[index - 1] = arguments[index];
       }
-      return length
-        ? arrayPush(isArray(array) ? copyArray(array) : [array], baseFlatten(args, 1))
-        : [];
+      return arrayPush(isArray(array) ? copyArray(array) : [array], baseFlatten(args, 1));
     }
 
     /**
      * Creates an array of `array` values not included in the other given arrays
      * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
-     * for equality comparisons. The order of result values is determined by the
-     * order they occur in the first array.
+     * for equality comparisons. The order and references of result values are
+     * determined by the first array.
      *
      * **Note:** Unlike `_.pullAll`, this method returns a new array.
      *
@@ -8822,8 +9014,9 @@ module.exports = Vector2D;
     /**
      * This method is like `_.difference` except that it accepts `iteratee` which
      * is invoked for each element of `array` and `values` to generate the criterion
-     * by which they're compared. Result values are chosen from the first array.
-     * The iteratee is invoked with one argument: (value).
+     * by which they're compared. The order and references of result values are
+     * determined by the first array. The iteratee is invoked with one argument:
+     * (value).
      *
      * **Note:** Unlike `_.pullAllBy`, this method returns a new array.
      *
@@ -8856,9 +9049,9 @@ module.exports = Vector2D;
 
     /**
      * This method is like `_.difference` except that it accepts `comparator`
-     * which is invoked to compare elements of `array` to `values`. Result values
-     * are chosen from the first array. The comparator is invoked with two arguments:
-     * (arrVal, othVal).
+     * which is invoked to compare elements of `array` to `values`. The order and
+     * references of result values are determined by the first array. The comparator
+     * is invoked with two arguments: (arrVal, othVal).
      *
      * **Note:** Unlike `_.pullAllWith`, this method returns a new array.
      *
@@ -9352,8 +9545,8 @@ module.exports = Vector2D;
     /**
      * Creates an array of unique values that are included in all given arrays
      * using [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
-     * for equality comparisons. The order of result values is determined by the
-     * order they occur in the first array.
+     * for equality comparisons. The order and references of result values are
+     * determined by the first array.
      *
      * @static
      * @memberOf _
@@ -9376,8 +9569,9 @@ module.exports = Vector2D;
     /**
      * This method is like `_.intersection` except that it accepts `iteratee`
      * which is invoked for each element of each `arrays` to generate the criterion
-     * by which they're compared. Result values are chosen from the first array.
-     * The iteratee is invoked with one argument: (value).
+     * by which they're compared. The order and references of result values are
+     * determined by the first array. The iteratee is invoked with one argument:
+     * (value).
      *
      * @static
      * @memberOf _
@@ -9411,9 +9605,9 @@ module.exports = Vector2D;
 
     /**
      * This method is like `_.intersection` except that it accepts `comparator`
-     * which is invoked to compare elements of `arrays`. Result values are chosen
-     * from the first array. The comparator is invoked with two arguments:
-     * (arrVal, othVal).
+     * which is invoked to compare elements of `arrays`. The order and references
+     * of result values are determined by the first array. The comparator is
+     * invoked with two arguments: (arrVal, othVal).
      *
      * @static
      * @memberOf _
@@ -9511,21 +9705,11 @@ module.exports = Vector2D;
       var index = length;
       if (fromIndex !== undefined) {
         index = toInteger(fromIndex);
-        index = (
-          index < 0
-            ? nativeMax(length + index, 0)
-            : nativeMin(index, length - 1)
-        ) + 1;
+        index = index < 0 ? nativeMax(length + index, 0) : nativeMin(index, length - 1);
       }
-      if (value !== value) {
-        return baseFindIndex(array, baseIsNaN, index - 1, true);
-      }
-      while (index--) {
-        if (array[index] === value) {
-          return index;
-        }
-      }
-      return -1;
+      return value === value
+        ? strictLastIndexOf(array, value, index)
+        : baseFindIndex(array, baseIsNaN, index, true);
     }
 
     /**
@@ -9687,9 +9871,7 @@ module.exports = Vector2D;
      * console.log(pulled);
      * // => ['b', 'd']
      */
-    var pullAt = baseRest(function(array, indexes) {
-      indexes = baseFlatten(indexes, 1);
-
+    var pullAt = flatRest(function(array, indexes) {
       var length = array ? array.length : 0,
           result = baseAt(array, indexes);
 
@@ -10264,8 +10446,9 @@ module.exports = Vector2D;
     /**
      * Creates a duplicate-free version of an array, using
      * [`SameValueZero`](http://ecma-international.org/ecma-262/7.0/#sec-samevaluezero)
-     * for equality comparisons, in which only the first occurrence of each
-     * element is kept.
+     * for equality comparisons, in which only the first occurrence of each element
+     * is kept. The order of result values is determined by the order they occur
+     * in the array.
      *
      * @static
      * @memberOf _
@@ -10287,7 +10470,9 @@ module.exports = Vector2D;
     /**
      * This method is like `_.uniq` except that it accepts `iteratee` which is
      * invoked for each element in `array` to generate the criterion by which
-     * uniqueness is computed. The iteratee is invoked with one argument: (value).
+     * uniqueness is computed. The order of result values is determined by the
+     * order they occur in the array. The iteratee is invoked with one argument:
+     * (value).
      *
      * @static
      * @memberOf _
@@ -10314,8 +10499,9 @@ module.exports = Vector2D;
 
     /**
      * This method is like `_.uniq` except that it accepts `comparator` which
-     * is invoked to compare elements of `array`. The comparator is invoked with
-     * two arguments: (arrVal, othVal).
+     * is invoked to compare elements of `array`. The order of result values is
+     * determined by the order they occur in the array.The comparator is invoked
+     * with two arguments: (arrVal, othVal).
      *
      * @static
      * @memberOf _
@@ -10457,8 +10643,9 @@ module.exports = Vector2D;
     /**
      * This method is like `_.xor` except that it accepts `iteratee` which is
      * invoked for each element of each `arrays` to generate the criterion by
-     * which by which they're compared. The iteratee is invoked with one argument:
-     * (value).
+     * which by which they're compared. The order of result values is determined
+     * by the order they occur in the arrays. The iteratee is invoked with one
+     * argument: (value).
      *
      * @static
      * @memberOf _
@@ -10487,8 +10674,9 @@ module.exports = Vector2D;
 
     /**
      * This method is like `_.xor` except that it accepts `comparator` which is
-     * invoked to compare elements of `arrays`. The comparator is invoked with
-     * two arguments: (arrVal, othVal).
+     * invoked to compare elements of `arrays`. The order of result values is
+     * determined by the order they occur in the arrays. The comparator is invoked
+     * with two arguments: (arrVal, othVal).
      *
      * @static
      * @memberOf _
@@ -10705,8 +10893,7 @@ module.exports = Vector2D;
      * _(object).at(['a[0].b.c', 'a[1]']).value();
      * // => [3, 4]
      */
-    var wrapperAt = baseRest(function(paths) {
-      paths = baseFlatten(paths, 1);
+    var wrapperAt = flatRest(function(paths) {
       var length = paths.length,
           start = length ? paths[0] : 0,
           value = this.__wrapped__,
@@ -10971,7 +11158,11 @@ module.exports = Vector2D;
      * // => { '3': 2, '5': 1 }
      */
     var countBy = createAggregator(function(result, value, key) {
-      hasOwnProperty.call(result, key) ? ++result[key] : (result[key] = 1);
+      if (hasOwnProperty.call(result, key)) {
+        ++result[key];
+      } else {
+        baseAssignValue(result, key, 1);
+      }
     });
 
     /**
@@ -11226,7 +11417,7 @@ module.exports = Vector2D;
      * @see _.forEachRight
      * @example
      *
-     * _([1, 2]).forEach(function(value) {
+     * _.forEach([1, 2], function(value) {
      *   console.log(value);
      * });
      * // => Logs `1` then `2`.
@@ -11294,7 +11485,7 @@ module.exports = Vector2D;
       if (hasOwnProperty.call(result, key)) {
         result[key].push(value);
       } else {
-        result[key] = [value];
+        baseAssignValue(result, key, [value]);
       }
     });
 
@@ -11407,7 +11598,7 @@ module.exports = Vector2D;
      * // => { 'left': { 'dir': 'left', 'code': 97 }, 'right': { 'dir': 'right', 'code': 100 } }
      */
     var keyBy = createAggregator(function(result, value, key) {
-      result[key] = value;
+      baseAssignValue(result, key, value);
     });
 
     /**
@@ -11667,10 +11858,7 @@ module.exports = Vector2D;
      * // => 2
      */
     function sample(collection) {
-      var array = isArrayLike(collection) ? collection : values(collection),
-          length = array.length;
-
-      return length > 0 ? array[baseRandom(0, length - 1)] : undefined;
+      return arraySample(isArrayLike(collection) ? collection : values(collection));
     }
 
     /**
@@ -11694,25 +11882,12 @@ module.exports = Vector2D;
      * // => [2, 3, 1]
      */
     function sampleSize(collection, n, guard) {
-      var index = -1,
-          result = toArray(collection),
-          length = result.length,
-          lastIndex = length - 1;
-
       if ((guard ? isIterateeCall(collection, n, guard) : n === undefined)) {
         n = 1;
       } else {
-        n = baseClamp(toInteger(n), 0, length);
+        n = toInteger(n);
       }
-      while (++index < n) {
-        var rand = baseRandom(index, lastIndex),
-            value = result[rand];
-
-        result[rand] = result[index];
-        result[index] = value;
-      }
-      result.length = n;
-      return result;
+      return arraySampleSize(isArrayLike(collection) ? collection : values(collection), n);
     }
 
     /**
@@ -11731,7 +11906,10 @@ module.exports = Vector2D;
      * // => [4, 1, 3, 2]
      */
     function shuffle(collection) {
-      return sampleSize(collection, MAX_ARRAY_LENGTH);
+      return shuffleSelf(isArrayLike(collection)
+        ? copyArray(collection)
+        : values(collection)
+      );
     }
 
     /**
@@ -11836,16 +12014,11 @@ module.exports = Vector2D;
      *   { 'user': 'barney', 'age': 34 }
      * ];
      *
-     * _.sortBy(users, function(o) { return o.user; });
+     * _.sortBy(users, [function(o) { return o.user; }]);
      * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
      *
      * _.sortBy(users, ['user', 'age']);
      * // => objects for [['barney', 34], ['barney', 36], ['fred', 40], ['fred', 48]]
-     *
-     * _.sortBy(users, 'user', function(o) {
-     *   return Math.floor(o.age / 10);
-     * });
-     * // => objects for [['barney', 36], ['barney', 34], ['fred', 48], ['fred', 40]]
      */
     var sortBy = baseRest(function(collection, iteratees) {
       if (collection == null) {
@@ -12360,7 +12533,7 @@ module.exports = Vector2D;
      * _.defer(function(text) {
      *   console.log(text);
      * }, 'deferred');
-     * // => Logs 'deferred' after one or more milliseconds.
+     * // => Logs 'deferred' after one millisecond.
      */
     var defer = baseRest(function(func, args) {
       return baseDelay(func, 1, args);
@@ -12468,14 +12641,14 @@ module.exports = Vector2D;
           return cache.get(key);
         }
         var result = func.apply(this, args);
-        memoized.cache = cache.set(key, result);
+        memoized.cache = cache.set(key, result) || cache;
         return result;
       };
       memoized.cache = new (memoize.Cache || MapCache);
       return memoized;
     }
 
-    // Assign cache to `_.memoize`.
+    // Expose `MapCache`.
     memoize.Cache = MapCache;
 
     /**
@@ -12567,7 +12740,7 @@ module.exports = Vector2D;
      * func(10, 5);
      * // => [100, 10]
      */
-    var overArgs = baseRest(function(func, transforms) {
+    var overArgs = castRest(function(func, transforms) {
       transforms = (transforms.length == 1 && isArray(transforms[0]))
         ? arrayMap(transforms[0], baseUnary(getIteratee()))
         : arrayMap(baseFlatten(transforms, 1), baseUnary(getIteratee()));
@@ -12681,8 +12854,8 @@ module.exports = Vector2D;
      * rearged('b', 'c', 'a')
      * // => ['a', 'b', 'c']
      */
-    var rearg = baseRest(function(func, indexes) {
-      return createWrap(func, REARG_FLAG, undefined, undefined, undefined, baseFlatten(indexes, 1));
+    var rearg = flatRest(function(func, indexes) {
+      return createWrap(func, REARG_FLAG, undefined, undefined, undefined, indexes);
     });
 
     /**
@@ -13358,7 +13531,7 @@ module.exports = Vector2D;
      * // => false
      */
     function isElement(value) {
-      return !!value && value.nodeType === 1 && isObjectLike(value) && !isPlainObject(value);
+      return value != null && value.nodeType === 1 && isObjectLike(value) && !isPlainObject(value);
     }
 
     /**
@@ -13404,7 +13577,7 @@ module.exports = Vector2D;
       if (tag == mapTag || tag == setTag) {
         return !value.size;
       }
-      if (nonEnumShadows || isPrototype(value)) {
+      if (isPrototype(value)) {
         return !nativeKeys(value).length;
       }
       for (var key in value) {
@@ -13653,7 +13826,7 @@ module.exports = Vector2D;
      */
     function isObject(value) {
       var type = typeof value;
-      return !!value && (type == 'object' || type == 'function');
+      return value != null && (type == 'object' || type == 'function');
     }
 
     /**
@@ -13681,7 +13854,7 @@ module.exports = Vector2D;
      * // => false
      */
     function isObjectLike(value) {
-      return !!value && typeof value == 'object';
+      return value != null && typeof value == 'object';
     }
 
     /**
@@ -13945,8 +14118,7 @@ module.exports = Vector2D;
      * // => true
      */
     function isPlainObject(value) {
-      if (!isObjectLike(value) ||
-          objectToString.call(value) != objectTag || isHostObject(value)) {
+      if (!isObjectLike(value) || objectToString.call(value) != objectTag) {
         return false;
       }
       var proto = getPrototype(value);
@@ -14503,7 +14675,7 @@ module.exports = Vector2D;
      * // => { 'a': 1, 'c': 3 }
      */
     var assign = createAssigner(function(object, source) {
-      if (nonEnumShadows || isPrototype(source) || isArrayLike(source)) {
+      if (isPrototype(source) || isArrayLike(source)) {
         copyObject(source, keys(source), object);
         return;
       }
@@ -14631,9 +14803,7 @@ module.exports = Vector2D;
      * _.at(object, ['a[0].b.c', 'a[1]']);
      * // => [3, 4]
      */
-    var at = baseRest(function(object, paths) {
-      return baseAt(object, baseFlatten(paths, 1));
-    });
+    var at = flatRest(baseAt);
 
     /**
      * Creates an object that inherits from the `prototype` object. If a
@@ -15236,7 +15406,7 @@ module.exports = Vector2D;
       iteratee = getIteratee(iteratee, 3);
 
       baseForOwn(object, function(value, key, object) {
-        result[iteratee(value, key, object)] = value;
+        baseAssignValue(result, iteratee(value, key, object), value);
       });
       return result;
     }
@@ -15274,7 +15444,7 @@ module.exports = Vector2D;
       iteratee = getIteratee(iteratee, 3);
 
       baseForOwn(object, function(value, key, object) {
-        result[key] = iteratee(value, key, object);
+        baseAssignValue(result, key, iteratee(value, key, object));
       });
       return result;
     }
@@ -15318,7 +15488,7 @@ module.exports = Vector2D;
      * This method is like `_.merge` except that it accepts `customizer` which
      * is invoked to produce the merged values of the destination and source
      * properties. If `customizer` returns `undefined`, merging is handled by the
-     * method instead. The `customizer` is invoked with seven arguments:
+     * method instead. The `customizer` is invoked with six arguments:
      * (objValue, srcValue, key, object, source, stack).
      *
      * **Note:** This method mutates `object`.
@@ -15368,11 +15538,11 @@ module.exports = Vector2D;
      * _.omit(object, ['a', 'c']);
      * // => { 'b': '2' }
      */
-    var omit = baseRest(function(object, props) {
+    var omit = flatRest(function(object, props) {
       if (object == null) {
         return {};
       }
-      props = arrayMap(baseFlatten(props, 1), toKey);
+      props = arrayMap(props, toKey);
       return basePick(object, baseDifference(getAllKeysIn(object), props));
     });
 
@@ -15417,8 +15587,8 @@ module.exports = Vector2D;
      * _.pick(object, ['a', 'c']);
      * // => { 'a': 1, 'c': 3 }
      */
-    var pick = baseRest(function(object, props) {
-      return object == null ? {} : basePick(object, arrayMap(baseFlatten(props, 1), toKey));
+    var pick = flatRest(function(object, props) {
+      return object == null ? {} : basePick(object, arrayMap(props, toKey));
     });
 
     /**
@@ -16072,8 +16242,8 @@ module.exports = Vector2D;
     }
 
     /**
-     * Converts the characters "&", "<", ">", '"', "'", and "\`" in `string` to
-     * their corresponding HTML entities.
+     * Converts the characters "&", "<", ">", '"', and "'" in `string` to their
+     * corresponding HTML entities.
      *
      * **Note:** No other characters are escaped. To escape additional
      * characters use a third-party library like [_he_](https://mths.be/he).
@@ -16083,12 +16253,6 @@ module.exports = Vector2D;
      * unless they're part of a tag or unquoted attribute value. See
      * [Mathias Bynens's article](https://mathiasbynens.be/notes/ambiguous-ampersands)
      * (under "semi-related fun fact") for more details.
-     *
-     * Backticks are escaped because in IE < 9, they can break out of
-     * attribute values or HTML comments. See [#59](https://html5sec.org/#59),
-     * [#102](https://html5sec.org/#102), [#108](https://html5sec.org/#108), and
-     * [#133](https://html5sec.org/#133) of the
-     * [HTML5 Security Cheatsheet](https://html5sec.org/) for more details.
      *
      * When working with HTML you should always
      * [quote attribute values](http://wonko.com/post/html-escaping) to reduce
@@ -16332,15 +16496,12 @@ module.exports = Vector2D;
      * // => [6, 8, 10]
      */
     function parseInt(string, radix, guard) {
-      // Chrome fails to trim leading <BOM> whitespace characters.
-      // See https://bugs.chromium.org/p/v8/issues/detail?id=3109 for more details.
       if (guard || radix == null) {
         radix = 0;
       } else if (radix) {
         radix = +radix;
       }
-      string = toString(string).replace(reTrim, '');
-      return nativeParseInt(string, radix || (reHasHexPrefix.test(string) ? 16 : 10));
+      return nativeParseInt(toString(string), radix || 0);
     }
 
     /**
@@ -16579,7 +16740,8 @@ module.exports = Vector2D;
      * compiled({ 'user': 'barney' });
      * // => 'hello barney!'
      *
-     * // Use the ES delimiter as an alternative to the default "interpolate" delimiter.
+     * // Use the ES template literal delimiter as an "interpolate" delimiter.
+     * // Disable support by replacing the "interpolate" delimiter.
      * var compiled = _.template('hello ${ user }!');
      * compiled({ 'user': 'pebbles' });
      * // => 'hello pebbles!'
@@ -16980,7 +17142,7 @@ module.exports = Vector2D;
 
     /**
      * The inverse of `_.escape`; this method converts the HTML entities
-     * `&amp;`, `&lt;`, `&gt;`, `&quot;`, `&#39;`, and `&#96;` in `string` to
+     * `&amp;`, `&lt;`, `&gt;`, `&quot;`, and `&#39;` in `string` to
      * their corresponding characters.
      *
      * **Note:** No other HTML entities are unescaped. To unescape additional
@@ -17134,10 +17296,10 @@ module.exports = Vector2D;
      * jQuery(element).on('click', view.click);
      * // => Logs 'clicked docs' when clicked.
      */
-    var bindAll = baseRest(function(object, methodNames) {
-      arrayEach(baseFlatten(methodNames, 1), function(key) {
+    var bindAll = flatRest(function(object, methodNames) {
+      arrayEach(methodNames, function(key) {
         key = toKey(key);
-        object[key] = bind(object[key], object);
+        baseAssignValue(object, key, bind(object[key], object));
       });
       return object;
     });
@@ -18928,7 +19090,7 @@ module.exports = Vector2D;
       lodash.prototype[iteratorSymbol] = wrapperToIterator;
     }
     return lodash;
-  }
+  });
 
   /*--------------------------------------------------------------------------*/
 
@@ -18966,7 +19128,7 @@ module.exports = Vector2D;
 },{}],5:[function(require,module,exports){
 /**
  memory-record - activerecord like in-memory data manager
- @version v0.1.5
+ @version v0.2.8
  @link https://github.com/7korobi/memory-record
  @license 
 **/
@@ -18976,95 +19138,196 @@ module.exports = Vector2D;
   var Mem;
 
   module.exports = Mem = {
-    Sync: {},
+    Base: {},
     Query: {},
-    Collection: {}
+    Model: {},
+    Collection: {},
+    Composite: {}
   };
 
 }).call(this);
 
 (function() {
-  var Mem;
+  var Mem, OBJ, f_composite, f_item, f_merge, f_remove, f_reset;
+
+  OBJ = function() {
+    return new Object(null);
+  };
+
+  f_reset = function(list, parent) {
+    return this.rule.finder.reset(list, parent);
+  };
+
+  f_merge = function(list, parent) {
+    return this.rule.finder.merge(list, parent);
+  };
+
+  f_remove = function(list) {
+    return this.rule.finder.remove(list);
+  };
+
+  f_item = function(cb) {
+    return function(item, parent) {
+      return cb.call(this, [item], parent);
+    };
+  };
+
+  f_composite = function() {
+    return this.rule.finder.rehash();
+  };
 
   Mem = module.exports;
 
-  Mem.Finder = (function() {
-    function Finder(sort_by) {
+  Mem.Base.Collection = (function() {
+    Collection.prototype.set = f_reset;
+
+    Collection.prototype.reset = f_reset;
+
+    Collection.prototype.merge = f_merge;
+
+    Collection.prototype.reject = f_remove;
+
+    Collection.prototype.add = f_item(f_merge);
+
+    Collection.prototype.append = f_item(f_merge);
+
+    Collection.prototype.create = f_item(f_merge);
+
+    Collection.prototype.remove = f_item(f_remove);
+
+    Collection.prototype.clear_cache = f_composite;
+
+    Collection.prototype.refresh = f_composite;
+
+    Collection.prototype.rehash = f_composite;
+
+    function Collection(rule) {
+      this.rule = rule;
+      this.validates = [];
+    }
+
+    return Collection;
+
+  })();
+
+}).call(this);
+
+(function() {
+  var Mem, OBJ, _, each,
+    slice = [].slice;
+
+  _ = require("lodash");
+
+  OBJ = function() {
+    return new Object(null);
+  };
+
+  each = function(from, process) {
+    var i, id, item, len, ref, ref1;
+    switch (from != null ? from.constructor : void 0) {
+      case Array:
+        ref = from || [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          item = ref[i];
+          if (!item) {
+            continue;
+          }
+          process(item);
+        }
+        break;
+      case Object:
+        ref1 = from || {};
+        for (id in ref1) {
+          item = ref1[id];
+          if (!item) {
+            continue;
+          }
+          item._id = id;
+          process(item);
+        }
+    }
+  };
+
+  Mem = module.exports;
+
+  Mem.Base.Finder = (function() {
+    function Finder(model, sortBy1, orderBy1) {
       var all;
-      this.sort_by = sort_by;
-      all = new Mem.Query(this, [], false, this.sort_by);
-      all._memory = {};
+      this.model = model;
+      this.sortBy = sortBy1;
+      this.orderBy = orderBy1;
+      all = new Mem.Base.Query(this, [], this.sortBy, this.orderBy);
+      all._memory = OBJ();
       this.scope = {
         all: all
       };
       this.query = {
         all: all
       };
+      this.validates = [];
     }
 
-    Finder.prototype.rehash = function(rules, diff) {
-      var i, len, rule;
+    Finder.prototype.validate = function(cb) {
+      return this.validates.push(cb);
+    };
+
+    Finder.prototype.use_cache = function(key, query_call) {
+      switch (query_call != null ? query_call.constructor : void 0) {
+        case Function:
+          return this.query.all[key] = (function(_this) {
+            return function() {
+              var args, base1, name;
+              args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+              return (base1 = _this.query.all)[name = key + ":" + (JSON.stringify(args))] != null ? base1[name] : base1[name] = query_call.apply(null, args);
+            };
+          })(this);
+        default:
+          return this.query.all[key] = query_call;
+      }
+    };
+
+    Finder.prototype.rehash = function() {
       delete this.query.all._reduce;
       delete this.query.all._list;
       delete this.query.all._hash;
       this.query = {
         all: this.query.all
       };
-      for (i = 0, len = rules.length; i < len; i++) {
-        rule = rules[i];
-        rule.rehash(diff);
-      }
     };
 
-    Finder.prototype.save = function(query) {
-      var _id, i, len, message, o, ref, ref1;
-      if (!this.sync) {
-        return;
-      }
-      try {
-        ref = this.sync.load_index();
-        for (i = 0, len = ref.length; i < len; i++) {
-          _id = ref[i];
-          if (!query.hash[_id]) {
-            this.sync["delete"](_id);
-          }
+    Finder.prototype.calculate = function(query) {
+      this.list(query, this.query.all._memory);
+      if (query._list.length && (this.model.map_reduce != null)) {
+        this.reduce(query);
+        if (query._distinct != null) {
+          this.group(query);
         }
-        ref1 = query.hash;
-        for (_id in ref1) {
-          o = ref1[_id];
-          this.sync.store(_id, o);
-        }
-        this.sync.store_index(Object.keys(query.hash));
-        return true;
-      } catch (_error) {
-        message = _error.message;
-        console.log(message);
-        return false;
       }
+      this.sort(query);
     };
 
-    Finder.prototype.calculate_reduce = function(query) {
-      var base, calc, emits, group, i, id, init, item, j, key, keys, last, len, len1, map, o, reduce, ref, ref1, ref2;
+    Finder.prototype.reduce = function(query) {
+      var base, calc, emits, i, id, init, item, len, map, o, path, paths, reduce, ref, ref1, ref2;
       init = function(map) {
         var o;
-        o = {};
+        o = OBJ();
         if (map.count) {
           o.count = 0;
         }
         if (map.all) {
           o.all = 0;
         }
-        if (map.push) {
-          o.push = [];
+        if (map.list) {
+          o.list = [];
         }
         if (map.set) {
-          o.set = {};
+          o.set = OBJ();
         }
         return o;
       };
       reduce = function(item, o, map) {
-        if (map.push) {
-          o.push.push(map.push);
+        if (map.list) {
+          o.list.push(map.list);
         }
         if (map.set) {
           o.set[map.set] = true;
@@ -19089,73 +19352,38 @@ module.exports = Vector2D;
           return o.avg = o.all / o.count;
         }
       };
-      base = {};
+      base = OBJ();
+      paths = OBJ();
       ref = query._memory;
       for (id in ref) {
         ref1 = ref[id], item = ref1.item, emits = ref1.emits;
         for (i = 0, len = emits.length; i < len; i++) {
-          ref2 = emits[i], keys = ref2[0], last = ref2[1], map = ref2[2];
-          o = base;
-          for (j = 0, len1 = keys.length; j < len1; j++) {
-            key = keys[j];
-            o = o[key] || (o[key] = {});
+          ref2 = emits[i], path = ref2[0], map = ref2[1];
+          o = _.get(base, path);
+          if (!o) {
+            o = paths[path.join(".")] = init(map);
+            _.set(base, path, o);
+            o;
           }
-          o = o[last] || (o[last] = init(map));
           reduce(item, o, map);
         }
       }
-      for (group in base) {
-        emits = base[group];
-        for (key in emits) {
-          map = emits[key];
-          calc(map);
-        }
+      for (path in paths) {
+        o = paths[path];
+        calc(o);
       }
       return query._reduce = base;
     };
 
-    Finder.prototype.calculate_sort = function(query) {
-      var gt, i, is_array, len, list, lt, o, ref, s;
-      list = query._list;
-      ref = query.desc ? [1, -1] : [-1, 1], lt = ref[0], gt = ref[1];
-      s = query.orders = {};
-      for (i = 0, len = list.length; i < len; i++) {
-        o = list[i];
-        s[o._id] = query.sort_by(o);
+    Finder.prototype.sort = function(query) {
+      var orderBy, sortBy;
+      sortBy = query.sortBy, orderBy = query.orderBy;
+      if (sortBy != null) {
+        return query._list = orderBy != null ? _.orderBy(query._list, sortBy, orderBy) : _.sortBy(query._list, sortBy);
       }
-      if (list.length) {
-        is_array = Array.isArray(query.sort_by(list[0]));
-      }
-      return query._list = is_array ? list.sort(function(a, b) {
-        var a_list, a_val, b_list, b_val, index, j, len1;
-        a_list = s[a._id];
-        b_list = s[b._id];
-        for (index = j = 0, len1 = a_list.length; j < len1; index = ++j) {
-          a_val = a_list[index];
-          b_val = b_list[index];
-          if (a_val < b_val) {
-            return lt;
-          }
-          if (a_val > b_val) {
-            return gt;
-          }
-        }
-        return 0;
-      }) : list.sort(function(a, b) {
-        var a_val, b_val;
-        a_val = s[a._id];
-        b_val = s[b._id];
-        if (a_val < b_val) {
-          return lt;
-        }
-        if (a_val > b_val) {
-          return gt;
-        }
-        return 0;
-      });
     };
 
-    Finder.prototype.calculate_group = function(query) {
+    Finder.prototype.group = function(query) {
       var id, o, reduce, ref, target;
       ref = query._distinct, reduce = ref.reduce, target = ref.target;
       return query._list = (function() {
@@ -19170,36 +19398,36 @@ module.exports = Vector2D;
       })();
     };
 
-    Finder.prototype.calculate_list = function(query, all) {
-      var deploy, filters, id, o;
+    Finder.prototype.list = function(query, all) {
+      var chk, deploy, every, id, o;
       if (query._memory === all) {
         deploy = function(id, o) {
           return query._hash[id] = o.item;
         };
       } else {
-        query._memory = {};
+        query._memory = OBJ();
         deploy = function(id, o) {
           query._memory[id] = o;
           return query._hash[id] = o.item;
         };
       }
-      query._hash = {};
+      query._hash = OBJ();
       return query._list = (function() {
         var i, len, ref, results;
         results = [];
         for (id in all) {
           o = all[id];
+          every = true;
           ref = query.filters;
           for (i = 0, len = ref.length; i < len; i++) {
-            filters = ref[i];
-            if (!filters(o.item)) {
-              o = null;
+            chk = ref[i];
+            if (!(!chk(o.item))) {
+              continue;
             }
-            if (!o) {
-              break;
-            }
+            every = false;
+            break;
           }
-          if (!o) {
+          if (!every) {
             continue;
           }
           results.push(deploy(id, o));
@@ -19208,15 +19436,86 @@ module.exports = Vector2D;
       })();
     };
 
-    Finder.prototype.calculate = function(query) {
-      this.calculate_list(query, this.query.all._memory);
-      if (query._list.length && (this.map_reduce != null)) {
-        this.calculate_reduce(query);
-        if (query._distinct != null) {
-          this.calculate_group(query);
+    Finder.prototype.remove = function(from) {
+      var _memory;
+      _memory = this.query.all._memory;
+      each(from, (function(_this) {
+        return function(item) {
+          var old;
+          old = _memory[item._id];
+          if (old != null) {
+            _this.model["delete"](old);
+            delete _memory[item._id];
+          }
+        };
+      })(this));
+      return this.rehash();
+    };
+
+    Finder.prototype.reset = function(from, parent) {
+      var _memory, item, key, news, old;
+      _memory = this.query.all._memory;
+      this.query.all._memory = news = OBJ();
+      this.merge(from, parent);
+      for (key in _memory) {
+        old = _memory[key];
+        item = news[key];
+        if (item != null) {
+          this.model.update(item, old);
+        } else {
+          this.model["delete"](old);
         }
       }
-      this.calculate_sort(query);
+      return this.rehash();
+    };
+
+    Finder.prototype.merge = function(from, parent) {
+      var _memory;
+      _memory = this.query.all._memory;
+      each(from, (function(_this) {
+        return function(item) {
+          var chk, emit, every, i, key, len, o, old, ref, val;
+          for (key in parent) {
+            val = parent[key];
+            item[key] = val;
+          }
+          item.__proto__ = _this.model.prototype;
+          _this.model.call(item, item, _this.model);
+          _this.model.rowid++;
+          every = true;
+          ref = _this.validates;
+          for (i = 0, len = ref.length; i < len; i++) {
+            chk = ref[i];
+            if (!(!chk(item))) {
+              continue;
+            }
+            every = false;
+            break;
+          }
+          if (every) {
+            o = {
+              item: item,
+              emits: []
+            };
+            old = _memory[item._id];
+            if (old != null) {
+              _this.model.update(item, old);
+            } else {
+              _this.model.create(item);
+            }
+            _memory[item._id] = o;
+            if (_this.model.map_reduce != null) {
+              emit = function() {
+                var cmd, j, keys;
+                keys = 2 <= arguments.length ? slice.call(arguments, 0, j = arguments.length - 1) : (j = 0, []), cmd = arguments[j++];
+                return o.emits.push([keys, cmd]);
+              };
+              _this.model.map_reduce(item, emit);
+            }
+          }
+        };
+      })(this));
+      return this.rehash();
     };
 
     return Finder;
@@ -19226,29 +19525,47 @@ module.exports = Vector2D;
 }).call(this);
 
 (function() {
-  var Mem, def, set_for, type,
+  var Mem;
+
+  Mem = module.exports;
+
+  Mem.Base.Model = (function() {
+    Model.rowid = 0;
+
+    Model.update = function(item, old) {};
+
+    Model.create = function(item) {};
+
+    Model["delete"] = function(old) {};
+
+    function Model(o, m) {
+      if (!o._id) {
+        o._id = o[m.id];
+      }
+      if (!o[m.id]) {
+        o[m.id] = o._id;
+      }
+    }
+
+    return Model;
+
+  })();
+
+}).call(this);
+
+(function() {
+  var Mem, OBJ, _, set_for,
     slice = [].slice;
 
-  type = function(o) {
-    return o != null ? o.constructor : void 0;
-  };
+  _ = require("lodash");
 
-  def = function(obj, key, arg) {
-    var configurable, enumerable, get, set;
-    get = arg.get, set = arg.set;
-    configurable = false;
-    enumerable = false;
-    Object.defineProperty(obj, key, {
-      configurable: configurable,
-      enumerable: enumerable,
-      get: get,
-      set: set
-    });
+  OBJ = function() {
+    return new Object(null);
   };
 
   set_for = function(list) {
     var i, key, len, set;
-    set = {};
+    set = OBJ();
     for (i = 0, len = list.length; i < len; i++) {
       key = list[i];
       set[key] = true;
@@ -19258,46 +19575,56 @@ module.exports = Vector2D;
 
   Mem = module.exports;
 
-  Mem.Query = (function() {
-    function Query(finder, filters1, desc1, sort_by1) {
+  Mem.Base.Query = (function() {
+    function Query(finder, filters1, sortBy1, orderBy1) {
       this.finder = finder;
       this.filters = filters1;
-      this.desc = desc1;
-      this.sort_by = sort_by1;
+      this.sortBy = sortBy1;
+      this.orderBy = orderBy1;
     }
 
-    Query.prototype._filters = function(query, cb) {
-      var filters, req, target;
-      if (!query) {
+    Query.prototype._filters = function(req, cb) {
+      var filters, path, target, type;
+      if (!req) {
         return this;
       }
       filters = this.filters.concat();
-      switch (type(query)) {
+      type = req != null ? req.constructor : void 0;
+      switch (type) {
         case Object:
-          for (target in query) {
-            req = query[target];
-            filters.push(cb(target, req));
+          for (target in req) {
+            req = req[target];
+            path = _.property(target);
+            filters.push(cb(path, req));
           }
           break;
         case Function:
-          filters.push(cb(null, query));
+        case Array:
+        case String:
+          path = function(o) {
+            return o;
+          };
+          filters.push(cb(path, req));
           break;
         default:
-          console.log([type(query, query)]);
+          console.log([type, req]);
           throw Error('unimplemented');
       }
-      return new Query(this.finder, filters, this.desc, this.sort_by);
+      return new Query(this.finder, filters, this.orderBy);
     };
 
-    Query.prototype["in"] = function(query) {
-      return this._filters(query, function(target, req) {
-        switch (type(req)) {
+    Query.prototype["in"] = function(req) {
+      return this._filters(req, function(path, req) {
+        var set, type;
+        type = req != null ? req.constructor : void 0;
+        switch (type) {
           case Array:
+            set = set_for(req);
             return function(o) {
-              var i, key, len, set;
-              set = set_for(o[target]);
-              for (i = 0, len = req.length; i < len; i++) {
-                key = req[i];
+              var i, key, len, ref;
+              ref = path(o);
+              for (i = 0, len = ref.length; i < len; i++) {
+                key = ref[i];
                 if (set[key]) {
                   return true;
                 }
@@ -19307,7 +19634,7 @@ module.exports = Vector2D;
           case RegExp:
             return function(o) {
               var i, len, ref, val;
-              ref = o[target];
+              ref = path(o);
               for (i = 0, len = ref.length; i < len; i++) {
                 val = ref[i];
                 if (req.test(val)) {
@@ -19321,51 +19648,41 @@ module.exports = Vector2D;
           case String:
           case Number:
             return function(o) {
-              var set;
-              set = set_for(o[target]);
+              set = set_for(path(o));
               return set[req];
             };
           default:
-            console.log([type(req, req)]);
+            console.log([type, req]);
             throw Error('unimplemented');
         }
       });
     };
 
-    Query.prototype.distinct = function(reduce, target) {
-      var query;
-      query = new Query(this.finder, this.filters, this.desc, this.sort_by);
-      query._distinct = {
-        reduce: reduce,
-        target: target
-      };
-      return query;
-    };
-
-    Query.prototype.where = function(query) {
-      return this._filters(query, function(target, req) {
-        var set;
-        switch (type(req)) {
+    Query.prototype.where = function(req) {
+      return this._filters(req, function(path, req) {
+        var set, type;
+        type = req != null ? req.constructor : void 0;
+        switch (type) {
+          case Function:
+            return req;
           case Array:
             set = set_for(req);
             return function(o) {
-              return set[o[target]];
+              return set[path(o)];
             };
           case RegExp:
             return function(o) {
-              return req.test(o[target]);
+              return req.test(path(o));
             };
-          case Function:
-            return req;
           case null:
           case Boolean:
           case String:
           case Number:
             return function(o) {
-              return o[target] === req;
+              return req === path(o);
             };
           default:
-            console.log([type(req, req)]);
+            console.log([type, req]);
             throw Error('unimplemented');
         }
       });
@@ -19399,33 +19716,25 @@ module.exports = Vector2D;
       });
     };
 
-    Query.prototype.sort = function(desc, order) {
-      var sort_by;
-      if (order == null) {
-        order = this.sort_by;
-      }
-      sort_by = (function() {
-        switch (type(order)) {
-          case Function:
-            return order;
-          case String:
-          case Number:
-            return function(o) {
-              return o[order];
-            };
-          default:
-            console.log([type(req, req)]);
-            throw Error('unimplemented');
-        }
-      })();
-      if (desc === this.desc && sort_by === this.sort_by) {
+    Query.prototype.distinct = function(reduce, target) {
+      var query;
+      query = new Query(this.finder, this.filters, this.orderBy);
+      query._distinct = {
+        reduce: reduce,
+        target: target
+      };
+      return query;
+    };
+
+    Query.prototype.sort = function(sortBy, orderBy) {
+      if (_.isEqual([sortBy, orderBy], [this.sortBy, this.orderBy])) {
         return this;
       }
-      return new Query(this.finder, this.filters, desc, sort_by);
+      return new Query(this.finder, this.filters, sortBy, orderBy);
     };
 
     Query.prototype.shuffle = function() {
-      return new Query(this.finder, this.filters, false, Math.random);
+      return new Query(this.finder, this.filters, Math.random);
     };
 
     Query.prototype.clear = function() {
@@ -19438,52 +19747,6 @@ module.exports = Vector2D;
     Query.prototype.save = function() {
       return this.finder.save(this);
     };
-
-    Query.prototype.fetch = function() {
-      return this;
-    };
-
-    def(Query.prototype, "reduce", {
-      get: function() {
-        if (this._reduce == null) {
-          this.finder.calculate(this);
-        }
-        return this._reduce;
-      }
-    });
-
-    def(Query.prototype, "list", {
-      get: function() {
-        if (this._list == null) {
-          this.finder.calculate(this);
-        }
-        return this._list;
-      }
-    });
-
-    def(Query.prototype, "hash", {
-      get: function() {
-        if (this._hash == null) {
-          this.finder.calculate(this);
-        }
-        return this._hash;
-      }
-    });
-
-    def(Query.prototype, "memory", {
-      get: function() {
-        if (this._memory == null) {
-          this.finder.calculate(this);
-        }
-        return this._memory;
-      }
-    });
-
-    def(Query.prototype, "ids", {
-      get: function() {
-        return Object.keys(this.memory);
-      }
-    });
 
     Query.prototype.find = function(id) {
       return this.hash[id];
@@ -19511,20 +19774,56 @@ module.exports = Vector2D;
           });
         case 1:
           return this.list.map(function(o) {
-            return o[keys[0]];
+            var a;
+            a = _.at(o, keys)[0];
+            return a;
           });
         default:
           return this.list.map(function(o) {
-            var i, key, len, results;
-            results = [];
-            for (i = 0, len = keys.length; i < len; i++) {
-              key = keys[i];
-              results.push(o[key]);
-            }
-            return results;
+            return _.at(o, keys);
           });
       }
     };
+
+    Object.defineProperties(Query.prototype, {
+      reduce: {
+        get: function() {
+          if (this._reduce == null) {
+            this.finder.calculate(this);
+          }
+          return this._reduce;
+        }
+      },
+      list: {
+        get: function() {
+          if (this._list == null) {
+            this.finder.calculate(this);
+          }
+          return this._list;
+        }
+      },
+      hash: {
+        get: function() {
+          if (this._hash == null) {
+            this.finder.calculate(this);
+          }
+          return this._hash;
+        }
+      },
+      memory: {
+        get: function() {
+          if (this._memory == null) {
+            this.finder.calculate(this);
+          }
+          return this._memory;
+        }
+      },
+      ids: {
+        get: function() {
+          return Object.keys(this.memory);
+        }
+      }
+    });
 
     return Query;
 
@@ -19533,375 +19832,184 @@ module.exports = Vector2D;
 }).call(this);
 
 (function() {
-  var Mem, def, type,
+  Object.defineProperties(Array.prototype, {
+    first: {
+      get: function() {
+        return this[0];
+      }
+    },
+    last: {
+      get: function() {
+        return this[this.length - 1];
+      }
+    },
+    cycle: {
+      value: function(n) {
+        var i, idx, ref, results;
+        results = [];
+        for (idx = i = 0, ref = n; 0 <= ref ? i <= ref : i >= ref; idx = 0 <= ref ? ++i : --i) {
+          results.push(this[idx % this.length]);
+        }
+        return results;
+      }
+    }
+  });
+
+}).call(this);
+
+(function() {
+  var Mem, _,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty,
     slice = [].slice;
 
-  type = function(o) {
-    return o != null ? o.constructor : void 0;
-  };
-
-  def = function(obj, key, arg) {
-    var configurable, enumerable, get, set;
-    get = arg.get, set = arg.set;
-    configurable = false;
-    enumerable = false;
-    Object.defineProperty(obj, key, {
-      configurable: configurable,
-      enumerable: enumerable,
-      get: get,
-      set: set
-    });
-  };
+  _ = require("lodash");
 
   Mem = module.exports;
 
   Mem.Rule = (function() {
-    var f_item, f_merge, f_remove, f_set;
-
-    Rule.responses = {};
-
-    f_set = function(list, parent) {
-      var key, ref, val;
-      this.finder.diff = {};
-      ref = this.finder.query.all._memory;
-      for (key in ref) {
-        val = ref[key];
-        this.finder.query.all._memory = {};
-        this.finder.diff.del = true;
-        break;
-      }
-      return this.set_base("merge", list, parent);
-    };
-
-    f_merge = function(list, parent) {
-      this.finder.diff = {};
-      return this.set_base("merge", list, parent);
-    };
-
-    f_remove = function(list) {
-      this.finder.diff = {};
-      return this.set_base(false, list, null);
-    };
-
-    f_item = function(cb) {
-      return function(item, parent) {
-        switch (type(item)) {
-          case Object:
-            return cb.call(this, [item], parent);
-          default:
-            throw Error('invalid data : #{item}');
-        }
-      };
-    };
-
-    Rule.prototype.set = f_set;
-
-    Rule.prototype.reset = f_set;
-
-    Rule.prototype.merge = f_merge;
-
-    Rule.prototype.reject = f_remove;
-
-    Rule.prototype.add = f_item(f_merge);
-
-    Rule.prototype.create = f_item(f_merge);
-
-    Rule.prototype.remove = f_item(f_remove);
-
-    Rule.prototype.fetch = function() {
-      var _id, list, message, sync;
-      sync = this.finder.sync;
-      if (!sync) {
-        return false;
-      }
-      try {
-        list = (function() {
-          var i, len, ref, results;
-          ref = sync.load_index();
-          results = [];
-          for (i = 0, len = ref.length; i < len; i++) {
-            _id = ref[i];
-            results.push(sync.load(_id));
-          }
-          return results;
-        })();
-        f_set.call(this, list);
-        return true;
-      } catch (_error) {
-        message = _error.message;
-        console.log(message);
-        return false;
-      }
-    };
-
     function Rule(field) {
-      var base;
-      this.id = field + "_id";
-      this.list_name = field + "s";
-      this.base_obj = {};
-      this.validates = [];
-      this.responses = (base = Mem.Rule.responses)[field] != null ? base[field] : base[field] = [];
-      this.map_reduce = function() {};
-      this.protect = function() {};
-      this.deploy = (function(_this) {
-        return function(o) {
-          if (!o._id) {
-            o._id = o[_this.id];
-          }
-          if (!o[_this.id]) {
-            return o[_this.id] = o._id;
-          }
-        };
-      })(this);
-      this.finder = new Mem.Finder(function(list) {
-        return list;
-      });
-      this.finder.name = this.list_name;
-      Mem.Collection[field] = this;
-      Mem.Query[this.list_name] = this.finder.query.all;
+      this.field = field;
+      this.model_id = this.field + "_id";
+      this.model_list = this.field + "s";
+      this.depend_on(this.field);
+      this.finder = new Mem.Base.Finder("_id");
+      this.model = Mem.Base.Model;
+      this.dml = new Mem.Base.Collection(this);
+      this.inits = [];
     }
 
     Rule.prototype.schema = function(cb) {
-      var cache_scope, definer;
-      cache_scope = function(key, finder, query_call) {
-        switch (type(query_call)) {
-          case Function:
-            return finder.query.all[key] = function() {
-              var args, base, name;
-              args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-              return (base = finder.query)[name = key + ":" + (JSON.stringify(args))] != null ? base[name] : base[name] = query_call.apply(null, args);
-            };
-          default:
-            return finder.query.all[key] = query_call;
-        }
-      };
-      definer = {
-        sync: (function(_this) {
-          return function(storage, table_name) {
-            if (table_name == null) {
-              table_name = _this.list_name;
-            }
-            return _this.finder.sync = new storage(table_name);
-          };
-        })(this),
-        scope: (function(_this) {
-          return function(cb) {
-            var key, query_call, ref, results;
-            _this.finder.scope = cb(_this.finder.query.all);
-            ref = _this.finder.scope;
-            results = [];
-            for (key in ref) {
-              query_call = ref[key];
-              results.push(cache_scope(key, _this.finder, query_call));
-            }
-            return results;
-          };
-        })(this),
-        "default": (function(_this) {
-          return function(cb) {
-            var key, ref, results, val;
-            ref = cb();
-            results = [];
-            for (key in ref) {
-              val = ref[key];
-              results.push(_this.base_obj[key] = val);
-            }
-            return results;
-          };
-        })(this),
-        depend_on: (function(_this) {
-          return function(parent) {
-            var base;
-            if ((base = Mem.Rule.responses)[parent] == null) {
-              base[parent] = [];
-            }
-            return Mem.Rule.responses[parent].push(_this);
-          };
-        })(this),
-        belongs_to: (function(_this) {
-          return function(parent, option) {
-            var dependent, parent_id, parents;
-            parents = parent + "s";
-            parent_id = parent + "_id";
-            def(_this.base_obj, parent, {
-              get: function() {
-                return Mem.Query[parents].find(this[parent_id]);
-              }
-            });
-            dependent = (option != null ? option.dependent : void 0) != null;
-            if (dependent) {
-              definer.depend_on(parent);
-              return _this.validates.push(function(o) {
-                return o[parent] != null;
-              });
-            }
-          };
-        })(this),
-        has_many: (function(_this) {
-          return function(children, option) {
-            var all, key, query;
-            key = _this.id;
-            all = _this.finder.query.all;
-            query = option != null ? option.query : void 0;
-            cache_scope(children, _this.finder, function(id) {
-              if (query == null) {
-                query = Mem.Query[children];
-              }
-              return query.where(function(o) {
-                return o[key] === id;
-              });
-            });
-            return def(_this.base_obj, children, {
-              get: function() {
-                return all[children](this._id);
-              }
-            });
-          };
-        })(this),
-        shuffle: function() {
-          var query;
-          query = this.finder.query.all.shuffle();
-          query._memory = this.finder.query.all._memory;
-          return Mem.Query[this.list_name] = this.finder.query.all = query;
-        },
-        order: (function(_this) {
-          return function(order) {
-            var query;
-            query = _this.finder.query.all.sort(false, order);
-            query._memory = _this.finder.query.all._memory;
-            return Mem.Query[_this.list_name] = _this.finder.query.all = query;
-          };
-        })(this),
-        protect: (function(_this) {
-          return function() {
-            var keys;
-            keys = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-            return _this.protect = function(o, old) {
-              var i, key, len, results;
-              results = [];
-              for (i = 0, len = keys.length; i < len; i++) {
-                key = keys[i];
-                results.push(o[key] = old[key]);
-              }
-              return results;
-            };
-          };
-        })(this),
-        deploy: (function(_this) {
-          return function(deploy) {
-            _this.deploy = deploy;
-          };
-        })(this),
-        map_reduce: (function(_this) {
-          return function(map_reduce) {
-            _this.map_reduce = map_reduce;
-          };
-        })(this)
-      };
-      return cb.call(definer, this);
-    };
+      var i, init, len, ref;
+      cb.call(this, this.dml);
+      this.model.id = this.model_id;
+      this.model.list = this.model_list;
+      if (this.model === Mem.Base.Model) {
+        this.model = (function(superClass) {
+          extend(model, superClass);
 
-    Rule.prototype.rehash = function(diff) {
-      return this.finder.rehash(this.responses, diff);
-    };
-
-    Rule.prototype.set_base = function(mode, from, parent) {
-      var all, deployer, diff, each, finder, validate_item;
-      finder = this.finder;
-      diff = finder.diff;
-      all = finder.query.all._memory;
-      deployer = (function(_this) {
-        return function(o) {
-          o.__proto__ = _this.base_obj;
-          return _this.deploy(o);
-        };
-      })(this);
-      validate_item = (function(_this) {
-        return function(item) {
-          var i, len, ref, validate;
-          ref = _this.validates;
-          for (i = 0, len = ref.length; i < len; i++) {
-            validate = ref[i];
-            if (!validate(item)) {
-              return false;
-            }
+          function model() {
+            return model.__super__.constructor.apply(this, arguments);
           }
-          return true;
-        };
-      })(this);
-      each = function(process) {
-        var i, id, item, len, ref, ref1;
-        switch (type(from)) {
-          case Array:
-            ref = from || [];
-            for (i = 0, len = ref.length; i < len; i++) {
-              item = ref[i];
-              if (!item) {
-                continue;
-              }
-              process(item);
-            }
-            break;
-          case Object:
-            ref1 = from || {};
-            for (id in ref1) {
-              item = ref1[id];
-              if (!item) {
-                continue;
-              }
-              item._id = id;
-              process(item);
-            }
-        }
-      };
-      switch (mode) {
-        case "merge":
-          each((function(_this) {
-            return function(item) {
-              var emit, key, o, old, val;
-              for (key in parent) {
-                val = parent[key];
-                item[key] = val;
-              }
-              deployer(item);
-              if (!validate_item(item)) {
-                return;
-              }
-              o = {
-                item: item,
-                emits: []
-              };
-              old = all[item._id];
-              if (old != null) {
-                _this.protect(item, old.item);
-                diff.change = true;
-              } else {
-                diff.add = true;
-              }
-              all[item._id] = o;
-              emit = function() {
-                var i, keys, last, map;
-                keys = 3 <= arguments.length ? slice.call(arguments, 0, i = arguments.length - 2) : (i = 0, []), last = arguments[i++], map = arguments[i++];
-                finder.map_reduce = true;
-                return o.emits.push([keys, last, map]);
-              };
-              _this.map_reduce(o.item, emit);
-            };
-          })(this));
-          break;
-        default:
-          each((function(_this) {
-            return function(item) {
-              var old;
-              old = all[item._id];
-              if (old != null) {
-                diff.del = true;
-                delete all[item._id];
-              }
-            };
-          })(this));
+
+          return model;
+
+        })(this.model);
       }
-      this.rehash(diff);
+      ref = this.inits;
+      for (i = 0, len = ref.length; i < len; i++) {
+        init = ref[i];
+        init();
+      }
+      Mem.Model[this.field] = this.finder.model = this.model;
+      Mem.Collection[this.field] = this.dml;
+      Mem.Query[this.model_list] = this.finder.query.all;
+      return this;
+    };
+
+    Rule.prototype.composite = function() {
+      var f, i, len, ref;
+      ref = Mem.Composite[this.field];
+      for (i = 0, len = ref.length; i < len; i++) {
+        f = ref[i];
+        f();
+      }
+    };
+
+    Rule.prototype.depend_on = function(parent) {
+      var base;
+      if ((base = Mem.Composite)[parent] == null) {
+        base[parent] = [];
+      }
+      return Mem.Composite[parent].push(function() {
+        return Mem.Collection[parent].rule.finder.rehash();
+      });
+    };
+
+    Rule.prototype.scope = function(cb) {
+      var key, query_call, ref, results;
+      this.finder.scope = cb(this.finder.query.all);
+      ref = this.finder.scope;
+      results = [];
+      for (key in ref) {
+        query_call = ref[key];
+        results.push(this.finder.use_cache(key, query_call));
+      }
+      return results;
+    };
+
+    Rule.prototype.belongs_to = function(parent, option) {
+      var dependent, parent_id, parents;
+      parents = parent + "s";
+      parent_id = parent + "_id";
+      this.inits.push((function(_this) {
+        return function() {
+          return Object.defineProperty(_this.model.prototype, parent, {
+            get: function() {
+              return Mem.Query[parents].find(this[parent_id]);
+            }
+          });
+        };
+      })(this));
+      dependent = option != null ? option.dependent : void 0;
+      if (dependent) {
+        this.depend_on(parent);
+        return this.finder.validate(function(o) {
+          return o[parent] != null;
+        });
+      }
+    };
+
+    Rule.prototype.has_many = function(children, option) {
+      var all, key, query;
+      key = this.model_id;
+      all = this.finder.query.all;
+      query = option != null ? option.query : void 0;
+      this.finder.use_cache(children, function(id) {
+        if (query == null) {
+          query = Mem.Query[children];
+        }
+        return query.where(function(o) {
+          return o[key] === id;
+        });
+      });
+      return this.inits.push((function(_this) {
+        return function() {
+          return Object.defineProperty(_this.model.prototype, children, {
+            get: function() {
+              return all[children](this._id);
+            }
+          });
+        };
+      })(this));
+    };
+
+    Rule.prototype.shuffle = function() {
+      var query;
+      query = this.finder.query.all.shuffle();
+      query._memory = this.finder.query.all._memory;
+      return Mem.Query[this.model_list] = this.finder.query.all = query;
+    };
+
+    Rule.prototype.order = function(sortBy, orderBy) {
+      var query;
+      query = this.finder.query.all.sort(sortBy, orderBy);
+      query._memory = this.finder.query.all._memory;
+      return Mem.Query[this.model_list] = this.finder.query.all = query;
+    };
+
+    Rule.prototype.protect = function() {
+      var keys;
+      keys = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      return this.protect = function(o, old) {
+        var i, key, len, results;
+        results = [];
+        for (i = 0, len = keys.length; i < len; i++) {
+          key = keys[i];
+          results.push(o[key] = old[key]);
+        }
+        return results;
+      };
     };
 
     return Rule;
@@ -19911,7 +20019,11 @@ module.exports = Vector2D;
 }).call(this);
 
 (function() {
-  var Mem, Serial, array_base_parser, base, escaped, func, key, pack, patch_size, serial, string_parser, string_serializer, symbol_parser, symbol_serializer, textfy, unpack, url_serializer;
+  var Mem, OBJ, Serial, array_base_parser, base, escaped, func, key, pack, patch_size, serial, string_parser, string_serializer, symbol_parser, symbol_serializer, textfy, unpack, url_serializer;
+
+  OBJ = function() {
+    return new Object(null);
+  };
 
   serial = null;
 
@@ -20046,7 +20158,7 @@ module.exports = Vector2D;
     },
     Keys: function(val) {
       var bool, hash, i, key, len, list;
-      hash = {};
+      hash = OBJ();
       if (val.length) {
         list = array_base_parser(val);
         for (i = 0, len = list.length; i < len; i++) {
@@ -20154,82 +20266,7 @@ module.exports = Vector2D;
 
 }).call(this);
 
-(function() {
-  var Sync, pack, ref, test, testStorage, unpack, web_storage;
-
-  ref = module.exports, Sync = ref.Sync, pack = ref.pack, unpack = ref.unpack;
-
-  web_storage = function(storage) {
-    return function(name) {
-      var key;
-      key = function(_id) {
-        return name + "~" + _id;
-      };
-      return {
-        load_index: function() {
-          var str;
-          str = storage.getItem(name);
-          if (str) {
-            return unpack.Array(str);
-          } else {
-            return [];
-          }
-        },
-        load: function(_id) {
-          return JSON.parse(storage.getItem(key(_id)) || (function() {
-            throw "Record Not Found";
-          })());
-        },
-        store_index: function(ids) {
-          return storage.setItem(name, pack.Array(ids));
-        },
-        store: function(_id, model) {
-          return storage.setItem(key(_id), JSON.stringify(model));
-        },
-        "delete": function(_id) {
-          return storage.removeItem(key(_id));
-        }
-      };
-    };
-  };
-
-  test = {};
-
-  testStorage = {
-    key: function(idx) {
-      return Object.keys(test)[idx];
-    },
-    setItem: function(key, val) {
-      test[key] = val;
-      console.log(":: " + key + " => " + val);
-      return void 0;
-    },
-    getItem: function(key) {
-      var val;
-      return val = test[key];
-    },
-    removeItem: function(key) {
-      var val;
-      val = test[key];
-      delete test[key];
-      console.log(":: " + key + " delete (" + val + ")");
-      return void 0;
-    }
-  };
-
-  if (typeof sessionStorage !== "undefined" && sessionStorage !== null) {
-    Sync.session = web_storage(sessionStorage);
-  }
-
-  if (typeof localStorage !== "undefined" && localStorage !== null) {
-    Sync.local = web_storage(localStorage);
-  }
-
-  Sync.test = web_storage(testStorage);
-
-}).call(this);
-
-},{}],6:[function(require,module,exports){
+},{"lodash":4}],6:[function(require,module,exports){
 /**
  mithril-canvas - Mithril Canvas library
  @version v0.0.5
@@ -21407,6 +21444,1911 @@ module.exports = Vector2D;
 }).call(this);
 
 },{"lodash":4}],8:[function(require,module,exports){
+/**
+ mithril-tie - browser input helper for mithril
+ @version v0.0.4
+ @link https://github.com/7korobi/mithril-tie
+ @license 
+**/
+
+
+(function() {
+  module.exports = {};
+
+}).call(this);
+
+(function() {
+  var Mem, Tie, memory_prop;
+
+  Mem = require("memory-record");
+
+  memory_prop = function(params, key, unpack) {
+    return function(val) {
+      if (arguments.length) {
+        return params[key] = unpack(val);
+      } else {
+        return params[key];
+      }
+    };
+  };
+
+  Tie = (function() {
+    Tie.types = {
+      url: ["protocol", "host", "pathname", "search", "hash", "href"],
+      store: ["session", "local", "cookie"]
+    };
+
+    Tie.build_input = function(tie, id, params, input) {
+      tie.deploy(memory_prop, params, input);
+      return tie;
+    };
+
+    Tie.build_url = function(hh, params, Url) {
+      var conf, format, h, i, j, len, len1, ref, ref1, store, tie, type;
+      tie = new Tie;
+      ref = Tie.types.url;
+      for (i = 0, len = ref.length; i < len; i++) {
+        type = ref[i];
+        if (h = hh[type]) {
+          for (conf in h) {
+            format = h[conf];
+            if (!Url.conf[conf]) {
+              Url.type[type].push(Url.conf[conf] = new Url(conf, type, format));
+            }
+          }
+        }
+      }
+      ref1 = Mem.Query.stores.list;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        store = ref1[j];
+        tie.deploy(memory_prop, params, store);
+      }
+      return tie;
+    };
+
+    Tie.build_store = function(ids, define, params) {
+      var i, len, ref, store, tie;
+      if (ids == null) {
+        ids = [];
+      }
+      tie = new Tie;
+      ref = Mem.Query.stores.where({
+        _id: ids
+      }).list;
+      for (i = 0, len = ref.length; i < len; i++) {
+        store = ref[i];
+        tie.deploy(define, params, store);
+      }
+      return tie;
+    };
+
+    function Tie() {
+      this.prop = {};
+    }
+
+    Tie.prototype.deploy = function(define, params, arg) {
+      var _id, current, pack, type, unpack, val;
+      _id = arg._id, current = arg.current, type = arg.type;
+      if (current == null) {
+        current = null;
+      }
+      unpack = Mem.unpack[type];
+      pack = Mem.pack[type];
+      this.prop[_id] = define(params, _id, unpack, pack);
+      val = this.prop[_id]();
+      switch (val) {
+        case void 0:
+        case null:
+        case "":
+          return this.prop[_id](val = current);
+      }
+    };
+
+    Tie.prototype.copyBy = function(source) {
+      var _id, prop, ref, results;
+      ref = this.prop;
+      results = [];
+      for (_id in ref) {
+        prop = ref[_id];
+        results.push(prop(source.prop[_id]()));
+      }
+      return results;
+    };
+
+    Tie.prototype.copyTo = function(target) {
+      var _id, prop, ref, results;
+      ref = this.prop;
+      results = [];
+      for (_id in ref) {
+        prop = ref[_id];
+        results.push(target.prop[_id](prop()));
+      }
+      return results;
+    };
+
+    return Tie;
+
+  })();
+
+  Tie.params = {};
+
+  module.exports.Tie = Tie;
+
+}).call(this);
+
+(function() {
+  var InputTie, Mem, Tie, _, _attr_form, m, submit_pick, validity_attr,
+    slice = [].slice;
+
+  Mem = require("memory-record");
+
+  m = require("mithril");
+
+  _ = require("lodash");
+
+  Tie = module.exports.Tie;
+
+  submit_pick = function() {
+    var attrs;
+    attrs = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+    return _.assignIn.apply(_, attrs);
+  };
+
+  _attr_form = function(tie, arg) {
+    var attr, ma;
+    attr = arg.attr;
+    return ma = _.assignIn(attr, {
+      config: tie._config(),
+      disabled: tie.disabled,
+      onsubmit: function(e) {
+        tie.do_submit();
+        return false;
+      }
+    });
+  };
+
+  validity_attr = {
+    valid: "valid",
+    valueMissing: "required",
+    typeMismatch: "type",
+    patternMismatch: "pattern",
+    rangeUnderflow: "min",
+    rangeOverflow: "max",
+    stepMismatch: "step",
+    tooLines: "max_line",
+    tooLong: "maxlength",
+    tooShort: "minlength",
+    hasSecret: "not_secret",
+    hasPlayer: "not_player"
+  };
+
+  InputTie = (function() {
+    InputTie.prototype.timeout = 1000;
+
+    InputTie.prototype._debounce = function() {
+      this.timer = true;
+      return new Promise((function(_this) {
+        return function(_, ng) {
+          return _this.timer = setTimeout(function() {
+            return ng("reset " + _this.timeout + "ms ");
+          }, _this.timeout);
+        };
+      })(this));
+    };
+
+    InputTie.prototype._config = function(_id) {
+      return (function(_this) {
+        return function(elem, isNew, context) {
+          if (isNew) {
+            _this.do_view(_id, elem);
+            return context.onunload = function() {
+              return _this.do_view(_id);
+            };
+          }
+        };
+      })(this);
+    };
+
+    InputTie.prototype.do_view = function(id, elem) {
+      if (id) {
+        if (elem) {
+          if (elem.validity == null) {
+            elem.validity = {
+              valid: true
+            };
+          }
+          if (elem.checkValidity == null) {
+            elem.checkValidity = function() {
+              return this.validity.valid;
+            };
+          }
+          if (elem.setCustomValidity == null) {
+            elem.setCustomValidity = function(validationMessage) {
+              this.validationMessage = validationMessage;
+              if (this.validationMessage) {
+                this.validity.customError = true;
+                return this.validity.valid = false;
+              } else {
+                this.validity.customError = false;
+                return this.validity.valid = true;
+              }
+            };
+          }
+        }
+        return this.input[id].do_view(elem);
+      } else {
+        return this.dom = elem;
+      }
+    };
+
+    InputTie.prototype.do_change = function(id, value) {
+      var input, old;
+      input = this.input[id];
+      value = input.__val(value);
+      old = this.params[id];
+      if (old === value) {
+        this.stay(id, value);
+      } else {
+        this.params[id] = value;
+        this.change(id, value, old);
+      }
+      input.do_change(value);
+      return this.disabled = !!this.timer;
+    };
+
+    InputTie.prototype.do_fail = function(id, value) {
+      var input;
+      input = this.input[id];
+      value = input.__val(value);
+      return input.do_fail(value);
+    };
+
+    InputTie.prototype.do_blur = function(id, e) {
+      return this.focus(id, false);
+    };
+
+    InputTie.prototype.do_focus = function(id, e) {
+      this.focus(id, true, this.focus_id);
+      this.focus_id = id;
+      return this.focused = this.input[id];
+    };
+
+    InputTie.prototype.do_select = function(id, e) {
+      var anchorOffset, focusOffset, offsets, s;
+      s = getSelection();
+      anchorOffset = s.anchorOffset, focusOffset = s.focusOffset;
+      offsets = [anchorOffset, focusOffset].sort();
+      return this.select(id, s.toString(), offsets);
+    };
+
+    InputTie.prototype.do_submit = function() {
+      var p_action, p_timer, value;
+      if (this.timer) {
+        return;
+      }
+      if (!this.dom.checkValidity()) {
+        return;
+      }
+      p_timer = this._debounce();
+      p_action = value = this.action();
+      if (this.action.then == null) {
+        p_action = new Promise(function(ok) {
+          return ok(value);
+        });
+      }
+      this.on();
+      m.redraw();
+      return Promise.race([p_timer, p_action]).then((function(_this) {
+        return function() {
+          return clearTimeout(_this.timer);
+        };
+      })(this))["catch"]((function(_this) {
+        return function(message) {
+          _this.message = message;
+          return console.log(_this.message);
+        };
+      })(this)).then((function(_this) {
+        return function() {
+          _this.off();
+          return m.redraw();
+        };
+      })(this));
+    };
+
+    InputTie.prototype.action = function() {};
+
+    InputTie.prototype.disable = function(id, b) {};
+
+    InputTie.prototype.focus = function(id, b, old_id) {};
+
+    InputTie.prototype.stay = function(id, value) {};
+
+    InputTie.prototype.change = function(id, value, old_value) {};
+
+    InputTie.prototype.select = function(id, str, offsets) {};
+
+    InputTie.prototype.off = function() {
+      this.disabled = false;
+      this.disable(false);
+      return this.timer = null;
+    };
+
+    InputTie.prototype.on = function() {
+      this.disabled = true;
+      return this.disable(true);
+    };
+
+    InputTie.prototype.cancel = function() {
+      clearTimeout(this.timer);
+      return this.off();
+    };
+
+    InputTie.prototype.errors = function(cb) {
+      var dom, id, ref, results;
+      ref = this.input;
+      results = [];
+      for (id in ref) {
+        dom = ref[id].dom;
+        if (dom) {
+          if (dom.validationMessage) {
+            results.push(cb(dom.validationMessage));
+          } else {
+            results.push(void 0);
+          }
+        }
+      }
+      return results;
+    };
+
+    InputTie.prototype.infos = function(cb) {
+      var id, info_msg, ref, results;
+      ref = this.input;
+      results = [];
+      for (id in ref) {
+        info_msg = ref[id].info_msg;
+        if (info_msg) {
+          if (info_msg) {
+            results.push(cb(info_msg));
+          } else {
+            results.push(void 0);
+          }
+        }
+      }
+      return results;
+    };
+
+    InputTie.prototype.submit = function() {
+      var children, ma, tag;
+      children = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      tag = "button.btn";
+      if (!this.disabled) {
+        tag += ".edge";
+      }
+      if (this.disabled) {
+        tag += ".active";
+      }
+      ma = this._submit_attr(null, {});
+      return m.apply(null, [tag, ma].concat(slice.call(children)));
+    };
+
+    InputTie.prototype.draw = function() {
+      var draw, i, len, ref, results;
+      ref = this._draw;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        draw = ref[i];
+        results.push(draw());
+      }
+      return results;
+    };
+
+    InputTie.prototype.do_draw = function(cb) {
+      return this._draw.push(cb);
+    };
+
+    InputTie.prototype.bundle = function(format) {
+      var _id, attr, input, type;
+      _id = format._id, attr = format.attr;
+      InputTie.format(format);
+      type = InputTie.type[attr.type];
+      if (attr.multiple) {
+        type = type.multiple;
+      }
+      this.input[_id] = input = new type(this, format);
+      Tie.build_input(this.tie, _id, this.params, input);
+      this.do_change(_id, this.params[_id]);
+      return this.input[_id];
+    };
+
+    InputTie.prototype._submit = function(arg) {
+      var attr;
+      this.form = arg.form;
+      attr = {};
+      this._submit_attr = this.form ? function(__, attr) {
+        return submit_pick(attr, {
+          type: "submit",
+          disabled: this.disabled
+        });
+      } : function(__, attr) {
+        var submit;
+        this.do_view(null, {});
+        submit = (function(_this) {
+          return function(e) {
+            _this.do_submit();
+            return false;
+          };
+        })(this);
+        return submit_pick(attr, {
+          type: "button",
+          disabled: this.disabled,
+          onclick: submit,
+          onmouseup: submit,
+          ontouchend: submit
+        });
+      };
+      return this;
+    };
+
+    function InputTie(arg) {
+      var i, id, ids, len;
+      this.params = arg.params, ids = arg.ids;
+      this.off();
+      this._draw = [];
+      this.input = {};
+      this.tie = new Tie;
+      this.prop = this.tie.prop;
+      for (i = 0, len = ids.length; i < len; i++) {
+        id = ids[i];
+        this.bundle(Mem.Query.inputs.find(id));
+      }
+      return;
+    }
+
+    InputTie.form = function(params, ids) {
+      return new InputTie({
+        ids: ids,
+        params: params
+      })._submit({
+        form: function() {
+          var attr, vdom;
+          attr = arguments[0], vdom = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+          return m("form", _attr_form(this, attr), vdom);
+        }
+      });
+    };
+
+    InputTie.btns = function(params, ids) {
+      return new InputTie({
+        ids: ids,
+        params: params
+      })._submit({});
+    };
+
+    InputTie.format = function(o) {
+      var _id, base, base1, label, ref, ref1, results;
+      if (o.label == null) {
+        o.label = {};
+      }
+      if ((base = o.label).attr == null) {
+        base.attr = {};
+      }
+      if ((ref = o.attr) != null ? ref.name : void 0) {
+        if ((base1 = o.attr).id == null) {
+          base1.id = o.attr.name;
+        }
+        o.label.attr["for"] = o.attr.name;
+      }
+      ref1 = o.options;
+      results = [];
+      for (_id in ref1) {
+        label = ref1[_id];
+        if (!label._id) {
+          results.push(o.options[_id] = "object" === typeof label ? (label._id = _id, label) : {
+            _id: _id,
+            label: label
+          });
+        }
+      }
+      return results;
+    };
+
+    InputTie.type = {};
+
+    return InputTie;
+
+  })();
+
+  module.exports.InputTie = InputTie;
+
+}).call(this);
+
+(function() {
+  var LocationStore, Mem, Tie, Url, _, decode, encode, state;
+
+  _ = require("lodash");
+
+  Mem = require("memory-record");
+
+  Tie = module.exports.Tie;
+
+  decode = Mem.unpack.Url;
+
+  encode = Mem.pack.Url;
+
+  state = _.debounce(function() {
+    var params;
+    params = Url.location();
+    if (decode(location.href) !== decode(params.href)) {
+      console.warn("url changed.");
+      if (typeof history !== "undefined" && history !== null) {
+        history[Url.mode]("URL", null, params.href);
+      }
+      return Url.popstate();
+    }
+  }, 50);
+
+  LocationStore = (function() {
+    LocationStore.now = function() {
+      return new this(location);
+    };
+
+    function LocationStore(arg) {
+      this.protocol = arg.protocol, this.host = arg.host, this.pathname = arg.pathname, this.search = arg.search, this.hash = arg.hash, this.href = arg.href;
+      return;
+    }
+
+    LocationStore.prototype.each = function(cb) {
+      var j, k, len, len1, path, ref, ref1, type, url;
+      ref = Tie.types.url;
+      for (j = 0, len = ref.length; j < len; j++) {
+        type = ref[j];
+        ref1 = Url.type[type];
+        for (k = 0, len1 = ref1.length; k < len1; k++) {
+          url = ref1[k];
+          path = this[type];
+          cb(url, path, type);
+        }
+      }
+      return this;
+    };
+
+    LocationStore.prototype.fetch = function() {
+      this.each(function(url, path, target) {
+        return url.fetch(path);
+      });
+      return this;
+    };
+
+    LocationStore.prototype.view = function() {
+      this.each((function(_this) {
+        return function(url, path, target) {
+          return _this[target] = url.view(path);
+        };
+      })(this));
+      this.href = this.protocol + "//" + this.host + this.pathname + this.search + this.hash;
+      return this;
+    };
+
+    return LocationStore;
+
+  })();
+
+  Url = (function() {
+    var j, len, ref, type;
+
+    Url.conf = {};
+
+    Url.type = {};
+
+    ref = Tie.types.url;
+    for (j = 0, len = ref.length; j < len; j++) {
+      type = ref[j];
+      Url.type[type] = [];
+    }
+
+    Url.define = function(key) {
+      return Mem.Query.stores.hash[key];
+    };
+
+    Url.maps = function(hh) {
+      this.tie = Tie.build_url(hh, Tie.params, this);
+      this.prop = this.tie.prop;
+      return this.params = Tie.params;
+    };
+
+    Url.popstate = function() {
+      this._loc = LocationStore.now();
+      this._loc.fetch();
+      return this.mode = "replaceState";
+    };
+
+    Url.pushstate = function() {
+      this.mode = "pushState";
+      return state();
+    };
+
+    Url.replacestate = function() {
+      return state();
+    };
+
+    Url.location = function() {
+      if (this._loc == null) {
+        this.popstate();
+      }
+      return this._loc.view();
+    };
+
+    function Url(_id, type1, format) {
+      var regexp;
+      this._id = _id;
+      this.type = type1;
+      this.format = format;
+      this.keys = [];
+      regexp = this.format.replace(/[.]/gi, function(key) {
+        return "\\" + key;
+      }).replace(/:([a-z_]+)/gi, (function(_this) {
+        return function(_, key) {
+          var o;
+          if (!(o = Url.define(key))) {
+            console.error("undefined key : " + key);
+            return;
+          }
+          _this.keys.push(key);
+          return Mem.Serial.url[o.type];
+        };
+      })(this), "i");
+      this.scanner = new RegExp(regexp);
+    }
+
+    Url.prototype.serialize = function() {
+      var k, key, len1, path, ref1, serial;
+      path = this.format;
+      ref1 = this.keys;
+      for (k = 0, len1 = ref1.length; k < len1; k++) {
+        key = ref1[k];
+        serial = Mem.pack[Url.define(key).type];
+        path = path.replace(RegExp(":" + key, "gi"), serial(Url.params[key]));
+      }
+      return encode(path);
+    };
+
+    Url.prototype.values = function(hash) {
+      var k, key, len1, ref1, results;
+      if (hash == null) {
+        hash = {};
+      }
+      ref1 = this.keys;
+      results = [];
+      for (k = 0, len1 = ref1.length; k < len1; k++) {
+        key = ref1[k];
+        results.push(hash[key] || Url.params[key]);
+      }
+      return results;
+    };
+
+    Url.prototype.fetch = function(path) {
+      var i, k, key, len1, ref1, results;
+      this.match = this.scanner.exec(path);
+      if (this.match) {
+        this.match.shift();
+        ref1 = this.keys;
+        results = [];
+        for (i = k = 0, len1 = ref1.length; k < len1; i = ++k) {
+          key = ref1[i];
+          results.push(Url.prop[key](decode(this.match[i])));
+        }
+        return results;
+      }
+    };
+
+    Url.prototype.view = function(path) {
+      this.match = this.scanner.exec(path);
+      if (this.match) {
+        return path.replace(this.scanner, this.serialize());
+      }
+      if (this.current) {
+        this.match = true;
+        path += (function() {
+          if (path.length) {
+            return "&";
+          } else {
+            switch (this.type) {
+              case "hash":
+                return "#";
+              case "search":
+                return "?";
+            }
+          }
+        }).call(this);
+        path += this.serialize();
+      }
+      return path;
+    };
+
+    return Url;
+
+  })();
+
+  module.exports.Url = Url;
+
+}).call(this);
+
+(function() {
+  var Tie, WebStore, cookie_prop, storage_prop;
+
+  Tie = module.exports.Tie;
+
+  storage_prop = function(store, key, unpack, pack) {
+    return function(val) {
+      if (arguments.length) {
+        return store.setItem(key, pack(val));
+      } else {
+        return unpack(store.getItem(key));
+      }
+    };
+  };
+
+  cookie_prop = function(options, key, unpack, pack) {
+    return function(val) {
+      var ary, domain, expires, match, path, secure, time;
+      if (arguments.length) {
+        ary = [key + "=" + (pack(val))];
+        time = options.time, domain = options.domain, path = options.path, secure = options.secure;
+        if (time) {
+          expires = new Date(Math.min(2147397247000, Date.now() + time * 3600000));
+          ary.push("expires=" + (expires.toUTCString()));
+        }
+        if (domain) {
+          ary.push("domain=" + domain);
+        }
+        if (path) {
+          ary.push("path=" + path);
+        }
+        if (secure) {
+          ary.push("secure");
+        }
+        return document.cookie = ary.join("; ");
+      } else {
+        match = RegExp(key + "=([^;]+)").exec(document.cookie);
+        if ((match != null ? match[0] : void 0) != null) {
+          return unpack(match[1]);
+        }
+      }
+    };
+  };
+
+  WebStore = (function() {
+    function WebStore() {}
+
+    WebStore.maps = function(ha) {
+      this.session = Tie.build_store(ha.session, storage_prop, sessionStorage);
+      this.local = Tie.build_store(ha.local, storage_prop, localStorage);
+      this.cookie = Tie.build_store(ha.cookie, cookie_prop, this.cookie_options);
+      return this.params = Tie.params;
+    };
+
+    WebStore.copyBy = function(source) {
+      var i, len, ref, results, store;
+      ref = Tie.types.store;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        store = ref[i];
+        results.push(this[store].copyBy(source));
+      }
+      return results;
+    };
+
+    WebStore.copyTo = function(target) {
+      var i, len, ref, results, store;
+      ref = Tie.types.store;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        store = ref[i];
+        results.push(this[store].copyTo(target));
+      }
+      return results;
+    };
+
+    WebStore.format = function(o) {
+      if (o.type == null) {
+        o.type = "String";
+      }
+      return o.current != null ? o.current : o.current = (function() {
+        switch (o.type) {
+          case "Keys":
+            return {};
+          case "Date":
+          case "Number":
+            return 0;
+          case "String":
+            return null;
+          case "Text":
+            return "";
+        }
+      })();
+    };
+
+    return WebStore;
+
+  })();
+
+  module.exports.WebStore = WebStore;
+
+}).call(this);
+
+(function() {
+  var InputTie, Mem,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Mem = require("memory-record");
+
+  InputTie = module.exports.InputTie;
+
+  new Mem.Rule("input").schema(function() {
+    this.scope(function(all) {
+      return {
+        checkbox: function(sean) {
+          return all.where(function(o) {
+            return o.attr.type === 'checkbox' && o.sean === sean;
+          });
+        }
+      };
+    });
+    return this.model = (function(superClass) {
+      extend(model, superClass);
+
+      function model() {
+        InputTie.format(this);
+      }
+
+      return model;
+
+    })(this.model);
+  });
+
+}).call(this);
+
+(function() {
+  var Mem, WebStore,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Mem = require("memory-record");
+
+  WebStore = module.exports.WebStore;
+
+  new Mem.Rule("store").schema(function() {
+    this.scope(function(all) {});
+    return this.model = (function(superClass) {
+      extend(model, superClass);
+
+      function model() {
+        WebStore.format(this);
+      }
+
+      return model;
+
+    })(this.model);
+  });
+
+}).call(this);
+
+(function() {
+  var InputTie, Mem, _, _attr_label, basic_input, change_attr, e_checked, e_selected, e_value, i, input_attr, input_pick, j, key, len, len1, m, number_input, option_pick, ref, ref1,
+    slice = [].slice,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Mem = require("memory-record");
+
+  m = require("mithril");
+
+  _ = require("lodash");
+
+  InputTie = module.exports.InputTie;
+
+  input_pick = function(attrs, last) {
+    return _.assignIn.apply(_, [{}].concat(slice.call(attrs), [last]));
+  };
+
+  option_pick = function() {
+    var attrs;
+    attrs = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+    attrs = attrs.map(function(ma) {
+      var target;
+      target = ["id", "className", "selected", "disabled", "value", "label"];
+      if (ma.badge) {
+        target.push("badge");
+      }
+      return _.pick(ma, target);
+    });
+    return _.assignIn.apply(_, attrs);
+  };
+
+  _attr_label = function() {
+    var _id, attrs;
+    _id = arguments[0], attrs = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+    return _.assignIn.apply(_, attrs);
+  };
+
+  change_attr = function() {
+    var _id, _value, attrs, b, ma, ref, tie;
+    _id = arguments[0], attrs = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+    ref = b = this, _value = ref._value, tie = ref.tie;
+    return ma = input_pick(attrs, {
+      config: tie._config(_id),
+      disabled: tie.disabled,
+      onblur: function(e) {
+        return tie.do_blur(_id, e);
+      },
+      onfocus: function(e) {
+        return tie.do_focus(_id, e);
+      },
+      onselect: function(e) {
+        return tie.do_select(_id, e);
+      },
+      onchange: function(e) {
+        return tie.do_change(_id, _value(e), ma);
+      },
+      oninvalid: function(e) {
+        return tie.do_fail(_id, _value(e), ma);
+      }
+    });
+  };
+
+  input_attr = function() {
+    var _id, _value, attrs, b, ma, ref, tie;
+    _id = arguments[0], attrs = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+    ref = b = this, _value = ref._value, tie = ref.tie;
+    return ma = input_pick(attrs, {
+      config: tie._config(_id),
+      disabled: tie.disabled,
+      onblur: function(e) {
+        return tie.do_blur(_id, e);
+      },
+      onfocus: function(e) {
+        return tie.do_focus(_id, e);
+      },
+      onselect: function(e) {
+        return tie.do_select(_id, e);
+      },
+      oninput: function(e) {
+        return tie.do_change(_id, _value(e), ma);
+      },
+      oninvalid: function(e) {
+        return tie.do_fail(_id, _value(e), ma);
+      }
+    });
+  };
+
+  e_checked = function(e) {
+    return (e.currentTarget || this).checked;
+  };
+
+  e_value = function(e) {
+    return (e.currentTarget || this).value;
+  };
+
+  e_selected = function(e) {
+    var i, len, list, news, option;
+    list = (e.currentTarget || this).selectedOptions;
+    news = {};
+    for (i = 0, len = list.length; i < len; i++) {
+      option = list[i];
+      news[option.value] = true;
+    }
+    return news;
+  };
+
+  basic_input = (function() {
+    basic_input.prototype._attr_label = _attr_label;
+
+    basic_input.prototype._value = e_value;
+
+    basic_input.prototype._attr = input_attr;
+
+    basic_input.prototype._debounce = InputTie.prototype._debounce;
+
+    basic_input.prototype.timeout = 100;
+
+    basic_input.prototype.type = "String";
+
+    basic_input.prototype.option_default = {
+      className: "icon-cancel-alt",
+      label: ""
+    };
+
+    function basic_input(tie1, format) {
+      var info, option_default, ref;
+      this.tie = tie1;
+      this.format = format;
+      ref = this.format, this._id = ref._id, this.options = ref.options, this.attr = ref.attr, this.name = ref.name, this.current = ref.current, info = ref.info, option_default = ref.option_default;
+      this.__info = info;
+      this.__uri = Mem.pack[this.type];
+      this.__val = Mem.unpack[this.type];
+      this.tie.do_draw(this.draw.bind(this));
+      this.option_default = _.assign({}, this.option_default, option_default);
+    }
+
+    basic_input.prototype.draw = function() {
+      var info, label, ref;
+      ref = this.format, info = ref.info, label = ref.label;
+      this.__name = this.attr.name || this._id;
+      return this.__value = this.tie.params[this._id];
+    };
+
+    basic_input.prototype.info = function(info_msg) {
+      this.info_msg = info_msg != null ? info_msg : "";
+    };
+
+    basic_input.prototype.error = function(msg) {
+      var ref;
+      if (msg == null) {
+        msg = "";
+      }
+      return (ref = this.dom) != null ? ref.setCustomValidity(msg) : void 0;
+    };
+
+    basic_input.prototype.do_view = function(dom) {
+      this.dom = dom;
+    };
+
+    basic_input.prototype.do_fail = function(value) {};
+
+    basic_input.prototype.do_change = function(value) {
+      var key, max, max_line, max_sjis, maxlength, min, minlength, msg, not_player, not_secret, pattern, ref, ref1, required, step, type, unit, val;
+      ref = this.attr, not_secret = ref.not_secret, not_player = ref.not_player, unit = ref.unit, max_sjis = ref.max_sjis, max_line = ref.max_line, minlength = ref.minlength, maxlength = ref.maxlength, min = ref.min, max = ref.max, step = ref.step, pattern = ref.pattern, type = ref.type, required = ref.required;
+      if (this.dom && !this.dom.validity.customError) {
+        if (this.format.error) {
+          ref1 = this.dom.validity;
+          for (key in ref1) {
+            val = ref1[key];
+            if (!(val)) {
+              continue;
+            }
+            msg = this.format.error[validity_attr[key]];
+            if (msg) {
+              this.error(msg);
+              return;
+            }
+          }
+        }
+      }
+    };
+
+    basic_input.prototype.option = function(value) {
+      var ref;
+      if (value) {
+        return ((ref = this.options) != null ? ref[value] : void 0) || {};
+      } else {
+        return this.option_default;
+      }
+    };
+
+    basic_input.prototype.item = function(value, m_attr) {
+      var ma, option;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      option = this.option(value);
+      ma = option_pick(this.attr, m_attr, option, {
+        className: [option.className, m_attr.className].join(" "),
+        value: this.__uri(value),
+        selected: value === this.__value
+      });
+      return m('option', ma, ma.label);
+    };
+
+    basic_input.prototype.datalist = function(m_attr) {
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      throw "not implement";
+    };
+
+    basic_input.prototype.head = function(m_attr) {
+      var ma;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      ma = this._attr_label(m_attr);
+      return m("label", ma, this.name);
+    };
+
+    basic_input.prototype.label = function(m_attr) {
+      var info, ma, option, text;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      if (this.label_for) {
+        if (this.options) {
+          option = this.options[this.__value];
+          if (option) {
+            return this.label_for(option);
+          }
+        }
+      }
+      if (info = this.__info) {
+        if (info.label) {
+          text = info.label;
+        }
+        if (info.off && !this.__value) {
+          text = info.off;
+        }
+        if (info.on && this.__value) {
+          text = info.on;
+        }
+        if (info.valid && this.__value) {
+          text = info.valid;
+        }
+        ma = this._attr_label(this._id, m_attr, this.format.label.attr);
+        return m("label", ma, text);
+      }
+    };
+
+    basic_input.prototype.field = function(m_attr) {
+      var ma;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      ma = this._attr(this._id, this.attr, m_attr, {
+        className: [this.attr.className, m_attr.className].join(" "),
+        name: this.__name,
+        value: this.__value
+      });
+      return m("input", ma);
+    };
+
+    return basic_input;
+
+  })();
+
+  number_input = (function(superClass) {
+    extend(number_input, superClass);
+
+    function number_input() {
+      return number_input.__super__.constructor.apply(this, arguments);
+    }
+
+    number_input.prototype.type = "Number";
+
+    return number_input;
+
+  })(basic_input);
+
+  ref = ["hidden", "tel", "password", "datetime", "date", "month", "week", "time", "datetime-local", "color"];
+  for (i = 0, len = ref.length; i < len; i++) {
+    key = ref[i];
+    InputTie.type[key] = basic_input;
+  }
+
+  ref1 = ["number", "range"];
+  for (j = 0, len1 = ref1.length; j < len1; j++) {
+    key = ref1[j];
+    InputTie.type[key] = number_input;
+  }
+
+  InputTie.type.checkbox = (function(superClass) {
+    extend(checkbox, superClass);
+
+    function checkbox() {
+      return checkbox.__super__.constructor.apply(this, arguments);
+    }
+
+    checkbox.prototype._value = e_checked;
+
+    checkbox.prototype._attr = change_attr;
+
+    checkbox.prototype.type = "Bool";
+
+    checkbox.prototype.option = function(value) {
+      var ref2, sw;
+      sw = value ? "on" : "off";
+      return ((ref2 = this.options) != null ? ref2[sw] : void 0) || {};
+    };
+
+    checkbox.prototype.field = function(m_attr) {
+      var ma, option;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      option = this.option(this.__value);
+      ma = this._attr(this._id, this.attr, m_attr, {
+        className: [this.attr.className, m_attr.className].join(" "),
+        type: "checkbox",
+        name: this.__name,
+        value: this.__uri(this.__value),
+        checked: this.__value
+      });
+      return m("input", ma);
+    };
+
+    return checkbox;
+
+  })(basic_input);
+
+  InputTie.type.radio = (function(superClass) {
+    extend(radio, superClass);
+
+    function radio() {
+      return radio.__super__.constructor.apply(this, arguments);
+    }
+
+    radio.prototype._value = e_value;
+
+    radio.prototype._attr = change_attr;
+
+    radio.prototype.field = function(m_attr) {
+      var list, option, value;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      list = (function() {
+        var ref2, results;
+        ref2 = this.options;
+        results = [];
+        for (value in ref2) {
+          option = ref2[value];
+          if (!option.hidden) {
+            results.push(this.item(value, m_attr));
+          }
+        }
+        return results;
+      }).call(this);
+      if (!(this.attr.required && this.format.current)) {
+        list.unshift(this.item("", m_attr));
+      }
+      return list;
+    };
+
+    radio.prototype.item = function(value, m_attr) {
+      var ma, option;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      option = this.option(value);
+      ma = this._attr(this._id, this.attr, m_attr, option, {
+        className: [this.attr.className, option.className, m_attr.className].join(" "),
+        type: "radio",
+        name: this.__name,
+        value: this.__uri(value),
+        checked: value === this.__value
+      });
+      return m("input", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
+    };
+
+    return radio;
+
+  })(basic_input);
+
+  InputTie.type.select = (function(superClass) {
+    extend(select, superClass);
+
+    function select() {
+      return select.__super__.constructor.apply(this, arguments);
+    }
+
+    select.prototype._value = e_value;
+
+    select.prototype._attr = change_attr;
+
+    select.prototype.option_default = {
+      className: "",
+      label: "―――"
+    };
+
+    select.prototype.field = function(m_attr) {
+      var list, ma, option, value;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      list = (function() {
+        var ref2, results;
+        ref2 = this.options;
+        results = [];
+        for (value in ref2) {
+          option = ref2[value];
+          if (!option.hidden) {
+            results.push(this.item(value, m_attr));
+          }
+        }
+        return results;
+      }).call(this);
+      if (!(this.attr.required && this.format.current)) {
+        list.unshift(this.item("", m_attr));
+      }
+      ma = this._attr(this._id, this.attr, m_attr, {
+        className: [this.attr.className, m_attr.className].join(" "),
+        name: this.__name
+      });
+      return m('select', ma, list);
+    };
+
+    return select;
+
+  })(basic_input);
+
+  InputTie.type.select.multiple = (function(superClass) {
+    extend(multiple, superClass);
+
+    function multiple() {
+      return multiple.__super__.constructor.apply(this, arguments);
+    }
+
+    multiple.prototype._value = e_selected;
+
+    multiple.prototype._attr = change_attr;
+
+    multiple.prototype.field = function(m_attr) {
+      var ma, option, value;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      ma = this._attr(this._id, this.attr, m_attr, {
+        className: [this.attr.className, m_attr.className].join(" "),
+        name: this.__name
+      });
+      return m('select', ma, (function() {
+        var ref2, results;
+        ref2 = this.options;
+        results = [];
+        for (value in ref2) {
+          option = ref2[value];
+          if (!option.hidden) {
+            results.push(this.item(value));
+          }
+        }
+        return results;
+      }).call(this));
+    };
+
+    multiple.prototype.item = function(value, m_attr) {
+      var ma, option;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      option = this.option(value);
+      ma = option_pick(this.attr, m_attr, option, {
+        className: [option.className, m_attr.className].join(" "),
+        value: this.__uri(value),
+        selected: this.__value[value]
+      });
+      return m('option', ma, ma.label);
+    };
+
+    return multiple;
+
+  })(basic_input);
+
+}).call(this);
+
+(function() {
+  var InputTie, _, _pick, btn_input, c_icon, c_stack, c_tap, m,
+    slice = [].slice,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  m = require("mithril");
+
+  _ = require("lodash");
+
+  InputTie = module.exports.InputTie;
+
+  _pick = function(attrs, last) {
+    attrs = attrs.map(function(ma) {
+      var target;
+      target = ["id", "className"];
+      if (ma.title) {
+        target.push("title");
+      }
+      if (ma["data-tooltip"] != null) {
+        target.push("data-tooltip");
+      }
+      return _.pick(ma, target);
+    });
+    return _.assignIn.apply(_, slice.call(attrs).concat([last]));
+  };
+
+  c_stack = function(bool, new_val, target) {
+    if (target) {
+      new_val.push(target);
+    } else {
+      new_val.pop();
+    }
+    return new_val;
+  };
+
+  c_tap = function(bool, new_val) {
+    return new_val;
+  };
+
+  c_icon = function(bool, new_val) {
+    if (bool) {
+      return null;
+    } else {
+      return new_val;
+    }
+  };
+
+  btn_input = (function(superClass) {
+    extend(btn_input, superClass);
+
+    function btn_input() {
+      return btn_input.__super__.constructor.apply(this, arguments);
+    }
+
+    btn_input.prototype._attr = function() {
+      var _id, attrs, b, className, css, disabled, i, last, ma, onchange, ref, selected, target, tie, value;
+      _id = arguments[0], attrs = 3 <= arguments.length ? slice.call(arguments, 1, i = arguments.length - 1) : (i = 1, []), last = arguments[i++];
+      ref = b = this, _id = ref._id, tie = ref.tie;
+      className = last.className, disabled = last.disabled, selected = last.selected, value = last.value, target = last.target;
+      onchange = function() {
+        if (b.timer) {
+          return;
+        }
+        b._debounce()["catch"](function() {
+          return b.timer = null;
+        });
+        value = b._value(selected, value, target);
+        tie.do_change(_id, value, ma);
+        if (!b.dom.validity.valid) {
+          return tie.do_fail(_id, value, ma);
+        }
+      };
+      css = "btn";
+      if (!(disabled || tie.disabled)) {
+        css += " edge";
+      }
+      if (selected) {
+        css += " active";
+      }
+      if (className) {
+        css += " " + className;
+      }
+      return ma = _pick(attrs, {
+        config: tie._config(_id),
+        className: css,
+        onclick: onchange,
+        onmouseup: onchange,
+        ontouchend: onchange
+      });
+    };
+
+    btn_input.prototype.do_change = function(value) {
+      var error, pattern, ref, required;
+      ref = this.attr, pattern = ref.pattern, required = ref.required;
+      if (this.dom) {
+        if (required && !value) {
+          error = "このフィールドを入力してください。";
+        }
+        if (pattern && value.match(new Regexp(pattern))) {
+          error = "指定されている形式で入力してください。";
+        }
+        this.error(error);
+      }
+      return btn_input.__super__.do_change.apply(this, arguments);
+    };
+
+    btn_input.prototype.head = function(m_attr) {
+      var ma, name;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      name = this.format.name;
+      ma = this._attr_label(m_attr);
+      return m("h6", ma, name);
+    };
+
+    return btn_input;
+
+  })(InputTie.type.hidden);
+
+  InputTie.type.toggle = (function(superClass) {
+    extend(toggle, superClass);
+
+    function toggle() {
+      return toggle.__super__.constructor.apply(this, arguments);
+    }
+
+    toggle.prototype._value = c_tap;
+
+    toggle.prototype.field = function(m_attr) {
+      var ma, next, option;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      next = this.__value;
+      option = this.option(next);
+      ma = this._attr(this._id, this.attr, m_attr, {
+        className: [this.attr.className, m_attr.className].join(" "),
+        value: next
+      });
+      return m("span", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
+    };
+
+    return toggle;
+
+  })(btn_input);
+
+  InputTie.type.checkbox_btn = (function(superClass) {
+    extend(checkbox_btn, superClass);
+
+    function checkbox_btn() {
+      return checkbox_btn.__super__.constructor.apply(this, arguments);
+    }
+
+    checkbox_btn.prototype._value = c_tap;
+
+    checkbox_btn.prototype.type = "Bool";
+
+    checkbox_btn.prototype.option = function(value) {
+      var ref, sw;
+      sw = value ? "on" : "off";
+      return ((ref = this.options) != null ? ref[sw] : void 0) || {};
+    };
+
+    checkbox_btn.prototype.field = function(m_attr) {
+      var ma, option;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      option = this.option(this.__value);
+      ma = this._attr(this._id, this.attr, m_attr, {
+        className: [this.attr.className, m_attr.className].join(" "),
+        selected: this.__value,
+        value: this.__value
+      });
+      return m("span", ma, this.__name, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
+    };
+
+    return checkbox_btn;
+
+  })(btn_input);
+
+  InputTie.type.icon = (function(superClass) {
+    var bigicon, menuicon, tags;
+
+    extend(icon, superClass);
+
+    function icon() {
+      return icon.__super__.constructor.apply(this, arguments);
+    }
+
+    icon.prototype._value = c_icon;
+
+    icon.prototype.option_default = {
+      className: "",
+      label: "",
+      "data-tooltip": "選択しない"
+    };
+
+    icon.prototype.field = function(m_attr) {
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      throw "not implement";
+    };
+
+    icon.prototype["with"] = function(value, mode) {
+      var bool;
+      bool = this.__value === value;
+      switch (mode) {
+        case bool:
+          return this._with[value]();
+        case !bool:
+          return null;
+        default:
+          this._with = {};
+          return this._with[value] = mode;
+      }
+    };
+
+    icon.prototype.item = function(value, m_attr) {
+      var ma, option, tag;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      option = this.option(value);
+      tag = m_attr.tag || "menuicon";
+      ma = this._attr(this._id, this.attr, m_attr, option, {
+        className: [this.attr.className, m_attr.className, option.className].join(" "),
+        selected: value === this.__value,
+        value: value
+      });
+      return tags[tag](value, ma, option);
+    };
+
+    menuicon = function(icon, attr, option) {
+      return m("a.menuicon", attr, m("span.icon-" + icon), option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
+    };
+
+    bigicon = function(icon, attr, option) {
+      return m("section", attr, m(".bigicon", m("span.icon-" + icon)), option.badge ? m(".badge.pull-right", option.badge()) : void 0);
+    };
+
+    tags = {
+      menuicon: menuicon,
+      bigicon: bigicon
+    };
+
+    return icon;
+
+  })(btn_input);
+
+  InputTie.type.btns = (function(superClass) {
+    extend(btns, superClass);
+
+    function btns() {
+      return btns.__super__.constructor.apply(this, arguments);
+    }
+
+    btns.prototype._value = c_tap;
+
+    btns.prototype.item = function(value, m_attr) {
+      var ma, option;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      option = this.option(value);
+      ma = this._attr(this._id, this.attr, m_attr, option, {
+        className: [this.attr.className, option.className, m_attr.className].join(" "),
+        selected: value === this.__value,
+        value: value
+      });
+      return m("span", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
+    };
+
+    btns.prototype.field = function(m_attr) {
+      var list, option, value;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      list = (function() {
+        var ref, results;
+        ref = this.options;
+        results = [];
+        for (value in ref) {
+          option = ref[value];
+          if (!option.hidden) {
+            results.push(this.item(value, m_attr));
+          }
+        }
+        return results;
+      }).call(this);
+      if (!(this.attr.required && this.format.current)) {
+        list.unshift(this.item("", m_attr));
+      }
+      return list;
+    };
+
+    return btns;
+
+  })(btn_input);
+
+  InputTie.type.btns.multiple = (function(superClass) {
+    extend(multiple, superClass);
+
+    function multiple() {
+      return multiple.__super__.constructor.apply(this, arguments);
+    }
+
+    multiple.prototype._value = c_tap;
+
+    multiple.prototype.item = function(value, m_attr) {
+      var ma, option;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      option = this.option(value);
+      ma = this._attr(this._id, this.attr, m_attr, option, {
+        className: [this.attr.className, option.className, m_attr.className].join(" "),
+        selected: this.__value[value],
+        value: this.__value[value]
+      });
+      return m("span", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
+    };
+
+    multiple.prototype.field = function(m_attr) {
+      var _id, attr, option, ref, ref1, results, value;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      ref = this.format, _id = ref._id, attr = ref.attr;
+      this.__values = this.tie.params[_id];
+      ref1 = this.options;
+      results = [];
+      for (value in ref1) {
+        option = ref1[value];
+        if (!option.hidden) {
+          results.push(this.item(value, m_attr));
+        }
+      }
+      return results;
+    };
+
+    return multiple;
+
+  })(btn_input);
+
+  InputTie.type.stack = (function(superClass) {
+    extend(stack, superClass);
+
+    function stack() {
+      return stack.__super__.constructor.apply(this, arguments);
+    }
+
+    stack.prototype._value = c_stack;
+
+    stack.prototype.type = "Array";
+
+    stack.prototype.field = function(m_attr) {
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      throw "not implement";
+    };
+
+    stack.prototype.item = function(target, m_attr) {
+      var ma, option;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      option = this.option(target);
+      ma = this._attr(this._id, this.attr, m_attr, option, {
+        className: [this.attr.className, option.className, m_attr.className].join(" "),
+        target: target,
+        value: this.__value
+      });
+      return m("span", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
+    };
+
+    stack.prototype.back = function(m_attr) {
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      return this.item("", m_attr);
+    };
+
+    return stack;
+
+  })(btn_input);
+
+}).call(this);
+
+(function() {
+  var InputTie, _, i, key, len, m, ref, text_input, text_point,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  m = require("mithril");
+
+  _ = require("lodash");
+
+  InputTie = module.exports.InputTie;
+
+  text_point = function(size) {
+    var pt;
+    pt = 20;
+    if (50 < size) {
+      pt += (size - 50) / 14;
+    }
+    return Math.floor(pt);
+  };
+
+  text_input = (function(superClass) {
+    extend(text_input, superClass);
+
+    function text_input() {
+      return text_input.__super__.constructor.apply(this, arguments);
+    }
+
+    text_input.prototype.draw = function() {
+      var line, point, size, sjis, unit;
+      unit = this.attr.unit;
+      this.__name = this.attr.name || this._id;
+      this.__value = this.tie.params[this._id];
+      size = this.__value.length;
+      sjis = this.__value.sjis_length;
+      line = this.__value.split("\n").length;
+      if ("point" === unit) {
+        point = text_point(sjis);
+      }
+      return this.calc = {
+        point: point,
+        line: line,
+        sjis: sjis,
+        size: size
+      };
+    };
+
+    text_input.prototype.do_change = function(value) {
+      var error, max_line, max_sjis, maxlength, minlength, not_player, not_secret, pattern, ref, ref1, required, unit;
+      ref = this.attr, not_secret = ref.not_secret, not_player = ref.not_player, unit = ref.unit, max_sjis = ref.max_sjis, max_line = ref.max_line, minlength = ref.minlength, maxlength = ref.maxlength, pattern = ref.pattern, required = ref.required;
+      if (this.dom) {
+        if (not_secret && value.match(/>>[\=\*\!]\d+/g)) {
+          error = "あぶない！秘密会話へのアンカーがあります！";
+        }
+        if (not_player && value.match(/\/\*|\*\//g)) {
+          error = "/*中の人の発言があります。*/";
+        }
+        if (max_line && max_line < line) {
+          error = "このテキストを " + max_line + " 行以下にしてください。";
+        }
+        if (max_sjis && max_sjis < sjis) {
+          error = "このテキストを " + max_sjis + " 文字以下にしてください。";
+        }
+        if (minlength && (0 < (ref1 = value.length) && ref1 < minlength)) {
+          if (!InputTie.skip_minlength) {
+            error = "このテキストは " + minlength + " 文字以上で指定してください（現在は " + value.length + " 文字です）。";
+          }
+        }
+        this.error(error);
+      }
+      return text_input.__super__.do_change.apply(this, arguments);
+    };
+
+    text_input.prototype.foot = function(m_attr) {
+      var ma, mark, max_size, size;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      ma = this._attr_label(this._id, this.attr, m_attr);
+      size = this.calc.size;
+      if (ma.maxlength) {
+        max_size = ma.maxlength;
+      }
+      if (ma.max_sjis) {
+        size = this.calc.sjis;
+        max_size = ma.max_sjis;
+      }
+      if (this.calc.point) {
+        mark = m("span.emboss", this.calc.point + "pt ");
+      } else {
+        mark = "";
+      }
+      if (!this.dom || this.dom.validationMessage) {
+        mark = m("span.WSAY.emboss", "⊘");
+      }
+      return [mark, " " + size, max_size != null ? m("sub", "/" + max_size) : void 0, m("sub", "字"), " " + this.calc.line, ma.max_line != null ? m("sub", "/" + ma.max_line) : void 0, m("sub", "行")];
+    };
+
+    return text_input;
+
+  })(InputTie.type.hidden);
+
+  InputTie.type.textarea = (function(superClass) {
+    extend(textarea, superClass);
+
+    function textarea() {
+      return textarea.__super__.constructor.apply(this, arguments);
+    }
+
+    textarea.prototype.field = function(m_attr) {
+      var ma;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      ma = this._attr(this._id, this.attr, m_attr, {
+        className: [this.attr.className, m_attr.className].join(" "),
+        name: this.__name
+      });
+      return m("textarea", ma, this.__value);
+    };
+
+    return textarea;
+
+  })(text_input);
+
+  ref = ["text", "search", "url", "email"];
+  for (i = 0, len = ref.length; i < len; i++) {
+    key = ref[i];
+    InputTie.type[key] = text_input;
+  }
+
+}).call(this);
+
+},{"lodash":4,"memory-record":5,"mithril":9}],9:[function(require,module,exports){
 ;(function (global, factory) { // eslint-disable-line
 	"use strict"
 	/* eslint-disable no-undef */
@@ -23641,7 +25583,7 @@ module.exports = Vector2D;
 	return m
 }); // eslint-disable-line
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 (function() {
   var b, deploy;
 
@@ -23697,15 +25639,8 @@ module.exports = Vector2D;
     win: require('mithril-giji'),
     Canvas: require('mithril-canvas')(head.browser),
     DELAY: require('delay.yml'),
-    GUI: require('gui'),
-    Url: require('url_store'),
-    WebStore: require('web_store'),
-    InputTie: require('input_tie')
+    GUI: require('gui')
   });
-
-  require("conf_input");
-
-  require("conf_store");
 
   GUI.Animate = require('gui_animate');
 
@@ -23714,6 +25649,8 @@ module.exports = Vector2D;
   deploy(require('base'));
 
   deploy(require('timer'));
+
+  deploy(require('mithril-tie'));
 
   require('_ext');
 
@@ -23724,9 +25661,9 @@ module.exports = Vector2D;
 }).call(this);
 
 
-},{"_ext":10,"base":11,"bounce.js":2,"conf_input":12,"conf_store":13,"delay.yml":1,"gui":14,"gui_animate":15,"gui_form":16,"headjs/dist/1.0.0/head":3,"input_tie":17,"lodash":4,"memory-record":5,"mithril":8,"mithril-canvas":6,"mithril-giji":7,"submit":20,"timer":22,"url_store":23,"web_store":24}],10:[function(require,module,exports){
+},{"_ext":11,"base":12,"bounce.js":2,"delay.yml":1,"gui":13,"gui_animate":14,"gui_form":15,"headjs/dist/1.0.0/head":3,"lodash":4,"memory-record":5,"mithril":9,"mithril-canvas":6,"mithril-giji":7,"mithril-tie":8,"submit":16,"timer":17}],11:[function(require,module,exports){
 (function(){
-  var player, unanchor, anchor, anchor_preview, unrandom, random, random_preview, link_regexp, link_regexp_g, id_num, uri_to_link, link, space, br, unbr, nowrap, unhtml, defines;
+  var player, unanchor, anchor, anchor_preview, unrandom, random, random_preview, link_regexp, link_regexp_g, id_num, uri_to_link, link, space, br, unbr, nowrap, unhtml;
   player = function(log){
     if (!log) {
       return log;
@@ -23829,33 +25766,7 @@ module.exports = Vector2D;
   };
   Number.MAX_INT32 = 0x7fffffff;
   Number.MAX_BITS = 0xffffffff;
-  defines = function(obj, hash){
-    var configurable, enumerable, key, ref$, get, set;
-    configurable = false;
-    enumerable = false;
-    for (key in hash) {
-      ref$ = hash[key], get = ref$.get, set = ref$.set;
-      Object.defineProperty(obj.prototype, key, {
-        configurable: configurable,
-        enumerable: enumerable,
-        get: get,
-        set: set
-      });
-    }
-  };
-  defines(Array, {
-    last: {
-      get: function(){
-        return this[this.length - 1];
-      }
-    },
-    first: {
-      get: function(){
-        return this[0];
-      }
-    }
-  });
-  defines(String, {
+  Object.defineProperties(String.prototype, {
     deco_preview: {
       get: function(){
         return br(space(player(anchor_preview(link(random_preview(unhtml(this)))))));
@@ -23891,7 +25802,7 @@ module.exports = Vector2D;
   });
 }).call(this);
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function() {
   var btn, btns, eq, include, is_true, keys_eq,
     slice = [].slice;
@@ -24014,49 +25925,7 @@ module.exports = Vector2D;
 
 }).call(this);
 
-},{}],12:[function(require,module,exports){
-(function() {
-  var InputTie, Mem;
-
-  Mem = require("memory-record");
-
-  InputTie = require("./input_tie");
-
-  new Mem.Rule("input").schema(function() {
-    this.scope(function(all) {
-      return {
-        checkbox: function(sean) {
-          return all.where(function(o) {
-            return o.attr.type === 'checkbox' && o.sean === sean;
-          });
-        }
-      };
-    });
-    return this.deploy(function(o) {
-      return InputTie.format(o);
-    });
-  });
-
-}).call(this);
-
-},{"./input_tie":17,"memory-record":5}],13:[function(require,module,exports){
-(function() {
-  var Mem, WebStore;
-
-  Mem = require("memory-record");
-
-  WebStore = require("./web_store");
-
-  new Mem.Rule("store").schema(function() {
-    this.scope(function(all) {});
-    return this.deploy(function(o) {
-      return WebStore.format(o);
-    });
-  });
-
-}).call(this);
-
-},{"./web_store":24,"memory-record":5}],14:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function() {
   var GUI, ids_list, ids_sort, name_config, obj_config,
     slice = [].slice;
@@ -24338,7 +26207,7 @@ module.exports = Vector2D;
 
 }).call(this);
 
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function() {
   var Animate;
 
@@ -24494,7 +26363,7 @@ module.exports = Vector2D;
 
 }).call(this);
 
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 (function() {
   var form, submit;
 
@@ -24542,1400 +26411,7 @@ module.exports = Vector2D;
 
 }).call(this);
 
-},{}],17:[function(require,module,exports){
-(function() {
-  var InputTie, Mem, Tie, _, _attr_form, _attr_label, _debounce, basic_input, change_attr, e_checked, e_selected, e_value, i, input_attr, input_pick, j, key, len, len1, m, number_input, option_pick, ref, ref1, submit_pick, validity_attr,
-    slice = [].slice,
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
-
-  Tie = require("./tie");
-
-  Mem = require("memory-record");
-
-  m = require("mithril");
-
-  _ = require("lodash");
-
-  submit_pick = function() {
-    var attrs;
-    attrs = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    return _.assignIn.apply(_, attrs);
-  };
-
-  input_pick = function(attrs, last) {
-    return _.assignIn.apply(_, [{}].concat(slice.call(attrs), [last]));
-  };
-
-  option_pick = function() {
-    var attrs;
-    attrs = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-    attrs = attrs.map(function(ma) {
-      var target;
-      target = ["id", "className", "selected", "disabled", "value", "label"];
-      if (ma.badge) {
-        target.push("badge");
-      }
-      return _.pick(ma, target);
-    });
-    return _.assignIn.apply(_, attrs);
-  };
-
-  _attr_form = function(tie, arg) {
-    var attr, ma;
-    attr = arg.attr;
-    return ma = _.assignIn(attr, {
-      config: tie._config(),
-      disabled: tie.disabled,
-      onsubmit: function(e) {
-        tie.do_submit();
-        return false;
-      }
-    });
-  };
-
-  _attr_label = function() {
-    var _id, attrs;
-    _id = arguments[0], attrs = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-    return _.assignIn.apply(_, attrs);
-  };
-
-  change_attr = function() {
-    var _id, _value, attrs, b, ma, ref, tie;
-    _id = arguments[0], attrs = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-    ref = b = this, _value = ref._value, tie = ref.tie;
-    return ma = input_pick(attrs, {
-      config: tie._config(_id),
-      disabled: tie.disabled,
-      onblur: function(e) {
-        return tie.do_blur(_id, e);
-      },
-      onfocus: function(e) {
-        return tie.do_focus(_id, e);
-      },
-      onselect: function(e) {
-        return tie.do_select(_id, e);
-      },
-      onchange: function(e) {
-        return tie.do_change(_id, _value(e), ma);
-      },
-      oninvalid: function(e) {
-        return tie.do_fail(_id, _value(e), ma);
-      }
-    });
-  };
-
-  input_attr = function() {
-    var _id, _value, attrs, b, ma, ref, tie;
-    _id = arguments[0], attrs = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-    ref = b = this, _value = ref._value, tie = ref.tie;
-    return ma = input_pick(attrs, {
-      config: tie._config(_id),
-      disabled: tie.disabled,
-      onblur: function(e) {
-        return tie.do_blur(_id, e);
-      },
-      onfocus: function(e) {
-        return tie.do_focus(_id, e);
-      },
-      onselect: function(e) {
-        return tie.do_select(_id, e);
-      },
-      oninput: function(e) {
-        return tie.do_change(_id, _value(e), ma);
-      },
-      oninvalid: function(e) {
-        return tie.do_fail(_id, _value(e), ma);
-      }
-    });
-  };
-
-  e_checked = function(e) {
-    return (e.currentTarget || this).checked;
-  };
-
-  e_value = function(e) {
-    return (e.currentTarget || this).value;
-  };
-
-  e_selected = function(e) {
-    var i, len, list, news, option;
-    list = (e.currentTarget || this).selectedOptions;
-    news = {};
-    for (i = 0, len = list.length; i < len; i++) {
-      option = list[i];
-      news[option.value] = true;
-    }
-    return news;
-  };
-
-  _debounce = function() {
-    this.timer = true;
-    return new Promise((function(_this) {
-      return function(_, ng) {
-        return _this.timer = setTimeout(function() {
-          return ng("reset " + _this.timeout + "ms ");
-        }, _this.timeout);
-      };
-    })(this));
-  };
-
-  validity_attr = {
-    valid: "valid",
-    valueMissing: "required",
-    typeMismatch: "type",
-    patternMismatch: "pattern",
-    rangeUnderflow: "min",
-    rangeOverflow: "max",
-    stepMismatch: "step",
-    tooLines: "max_line",
-    tooLong: "maxlength",
-    tooShort: "minlength",
-    hasSecret: "not_secret",
-    hasPlayer: "not_player"
-  };
-
-  InputTie = (function() {
-    InputTie.prototype.timeout = 1000;
-
-    InputTie.prototype._debounce = _debounce;
-
-    InputTie.prototype._config = function(_id) {
-      return (function(_this) {
-        return function(elem, isNew, context) {
-          if (isNew) {
-            _this.do_view(_id, elem);
-            return context.onunload = function() {
-              return _this.do_view(_id);
-            };
-          }
-        };
-      })(this);
-    };
-
-    InputTie.prototype.do_view = function(id, elem) {
-      if (id) {
-        if (elem) {
-          if (elem.validity == null) {
-            elem.validity = {
-              valid: true
-            };
-          }
-          if (elem.checkValidity == null) {
-            elem.checkValidity = function() {
-              return this.validity.valid;
-            };
-          }
-          if (elem.setCustomValidity == null) {
-            elem.setCustomValidity = function(validationMessage) {
-              this.validationMessage = validationMessage;
-              if (this.validationMessage) {
-                this.validity.customError = true;
-                return this.validity.valid = false;
-              } else {
-                this.validity.customError = false;
-                return this.validity.valid = true;
-              }
-            };
-          }
-        }
-        return this.input[id].do_view(elem);
-      } else {
-        return this.dom = elem;
-      }
-    };
-
-    InputTie.prototype.do_change = function(id, value) {
-      var input, old;
-      input = this.input[id];
-      value = input.__val(value);
-      old = this.params[id];
-      if (old === value) {
-        this.stay(id, value);
-      } else {
-        this.params[id] = value;
-        this.change(id, value, old);
-      }
-      input.do_change(value);
-      return this.disabled = !!this.timer;
-    };
-
-    InputTie.prototype.do_fail = function(id, value) {
-      var input;
-      input = this.input[id];
-      value = input.__val(value);
-      return input.do_fail(value);
-    };
-
-    InputTie.prototype.do_blur = function(id, e) {
-      return this.focus(id, false);
-    };
-
-    InputTie.prototype.do_focus = function(id, e) {
-      this.focus(id, true, this.focus_id);
-      this.focus_id = id;
-      return this.focused = this.input[id];
-    };
-
-    InputTie.prototype.do_select = function(id, e) {
-      var anchorOffset, focusOffset, offsets, s;
-      s = getSelection();
-      anchorOffset = s.anchorOffset, focusOffset = s.focusOffset;
-      offsets = [anchorOffset, focusOffset].sort();
-      return this.select(id, s.toString(), offsets);
-    };
-
-    InputTie.prototype.do_submit = function() {
-      var p_action, p_timer, value;
-      if (this.timer) {
-        return;
-      }
-      if (!this.dom.checkValidity()) {
-        return;
-      }
-      p_timer = this._debounce();
-      p_action = value = this.action();
-      if (this.action.then == null) {
-        p_action = new Promise(function(ok) {
-          return ok(value);
-        });
-      }
-      this.on();
-      m.redraw();
-      return Promise.race([p_timer, p_action]).then((function(_this) {
-        return function() {
-          return clearTimeout(_this.timer);
-        };
-      })(this))["catch"]((function(_this) {
-        return function(message) {
-          _this.message = message;
-          return console.log(_this.message);
-        };
-      })(this)).then((function(_this) {
-        return function() {
-          _this.off();
-          return m.redraw();
-        };
-      })(this));
-    };
-
-    InputTie.prototype.action = function() {};
-
-    InputTie.prototype.disable = function(id, b) {};
-
-    InputTie.prototype.focus = function(id, b, old_id) {};
-
-    InputTie.prototype.stay = function(id, value) {};
-
-    InputTie.prototype.change = function(id, value, old_value) {};
-
-    InputTie.prototype.select = function(id, str, offsets) {};
-
-    InputTie.prototype.off = function() {
-      this.disabled = false;
-      this.disable(false);
-      return this.timer = null;
-    };
-
-    InputTie.prototype.on = function() {
-      this.disabled = true;
-      return this.disable(true);
-    };
-
-    InputTie.prototype.cancel = function() {
-      clearTimeout(this.timer);
-      return this.off();
-    };
-
-    InputTie.prototype.errors = function(cb) {
-      var dom, id, ref, results;
-      ref = this.input;
-      results = [];
-      for (id in ref) {
-        dom = ref[id].dom;
-        if (dom) {
-          if (dom.validationMessage) {
-            results.push(cb(dom.validationMessage));
-          } else {
-            results.push(void 0);
-          }
-        }
-      }
-      return results;
-    };
-
-    InputTie.prototype.infos = function(cb) {
-      var id, info_msg, ref, results;
-      ref = this.input;
-      results = [];
-      for (id in ref) {
-        info_msg = ref[id].info_msg;
-        if (info_msg) {
-          if (info_msg) {
-            results.push(cb(info_msg));
-          } else {
-            results.push(void 0);
-          }
-        }
-      }
-      return results;
-    };
-
-    InputTie.prototype.submit = function() {
-      var children, ma, tag;
-      children = 1 <= arguments.length ? slice.call(arguments, 0) : [];
-      tag = "button.btn";
-      if (!this.disabled) {
-        tag += ".edge";
-      }
-      if (this.disabled) {
-        tag += ".active";
-      }
-      ma = this._submit_attr(null, {});
-      return m.apply(null, [tag, ma].concat(slice.call(children)));
-    };
-
-    InputTie.prototype.draw = function() {
-      var draw, i, len, ref, results;
-      ref = this._draw;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        draw = ref[i];
-        results.push(draw());
-      }
-      return results;
-    };
-
-    InputTie.prototype.do_draw = function(cb) {
-      return this._draw.push(cb);
-    };
-
-    InputTie.prototype.bundle = function(format) {
-      var _id, attr, input, type;
-      _id = format._id, attr = format.attr;
-      InputTie.format(format);
-      type = InputTie.type[attr.type];
-      if (attr.multiple) {
-        type = type.multiple;
-      }
-      this.input[_id] = input = new type(this, format);
-      Tie.build_input(this.tie, _id, this.params, input);
-      return this.do_change(_id, this.params[_id]);
-    };
-
-    InputTie.prototype._submit = function(arg) {
-      var attr;
-      this.form = arg.form;
-      attr = {};
-      this._submit_attr = this.form ? function(__, attr) {
-        return submit_pick(attr, {
-          type: "submit",
-          disabled: this.disabled
-        });
-      } : function(__, attr) {
-        var submit;
-        this.do_view(null, {});
-        submit = (function(_this) {
-          return function(e) {
-            _this.do_submit();
-            return false;
-          };
-        })(this);
-        return submit_pick(attr, {
-          type: "button",
-          disabled: this.disabled,
-          onclick: submit,
-          onmouseup: submit,
-          ontouchend: submit
-        });
-      };
-      return this;
-    };
-
-    function InputTie(arg) {
-      var i, id, ids, len;
-      this.params = arg.params, ids = arg.ids;
-      this.off();
-      this._draw = [];
-      this.input = {};
-      this.tie = new Tie;
-      this.prop = this.tie.prop;
-      for (i = 0, len = ids.length; i < len; i++) {
-        id = ids[i];
-        this.bundle(Mem.Query.inputs.find(id));
-      }
-      return;
-    }
-
-    InputTie.form = function(params, ids) {
-      return new InputTie({
-        ids: ids,
-        params: params
-      })._submit({
-        form: function() {
-          var attr, vdom;
-          attr = arguments[0], vdom = 2 <= arguments.length ? slice.call(arguments, 1) : [];
-          return m("form", _attr_form(this, attr), vdom);
-        }
-      });
-    };
-
-    InputTie.btns = function(params, ids) {
-      return new InputTie({
-        ids: ids,
-        params: params
-      })._submit({});
-    };
-
-    InputTie.format = function(o) {
-      var _id, base, base1, label, ref, ref1, results;
-      if (o.label == null) {
-        o.label = {};
-      }
-      if ((base = o.label).attr == null) {
-        base.attr = {};
-      }
-      if ((ref = o.attr) != null ? ref.name : void 0) {
-        if ((base1 = o.attr).id == null) {
-          base1.id = o.attr.name;
-        }
-        o.label.attr["for"] = o.attr.name;
-      }
-      ref1 = o.options;
-      results = [];
-      for (_id in ref1) {
-        label = ref1[_id];
-        if (!label._id) {
-          results.push(o.options[_id] = "object" === typeof label ? (label._id = _id, label) : {
-            _id: _id,
-            label: label
-          });
-        }
-      }
-      return results;
-    };
-
-    InputTie.type = {};
-
-    return InputTie;
-
-  })();
-
-  basic_input = (function() {
-    basic_input.prototype._attr_label = _attr_label;
-
-    basic_input.prototype._value = e_value;
-
-    basic_input.prototype._attr = input_attr;
-
-    basic_input.prototype._debounce = _debounce;
-
-    basic_input.prototype.timeout = 100;
-
-    basic_input.prototype.type = "String";
-
-    basic_input.prototype.default_option = {
-      className: "icon-cancel-alt",
-      label: ""
-    };
-
-    function basic_input(tie1, format1) {
-      var info, ref;
-      this.tie = tie1;
-      this.format = format1;
-      ref = this.format, this._id = ref._id, this.options = ref.options, this.attr = ref.attr, this.name = ref.name, this.current = ref.current, info = ref.info;
-      this.__info = info;
-      this.__uri = Mem.pack[this.type];
-      this.__val = Mem.unpack[this.type];
-      this.tie.do_draw(this.draw.bind(this));
-    }
-
-    basic_input.prototype.draw = function() {
-      var info, label, ref;
-      ref = this.format, info = ref.info, label = ref.label;
-      this.__name = this.attr.name || this._id;
-      return this.__value = this.tie.params[this._id];
-    };
-
-    basic_input.prototype.info = function(info_msg1) {
-      this.info_msg = info_msg1 != null ? info_msg1 : "";
-    };
-
-    basic_input.prototype.error = function(msg) {
-      var ref;
-      if (msg == null) {
-        msg = "";
-      }
-      return (ref = this.dom) != null ? ref.setCustomValidity(msg) : void 0;
-    };
-
-    basic_input.prototype.do_view = function(dom1) {
-      this.dom = dom1;
-    };
-
-    basic_input.prototype.do_fail = function(value) {};
-
-    basic_input.prototype.do_change = function(value) {
-      var key, max, max_line, max_sjis, maxlength, min, minlength, msg, not_player, not_secret, pattern, ref, ref1, required, step, type, unit, val;
-      ref = this.attr, not_secret = ref.not_secret, not_player = ref.not_player, unit = ref.unit, max_sjis = ref.max_sjis, max_line = ref.max_line, minlength = ref.minlength, maxlength = ref.maxlength, min = ref.min, max = ref.max, step = ref.step, pattern = ref.pattern, type = ref.type, required = ref.required;
-      if (this.dom && !this.dom.validity.customError) {
-        if (this.format.error) {
-          ref1 = this.dom.validity;
-          for (key in ref1) {
-            val = ref1[key];
-            if (!(val)) {
-              continue;
-            }
-            msg = this.format.error[validity_attr[key]];
-            if (msg) {
-              this.error(msg);
-              return;
-            }
-          }
-        }
-      }
-    };
-
-    basic_input.prototype.option = function(value) {
-      var ref;
-      if (value) {
-        return ((ref = this.options) != null ? ref[value] : void 0) || {};
-      } else {
-        return this.default_option;
-      }
-    };
-
-    basic_input.prototype.item = function(value, m_attr) {
-      var ma, option;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      option = this.option(value);
-      ma = option_pick(this.attr, m_attr, option, {
-        className: [option.className, m_attr.className].join(" "),
-        value: this.__uri(value),
-        selected: value === this.__value
-      });
-      return m('option', ma, ma.label);
-    };
-
-    basic_input.prototype.datalist = function(m_attr) {
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      throw "not implement";
-    };
-
-    basic_input.prototype.head = function(m_attr) {
-      var ma;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      ma = this._attr_label(m_attr);
-      return m("label", ma, this.name);
-    };
-
-    basic_input.prototype.label = function(m_attr) {
-      var info, ma, option, text;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      if (this.label_for) {
-        if (this.options) {
-          option = this.options[this.__value];
-          if (option) {
-            return this.label_for(option);
-          }
-        }
-      }
-      if (info = this.__info) {
-        if (info.label) {
-          text = info.label;
-        }
-        if (info.off && !this.__value) {
-          text = info.off;
-        }
-        if (info.on && this.__value) {
-          text = info.on;
-        }
-        if (info.valid && this.__value) {
-          text = info.valid;
-        }
-        ma = this._attr_label(this._id, m_attr, this.format.label.attr);
-        return m("label", ma, text);
-      }
-    };
-
-    basic_input.prototype.field = function(m_attr) {
-      var ma;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      ma = this._attr(this._id, this.attr, m_attr, {
-        className: [this.attr.className, m_attr.className].join(" "),
-        name: this.__name,
-        value: this.__value
-      });
-      return m("input", ma);
-    };
-
-    return basic_input;
-
-  })();
-
-  number_input = (function(superClass) {
-    extend(number_input, superClass);
-
-    function number_input() {
-      return number_input.__super__.constructor.apply(this, arguments);
-    }
-
-    number_input.prototype.type = "Number";
-
-    return number_input;
-
-  })(basic_input);
-
-  ref = ["hidden", "tel", "password", "datetime", "date", "month", "week", "time", "datetime-local", "color"];
-  for (i = 0, len = ref.length; i < len; i++) {
-    key = ref[i];
-    InputTie.type[key] = basic_input;
-  }
-
-  ref1 = ["number", "range"];
-  for (j = 0, len1 = ref1.length; j < len1; j++) {
-    key = ref1[j];
-    InputTie.type[key] = number_input;
-  }
-
-  InputTie.type.checkbox = (function(superClass) {
-    extend(checkbox, superClass);
-
-    function checkbox() {
-      return checkbox.__super__.constructor.apply(this, arguments);
-    }
-
-    checkbox.prototype._value = e_checked;
-
-    checkbox.prototype._attr = change_attr;
-
-    checkbox.prototype.type = "Bool";
-
-    checkbox.prototype.option = function(value) {
-      var ref2, sw;
-      sw = value ? "on" : "off";
-      return ((ref2 = this.options) != null ? ref2[sw] : void 0) || {};
-    };
-
-    checkbox.prototype.field = function(m_attr) {
-      var ma, option;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      option = this.option(this.__value);
-      ma = this._attr(this._id, this.attr, m_attr, {
-        className: [this.attr.className, m_attr.className].join(" "),
-        type: "checkbox",
-        name: this.__name,
-        value: this.__uri(this.__value),
-        checked: this.__value
-      });
-      return m("input", ma);
-    };
-
-    return checkbox;
-
-  })(basic_input);
-
-  InputTie.type.radio = (function(superClass) {
-    extend(radio, superClass);
-
-    function radio() {
-      return radio.__super__.constructor.apply(this, arguments);
-    }
-
-    radio.prototype._value = e_value;
-
-    radio.prototype._attr = change_attr;
-
-    radio.prototype.field = function(m_attr) {
-      var list, option, value;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      list = (function() {
-        var ref2, results;
-        ref2 = this.options;
-        results = [];
-        for (value in ref2) {
-          option = ref2[value];
-          if (!option.hidden) {
-            results.push(this.item(value, m_attr));
-          }
-        }
-        return results;
-      }).call(this);
-      if (!(this.attr.required && this.format.current)) {
-        list.unshift(this.item("", m_attr));
-      }
-      return list;
-    };
-
-    radio.prototype.item = function(value, m_attr) {
-      var ma, option;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      option = this.option(value);
-      ma = this._attr(this._id, this.attr, m_attr, option, {
-        className: [this.attr.className, option.className, m_attr.className].join(" "),
-        type: "radio",
-        name: this.__name,
-        value: this.__uri(value),
-        checked: value === this.__value
-      });
-      return m("input", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
-    };
-
-    return radio;
-
-  })(basic_input);
-
-  InputTie.type.select = (function(superClass) {
-    extend(select, superClass);
-
-    function select() {
-      return select.__super__.constructor.apply(this, arguments);
-    }
-
-    select.prototype._value = e_value;
-
-    select.prototype._attr = change_attr;
-
-    select.prototype.default_option = {
-      className: "",
-      label: "ーーー"
-    };
-
-    select.prototype.field = function(m_attr) {
-      var list, ma, option, value;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      list = (function() {
-        var ref2, results;
-        ref2 = this.options;
-        results = [];
-        for (value in ref2) {
-          option = ref2[value];
-          if (!option.hidden) {
-            results.push(this.item(value, m_attr));
-          }
-        }
-        return results;
-      }).call(this);
-      if (!(this.attr.required && this.format.current)) {
-        list.unshift(this.item("", m_attr));
-      }
-      ma = this._attr(this._id, this.attr, m_attr, {
-        className: [this.attr.className, m_attr.className].join(" "),
-        name: this.__name
-      });
-      return m('select', ma, list);
-    };
-
-    return select;
-
-  })(basic_input);
-
-  InputTie.type.select.multiple = (function(superClass) {
-    extend(multiple, superClass);
-
-    function multiple() {
-      return multiple.__super__.constructor.apply(this, arguments);
-    }
-
-    multiple.prototype._value = e_selected;
-
-    multiple.prototype._attr = change_attr;
-
-    multiple.prototype.field = function(m_attr) {
-      var ma, option, value;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      ma = this._attr(this._id, this.attr, m_attr, {
-        className: [this.attr.className, m_attr.className].join(" "),
-        name: this.__name
-      });
-      return m('select', ma, (function() {
-        var ref2, results;
-        ref2 = this.options;
-        results = [];
-        for (value in ref2) {
-          option = ref2[value];
-          if (!option.hidden) {
-            results.push(this.item(value));
-          }
-        }
-        return results;
-      }).call(this));
-    };
-
-    multiple.prototype.item = function(value, m_attr) {
-      var ma, option;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      option = this.option(value);
-      ma = option_pick(this.attr, m_attr, option, {
-        className: [option.className, m_attr.className].join(" "),
-        value: this.__uri(value),
-        selected: this.__value[value]
-      });
-      return m('option', ma, ma.label);
-    };
-
-    return multiple;
-
-  })(basic_input);
-
-  module.exports = InputTie;
-
-  require("./input_tie_text");
-
-  require("./input_tie_btn");
-
-}).call(this);
-
-},{"./input_tie_btn":18,"./input_tie_text":19,"./tie":21,"lodash":4,"memory-record":5,"mithril":8}],18:[function(require,module,exports){
-(function() {
-  var InputTie, _, _pick, btn_input, c_icon, c_stack, c_tap, m,
-    slice = [].slice,
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
-
-  InputTie = require('./input_tie');
-
-  m = require("mithril");
-
-  _ = require("lodash");
-
-  _pick = function(attrs, last) {
-    attrs = attrs.map(function(ma) {
-      var target;
-      target = ["id", "className"];
-      if (ma.title) {
-        target.push("title");
-      }
-      if (ma["data-tooltip"] != null) {
-        target.push("data-tooltip");
-      }
-      return _.pick(ma, target);
-    });
-    return _.assignIn.apply(_, slice.call(attrs).concat([last]));
-  };
-
-  c_stack = function(bool, new_val, target) {
-    if (target) {
-      new_val.push(target);
-    } else {
-      new_val.pop();
-    }
-    return new_val;
-  };
-
-  c_tap = function(bool, new_val) {
-    return new_val;
-  };
-
-  c_icon = function(bool, new_val) {
-    if (bool) {
-      return null;
-    } else {
-      return new_val;
-    }
-  };
-
-  btn_input = (function(superClass) {
-    extend(btn_input, superClass);
-
-    function btn_input() {
-      return btn_input.__super__.constructor.apply(this, arguments);
-    }
-
-    btn_input.prototype._attr = function() {
-      var _id, attrs, b, className, css, disabled, i, last, ma, onchange, ref, selected, target, tie, value;
-      _id = arguments[0], attrs = 3 <= arguments.length ? slice.call(arguments, 1, i = arguments.length - 1) : (i = 1, []), last = arguments[i++];
-      ref = b = this, _id = ref._id, tie = ref.tie;
-      className = last.className, disabled = last.disabled, selected = last.selected, value = last.value, target = last.target;
-      onchange = function() {
-        if (b.timer) {
-          return;
-        }
-        b._debounce()["catch"](function() {
-          return b.timer = null;
-        });
-        value = b._value(selected, value, target);
-        tie.do_change(_id, value, ma);
-        if (!b.dom.validity.valid) {
-          return tie.do_fail(_id, value, ma);
-        }
-      };
-      css = "btn";
-      if (!(disabled || tie.disabled)) {
-        css += " edge";
-      }
-      if (selected) {
-        css += " active";
-      }
-      if (className) {
-        css += " " + className;
-      }
-      return ma = _pick(attrs, {
-        config: tie._config(_id),
-        className: css,
-        onclick: onchange,
-        onmouseup: onchange,
-        ontouchend: onchange
-      });
-    };
-
-    btn_input.prototype.do_change = function(value) {
-      var error, pattern, ref, required;
-      ref = this.attr, pattern = ref.pattern, required = ref.required;
-      if (this.dom) {
-        if (required && !value) {
-          error = "このフィールドを入力してください。";
-        }
-        if (pattern && value.match(new Regexp(pattern))) {
-          error = "指定されている形式で入力してください。";
-        }
-        this.error(error);
-      }
-      return btn_input.__super__.do_change.apply(this, arguments);
-    };
-
-    btn_input.prototype.head = function(m_attr) {
-      var ma, name;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      name = this.format.name;
-      ma = this._attr_label(m_attr);
-      return m("h6", ma, name);
-    };
-
-    return btn_input;
-
-  })(InputTie.type.hidden);
-
-  InputTie.type.toggle = (function(superClass) {
-    extend(toggle, superClass);
-
-    function toggle() {
-      return toggle.__super__.constructor.apply(this, arguments);
-    }
-
-    toggle.prototype._value = c_tap;
-
-    toggle.prototype.field = function(m_attr) {
-      var ma, next, option;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      next = this.__value;
-      option = this.option(next);
-      ma = this._attr(this._id, this.attr, m_attr, {
-        className: [this.attr.className, m_attr.className].join(" "),
-        value: next
-      });
-      return m("span", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
-    };
-
-    return toggle;
-
-  })(btn_input);
-
-  InputTie.type.checkbox_btn = (function(superClass) {
-    extend(checkbox_btn, superClass);
-
-    function checkbox_btn() {
-      return checkbox_btn.__super__.constructor.apply(this, arguments);
-    }
-
-    checkbox_btn.prototype._value = c_tap;
-
-    checkbox_btn.prototype.type = "Bool";
-
-    checkbox_btn.prototype.option = function(value) {
-      var ref, sw;
-      sw = value ? "on" : "off";
-      return ((ref = this.options) != null ? ref[sw] : void 0) || {};
-    };
-
-    checkbox_btn.prototype.field = function(m_attr) {
-      var ma, option;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      option = this.option(this.__value);
-      ma = this._attr(this._id, this.attr, m_attr, {
-        className: [this.attr.className, m_attr.className].join(" "),
-        selected: this.__value,
-        value: this.__value
-      });
-      return m("span", ma, this.__name, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
-    };
-
-    return checkbox_btn;
-
-  })(btn_input);
-
-  InputTie.type.icon = (function(superClass) {
-    var bigicon, menuicon, tags;
-
-    extend(icon, superClass);
-
-    function icon() {
-      return icon.__super__.constructor.apply(this, arguments);
-    }
-
-    icon.prototype._value = c_icon;
-
-    icon.prototype.default_option = {
-      className: "",
-      label: "",
-      "data-tooltip": "選択しない"
-    };
-
-    icon.prototype.field = function(m_attr) {
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      throw "not implement";
-    };
-
-    icon.prototype["with"] = function(value, mode) {
-      var bool;
-      bool = this.__value === value;
-      switch (mode) {
-        case bool:
-          return this._with[value]();
-        case !bool:
-          return null;
-        default:
-          this._with = {};
-          return this._with[value] = mode;
-      }
-    };
-
-    icon.prototype.item = function(value, m_attr) {
-      var ma, option, tag;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      option = this.option(value);
-      tag = m_attr.tag || "menuicon";
-      ma = this._attr(this._id, this.attr, m_attr, option, {
-        className: [this.attr.className, m_attr.className, option.className].join(" "),
-        selected: value === this.__value,
-        value: value
-      });
-      return tags[tag](value, ma, option);
-    };
-
-    menuicon = function(icon, attr, option) {
-      return m("a.menuicon", attr, m("span.icon-" + icon), option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
-    };
-
-    bigicon = function(icon, attr, option) {
-      return m("section", attr, m(".bigicon", m("span.icon-" + icon)), option.badge ? m(".badge.pull-right", option.badge()) : void 0);
-    };
-
-    tags = {
-      menuicon: menuicon,
-      bigicon: bigicon
-    };
-
-    return icon;
-
-  })(btn_input);
-
-  InputTie.type.btns = (function(superClass) {
-    extend(btns, superClass);
-
-    function btns() {
-      return btns.__super__.constructor.apply(this, arguments);
-    }
-
-    btns.prototype._value = c_tap;
-
-    btns.prototype.item = function(value, m_attr) {
-      var ma, option;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      option = this.option(value);
-      ma = this._attr(this._id, this.attr, m_attr, option, {
-        className: [this.attr.className, option.className, m_attr.className].join(" "),
-        selected: value === this.__value,
-        value: value
-      });
-      return m("span", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
-    };
-
-    btns.prototype.field = function(m_attr) {
-      var list, option, value;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      list = (function() {
-        var ref, results;
-        ref = this.options;
-        results = [];
-        for (value in ref) {
-          option = ref[value];
-          if (!option.hidden) {
-            results.push(this.item(value, m_attr));
-          }
-        }
-        return results;
-      }).call(this);
-      if (!(this.attr.required && this.format.current)) {
-        list.unshift(this.item("", m_attr));
-      }
-      return list;
-    };
-
-    return btns;
-
-  })(btn_input);
-
-  InputTie.type.btns.multiple = (function(superClass) {
-    extend(multiple, superClass);
-
-    function multiple() {
-      return multiple.__super__.constructor.apply(this, arguments);
-    }
-
-    multiple.prototype._value = c_tap;
-
-    multiple.prototype.item = function(value, m_attr) {
-      var ma, option;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      option = this.option(value);
-      ma = this._attr(this._id, this.attr, m_attr, option, {
-        className: [this.attr.className, option.className, m_attr.className].join(" "),
-        selected: this.__value[value],
-        value: this.__value[value]
-      });
-      return m("span", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
-    };
-
-    multiple.prototype.field = function(m_attr) {
-      var _id, attr, option, ref, ref1, results, value;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      ref = this.format, _id = ref._id, attr = ref.attr;
-      this.__values = this.tie.params[_id];
-      ref1 = this.options;
-      results = [];
-      for (value in ref1) {
-        option = ref1[value];
-        if (!option.hidden) {
-          results.push(this.item(value, m_attr));
-        }
-      }
-      return results;
-    };
-
-    return multiple;
-
-  })(btn_input);
-
-  InputTie.type.stack = (function(superClass) {
-    extend(stack, superClass);
-
-    function stack() {
-      return stack.__super__.constructor.apply(this, arguments);
-    }
-
-    stack.prototype._value = c_stack;
-
-    stack.prototype.type = "Array";
-
-    stack.prototype.field = function(m_attr) {
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      throw "not implement";
-    };
-
-    stack.prototype.item = function(target, m_attr) {
-      var ma, option;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      option = this.option(target);
-      ma = this._attr(this._id, this.attr, m_attr, option, {
-        className: [this.attr.className, option.className, m_attr.className].join(" "),
-        target: target,
-        value: this.__value
-      });
-      return m("span", ma, option.label, option.badge ? m(".emboss.pull-right", option.badge()) : void 0);
-    };
-
-    stack.prototype.back = function(m_attr) {
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      return this.item("", m_attr);
-    };
-
-    return stack;
-
-  })(btn_input);
-
-}).call(this);
-
-},{"./input_tie":17,"lodash":4,"mithril":8}],19:[function(require,module,exports){
-(function() {
-  var InputTie, _, i, key, len, m, ref, text_input, text_point,
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
-
-  InputTie = require('./input_tie');
-
-  m = require("mithril");
-
-  _ = require("lodash");
-
-  text_point = function(size) {
-    var pt;
-    pt = 20;
-    if (50 < size) {
-      pt += (size - 50) / 14;
-    }
-    return Math.floor(pt);
-  };
-
-  text_input = (function(superClass) {
-    extend(text_input, superClass);
-
-    function text_input() {
-      return text_input.__super__.constructor.apply(this, arguments);
-    }
-
-    text_input.prototype.draw = function() {
-      var line, point, size, sjis, unit;
-      unit = this.attr.unit;
-      this.__name = this.attr.name || this._id;
-      this.__value = this.tie.params[this._id];
-      size = this.__value.length;
-      sjis = this.__value.sjis_length;
-      line = this.__value.split("\n").length;
-      if ("point" === unit) {
-        point = text_point(sjis);
-      }
-      return this.calc = {
-        point: point,
-        line: line,
-        sjis: sjis,
-        size: size
-      };
-    };
-
-    text_input.prototype.do_change = function(value) {
-      var error, max_line, max_sjis, maxlength, minlength, not_player, not_secret, pattern, ref, ref1, required, unit;
-      ref = this.attr, not_secret = ref.not_secret, not_player = ref.not_player, unit = ref.unit, max_sjis = ref.max_sjis, max_line = ref.max_line, minlength = ref.minlength, maxlength = ref.maxlength, pattern = ref.pattern, required = ref.required;
-      if (this.dom) {
-        if (not_secret && value.match(/>>[\=\*\!]\d+/g)) {
-          error = "あぶない！秘密会話へのアンカーがあります！";
-        }
-        if (not_player && value.match(/\/\*|\*\//g)) {
-          error = "/*中の人の発言があります。*/";
-        }
-        if (max_line && max_line < line) {
-          error = "このテキストを " + max_line + " 行以下にしてください。";
-        }
-        if (max_sjis && max_sjis < sjis) {
-          error = "このテキストを " + max_sjis + " 文字以下にしてください。";
-        }
-        if (minlength && (0 < (ref1 = value.length) && ref1 < minlength)) {
-          if (!InputTie.skip_minlength) {
-            error = "このテキストは " + minlength + " 文字以上で指定してください（現在は " + value.length + " 文字です）。";
-          }
-        }
-        this.error(error);
-      }
-      return text_input.__super__.do_change.apply(this, arguments);
-    };
-
-    text_input.prototype.foot = function(m_attr) {
-      var ma, mark, max_size, size;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      ma = this._attr_label(this._id, this.attr, m_attr);
-      size = this.calc.size;
-      if (ma.maxlength) {
-        max_size = ma.maxlength;
-      }
-      if (ma.max_sjis) {
-        size = this.calc.sjis;
-        max_size = ma.max_sjis;
-      }
-      if (this.calc.point) {
-        mark = m("span.emboss", this.calc.point + "pt ");
-      } else {
-        mark = "";
-      }
-      if (!this.dom || this.dom.validationMessage) {
-        mark = m("span.WSAY.emboss", "⊘");
-      }
-      return [mark, " " + size, max_size != null ? m("sub", "/" + max_size) : void 0, m("sub", "字"), " " + this.calc.line, ma.max_line != null ? m("sub", "/" + ma.max_line) : void 0, m("sub", "行")];
-    };
-
-    return text_input;
-
-  })(InputTie.type.hidden);
-
-  InputTie.type.textarea = (function(superClass) {
-    extend(textarea, superClass);
-
-    function textarea() {
-      return textarea.__super__.constructor.apply(this, arguments);
-    }
-
-    textarea.prototype.field = function(m_attr) {
-      var ma;
-      if (m_attr == null) {
-        m_attr = {};
-      }
-      ma = this._attr(this._id, this.attr, m_attr, {
-        className: [this.attr.className, m_attr.className].join(" "),
-        name: this.__name
-      });
-      return m("textarea", ma, this.__value);
-    };
-
-    return textarea;
-
-  })(text_input);
-
-  ref = ["text", "search", "url", "email"];
-  for (i = 0, len = ref.length; i < len; i++) {
-    key = ref[i];
-    InputTie.type[key] = text_input;
-  }
-
-}).call(this);
-
-},{"./input_tie":17,"lodash":4,"mithril":8}],20:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function() {
   var Submit, build, iframe_handler, type, typeof_str;
 
@@ -26068,127 +26544,7 @@ module.exports = Vector2D;
 
 }).call(this);
 
-},{}],21:[function(require,module,exports){
-(function() {
-  var Mem, Tie, memory_prop;
-
-  Mem = require("memory-record");
-
-  memory_prop = function(params, key, unpack) {
-    return function(val) {
-      if (arguments.length) {
-        return params[key] = unpack(val);
-      } else {
-        return params[key];
-      }
-    };
-  };
-
-  Tie = (function() {
-    Tie.types = {
-      url: ["protocol", "host", "pathname", "search", "hash", "href"],
-      store: ["session", "local", "cookie"]
-    };
-
-    Tie.build_input = function(tie, id, params, input) {
-      tie.deploy(memory_prop, params, input);
-      return tie;
-    };
-
-    Tie.build_url = function(hh, params, Url) {
-      var conf, format, h, i, j, len, len1, ref, ref1, store, tie, type;
-      tie = new Tie;
-      ref = Tie.types.url;
-      for (i = 0, len = ref.length; i < len; i++) {
-        type = ref[i];
-        if (h = hh[type]) {
-          for (conf in h) {
-            format = h[conf];
-            if (!Url.conf[conf]) {
-              Url.type[type].push(Url.conf[conf] = new Url(conf, type, format));
-            }
-          }
-        }
-      }
-      ref1 = Mem.Query.stores.list;
-      for (j = 0, len1 = ref1.length; j < len1; j++) {
-        store = ref1[j];
-        tie.deploy(memory_prop, params, store);
-      }
-      return tie;
-    };
-
-    Tie.build_store = function(ids, define, params) {
-      var i, len, ref, store, tie;
-      if (ids == null) {
-        ids = [];
-      }
-      tie = new Tie;
-      ref = Mem.Query.stores.where({
-        _id: ids
-      }).list;
-      for (i = 0, len = ref.length; i < len; i++) {
-        store = ref[i];
-        tie.deploy(define, params, store);
-      }
-      return tie;
-    };
-
-    function Tie() {
-      this.prop = {};
-    }
-
-    Tie.prototype.deploy = function(define, params, arg) {
-      var _id, current, pack, type, unpack, val;
-      _id = arg._id, current = arg.current, type = arg.type;
-      if (current == null) {
-        current = null;
-      }
-      unpack = Mem.unpack[type];
-      pack = Mem.pack[type];
-      this.prop[_id] = define(params, _id, unpack, pack);
-      val = this.prop[_id]();
-      switch (val) {
-        case void 0:
-        case null:
-        case "":
-          return this.prop[_id](val = current);
-      }
-    };
-
-    Tie.prototype.copyBy = function(source) {
-      var _id, prop, ref, results;
-      ref = this.prop;
-      results = [];
-      for (_id in ref) {
-        prop = ref[_id];
-        results.push(prop(source.prop[_id]()));
-      }
-      return results;
-    };
-
-    Tie.prototype.copyTo = function(target) {
-      var _id, prop, ref, results;
-      ref = this.prop;
-      results = [];
-      for (_id in ref) {
-        prop = ref[_id];
-        results.push(target.prop[_id](prop()));
-      }
-      return results;
-    };
-
-    return Tie;
-
-  })();
-
-  Tie.params = {};
-
-  module.exports = Tie;
-
-}).call(this);
-
-},{"memory-record":5}],22:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 (function() {
   var Timer, _;
 
@@ -26360,330 +26716,4 @@ module.exports = Vector2D;
 
 }).call(this);
 
-},{"lodash":4}],23:[function(require,module,exports){
-(function() {
-  var LocationStore, Mem, Tie, Url, _, decode, encode, memory_prop, state;
-
-  _ = require("lodash");
-
-  Mem = require("memory-record");
-
-  Tie = require("./tie");
-
-  decode = Mem.unpack.Url;
-
-  encode = Mem.pack.Url;
-
-  memory_prop = function(params, key, unpack) {
-    return function(val) {
-      if (arguments.length) {
-        return params[key] = unpack(val);
-      } else {
-        return params[key];
-      }
-    };
-  };
-
-  state = _.debounce(function() {
-    var params;
-    params = Url.location();
-    if (decode(location.href) !== decode(params.href)) {
-      console.warn("url changed.");
-      if (typeof history !== "undefined" && history !== null) {
-        history[Url.mode]("URL", null, params.href);
-      }
-      return Url.popstate();
-    }
-  }, 50);
-
-  LocationStore = (function() {
-    LocationStore.now = function() {
-      return new this(location);
-    };
-
-    function LocationStore(arg) {
-      this.protocol = arg.protocol, this.host = arg.host, this.pathname = arg.pathname, this.search = arg.search, this.hash = arg.hash, this.href = arg.href;
-      return;
-    }
-
-    LocationStore.prototype.each = function(cb) {
-      var j, k, len, len1, path, ref, ref1, type, url;
-      ref = Tie.types.url;
-      for (j = 0, len = ref.length; j < len; j++) {
-        type = ref[j];
-        ref1 = Url.type[type];
-        for (k = 0, len1 = ref1.length; k < len1; k++) {
-          url = ref1[k];
-          path = this[type];
-          cb(url, path, type);
-        }
-      }
-      return this;
-    };
-
-    LocationStore.prototype.fetch = function() {
-      this.each(function(url, path, target) {
-        return url.fetch(path);
-      });
-      return this;
-    };
-
-    LocationStore.prototype.view = function() {
-      this.each((function(_this) {
-        return function(url, path, target) {
-          return _this[target] = url.view(path);
-        };
-      })(this));
-      this.href = this.protocol + "//" + this.host + this.pathname + this.search + this.hash;
-      return this;
-    };
-
-    return LocationStore;
-
-  })();
-
-  Url = (function() {
-    var j, len, ref, type;
-
-    Url.conf = {};
-
-    Url.type = {};
-
-    ref = Tie.types.url;
-    for (j = 0, len = ref.length; j < len; j++) {
-      type = ref[j];
-      Url.type[type] = [];
-    }
-
-    Url.define = function(key) {
-      return Mem.Query.stores.hash[key];
-    };
-
-    Url.maps = function(hh) {
-      this.tie = Tie.build_url(hh, Tie.params, this);
-      this.prop = this.tie.prop;
-      return this.params = Tie.params;
-    };
-
-    Url.popstate = function() {
-      this._loc = LocationStore.now();
-      this._loc.fetch();
-      return this.mode = "replaceState";
-    };
-
-    Url.pushstate = function() {
-      this.mode = "pushState";
-      return state();
-    };
-
-    Url.replacestate = function() {
-      return state();
-    };
-
-    Url.location = function() {
-      if (this._loc == null) {
-        this.popstate();
-      }
-      return this._loc.view();
-    };
-
-    function Url(_id, type1, format) {
-      var regexp;
-      this._id = _id;
-      this.type = type1;
-      this.format = format;
-      this.keys = [];
-      regexp = this.format.replace(/[.]/gi, function(key) {
-        return "\\" + key;
-      }).replace(/:([a-z_]+)/gi, (function(_this) {
-        return function(_, key) {
-          var o;
-          if (!(o = Url.define(key))) {
-            console.error("undefined key : " + key);
-            return;
-          }
-          _this.keys.push(key);
-          return Mem.Serial.url[o.type];
-        };
-      })(this), "i");
-      this.scanner = new RegExp(regexp);
-    }
-
-    Url.prototype.serialize = function() {
-      var k, key, len1, path, ref1, serial;
-      path = this.format;
-      ref1 = this.keys;
-      for (k = 0, len1 = ref1.length; k < len1; k++) {
-        key = ref1[k];
-        serial = Mem.pack[Url.define(key).type];
-        path = path.replace(RegExp(":" + key, "gi"), serial(Url.params[key]));
-      }
-      return encode(path);
-    };
-
-    Url.prototype.values = function(hash) {
-      var k, key, len1, ref1, results;
-      if (hash == null) {
-        hash = {};
-      }
-      ref1 = this.keys;
-      results = [];
-      for (k = 0, len1 = ref1.length; k < len1; k++) {
-        key = ref1[k];
-        results.push(hash[key] || Url.params[key]);
-      }
-      return results;
-    };
-
-    Url.prototype.fetch = function(path) {
-      var i, k, key, len1, ref1, results;
-      this.match = this.scanner.exec(path);
-      if (this.match) {
-        this.match.shift();
-        ref1 = this.keys;
-        results = [];
-        for (i = k = 0, len1 = ref1.length; k < len1; i = ++k) {
-          key = ref1[i];
-          results.push(Url.prop[key](decode(this.match[i])));
-        }
-        return results;
-      }
-    };
-
-    Url.prototype.view = function(path) {
-      this.match = this.scanner.exec(path);
-      if (this.match) {
-        return path.replace(this.scanner, this.serialize());
-      }
-      if (this.current) {
-        this.match = true;
-        path += (function() {
-          if (path.length) {
-            return "&";
-          } else {
-            switch (this.type) {
-              case "hash":
-                return "#";
-              case "search":
-                return "?";
-            }
-          }
-        }).call(this);
-        path += this.serialize();
-      }
-      return path;
-    };
-
-    return Url;
-
-  })();
-
-  module.exports = Url;
-
-}).call(this);
-
-},{"./tie":21,"lodash":4,"memory-record":5}],24:[function(require,module,exports){
-(function() {
-  var Tie, WebStore, cookie_prop, storage_prop;
-
-  Tie = require("./tie");
-
-  storage_prop = function(store, key, unpack, pack) {
-    return function(val) {
-      if (arguments.length) {
-        return store.setItem(key, pack(val));
-      } else {
-        return unpack(store.getItem(key));
-      }
-    };
-  };
-
-  cookie_prop = function(options, key, unpack, pack) {
-    return function(val) {
-      var ary, domain, expires, match, path, secure, time;
-      if (arguments.length) {
-        ary = [key + "=" + (pack(val))];
-        time = options.time, domain = options.domain, path = options.path, secure = options.secure;
-        if (time) {
-          expires = new Date(Math.min(2147397247000, Date.now() + time * 3600000));
-          ary.push("expires=" + (expires.toUTCString()));
-        }
-        if (domain) {
-          ary.push("domain=" + domain);
-        }
-        if (path) {
-          ary.push("path=" + path);
-        }
-        if (secure) {
-          ary.push("secure");
-        }
-        return document.cookie = ary.join("; ");
-      } else {
-        match = RegExp(key + "=([^;]+)").exec(document.cookie);
-        if ((match != null ? match[0] : void 0) != null) {
-          return unpack(match[1]);
-        }
-      }
-    };
-  };
-
-  WebStore = (function() {
-    function WebStore() {}
-
-    WebStore.maps = function(ha) {
-      this.session = Tie.build_store(ha.session, storage_prop, sessionStorage);
-      this.local = Tie.build_store(ha.local, storage_prop, localStorage);
-      this.cookie = Tie.build_store(ha.cookie, cookie_prop, this.cookie_options);
-      return this.params = Tie.params;
-    };
-
-    WebStore.copyBy = function(source) {
-      var i, len, ref, results, store;
-      ref = Tie.types.store;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        store = ref[i];
-        results.push(this[store].copyBy(source));
-      }
-      return results;
-    };
-
-    WebStore.copyTo = function(target) {
-      var i, len, ref, results, store;
-      ref = Tie.types.store;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        store = ref[i];
-        results.push(this[store].copyTo(target));
-      }
-      return results;
-    };
-
-    WebStore.format = function(o) {
-      if (o.type == null) {
-        o.type = "String";
-      }
-      return o.current != null ? o.current : o.current = (function() {
-        switch (o.type) {
-          case "Keys":
-            return {};
-          case "Date":
-          case "Number":
-            return 0;
-          case "String":
-            return null;
-          case "Text":
-            return "";
-        }
-      })();
-    };
-
-    return WebStore;
-
-  })();
-
-  module.exports = WebStore;
-
-}).call(this);
-
-},{"./tie":21}]},{},[9]);
+},{"lodash":4}]},{},[10]);

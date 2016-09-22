@@ -345,9 +345,7 @@
         var chrs;
         chrs = Mem.Query.chr_jobs.where({
           chr_set_id: "time"
-        }).sort(false, function(o) {
-          return o.face.order;
-        }).list;
+        }).sort("face.order").list;
         this.old_chrs = chrs.slice(0, 24);
         this.new_chrs = chrs.slice(24);
       },
@@ -361,9 +359,7 @@
         var chrs;
         chrs = Mem.Query.chr_jobs.where({
           chr_set_id: "sf"
-        }).sort(false, function(o) {
-          return o.face.order;
-        }).list;
+        }).sort("face.order").list;
         this.old_chrs = chrs.slice(0, 32);
         this.new_chrs = chrs.slice(32);
       },
@@ -747,9 +743,7 @@
           });
           return doc.messages.talk(params).list.length - Mem.Query.events.list.length;
         },
-        "th-large": function() {
-          return Mem.Query.map_faces.active(Url.params.order, Url.params.chr_set, Url.params.search).list.length;
-        }
+        "th-large": function() {}
       };
       ref = Mem.Query.inputs.hash.icon.options;
       for (icon in ref) {
@@ -1046,12 +1040,11 @@
 
 (function(){
   doc.component.form = {
-    controller: function(v){
-      console.warn(v);
-    },
+    controller: function(v){},
     view: function(c, v){
       var params, tie, error_and_info, select, chr_job, face, form_text, target, able, input;
       params = v.params, tie = v.tie;
+      console.warn(v);
       error_and_info = function(o){
         var list, i$, ref$, len$, msg;
         list = [];
@@ -1238,7 +1231,7 @@
       });
       switch (type) {
         case 'rolelist':
-          return win.scroll.size = 10;
+          win.scroll.size = 10;
       }
     },
     view: function(arg, type) {
@@ -1292,9 +1285,7 @@
       var chrs;
       chrs = Mem.Query.chr_jobs.where({
         chr_set_id: "time"
-      }).sort(false, function(o) {
-        return o.face.order;
-      }).list;
+      }).sort("face.order").list;
       this.old_chrs = chrs.slice(0, 24);
       this.new_chrs = chrs.slice(24);
     },
@@ -2355,6 +2346,7 @@
         }
         return results;
       })();
+      console.warn(v.tie);
 
       /*
       v.tie.validate =

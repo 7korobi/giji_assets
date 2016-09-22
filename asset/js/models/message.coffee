@@ -42,7 +42,7 @@ new Mem.Rule("message").schema ->
     pins: (story_id, pins)->
       enables = RAILS.message.visible.appendex.event_desc
       all
-      .sort "desc", "updated_at"
+      .sort ["updated_at"], ["desc"]
       .where (o)->
         (o.show & enables) || pins["#{o.turn}-#{o.logid}"] && (o.story_id == story_id)
 
@@ -61,7 +61,7 @@ new Mem.Rule("message").schema ->
     memo: (mode, uniq, hides, search)->
       enables = visible.memo[mode]
       query = all
-      .sort("desc", "updated_at")
+      .sort ["updated_at"], ["desc"]
       .where (o)-> (o.show & enables) && ! hides[o.face_id]
       .search search
 
@@ -73,134 +73,133 @@ new Mem.Rule("message").schema ->
       all
       .where (o)-> (o.show & enables) && ! hides[o.face_id]
 
-  @default ->
+  class @model extends @model
     log: ""
     csid: null
     face_id: null
+    constructor: ->
+      if @sow?
+        @mestype = SOW_RECORD.mestypes[@sow.mestype]
 
-  @deploy (o)->
-    if o.sow?
-      o.mestype = SOW_RECORD.mestypes[o.sow.mestype]
+      logtype = @logid[0..1]
+      lognumber = @logid[2..-1]
+      switch @mestype
+        when "QUEUE"
+          @mestype = "SAY" # data cleaned
+        when "VSAY"
+          { story, event } = @
+          has.vsay = true
+          if story && event && "grave" == story.type.mob && ! event.name.match /プロローグ|エピローグ/
+            @mestype = "VGSAY"
 
-    logtype = o.logid[0..1]
-    lognumber = o.logid[2..-1]
-    switch o.mestype
-      when "QUEUE"
-        o.mestype = "SAY" # data cleaned
-      when "VSAY"
-        { story, event } = o
-        has.vsay = true
-        if story && event && "grave" == story.type.mob && ! event.name.match /プロローグ|エピローグ/
-          o.mestype = "VGSAY"
+      switch logtype
+        when "IS"
+          @logid = "II#{lognumber}" # data cleaned
+        when "iS"
+          @logid = "iI#{lognumber}" # data cleaned
+        when "CS"
+          @logid = "cI#{lognumber}" # data cleaned
+        when "AS"
+          @mestype = "ADMIN"        # data cleaned
+        when "DS"
+          @mestype = "DELETED"      # data cleaned
+        when "TS"
+          if @to
+            has.to = true
+          else
+            @mestype = "TSAY"       # data cleaned
+      # legacy support
+      [folder, vid, turn] = @event_id.split("-")
+      @folder ||= folder
+      @vid ||= vid
+      @turn ||= turn
 
-    switch logtype
-      when "IS"
-        o.logid = "II#{lognumber}" # data cleaned
-      when "iS"
-        o.logid = "iI#{lognumber}" # data cleaned
-      when "CS"
-        o.logid = "cI#{lognumber}" # data cleaned
-      when "AS"
-        o.mestype = "ADMIN"        # data cleaned
-      when "DS"
-        o.mestype = "DELETED"      # data cleaned
-      when "TS"
-        if o.to
-          has.to = true
-        else
-          o.mestype = "TSAY"       # data cleaned
-    # legacy support
-    [folder, vid, turn] = o.event_id.split("-")
-    o.folder ||= folder
-    o.vid ||= vid
-    o.turn ||= turn
+      @_id = @event_id + "-" + @logid
+      @user_id = @sow_auth_id
 
-    o._id = o.event_id + "-" + o.logid
-    o.user_id = o.sow_auth_id
+      anchor_num = @logid[2..-1] - 0 || 0
+      @anchor = RAILS.log.anchor[@logid[0]] + anchor_num || ""
+      @pen = "#{@mestype}-#{@face_id}"
+      @potof_id = "#{@event_id}-#{@csid}-#{@face_id}"
 
-    anchor_num = o.logid[2..-1] - 0 || 0
-    o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || ""
-    o.pen = "#{o.mestype}-#{o.face_id}"
-    o.potof_id = "#{o.event_id}-#{o.csid}-#{o.face_id}"
+      unless @updated_at
+        @updated_at = new Date(@date) - 0
+      if ats[@updated_at]
+        @updated_at += ats[@updated_at]++
+      else
+        ats[@updated_at] = 1
 
-    unless o.updated_at
-      o.updated_at = new Date(o.date) - 0
-    if ats[o.updated_at]
-      o.updated_at += ats[o.updated_at]++
-    else
-      ats[o.updated_at] = 1
+      template = @template
+      switch @logid[1]
+        when "S", "X"
+          template = "talk"
+          @show = bit.TALK
+        when "A", "B"
+          template = "action"
+          @anchor = "act"
+          @show = bit.ACTION
+        when "M"
+          template = "memo"
+          @anchor = "memo"
+          @show = bit.MEMO
+          tail = @logid[1..-1]
+          anker_id = @event_id + "-M" + tail
+          ids[anker_id] = @_id
+          # @logid = @mestype[0..0] + tail  # data cleaned
+        when "I"
+          template = "info"
+          @anchor = "info"
+          @show = bit.INFO
 
-    template = o.template
-    switch o.logid[1]
-      when "S", "X"
-        template = "talk"
-        o.show = bit.TALK
-      when "A", "B"
-        template = "action"
-        o.anchor = "act"
-        o.show = bit.ACTION
-      when "M"
-        template = "memo"
-        o.anchor = "memo"
-        o.show = bit.MEMO
-        tail = o.logid[1..-1]
-        anker_id = o.event_id + "-M" + tail
-        ids[anker_id] = o._id
-        # o.logid = o.mestype[0..0] + tail  # data cleaned
-      when "I"
-        template = "info"
-        o.anchor = "info"
-        o.show = bit.INFO
+      @mask =
+        switch @logid[0]
+          when "-", "W", "P", "X"
+            has.clan = true
+            "CLAN"
+          when "T", "i"
+            has.think = true
+            "THINK"
+          when "V", "G"
+            has.grave = true
+            "GRAVE"
+          when "D"
+            @anchor = "del"
+            "DELETE"
+          else
+            "MAIN"
 
-    o.mask =
-      switch o.logid[0]
-        when "-", "W", "P", "X"
-          has.clan = true
-          "CLAN"
-        when "T", "i"
-          has.think = true
-          "THINK"
-        when "V", "G"
-          has.grave = true
-          "GRAVE"
-        when "D"
-          o.anchor = "del"
-          "DELETE"
-        else
-          "MAIN"
+      switch @mestype
+        when "MAKER", "ADMIN"
+          template = "guide" unless @show == bit.ACTION
+          @mask = "ANNOUNCE"
+        when "CAST"
+          template = "potofs"
+        when "STORY"
+          @pen = @event_id
+          @mask = "ALL"
+        when "EVENT"
+          @pen = @event_id
+          @mask = "ALL"
 
-    switch o.mestype
-      when "MAKER", "ADMIN"
-        template = "guide" unless o.show == bit.ACTION
-        o.mask = "ANNOUNCE"
-      when "CAST"
-        template = "potofs"
-      when "STORY"
-        o.pen = o.event_id
-        o.mask = "ALL"
-      when "EVENT"
-        o.pen = o.event_id
-        o.mask = "ALL"
+      @show &= mask[@mask]
+      @template = template
 
-    o.show &= mask[o.mask]
-    o.template = template
+      @search_words = @log
 
-    o.search_words = o.log
+    @map_reduce: (o, emit)->
+      has.face[o.face_id] = true
 
-  @map_reduce (o, emit)->
-    has.face[o.face_id] = true
-
-    switch o.template
-      when "talk", "guide"
-        if o.log
-          time_id = Mem.pack.Date(o.updated_at / timespan)
-          item =
-            count: o.log.length
-            min: o.updated_at
-            max: o.updated_at
-          emit "mask", time_id, o.mestype, item
-          emit "mask", time_id, "all", item
-    emit "event", o.event_id,
-      max: o.updated_at
-    emit "pen", o.pen,
-      max: o.updated_at
+      switch o.template
+        when "talk", "guide"
+          if o.log
+            time_id = Mem.pack.Date(o.updated_at / timespan)
+            item =
+              count: o.log.length
+              min: o.updated_at
+              max: o.updated_at
+            emit "mask", time_id, o.mestype, item
+            emit "mask", time_id, "all", item
+      emit "event", o.event_id,
+        max: o.updated_at
+      emit "pen", o.pen,
+        max: o.updated_at

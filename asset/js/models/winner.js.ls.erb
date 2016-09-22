@@ -9,14 +9,10 @@ new Mem.Rule("winner").schema ->
     sow: (idx)->
       all.where((o)-> o.order == idx).list.first
 
-
-  @default ->
-
-  @deploy (o)->
-    o.order = id_index.indexOf o._id
-    o.label_human ?= o.label
-
-  @map_reduce (o)->
+  class @model extends @model
+    ->
+      @order = id_index.indexOf @_id
+      @label_human ?= @label
 
 Mem.Collection.winner.set <%- JSON.stringify(SET_WINNER) %>
 Mem.conf.winner = Mem.Query.winners.hash

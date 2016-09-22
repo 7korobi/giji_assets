@@ -23,13 +23,13 @@ new Mem.Rule("face").schema ->
         counts[names.length].push "<#{key}>#{names.join(" ")}"
       counts
 
-  item =
+  map =
     count: 1
-  @map_reduce (o, emit)->
-    emit "all", "all", item
-    for tag in o.tags
-      emit "tag", tag, item
-
+  class @model extends @model
+    @map_reduce: (o, emit)->
+      emit "all", "all", map
+      for tag in o.tags
+        emit "tag", tag, map
 
 
 new Mem.Rule("chr_set").schema ->
@@ -37,39 +37,39 @@ new Mem.Rule("chr_set").schema ->
   @has_many "chr_jobs"
   @has_many "chr_npcs"
 
+
 new Mem.Rule("chr_npc").schema ->
   @order "label"
   @belongs_to "chr_set", dependent: true
-  @belongs_to "face", dependent: true
-
-  @deploy (o)->
+  @belongs_to "face",    dependent: true
 
 
 new Mem.Rule("chr_job").schema ->
-  @order (o)-> o.face.order
+  @order "face.order"
   @belongs_to "chr_set", dependent: true
-  @belongs_to "face", dependent: true
-  @deploy (o)->
-    o.chr_job_id = o._id
-    o.chr_set_idx = order.indexOf o.chr_set_id
-
-  order = [
-    "ririnra"
-    "wa"
-    "time"
-    "sf"
-    "mad"
-    "ger"
-    "changed"
-    "animal"
-    "school"
-    "all"
-  ]
+  @belongs_to "face",    dependent: true
 
   @scope (all)->
     face: (face_id)->
-      all.where((o)-> face_id == o.face_id).sort(false, (o)-> o.chr_set_idx )
+      all.where({ face_id }).sort "chr_set_idx"
 
+  class @model extends @model
+    constructor: ->
+      @chr_job_id = @_id
+      @chr_set_idx = order.indexOf @chr_set_id
+
+    order = [
+      "ririnra"
+      "wa"
+      "time"
+      "sf"
+      "mad"
+      "ger"
+      "changed"
+      "animal"
+      "school"
+      "all"
+    ]
 
 Mem.Collection.face.set <%- JSON.stringify(FACE) %>
 
@@ -80,8 +80,8 @@ Mem.Collection.face.set <%- JSON.stringify(FACE) %>
 
  %>
 Mem.Collection.chr_set.merge [<%- JSON.stringify(data.chr_set) %>]
-Mem.Collection.chr_npc.merge <%-  JSON.stringify(data.chr_npc) %>
-Mem.Collection.chr_job.merge <%-  JSON.stringify(data.chr_job) %>
+Mem.Collection.chr_npc.merge  <%- JSON.stringify(data.chr_npc) %>
+Mem.Collection.chr_job.merge  <%- JSON.stringify(data.chr_job) %>
 <% } %>
 
 list =
@@ -91,6 +91,6 @@ list =
     _id = "all_#{face_id}"
     job = Mem.Query.chr_jobs.face(face_id).list.first?.job
     continue unless job?
-    {chr_set_id, face_id, job, _id}
+    { chr_set_id, face_id, job, _id }
 
 Mem.Collection.chr_job.merge list

@@ -595,6 +595,8 @@ say_count:
   query:
     SOW: saycnttype
   name: 発言制限
+  option_default:
+    label: "発言制限"
 
 role_table:
   sean: vil
@@ -606,6 +608,8 @@ role_table:
     SOW: roletable
   current: default
   name: 役職配分
+  option_default:
+    label: "役職の配分"
 
 mob_type:
   sean: vil
@@ -614,6 +618,8 @@ mob_type:
     name: mob
     required: true
   name: 見物スタイル
+  option_default:
+    label: "見物人の種類"
 
 trs_type:
   sean: vil
@@ -625,3 +631,5 @@ trs_type:
     SOW: trsid
   current: all
   name: 地の文章
+  option_default:
+    label: "地の文章"

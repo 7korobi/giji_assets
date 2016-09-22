@@ -1437,7 +1437,7 @@
 
 (function(){
   new Mem.Rule("action").schema(function(){
-    var index;
+    var model;
     this.order("index");
     this.scope(function(all){
       return {
@@ -1446,19 +1446,19 @@
         }
       };
     });
-    this['default'](function(){});
-    index = 0;
-    this.deploy(function(o){
-      var ref$;
-      if (!o.index) {
-        o.index = index += 1;
+    return this.model = model = (function(superclass){
+      var prototype = extend$((import$(model, superclass).displayName = 'model', model), superclass).prototype, constructor = model;
+      function model(o, arg$){
+        var rowid;
+        rowid = arg$.rowid;
+        if (!this.index) {
+          this.index = rowid;
+        }
+        this._id = this.index;
+        this.target == null && (this.target = true);
       }
-      o._id = o.index;
-      return (ref$ = o.target) != null
-        ? ref$
-        : o.target = true;
-    });
-    return this.map_reduce(function(o){});
+      return model;
+    }(this.model));
   });
   Mem.Collection.action.set([
     {
@@ -1565,9 +1565,23 @@
       "text": "から逃げ出した！しかし、回り込まれてしまった！"
     }
   ]);
+  function extend$(sub, sup){
+    function fun(){} fun.prototype = (sub.superclass = sup).prototype;
+    (sub.prototype = new fun).constructor = sub;
+    if (typeof sup.extended == 'function') sup.extended(sub);
+    return sub;
+  }
+  function import$(obj, src){
+    var own = {}.hasOwnProperty;
+    for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+    return obj;
+  }
 }).call(this);
 
 (function() {
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
   new Mem.Rule("say").schema(function() {
     this.scope(function(all) {
       return {
@@ -1578,15 +1592,24 @@
         }
       };
     });
-    return this.deploy(function(o) {
-      return o.say_id = o._id;
-    });
+    return this.model = (function(superClass) {
+      extend(model, superClass);
+
+      function model() {
+        this.say_id = this._id;
+      }
+
+      return model;
+
+    })(this.model);
   });
 
 }).call(this);
 
 (function() {
-  var config;
+  var config,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
   config = function(key) {
     return function() {
@@ -1599,10 +1622,16 @@
           }
         };
       });
-      this.deploy(function(o) {
-        return o[key + "_id"] = o._id;
-      });
-      return this.map_reduce(function(o) {});
+      return this.model = (function(superClass) {
+        extend(model, superClass);
+
+        function model() {
+          return model.__super__.constructor.apply(this, arguments);
+        }
+
+        return model;
+
+      })(this.model);
     };
   };
 
@@ -3521,7 +3550,10 @@
       "query": {
         "SOW": "saycnttype"
       },
-      "name": "発言制限"
+      "name": "発言制限",
+      "option_default": {
+        "label": "発言制限"
+      }
     },
     "role_table": {
       "sean": "vil",
@@ -3534,7 +3566,10 @@
         "SOW": "roletable"
       },
       "current": "default",
-      "name": "役職配分"
+      "name": "役職配分",
+      "option_default": {
+        "label": "役職の配分"
+      }
     },
     "mob_type": {
       "sean": "vil",
@@ -3543,7 +3578,10 @@
         "name": "mob",
         "required": true
       },
-      "name": "見物スタイル"
+      "name": "見物スタイル",
+      "option_default": {
+        "label": "見物人の種類"
+      }
     },
     "trs_type": {
       "sean": "vil",
@@ -3556,7 +3594,10 @@
         "SOW": "trsid"
       },
       "current": "all",
-      "name": "地の文章"
+      "name": "地の文章",
+      "option_default": {
+        "label": "地の文章"
+      }
     }
   });
 
@@ -4625,10 +4666,12 @@
 }).call(this);
 
 (function() {
-  var _id, chr_set_id, face, face_id, job, list;
+  var _id, chr_set_id, face, face_id, job, list,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
   new Mem.Rule("face").schema(function() {
-    var item;
+    var map;
     this.has_many("chr_jobs");
     this.has_many("chr_npcs");
     this.order("order");
@@ -4666,20 +4709,31 @@
         }
       };
     });
-    item = {
+    map = {
       count: 1
     };
-    return this.map_reduce(function(o, emit) {
-      var i, len, ref, results, tag;
-      emit("all", "all", item);
-      ref = o.tags;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        tag = ref[i];
-        results.push(emit("tag", tag, item));
+    return this.model = (function(superClass) {
+      extend(model, superClass);
+
+      function model() {
+        return model.__super__.constructor.apply(this, arguments);
       }
-      return results;
-    });
+
+      model.map_reduce = function(o, emit) {
+        var i, len, ref, results, tag;
+        emit("all", "all", map);
+        ref = o.tags;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          tag = ref[i];
+          results.push(emit("tag", tag, map));
+        }
+        return results;
+      };
+
+      return model;
+
+    })(this.model);
   });
 
   new Mem.Rule("chr_set").schema(function() {
@@ -4693,39 +4747,43 @@
     this.belongs_to("chr_set", {
       dependent: true
     });
-    this.belongs_to("face", {
+    return this.belongs_to("face", {
       dependent: true
     });
-    return this.deploy(function(o) {});
   });
 
   new Mem.Rule("chr_job").schema(function() {
-    var order;
-    this.order(function(o) {
-      return o.face.order;
-    });
+    this.order("face.order");
     this.belongs_to("chr_set", {
       dependent: true
     });
     this.belongs_to("face", {
       dependent: true
     });
-    this.deploy(function(o) {
-      o.chr_job_id = o._id;
-      return o.chr_set_idx = order.indexOf(o.chr_set_id);
-    });
-    order = ["ririnra", "wa", "time", "sf", "mad", "ger", "changed", "animal", "school", "all"];
-    return this.scope(function(all) {
+    this.scope(function(all) {
       return {
         face: function(face_id) {
-          return all.where(function(o) {
-            return face_id === o.face_id;
-          }).sort(false, function(o) {
-            return o.chr_set_idx;
-          });
+          return all.where({
+            face_id: face_id
+          }).sort("chr_set_idx");
         }
       };
     });
+    return this.model = (function(superClass) {
+      var order;
+
+      extend(model, superClass);
+
+      function model() {
+        this.chr_job_id = this._id;
+        this.chr_set_idx = order.indexOf(this.chr_set_id);
+      }
+
+      order = ["ririnra", "wa", "time", "sf", "mad", "ger", "changed", "animal", "school", "all"];
+
+      return model;
+
+    })(this.model);
   });
 
   Mem.Collection.face.set([
@@ -9573,6 +9631,9 @@
 }).call(this);
 
 (function() {
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
   new Mem.Rule("event").schema(function() {
     var bit, mask, ref, visible;
     this.belongs_to("story", {
@@ -9583,292 +9644,47 @@
     this.scope(function(all) {
       return {};
     });
-    this.deploy(function(o) {
-      if (o.sow != null) {
-        o.winner = Mem.Query.winners.sow(o.sow.winner)._id;
-        o.event = Mem.Query.traps.sow(o.sow.event)._id;
-      }
-      if (o._id == null) {
-        o._id = o.story_id + "-" + o.turn;
-      }
-      o.event_id = o._id;
-      return o.view = {
-        btn: function() {
-          var submit;
-          switch (false) {
-            case !o.is_full:
-              return null;
-            case !o.is_loading:
-              return m(".SSAY", "読み込み…");
-            default:
-              submit = function() {
-                return doc.load.event(false, o, function() {});
-              };
-              return m(".SSAY", Btn.call({}, submit), "読み込み");
-          }
+    return this.model = (function(superClass) {
+      extend(model, superClass);
+
+      function model() {
+        if (this.sow) {
+          this.winner = Mem.Query.winners.sow(this.sow.winner)._id;
+          this.event = Mem.Query.traps.sow(this.sow.event)._id;
         }
-      };
-    });
-    return this.map_reduce(function(o, emit) {});
-  });
+        if (this._id == null) {
+          this._id = this.story_id + "-" + this.turn;
+        }
+        this.event_id = this._id;
+      }
 
-}).call(this);
-
-(function(){
-  new Mem.Rule("form").schema(function(){
-    this.belongs_to("chr_job");
-    this.order(function(o){
-      return o.index;
-    });
-    this.scope(function(all){});
-    this['default'](function(){});
-    this.deploy(function(o){
-      var listup, text, input, role_scan, able_scan, role_names, role_helps, able_helps, i$, ref$, len$, role_id, can_use, able;
-      listup = function(state, live, mob){
-        var option;
-        option = function(cb){
-          if (Mem.Query.potofs) {
-            return Mem.Query.potofs.where(cb).list.map(function(o){
-              return {
-                pno: o.pno,
-                job: o.chr_job.job,
-                label: o.label
-              };
-            });
-          } else {
-            return [];
-          }
-        };
-        switch (state) {
-        case "dead":
-          return option(function(o){
-            var ref$;
-            return !((ref$ = o.live) === "live" || ref$ === "mob");
-          });
-        case "gm_live":
-          return option(function(o){
-            var ref$;
-            return (ref$ = o.live) === "live" || ref$ === "mob";
-          });
-        case "gm_dead":
-          return option(function(o){
-            return o.live !== "live";
-          });
-        case "live":
-          return option(function(o){
-            return o.live === "live";
-          });
-        case "cast":
-          return option(function(o){
-            return o.live !== "mob";
-          });
-        case "mob":
-          return option(function(o){
-            return o.live === "mob";
-          });
-        case "all":
-          return option(function(){
-            return true;
-          });
-        case "near":
-          switch (live) {
-          case "mob":
-            switch (mob) {
-            case "grave":
-              return listup("dead");
-            case "alive":
-              return listup("live");
-            case "gamemaster":
-              return listup("all");
-            default:
-              return listup("mob");
-            }
-            break;
-          case "live":
-            return listup("live");
+      model.prototype.btn = function() {
+        var submit;
+        switch (false) {
+          case !this.is_full:
+            return null;
+          case !this.is_loading:
+            return m(".SSAY", "読み込み…");
           default:
-            return listup("dead");
-          }
-          break;
-        default:
-          return [];
+            submit = (function(_this) {
+              return function() {
+                return doc.load.event(false, _this, function() {});
+              };
+            })(this);
+            return m(".SSAY", Btn.call({}, submit), "読み込み");
         }
       };
-      text = function(mestype, format, able){
-        var form_id, targets;
-        form_id = o._id;
-        targets = listup("near", o.live, o.mob);
-        if (mestype === 'SAY' || mestype === 'GSAY' || mestype === 'VSAY' || mestype === 'TSAY') {
-          targets.push({
-            job: "―――",
-            name: "",
-            pno: -1
-          });
-        }
-        if (targets.length) {
-          return Mem.Collection.form_text.merge([{
-            form_id: form_id,
-            mestype: mestype,
-            format: format,
-            targets: targets,
-            able: able
-          }]);
-        }
-      };
-      input = function(role, able){
-        var target, old, targets, obj;
-        target = m.prop(-1);
-        old = m.prop(-1);
-        targets = listup(able['for'], o.live, o.mob);
-        if (able.sw) {
-          targets.push({
-            name: "",
-            pno: o.pno || 1,
-            job: able.sw
-          });
-        }
-        if (able.pass) {
-          targets.push({
-            name: "",
-            pno: -1,
-            job: able.pass || "（パス）"
-          });
-        }
-        obj = {
-          able: able,
-          old: old,
-          target: target,
-          targets: targets
-        };
-        obj.cmd = able.cmd || role.cmd;
-        obj.attr = {
-          form: function(){
-            return {
-              onchange: function(e){
-                console.log([e.target]);
-                e.target.name;
-                return e.target.value;
-              },
-              onreset: function(e){},
-              onsubmit: function(e){
-                console.log([e, role, able, o]);
-                return false;
-              }
-            };
-          },
-          target: function(){
-            return {
-              value: target(),
-              onchange: m.withAttr("value", function(value){
-                target(value);
-                return validate.input(obj);
-              })
-            };
-          }
-        };
-        validate.input(obj);
-        return obj;
-      };
-      role_scan = function(role_id, can_use){
-        var role, i$, ref$, len$, able_id, able, results$ = [];
-        role = Mem.Query.roles.find(role_id);
-        role_names.push(role.name);
-        role_helps.push(role.help);
-        if (in$("grave", role.ables)) {
-          can_use = !can_use;
-        }
-        if (can_use) {
-          for (i$ = 0, len$ = (ref$ = role.ables).length; i$ < len$; ++i$) {
-            able_id = ref$[i$];
-            able = Mem.Query.ables.find(able_id);
-            results$.push(able_scan(role, able));
-          }
-          return results$;
-        }
-      };
-      able_scan = function(role, able){
-        var mestype, attr;
-        able_helps.push(able.help);
-        if (mestype = able.text) {
-          if (mestype === 'SAY' || mestype === 'GSAY' || mestype === 'VSAY') {
-            text(mestype, "act", able);
-            o.mestype = mestype;
-          }
-          text(mestype, "memo", able);
-          text(mestype, "talk", able);
-          o.texts.push(mestype);
-        }
-        if (able.at != null) {
-          if (able.at[o.turn]) {
-            attr = {
-              able: able,
-              input: input(role, able)
-            };
-            return o.selects.push(attr);
-          }
-        }
-      };
-      o.format = "talk";
-      o.format_on = function(format){
-        var choice_on;
-        choice_on = function(){
-          return o.format = format;
-        };
-        return {
-          onmouseup: choice_on,
-          ontouchend: choice_on
-        };
-      };
-      o.mestype_on = function(mestype){
-        var choice_on;
-        choice_on = function(){
-          return o.mestype = mestype;
-        };
-        return {
-          onmouseup: choice_on,
-          ontouchend: choice_on
-        };
-      };
-      role_names = [];
-      role_helps = [];
-      able_helps = [];
-      o.form = {};
-      o.texts = [];
-      o.selects = [];
-      o.ext == null && (o.ext = []);
-      for (i$ = 0, len$ = (ref$ = o.ext).length; i$ < len$; ++i$) {
-        role_id = ref$[i$];
-        role_scan(role_id, true);
-      }
-      role_scan(o.turn, true);
-      if (o.live !== "mob") {
-        can_use = "live" === o.live;
-        role_scan(o.live, true);
-        for (i$ = 0, len$ = (ref$ = o.role).length; i$ < len$; ++i$) {
-          role_id = ref$[i$];
-          role_scan(role_id, can_use);
-        }
-      }
-      for (i$ = 0, len$ = (ref$ = Mem.Query.ables.by_rolestate(o.rolestate)).length; i$ < len$; ++i$) {
-        able = ref$[i$];
-        role_names.push(able.name);
-        able_scan({}, able);
-      }
-      o.role_name = role_names.join("、");
-      o.role_help = _.uniq(_.compact(role_helps)).join("\n<br>\n");
-      return o.able_help = _.uniq(_.compact(able_helps)).join("\n<br>\n");
-    });
-    return this.map_reduce(function(o){});
+
+      return model;
+
+    })(this.model);
   });
-  function in$(x, xs){
-    var i = -1, l = xs.length >>> 0;
-    while (++i < l) if (x === xs[i]) return true;
-    return false;
-  }
+
 }).call(this);
 
 (function(){
   new Mem.Rule("form_text").schema(function(){
+    var model;
     this.scope(function(all){
       return {
         formats: function(form_id, mestype){
@@ -9883,12 +9699,26 @@
         }
       };
     });
-    this['default'](function(){});
-    return this.deploy(function(o){
-      o._id = o.form_id + "-" + o.mestype + "-" + o.format;
-      return o.mestype_name = Mem.Query.ables.find(o.mestype).label;
-    });
+    return this.model = model = (function(superclass){
+      var prototype = extend$((import$(model, superclass).displayName = 'model', model), superclass).prototype, constructor = model;
+      function model(){
+        this._id = this.form_id + "-" + this.mestype + "-" + this.format;
+        this.mestype_name = Mem.Query.ables.find(this.mestype).label;
+      }
+      return model;
+    }(this.model));
   });
+  function extend$(sub, sup){
+    function fun(){} fun.prototype = (sub.superclass = sup).prototype;
+    (sub.prototype = new fun).constructor = sub;
+    if (typeof sup.extended == 'function') sup.extended(sub);
+    return sub;
+  }
+  function import$(obj, src){
+    var own = {}.hasOwnProperty;
+    for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+    return obj;
+  }
 }).call(this);
 
 (function(){
@@ -10009,11 +9839,6 @@
       return Mem.Collection.chr_job.merge(gon.new_chr_jobs);
     },
     map_reduce_faces: function(){
-      Mem.Collection.chr_set.schema(function(){
-        return this.order(function(o){
-          return Mem.Query.map_faces.reduce.chr_set[o._id].count;
-        });
-      });
       return Mem.Collection.map_face.set(gon.map_reduce.faces);
     },
     villages: function(){
@@ -10067,7 +9892,7 @@
 (function(){
   var slice$ = [].slice;
   new Mem.Rule("item").schema(function(){
-    var data;
+    var data, model;
     data = function(rule, ary){
       var q, scope;
       q = Mem.Query[rule];
@@ -10077,111 +9902,142 @@
       }
       return q;
     };
-    this.order(function(o){
-      return o.index;
-    });
+    this.order("index");
     this.scope(function(all){});
-    this['default'](function(){
-      return {
-        list: function(){
-          var ref$, rule, ary;
-          if (this.query) {
-            ref$ = this.query.split(/ +/), rule = ref$[0], ary = slice$.call(ref$, 1);
-            return data(rule, ary).list;
-          }
+    this.model = model = (function(superclass){
+      var prototype = extend$((import$(model, superclass).displayName = 'model', model), superclass).prototype, constructor = model;
+      model.prototype.list = function(){
+        var ref$, rule, ary;
+        if (this.query) {
+          ref$ = this.query.split(/ +/), rule = ref$[0], ary = slice$.call(ref$, 1);
+          return data(rule, ary).list;
         }
       };
-    });
-    this.deploy(function(o){
-      var ref$, type, template, mestype, index, rule, i$, ary, key;
-      ref$ = o._id.split('-'), type = ref$[0], template = ref$[1], mestype = ref$[2], index = ref$[3];
-      if (o.face_id) {
-        o.csid || (o.csid = "all");
+      function model(){
+        var ref$, type, template, mestype, index, rule, i$, ary, key;
+        ref$ = this._id.split('-'), type = ref$[0], template = ref$[1], mestype = ref$[2], index = ref$[3];
+        if (this.face_id) {
+          this.csid == null && (this.csid = "all");
+        }
+        this.type == null && (this.type = type);
+        this.index == null && (this.index = Number(index) || this.updated_at);
+        this.mestype == null && (this.mestype = mestype);
+        this.template == null && (this.template = template);
+        if (this.object) {
+          ref$ = this.object.split(/ +/), rule = ref$[0], ary = 1 < (i$ = ref$.length - 1) ? slice$.call(ref$, 1, i$) : (i$ = 1, []), key = ref$[i$];
+          this.log = data(rule, ary)[key];
+        }
       }
-      o.type || (o.type = type);
-      o.index || (o.index = Number(index) || o.updated_at);
-      o.mestype || (o.mestype = mestype);
-      o.template || (o.template = template);
-      if (o.object) {
-        ref$ = o.object.split(/ +/), rule = ref$[0], ary = 1 < (i$ = ref$.length - 1) ? slice$.call(ref$, 1, i$) : (i$ = 1, []), key = ref$[i$];
-        return o.log = data(rule, ary)[key];
-      }
-    });
-    this.map_reduce(function(o){});
+      return model;
+    }(this.model));
   });
+  function extend$(sub, sup){
+    function fun(){} fun.prototype = (sub.superclass = sup).prototype;
+    (sub.prototype = new fun).constructor = sub;
+    if (typeof sup.extended == 'function') sup.extended(sub);
+    return sub;
+  }
+  function import$(obj, src){
+    var own = {}.hasOwnProperty;
+    for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+    return obj;
+  }
 }).call(this);
 
 (function() {
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
   new Mem.Rule("map_face").schema(function() {
-    var item;
     this.belongs_to("face", {
       dependent: true
     });
     this.scope(function(all) {
       return {
         active: function(order, chr_set, search) {
+          Mem.Query.map_faces.reduce.chr_set[o._id].count;
           order = Mem.conf.map_faces_order[order].order;
           return all["in"]({
             chr_set_ids: chr_set
-          }).search(search).sort("desc", function(o) {
+          }).search(search).sort(function(o) {
             var base;
-            return (base = o.win.value)[order] != null ? base[order] : base[order] = 0;
+            return -((base = o.win.value)[order] != null ? base[order] : base[order] = 0);
           });
         }
       };
     });
-    this.deploy(function(o) {
-      var face, list, ref, ref1, search_words, sow_auth_id;
-      o._id = o.face_id;
-      o.win.value.合計 = o.win.all;
-      list = (ref = o.face) != null ? (ref1 = ref.chr_jobs) != null ? ref1.list : void 0 : void 0;
-      if (list) {
-        search_words = list.map(function(o) {
-          return o.job;
-        });
-        o.chr_set_ids = list.map(function(o) {
-          return o.chr_set_id;
-        });
-      } else {
-        search_words = o.chr_set_ids = [];
-      }
-      face = o.face;
-      if (face) {
-        search_words.push(face.name);
-        for (sow_auth_id in o.sow_auth_id.value) {
-          search_words.push(sow_auth_id);
+    return this.model = (function(superClass) {
+      var map;
+
+      extend(model, superClass);
+
+      function model() {
+        var face, list, ref, ref1, search_words, sow_auth_id;
+        this._id = this.face_id;
+        this.win.value.合計 = this.win.all;
+        list = (ref = this.face) != null ? (ref1 = ref.chr_jobs) != null ? ref1.list : void 0 : void 0;
+        if (list) {
+          search_words = list.map(function(o) {
+            return o.job;
+          });
+          this.chr_set_ids = list.map(function(o) {
+            return o.chr_set_id;
+          });
+        } else {
+          search_words = this.chr_set_ids = [];
         }
-        return o.search_words = search_words.join("\t");
+        face = this.face;
+        if (face) {
+          search_words.push(face.name);
+          for (sow_auth_id in this.sow_auth_id.value) {
+            search_words.push(sow_auth_id);
+          }
+          this.search_words = search_words.join("\t");
+        }
       }
-    });
-    item = {
-      count: 1
-    };
-    return this.map_reduce(function(o, emit) {
-      var i, id, len, ref, results;
-      ref = o.chr_set_ids;
-      results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        id = ref[i];
-        results.push(emit("chr_set", id, item));
-      }
-      return results;
-    });
+
+      map = {
+        count: 1
+      };
+
+      model.map_reduce = function(o, emit) {
+        var i, id, len, ref, results;
+        console.warn(o);
+        ref = o.chr_set_ids;
+        results = [];
+        for (i = 0, len = ref.length; i < len; i++) {
+          id = ref[i];
+          results.push(emit("chr_set", id, map));
+        }
+        return results;
+      };
+
+      return model;
+
+    })(this.model);
   });
 
   new Mem.Rule("map_face_story_log").schema(function() {
-    this.order(function(o) {
-      return o.date.max;
-    });
-    return this.deploy(function(o) {
-      o._id = o.logid_head;
-      return o.folder = o.logid_head.split("-")[0].toUpperCase();
-    });
+    this.order("date.max");
+    return this.model = (function(superClass) {
+      extend(model, superClass);
+
+      function model() {
+        this._id = this.logid_head;
+        this.folder = this.logid_head.split("-")[0].toUpperCase();
+      }
+
+      return model;
+
+    })(this.model);
   });
 
 }).call(this);
 
 (function() {
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
   new Mem.Rule("message").schema(function() {
     var ats, bit, has, ids, mask, ref, timespan, visible;
     this.belongs_to("event", {
@@ -10234,7 +10090,7 @@
         pins: function(story_id, pins) {
           var enables;
           enables = RAILS.message.visible.appendex.event_desc;
-          return all.sort("desc", "updated_at").where(function(o) {
+          return all.sort(["updated_at"], ["desc"]).where(function(o) {
             return (o.show & enables) || pins[o.turn + "-" + o.logid] && (o.story_id === story_id);
           });
         },
@@ -10258,7 +10114,7 @@
         memo: function(mode, uniq, hides, search) {
           var enables, query;
           enables = visible.memo[mode];
-          query = all.sort("desc", "updated_at").where(function(o) {
+          query = all.sort(["updated_at"], ["desc"]).where(function(o) {
             return (o.show & enables) && !hides[o.face_id];
           }).search(search);
           if (uniq) {
@@ -10275,174 +10131,183 @@
         }
       };
     });
-    this["default"](function() {
-      return {
-        log: "",
-        csid: null,
-        face_id: null
-      };
-    });
-    this.deploy(function(o) {
-      var anchor_num, anker_id, event, folder, lognumber, logtype, ref1, story, tail, template, turn, vid;
-      if (o.sow != null) {
-        o.mestype = SOW_RECORD.mestypes[o.sow.mestype];
-      }
-      logtype = o.logid.slice(0, 2);
-      lognumber = o.logid.slice(2);
-      switch (o.mestype) {
-        case "QUEUE":
-          o.mestype = "SAY";
-          break;
-        case "VSAY":
-          story = o.story, event = o.event;
-          has.vsay = true;
-          if (story && event && "grave" === story.type.mob && !event.name.match(/プロローグ|エピローグ/)) {
-            o.mestype = "VGSAY";
-          }
-      }
-      switch (logtype) {
-        case "IS":
-          o.logid = "II" + lognumber;
-          break;
-        case "iS":
-          o.logid = "iI" + lognumber;
-          break;
-        case "CS":
-          o.logid = "cI" + lognumber;
-          break;
-        case "AS":
-          o.mestype = "ADMIN";
-          break;
-        case "DS":
-          o.mestype = "DELETED";
-          break;
-        case "TS":
-          if (o.to) {
-            has.to = true;
-          } else {
-            o.mestype = "TSAY";
-          }
-      }
-      ref1 = o.event_id.split("-"), folder = ref1[0], vid = ref1[1], turn = ref1[2];
-      o.folder || (o.folder = folder);
-      o.vid || (o.vid = vid);
-      o.turn || (o.turn = turn);
-      o._id = o.event_id + "-" + o.logid;
-      o.user_id = o.sow_auth_id;
-      anchor_num = o.logid.slice(2) - 0 || 0;
-      o.anchor = RAILS.log.anchor[o.logid[0]] + anchor_num || "";
-      o.pen = o.mestype + "-" + o.face_id;
-      o.potof_id = o.event_id + "-" + o.csid + "-" + o.face_id;
-      if (!o.updated_at) {
-        o.updated_at = new Date(o.date) - 0;
-      }
-      if (ats[o.updated_at]) {
-        o.updated_at += ats[o.updated_at]++;
-      } else {
-        ats[o.updated_at] = 1;
-      }
-      template = o.template;
-      switch (o.logid[1]) {
-        case "S":
-        case "X":
-          template = "talk";
-          o.show = bit.TALK;
-          break;
-        case "A":
-        case "B":
-          template = "action";
-          o.anchor = "act";
-          o.show = bit.ACTION;
-          break;
-        case "M":
-          template = "memo";
-          o.anchor = "memo";
-          o.show = bit.MEMO;
-          tail = o.logid.slice(1);
-          anker_id = o.event_id + "-M" + tail;
-          ids[anker_id] = o._id;
-          break;
-        case "I":
-          template = "info";
-          o.anchor = "info";
-          o.show = bit.INFO;
-      }
-      o.mask = (function() {
-        switch (o.logid[0]) {
-          case "-":
-          case "W":
-          case "P":
-          case "X":
-            has.clan = true;
-            return "CLAN";
-          case "T":
-          case "i":
-            has.think = true;
-            return "THINK";
-          case "V":
-          case "G":
-            has.grave = true;
-            return "GRAVE";
-          case "D":
-            o.anchor = "del";
-            return "DELETE";
-          default:
-            return "MAIN";
+    return this.model = (function(superClass) {
+      extend(model, superClass);
+
+      model.prototype.log = "";
+
+      model.prototype.csid = null;
+
+      model.prototype.face_id = null;
+
+      function model() {
+        var anchor_num, anker_id, event, folder, lognumber, logtype, ref1, story, tail, template, turn, vid;
+        if (this.sow != null) {
+          this.mestype = SOW_RECORD.mestypes[this.sow.mestype];
         }
-      })();
-      switch (o.mestype) {
-        case "MAKER":
-        case "ADMIN":
-          if (o.show !== bit.ACTION) {
-            template = "guide";
+        logtype = this.logid.slice(0, 2);
+        lognumber = this.logid.slice(2);
+        switch (this.mestype) {
+          case "QUEUE":
+            this.mestype = "SAY";
+            break;
+          case "VSAY":
+            story = this.story, event = this.event;
+            has.vsay = true;
+            if (story && event && "grave" === story.type.mob && !event.name.match(/プロローグ|エピローグ/)) {
+              this.mestype = "VGSAY";
+            }
+        }
+        switch (logtype) {
+          case "IS":
+            this.logid = "II" + lognumber;
+            break;
+          case "iS":
+            this.logid = "iI" + lognumber;
+            break;
+          case "CS":
+            this.logid = "cI" + lognumber;
+            break;
+          case "AS":
+            this.mestype = "ADMIN";
+            break;
+          case "DS":
+            this.mestype = "DELETED";
+            break;
+          case "TS":
+            if (this.to) {
+              has.to = true;
+            } else {
+              this.mestype = "TSAY";
+            }
+        }
+        ref1 = this.event_id.split("-"), folder = ref1[0], vid = ref1[1], turn = ref1[2];
+        this.folder || (this.folder = folder);
+        this.vid || (this.vid = vid);
+        this.turn || (this.turn = turn);
+        this._id = this.event_id + "-" + this.logid;
+        this.user_id = this.sow_auth_id;
+        anchor_num = this.logid.slice(2) - 0 || 0;
+        this.anchor = RAILS.log.anchor[this.logid[0]] + anchor_num || "";
+        this.pen = this.mestype + "-" + this.face_id;
+        this.potof_id = this.event_id + "-" + this.csid + "-" + this.face_id;
+        if (!this.updated_at) {
+          this.updated_at = new Date(this.date) - 0;
+        }
+        if (ats[this.updated_at]) {
+          this.updated_at += ats[this.updated_at]++;
+        } else {
+          ats[this.updated_at] = 1;
+        }
+        template = this.template;
+        switch (this.logid[1]) {
+          case "S":
+          case "X":
+            template = "talk";
+            this.show = bit.TALK;
+            break;
+          case "A":
+          case "B":
+            template = "action";
+            this.anchor = "act";
+            this.show = bit.ACTION;
+            break;
+          case "M":
+            template = "memo";
+            this.anchor = "memo";
+            this.show = bit.MEMO;
+            tail = this.logid.slice(1);
+            anker_id = this.event_id + "-M" + tail;
+            ids[anker_id] = this._id;
+            break;
+          case "I":
+            template = "info";
+            this.anchor = "info";
+            this.show = bit.INFO;
+        }
+        this.mask = (function() {
+          switch (this.logid[0]) {
+            case "-":
+            case "W":
+            case "P":
+            case "X":
+              has.clan = true;
+              return "CLAN";
+            case "T":
+            case "i":
+              has.think = true;
+              return "THINK";
+            case "V":
+            case "G":
+              has.grave = true;
+              return "GRAVE";
+            case "D":
+              this.anchor = "del";
+              return "DELETE";
+            default:
+              return "MAIN";
           }
-          o.mask = "ANNOUNCE";
-          break;
-        case "CAST":
-          template = "potofs";
-          break;
-        case "STORY":
-          o.pen = o.event_id;
-          o.mask = "ALL";
-          break;
-        case "EVENT":
-          o.pen = o.event_id;
-          o.mask = "ALL";
+        }).call(this);
+        switch (this.mestype) {
+          case "MAKER":
+          case "ADMIN":
+            if (this.show !== bit.ACTION) {
+              template = "guide";
+            }
+            this.mask = "ANNOUNCE";
+            break;
+          case "CAST":
+            template = "potofs";
+            break;
+          case "STORY":
+            this.pen = this.event_id;
+            this.mask = "ALL";
+            break;
+          case "EVENT":
+            this.pen = this.event_id;
+            this.mask = "ALL";
+        }
+        this.show &= mask[this.mask];
+        this.template = template;
+        this.search_words = this.log;
       }
-      o.show &= mask[o.mask];
-      o.template = template;
-      return o.search_words = o.log;
-    });
-    return this.map_reduce(function(o, emit) {
-      var item, time_id;
-      has.face[o.face_id] = true;
-      switch (o.template) {
-        case "talk":
-        case "guide":
-          if (o.log) {
-            time_id = Mem.pack.Date(o.updated_at / timespan);
-            item = {
-              count: o.log.length,
-              min: o.updated_at,
-              max: o.updated_at
-            };
-            emit("mask", time_id, o.mestype, item);
-            emit("mask", time_id, "all", item);
-          }
-      }
-      emit("event", o.event_id, {
-        max: o.updated_at
-      });
-      return emit("pen", o.pen, {
-        max: o.updated_at
-      });
-    });
+
+      model.map_reduce = function(o, emit) {
+        var item, time_id;
+        has.face[o.face_id] = true;
+        switch (o.template) {
+          case "talk":
+          case "guide":
+            if (o.log) {
+              time_id = Mem.pack.Date(o.updated_at / timespan);
+              item = {
+                count: o.log.length,
+                min: o.updated_at,
+                max: o.updated_at
+              };
+              emit("mask", time_id, o.mestype, item);
+              emit("mask", time_id, "all", item);
+            }
+        }
+        emit("event", o.event_id, {
+          max: o.updated_at
+        });
+        return emit("pen", o.pen, {
+          max: o.updated_at
+        });
+      };
+
+      return model;
+
+    })(this.model);
   });
 
 }).call(this);
 
 (function() {
-  var slice = [].slice;
+  var slice = [].slice,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
 
   new Mem.Rule("potof").schema(function() {
     var id_list, urges, win_by_role;
@@ -10466,7 +10331,7 @@
       };
     })(this);
     id_list = function(query) {
-      return query.pluck("face_id").sort();
+      return query.pluck("face_id");
     };
     this.scope(function(all) {
       return {
@@ -10502,225 +10367,237 @@
           }));
         },
         view: function(is_desc, order) {
-          return all.sort(is_desc, function(o) {
-            return o.order[order];
-          });
+          if (is_desc) {
+            return all.sort(function(o) {
+              return -o.order[order];
+            });
+          } else {
+            return all.sort(function(o) {
+              return o.order[order];
+            });
+          }
         }
       };
     });
-    this.deploy(function(o) {
-      var chr_job, event, is_dead_lose, is_lone_lose, job, name, pt, pt_no, ref, ref1, ref2, ref3, role, role_side_order, role_text, roles, said_num, say_type, select, stat_at, stat_order, stat_type, story, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie;
-      if (o.sow != null) {
-        o.role = [Mem.Query.roles.sow_role(o.sow.role)._id, Mem.Query.roles.sow_gift(o.sow.gift)._id];
-        o.select = Mem.Query.roles.sow_role(o.sow.selrole)._id;
-      }
-      if (((ref = o._id) != null ? ref.$oid : void 0) != null) {
-        o._id = o._id.$oid;
-      }
-      if (o.user_id == null) {
-        o.user_id = o.sow_auth_id;
-      }
-      if (o.chr_job_id == null) {
-        o.chr_job_id = (o.csid.toLowerCase()) + "_" + o.face_id;
-      }
-      chr_job = o.chr_job;
-      if (chr_job != null) {
-        name = (ref1 = chr_job.face) != null ? ref1.name : void 0;
-        job = chr_job.job;
-      } else {
-        job = "***";
-      }
-      if (name == null) {
-        name = o.name;
-      }
-      o.name = o.zapcount ? "" + RAILS.clearance[o.clearance] + name + "-" + o.zapcount : name;
-      o.hide = {};
+    return this.model = (function(superClass) {
+      extend(model, superClass);
 
-      /*
-      if o.event_id
-        if o.event_id.match /-0$/
-          o.live = "leave"
-      else
-        o.live = "leave"
-       */
-      stat_at = (0 < (ref2 = o.deathday) && ref2 < Infinity) ? o.deathday + "日" : (o.deathday = Infinity, "");
-      said_num = o.point.saidcount;
-      urge = o.point.actaddpt;
-      pt_no = o.say.gsay;
-      story = o.story, event = o.event;
-      switch (o.live) {
-        case "live":
-          pt_no = o.say.say;
-          o.hide.dead = o.deathday;
-          break;
-        case "mob":
-          if ('juror' === story.type.mob) {
-            win_juror = 'HUMAN';
-          }
-          break;
-        case "suddendead":
-          win_juror = 'LEAVE';
-          o.hide.other = true;
-          o.hide.dead = o.deathday;
-          break;
-        case "leave":
-          win_juror = 'LEAVE';
-          o.hide.other = true;
-          pt = 0;
-          urge = 0;
-          said_num = 0;
-          break;
-        default:
-          o.hide.dead = o.deathday;
-      }
-      if (story.is_epilogue) {
-        pt = "∞";
-      } else {
-        say_type = Mem.conf.say[story.type.say];
-        pt = (function() {
-          switch (say_type.COST_SAY) {
-            case "point":
-              return pt_no + "pt";
-            case "count":
-              return pt_no + "回";
-            default:
-              return "∞";
-          }
-        })();
-      }
-      select = GUI.name.config(o.select);
-      win_result = "参加";
-      zombie = 0x040;
-      switch (story.type.game) {
-        case "TROUBLE":
-          if (0 === (o.rolestate & zombie)) {
-            win_zombie = 'WOLF';
-          }
-          if ("HUMAN" === win) {
-            is_dead_lose = 1;
-          }
-          break;
-        case "LIVE_TABULA":
-        case "LIVE_MILLERHOLLOW":
-        case "SECRET":
-          is_dead_lose = 1;
-      }
-      win_love = (ref3 = RAILS.loves[o.love]) != null ? ref3.win : void 0;
-      win_role = win_by_role(o, Mem.Query.roles);
-      win = win_juror || win_love || win_zombie || win_role;
-      if (win === 'EVIL') {
-        win = story.evil;
-      }
-      switch (win) {
-        case "LONEWOLF":
-          is_dead_lose = 1;
-          break;
-        case "HATER":
-          if (!_.includes(o.role, "HATEDEVIL")) {
-            is_dead_lose = 1;
-          }
-          break;
-        case "LOVER":
-          if (!_.includes(o.role, "LOVEANGEL")) {
-            is_lone_lose = 1;
-          }
-      }
-      if (story.is_epilogue) {
-        switch (o.live) {
+      function model() {
+        var chr_job, event, is_dead_lose, is_lone_lose, job, name, pt, pt_no, ref, ref1, ref2, ref3, role, role_side_order, role_text, roles, said_num, say_type, select, stat_at, stat_order, stat_type, story, text, text_str, urge, win, win_juror, win_love, win_result, win_role, win_side_order, win_zombie, winner, zombie;
+        if (this.sow != null) {
+          this.role = [Mem.Query.roles.sow_role(this.sow.role)._id, Mem.Query.roles.sow_gift(this.sow.gift)._id];
+          this.select = Mem.Query.roles.sow_role(this.sow.selrole)._id;
+        }
+        if (((ref = this._id) != null ? ref.$oid : void 0) != null) {
+          this._id = this._id.$oid;
+        }
+        if (this.user_id == null) {
+          this.user_id = this.sow_auth_id;
+        }
+        if (this.chr_job_id == null) {
+          this.chr_job_id = (this.csid.toLowerCase()) + "_" + this.face_id;
+        }
+        chr_job = this.chr_job;
+        if (chr_job != null) {
+          name = (ref1 = chr_job.face) != null ? ref1.name : void 0;
+          job = chr_job.job;
+        } else {
+          job = "***";
+        }
+        if (name == null) {
+          name = this.name;
+        }
+        this.name = this.zapcount ? "" + RAILS.clearance[this.clearance] + name + "-" + this.zapcount : name;
+        this.hide = {};
+
+        /*
+        if @event_id
+          if @event_id.match /-0$/
+            @live = "leave"
+        else
+          @live = "leave"
+         */
+        stat_at = (0 < (ref2 = this.deathday) && ref2 < Infinity) ? this.deathday + "日" : (this.deathday = Infinity, "");
+        said_num = this.point.saidcount;
+        urge = this.point.actaddpt;
+        pt_no = this.say.gsay;
+        story = this.story, event = this.event;
+        switch (this.live) {
+          case "live":
+            pt_no = this.say.say;
+            this.hide.dead = this.deathday;
+            break;
+          case "mob":
+            if ('juror' === story.type.mob) {
+              win_juror = 'HUMAN';
+            }
+            break;
           case "suddendead":
+            win_juror = 'LEAVE';
+            this.hide.other = true;
+            this.hide.dead = this.deathday;
+            break;
           case "leave":
-            win_result = "―";
+            win_juror = 'LEAVE';
+            this.hide.other = true;
+            pt = 0;
+            urge = 0;
+            said_num = 0;
             break;
           default:
-            winner = event.winner;
-            win_result = "敗北";
-            if (winner === "WIN_" + win) {
-              win_result = "勝利";
+            this.hide.dead = this.deathday;
+        }
+        if (story.is_epilogue) {
+          pt = "∞";
+        } else {
+          say_type = Mem.conf.say[story.type.say];
+          pt = (function() {
+            switch (say_type.COST_SAY) {
+              case "point":
+                return pt_no + "pt";
+              case "count":
+                return pt_no + "回";
+              default:
+                return "∞";
             }
-            if (winner !== "WIN_HUMAN" && winner !== "WIN_LOVER" && "EVIL" === win) {
-              win_result = "勝利";
+          })();
+        }
+        select = GUI.name.config(this.select);
+        win_result = "参加";
+        zombie = 0x040;
+        switch (story.type.game) {
+          case "TROUBLE":
+            if (0 === (this.rolestate & zombie)) {
+              win_zombie = 'WOLF';
             }
-            if ("victim" === o.live && "DISH" === win) {
-              win_result = "勝利";
+            if ("HUMAN" === win) {
+              is_dead_lose = 1;
             }
-            if (is_dead_lose && 'live' !== o.live) {
-              win_result = "敗北";
+            break;
+          case "LIVE_TABULA":
+          case "LIVE_MILLERHOLLOW":
+          case "SECRET":
+            is_dead_lose = 1;
+        }
+        win_love = (ref3 = RAILS.loves[this.love]) != null ? ref3.win : void 0;
+        win_role = win_by_role(this, Mem.Query.roles);
+        win = win_juror || win_love || win_zombie || win_role;
+        if (win === 'EVIL') {
+          win = story.evil;
+        }
+        switch (win) {
+          case "LONEWOLF":
+            is_dead_lose = 1;
+            break;
+          case "HATER":
+            if (!_.includes(this.role, "HATEDEVIL")) {
+              is_dead_lose = 1;
             }
-            if (is_lone_lose && _.some(o.bonds, function(o) {
-              return o.live !== 'live' && _.some(o.bonds, o.pno);
-            })) {
-              win_result = "敗北";
-            }
-            if ("NONE" === win) {
-              win_result = "参加";
+            break;
+          case "LOVER":
+            if (!_.includes(this.role, "LOVEANGEL")) {
+              is_lone_lose = 1;
             }
         }
-      }
-      stat_type = Mem.conf.live[o.live].label;
-      stat_order = Mem.conf.live[o.live].order;
-      win_side_order = Mem.conf.winner["WIN_" + win].order;
-      role_side_order = Mem.conf.winner["WIN_" + win_role].order;
-      roles = (function() {
-        var i, len, ref4, results;
-        ref4 = o.role;
-        results = [];
-        for (i = 0, len = ref4.length; i < len; i++) {
-          role = ref4[i];
-          results.push(GUI.name.config(role));
+        if (story.is_epilogue) {
+          switch (this.live) {
+            case "suddendead":
+            case "leave":
+              win_result = "―";
+              break;
+            default:
+              winner = event.winner;
+              win_result = "敗北";
+              if (winner === "WIN_" + win) {
+                win_result = "勝利";
+              }
+              if (winner !== "WIN_HUMAN" && winner !== "WIN_LOVER" && "EVIL" === win) {
+                win_result = "勝利";
+              }
+              if ("victim" === this.live && "DISH" === win) {
+                win_result = "勝利";
+              }
+              if (is_dead_lose && 'live' !== this.live) {
+                win_result = "敗北";
+              }
+              if (is_lone_lose && _.some(this.bonds, function(o) {
+                return o.live !== 'live' && _.some(this.bonds, this.pno);
+              })) {
+                win_result = "敗北";
+              }
+              if ("NONE" === win) {
+                win_result = "参加";
+              }
+          }
         }
-        return results;
-      })();
-      role_text = roles.join("、");
-      text = Mem.Query.ables.by_rolestate(o.rolestate).pluck("name");
-      if ('pixi' === o.sheep) {
-        text.push('<span class="icon-music"></span>');
+        stat_type = Mem.conf.live[this.live].label;
+        stat_order = Mem.conf.live[this.live].order;
+        win_side_order = Mem.conf.winner["WIN_" + win].order;
+        role_side_order = Mem.conf.winner["WIN_" + win_role].order;
+        roles = (function() {
+          var i, len, ref4, results;
+          ref4 = this.role;
+          results = [];
+          for (i = 0, len = ref4.length; i < len; i++) {
+            role = ref4[i];
+            results.push(GUI.name.config(role));
+          }
+          return results;
+        }).call(this);
+        role_text = roles.join("、");
+        text = Mem.Query.ables.by_rolestate(this.rolestate).pluck("name");
+        if ('pixi' === this.sheep) {
+          text.push('<span class="icon-music"></span>');
+        }
+        if ('love' === this.love) {
+          text.push('<span class="icon-heart"></span>');
+        }
+        if ('hate' === this.love) {
+          text.push('<span class="icon-scissors"></span>');
+        }
+        if ('love' === this.pseudolove) {
+          text.push('<span class="icon-heart    del"></span>');
+        }
+        if ('hate' === this.pseudolove) {
+          text.push('<span class="icon-scissors del"></span>');
+        }
+        text_str = text.join();
+        this.order = {
+          stat_at: [-this.deathday, -stat_order],
+          stat_type: [stat_order, -this.deathday],
+          said_num: [said_num, pt_no, urge],
+          pt: [pt_no, said_num, urge],
+          urge: [urge, pt_no, said_num],
+          win_result: [win_result, win_side_order, text_str, role_text],
+          win_side: [win_side_order, win_result, text_str, role_text],
+          role: [role_side_order, role_text, win_side_order, select, text_str],
+          select: [select, role_side_order, role_text, win_side_order, text_str],
+          text: [text_str, win_side_order, role_side_order, role_text, select]
+        };
+        this.view = {
+          portrate: GUI.portrate(this.face_id),
+          job: job,
+          user_id: m("kbd", this.user_id),
+          stat_at: stat_at,
+          stat_type: stat_type,
+          said_num: said_num ? said_num + "回" : "",
+          pt: pt,
+          urge: urges[urge] || "∞",
+          win: win,
+          win_result: win_result,
+          win_side: Mem.conf.winner["WIN_" + win].name,
+          role: role_text,
+          select: select ? m("kbd", select) : "",
+          text: text_str
+        };
+        this.form = {
+          _id: this.pno
+        };
       }
-      if ('love' === o.love) {
-        text.push('<span class="icon-heart"></span>');
-      }
-      if ('hate' === o.love) {
-        text.push('<span class="icon-scissors"></span>');
-      }
-      if ('love' === o.pseudolove) {
-        text.push('<span class="icon-heart    del"></span>');
-      }
-      if ('hate' === o.pseudolove) {
-        text.push('<span class="icon-scissors del"></span>');
-      }
-      text_str = text.join();
-      o.order = {
-        stat_at: [-o.deathday, -stat_order],
-        stat_type: [stat_order, -o.deathday],
-        said_num: [said_num, pt_no, urge],
-        pt: [pt_no, said_num, urge],
-        urge: [urge, pt_no, said_num],
-        win_result: [win_result, win_side_order, text_str, role_text],
-        win_side: [win_side_order, win_result, text_str, role_text],
-        role: [role_side_order, role_text, win_side_order, select, text_str],
-        select: [select, role_side_order, role_text, win_side_order, text_str],
-        text: [text_str, win_side_order, role_side_order, role_text, select]
-      };
-      o.view = {
-        portrate: GUI.portrate(o.face_id),
-        job: job,
-        user_id: m("kbd", o.user_id),
-        stat_at: stat_at,
-        stat_type: stat_type,
-        said_num: said_num ? said_num + "回" : "",
-        pt: pt,
-        urge: urges[urge] || "∞",
-        win: win,
-        win_result: win_result,
-        win_side: Mem.conf.winner["WIN_" + win].name,
-        role: role_text,
-        select: select ? m("kbd", select) : "",
-        text: text_str
-      };
-      return o.form = {
-        _id: o.pno
-      };
-    });
-    return this.map_reduce(function(o, emit) {});
+
+      return model;
+
+    })(this.model);
   });
 
 }).call(this);
@@ -10728,7 +10605,7 @@
 (function(){
   var mask, ref$, id, o;
   new Mem.Rule("role").schema(function(){
-    var role_index, gift_index, order_index;
+    var role_index, gift_index, order_index, model;
     role_index = SOW_RECORD.roles;
     gift_index = SOW_RECORD.gifts;
     order_index = role_index.concat(gift_index);
@@ -10827,31 +10704,33 @@
         }
       };
     });
-    this['default'](function(){});
-    this.deploy(function(o){
-      o.ables == null && (o.ables = []);
-      o.help == null && (o.help = "");
-      o.role_idx = role_index.indexOf(o._id);
-      o.gift_idx = gift_index.indexOf(o._id);
-      o.order = order_index.indexOf(o._id);
-      if (o.group != null && o.group !== "OTHER") {
-        o.side = o.group.toLowerCase();
+    return this.model = model = (function(superclass){
+      var prototype = extend$((import$(model, superclass).displayName = 'model', model), superclass).prototype, constructor = model;
+      function model(){
+        this.ables == null && (this.ables = []);
+        this.help == null && (this.help = "");
+        this.role_idx = role_index.indexOf(this._id);
+        this.gift_idx = gift_index.indexOf(this._id);
+        this.order = order_index.indexOf(this._id);
+        if (this.group != null && this.group !== "OTHER") {
+          this.side = this.group.toLowerCase();
+        }
+        if ("gift" === this.cmd) {
+          this.side = "gift";
+        }
+        if (this.group === "MOB") {
+          this.side = "mob";
+          this.order = 0;
+        }
+        if (!this.side) {
+          this.side = "other";
+        }
       }
-      if ("gift" === o.cmd) {
-        o.side = "gift";
-      }
-      if (o.group === "MOB") {
-        o.side = "mob";
-        o.order = 0;
-      }
-      if (!o.side) {
-        return o.side = "other";
-      }
-    });
-    return this.map_reduce(function(o){});
+      return model;
+    }(this.model));
   });
   new Mem.Rule("trap").schema(function(){
-    var id_index;
+    var id_index, model;
     id_index = SOW_RECORD.events;
     this.order("order");
     this.scope(function(all){
@@ -10873,13 +10752,16 @@
         }
       };
     });
-    this['default'](function(){});
-    this.deploy(function(o){
-      return o.order = id_index.indexOf(o._id);
-    });
-    return this.map_reduce(function(o){});
+    return this.model = model = (function(superclass){
+      var prototype = extend$((import$(model, superclass).displayName = 'model', model), superclass).prototype, constructor = model;
+      function model(){
+        this.order = id_index.indexOf(this._id);
+      }
+      return model;
+    }(this.model));
   });
   new Mem.Rule("able").schema(function(){
+    var model;
     this.scope(function(all){
       return {
         by_rolestate: function(bits){
@@ -10899,45 +10781,47 @@
         }
       };
     });
-    this['default'](function(){});
-    this.deploy(function(o){
-      return o.at = (function(){
-        switch (o.at) {
-        case "main":
-          return {
-            main: true
-          };
-        case "start":
-          return {
-            start: true
-          };
-        case "progress":
-          return {
-            start: true,
-            main: true
-          };
-        case "prologue":
-          return {
-            prologue: true
-          };
-        case "around":
-          return {
-            prologue: true,
-            epilogue: true
-          };
-        case "all":
-          return {
-            start: true,
-            main: true,
-            prologue: true,
-            epilogue: true
-          };
-        default:
-          return {};
-        }
-      }());
-    });
-    return this.map_reduce(function(o){});
+    return this.model = model = (function(superclass){
+      var prototype = extend$((import$(model, superclass).displayName = 'model', model), superclass).prototype, constructor = model;
+      function model(){
+        this.at = (function(){
+          switch (this.at) {
+          case "main":
+            return {
+              main: true
+            };
+          case "start":
+            return {
+              start: true
+            };
+          case "progress":
+            return {
+              start: true,
+              main: true
+            };
+          case "prologue":
+            return {
+              prologue: true
+            };
+          case "around":
+            return {
+              prologue: true,
+              epilogue: true
+            };
+          case "all":
+            return {
+              start: true,
+              main: true,
+              prologue: true,
+              epilogue: true
+            };
+          default:
+            return {};
+          }
+        }.call(this));
+      }
+      return model;
+    }(this.model));
   });
   Mem.Collection.able.set({
     "editvilform": {
@@ -12332,204 +12216,229 @@
       "help": "あなたは<A href=\"http://crazy-crazy.sakura.ne.jp/giji/?(Role)ROLEID_BITCH\" TARGET=\"_blank\">遊び人</A>です。\n本命とあなたが生き延びれば、あなたの勝利です。"
     }
   });
+  function extend$(sub, sup){
+    function fun(){} fun.prototype = (sub.superclass = sup).prototype;
+    (sub.prototype = new fun).constructor = sub;
+    if (typeof sup.extended == 'function') sup.extended(sub);
+    return sub;
+  }
+  function import$(obj, src){
+    var own = {}.hasOwnProperty;
+    for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+    return obj;
+  }
 }).call(this);
 
 (function(){
   new Mem.Rule("form").schema(function(){
+    var model;
     this.belongs_to("chr_job");
     this.order(function(o){
       return o.index;
     });
     this.scope(function(all){});
-    this['default'](function(){});
-    this.deploy(function(o){
-      var listup, target_for, text_for, input_for, role_scan, able_scan, role_names, role_helps, able_helps, i$, ref$, len$, role_id, can_use, able;
-      listup = function(state, live, mob){
-        var option;
-        option = function(cb){
-          var ref$;
-          return ((ref$ = Mem.Query.potofs) != null ? ref$.where(cb).list : void 8) || [];
-        };
-        switch (state) {
-        case "dead":
-          return option(function(o){
+    return this.model = model = (function(superclass){
+      var prototype = extend$((import$(model, superclass).displayName = 'model', model), superclass).prototype, constructor = model;
+      function model(){
+        var listup, target_for, text_for, input_for, role_scan, able_scan, role_names, role_helps, able_helps, i$, ref$, len$, role_id, can_use, able;
+        listup = function(state, live, mob){
+          var option;
+          option = function(cb){
             var ref$;
-            return !((ref$ = o.live) === "live" || ref$ === "mob");
-          });
-        case "gm_live":
-          return option(function(o){
-            var ref$;
-            return (ref$ = o.live) === "live" || ref$ === "mob";
-          });
-        case "gm_dead":
-          return option(function(o){
-            return o.live !== "live";
-          });
-        case "live":
-          return option(function(o){
-            return o.live === "live";
-          });
-        case "cast":
-          return option(function(o){
-            return o.live !== "mob";
-          });
-        case "mob":
-          return option(function(o){
-            return o.live === "mob";
-          });
-        case "all":
-          return option(function(){
-            return true;
-          });
-        case "near":
-          switch (live) {
+            return ((ref$ = Mem.Query.potofs) != null ? ref$.where(cb).list : void 8) || [];
+          };
+          switch (state) {
+          case "dead":
+            return option(function(o){
+              var ref$;
+              return !((ref$ = o.live) === "live" || ref$ === "mob");
+            });
+          case "gm_live":
+            return option(function(o){
+              var ref$;
+              return (ref$ = o.live) === "live" || ref$ === "mob";
+            });
+          case "gm_dead":
+            return option(function(o){
+              return o.live !== "live";
+            });
+          case "live":
+            return option(function(o){
+              return o.live === "live";
+            });
+          case "cast":
+            return option(function(o){
+              return o.live !== "mob";
+            });
           case "mob":
-            switch (mob) {
-            case "grave":
-              return listup("dead");
-            case "alive":
+            return option(function(o){
+              return o.live === "mob";
+            });
+          case "all":
+            return option(function(){
+              return true;
+            });
+          case "near":
+            switch (live) {
+            case "mob":
+              switch (mob) {
+              case "grave":
+                return listup("dead");
+              case "alive":
+                return listup("live");
+              case "gamemaster":
+                return listup("all");
+              default:
+                return listup("mob");
+              }
+              break;
+            case "live":
               return listup("live");
-            case "gamemaster":
-              return listup("all");
             default:
-              return listup("mob");
+              return listup("dead");
             }
             break;
-          case "live":
-            return listup("live");
           default:
-            return listup("dead");
+            return [];
           }
-          break;
-        default:
-          return [];
-        }
-      };
-      target_for = function(options){
-        var target, h, i$, len$, ref$, name, job, pno;
-        target = Mem.Query.inputs.hash.target;
-        h = {};
-        for (i$ = 0, len$ = options.length; i$ < len$; ++i$) {
-          ref$ = options[i$], name = ref$.name, job = ref$.job, pno = ref$.pno;
-          h[pno] = {
-            _id: pno,
-            label: job + " " + name
+        };
+        target_for = function(options){
+          var target, h, i$, len$, ref$, name, job, pno;
+          target = Mem.Query.inputs.hash.target;
+          h = {};
+          for (i$ = 0, len$ = options.length; i$ < len$; ++i$) {
+            ref$ = options[i$], name = ref$.name, job = ref$.job, pno = ref$.pno;
+            h[pno] = {
+              _id: pno,
+              label: job + " " + name
+            };
+          }
+          target.options = h;
+          return console.warn(target);
+        };
+        text_for = function(format, able){
+          var _id, text, options, area, tie;
+          _id = able._id, text = able.text;
+          options = listup("near", o.live, o.mob);
+          if (_id === 'SAY' || _id === 'GSAY' || _id === 'VSAY' || _id === 'TSAY') {
+            options.push({
+              job: "―――",
+              name: "",
+              pno: -1
+            });
+          }
+          if (options.length) {
+            area = Mem.Query.inputs.hash[format];
+            target_for(options);
+          }
+          tie = InputTie.form({}, [text, "target"]);
+          tie.inputs.target.options = options;
+          return o.texts[_id] = {
+            tie: tie
           };
-        }
-        target.options = h;
-        return console.warn(target);
-      };
-      text_for = function(format, able){
-        var _id, text, options, area, tie;
-        _id = able._id, text = able.text;
-        options = listup("near", o.live, o.mob);
-        if (_id === 'SAY' || _id === 'GSAY' || _id === 'VSAY' || _id === 'TSAY') {
-          options.push({
-            job: "―――",
-            name: "",
-            pno: -1
-          });
-        }
-        if (options.length) {
-          area = Mem.Query.inputs.hash[format];
-          target_for(options);
-        }
-        tie = InputTie.form({}, [text, "target"]);
-        tie.inputs.target.options = options;
-        return o.texts[_id] = {
-          tie: tie
         };
-      };
-      input_for = function(role, able){
-        var cmd, options, select, tie;
-        cmd = able.cmd || role.cmd;
-        options = listup(able['for'], o.live, o.mob);
-        if (able.sw) {
-          options.push({
-            name: "",
-            pno: o.pno || 1,
-            job: able.sw
-          });
-        }
-        if (able.pass) {
-          options.push({
-            name: "",
-            pno: -1,
-            job: able.pass || "（パス）"
-          });
-        }
-        if (options.length) {
-          select = Mem.Query.inputs.hash.target;
-          target_for(options);
-        }
-        tie = InputTie.form({}, ["target"]);
-        tie.inputs.target.options = options;
-        return o.selects[_id] = {
-          tie: tie
+        input_for = function(role, able){
+          var cmd, options, select, tie;
+          cmd = able.cmd || role.cmd;
+          options = listup(able['for'], o.live, o.mob);
+          if (able.sw) {
+            options.push({
+              name: "",
+              pno: o.pno || 1,
+              job: able.sw
+            });
+          }
+          if (able.pass) {
+            options.push({
+              name: "",
+              pno: -1,
+              job: able.pass || "（パス）"
+            });
+          }
+          if (options.length) {
+            select = Mem.Query.inputs.hash.target;
+            target_for(options);
+          }
+          tie = InputTie.form({}, ["target"]);
+          tie.inputs.target.options = options;
+          return o.selects[_id] = {
+            tie: tie
+          };
         };
-      };
-      role_scan = function(role_id, can_use){
-        var role, i$, ref$, len$, able_id, able, results$ = [];
-        role = Mem.Query.roles.find(role_id);
-        role_names.push(role.name);
-        role_helps.push(role.help);
-        if (in$("grave", role.ables)) {
-          can_use = !can_use;
-        }
-        if (can_use) {
-          for (i$ = 0, len$ = (ref$ = role.ables).length; i$ < len$; ++i$) {
-            able_id = ref$[i$];
-            able = Mem.Query.ables.find(able_id);
-            results$.push(able_scan(role, able));
+        role_scan = function(role_id, can_use){
+          var role, i$, ref$, len$, able_id, able, results$ = [];
+          role = Mem.Query.roles.find(role_id);
+          role_names.push(role.name);
+          role_helps.push(role.help);
+          if (in$("grave", role.ables)) {
+            can_use = !can_use;
           }
-          return results$;
-        }
-      };
-      able_scan = function(role, able){
-        var _id;
-        able_helps.push(able.help);
-        _id = able._id;
-        if (able.text != null) {
-          text_for(format, able);
-        }
-        if (able.at != null) {
-          if (able.at[o.turn]) {
-            return input_for(role, able);
+          if (can_use) {
+            for (i$ = 0, len$ = (ref$ = role.ables).length; i$ < len$; ++i$) {
+              able_id = ref$[i$];
+              able = Mem.Query.ables.find(able_id);
+              results$.push(able_scan(role, able));
+            }
+            return results$;
           }
-        }
-      };
-      o.tie = InputTie.form(o.params, ["format", "mestype"]);
-      role_names = [];
-      role_helps = [];
-      able_helps = [];
-      o.form = {};
-      o.texts = {};
-      o.selects = {};
-      o.ext == null && (o.ext = []);
-      for (i$ = 0, len$ = (ref$ = o.ext).length; i$ < len$; ++i$) {
-        role_id = ref$[i$];
-        role_scan(role_id, true);
-      }
-      role_scan(o.turn, true);
-      if (o.live !== "mob") {
-        can_use = "live" === o.live;
-        role_scan(o.live, true);
-        for (i$ = 0, len$ = (ref$ = o.role).length; i$ < len$; ++i$) {
+        };
+        able_scan = function(role, able){
+          var _id;
+          able_helps.push(able.help);
+          _id = able._id;
+          if (able.text != null) {
+            text_for(format, able);
+          }
+          if (able.at != null) {
+            if (able.at[o.turn]) {
+              return input_for(role, able);
+            }
+          }
+        };
+        this.tie = InputTie.form(this.params, ["format", "mestype"]);
+        role_names = [];
+        role_helps = [];
+        able_helps = [];
+        this.form = {};
+        this.texts = {};
+        this.selects = {};
+        this.ext == null && (this.ext = []);
+        for (i$ = 0, len$ = (ref$ = this.ext).length; i$ < len$; ++i$) {
           role_id = ref$[i$];
-          role_scan(role_id, can_use);
+          role_scan(role_id, true);
         }
+        role_scan(this.turn, true);
+        if (this.live !== "mob") {
+          can_use = "live" === this.live;
+          role_scan(this.live, true);
+          for (i$ = 0, len$ = (ref$ = this.role).length; i$ < len$; ++i$) {
+            role_id = ref$[i$];
+            role_scan(role_id, can_use);
+          }
+        }
+        for (i$ = 0, len$ = (ref$ = Mem.Query.ables.by_rolestate(this.rolestate)).length; i$ < len$; ++i$) {
+          able = ref$[i$];
+          role_names.push(able.name);
+          able_scan({}, able);
+        }
+        this.role_name = role_names.join("、");
+        this.role_help = _.uniq(_.compact(role_helps)).join("\n<br>\n");
+        this.able_help = _.uniq(_.compact(able_helps)).join("\n<br>\n");
       }
-      for (i$ = 0, len$ = (ref$ = Mem.Query.ables.by_rolestate(o.rolestate)).length; i$ < len$; ++i$) {
-        able = ref$[i$];
-        role_names.push(able.name);
-        able_scan({}, able);
-      }
-      o.role_name = role_names.join("、");
-      o.role_help = _.uniq(_.compact(role_helps)).join("\n<br>\n");
-      return o.able_help = _.uniq(_.compact(able_helps)).join("\n<br>\n");
-    });
-    return this.map_reduce(function(o){});
+      return model;
+    }(this.model));
   });
+  function extend$(sub, sup){
+    function fun(){} fun.prototype = (sub.superclass = sup).prototype;
+    (sub.prototype = new fun).constructor = sub;
+    if (typeof sup.extended == 'function') sup.extended(sub);
+    return sub;
+  }
+  function import$(obj, src){
+    var own = {}.hasOwnProperty;
+    for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+    return obj;
+  }
   function in$(x, xs){
     var i = -1, l = xs.length >>> 0;
     while (++i < l) if (x === xs[i]) return true;
@@ -12538,12 +12447,15 @@
 }).call(this);
 
 (function() {
+  var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
   new Mem.Rule("story").schema(function() {
     var all_traps;
     this.scope(function(all) {
       return {
         menu: function(folder, game, rating, event_type, role_type, say_limit, player_length, update_at, update_interval, search) {
-          return all.sort("desc", "order").search(search).where(function(o) {
+          return all.sort(["order"], ["desc"]).search(search).where(function(o) {
             var tf;
             tf = true;
             if (folder !== "all") {
@@ -12603,91 +12515,99 @@
       };
     });
     all_traps = Mem.Query.traps.ids;
-    this.deploy(function(o) {
-      var base, base1, mob, ref, ref1, ref2;
-      o.order = o.folder + GUI.field(o.vid, 4);
-      if (!o.rating) {
-        o.rating = "default";
+    return this.model = (function(superClass) {
+      extend(model, superClass);
+
+      function model() {
+        var base, base1, mob, ref, ref1, ref2;
+        this.order = this.folder + GUI.field(this.vid, 4);
+        if (!this.rating) {
+          this.rating = "default";
+        }
+        this.user_id = this.sow_auth_id;
+        this.card.role = _.difference(this.card.config, all_traps);
+        if ((base = this.type).game == null) {
+          base.game = "TABULA";
+        }
+        if ((base1 = this.type).mob == null) {
+          base1.mob = "visiter";
+        }
+        if (mob = Mem.Query.roles.find(this.type.mob)) {
+          Mem.Query.roles.find("mob").name = mob.name;
+        }
+        this.evil || (this.evil = Mem.conf.folder[this.folder].story.evil);
+        this.view = {
+          rating: m("img", {
+            src: GUI.img_head + ("/icon/cd_" + this.rating + ".png")
+          }),
+          update_at: Timer.hhmm(this.upd.hour, this.upd.minute),
+          update_interval: (this.upd.interval * 24) + "時間",
+          player_length: this.vpl.last,
+          role_types: GUI.names.config(this.card.role, function(size, arg) {
+            var label;
+            label = arg.label;
+            return label;
+          }),
+          event_types: GUI.names.config(this.card.event, function(size, arg) {
+            var label;
+            label = arg.label;
+            return label;
+          }),
+          role_cards: GUI.names.config(this.card.role, function(size, arg) {
+            var label, win;
+            label = arg.label, win = arg.win;
+            if (size > 1) {
+              return m(".emboss.WIN_" + win, label + "x" + size);
+            } else {
+              return m(".emboss.WIN_" + win, "" + label);
+            }
+          }),
+          trap_cards: GUI.names.config(this.card.event, function(size, arg) {
+            var label, win;
+            label = arg.label, win = arg.win;
+            if (size > 1) {
+              return m(".emboss.WIN_" + win, label + "x" + size);
+            } else {
+              return m(".emboss.WIN_" + win, "" + label);
+            }
+          }),
+          say_limit_help: ((ref = Mem.conf.say[this.type.say]) != null ? ref.help : void 0) || "――",
+          say_limit: ((ref1 = Mem.conf.say[this.type.say]) != null ? ref1.label : void 0) || "――",
+          game_rule: ((ref2 = Mem.conf.rule[this.type.game]) != null ? ref2.label : void 0) || "タブラの人狼"
+        };
+        this.search_words = this.name;
       }
-      o.user_id = o.sow_auth_id;
-      o.card.role = _.difference(o.card.config, all_traps);
-      if ((base = o.type).game == null) {
-        base.game = "TABULA";
-      }
-      if ((base1 = o.type).mob == null) {
-        base1.mob = "visiter";
-      }
-      if (mob = Mem.Query.roles.find(o.type.mob)) {
-        Mem.Query.roles.find("mob").name = mob.name;
-      }
-      o.evil || (o.evil = Mem.conf.folder[o.folder].story.evil);
-      o.view = {
-        rating: m("img", {
-          src: GUI.img_head + ("/icon/cd_" + o.rating + ".png")
-        }),
-        update_at: Timer.hhmm(o.upd.hour, o.upd.minute),
-        update_interval: (o.upd.interval * 24) + "時間",
-        player_length: o.vpl.last,
-        role_types: GUI.names.config(o.card.role, function(size, arg) {
-          var label;
-          label = arg.label;
-          return label;
-        }),
-        event_types: GUI.names.config(o.card.event, function(size, arg) {
-          var label;
-          label = arg.label;
-          return label;
-        }),
-        role_cards: GUI.names.config(o.card.role, function(size, arg) {
-          var label, win;
-          label = arg.label, win = arg.win;
-          if (size > 1) {
-            return m(".emboss.WIN_" + win, label + "x" + size);
-          } else {
-            return m(".emboss.WIN_" + win, "" + label);
-          }
-        }),
-        trap_cards: GUI.names.config(o.card.event, function(size, arg) {
-          var label, win;
-          label = arg.label, win = arg.win;
-          if (size > 1) {
-            return m(".emboss.WIN_" + win, label + "x" + size);
-          } else {
-            return m(".emboss.WIN_" + win, "" + label);
-          }
-        }),
-        say_limit_help: ((ref = Mem.conf.say[o.type.say]) != null ? ref.help : void 0) || "――",
-        say_limit: ((ref1 = Mem.conf.say[o.type.say]) != null ? ref1.label : void 0) || "――",
-        game_rule: ((ref2 = Mem.conf.rule[o.type.game]) != null ? ref2.label : void 0) || "タブラの人狼"
+
+      model.map_reduce = function(o, emit) {
+        var event_type, i, item, j, len, len1, ref, ref1, results, role_type;
+        item = {
+          count: 1
+        };
+        emit("all", "all", item);
+        emit("folder", o.folder, item);
+        emit("game", o.type.game, item);
+        emit("rating", o.rating, item);
+        emit("say_limit", o.view.say_limit, item);
+        emit("update_at", o.view.update_at, item);
+        emit("update_interval", o.view.update_interval, item);
+        emit("player_length", o.view.player_length, item);
+        ref = o.view.role_types;
+        for (i = 0, len = ref.length; i < len; i++) {
+          role_type = ref[i];
+          emit("role_type", role_type, item);
+        }
+        ref1 = o.view.event_types;
+        results = [];
+        for (j = 0, len1 = ref1.length; j < len1; j++) {
+          event_type = ref1[j];
+          results.push(emit("event_type", event_type, item));
+        }
+        return results;
       };
-      return o.search_words = o.name;
-    });
-    return this.map_reduce(function(o, emit) {
-      var event_type, i, item, j, len, len1, ref, ref1, results, role_type;
-      item = {
-        count: 1
-      };
-      emit("all", "all", item);
-      emit("folder", o.folder, item);
-      emit("game", o.type.game, item);
-      emit("rating", o.rating, item);
-      emit("say_limit", o.view.say_limit, item);
-      emit("update_at", o.view.update_at, item);
-      emit("update_interval", o.view.update_interval, item);
-      emit("player_length", o.view.player_length, item);
-      ref = o.view.role_types;
-      for (i = 0, len = ref.length; i < len; i++) {
-        role_type = ref[i];
-        emit("role_type", role_type, item);
-      }
-      ref1 = o.view.event_types;
-      results = [];
-      for (j = 0, len1 = ref1.length; j < len1; j++) {
-        event_type = ref1[j];
-        results.push(emit("event_type", event_type, item));
-      }
-      return results;
-    });
+
+      return model;
+
+    })(this.model);
   });
 
 }).call(this);
@@ -12811,7 +12731,7 @@
 
 (function(){
   new Mem.Rule("winner").schema(function(){
-    var id_index;
+    var id_index, model;
     id_index = SOW_RECORD.winners;
     this.scope(function(all){
       return {
@@ -12827,15 +12747,14 @@
         }
       };
     });
-    this['default'](function(){});
-    this.deploy(function(o){
-      var ref$;
-      o.order = id_index.indexOf(o._id);
-      return (ref$ = o.label_human) != null
-        ? ref$
-        : o.label_human = o.label;
-    });
-    return this.map_reduce(function(o){});
+    return this.model = model = (function(superclass){
+      var prototype = extend$((import$(model, superclass).displayName = 'model', model), superclass).prototype, constructor = model;
+      function model(){
+        this.order = id_index.indexOf(this._id);
+        this.label_human == null && (this.label_human = this.label);
+      }
+      return model;
+    }(this.model));
   });
   Mem.Collection.winner.set({
     "WIN_HUMAN": {
@@ -12919,6 +12838,17 @@
     }
   });
   Mem.conf.winner = Mem.Query.winners.hash;
+  function extend$(sub, sup){
+    function fun(){} fun.prototype = (sub.superclass = sup).prototype;
+    (sub.prototype = new fun).constructor = sub;
+    if (typeof sup.extended == 'function') sup.extended(sub);
+    return sub;
+  }
+  function import$(obj, src){
+    var own = {}.hasOwnProperty;
+    for (var key in src) if (own.call(src, key)) obj[key] = src[key];
+    return obj;
+  }
 }).call(this);
 
 (function() {

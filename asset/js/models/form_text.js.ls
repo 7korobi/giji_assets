@@ -6,8 +6,7 @@ new Mem.Rule("form_text").schema ->
     mestypes: (form_id, format)->
       all.where((o)-> o.form_id == form_id && o.format == format )
 
-  @default ->
-
-  @deploy (o)->
-    o._id = "#{o.form_id}-#{o.mestype}-#{o.format}"
-    o.mestype_name = Mem.Query.ables.find(o.mestype).label
+  class @model extends @model
+    ->
+      @_id = "#{@form_id}-#{@mestype}-#{@format}"
+      @mestype_name = Mem.Query.ables.find(@mestype).label

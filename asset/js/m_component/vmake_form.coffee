@@ -60,6 +60,7 @@ doc.component.vmake_form =
     v.tie.input.checkboxes =
       for chk in Mem.Query.inputs.checkbox("vil").list
         v.tie.bundle chk
+    console.warn v.tie
 
     ###
     v.tie.validate =

@@ -52,18 +52,13 @@ deploy
   DELAY: require 'delay.yml'
 
   GUI: require 'gui'
-  Url: require 'url_store'
-  WebStore: require 'web_store'
-  InputTie: require 'input_tie'
-
-require "conf_input"
-require "conf_store"
 
 GUI.Animate = require 'gui_animate'
 GUI.form = require 'gui_form'
 
 deploy require 'base'
 deploy require 'timer'
+deploy require 'mithril-tie'
 
 require '_ext'
 

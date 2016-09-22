@@ -5,11 +5,7 @@ config = (key)->
         all.where (o)->
           ! o.disabled
 
-    @deploy (o)->
-      o["#{key}_id"] = o._id
-
-    @map_reduce (o)->
-
+    class @model extends @model
 
 Mem.conf = {}
 

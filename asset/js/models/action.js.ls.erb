@@ -1,20 +1,14 @@
 new Mem.Rule("action").schema ->
-
   @order "index"
-
   @scope (all)->
     for_form: (mestype, format)->
       all
 
-  @default ->
-
-  index = 0
-  @deploy (o)->
-    unless o.index
-      o.index = index += 1
-    o._id = o.index
-    o.target ?= true
-
-  @map_reduce (o)->
+  class @model extends @model
+    (o, { rowid })->
+      unless @index
+        @index = rowid
+      @_id = @index
+      @target ?= true
 
 Mem.Collection.action.set <%- JSON.stringify(SET_ACTIONS) %>

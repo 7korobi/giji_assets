@@ -72,24 +72,21 @@ new Mem.Rule("role").schema ->
       all.where (o)-> o._id in ["bitch", "fink", "fairy", "ogre"]
       .finds ids
 
-  @default ->
+  class @model extends @model
+    ->
+      @ables ?= []
+      @help ?= ""
 
-  @deploy (o)->
-    o.ables ?= []
-    o.help ?= ""
+      @role_idx = role_index.indexOf @_id
+      @gift_idx = gift_index.indexOf @_id
+      @order   = order_index.indexOf @_id
 
-    o.role_idx = role_index.indexOf o._id
-    o.gift_idx = gift_index.indexOf o._id
-    o.order = order_index.indexOf o._id
-
-    o.side = o.group.toLowerCase() if o.group? && o.group != "OTHER"
-    o.side = "gift"  if "gift" == o.cmd
-    if o.group == "MOB"
-      o.side = "mob"
-      o.order = 0
-    o.side = "other" unless o.side
-
-  @map_reduce (o)->
+      @side = @group.toLowerCase() if @group? && @group != "OTHER"
+      @side = "gift"  if "gift" == @cmd
+      if @group == "MOB"
+        @side = "mob"
+        @order = 0
+      @side = "other" unless @side
 
 
 new Mem.Rule("trap").schema ->
@@ -109,13 +106,9 @@ new Mem.Rule("trap").schema ->
     sow: (idx)->
       all.where((o)-> o.order == idx).list.first
 
-
-  @default ->
-
-  @deploy (o)->
-    o.order = id_index.indexOf o._id
-
-  @map_reduce (o)->
+  class @model extends @model
+    ->
+      @order = id_index.indexOf @_id
 
 
 new Mem.Rule("able").schema ->
@@ -127,19 +120,17 @@ new Mem.Rule("able").schema ->
           mask
       all.where(mask:masks)
 
-  @default ->
+  class @model extends @model
+    ->
+      @at = switch @at
+           | "main"     => {         +main                       }
+           | "start"    => { +start                              }
+           | "progress" => { +start, +main                       }
+           | "prologue" => {                +prologue            }
+           | "around"   => {                +prologue, +epilogue }
+           | "all"      => { +start, +main, +prologue, +epilogue }
+           | _          => {                                     }
 
-  @deploy (o)->
-    o.at = switch o.at
-         | "main"     => {         +main                       }
-         | "start"    => { +start                              }
-         | "progress" => { +start, +main                       }
-         | "prologue" => {                +prologue            }
-         | "around"   => {                +prologue, +epilogue }
-         | "all"      => { +start, +main, +prologue, +epilogue }
-         | _          => {                                     }
-
-  @map_reduce (o)->
 
 
 Mem.Collection.able.set <%- JSON.stringify(SET_ABLES) %>

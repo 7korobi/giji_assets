@@ -6,26 +6,23 @@ new Mem.Rule("item").schema !->
       q = q[scope](...ary)
     q
 
-  @order (o)-> o.index
-
+  @order "index"
   @scope (all)->
 
-  @default ->
+  class @model extends @model
     list: ->
       if @query
         [rule, ...ary] = @query.split(/ +/)
         data(rule, ary).list
 
-  @deploy (o)->
-    [type, template, mestype, index] = o._id.split('-')
-    o.csid ||= "all" if o.face_id
-    o.type ||= type
-    o.index ||= Number(index) || o.updated_at
-    o.mestype ||= mestype
-    o.template ||= template
+    ->
+      [type, template, mestype, index] = @_id.split('-')
+      @csid ?= "all" if @face_id
+      @type ?= type
+      @index ?= Number(index) || @updated_at
+      @mestype ?= mestype
+      @template ?= template
 
-    if o.object
-      [rule, ...ary, key] = o.object.split(/ +/)
-      o.log = data(rule, ary)[key]
-
-  @map_reduce (o)->
+      if @object
+        [rule, ...ary, key] = @object.split(/ +/)
+        @log = data(rule, ary)[key]

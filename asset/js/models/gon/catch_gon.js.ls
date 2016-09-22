@@ -93,10 +93,6 @@ export catch_gon =
     Mem.Collection.chr_job.merge gon.new_chr_jobs
 
   map_reduce_faces: ->
-    Mem.Collection.chr_set.schema ->
-      @order (o)->
-        Mem.Query.map_faces.reduce.chr_set[o._id].count
-
     Mem.Collection.map_face.set gon.map_reduce.faces
 
   villages: ->

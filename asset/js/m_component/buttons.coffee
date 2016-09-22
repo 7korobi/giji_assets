@@ -24,7 +24,7 @@ doc.component.buttons =
           search: ""
         doc.messages.talk(params).list.length - Mem.Query.events.list.length
       "th-large": ->
-        Mem.Query.map_faces.active(Url.params.order, Url.params.chr_set, Url.params.search).list.length
+        # Mem.Query.map_faces.active(Url.params.order, Url.params.chr_set, Url.params.search).list.length
 
 
     for icon, option of Mem.Query.inputs.hash.icon.options

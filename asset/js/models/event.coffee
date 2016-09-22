@@ -7,24 +7,23 @@ new Mem.Rule("event").schema ->
   @scope (all)->
     {}
 
-  @deploy (o)->
-    if o.sow?
-      o.winner = Mem.Query.winners.sow(o.sow.winner)._id
-      o.event = Mem.Query.traps.sow(o.sow.event)._id
+  class @model extends @model
+    constructor: ->
+      if @sow
+        @winner = Mem.Query.winners.sow(@sow.winner)._id
+        @event  = Mem.Query.traps.sow(@sow.event)._id
 
-    o._id ?= "#{o.story_id}-#{o.turn}"
-    o.event_id = o._id
-    o.view =
-      btn: ->
-        switch
-          when o.is_full
-            null
-          when o.is_loading
-            m ".SSAY", "読み込み…"
-          else
-            submit = ->
-              doc.load.event false, o, ->
-            m ".SSAY", Btn.call({}, submit), "読み込み"
+      @_id ?= "#{@story_id}-#{@turn}"
+      @event_id = @_id
 
+    btn: ->
+      switch
+        when @is_full
+          null
+        when @is_loading
+          m ".SSAY", "読み込み…"
+        else
+          submit = =>
+            doc.load.event false, @, ->
+          m ".SSAY", Btn.call({}, submit), "読み込み"
 
-  @map_reduce (o, emit)->
