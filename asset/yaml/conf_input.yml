@@ -51,6 +51,16 @@ menu_player_length:
   <<: *menu
   name: 人数
 
+
+timeline:
+  sean: log
+  attr:
+    type: canvas
+    size:
+      - 200
+      - 100
+
+
 act:
   sean: form
   attr:

@@ -190,9 +190,12 @@ new Mem.Rule("message").schema ->
       has.face[o.face_id] = true
 
       switch o.template
+        when "event"
+          time_id = Mem.pack.Date o.updated_at / timespan
+          emit "mask", time_id, "all", {}
         when "talk", "guide"
           if o.log
-            time_id = Mem.pack.Date(o.updated_at / timespan)
+            time_id = Mem.pack.Date o.updated_at / timespan
             item =
               count: o.log.length
               min: o.updated_at

@@ -2906,6 +2906,13 @@
       "current": "all",
       "name": "人数"
     },
+    "timeline": {
+      "sean": "log",
+      "attr": {
+        "type": "canvas",
+        "size": [200, 100]
+      }
+    },
     "act": {
       "sean": "form",
       "attr": {
@@ -10276,6 +10283,10 @@
         var item, time_id;
         has.face[o.face_id] = true;
         switch (o.template) {
+          case "event":
+            time_id = Mem.pack.Date(o.updated_at / timespan);
+            emit("mask", time_id, "all", {});
+            break;
           case "talk":
           case "guide":
             if (o.log) {

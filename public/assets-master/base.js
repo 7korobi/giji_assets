@@ -21446,7 +21446,7 @@ module.exports = Vector2D;
 },{"lodash":4}],8:[function(require,module,exports){
 /**
  mithril-tie - browser input helper for mithril
- @version v0.0.4
+ @version v0.0.6
  @link https://github.com/7korobi/mithril-tie
  @license 
 **/
@@ -21473,6 +21473,8 @@ module.exports = Vector2D;
   };
 
   Tie = (function() {
+    Tie.browser = {};
+
     Tie.types = {
       url: ["protocol", "host", "pathname", "search", "hash", "href"],
       store: ["session", "local", "cookie"]
@@ -21577,7 +21579,7 @@ module.exports = Vector2D;
 }).call(this);
 
 (function() {
-  var InputTie, Mem, Tie, _, _attr_form, m, submit_pick, validity_attr,
+  var InputTie, Mem, Tie, _, _attr_form, m, submit_pick,
     slice = [].slice;
 
   Mem = require("memory-record");
@@ -21598,7 +21600,6 @@ module.exports = Vector2D;
     var attr, ma;
     attr = arg.attr;
     return ma = _.assignIn(attr, {
-      config: tie._config(),
       disabled: tie.disabled,
       onsubmit: function(e) {
         tie.do_submit();
@@ -21607,22 +21608,11 @@ module.exports = Vector2D;
     });
   };
 
-  validity_attr = {
-    valid: "valid",
-    valueMissing: "required",
-    typeMismatch: "type",
-    patternMismatch: "pattern",
-    rangeUnderflow: "min",
-    rangeOverflow: "max",
-    stepMismatch: "step",
-    tooLines: "max_line",
-    tooLong: "maxlength",
-    tooShort: "minlength",
-    hasSecret: "not_secret",
-    hasPlayer: "not_player"
-  };
-
   InputTie = (function() {
+    InputTie.util = {};
+
+    InputTie.type = {};
+
     InputTie.prototype.timeout = 1000;
 
     InputTie.prototype._debounce = function() {
@@ -21636,55 +21626,47 @@ module.exports = Vector2D;
       })(this));
     };
 
-    InputTie.prototype._config = function(_id) {
+    InputTie.prototype._config = function(input) {
       return (function(_this) {
-        return function(elem, isNew, context) {
-          if (isNew) {
-            _this.do_view(_id, elem);
-            return context.onunload = function() {
-              return _this.do_view(_id);
-            };
-          }
+        return function(elem, isStay, context) {
+          return _this.config(input, elem, isStay, context);
         };
       })(this);
     };
 
-    InputTie.prototype.do_view = function(id, elem) {
-      if (id) {
-        if (elem) {
-          if (elem.validity == null) {
-            elem.validity = {
-              valid: true
-            };
-          }
-          if (elem.checkValidity == null) {
-            elem.checkValidity = function() {
-              return this.validity.valid;
-            };
-          }
-          if (elem.setCustomValidity == null) {
-            elem.setCustomValidity = function(validationMessage) {
-              this.validationMessage = validationMessage;
-              if (this.validationMessage) {
-                this.validity.customError = true;
-                return this.validity.valid = false;
-              } else {
-                this.validity.customError = false;
-                return this.validity.valid = true;
-              }
-            };
-          }
+    InputTie.prototype.config = function(input, elem, isStay, context) {
+      if (!isStay) {
+        if (elem.validity == null) {
+          elem.validity = {
+            valid: true
+          };
         }
-        return this.input[id].do_view(elem);
-      } else {
-        return this.dom = elem;
+        if (elem.checkValidity == null) {
+          elem.checkValidity = function() {
+            return this.validity.valid;
+          };
+        }
+        if (elem.setCustomValidity == null) {
+          elem.setCustomValidity = function(validationMessage) {
+            this.validationMessage = validationMessage;
+            if (this.validationMessage) {
+              this.validity.customError = true;
+              return this.validity.valid = false;
+            } else {
+              this.validity.customError = false;
+              return this.validity.valid = true;
+            }
+          };
+        }
       }
+      return input.config(elem, isStay, context);
     };
 
-    InputTie.prototype.do_change = function(id, value) {
-      var input, old;
-      input = this.input[id];
+    InputTie.prototype.do_change = function(input, value) {
+      var id, old;
       value = input.__val(value);
+      input.do_change(value);
+      id = input._id;
       old = this.params[id];
       if (old === value) {
         this.stay(id, value);
@@ -21692,33 +21674,42 @@ module.exports = Vector2D;
         this.params[id] = value;
         this.change(id, value, old);
       }
-      input.do_change(value);
       return this.disabled = !!this.timer;
     };
 
-    InputTie.prototype.do_fail = function(id, value) {
-      var input;
-      input = this.input[id];
+    InputTie.prototype.do_fail = function(input, value) {
       value = input.__val(value);
       return input.do_fail(value);
     };
 
-    InputTie.prototype.do_blur = function(id, e) {
+    InputTie.prototype.do_blur = function(input, e) {
+      var id;
+      input.do_blur(e);
+      id = input._id;
       return this.focus(id, false);
     };
 
-    InputTie.prototype.do_focus = function(id, e) {
-      this.focus(id, true, this.focus_id);
+    InputTie.prototype.do_focus = function(input, e) {
+      var id;
+      input.do_focus(e);
+      id = input._id;
+      this.focus(id, true, this.focus_id, this.focused);
       this.focus_id = id;
-      return this.focused = this.input[id];
+      return this.focused = input;
     };
 
-    InputTie.prototype.do_select = function(id, e) {
+    InputTie.prototype.do_move = function(input, e) {
+      var id;
+      input.do_move(e);
+      return id = input._id;
+    };
+
+    InputTie.prototype.do_select = function(input, e) {
       var anchorOffset, focusOffset, offsets, s;
       s = getSelection();
       anchorOffset = s.anchorOffset, focusOffset = s.focusOffset;
       offsets = [anchorOffset, focusOffset].sort();
-      return this.select(id, s.toString(), offsets);
+      return this.select(input, s.toString(), offsets);
     };
 
     InputTie.prototype.do_submit = function() {
@@ -21784,31 +21775,27 @@ module.exports = Vector2D;
     };
 
     InputTie.prototype.errors = function(cb) {
-      var dom, id, ref, results;
+      var dom, id, name, ref, ref1, results;
       ref = this.input;
       results = [];
       for (id in ref) {
-        dom = ref[id].dom;
-        if (dom) {
-          if (dom.validationMessage) {
-            results.push(cb(dom.validationMessage));
-          } else {
-            results.push(void 0);
-          }
+        ref1 = ref[id], name = ref1.name, dom = ref1.dom;
+        if (dom != null ? dom.validationMessage : void 0) {
+          results.push(cb(dom.validationMessage, name));
         }
       }
       return results;
     };
 
     InputTie.prototype.infos = function(cb) {
-      var id, info_msg, ref, results;
+      var id, info_msg, name, ref, ref1, results;
       ref = this.input;
       results = [];
       for (id in ref) {
-        info_msg = ref[id].info_msg;
+        ref1 = ref[id], name = ref1.name, info_msg = ref1.info_msg;
         if (info_msg) {
           if (info_msg) {
-            results.push(cb(info_msg));
+            results.push(cb(info_msg, name));
           } else {
             results.push(void 0);
           }
@@ -21856,8 +21843,9 @@ module.exports = Vector2D;
       }
       this.input[_id] = input = new type(this, format);
       Tie.build_input(this.tie, _id, this.params, input);
-      this.do_change(_id, this.params[_id]);
-      return this.input[_id];
+      input.do_draw();
+      this.do_change(input, this.params[_id]);
+      return input;
     };
 
     InputTie.prototype._submit = function(arg) {
@@ -21871,7 +21859,7 @@ module.exports = Vector2D;
         });
       } : function(__, attr) {
         var submit;
-        this.do_view(null, {});
+        this.do_dom(null, {});
         submit = (function(_this) {
           return function(e) {
             _this.do_submit();
@@ -21952,8 +21940,6 @@ module.exports = Vector2D;
       return results;
     };
 
-    InputTie.type = {};
-
     return InputTie;
 
   })();
@@ -21979,7 +21965,6 @@ module.exports = Vector2D;
     var params;
     params = Url.location();
     if (decode(location.href) !== decode(params.href)) {
-      console.warn("url changed.");
       if (typeof history !== "undefined" && history !== null) {
         history[Url.mode]("URL", null, params.href);
       }
@@ -22277,6 +22262,214 @@ module.exports = Vector2D;
 }).call(this);
 
 (function() {
+  var InputTie, Mem, OBJ, Tie, View, Views, _, m, ref,
+    slice = [].slice;
+
+  Mem = require("memory-record");
+
+  m = require("mithril");
+
+  _ = require("lodash");
+
+  ref = module.exports, InputTie = ref.InputTie, Tie = ref.Tie;
+
+  OBJ = function() {
+    return new Object(null);
+  };
+
+  Views = (function() {
+    function Views() {
+      this.data = OBJ();
+    }
+
+    Views.prototype.build = function() {
+      var type, types;
+      types = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      return this.views = (function() {
+        var i, len, results;
+        results = [];
+        for (i = 0, len = types.length; i < len; i++) {
+          type = types[i];
+          results.push(new type(this.dom));
+        }
+        return results;
+      }).call(this);
+    };
+
+    Views.prototype.draw = function(arg) {
+      var history, is_touch, offset, offsets;
+      is_touch = arg.is_touch, offset = arg.offset, offsets = arg.offsets, history = arg.history;
+    };
+
+    Views.prototype.dom = function(dom1) {
+      var ref1;
+      this.dom = dom1;
+      return ref1 = this.build(View), this._view = ref1[0], ref1;
+    };
+
+    Views.prototype.resize = function(size) {
+      this._view.fit({
+        offset: [0, 0],
+        view: [1, 1],
+        size: size
+      });
+      return this._view.clear();
+    };
+
+    Views.prototype.background = function(size) {
+      var base, image;
+      if ((base = this.data).canvas == null) {
+        base.canvas = OBJ();
+      }
+      if (image = this.data.canvas[this._view.size]) {
+        this._view.paste(image, [0, 0]);
+        return;
+      }
+      this.resize(size);
+      if (this.data) {
+        return this.data.canvas[this._view.size] = this._view.copy([0, 0], [1, 1]);
+      }
+    };
+
+    Views.prototype.hit = function(at) {
+      return _.some(this.views, function(o) {
+        return o.hit(at);
+      });
+    };
+
+    Views.prototype.touch = function(at) {
+      return this.hit(at, function(x, y) {});
+    };
+
+    Views.prototype.over = function(at) {
+      return this.hit(at, function(x, y) {});
+    };
+
+    return Views;
+
+  })();
+
+  View = (function() {
+    function View(dom) {
+      this.draw = dom.getContext("2d");
+    }
+
+    View.prototype.fit = function(arg) {
+      var offset, ref1, ref2, ref3, ref4, view;
+      ref1 = arg != null ? arg : {}, offset = ref1.offset, this.size = ref1.size, view = ref1.view;
+      ref2 = this.size, this.show_width = ref2[0], this.show_height = ref2[1];
+      ref3 = view || this.size, this.view_width = ref3[0], this.view_height = ref3[1];
+      ref4 = offset || [0, 0], this.left = ref4[0], this.top = ref4[1];
+      this.right = this.left + this.show_width;
+      this.bottom = this.top + this.show_height;
+      this.x = this.show_width / this.view_width;
+      return this.y = this.show_height / this.view_height;
+    };
+
+    View.prototype.by = function(x, y) {
+      return [(x - this.left) / this.x, (y - this.top) / this.y];
+    };
+
+    View.prototype.at = function(x, y) {
+      return [this.left + this.x * x, this.top + this.y * y];
+    };
+
+    View.prototype.to = function(x, y) {
+      return [this.x * x, this.y * y];
+    };
+
+    View.prototype.pen = function(o) {
+      return _.assignIn(this.draw, o);
+    };
+
+    View.prototype.clear = function() {
+      return this.draw.clearRect(this.left, this.top, this.right, this.bottom);
+    };
+
+    View.prototype.fill = function() {
+      return this.draw.fillRect(this.left, this.top, this.right, this.bottom);
+    };
+
+    View.prototype.paste = function(image, arg) {
+      var x, y;
+      x = arg[0], y = arg[1];
+      return this.draw.putImageData(image, x, y);
+    };
+
+    View.prototype.copy = function(a, o) {
+      var ref1, ref2, xa, xo, ya, yo;
+      ref1 = this.at.apply(this, a), xa = ref1[0], ya = ref1[1];
+      ref2 = this.to.apply(this, o), xo = ref2[0], yo = ref2[1];
+      return this.draw.getImageData(xa, ya, xo, yo);
+    };
+
+    View.prototype.text = function(str, a, width) {
+      var ref1, xa, ya;
+      ref1 = this.at.apply(this, a), xa = ref1[0], ya = ref1[1];
+      width = this.x * width - 4;
+      if (4 < width) {
+        return this.draw.fillText(str, xa, ya, width);
+      }
+    };
+
+    View.prototype.rect = function(a, b) {
+      var ref1, ref2, xa, xb, ya, yb;
+      ref1 = this.at.apply(this, a), xa = ref1[0], ya = ref1[1];
+      ref2 = this.at.apply(this, b), xb = ref2[0], yb = ref2[1];
+      return this.draw.fillRect(xa, ya, xb, yb);
+    };
+
+    View.prototype.moveTo = function() {
+      var ref1, x, y;
+      ref1 = this.at.apply(this, arguments), x = ref1[0], y = ref1[1];
+      return this.draw.moveTo(x, y);
+    };
+
+    View.prototype.lineTo = function() {
+      var ref1, x, y;
+      ref1 = this.at.apply(this, arguments), x = ref1[0], y = ref1[1];
+      return this.draw.lineTo(x, y);
+    };
+
+    View.prototype.path = function(cb) {
+      this.draw.beginPath();
+      cb(d);
+      return this.draw.stroke();
+    };
+
+    View.prototype.hit = function(a) {
+      var ref1, ref2;
+      return (this.left < (ref1 = a[0]) && ref1 < this.right) && (this.top < (ref2 = a[1]) && ref2 < this.bottom);
+    };
+
+    View.prototype.touch = function(a, cb) {
+      var ref1, x, y;
+      ref1 = this.by.apply(this, a), x = ref1[0], y = ref1[1];
+      if (this.hit(a)) {
+        return cb(x, y);
+      }
+    };
+
+    View.prototype.over = function(a, cb) {
+      var ref1, x, y;
+      ref1 = this.by.apply(this, a), x = ref1[0], y = ref1[1];
+      if (this.hit(a)) {
+        return cb(x, y);
+      }
+    };
+
+    return View;
+
+  })();
+
+  InputTie.util.canvas = {
+    View: View,
+    Views: Views
+  };
+
+}).call(this);
+
+(function() {
   var InputTie, Mem,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -22335,7 +22528,7 @@ module.exports = Vector2D;
 }).call(this);
 
 (function() {
-  var InputTie, Mem, _, _attr_label, basic_input, change_attr, e_checked, e_selected, e_value, i, input_attr, input_pick, j, key, len, len1, m, number_input, option_pick, ref, ref1,
+  var InputTie, Mem, _, _attr_label, basic_input, change_attr, e_checked, e_selected, e_value, i, input_attr, input_pick, j, key, len, len1, m, number_input, option_pick, ref, ref1, validity_attr,
     slice = [].slice,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
@@ -22367,57 +22560,57 @@ module.exports = Vector2D;
   };
 
   _attr_label = function() {
-    var _id, attrs;
-    _id = arguments[0], attrs = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+    var attrs;
+    attrs = 1 <= arguments.length ? slice.call(arguments, 0) : [];
     return _.assignIn.apply(_, attrs);
   };
 
   change_attr = function() {
-    var _id, _value, attrs, b, ma, ref, tie;
-    _id = arguments[0], attrs = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+    var _value, attrs, b, ma, ref, tie;
+    attrs = 1 <= arguments.length ? slice.call(arguments, 0) : [];
     ref = b = this, _value = ref._value, tie = ref.tie;
     return ma = input_pick(attrs, {
-      config: tie._config(_id),
+      config: this._config,
       disabled: tie.disabled,
       onblur: function(e) {
-        return tie.do_blur(_id, e);
+        return tie.do_blur(b, e);
       },
       onfocus: function(e) {
-        return tie.do_focus(_id, e);
+        return tie.do_focus(b, e);
       },
       onselect: function(e) {
-        return tie.do_select(_id, e);
+        return tie.do_select(b, e);
       },
       onchange: function(e) {
-        return tie.do_change(_id, _value(e), ma);
+        return tie.do_change(b, _value(e), ma);
       },
       oninvalid: function(e) {
-        return tie.do_fail(_id, _value(e), ma);
+        return tie.do_fail(b, _value(e), ma);
       }
     });
   };
 
   input_attr = function() {
-    var _id, _value, attrs, b, ma, ref, tie;
-    _id = arguments[0], attrs = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+    var _value, attrs, b, ma, ref, tie;
+    attrs = 1 <= arguments.length ? slice.call(arguments, 0) : [];
     ref = b = this, _value = ref._value, tie = ref.tie;
     return ma = input_pick(attrs, {
-      config: tie._config(_id),
+      config: this._config,
       disabled: tie.disabled,
       onblur: function(e) {
-        return tie.do_blur(_id, e);
+        return tie.do_blur(b, e);
       },
       onfocus: function(e) {
-        return tie.do_focus(_id, e);
+        return tie.do_focus(b, e);
       },
       onselect: function(e) {
-        return tie.do_select(_id, e);
+        return tie.do_select(b, e);
       },
       oninput: function(e) {
-        return tie.do_change(_id, _value(e), ma);
+        return tie.do_change(b, _value(e), ma);
       },
       oninvalid: function(e) {
-        return tie.do_fail(_id, _value(e), ma);
+        return tie.do_fail(b, _value(e), ma);
       }
     });
   };
@@ -22439,6 +22632,21 @@ module.exports = Vector2D;
       news[option.value] = true;
     }
     return news;
+  };
+
+  validity_attr = {
+    valid: "valid",
+    valueMissing: "required",
+    typeMismatch: "type",
+    patternMismatch: "pattern",
+    rangeUnderflow: "min",
+    rangeOverflow: "max",
+    stepMismatch: "step",
+    tooLines: "max_line",
+    tooLong: "maxlength",
+    tooShort: "minlength",
+    hasSecret: "not_secret",
+    hasPlayer: "not_player"
   };
 
   basic_input = (function() {
@@ -22464,18 +22672,16 @@ module.exports = Vector2D;
       this.tie = tie1;
       this.format = format;
       ref = this.format, this._id = ref._id, this.options = ref.options, this.attr = ref.attr, this.name = ref.name, this.current = ref.current, info = ref.info, option_default = ref.option_default;
+      this._config = this.tie._config(this);
       this.__info = info;
       this.__uri = Mem.pack[this.type];
       this.__val = Mem.unpack[this.type];
-      this.tie.do_draw(this.draw.bind(this));
+      this.tie.do_draw(this.do_draw.bind(this));
       this.option_default = _.assign({}, this.option_default, option_default);
     }
 
-    basic_input.prototype.draw = function() {
-      var info, label, ref;
-      ref = this.format, info = ref.info, label = ref.label;
-      this.__name = this.attr.name || this._id;
-      return this.__value = this.tie.params[this._id];
+    basic_input.prototype.config = function(dom, isStay, context) {
+      this.dom = dom;
     };
 
     basic_input.prototype.info = function(info_msg) {
@@ -22490,20 +22696,26 @@ module.exports = Vector2D;
       return (ref = this.dom) != null ? ref.setCustomValidity(msg) : void 0;
     };
 
-    basic_input.prototype.do_view = function(dom) {
-      this.dom = dom;
-    };
-
     basic_input.prototype.do_fail = function(value) {};
 
+    basic_input.prototype.do_focus = function() {};
+
+    basic_input.prototype.do_blur = function() {};
+
+    basic_input.prototype.do_draw = function() {
+      var info, label, ref;
+      ref = this.format, info = ref.info, label = ref.label;
+      this.__name = this.attr.name || this._id;
+      return this.__value = this.tie.params[this._id];
+    };
+
     basic_input.prototype.do_change = function(value) {
-      var key, max, max_line, max_sjis, maxlength, min, minlength, msg, not_player, not_secret, pattern, ref, ref1, required, step, type, unit, val;
-      ref = this.attr, not_secret = ref.not_secret, not_player = ref.not_player, unit = ref.unit, max_sjis = ref.max_sjis, max_line = ref.max_line, minlength = ref.minlength, maxlength = ref.maxlength, min = ref.min, max = ref.max, step = ref.step, pattern = ref.pattern, type = ref.type, required = ref.required;
+      var key, msg, ref, val;
       if (this.dom && !this.dom.validity.customError) {
         if (this.format.error) {
-          ref1 = this.dom.validity;
-          for (key in ref1) {
-            val = ref1[key];
+          ref = this.dom.validity;
+          for (key in ref) {
+            val = ref[key];
             if (!(val)) {
               continue;
             }
@@ -22582,7 +22794,7 @@ module.exports = Vector2D;
         if (info.valid && this.__value) {
           text = info.valid;
         }
-        ma = this._attr_label(this._id, m_attr, this.format.label.attr);
+        ma = this._attr_label(m_attr, this.format.label.attr);
         return m("label", ma, text);
       }
     };
@@ -22592,7 +22804,7 @@ module.exports = Vector2D;
       if (m_attr == null) {
         m_attr = {};
       }
-      ma = this._attr(this._id, this.attr, m_attr, {
+      ma = this._attr(this.attr, m_attr, {
         className: [this.attr.className, m_attr.className].join(" "),
         name: this.__name,
         value: this.__value
@@ -22654,7 +22866,7 @@ module.exports = Vector2D;
         m_attr = {};
       }
       option = this.option(this.__value);
-      ma = this._attr(this._id, this.attr, m_attr, {
+      ma = this._attr(this.attr, m_attr, {
         className: [this.attr.className, m_attr.className].join(" "),
         type: "checkbox",
         name: this.__name,
@@ -22708,7 +22920,7 @@ module.exports = Vector2D;
         m_attr = {};
       }
       option = this.option(value);
-      ma = this._attr(this._id, this.attr, m_attr, option, {
+      ma = this._attr(this.attr, m_attr, option, {
         className: [this.attr.className, option.className, m_attr.className].join(" "),
         type: "radio",
         name: this.__name,
@@ -22758,7 +22970,7 @@ module.exports = Vector2D;
       if (!(this.attr.required && this.format.current)) {
         list.unshift(this.item("", m_attr));
       }
-      ma = this._attr(this._id, this.attr, m_attr, {
+      ma = this._attr(this.attr, m_attr, {
         className: [this.attr.className, m_attr.className].join(" "),
         name: this.__name
       });
@@ -22785,7 +22997,7 @@ module.exports = Vector2D;
       if (m_attr == null) {
         m_attr = {};
       }
-      ma = this._attr(this._id, this.attr, m_attr, {
+      ma = this._attr(this.attr, m_attr, {
         className: [this.attr.className, m_attr.className].join(" "),
         name: this.__name
       });
@@ -22880,7 +23092,7 @@ module.exports = Vector2D;
 
     btn_input.prototype._attr = function() {
       var _id, attrs, b, className, css, disabled, i, last, ma, onchange, ref, selected, target, tie, value;
-      _id = arguments[0], attrs = 3 <= arguments.length ? slice.call(arguments, 1, i = arguments.length - 1) : (i = 1, []), last = arguments[i++];
+      attrs = 2 <= arguments.length ? slice.call(arguments, 0, i = arguments.length - 1) : (i = 0, []), last = arguments[i++];
       ref = b = this, _id = ref._id, tie = ref.tie;
       className = last.className, disabled = last.disabled, selected = last.selected, value = last.value, target = last.target;
       onchange = function() {
@@ -22891,9 +23103,9 @@ module.exports = Vector2D;
           return b.timer = null;
         });
         value = b._value(selected, value, target);
-        tie.do_change(_id, value, ma);
+        tie.do_change(b, value, ma);
         if (!b.dom.validity.valid) {
-          return tie.do_fail(_id, value, ma);
+          return tie.do_fail(b, value, ma);
         }
       };
       css = "btn";
@@ -22907,7 +23119,7 @@ module.exports = Vector2D;
         css += " " + className;
       }
       return ma = _pick(attrs, {
-        config: tie._config(_id),
+        config: this._config,
         className: css,
         onclick: onchange,
         onmouseup: onchange,
@@ -22960,7 +23172,7 @@ module.exports = Vector2D;
       }
       next = this.__value;
       option = this.option(next);
-      ma = this._attr(this._id, this.attr, m_attr, {
+      ma = this._attr(this.attr, m_attr, {
         className: [this.attr.className, m_attr.className].join(" "),
         value: next
       });
@@ -22994,7 +23206,7 @@ module.exports = Vector2D;
         m_attr = {};
       }
       option = this.option(this.__value);
-      ma = this._attr(this._id, this.attr, m_attr, {
+      ma = this._attr(this.attr, m_attr, {
         className: [this.attr.className, m_attr.className].join(" "),
         selected: this.__value,
         value: this.__value
@@ -23051,7 +23263,7 @@ module.exports = Vector2D;
       }
       option = this.option(value);
       tag = m_attr.tag || "menuicon";
-      ma = this._attr(this._id, this.attr, m_attr, option, {
+      ma = this._attr(this.attr, m_attr, option, {
         className: [this.attr.className, m_attr.className, option.className].join(" "),
         selected: value === this.__value,
         value: value
@@ -23091,7 +23303,7 @@ module.exports = Vector2D;
         m_attr = {};
       }
       option = this.option(value);
-      ma = this._attr(this._id, this.attr, m_attr, option, {
+      ma = this._attr(this.attr, m_attr, option, {
         className: [this.attr.className, option.className, m_attr.className].join(" "),
         selected: value === this.__value,
         value: value
@@ -23141,7 +23353,7 @@ module.exports = Vector2D;
         m_attr = {};
       }
       option = this.option(value);
-      ma = this._attr(this._id, this.attr, m_attr, option, {
+      ma = this._attr(this.attr, m_attr, option, {
         className: [this.attr.className, option.className, m_attr.className].join(" "),
         selected: this.__value[value],
         value: this.__value[value]
@@ -23195,7 +23407,7 @@ module.exports = Vector2D;
         m_attr = {};
       }
       option = this.option(target);
-      ma = this._attr(this._id, this.attr, m_attr, option, {
+      ma = this._attr(this.attr, m_attr, option, {
         className: [this.attr.className, option.className, m_attr.className].join(" "),
         target: target,
         value: this.__value
@@ -23213,6 +23425,557 @@ module.exports = Vector2D;
     return stack;
 
   })(btn_input);
+
+}).call(this);
+
+(function() {
+  var InputTie, Mem, OBJ, Tie, _, _pick, browser, capture, m, mouse, ratio, ref, touch, touch_A, touch_B,
+    slice = [].slice,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Mem = require("memory-record");
+
+  m = require("mithril");
+
+  _ = require("lodash");
+
+  ref = module.exports, InputTie = ref.InputTie, Tie = ref.Tie;
+
+  ratio = window.devicePixelRatio;
+
+  OBJ = function() {
+    return new Object(null);
+  };
+
+  capture = function(arg, e) {
+    var ctx, dom, e_touch, rect;
+    dom = arg.dom, ctx = arg.ctx;
+    ctx.offset = null;
+    ctx.offsets = [];
+    if (!((e != null) && (ctx != null))) {
+      return ctx.offsets;
+    }
+    if (e.touches != null) {
+      rect = dom.getBoundingClientRect();
+      ctx.offsets = (function() {
+        var i, len, ref1, results;
+        ref1 = e.touches;
+        results = [];
+        for (i = 0, len = ref1.length; i < len; i++) {
+          e_touch = ref1[i];
+          results.push(touch(e_touch, rect));
+        }
+        return results;
+      })();
+      if (1 === e.touches.length) {
+        ctx.offset = ctx.offsets[0];
+      }
+    } else {
+      ctx.offset = mouse(e);
+      if (ctx.offset != null) {
+        ctx.offsets = [ctx.offset];
+      }
+    }
+    return ctx.history.push(ctx.offsets);
+  };
+
+  mouse = function(event) {
+    var x, y;
+    x = event.offsetX || event.layerX;
+    y = event.offsetY || event.layerY;
+    if ((x != null) && (y != null)) {
+      x *= ratio;
+      y *= ratio;
+      return [x, y];
+    }
+  };
+
+  touch_A = function(arg, arg1) {
+    var left, pageX, pageY, top, x, y;
+    pageX = arg.pageX, pageY = arg.pageY;
+    left = arg1.left, top = arg1.top;
+    x = ratio * (pageX - left - window.scrollX);
+    y = ratio * (pageY - top - window.scrollY);
+    return [x, y];
+  };
+
+  touch_B = function(arg, arg1) {
+    var left, pageX, pageY, top, x, y;
+    pageX = arg.pageX, pageY = arg.pageY;
+    left = arg1.left, top = arg1.top;
+    x = ratio * (pageX - left);
+    y = ratio * (pageY - top - window.scrollY);
+    return [x, y];
+  };
+
+  touch = touch_B;
+
+  _pick = function(attrs, last) {
+    return _.assignIn.apply(_, [{}].concat(slice.call(attrs), [last]));
+  };
+
+  browser = function() {
+    var chrome, ff, ios, old, ref1;
+    ref1 = Tie.browser, ios = ref1.ios, ff = ref1.ff, old = ref1.old, chrome = ref1.chrome;
+    return touch = ios || ff || old && chrome ? touch_A : touch_B;
+  };
+
+  InputTie.type.canvas = (function(superClass) {
+    extend(canvas, superClass);
+
+    canvas.prototype.type = "Array";
+
+    canvas.prototype._views = InputTie.util.canvas.Views;
+
+    function canvas() {
+      this.views = new this._views(this);
+      canvas.__super__.constructor.apply(this, arguments);
+    }
+
+    canvas.prototype.config = function(dom1, isStay, ctx1) {
+      this.dom = dom1;
+      this.ctx = ctx1;
+      if (!isStay) {
+        this.views.dom(this.dom);
+        this.do_blur();
+      }
+      return this.views.background(this.size);
+    };
+
+    canvas.prototype.do_draw = function() {};
+
+    canvas.prototype.do_focus = function(e) {
+      return this.ctx.is_touch = true;
+    };
+
+    canvas.prototype.do_blur = function(e) {
+      this.ctx.is_touch = false;
+      this.ctx.history = [];
+      return this.views.draw(this.ctx);
+    };
+
+    canvas.prototype.do_move = function() {
+      var history, is_touch, offset, offsets, ref1;
+      ref1 = this.ctx, is_touch = ref1.is_touch, offset = ref1.offset, offsets = ref1.offsets, history = ref1.history;
+      if (offset) {
+        if (is_touch) {
+          this.views.touch(offset);
+        } else {
+          this.views.over(offset);
+        }
+      }
+      this.views.draw(this.ctx);
+      return this.tie.do_change(this, this._value(this.ctx));
+    };
+
+    canvas.prototype.do_fail = function(offset) {};
+
+    canvas.prototype.do_change = function(offset) {};
+
+    canvas.prototype._value = function(e) {
+      return e.offset;
+    };
+
+    canvas.prototype._attr = function() {
+      var _value, attrs, b, blur, cancel, ctx, focus, ma, move, ref1, tie;
+      attrs = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      ref1 = b = this, _value = ref1._value, tie = ref1.tie, ctx = ref1.ctx;
+      focus = function(e) {
+        tie.do_focus(b, e);
+        return move(e);
+      };
+      blur = function(e) {
+        move(e);
+        return tie.do_blur(b, e);
+      };
+      move = function(e) {
+        capture(b, e);
+        return b.do_move();
+      };
+      cancel = function(e) {
+        capture(b, e);
+        tie.do_fail(b, _value(b.ctx));
+        return tie.do_blur(b, e);
+      };
+      return ma = _pick(attrs, {
+        config: this._config,
+        ontouchend: blur,
+        ontouchmove: move,
+        ontouchstart: focus,
+        ontouchcancel: cancel,
+        onmouseup: blur,
+        onmousemove: move,
+        onmousedown: focus,
+        onmouseout: blur,
+        onmouseover: move
+      });
+    };
+
+    canvas.prototype.field = function(m_attr) {
+      var h, ma, ref1, w;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      ref1 = this.size = m_attr.size || this.attr.size, w = ref1[0], h = ref1[1];
+      ma = this._attr(this.attr, m_attr, {
+        className: [this.attr.className, m_attr.className].join(" "),
+        width: w,
+        height: h,
+        style: "width: " + (w / ratio) + "px; height: " + (h / ratio) + "px;"
+      });
+      return m("canvas", ma);
+    };
+
+    return canvas;
+
+  })(InputTie.type.hidden);
+
+}).call(this);
+
+(function() {
+  var InputTie, Mem, OBJ, Tie, Timeline, View, Views, _, m, mestype_orders, ref, ref1, timespan,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  Mem = require("memory-record");
+
+  m = require("mithril");
+
+  _ = require("lodash");
+
+  ref = module.exports, InputTie = ref.InputTie, Tie = ref.Tie;
+
+  OBJ = function() {
+    return new Object(null);
+  };
+
+  timespan = 1000 * 3600;
+
+  mestype_orders = ["SAY", "MSAY", "VSAY", "VGSAY", "GSAY", "SPSAY", "WSAY", "XSAY", "BSAY", "AIM", "TSAY", "MAKER", "ADMIN"];
+
+  ref1 = InputTie.util.canvas, View = ref1.View, Views = ref1.Views;
+
+  Timeline = (function(superClass) {
+    extend(Timeline, superClass);
+
+    function Timeline() {
+      return Timeline.__super__.constructor.apply(this, arguments);
+    }
+
+    Timeline.prototype.dom = function(dom) {
+      var ref2;
+      this.dom = dom;
+      Timeline.__super__.dom.apply(this, arguments);
+      return ref2 = this.build(View, View), this.field = ref2[0], this.foots = ref2[1], ref2;
+    };
+
+    Timeline.prototype.resize = function(size) {
+      var height, heights, i, j, left, len, len1, mask, max_height, mestype, time_id, top, width;
+      Timeline.__super__.resize.apply(this, arguments);
+      this.base = Mem.Query.messages.talk(talk(), open(), potofs_hide());
+      if (!base.reduce) {
+        return;
+      }
+      this.masks = this.base.reduce.mask || {};
+      heights = (function() {
+        var ref2, results;
+        ref2 = this.masks;
+        results = [];
+        for (time_id in ref2) {
+          mask = ref2[time_id];
+          results.push(mask.all.count);
+        }
+        return results;
+      }).call(this);
+      max_height = Math.max.apply(Math, heights);
+      this.time_ids = _.sortBy(Object.keys(this.masks), Mem.unpack.Date);
+      width = size[0], height = size[1];
+      this.field.fit({
+        size: [width, height - 50],
+        view: [this.time_ids.length, max_height]
+      });
+      this.foots.fit({
+        offset: [0, height - 50],
+        size: [width, 50],
+        view: [this.time_ids.length, 1]
+      });
+      this.field.pen({
+        fillStyle: RAILS.log.colors.back,
+        globalAlpha: 0.5
+      });
+      this.field.fill();
+      for (left = i = 0, len = time_ids.length; i < len; left = ++i) {
+        time_id = time_ids[left];
+        mask = masks[time_id];
+        top = max_height;
+        for (j = 0, len1 = mestype_orders.length; j < len1; j++) {
+          mestype = mestype_orders[j];
+          if (!mask[mestype]) {
+            continue;
+          }
+          height = mask[mestype].count;
+          top -= height;
+          this.field.pen({
+            fillStyle: RAILS.log.colors[mestype],
+            globalAlpha: 1
+          });
+          this.field.rect([left, top], [1, height]);
+        }
+      }
+      return this.foots.path((function(_this) {
+        return function() {
+          var event, k, len2, ref2, results, right;
+          ref2 = Mem.Query.events.list;
+          results = [];
+          for (k = 0, len2 = ref2.length; k < len2; k++) {
+            event = ref2[k];
+            if (!event.created_at) {
+              continue;
+            }
+            right = index_at(event.updated_at);
+            left = index_at(event.created_at);
+            _this.foots.pen({
+              strokeStyle: RAILS.log.colors.line,
+              globalAlpha: 1
+            });
+            _this.foots.moveTo(left, 1);
+            _this.foots.lineTo(left, 0);
+            _this.foots.moveTo(right, 1);
+            _this.foots.lineTo(right, 0);
+            _this.foots.pen({
+              fillStyle: RAILS.log.colors.event
+            });
+            _this.foots.fill();
+            _this.foots.pen({
+              font: "30px serif",
+              textAlign: "left",
+              fillStyle: RAILS.log.colors.text
+            });
+            results.push(_this.foots.text(event.name, [left, 38], right - left));
+          }
+          return results;
+        };
+      })(this));
+    };
+
+    Timeline.prototype.draw = function(ctx) {
+      var focus, x;
+      this.ctx = ctx;
+      focus = Mem.Query.messages.find(Url.params.talk_at);
+      if (!focus) {
+        return;
+      }
+      x = this.index(focus.updated_at);
+      return this.field.path((function(_this) {
+        return function() {
+          _this.field.pen({
+            strokeStyle: RAILS.log.colors.focus,
+            globalAlpha: 1
+          });
+          _this.field.moveTo(x, _this.show_height);
+          return _this.field.lineTo(x, 0);
+        };
+      })(this));
+    };
+
+    Timeline.prototype.index = function(updated_at) {
+      return this.time_ids.indexOf(Mem.pack.Date(updated_at / timespan));
+    };
+
+    Timeline.prototype.choice = function(x, query) {
+      var index, o;
+      index = Math.floor(x);
+      o = this.masks[this.time_ids[index]].all.min_is;
+      Url.params.talk_at = o._id;
+      Url.params.icon("search");
+      Url.params.scope("talk");
+      Url.params.scroll("");
+      return win.scroll.rescroll(Url.prop.talk_at);
+    };
+
+    Timeline.prototype.touch = function(at) {
+      Url.params.search = "";
+      this.field.touch(at, (function(_this) {
+        return function(x) {
+          return _this.choice(x, base);
+        };
+      })(this));
+      return this.foots.touch(at, (function(_this) {
+        return function(x) {
+          return _this.choice(x, Mem.Query.messages.talk("open", false, {}));
+        };
+      })(this));
+    };
+
+    return Timeline;
+
+  })(Views);
+
+  InputTie.type.timeline = (function(superClass) {
+    extend(timeline, superClass);
+
+    function timeline() {
+      return timeline.__super__.constructor.apply(this, arguments);
+    }
+
+    timeline.prototype.type = "Array";
+
+    timeline.prototype._graph = Timeline;
+
+    return timeline;
+
+  })(InputTie.type.canvas);
+
+}).call(this);
+
+(function() {
+  var Fabric, InputTie, Tie, _pick, chk_canvas, m, new_canvas, ratio, ref,
+    slice = [].slice,
+    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    hasProp = {}.hasOwnProperty;
+
+  m = require("mithril");
+
+  ref = module.exports, InputTie = ref.InputTie, Tie = ref.Tie;
+
+  ratio = window.devicePixelRatio;
+
+  _pick = function(attrs, last) {
+    return _.assignIn.apply(_, [{}].concat(slice.call(attrs), [last]));
+  };
+
+  new_canvas = function(dom) {
+    return new fabric.Canvas(dom, {
+      enableRetinaScaling: true
+    });
+  };
+
+  chk_canvas = function() {
+    if (!fabric) {
+      throw "require fabric.js";
+    }
+  };
+
+  Fabric = (function() {
+    Fabric.prototype.type = "String";
+
+    Fabric.prototype.do_draw = function() {};
+
+    Fabric.prototype.do_focus = function(e) {};
+
+    Fabric.prototype.do_blur = function(e) {};
+
+    Fabric.prototype.do_fail = function(offset) {};
+
+    Fabric.prototype.do_change = function(offset) {};
+
+    function Fabric(tie1, input) {
+      this.tie = tie1;
+      this.input = input;
+    }
+
+    Fabric.prototype.deploy = function(canvas, size) {};
+
+    Fabric.prototype.redraw = function(canvas, size) {};
+
+    Fabric.prototype.resize = function(canvas, size) {};
+
+    return Fabric;
+
+  })();
+
+  InputTie.type.fabric = (function(superClass) {
+    extend(fabric, superClass);
+
+    fabric.extend = function(name, view) {
+      chk_canvas();
+      return InputTie.type[name] = (function(superClass1) {
+        extend(_Class, superClass1);
+
+        function _Class() {
+          return _Class.__super__.constructor.apply(this, arguments);
+        }
+
+        _Class.prototype.type = view.prototype.type;
+
+        _Class.prototype._view = view;
+
+        return _Class;
+
+      })(this);
+    };
+
+    fabric.prototype.type = "Array";
+
+    fabric.prototype._view = Fabric;
+
+    function fabric() {
+      fabric.__super__.constructor.apply(this, arguments);
+      this.size_old = [0, 0];
+      this.view = new this._view(this.tie, this);
+      this.view.__val = this.__val;
+    }
+
+    fabric.prototype.config = function(dom, isStay, ctx) {
+      var height, ref1, width;
+      ref1 = this.size, width = ref1[0], height = ref1[1];
+      if (!isStay) {
+        this.canvas = new_canvas(dom);
+        this.view.deploy(this.canvas, this.size);
+      }
+      if (this.size[0] === this.size_old[0] && this.size[1] === this.size_old[1]) {
+        this.canvas.renderAll();
+        this.view.redraw(this.canvas, this.size);
+      } else {
+        this.canvas.setWidth(width);
+        this.canvas.setHeight(height);
+        console.log("resize " + [width, height]);
+        this.view.resize(this.canvas, this.size);
+      }
+      return this.size_old = this.size;
+    };
+
+    fabric.prototype.do_draw = function() {};
+
+    fabric.prototype.do_focus = function(e) {};
+
+    fabric.prototype.do_blur = function(e) {};
+
+    fabric.prototype.do_fail = function(offset) {};
+
+    fabric.prototype.do_change = function(offset) {};
+
+    fabric.prototype._value = function(e) {
+      return e.offset;
+    };
+
+    fabric.prototype._attr = function() {
+      var _value, attrs, b, ctx, ma, ref1, tie;
+      attrs = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+      ref1 = b = this, _value = ref1._value, tie = ref1.tie, ctx = ref1.ctx;
+      return ma = _pick(attrs, {
+        config: this._config
+      });
+    };
+
+    fabric.prototype.field = function(m_attr) {
+      var h, ma, ref1, w;
+      if (m_attr == null) {
+        m_attr = {};
+      }
+      ref1 = this.size = m_attr.size || this.attr.size, w = ref1[0], h = ref1[1];
+      ma = this._attr(this.attr, m_attr, {
+        className: [this.attr.className, m_attr.className].join(" "),
+        width: w,
+        height: h
+      });
+      return m("canvas", ma);
+    };
+
+    return fabric;
+
+  })(InputTie.type.hidden);
 
 }).call(this);
 
@@ -23243,7 +24006,7 @@ module.exports = Vector2D;
       return text_input.__super__.constructor.apply(this, arguments);
     }
 
-    text_input.prototype.draw = function() {
+    text_input.prototype.do_draw = function() {
       var line, point, size, sjis, unit;
       unit = this.attr.unit;
       this.__name = this.attr.name || this._id;
@@ -23263,8 +24026,9 @@ module.exports = Vector2D;
     };
 
     text_input.prototype.do_change = function(value) {
-      var error, max_line, max_sjis, maxlength, minlength, not_player, not_secret, pattern, ref, ref1, required, unit;
+      var error, line, max_line, max_sjis, maxlength, minlength, not_player, not_secret, pattern, ref, ref1, ref2, required, sjis, unit;
       ref = this.attr, not_secret = ref.not_secret, not_player = ref.not_player, unit = ref.unit, max_sjis = ref.max_sjis, max_line = ref.max_line, minlength = ref.minlength, maxlength = ref.maxlength, pattern = ref.pattern, required = ref.required;
+      ref1 = this.calc, line = ref1.line, sjis = ref1.sjis;
       if (this.dom) {
         if (not_secret && value.match(/>>[\=\*\!]\d+/g)) {
           error = "あぶない！秘密会話へのアンカーがあります！";
@@ -23278,7 +24042,7 @@ module.exports = Vector2D;
         if (max_sjis && max_sjis < sjis) {
           error = "このテキストを " + max_sjis + " 文字以下にしてください。";
         }
-        if (minlength && (0 < (ref1 = value.length) && ref1 < minlength)) {
+        if (minlength && (0 < (ref2 = value.length) && ref2 < minlength)) {
           if (!InputTie.skip_minlength) {
             error = "このテキストは " + minlength + " 文字以上で指定してください（現在は " + value.length + " 文字です）。";
           }
@@ -23293,7 +24057,7 @@ module.exports = Vector2D;
       if (m_attr == null) {
         m_attr = {};
       }
-      ma = this._attr_label(this._id, this.attr, m_attr);
+      ma = this._attr_label(this.attr, m_attr);
       size = this.calc.size;
       if (ma.maxlength) {
         max_size = ma.maxlength;
@@ -23329,7 +24093,7 @@ module.exports = Vector2D;
       if (m_attr == null) {
         m_attr = {};
       }
-      ma = this._attr(this._id, this.attr, m_attr, {
+      ma = this._attr(this.attr, m_attr, {
         className: [this.attr.className, m_attr.className].join(" "),
         name: this.__name
       });
