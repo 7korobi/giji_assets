@@ -125,3 +125,15 @@ chr_job:
 
   - face_id: t35
     job: "紅客連盟"
+
+  - face_id: t36
+    job: "PPP"
+
+  - face_id: t37
+    job: "素顔連盟"
+
+  - face_id: t38
+    job: "北後家蜘蛛会"
+
+  - face_id: t39
+    job: "黄金∴黎明"
