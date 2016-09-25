@@ -6688,6 +6688,34 @@
       "name": "パラチーノ",
       "order": 80038,
       "tags": ["stratos"]
+    }, {
+      "_id": "t36",
+      "face_id": "t36",
+      "name": "イルマ",
+      "comment": "KKKてきな何か。",
+      "order": 30036,
+      "tags": ["travel"]
+    }, {
+      "_id": "t37",
+      "face_id": "t37",
+      "name": "シュンタロ",
+      "comment": "国語の教科書から。",
+      "order": 30009,
+      "tags": ["travel"]
+    }, {
+      "_id": "t38",
+      "face_id": "t38",
+      "name": "スズキ",
+      "comment": "人の死なない推理小説『黒後家蜘蛛の会』のそばに",
+      "order": 30038,
+      "tags": ["travel"]
+    }, {
+      "_id": "t39",
+      "face_id": "t39",
+      "name": "ガモウ",
+      "comment": "そろそろ聖戦士が欲しかった！",
+      "order": 30018.1,
+      "tags": ["travel"]
     }
   ]);
 
@@ -9317,6 +9345,26 @@
       "face_id": "t35",
       "job": "紅客連盟",
       "_id": "time_t35",
+      "chr_set_id": "time"
+    }, {
+      "face_id": "t36",
+      "job": "PPP",
+      "_id": "time_t36",
+      "chr_set_id": "time"
+    }, {
+      "face_id": "t37",
+      "job": "素顔連盟",
+      "_id": "time_t37",
+      "chr_set_id": "time"
+    }, {
+      "face_id": "t38",
+      "job": "北後家蜘蛛会",
+      "_id": "time_t38",
+      "chr_set_id": "time"
+    }, {
+      "face_id": "t39",
+      "job": "黄金∴黎明",
+      "_id": "time_t39",
       "chr_set_id": "time"
     }
   ]);

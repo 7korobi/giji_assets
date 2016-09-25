@@ -2,18 +2,7 @@
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-mocha-chai-sinon": "0.0.9"
-  },
-  "dependencies": {
-    "bounce.js": "^0.8.2",
-    "browser-sync": "^2.16.0",
-    "browserify": "^13.0.0",
-    "chai": "^3.4.1",
-    "coffee": "~2.1.0",
-    "csscomb": "~3.1.8",
-    "deglobalify": "^0.2.0",
-    "del": "~2.2.0",
-    "fabric": "^1.6.4",
+    "grunt-mocha-chai-sinon": "0.0.9",
     "gulp": "^3.9.0",
     "gulp-appcache": "0.0.4",
     "gulp-awspublish": "~3.0.1",
@@ -38,6 +27,15 @@
     "gulp-shorthand": "~1.1.0",
     "gulp-sort": "~1.1.1",
     "gulp-uglify": "^1.5.1",
+    "bounce.js": "^0.8.2",
+    "browser-sync": "^2.16.0",
+    "browserify": "^13.0.0",
+    "chai": "^3.4.1",
+    "coffee": "~2.1.0",
+    "csscomb": "~3.1.8",
+    "deglobalify": "^0.2.0",
+    "del": "~2.2.0",
+    "fabric": "^1.6.4",
     "headjs": "~1.0.3",
     "js-yaml": "~3.4.6",
     "licensify": "^2.0.1",
@@ -46,7 +44,6 @@
     "memory-record": "^0.2.8",
     "merge-stream": "~1.0.0",
     "mithril": "^0.2.0",
-    "mithril-canvas": "*",
     "mithril-giji": "*",
     "mithril-tie": "^0.0.6",
     "mocha": "^2.3.4",
@@ -62,5 +59,7 @@
     "webpack-stream": "^3.1.0",
     "yaml-loader": "^0.1.0",
     "yamlify": "^0.1.2"
+  },
+  "dependencies": {
   }
 }
