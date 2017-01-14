@@ -23,7 +23,7 @@ config =
       font:  'public/**/*.{svg,eot,ttf,woff}'
       gz:    'public/**/*.gz'
       face:  '../../web_work/{@@@,images}/**/*'
-      old:   'public/{@@@,assets-show-fix}/*'
+      old:   'public/{@@@,assets-show-fix,stylesheets/theme}/*'
     manifest:
       list:  'public/{assets-master,font,images/auth,images/banner,images/icon,images/portrate,images/bg}/**/*'
       ignore: '!**/*.{html,gz,*_}'
