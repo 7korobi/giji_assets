@@ -1,5 +1,5 @@
-@import url("/stylesheets/theme/color.black.css");
-@import url("/stylesheets/application.css");
+@import url("./color.black.css");
+@import url("../application.css");
 
 /* GROBAL --------------------*/
 .handler,

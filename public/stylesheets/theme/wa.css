@@ -1,5 +1,5 @@
-@import url("/stylesheets/theme/color.white.css");
-@import url("/stylesheets/application.css");
+@import url("./color.white.css");
+@import url("../application.css");
 
 /* GROBAL --------------------*/
 .handler,
@@ -7,7 +7,7 @@ body {
   margin: 0px;
   padding: 0px;
   color: #ccf;
-  background-image: url("/images/bg/nagatanienn.png");
+  background-image: url("../../images/bg/nagatanienn.png");
   background-repeat: repeat;
   background-position: center;
 }
@@ -172,7 +172,7 @@ strong { }
 
 /* 外枠 ----------*/
 .outframe {
-  background-image: url("/images/bg/nagatanienn.png");
+  background-image: url("../../images/bg/nagatanienn.png");
   background-repeat: repeat;
   background-position: center;
 }
@@ -185,7 +185,7 @@ strong { }
 
 /* フィルタを左に配置した時の外枠 ----------*/
 .outframe_navimode {
-  background-image: url("/images/bg/nagatanienn.png");
+  background-image: url("../../images/bg/nagatanienn.png");
   background-repeat: repeat;
   background-position: center;
 }

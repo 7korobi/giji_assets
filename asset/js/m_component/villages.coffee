@@ -17,7 +17,7 @@ doc.component.villages =
               GUI.inline_item ->
                 @left 2.8 + folder.length * 0.65,
                   m "a",
-                    href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{story_id[0]}"
+                    href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/#{story_id[0]}"
                   , story_id[0]
         ]
     ]

@@ -1,4 +1,4 @@
-@import url("/stylesheets/application.css");
+@import url("../application.css");
 
 /* GROBAL --------------------*/
 body {
@@ -89,7 +89,7 @@ h3 {
 }
 
 .mes_text_monospace{
-  background-image: url("http://7korobi.gehirn.ne.jp/images/bg/grid.gif");
+  background-image: url("../../images/bg/grid.gif");
 }
 
 /* Ç‚ÇÒÇÌÇËíçà”ï\é¶ ----------*/

@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# Time: Sat Jan 14 2017 12:54:01 GMT+0900 (東京 (標準時))
+# Time: Sat Jan 21 2017 23:47:55 GMT+0900 (東京 (標準時))
 
 CACHE:
 assets-master/2016-05-new-chrs.js
@@ -31,11 +31,18 @@ images/bg/background580.png
 images/bg/background770.png
 images/bg/earth_half.png
 images/bg/earth.png
+images/bg/fhd-giji.png
+images/bg/film-border.png
+images/bg/film-end.pdn
+images/bg/film-end.png
 images/bg/film-gray460.png
 images/bg/film-gray580.png
 images/bg/film-gray770.png
 images/bg/film-L.png
 images/bg/film-S.png
+images/bg/film-wa-border.png
+images/bg/film-wa-end.pdn
+images/bg/film-wa-end.png
 images/bg/film-wa-L.png
 images/bg/film-wa-S.png
 images/bg/film-wa460.png

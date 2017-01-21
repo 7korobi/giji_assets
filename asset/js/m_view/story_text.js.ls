@@ -12,9 +12,9 @@ doc.view.story_text = ({_id, story})->
 
       m ".emboss",
         "以上の項目が、人狼議事の"
-        m 'a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"]', "ルール"
+        m 'a[href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/rule.html?scr=nation~~"]', "ルール"
         "と"
-        m 'a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"]', "心構え"
+        m 'a[href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/rule.html?scr=player~~"]', "心構え"
         "なんだ。"
 
       m "span.mes_date.pull-right",

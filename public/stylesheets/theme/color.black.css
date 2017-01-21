@@ -1,4 +1,4 @@
-@import url("/stylesheets/application.css");
+@import url("../application.css");
 
 body {
   color: #ccf;
@@ -98,7 +98,7 @@ h3 {
 }
 
 .mes_text_monospace{
-  background-image: url("/WebRecord/images/bg/grid_blue.gif");
+  background-image: url("../../images/bg/grid_blue.gif");
 }
 
 /* Ç‚ÇÒÇÌÇËíçà”ï\é¶ ----------*/

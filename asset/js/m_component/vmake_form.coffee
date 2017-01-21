@@ -192,9 +192,9 @@ doc.component.vmake_form =
 
             m ".emboss",
               "以上の項目が、人狼議事の"
-              m 'a', {href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"}, "ルール"
+              m 'a', {href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/rule.html?scr=nation~~"}, "ルール"
               "と"
-              m 'a', {href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"}, "心構え"
+              m 'a', {href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/rule.html?scr=player~~"}, "心構え"
               "なんだ。編集していい部分は、自由に変更してかまわない。"
 
         m ".SSAY.plane",
@@ -208,7 +208,7 @@ doc.component.vmake_form =
 
             m "p",
               v.form.rating.field (o)-> o.caption
-              v.form.rating.label (o)-> m "img", src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_#{o._id}.png"
+              v.form.rating.label (o)-> m "img", src: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/images/icon/cd_#{o._id}.png"
 
             m "p",
               v.form.say_count.field (o)-> o.CAPTION

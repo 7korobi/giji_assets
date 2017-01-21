@@ -100,56 +100,56 @@ doc.component.header =
             m "tr",
               m "td",
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=LOBBY"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=LOBBY"
                 , "lobby"
                 m "br"
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=OFFPARTY"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=OFFPARTY"
                 ,"offparty"
 
               m "td",
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=MORPHE"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=MORPHE"
                 , "morphe"
                 m "br"
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CABALA"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CABALA"
                 , "cafe"
 
               m "td",
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=WOLF"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=WOLF"
                 , "wolf"
                 m "br"
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ULTIMATE"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=ULTIMATE"
                 , "ultimate"
                 m "br"
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ALLSTAR"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=ALLSTAR"
                 , "allstar"
 
               m "td",
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=RP"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=RP"
                 , "role-play"
                 m "br"
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PRETENSE"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=PRETENSE"
                 , "advance"
                 m "br"
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PERJURY"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=PERJURY"
                 , "perjury"
                 m "br"
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=XEBEC"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=XEBEC"
                 , "xebec"
                 m "br"
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CRAZY"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CRAZY"
                 , "crazy"
                 m "br"
                 m "a",
-                  href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CIEL"
+                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CIEL"
                 , "ciel"

@@ -1,4 +1,4 @@
-@import url("/stylesheets/application.css");
+@import url("../application.css");
 
 /* GROBAL --------------------*/
 body {
@@ -85,7 +85,7 @@ h3 {
 }
 
 .mes_text_monospace{
-  background-image: url("/WebRecord/images/bg/grid.gif");
+  background-image: url("../../images/bg/grid.gif");
 }
 
 /* Ç‚ÇÒÇÌÇËíçà”ï\é¶ ----------*/

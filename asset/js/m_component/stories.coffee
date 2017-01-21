@@ -93,7 +93,7 @@ doc.component.stories =
             m "kbd.note",
               o._id
             m "a",
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{o._id}"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/#{o._id}"
             , m.trust o.name
             m "kbd",
               o.view.rating

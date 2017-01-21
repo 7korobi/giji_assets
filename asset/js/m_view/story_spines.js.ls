@@ -9,7 +9,7 @@ doc.view.story_spines = ({_id, link, name, view})->
     m "kbd.note",
       _id
     m "a",
-      href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/#{_id}"
+      href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/#{_id}"
     , m.trust name
     m "kbd",
       view.rating

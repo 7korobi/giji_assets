@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'giji';
-  src: url('http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/font/giji.eot');
-  src: url('http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/font/giji.eot') format('embedded-opentype'),
-       url('http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/font/giji.woff') format('woff'),
-       url('http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/font/giji.ttf') format('truetype'),
-       url('http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/font/giji.svg') format('svg');
+  src: url('http://s3-ap-northeast-1.amazonaws.com/giji-assets/font/giji.eot');
+  src: url('http://s3-ap-northeast-1.amazonaws.com/giji-assets/font/giji.eot') format('embedded-opentype'),
+       url('http://s3-ap-northeast-1.amazonaws.com/giji-assets/font/giji.woff') format('woff'),
+       url('http://s3-ap-northeast-1.amazonaws.com/giji-assets/font/giji.ttf') format('truetype'),
+       url('http://s3-ap-northeast-1.amazonaws.com/giji-assets/font/giji.svg') format('svg');
   font-weight: normal;
   font-style: normal;
 }

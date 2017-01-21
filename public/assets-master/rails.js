@@ -1504,31 +1504,31 @@
             }, "ciel"))));
           case "finish":
             return m("tbody", m("tr", m("td", m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=LOBBY"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=LOBBY"
             }, "lobby"), m("br"), m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=OFFPARTY"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=OFFPARTY"
             }, "offparty")), m("td", m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=MORPHE"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=MORPHE"
             }, "morphe"), m("br"), m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CABALA"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CABALA"
             }, "cafe")), m("td", m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=WOLF"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=WOLF"
             }, "wolf"), m("br"), m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ULTIMATE"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=ULTIMATE"
             }, "ultimate"), m("br"), m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=ALLSTAR"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=ALLSTAR"
             }, "allstar")), m("td", m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=RP"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=RP"
             }, "role-play"), m("br"), m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PRETENSE"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=PRETENSE"
             }, "advance"), m("br"), m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=PERJURY"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=PERJURY"
             }, "perjury"), m("br"), m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=XEBEC"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=XEBEC"
             }, "xebec"), m("br"), m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CRAZY"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CRAZY"
             }, "crazy"), m("br"), m("a", {
-              href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/all?folder=CIEL"
+              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CIEL"
             }, "ciel"))));
         }
       })());
@@ -1890,7 +1890,7 @@
         }, m("code.icon-download")), m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/" + o._id + ".html"
         }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
-          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/" + o._id
+          href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/" + o._id
         }, m.trust(o.name)), m("kbd", o.view.rating));
         return m("tr", {
           key: o._id
@@ -2245,7 +2245,7 @@
         }, m("code.icon-download")), m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/" + o._id + ".html"
         }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
-          href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/" + o._id
+          href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/" + o._id
         }, m.trust(o.name)), m("kbd", o.view.rating));
         return m("tr", {
           key: o._id
@@ -2497,7 +2497,7 @@
                   story_id = ref1[j];
                   results1.push(GUI.inline_item(function() {
                     return this.left(2.8 + folder.length * 0.65, m("a", {
-                      href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/" + story_id[0]
+                      href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/" + story_id[0]
                     }, story_id[0]));
                   }));
                 }
@@ -2740,9 +2740,9 @@
       }, m(".INFOSP.info", m("p.text", "村建てマニュアルや同村者の意見を参考に、魅力的な村を作っていきましょう。", m("br"), "村作成から", m("span.mark", Mem.conf.folder.MORPHE.config.cfg.TIMEOUT_SCRAP + "日間"), "が、募集の期限となります。期限内に村が開始しなかった場合、廃村となります。")), m(".MAKER.plane", m("fieldset.msg", m("legend.emboss", "村の名前、説明、ルール"), v.form.vil_name.field(), v.form.vil_comment.field(), m("p", "■国のルール"), RULE.nation.list.map(function(o) {
         return m("p", (++nindex) + "." + o.head);
       }), m(".emboss", "以上の項目が、人狼議事の", m('a', {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"
+        href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/rule.html?scr=nation~~"
       }, "ルール"), "と", m('a', {
-        href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"
+        href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/rule.html?scr=player~~"
       }, "心構え"), "なんだ。編集していい部分は、自由に変更してかまわない。"))), m(".SSAY.plane", m("fieldset.msg", m("legend.emboss", "設定"), m("p", v.form.trs_type.field(function(o) {
         return o.CAPTION;
       }), v.form.trs_type.label(function(o) {
@@ -2751,7 +2751,7 @@
         return o.caption;
       }), v.form.rating.label(function(o) {
         return m("img", {
-          src: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images/icon/cd_" + o._id + ".png"
+          src: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/images/icon/cd_" + o._id + ".png"
         });
       })), m("p", v.form.say_count.field(function(o) {
         return o.CAPTION;
@@ -3370,7 +3370,7 @@
     }, m("code.icon-download")), m("a", {
       href: "http://7korobi.gehirn.ne.jp/stories/" + _id + ".html"
     }, m("code.icon-download")), m("kbd.note", _id), m("a", {
-      href: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/stories/" + _id
+      href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/" + _id
     }, m.trust(name)), m("kbd", view.rating));
     return m("tr", {
       key: _id
@@ -3389,7 +3389,7 @@
       key: "STORY-TEXT"
     }, m("p.name", m("b", story.name)), doc.ext.talk_text(_id, "head", story.comment), m("p", "■国のルール"), RULE.nation.list.map(function(o){
       return m("p", (++nindex) + "." + o.head);
-    }), m(".emboss", "以上の項目が、人狼議事の", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=nation~~"]', "ルール"), "と", m('a[href="http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/assets-master/rule.html?scr=player~~"]', "心構え"), "なんだ。"), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black"));
+    }), m(".emboss", "以上の項目が、人狼議事の", m('a[href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/rule.html?scr=nation~~"]', "ルール"), "と", m('a[href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/rule.html?scr=player~~"]', "心構え"), "なんだ。"), m("span.mes_date.pull-right", "managed by ", m(".emboss", story.user_id)), m("hr.black"));
   };
 }).call(this);
 

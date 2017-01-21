@@ -27,7 +27,7 @@ name_config = (key)->
 
 
 GUI =
-  img_head: "http://giji-assets.s3-website-ap-northeast-1.amazonaws.com/images"
+  img_head: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/images"
   portrate: (face_id, attr = {})->
     attr.src = GUI.img_head + "/portrate/#{face_id}.jpg"
     m "img", attr
