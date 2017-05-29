@@ -24,7 +24,3 @@ gem "thor"
 gem "hashie"
 gem "mime-types"
 
-group :development do
-  gem "capistrano"
-  gem "aws-sdk"
-end
