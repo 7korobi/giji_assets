@@ -4,267 +4,35 @@ package SWAdminInfo;
 # 管理人からのお知らせ
 #----------------------------------------
 sub OutHTMLAdminInfo {
-  my $sow = shift;
-  my $cfg   = $sow->{'cfg'};
-  my $net = $sow->{'html'}->{'net'}; # Null End Tag
-  my $atr_id = $sow->{'html'}->{'atr_id'};
-
-  my $urlsow  = $cfg->{'BASEDIR_CGI'}.'/'.$cfg->{'FILE_GAME'};
-  my $urlwiki = $cfg->{'URL_CONST'};
-  my $urlimg  = $cfg->{'DIR_IMG'};
-
-  $reqvals->{'cmd'} = 'howto';
-  my $linkvalue   = &SWBase::GetLinkValues($sow, $reqvals);
-  $reqvals->{'cmd'} = 'rule';
-  my $linkrule    = &SWBase::GetLinkValues($sow, $reqvals);
-  my $linkoperate = '(Knowledge)Operation';
-  my $linkspec    = '(What)Other';
-  my $zipfile     = 'https://github.com/7korobi/sow-giji/cabala';
-
-  # 設定データの読み込み
-  my $reqvals = &SWBase::GetRequestValues($sow);
-  my $topcss  = &SWBase::GetLinkValues($sow, $reqvals);
-
-  my $max_perjury  =  <%= CONF_FOLDER[:PERJURY_OLD]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_vage     =  <%= CONF_FOLDER[:PERJURY]['config']['cfg'][:MAX_VILLAGES] %>;
-
-  my $max_crazy    =  <%= CONF_FOLDER[:CRAZY  ]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_xebec    =  <%= CONF_FOLDER[:XEBEC  ]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_cafe     =  <%= CONF_FOLDER[:CABALA ]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_ciel     =  <%= CONF_FOLDER[:CIEL   ]['config']['cfg'][:MAX_VILLAGES] %>;
-
-  my $max_morphe   =  <%= CONF_FOLDER[:MORPHE ]['config']['cfg'][:MAX_VILLAGES] %>;
-
-  my $max_pan      =  <%= CONF_FOLDER[:PAN    ]['config']['cfg'][:MAX_VILLAGES] %>;
-  my $max_all      = ( $max_perjury + $max_vage   + $max_crazy + $max_xebec + $max_ciel )
-                   + ( $max_cafe )
-                   + ( $max_morphe )
-                   ;
-
-  my $choice_lobby    = (   'LOBBY' eq $cfg->{'RULE'})?("choice"):("no_choice");
-  my $choice_braid    = (   'BRAID' eq $cfg->{'RULE'})?("choice"):("no_choice");
-  my $choice_cabala   = (  'CABALA' eq $cfg->{'RULE'})?("choice"):("no_choice");
-  my $choice_morphe   = (  'MORPHE' eq $cfg->{'RULE'})?("choice"):("no_choice");
-
-
-  my $css_select = '<a href="sow.cgi?css=ririnra">漆黒</a>｜<a href="sow.cgi?css=cinema800">煉瓦</a> <a href="sow.cgi?css=cinema480">480</a>｜<a href="sow.cgi?css=night800">月夜</a> <a href="sow.cgi?css=night480">480</a>｜<a href="sow.cgi?css=star800">蒼穹</a> <a href="sow.cgi?css=star480">480</a>｜<a href="sow.cgi?css=wa800">和の国</a> <a href="sow.cgi?css=wa480">480</a>｜<a href="sow.cgi?ua=mb">携帯</a>';
-  print <<"_HTML_";
-<div class="choice">
-<script>\$(function(){\$('.finished_log').hide()});</script>
-<table class="board">
-<tr>
-<th colspan=4>
-<div class="progress_log">
-<strong>進行中の村　←　</strong><a style="color: #ccc;" onclick="\$('.progress_log').hide();\$('.finished_log').show();">終了した村を見る</a>
-</div>
-<div class="finished_log">
-<a style="color: #ccc;" onclick="\$('.progress_log').show();\$('.finished_log').hide();">進行中の村を見る</a><strong>　→　終了した村</strong>
-</div>
-<td rowspan=2 class="no_choice link"><a href="<%= CONF_FOLDER[:PAN]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">似顔絵<br>人狼</a>
-<tr class="link">
-<td class="$choice_lobby">  ロビー　
-<td class="$choice_morphe"> 夢の形　
-<td class="$choice_cabala"> 陰謀　　
-<td class="$choice_braid">  ＲＰ　
-<tr class="progress_log">
-<td class="$choice_lobby" style="text-align:left;">
-  <a href="http://crazy-crazy.sakura.ne.jp/giji_lobby/lobby/sow.cgi?$topcss">lobby</a><br>
-  offparty<br>
-　<br>
-　<br>
-　<br>
-<td class="$choice_cabala" style="text-align:left;">
-  $max_morphe村:<a href="<%= CONF_FOLDER[:MORPHE]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">morphe</a><br>
-  $max_cafe村:<a href="<%= CONF_FOLDER[:CABALA]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">cafe</a><br>
-　<br>
-　<br>
-　<br>
-<td class="$choice_allstar" style="text-align:left;">
-  wolf<br>
-  ultimate<br>
-  allstar<br>
-　<br>
-　<br>
-<td class="$choice_braid" style="text-align:left;">
-  role-play<br>
-  RP-advance<br>
-  $max_vage村:<a href="<%= CONF_FOLDER[:PERJURY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">perjury</a><br>
-  $max_xebec村:<a href="<%= CONF_FOLDER[:XEBEC]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">xebec</a><br>
-  $max_crazy村:<a href="<%= CONF_FOLDER[:CRAZY]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">crazy</a><br>
-  $max_ciel村:<a href="<%= CONF_FOLDER[:CIEL]['config']['cfg'][:URL_SW] %>/sow.cgi?$topcss">ciel</a><br>
-<td class="no_choice">
-  $max_pan村:pan<br>
-　<br>
-　<br>
-　<br>
-　<br>
-<tr class="finished_log">
-<td class="$choice_lobby" style="text-align:left;">
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=LOBBY">lobby</a><br>
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=OFFPARTY">offparty</a><br>
-　<br>
-　<br>
-　<br>
-<td class="$choice_cabala" style="text-align:left;">
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=MORPHE">morphe</a><br>
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CABALA">cafe</a><br>
-　<br>
-　<br>
-　<br>
-<td class="$choice_allstar" style="text-align:left;">
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=WOLF">wolf</a><br>
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=ULTIMATE">ultimate</a><br>
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=ALLSTAR">allstar</a><br>
-　<br>
-　<br>
-<td class="$choice_braid" style="text-align:left;">
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=RP">role-play</a><br>
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=PRETENSE">RP-advance</a><br>
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=PERJURY">perjury</a><br>
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=XEBEC">xebec</a><br>
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CRAZY">crazy</a><br>
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CIEL">ciel</a><br>
-<td class="no_choice">
-  <a href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=PAN">pan</a><br>
-　<br>
-　<br>
-　<br>
-　<br>
-</table>
-<p style="text-align:right;"> $css_select </p>
-</div>
-_HTML_
 }
 
 sub OutHTMLStateInfo {
   my $sow = shift;
   my $cfg   = $sow->{'cfg'};
 
-  print <<"_HTML_";
-<div class="paragraph">
-_HTML_
-
   if( 'LOBBY' eq $cfg->{'RULE'} ){
     print <<"_HTML_";
-<script>
-gon.top_info = [
-{ mesicon:'',
-  name:'ようこそ！',
-  text:'みなさまの助けになるよう、ロビーを用意いたしました。<br>\\
-相談や困りごと、ちょっとした疑問などをお持ちでしたら、どうぞ、ごゆっくりなさいませ。',
-updated_at:new Date(1370662886000),template:"message/say",mestype:"SAY",csid:"all",face_id:"c20"}
-];
-</script>
-</div>
-<div class="message_filter" logs="top_info">
-_HTML_
-  }
-
-  if( 'WOLF' eq $cfg->{'RULE'} ){
-    print <<"_HTML_";
-こちらのページは<span style="color:#FFF">自陣営勝利を目指し、議論をし、最善を尽くす村</span>用に調整しています。<br>
-以下の点で他州と相違があるので、御注意ください。
-<ul>
-<li><a href="sow.cgi?cmd=rule#mind">参加者の心構\え</a>。
-<li><a href="http://crazy-crazy.sakura.ne.jp/giji/?(List)SayCnt">発言ptの量</a>。
-</ul>
+<div class="message_filter" logs="top_info"></div>
 _HTML_
   }
 
   if( 'CIEL' eq $cfg->{'RULE'} ){
     print <<"_HTML_";
-<script>
-gon.top_info = [
-{ mesicon:'',
-  name:'ようこそ！',
-  text:'<span class="mark">勝利を求めないRP村や、勝利も追求するRP村</span>用に、このページは調整してあるよ。<br>\\
-早い者勝ちがよいのだけれど、<a class="mark" href="http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD">企画村予\定\表\</a>という便利なページも見てみましょうね。',
-updated_at:new Date(1379511895000),template:"message/say",mestype:"SAY",csid:"all",face_id:"c24"}
-];
-</script>
-</div>
-<div class="message_filter" logs="top_info">
+<div class="message_filter" logs="top_info"></div>
 _HTML_
   }
 
-  if( 'BRAID' eq $cfg->{'RULE'} ){
-    print <<"_HTML_";
-こちらのページは<span style="color:#FFF">（陣営勝利を求めない）完全RP村、勝利追求を含むRP村</span>用に調整してあるよ。
-早い者勝ちが原則だけれど、<a href="http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD" ng-href="{{link.plan}}">企画村予\定\表\</a>という便利なページも見てみよう。<br>
-
-以下がおおざっぱな、他州との相違点なんだ。
-<ul style="font-size: smaller;">
-<li><a href="sow.cgi?cmd=rule#mind">参加者の心構\え</a>。ガチとは違うのだよ。ガチとは。
-<li><a href="http://crazy-crazy.sakura.ne.jp/giji/?(List)SayCnt">発言ptの量</a>。
-<li>村の説明は4000字まで記述\できます。
-<li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
-</ul>
-_HTML_
-  }
   if( 'PERJURY' eq $cfg->{'RULE'} ){
     print <<"_HTML_";
-<script>
-gon.top_info = [
-{ mesicon:'',
-  name:'ようこそ！',
-  text:'<span class="mark">勝利を求めないRP村や、勝利も追求するRP村</span>用に、このページは調整してあるのだ。<br>\\
-紳士淑女の諸君には、<a class="mark" href="http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD">企画村予\定\表\</a>を参考に、譲り合いの精神で調整してほしい。',
-updated_at:new Date(1393597313000),template:"message/say",mestype:"SAY",csid:"all",face_id:"c25"}
-];
-</script>
-</div>
-<div class="message_filter" logs="top_info">
-_HTML_
-  }
-
-  if( 'ALLSTAR' eq $cfg->{'RULE'} ){
-    print <<"_HTML_";
-このページは<span style="color:#FFF">議論やＲＰを楽しみ、自陣営勝利を目指し、不慮の事態に寛容な村</span>用に調整してあるよ。「大乱闘」の後継なんだ。<br$net>参加する村が自陣営勝利を目指すのかどうか、村ごとの情報欄を良く読んで確認してね。<br>
-以下がおおざっぱな、他州との相違点なんだ。
-大きな違いは狂人の勝利条件だが、多くの編成では同じ意味になるよ。
-<ul style="font-size: smaller;">
-<li><a href="sow.cgi?cmd=rule#mind">参加者の心構\え</a>。
-<li><a href="http://crazy-crazy.sakura.ne.jp/giji/?(List)SayCnt">発言ptの量</a>。
-<li>他、細かい調整が入っています。<a href="http://crazy-crazy.sakura.ne.jp/giji/">仕様変更</a>を参考にしましょう。
-<li><a href="$zipfile">最新のスナップショット</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
-</ul>
+<div class="message_filter" logs="top_info"></div>
 _HTML_
   }
 
   if( 'CABALA' eq $cfg->{'RULE'} ){
     print <<"_HTML_";
-<script>
-gon.top_info = [
-{ mesicon:'',
-  name:'ようこそ！',
-  text:'こちらのページは<span class="mark">RP村も、勝負も楽しみたい村</span>用に調整してあるよ。\\
-早い者勝ちが原則だけれど、企画村予\定\表\という便利なページも見てみよう。\\
-もし君がRPに没頭したいなら、専用の州でどっぷり楽しもう。きっとそのほうが楽しめる。',
-updated_at:new Date(1420047938191),template:"message/say",mestype:"SAY",csid:"all",face_id:"c78"}
-];
-</script>
-</div>
-<div class="message_filter" logs="top_info">
+<div class="message_filter" logs="top_info"></div>
 _HTML_
   }
-
-  if( 'MORPHE' eq $cfg->{'RULE'} ){
-    print <<"_HTML_";
-こちらのページは、<span style="color:#FFF">RP村も、勝負も楽しみたい村</span>用に調整してあるよ。早い者勝ちが原則だけれど、企画村予\定\表\という便利なページも見てみよう。<br>
-もし君がRPに没頭したいなら、それぞれ専用の州でどっぷり楽しもう。きっとそのほうが楽しめる。<br>
-_HTML_
-  }
-
-  if( 'PAN' eq $cfg->{'RULE'} ){
-    print <<"_HTML_";
-<h2>アルティメット人狼、始動！？</h2>
-まだまだ、バグは貴方の知らないあんなところに潜んでいるかもしれない。バグっても泣かない。<br>
-<ul style="font-size: smaller;">
-<li><a href="$zipfile">最新のスナップショット</a>はこちら。<a href="../wolf/resource.zip">css、js</a>はこちら。ライセンスは<a href="$license">修正済みBSDライセンス</a>となっています。永遠にバグ取り中。
-</ul>
-_HTML_
-  }
-  print "</div>";
 }
 
 1;

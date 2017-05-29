@@ -79,7 +79,6 @@ doc.component.buttons =
     section "pencil"
     section "th-large"
     section "search" unless "pins" == menu.scope.state()
-    section "cog"
 
     m "table",
       m "tr",

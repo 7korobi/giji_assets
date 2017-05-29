@@ -1,15 +1,15 @@
 source 'https://rubygems.org'
-ruby "2.3.1"
+ruby "2.4.1"
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem "nokogiri", ">= 1.6.7.2"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5.2'
+gem 'rails', '5.1.1'
+gem 'erubis'
 
 gem 'sqlite3', :group => [:development, :test]
 group :production do
-  gem 'pg'
   gem 'rails_12factor'
 end
 
@@ -19,8 +19,6 @@ gem 'therubyracer', platforms: :ruby
 gem "bson_ext"
 gem 'yajl-ruby'
 
-# Use SCSS for stylesheets
-gem 'sass-rails', '>= 4.0.0'
 
 gem "thor"
 gem "hashie"
