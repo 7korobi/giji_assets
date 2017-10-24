@@ -100,56 +100,56 @@ doc.component.header =
             m "tr",
               m "td",
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=LOBBY"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=LOBBY"
                 , "lobby"
                 m "br"
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=OFFPARTY"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=OFFPARTY"
                 ,"offparty"
 
               m "td",
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=MORPHE"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=MORPHE"
                 , "morphe"
                 m "br"
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CABALA"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=CABALA"
                 , "cafe"
 
               m "td",
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=WOLF"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=WOLF"
                 , "wolf"
                 m "br"
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=ULTIMATE"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=ULTIMATE"
                 , "ultimate"
                 m "br"
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=ALLSTAR"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=ALLSTAR"
                 , "allstar"
 
               m "td",
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=RP"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=RP"
                 , "role-play"
                 m "br"
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=PRETENSE"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=PRETENSE"
                 , "advance"
                 m "br"
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=PERJURY"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=PERJURY"
                 , "perjury"
                 m "br"
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=XEBEC"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=XEBEC"
                 , "xebec"
                 m "br"
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CRAZY"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=CRAZY"
                 , "crazy"
                 m "br"
                 m "a",
-                  href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CIEL"
+                  href: "http://giji.f5.si/sow/villages?page=1&folder_id=CIEL"
                 , "ciel"

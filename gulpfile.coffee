@@ -50,12 +50,11 @@ config =
 gulp.task "default", ["browser:sync"], ->
   gulp.watch "asset/**/*.{html,jade}",            ["asset:html"]
   gulp.watch "asset/**/*.{js,ls,coffee,erb,yml}", ["clean", "asset:js"]
-  gulp.watch "asset/**/*.{css,scss}",             ["asset:css"]
+  gulp.watch "asset/**/*.{css,scss}",             []
   gulp.start [
     "clean"
     "asset:js"
     "asset:html"
-    "asset:css"
   ]
 
 require('./lib/gulp/base') config

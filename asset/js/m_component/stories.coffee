@@ -85,7 +85,7 @@ doc.component.stories =
         win.scroll.pager "tbody", query.list, (o)->
           header = m "div",
             m "a",
-              href: "http://giji.check.jp#{o.link}"
+              href: "http://giji.f5.si#{o.link}"
             , m "code.icon-download"
             m "a",
               href: "http://7korobi.gehirn.ne.jp/stories/#{o._id}.html"

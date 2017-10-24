@@ -18,6 +18,6 @@ win.on.resize.push ->
 
 doc.view.banner = ->
   theme = Mem.conf.theme[Url.prop.theme()]
-  m 'a[href="//giji.check.jp/"]',
+  m 'a[href="//giji.f5.si/"]',
     m "img",
       src: GUI.img_head + "/banner/title#{h1_width}" + theme.width[h1_width][day_or_night]

@@ -434,30 +434,6 @@
   };
   menu.icon.state = Url.prop.icon;
   menu.scope.state = Url.prop.scope;
-  menu.icon.icon("cog", {
-    view: function(){
-      return m(".paragraph", m("h6", "スタイル"), Btns.radio({}, Url.prop.theme, {
-        cinema: "煉瓦",
-        star: "蒼穹",
-        night: "闇夜",
-        moon: "月夜",
-        wa: "和の国"
-      }), m("h6", "幅の広さ"), Btns.radio({}, Url.prop.width, {
-        full: "最大",
-        wide: "広域",
-        std: "狭域"
-      }), m("h6", "位置"), Btns.radio({}, Url.prop.layout, {
-        left: "左詰",
-        center: "中央",
-        right: "右詰"
-      }), m("h6", "位置"), Btns.radio({}, Url.prop.font, {
-        large: "大判",
-        novel: "明朝",
-        std: "ゴシック",
-        small: "繊細"
-      }));
-    }
-  });
   /*
   map_reduce
     menu.tree
@@ -812,7 +788,6 @@
       if ("pins" !== menu.scope.state()) {
         section("search");
       }
-      section("cog");
       return m("table", m("tr", m("td", vdoms)));
     }
   };
@@ -1209,31 +1184,31 @@
             }, "ciel"))));
           case "finish":
             return m("tbody", m("tr", m("td", m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=LOBBY"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=LOBBY"
             }, "lobby"), m("br"), m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=OFFPARTY"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=OFFPARTY"
             }, "offparty")), m("td", m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=MORPHE"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=MORPHE"
             }, "morphe"), m("br"), m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CABALA"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=CABALA"
             }, "cafe")), m("td", m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=WOLF"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=WOLF"
             }, "wolf"), m("br"), m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=ULTIMATE"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=ULTIMATE"
             }, "ultimate"), m("br"), m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=ALLSTAR"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=ALLSTAR"
             }, "allstar")), m("td", m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=RP"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=RP"
             }, "role-play"), m("br"), m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=PRETENSE"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=PRETENSE"
             }, "advance"), m("br"), m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=PERJURY"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=PERJURY"
             }, "perjury"), m("br"), m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=XEBEC"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=XEBEC"
             }, "xebec"), m("br"), m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CRAZY"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=CRAZY"
             }, "crazy"), m("br"), m("a", {
-              href: "http://s3-ap-northeast-1.amazonaws.com/giji-assets/stories/all?folder=CIEL"
+              href: "http://giji.f5.si/sow/villages?page=1&folder_id=CIEL"
             }, "ciel"))));
         }
       })());
@@ -1591,7 +1566,7 @@
       }), m("table.vindex", m("thead", m("tr", m("th"))), win.scroll.pager("tbody", query.list, function(o) {
         var header;
         header = m("div", m("a", {
-          href: "http://giji.check.jp" + o.link
+          href: "http://giji.f5.si" + o.link
         }, m("code.icon-download")), m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/" + o._id + ".html"
         }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
@@ -1946,7 +1921,7 @@
       }), m("table.vindex", m("thead", m("tr", m("th"))), win.scroll.pager("tbody", query.list, function(o) {
         var header;
         header = m("div", m("a", {
-          href: "http://giji.check.jp" + o.link
+          href: "http://giji.f5.si" + o.link
         }, m("code.icon-download")), m("a", {
           href: "http://7korobi.gehirn.ne.jp/stories/" + o._id + ".html"
         }, m("code.icon-download")), m("kbd.note", o._id), m("a", {
@@ -2652,7 +2627,7 @@
   doc.view.banner = function() {
     var theme;
     theme = Mem.conf.theme[Url.prop.theme()];
-    return m('a[href="//giji.check.jp/"]', m("img", {
+    return m('a[href="//giji.f5.si/"]', m("img", {
       src: GUI.img_head + ("/banner/title" + h1_width) + theme.width[h1_width][day_or_night]
     }));
   };
@@ -3071,7 +3046,7 @@
     var _id, link, name, view, header;
     _id = arg$._id, link = arg$.link, name = arg$.name, view = arg$.view;
     header = m("div", m("a", {
-      href: "http://giji.check.jp" + link
+      href: "http://giji.f5.si" + link
     }, m("code.icon-download")), m("a", {
       href: "http://7korobi.gehirn.ne.jp/stories/" + _id + ".html"
     }, m("code.icon-download")), m("kbd.note", _id), m("a", {

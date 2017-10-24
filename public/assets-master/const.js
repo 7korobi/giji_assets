@@ -10555,7 +10555,7 @@
       else
         o.live = "leave"
        */
-      stat_at = (0 < (ref2 = o.deathday) && ref2 < Infinity) ? o.deathday + "日" : (o.deathday = Infinity, "");
+      stat_at = (0 < (ref2 = o.deathday) && ref2 < 2e308) ? o.deathday + "日" : (o.deathday = 2e308, "");
       said_num = o.point.saidcount;
       urge = o.point.actaddpt;
       pt_no = o.say.gsay;

@@ -27,7 +27,7 @@ module.exports = ({gulp, $, src, dest,  yml})->
       preferOnline: true
     .pipe gulp.dest 'public'
 
-  gulp.task "asset", ['asset:css', 'asset:js', 'asset:html'], manifest
+  gulp.task "asset", ['asset:js', 'asset:html'], manifest
   gulp.task "asset:manifest", manifest
 
 

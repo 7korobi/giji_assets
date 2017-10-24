@@ -63,7 +63,7 @@ sow:
   - _id: title-paragraph--14
     log: |-
       <a class="btn edge" href="http://s3-ap-northeast-1.amazonaws.com/giji-assets/assets-master/character_tag.html">キャラクター画像はこちら</a>
-      キャラクターを選ぶ参考に、<a class="btn edge" href="http://giji.check.jp/map_reduce/faces">人気度集計</a>をチェックしてもいいかもね。
+      キャラクターを選ぶ参考に、<a class="btn edge" href="http://giji.f5.si/map_reduce/faces">人気度集計</a>をチェックしてもいいかもね。
 
   - _id: title-head-h6-15
     log: この州の設定
@@ -116,7 +116,7 @@ sow:
     log: |-
       <dl class="XSAY paragraph">
 
-      <dt><a class="btn edge" href="http://giji.check.jp/">人狼議事総合トップ</a>
+      <dt><a class="btn edge" href="http://giji.f5.si/">人狼議事総合トップ</a>
       <dd>人狼議事全体の過去ログ、募集中の村の一覧など。
 
       <dt><a class="btn edge" href="http://jsfun525.gamedb.info/wiki/?%B4%EB%B2%E8%C2%BC%CD%BD%C4%EA%C9%BD">企画村予定表</a>（wiki：stinさん管理）

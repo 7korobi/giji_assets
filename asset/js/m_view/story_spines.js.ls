@@ -1,7 +1,7 @@
 doc.view.story_spines = ({_id, link, name, view})->
   header = m "div",
     m "a",
-      href: "http://giji.check.jp#{link}"
+      href: "http://giji.f5.si#{link}"
     , m "code.icon-download"
     m "a",
       href: "http://7korobi.gehirn.ne.jp/stories/#{_id}.html"
