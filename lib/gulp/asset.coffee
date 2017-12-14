@@ -1,5 +1,4 @@
 module.exports = ({gulp, $, src, dest,  yml})->
-  neat = require 'node-neat'
   source = require 'vinyl-source-stream'
   browserify = require 'browserify'
   yamlify = require 'yamlify'
@@ -30,15 +29,6 @@ module.exports = ({gulp, $, src, dest,  yml})->
   gulp.task "asset", ['asset:js', 'asset:html'], manifest
   gulp.task "asset:manifest", manifest
 
-
-  gulp.task "asset:legacy", ->
-    gulp
-    .src "public/assets-show-fix/*.js"
-    .pipe gulp.dest dest.public
-    .pipe $.gzip gzipOptions: level: 9
-    .pipe gulp.dest "public/assets-show-fix/"
-
-
   gulp.task "asset:html", ->
     locals = {}
     asset ->
@@ -48,21 +38,6 @@ module.exports = ({gulp, $, src, dest,  yml})->
       .pipe $.sort()
       .pipe $.if "*.jade", $.jade()
       .pipe $.if "*.html.html", $.rename extname: ""
-
-
-  # https://github.com/csscomb/csscomb.js/blob/master/doc/options.md
-  gulp.task "asset:css", ->
-    asset ->
-      gulp
-      .src src.asset.css
-      .on "error", alert
-      .pipe $.sort()
-      .pipe $.include()
-      .pipe $.sass includePaths: neat.includePaths
-      .pipe $.csso true
-      .pipe $.shorthand()
-      .pipe $.csscomb()
-
 
   gulp.task "asset:js", ["asset:js:plane", "asset:js:npm:base"], ->
 

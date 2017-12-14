@@ -18,10 +18,8 @@ config =
       clean: 'tmp/cache/gulp*/**/*.{css,js,yml}'
   src:
     amazon:
-      cache: 'public/giji.appcache'
       image: 'public/**/*.{jpg,png,gif}'
       font:  'public/**/*.{svg,eot,ttf,woff}'
-      gz:    'public/**/*.gz'
       face:  '../../web_work/{@@@,images}/**/*'
       old:   'public/{@@@,assets-show-fix,stylesheets/theme}/*'
     manifest:
