@@ -934,7 +934,7 @@ function setAjaxEvent(target){
 
 					var topm    = mouse.pageY +  16;
                     var leftm = $('#contentframe').offset().left;
-					var leftend = $("body").width() - mes.width() - 8;
+					var leftend = $(document).width() - mes.width() - 8;
 					if( leftend < leftm ){
 						leftm   = leftend;
 					}
