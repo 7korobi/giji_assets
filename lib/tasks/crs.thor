@@ -140,7 +140,7 @@ class Crs < Thor
         "all" => @orders.map(&:face_id)
       }
       @orders.each do |face|
-        face.tags.each do |tag|
+        face.tag_ids.each do |tag|
           next unless CONF_TAG[tag].chr_set_ids.any? {|csid| @csid[csid] }
           @tag_names[tag] = CONF_TAG[tag].name
           @chr_orders[tag] = (@chr_orders[tag] || []) + [face._id]

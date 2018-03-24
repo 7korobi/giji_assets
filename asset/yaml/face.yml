@@ -4,7 +4,7 @@
     face_id: c49
     name: "ボリス"
     order: 1
-    tags:
+    tag_ids:
       - giji
       - guild
       - young
@@ -12,7 +12,7 @@
     order: 2
     face_id: c38
     name: "コリーン"
-    tags:
+    tag_ids:
       - giji
       - market
       - young
@@ -20,7 +20,7 @@
     order: 3
     face_id: c77
     name: "キャロライナ"
-    tags:
+    tag_ids:
       - giji
       - servant
       - road
@@ -30,7 +30,7 @@
     order: 4
     face_id: c35
     name: "ダン"
-    tags:
+    tag_ids:
       - giji
       - guild
       - middle
@@ -38,7 +38,7 @@
     order: 5
     face_id: c53
     name: "ゼルダ"
-    tags:
+    tag_ids:
       - giji
       - government
       - farm
@@ -48,7 +48,7 @@
     order: 6
     face_id: c74
     name: "フランシスカ"
-    tags:
+    tag_ids:
       - giji
       - market
       - young
@@ -56,7 +56,7 @@
     order: 8
     face_id: c50
     name: "ディーン"
-    tags:
+    tag_ids:
       - giji
       - government
       - guild
@@ -65,7 +65,7 @@
     order: 8
     face_id: c36
     name: "ミッシェル"
-    tags:
+    tag_ids:
       - giji
       - guild
       - servant
@@ -74,7 +74,7 @@
     order: 8
     face_id: c26
     name: "モニカ"
-    tags:
+    tag_ids:
       - giji
       - guild
       - young
@@ -82,7 +82,7 @@
     order: 9
     face_id: c09
     name: "ヒロシ"
-    tags:
+    tag_ids:
       - giji
       - immoral
       - travel
@@ -92,7 +92,7 @@
     order: 10
     face_id: c55
     name: "パピヨン"
-    tags:
+    tag_ids:
       - giji
       - apartment
       - elegant
@@ -101,7 +101,7 @@
     order: 11
     face_id: c29
     name: "イアン"
-    tags:
+    tag_ids:
       - giji
       - guild
       - young
@@ -109,7 +109,7 @@
     order: 12
     face_id: c12
     name: "バーナバス"
-    tags:
+    tag_ids:
       - giji
       - servant
       - road
@@ -118,7 +118,7 @@
     order: 127
     face_id: c16
     name: "マリアンヌ"
-    tags:
+    tag_ids:
       - giji
       - apartment
       - market
@@ -128,7 +128,7 @@
     order: 14
     face_id: c34
     name: "トニー"
-    tags:
+    tag_ids:
       - giji
       - road
       - servant
@@ -137,7 +137,7 @@
     order: 15
     face_id: c44
     name: "ドナルド"
-    tags:
+    tag_ids:
       - giji
       - immoral
       - young
@@ -145,7 +145,7 @@
     order: 16
     face_id: c11
     name: "カルヴィン"
-    tags:
+    tag_ids:
       - giji
       - elegant
       - apartment
@@ -154,7 +154,7 @@
     order: 17
     face_id: c10
     name: "ゾーイ"
-    tags:
+    tag_ids:
       - travel
       - giji
       - apartment
@@ -163,7 +163,7 @@
     order: 18
     face_id: c70
     name: "パティ"
-    tags:
+    tag_ids:
       - giji
       - servant
       - apartment
@@ -172,7 +172,7 @@
     order: 19
     face_id: c56
     name: "ゴドウィン"
-    tags:
+    tag_ids:
       - giji
       - guild
       - market
@@ -181,7 +181,7 @@
     order: 20
     face_id: c07
     name: "ティモシー"
-    tags:
+    tag_ids:
       - giji
       - guild
       - elder
@@ -189,7 +189,7 @@
     order: 21
     face_id: c41
     name: "ヤニク"
-    tags:
+    tag_ids:
       - giji
       - immoral
       - river
@@ -198,7 +198,7 @@
     order: 22
     face_id: c58
     name: "ブルーノ"
-    tags:
+    tag_ids:
       - giji
       - ecclesia
       - middle
@@ -207,7 +207,7 @@
     order: 23
     face_id: c17
     name: "ユリシーズ"
-    tags:
+    tag_ids:
       - giji
       - market
       - middle
@@ -216,7 +216,7 @@
     order: 24
     face_id: c39
     name: "シビル"
-    tags:
+    tag_ids:
       - giji
       - servant
       - guild
@@ -225,7 +225,7 @@
     order: 25
     face_id: c40
     name: "ハワード"
-    tags:
+    tag_ids:
       - giji
       - servant
       - elder
@@ -234,7 +234,7 @@
     order: 26
     face_id: c65
     name: "ズリエル"
-    tags:
+    tag_ids:
       - giji
       - immoral
       - middle
@@ -242,7 +242,7 @@
     order: 27
     face_id: c59
     name: "ムパムピス"
-    tags:
+    tag_ids:
       - giji
       - ecclesia
       - young
@@ -250,7 +250,7 @@
     order: 28
     face_id: c57
     name: "ツェツィーリヤ"
-    tags:
+    tag_ids:
       - giji
       - ecclesia
       - young
@@ -259,7 +259,7 @@
     order: 29
     face_id: c04
     name: "ノーリーン"
-    tags:
+    tag_ids:
       - giji
       - servant
       - middle
@@ -268,7 +268,7 @@
     order: 30
     face_id: c46
     name: "ゲイル"
-    tags:
+    tag_ids:
       - giji
       - apartment
       - medical
@@ -278,7 +278,7 @@
     order: 31
     face_id: c14
     name: "レティーシャ"
-    tags:
+    tag_ids:
       - giji
       - ecclesia
       - kid
@@ -286,7 +286,7 @@
     order: 33
     face_id: c42
     name: "ラルフ"
-    tags:
+    tag_ids:
       - giji
       - servant
       - young
@@ -294,7 +294,7 @@
     order: 34
     face_id: c37
     name: "セシル"
-    tags:
+    tag_ids:
       - giji
 #      - elegant
       - market
@@ -303,7 +303,7 @@
     order: 35
     face_id: c75
     name: "ビリー"
-    tags:
+    tag_ids:
       - giji
 #      - elegant
       - market
@@ -312,7 +312,7 @@
     order: 36
     face_id: c32
     name: "オスカー"
-    tags:
+    tag_ids:
       - giji
       - apartment
       - kid
@@ -320,7 +320,7 @@
     order: 37
     face_id: c33
     name: "ホリー"
-    tags:
+    tag_ids:
       - giji
       - apartment
       - kid
@@ -328,7 +328,7 @@
     order: 38
     face_id: c02
     name: "アルフレッド"
-    tags:
+    tag_ids:
       - giji
       - government
       - middle
@@ -337,7 +337,7 @@
     order: 39
     face_id: c66
     name: "クリストファー"
-    tags:
+    tag_ids:
       - giji
       - servant
       - guild
@@ -347,7 +347,7 @@
     order: 41
     face_id: c24
     name: "ナタリア"
-    tags:
+    tag_ids:
       - giji
       - government
       - apartment
@@ -356,7 +356,7 @@
     order: 42
     face_id: c79
     name: "マーゴ"
-    tags:
+    tag_ids:
       - giji
 #      - elegant
       - government
@@ -366,7 +366,7 @@
     order: 43
     face_id: c61
     name: "ヌマタロウ"
-    tags:
+    tag_ids:
       - giji
       - river
       - farm
@@ -375,7 +375,7 @@
     order: 44
     face_id: c23
     name: "チャールズ"
-    tags:
+    tag_ids:
       - giji
       - ecclesia
       - middle
@@ -384,7 +384,7 @@
     face_id: c28
     name: "ケイト"
     order: 47
-    tags:
+    tag_ids:
       - giji
       - apartment
       - young
@@ -392,7 +392,7 @@
     order: 48
     face_id: c68
     name: "ヨアヒム"
-    tags:
+    tag_ids:
       - giji
       - market
       - immoral
@@ -403,7 +403,7 @@
     order: 49
     face_id: c30
     name: "フィリップ"
-    tags:
+    tag_ids:
       - giji
       - road
       - river
@@ -413,7 +413,7 @@
     order: 50
     face_id: c21
     name: "ニール"
-    tags:
+    tag_ids:
       - giji
       - farm
       - guild
@@ -423,7 +423,7 @@
     order: 52
     face_id: c52
     name: "ギリアン"
-    tags:
+    tag_ids:
       - giji
       - medical
       - ecclesia
@@ -432,7 +432,7 @@
     order: 53
     face_id: c51
     name: "ヨーランダ"
-    tags:
+    tag_ids:
       - giji
       - medical
       - ecclesia
@@ -442,7 +442,7 @@
     face_id: c01
     name: "メアリー"
     order: 55
-    tags:
+    tag_ids:
       - giji
       - market
       - road
@@ -451,7 +451,7 @@
     order: 56
     face_id: c69
     name: "ギネス"
-    tags:
+    tag_ids:
       - giji
       - guild
       - market
@@ -460,7 +460,7 @@
     order: 57
     face_id: c63
     name: "ピッパ"
-    tags:
+    tag_ids:
       - giji
       - guild
       - young
@@ -468,7 +468,7 @@
     order: 59
     face_id: c05
     name: "キャサリン"
-    tags:
+    tag_ids:
       - giji
       - medical
       - young
@@ -476,7 +476,7 @@
     order: 60
     face_id: c22
     name: "ワット"
-    tags:
+    tag_ids:
       - giji
       - farm
       - middle
@@ -484,7 +484,7 @@
     order: 61
     face_id: c62
     name: "ヴェラ"
-    tags:
+    tag_ids:
       - giji
       - immoral
       - river
@@ -493,7 +493,7 @@
     order: 62
     face_id: c13
     name: "ロミオ"
-    tags:
+    tag_ids:
       - giji
       - medical
       - elder
@@ -501,7 +501,7 @@
     order: 63
     face_id: c18
     name: "エマ"
-    tags:
+    tag_ids:
       - giji
       - medical
       - elder
@@ -509,7 +509,7 @@
     order: 65
     face_id: c27
     name: "リンダ"
-    tags:
+    tag_ids:
       - giji
       - farm
       - young
@@ -517,7 +517,7 @@
     order: 66
     face_id: c08
     name: "ベネット"
-    tags:
+    tag_ids:
       - giji
       - guild
       - young
@@ -525,7 +525,7 @@
     order: 67
     face_id: c19
     name: "タバサ"
-    tags:
+    tag_ids:
       - giji
       - immoral
       - market
@@ -534,7 +534,7 @@
     order: 70
     face_id: c71
     name: "ノックス"
-    tags:
+    tag_ids:
       - giji
       - road
       - farm
@@ -543,7 +543,7 @@
     order: 71
     face_id: c03
     name: "スティーブン"
-    tags:
+    tag_ids:
       - giji
       - medical
       - middle
@@ -551,7 +551,7 @@
     order: 72
     face_id: c43
     name: "ガストン"
-    tags:
+    tag_ids:
       - giji
       - farm
       - middle
@@ -559,7 +559,7 @@
     order: 73
     face_id: c15
     name: "ウェーズリー"
-    tags:
+    tag_ids:
       - giji
       - government
       - road
@@ -568,7 +568,7 @@
     order: 75
     face_id: c54
     name: "ザック"
-    tags:
+    tag_ids:
       - giji
       - guild
       - medical
@@ -577,7 +577,7 @@
     order: 77
     face_id: c25
     name: "ルーカス"
-    tags:
+    tag_ids:
       - giji
       - elegant
       - young
@@ -585,7 +585,7 @@
     order: 79
     face_id: c20
     name: "グロリア"
-    tags:
+    tag_ids:
       - giji
       - elegant
       - young
@@ -593,7 +593,7 @@
     order: 81
     face_id: c72
     name: "ヴェスパタイン"
-    tags:
+    tag_ids:
       - giji
       - guild
       - young
@@ -601,7 +601,7 @@
     order: 83
     face_id: c73
     name: "ローズマリー"
-    tags:
+    tag_ids:
       - giji
       - immoral
       - market
@@ -610,7 +610,7 @@
     order: 85
     face_id: c47
     name: "ペラジー"
-    tags:
+    tag_ids:
       - giji
       - ecclesia
       - river
@@ -619,7 +619,7 @@
     order: 87
     face_id: c80
     name: "テッド"
-    tags:
+    tag_ids:
       - giji
       - road
       - apartment
@@ -629,7 +629,7 @@
     name: "レオナルド"
     comment: 2011/12/11
     order: 89
-    tags:
+    tag_ids:
       - giji
       - government
       - ecclesia
@@ -639,7 +639,7 @@
     name: "モリス"
     comment: 2011/12/11
     order: 91
-    tags:
+    tag_ids:
       - giji
       - guild
       - road
@@ -649,7 +649,7 @@
     name: "ジェフ"
     comment: 2011/12/14 超常現象はあるんだ…
     order: 93
-    tags:
+    tag_ids:
       - giji
       - government
       - river
@@ -660,7 +660,7 @@
     name: "オズワルド"
     comment: 2011/12/29 この髭はぜったいワックス使ってる。
     order: 95
-    tags:
+    tag_ids:
       - giji
 #      - elegant
       - immoral
@@ -671,7 +671,7 @@
     name: "グレッグ"
     comment: 2012/12/30 スポーツ系中学生くらいに見える
     order: 97
-    tags:
+    tag_ids:
       - giji
       - guild
       - young
@@ -680,7 +680,7 @@
     name: "クラリッサ"
     comment: 2011/12/30 美人さん♪
     order: 99
-    tags:
+    tag_ids:
       - giji
       - servant
       - apartment
@@ -690,7 +690,7 @@
     name: "ケヴィン"
     comment: 2011/12/06
     order: 125
-    tags:
+    tag_ids:
       - giji
       - government
       - river
@@ -701,7 +701,7 @@
     name: "ピエール"
     order: 126
     comment: 2011/12/05
-    tags:
+    tag_ids:
       - giji
 #      - elegant
       - servant
@@ -712,7 +712,7 @@
     name: "カトリーナ"
     comment: 2011/12/06
     order: 128
-    tags:
+    tag_ids:
       - giji
       - apartment
       - young
@@ -721,7 +721,7 @@
     name: "ブレンダ"
     order: 129
     comment: 2011/12/05
-    tags:
+    tag_ids:
       - giji
       - apartment
       - middle
@@ -730,7 +730,7 @@
     name: "ハナ"
     order: 130
     comment: 2011/12/05
-    tags:
+    tag_ids:
       - giji
       - road
       - servant
@@ -740,7 +740,7 @@
     face_id: c91
     name: "ドロシー"
     order: 143
-    tags:
+    tag_ids:
       - giji
       - river
       - servant
@@ -750,7 +750,7 @@
     face_id: c92
     name: "セレスト"
     order: 144
-    tags:
+    tag_ids:
       - giji
       - river
       - servant
@@ -760,7 +760,7 @@
     face_id: c93
     name: "ベッキー"
     order: 145
-    tags:
+    tag_ids:
       - giji
       - river
       - servant
@@ -769,7 +769,7 @@
     order: 150
     face_id: c78
     name: "ネイサン"
-    tags:
+    tag_ids:
       - giji
       - market
       - middle
@@ -777,7 +777,7 @@
     order: 148
     face_id: c82
     name: "ロビン"
-    tags:
+    tag_ids:
       - giji
       - servant
       - kid
@@ -787,7 +787,7 @@
     name: "ダーラ"
     comment: 2011/12/11
     order: 165
-    tags:
+    tag_ids:
       - giji
       - elegant
       - immoral
@@ -797,7 +797,7 @@
     order: 180
     face_id: c64
     name: "ヘクター"
-    tags:
+    tag_ids:
       - giji
       - immoral
       - middle
@@ -805,7 +805,7 @@
     order: 190
     face_id: c81
     name: "サイラス"
-    tags:
+    tag_ids:
       - giji
       - medical
       - guild
@@ -815,7 +815,7 @@
     order: 200
     face_id: c67
     name: "ソフィア"
-    tags:
+    tag_ids:
       - giji
       - guild
       - young
@@ -823,7 +823,7 @@
     order: 210
     face_id: c76
     name: "ジョージ"
-    tags:
+    tag_ids:
       - giji
       - apartment
       - kid
@@ -831,7 +831,7 @@
     order: 213
     face_id: c60
     name: "ポーチュラカ"
-    tags:
+    tag_ids:
       - giji
       - elegant
       - kid
@@ -840,7 +840,7 @@
     name: "エリアス"
     order: 217
     comment: 2011/12/05
-    tags:
+    tag_ids:
       - giji
       - elegant
       - medical
@@ -849,7 +849,7 @@
     order: 220
     face_id: c45
     name: "プリシラ"
-    tags:
+    tag_ids:
       - giji
       - immoral
       - young
@@ -857,7 +857,7 @@
     order: 225
     face_id: c48
     name: "ビアンカ"
-    tags:
+    tag_ids:
       - giji
       - elegant
       - middle
@@ -867,7 +867,7 @@
     name: "ホレーショー"
     order: 230
     comment: 2011/12/05
-    tags:
+    tag_ids:
       - giji
       - immoral
       - apartment
@@ -876,7 +876,7 @@
     order: 240
     face_id: c83
     name: "アイリス"
-    tags:
+    tag_ids:
       - marchen
       - giji
       - road
@@ -887,7 +887,7 @@
     order: 250
     face_id: c31
     name: "ネル"
-    tags:
+    tag_ids:
       - giji
       - guild
       - apartment
@@ -896,7 +896,7 @@
     order: 999
     face_id: c99
     name: "サイモン"
-    tags:
+    tag_ids:
       - giji
       - apartment
       - young
@@ -906,655 +906,655 @@
     name: "露蝶"
     comment: "中国女性名"
     _id: g01
-    tags:
+    tag_ids:
       - asia
 -   order: 215
     face_id: g02
     name: "志偉"
     comment: "台湾男性名 越南の名前も探したかったが、見つからぬ…"
     _id: g02
-    tags:
+    tag_ids:
       - asia
 -   order: 10003
     face_id: g03
     name: "芙蓉"
     comment: "里帰り"
     _id: g03
-    tags:
+    tag_ids:
       - asia
 -   order: 10004
     face_id: gc61
     name: "沼太郎"
     comment: "里帰り"
     _id: gc61
-    tags:
+    tag_ids:
       - asia
 -   name: "デメテル"
     face_id: mad01
     comment: "阿片窟からきました"
     order: 20001
     _id: mad01
-    tags:
+    tag_ids:
       - marchen
 -   name: "エルゴット"
     face_id: mad02
     comment: "阿片窟からきました"
     order: 245
     _id: mad02
-    tags:
+    tag_ids:
       - marchen
 -   name: "シーシャ"
     face_id: mad03
     comment: "阿片窟からきました"
     order: 223
     _id: mad03
-    tags:
+    tag_ids:
       - marchen
 -   name: "ドリベル"
     face_id: mad04
     comment: "阿片窟からきました"
     order: 20004
     _id: mad04
-    tags:
+    tag_ids:
       - marchen
 -   name: "ヤヘイ"
     face_id: mad05
     comment: "阿片窟からきました"
     order: 1010
     _id: mad05
-    tags:
+    tag_ids:
       - marchen
 -   name: "アヤワスカ"
     face_id: mad06
     comment: "阿片窟からきました"
     order: 236
     _id: mad06
-    tags:
+    tag_ids:
       - marchen
 -   name: "チアキ"
     face_id: t01
     comment: "時をかける少女"
     order: 30001
     _id: t01
-    tags:
+    tag_ids:
       - travel
 -   name: "リッキィ"
     face_id: t02
     comment: "夏への扉"
     order: 30002
     _id: t02
-    tags:
+    tag_ids:
       - travel
 -   name: "ミナカタ"
     face_id: t03
     comment: "ー仁ー"
     order: 156
     _id: t03
-    tags:
+    tag_ids:
       - travel
 -   name: "カイル"
     face_id: t04
     comment: "サラ・コナー・クロニクルズ"
     order: 30004
     _id: t04
-    tags:
+    tag_ids:
       - travel
 -   name: "ジェニファー"
     face_id: t05
     comment: "バック・トゥ・ザ・フューチャー"
     order: 30005
     _id: t05
-    tags:
+    tag_ids:
       - travel
 -   _id: m99
     order: 70001
     face_id: m99
     name: "パルック"
-    tags:
+    tag_ids:
       - myth
 -   _id: m06
     order: 70002
     face_id: m06
     name: "リリンラ"
-    tags:
+    tag_ids:
       - myth
 -   _id: m03
     order: 70003
     face_id: m03
     name: "トノサマ"
-    tags:
+    tag_ids:
       - myth
 -   _id: m05
     order: 70004
     face_id: m05
     name: "ナナコロ"
-    tags:
+    tag_ids:
       - myth
 -   _id: m15
     order: 70005
     face_id: m15
     name: "ミソチャ"
-    tags:
+    tag_ids:
       - myth
 -   _id: m07
     order: 70006
     face_id: m07
     name: "アリス"
-    tags:
+    tag_ids:
       - myth
 -   _id: r30
     order: 70006
     face_id: r30
     name: "トリ"
-    tags:
+    tag_ids:
       - myth
 -   _id: m01
     order: 70007
     face_id: m01
     name: "ケムシ"
-    tags:
+    tag_ids:
       - myth
 -   _id: m02
     order: 70008
     face_id: m02
     name: "ポプラ"
-    tags:
+    tag_ids:
       - myth
 -   _id: m04
     order: 70009
     face_id: m04
     name: "アオイ"
-    tags:
+    tag_ids:
       - myth
 -   _id: b44
     comment: ''
     face_id: b44
     name: "ドナルド"
     order: 70010
-    tags:
+    tag_ids:
       - myth
 -   _id: m08
     order: 70011
     face_id: m08
     name: "おっぱい"
-    tags:
+    tag_ids:
       - myth
 -   _id: m09
     order: 70012
     face_id: m09
     name: "カミジャー"
-    tags:
+    tag_ids:
       - myth
 -   _id: r12
     order: 70012
     face_id: r12
     name: "バーナバス"
-    tags:
+    tag_ids:
       - myth
 -   _id: b49
     comment: ''
     face_id: b49
     name: "ボリス"
     order: 70012
-    tags:
+    tag_ids:
       - myth
 -   _id: m10
     order: 70013
     face_id: m10
     name: "アチャポ"
-    tags:
+    tag_ids:
       - myth
 -   _id: m12
     comment: ''
     face_id: m12
     name: "トルニトス"
     order: 70014
-    tags:
+    tag_ids:
       - myth
 -   _id: m11
     order: 70015
     face_id: m11
     name: "ライトニング"
-    tags:
+    tag_ids:
       - myth
 -   _id: m13
     order: 70016
     face_id: m13
     name: "ミケ"
-    tags:
+    tag_ids:
       - myth
 -   _id: m14
     order: 70017
     face_id: m14
     name: "カリュクス"
-    tags:
+    tag_ids:
       - myth
 -   _id: sf01
     order: 80000
     face_id: sf01
     name: "ラッシード"
     comment: "りしあさん＆かれやなぎさん"
-    tags:
+    tag_ids:
       - stratos
 -   _id: sf02
     order: 80001
     face_id: sf02
     name: "エスペラント"
     comment: "ふらぅさん＆かれやなぎさん"
-    tags:
+    tag_ids:
       - stratos
 -   _id: sf03
     order: 80002
     face_id: sf03
     name: "ピート"
     comment: "たるっとさん＆りちゃさん"
-    tags:
+    tag_ids:
       - stratos
 -   _id: sf04
     order: 80003
     face_id: sf04
     name: "アシモフ"
     comment: "あすたん＆りりんら"
-    tags:
+    tag_ids:
       - stratos
 -   _id: sf05
     order: 80004
     face_id: sf05
     name: "モナリザ"
     comment: "ななころび＆りりんら"
-    tags:
+    tag_ids:
       - stratos
 -   _id: sf06
     order: 80005
     face_id: sf06
     name: "ワレンチナ"
     comment: "まりもさん＆あずまさん"
-    tags:
+    tag_ids:
       - stratos
 -   _id: sf07
     order: 80007
     face_id: sf07
     name: "ヤンファ"
     comment: "りしあさん＆はむおくん"
-    tags:
+    tag_ids:
       - stratos
 -   _id: sf08
     order: 80008
     face_id: sf08
     name: "ＰＪ"
     comment: "りしあさん＆ふらぅさん"
-    tags:
+    tag_ids:
       - stratos
 -   _id: sf09
     order: 80009
     face_id: sf09
     name: "キリシマ"
     comment: "ななころび＆ふらぅさん"
-    tags:
+    tag_ids:
       - stratos
 -   _id: sf10
     order: 80010
     face_id: sf10
     name: "ナユタ"
     comment: "かれやなぎさん＆かいさん"
-    tags:
+    tag_ids:
       - stratos
 -   _id: sf11
     order: 80011
     face_id: sf11
     name: "イワノフ"
     comment: "かれやなぎさん＆りちゃさん"
-    tags:
+    tag_ids:
       - stratos
 -   order: 80012
     face_id: sf12
     name: "†ルシフェル†"
     comment:
     _id: sf12
-    tags:
+    tag_ids:
       - stratos
 -   order: 80013
     face_id: sf13
     name: "トルドヴィン"
     comment:
     _id: sf13
-    tags:
+    tag_ids:
       - stratos
 -   order: 80014
     face_id: sf18
     name: "玖休"
     comment:
     _id: sf18
-    tags:
+    tag_ids:
       - stratos
 -   order: 80015
     face_id: sf19
     name: "参休"
     comment:
     _id: sf19
-    tags:
+    tag_ids:
       - stratos
 -   order: 80016
     face_id: sf14
     name: "クリスマス"
     comment:
     _id: sf14
-    tags:
+    tag_ids:
       - stratos
 -   order: 80017
     face_id: sf15
     name: "ジェームス"
     comment:
     _id: sf15
-    tags:
+    tag_ids:
       - stratos
 -   order: 80018
     face_id: sf16
     name: "ライジ"
     comment:
     _id: sf16
-    tags:
+    tag_ids:
       - stratos
 -   order: 80019
     face_id: sf17
     name: "ジャック"
     comment:
     _id: sf17
-    tags:
+    tag_ids:
       - stratos
 -   _id: w05
     order: 90001
     face_id: w05
     name: "定吉"
     comment: "ぷえるとりこの旅人　エージ―エー"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w21
     order: 90002
     face_id: w21
     name: "鉄平"
     comment: "日本の伝統　熊木彫"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w22
     order: 90003
     face_id: w22
     name: "竹三"
     comment: "雪国の風雅　熊木彫"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w36
     order: 90004
     face_id: w36
     name: "ウト"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w16
     order: 90005
     face_id: w16
     name: "勢"
     comment: "ぶたさん印の　あおいジンギスカン"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w18
     order: 90006
     face_id: w18
     name: "菊"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w26
     order: 90007
     face_id: w26
     name: "勝丸"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w35
     comment: ''
     face_id: w35
     name: "奈須麿"
     order: 90008
-    tags:
+    tag_ids:
       - shoji
 -   _id: w24
     order: 90009
     face_id: w24
     name: "辰次"
     comment: "桃源郷ぐた国のめぐみ　ふらう乳業"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w37
     order: 90010
     face_id: w37
     name: "芙蓉"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w29
     order: 90011
     face_id: w29
     name: "志乃"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w20
     order: 90012
     face_id: w20
     name: "藤之助"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w31
     order: 90013
     face_id: w31
     name: "日向"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w12
     order: 90014
     face_id: w12
     name: "おみつ"
     comment: "道を外して60年　GEDOU協会"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w10
     order: 90015
     face_id: w10
     name: "博史"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w25
     order: 90016
     face_id: w25
     name: "法泉"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w09
     order: 90017
     face_id: w09
     name: "チャールズ"
     comment: "チャールズ派遣ならおまかせ　O-ririn"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w30
     order: 90018
     face_id: w30
     name: "雪代"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w14
     order: 90019
     face_id: w14
     name: "華月斎"
     comment: "めげないゼラチン作り　MEGEゼラチン"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w13
     order: 90020
     face_id: w13
     name: "たまこ"
     comment: "世界の道をつなぐ　議事国地図"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w11
     order: 90021
     face_id: w11
     name: "沼太郎"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w03
     order: 90022
     face_id: w03
     name: "朔"
     comment: "新しい議事をつくる　たき学会"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w34
     order: 90023
     face_id: w34
     name: "余四朗"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w27
     order: 90024
     face_id: w27
     name: "源蔵"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w28
     order: 90025
     face_id: w28
     name: "甚六"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w17
     order: 90026
     face_id: w17
     name: "雷門"
     comment: "輝く月に未来を託す　暁月商事"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w39
     comment: ''
     face_id: w39
     name: "沙耶"
     order: 90027
-    tags:
+    tag_ids:
       - shoji
 -   _id: w08
     order: 90028
     face_id: w08
     name: "朝顔"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w43
     order: 90029
     face_id: w43
     name: "春松"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w07
     order: 90030
     face_id: w07
     name: "夕顔"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w40
     order: 90031
     face_id: w40
     name: "朧"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w33
     comment: ''
     face_id: w33
     name: "団十郎"
     order: 90032
-    tags:
+    tag_ids:
       - shoji
 -   _id: w23
     order: 90033
     face_id: w23
     name: "仁右衛門"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w04
     order: 90034
     face_id: w04
     name: "小鈴"
     comment: "お口の愛人　タルッティ・タルット"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w06
     order: 90035
     face_id: w06
     name: "ゆり"
     comment: "道を外して60年　GEDOU協会"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w38
     comment: ''
     face_id: w38
     name: "一平太"
     order: 90037
-    tags:
+    tag_ids:
       - shoji
 -   _id: w01
     order: 90038
     face_id: w01
     name: "鏡花"
     comment: "輝く月に未来を託す　暁月商事"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w15
     order: 90039
     face_id: w15
     name: "八重"
     comment: "桃源郷ぐた国のめぐみ　ふらう乳業"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w32
     order: 90040
     face_id: w32
     name: "明之進"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w02
     order: 90041
     face_id: w02
     name: "慶三郎"
     comment: "カメラのことなら　MISEKI"
-    tags:
+    tag_ids:
       - shoji
 -   _id: w44
     face_id: w44
     name: "雪客"
     comment: "りりんラハウス呑んだくれ大会"
     order: 90042
-    tags:
+    tag_ids:
       - shoji
 -   _id: w45
     face_id: w45
     name: "亀吉"
     comment: "りりんラハウス呑んだくれ大会"
     order: 90043
-    tags:
+    tag_ids:
       - shoji
 -   _id: w46
     face_id: w46
     name: "梅子"
     order: 90044
     comment: "お誕生日記念☆"
-    tags:
+    tag_ids:
       - shoji
 -   face_id: w47
     name: "置壱"
     comment: "日本の美徳強化月間"
     order: 90045
     _id: w47
-    tags:
+    tag_ids:
       - shoji
 -   face_id: all
     name: "パルック"
     order: 99999
     _id: all
-    tags:
+    tag_ids:
       - god
 
 #########################
@@ -1565,7 +1565,7 @@
     name: "攻芸"
     comment: "台湾男性名"
     order: 10005
-    tags:
+    tag_ids:
       - asia
 
 -   _id: g05
@@ -1573,7 +1573,7 @@
     name: "麻雀"
     comment: "中国女性名"
     order: 170
-    tags:
+    tag_ids:
       - asia
 
 -   _id: g06
@@ -1581,7 +1581,7 @@
     name: "黍炉"
     comment: "ダリダイ・オッチギン"
     order: 10007
-    tags:
+    tag_ids:
       - asia
 
 -   _id: mad07
@@ -1589,7 +1589,7 @@
     name: "ダイミ"
     comment: "阿片窟からきました"
     order: 20007
-    tags:
+    tag_ids:
       - marchen
 
 -   _id: mad08
@@ -1597,7 +1597,7 @@
     name: "エフェドラ"
     comment: "阿片窟からきました"
     order: 20008
-    tags:
+    tag_ids:
       - marchen
 
 -   _id: t06
@@ -1605,7 +1605,7 @@
     name: "サミュエル"
     comment: "トランスフォーマー"
     order: 30006
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t07
@@ -1613,7 +1613,7 @@
     name: "アカリ"
     comment: "時をかける少女"
     order: 30019
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t08
@@ -1621,7 +1621,7 @@
     name: "ミルフィ"
     comment: "海賊戦隊ゴーカイジャー"
     order: 30020
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t09
@@ -1629,7 +1629,7 @@
     name: "ゴロウ"
     comment: "時をかける少女"
     order: 30009
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t10
@@ -1637,7 +1637,7 @@
     name: "トレイル"
     comment: "ゼルダの伝説 ムジュラの仮面"
     order: 30010
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t11
@@ -1645,7 +1645,7 @@
     name: "マドカ"
     comment: "宇宙戦艦ヤマモト・ヨーコ"
     order: 30019
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t12
@@ -1653,7 +1653,7 @@
     name: "フランク"
     comment: "オーロラの彼方へ"
     order: 30012
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t13
@@ -1661,7 +1661,7 @@
     name: "ジャニス"
     comment: "フラッシュフォワード"
     order: 30013
-    tags:
+    tag_ids:
       - travel
 
 #########################
@@ -1671,7 +1671,7 @@
     name: "シメオン"
     face_id: c105
     order: 82
-    tags:
+    tag_ids:
       - giji
       - apartment
       - ecclesia
@@ -1681,7 +1681,7 @@
     name: "ヒュー"
     face_id: c104
     order: 89
-    tags:
+    tag_ids:
       - giji
       - medical
       - young
@@ -1690,7 +1690,7 @@
     face_id: c106
     name: "ワンダ"
     order: 90
-    tags:
+    tag_ids:
       - giji
       - river
       - guild
@@ -1700,7 +1700,7 @@
     name: "ブローリン"
     comment: "年末カウントダウン♪"
     order: 91
-    tags:
+    tag_ids:
       - giji
       - farm
       - young
@@ -1710,7 +1710,7 @@
     name: "ラディスラヴァ"
     comment: "年末カウントダウン♪"
     order: 185
-    tags:
+    tag_ids:
       - giji
       - apartment
       - young
@@ -1719,7 +1719,7 @@
     face_id: c102
     name: "ウォーレン"
     order: 155
-    tags:
+    tag_ids:
       - giji
 #      - elegant
       - market
@@ -1729,7 +1729,7 @@
     name: "イヴォン"
     comment: "年末カウントダウン♪"
     order: 205
-    tags:
+    tag_ids:
       - giji
       - elegant
       - middle
@@ -1739,7 +1739,7 @@
     name: "ナンシー"
     face_id: c103
     order: 234
-    tags:
+    tag_ids:
       - giji
       - apartment
       - young
@@ -1752,7 +1752,7 @@
     name: "クシャミ"
     comment: "吾輩は猫である。"
     order: 30014
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t15
@@ -1760,7 +1760,7 @@
     name: "ガーディ"
     comment: "ベイカー街少年探偵団"
     order: 30015
-    tags:
+    tag_ids:
       - travel
 
 
@@ -1772,7 +1772,7 @@
     name: "ティソ"
     comment:
     order: 80020
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: g07
@@ -1780,7 +1780,7 @@
     name: "ジリヤ"
     comment: "ロシア女性名"
     order: 10008
-    tags:
+    tag_ids:
       - asia
 
 -   _id: t16
@@ -1788,7 +1788,7 @@
     name: "アラン"
     comment: "映画監督たちの共用偽名"
     order: 30016
-    tags:
+    tag_ids:
       - travel
 
 
@@ -1800,7 +1800,7 @@
     name: "直円"
     comment: "和算復活月間"
     order: 90048
-    tags:
+    tag_ids:
       - shoji
 
 -   _id: w49
@@ -1808,7 +1808,7 @@
     name: "錠"
     comment: "ポルトガル人にジオゴっているんだぜ。へー。かっこいー。"
     order: 90049
-    tags:
+    tag_ids:
       - shoji
 
 -   _id: w50
@@ -1816,7 +1816,7 @@
     name: "丁助"
     comment: "負けるたびに追い博打"
     order: 90050
-    tags:
+    tag_ids:
       - shoji
 
 
@@ -1828,7 +1828,7 @@
     name: "ススム"
     comment: "おもいっきり探偵団 覇悪怒組"
     order: 30018
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t18
@@ -1836,7 +1836,7 @@
     name: "マユミ"
     comment: "まんがはじめて物語（二代目）"
     order: 30018
-    tags:
+    tag_ids:
       - travel
 
 
@@ -1848,7 +1848,7 @@
     name: "リー"
     comment: ''
     order: 92
-    tags:
+    tag_ids:
       - giji
       - immoral
       - apartment
@@ -1859,7 +1859,7 @@
     name: "ハルカ"
     comment: "はるかリフレイン"
     order: 30017
-    tags:
+    tag_ids:
       - travel
 
 
@@ -1871,7 +1871,7 @@
     name: "鬼丞"
     comment: "リニューアル記念！"
     order: 90051
-    tags:
+    tag_ids:
       - shoji
 
 -   _id: w52
@@ -1879,7 +1879,7 @@
     name: "櫻子"
     comment: "リニューアル記念！"
     order: 90052
-    tags:
+    tag_ids:
       - shoji
 
 -   _id: c111
@@ -1887,7 +1887,7 @@
     name: "スージー"
     comment: "リニューアル記念！ 弟がいるという噂が…"
     order: 160
-    tags:
+    tag_ids:
       - giji
       - apartment
       - elegant
@@ -1899,7 +1899,7 @@
     name: "ジェレミー"
     comment: "リニューアル記念！"
     order: 228
-    tags:
+    tag_ids:
       - giji
       - apartment
       - immoral
@@ -1914,7 +1914,7 @@
     name: "ニコラス"
     comment: "！？"
     order: 128
-    tags:
+    tag_ids:
       - giji
       - elegant
       - young
@@ -1924,7 +1924,7 @@
     name: "アーサー"
     comment: "円卓の騎士"
     order: 70018
-    tags:
+    tag_ids:
       - myth
 
 -   _id: t20
@@ -1932,7 +1932,7 @@
     name: "エリ"
     comment: "英国情報局秘密組織チェラブ (CHERUB)"
     order: 30022
-    tags:
+    tag_ids:
       - travel
 
 #########################
@@ -1943,7 +1943,7 @@
     name: "イワン"
     comment: "Иван-дурак"
     order: 10009
-    tags:
+    tag_ids:
       - asia
 
 -   _id: c114
@@ -1951,7 +1951,7 @@
     name: "モンド"
     comment: "８８件のご応募、ありがとう。そして、ありがとう。"
     order: 131
-    tags:
+    tag_ids:
       - giji
       - government
       - immoral
@@ -1965,7 +1965,7 @@
     name: "ミーム"
     comment: "インターネット・ミームから。 えんいー"
     order: 70020
-    tags:
+    tag_ids:
       - myth
 
 -   _id: m19
@@ -1973,7 +1973,7 @@
     name: "タルト"
     comment: "https://twitter.com/7korobi/status/510069062974447617"
     order: 70021
-    tags:
+    tag_ids:
       - myth
 
 -   _id: m20
@@ -1981,7 +1981,7 @@
     name: "ショコラ"
     comment: "https://twitter.com/noa_marimo/status/510100541536358400"
     order: 70022
-    tags:
+    tag_ids:
       - myth
 
 #########################
@@ -1992,7 +1992,7 @@
     name: "マリオ"
     comment: "じつは、牧場育ちらしいよ。"
     order: 132
-    tags:
+    tag_ids:
       - giji
       - guild
       - road
@@ -2003,7 +2003,7 @@
     name: "トシミ"
     comment: "代紋TAKE2"
     order: 30019
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t22
@@ -2011,7 +2011,7 @@
     name: "ケイイチ"
     comment: "ひぐらしのなく頃に"
     order: 30021
-    tags:
+    tag_ids:
       - travel
 
 -   _id: w53
@@ -2019,7 +2019,7 @@
     name: "おもん"
     comment: "三拾糎程の「もふもふねこひよこ」　せんいち"
     order: 90053
-    tags:
+    tag_ids:
       - shoji
 
 #########################
@@ -2030,7 +2030,7 @@
     name: "アンタレス"
     comment: ""
     order: 80022
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf023
@@ -2038,7 +2038,7 @@
     name: "エフ"
     comment: ""
     order: 80023
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf024
@@ -2046,7 +2046,7 @@
     name: "アイライト"
     comment: ""
     order: 80024
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf025
@@ -2054,7 +2054,7 @@
     name: "アマルテア"
     comment: ""
     order: 80006
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf026
@@ -2062,7 +2062,7 @@
     name: "ポーラ"
     comment: ""
     order: 80026
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf022
@@ -2070,7 +2070,7 @@
     name: "チェビイ"
     comment: ""
     order: 80027
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf027
@@ -2078,7 +2078,7 @@
     name: "モスキート"
     comment: ""
     order: 80028
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf032
@@ -2086,7 +2086,7 @@
     name: "ワクラバ"
     comment: ""
     order: 80029
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf028
@@ -2094,7 +2094,7 @@
     name: "コータ"
     comment: ""
     order: 80030
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf029
@@ -2102,7 +2102,7 @@
     name: "ミツボシ"
     comment: ""
     order: 80031
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf030
@@ -2110,7 +2110,7 @@
     name: "クレパスキュール"
     comment: ""
     order: 80032
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf031
@@ -2118,7 +2118,7 @@
     name: "シルク"
     comment: ""
     order: 80033
-    tags:
+    tag_ids:
       - stratos
 
 #########################
@@ -2129,7 +2129,7 @@
     name: "ナナオ"
     comment: ""
     order: 30023
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t24
@@ -2137,7 +2137,7 @@
     name: "キルロイ"
     comment: "「キルロイここに現る」"
     order: 30024
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t25
@@ -2145,7 +2145,7 @@
     name: "ミサキ"
     comment: ""
     order: 30025
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t26
@@ -2153,7 +2153,7 @@
     name: "アツタネ"
     comment: "平田篤胤"
     order: 30026
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t27
@@ -2161,7 +2161,7 @@
     name: "みょんこ"
     comment: ""
     order: 30027
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t28
@@ -2169,7 +2169,7 @@
     name: "リツ"
     comment: ""
     order: 30028
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t29
@@ -2177,7 +2177,7 @@
     name: "ヒナコ"
     comment: ""
     order: 30020
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t30
@@ -2185,7 +2185,7 @@
     name: "ワタヌキ"
     comment: "四月朔日"
     order: 30030
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t31
@@ -2193,7 +2193,7 @@
     name: "ホウイチ"
     comment: ""
     order: 158
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t32
@@ -2201,7 +2201,7 @@
     name: "トヨタ"
     comment: "洋画の日本人名"
     order: 30032
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t33
@@ -2209,7 +2209,7 @@
     name: "エツコ"
     comment: ""
     order: 30033
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t34
@@ -2217,7 +2217,7 @@
     name: "ドン"
     comment: ""
     order: 17
-    tags:
+    tag_ids:
       - travel
 
 #########################
@@ -2228,7 +2228,7 @@
     name: "メルヤ"
     comment: ""
     order: 116
-    tags:
+    tag_ids:
       - giji
       - medical
       - immoral
@@ -2239,7 +2239,7 @@
     name: "ルパート"
     comment: ""
     order: 135
-    tags:
+    tag_ids:
       - giji
       - road
       - guild
@@ -2250,7 +2250,7 @@
     name: "ユージン"
     comment: ""
     order: 118
-    tags:
+    tag_ids:
       - giji
       - river
       - young
@@ -2261,7 +2261,7 @@
     name: "オーレリア"
     comment: ""
     order: 119
-    tags:
+    tag_ids:
       - giji
       - ecclesia
       - young
@@ -2271,7 +2271,7 @@
     name: "ノア"
     comment: ""
     order: 120
-    tags:
+    tag_ids:
       - giji
       - servant
       - young
@@ -2285,7 +2285,7 @@
     name: "イスルギ"
     comment: ""
     order: 30020
-    tags:
+    tag_ids:
       - travel
 
 -   _id: c121
@@ -2293,7 +2293,7 @@
     name: ブッカ
     comment: "ブッカ・ホワイト氏から。"
     order: 121
-    tags:
+    tag_ids:
       - giji
       - farm
 
@@ -2305,7 +2305,7 @@
     name: カナビス
     comment: "ウパニシャッドの精神で"
     order: 20009
-    tags:
+    tag_ids:
       - marchen
 
 -   _id: mad10
@@ -2313,7 +2313,7 @@
     name: ルグレ
     comment: "後悔あとをたたず"
     order: 20010
-    tags:
+    tag_ids:
       - marchen
 
 -   _id: mad11
@@ -2321,7 +2321,7 @@
     name: オルギア
     comment: "ええじゃないかええじゃないかー！"
     order: 20011
-    tags:
+    tag_ids:
       - marchen
 
 #########################
@@ -2332,14 +2332,14 @@
     name: イースター
     comment:
     order: 80033
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf034
     face_id: sf034
     name: アニュ
     order: 80034
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf035
@@ -2347,28 +2347,28 @@
     name: キャンディ
     comment:
     order: 80035
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf036
     face_id: sf036
     name: キカ
     order: 80036
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf037
     face_id: sf037
     name: バンアレン
     order: 80037
-    tags:
+    tag_ids:
       - stratos
 
 -   _id: sf038
     face_id: sf038
     name: パラチーノ
     order: 80038
-    tags:
+    tag_ids:
       - stratos
 
 #########################
@@ -2379,7 +2379,7 @@
     name: "イルマ"
     comment: "KKKてきな何か。"
     order: 30036
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t37
@@ -2387,7 +2387,7 @@
     name: "シュンタロ"
     comment: "国語の教科書から。"
     order: 30009  # 素顔的なこだわり
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t38
@@ -2395,7 +2395,7 @@
     name: "スズキ"
     comment: "人の死なない推理小説『黒後家蜘蛛の会』のそばに"
     order: 30038
-    tags:
+    tag_ids:
       - travel
 
 -   _id: t39
@@ -2403,7 +2403,7 @@
     name: "ガモウ"
     comment: "そろそろ聖戦士が欲しかった！"
     order: 30018.1  # 聖戦士はみんなここ
-    tags:
+    tag_ids:
       - travel
 
 #########################
@@ -2458,4 +2458,4 @@
 #########################
 # xxxx-xx-xx update
 # 名前案
-#   see giji-nuxt yaml/chr_face.yml
+#   see giji-nuxt yaml\
