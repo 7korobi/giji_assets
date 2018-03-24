@@ -461,3 +461,15 @@ chr_job:
 
   - face_id: c121
     job: "農薬売"
+
+  - face_id: c122
+    job: ビール配り
+
+  - face_id: c123
+    job: 蝋燭職人
+
+  - face_id: c124
+    job: 公証人
+
+  - face_id: c125
+    job: 下働き

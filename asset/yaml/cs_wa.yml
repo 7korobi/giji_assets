@@ -176,3 +176,5 @@ chr_job:
   - face_id: w53
     job: "旅籠"
 
+  - face_id: w54
+    job: 大旦那
