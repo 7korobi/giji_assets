@@ -33,7 +33,7 @@ class Crs < Thor
     CS_ALL.chr_job = (chr_jobs_hash.values.flatten).uniq {|o| o.face_id }.reject {|o| rejects.member? o.face_id }
 
     ([CS_ALL] + chr_sets).map do |cs|
-      faces = cs.chr_job.map {|job| FACE.find {|f| f.face_id == job.face_id } }.compact
+      faces = cs.chr_job.map {|job| FACE.find {|f| f._id == job.face_id } }.compact
       cs.chr_npc.map do |npc|
         {csid: npc.csid, set: cs.chr_set, chr_jobs: cs.chr_job, npc: npc, faces: faces }
       end
@@ -124,7 +124,7 @@ class Crs < Thor
       faces = params.faces
       faces.each do |face|
         face.name = face.name
-        job = job_groups[face.face_id].first
+        job = job_groups[face._id].first
 
         [:job].each do |col|
           face[col] = job[col]
@@ -132,7 +132,7 @@ class Crs < Thor
       end
 
       @orders = faces.sort_by(&:order)
-      @lists  = faces.sort_by(&:face_id)
+      @lists  = faces.sort_by(&:_id)
       @tag_names = {
         "all" => CONF_TAG.all.name
       }
@@ -143,7 +143,7 @@ class Crs < Thor
         face.tags.each do |tag|
           next unless CONF_TAG[tag].chr_set_ids.any? {|csid| @csid[csid] }
           @tag_names[tag] = CONF_TAG[tag].name
-          @chr_orders[tag] = (@chr_orders[tag] || []) + [face.face_id]
+          @chr_orders[tag] = (@chr_orders[tag] || []) + [face._id]
         end
       end
       @tag_order = CONF_TAG.keys.select {|tag| @chr_orders[tag] }
