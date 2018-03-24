@@ -689,7 +689,7 @@
     face_id: c90
     name: "ケヴィン"
     comment: 2011/12/06
-    order: 125
+    order: 125.2
     tag_ids:
       - giji
       - government
@@ -699,7 +699,7 @@
 -   _id: c88
     face_id: c88
     name: "ピエール"
-    order: 126
+    order: 125.8
     comment: 2011/12/05
     tag_ids:
       - giji
