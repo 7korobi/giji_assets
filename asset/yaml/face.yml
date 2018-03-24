@@ -2415,6 +2415,7 @@
     order: 122
     tag_ids:
       - giji
+      - young
       - market
 
 -   _id: c123
@@ -2423,6 +2424,7 @@
     order: 123
     tag_ids:
       - giji
+      - young
       - guild
 
 -   _id: c124
@@ -2431,6 +2433,7 @@
     order: 124
     tag_ids:
       - giji
+      - middle
       - government
 
 -   _id: c125
@@ -2439,6 +2442,7 @@
     order: 125
     tag_ids:
       - giji
+      - young
       - servant
 
 -   _id: t40
