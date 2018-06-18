@@ -16,6 +16,9 @@ PERL_DEFAULT:
       - mad
       - mad_mad05
       - time
+      - time_t44
+      - time_t48
+      - time_t49
       - ger
       - animal
       - school
@@ -23,6 +26,7 @@ PERL_DEFAULT:
       - changed_m05
       - SF
       - SF_sf10
+      - SF_sf032
       - wa
       - wa_w23
 

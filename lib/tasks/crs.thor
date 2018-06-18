@@ -23,6 +23,10 @@ class Crs < Thor
       CS_ALL,
     ]
 
+    FACE.each do |face|
+      face.face_id = face._id
+    end
+
     chr_jobs_hash = chr_sets.each_with_object({}) do |cs,o|
       o[cs.chr_set._id] = cs.chr_job
       cs.chr_job.each {|o| o.delete("_id") }
@@ -124,7 +128,7 @@ class Crs < Thor
       faces = params.faces
       faces.each do |face|
         face.name = face.name
-        job = job_groups[face._id].first
+        job = job_groups[face.face_id].first
 
         [:job].each do |col|
           face[col] = job[col]
@@ -143,7 +147,7 @@ class Crs < Thor
         face.tag_ids.each do |tag|
           next unless CONF_TAG[tag].chr_set_ids.any? {|csid| @csid[csid] }
           @tag_names[tag] = CONF_TAG[tag].name
-          @chr_orders[tag] = (@chr_orders[tag] || []) + [face._id]
+          @chr_orders[tag] = (@chr_orders[tag] || []) + [face.face_id]
         end
       end
       @tag_order = CONF_TAG.keys.select {|tag| @chr_orders[tag] }
