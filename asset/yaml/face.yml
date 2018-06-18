@@ -389,7 +389,7 @@
       - apartment
       - young
 -   _id: c68
-    order: 48
+    order: 41
     face_id: c68
     name: "ヨアヒム"
     tag_ids:
@@ -774,7 +774,7 @@
       - market
       - middle
 -   _id: c82
-    order: 148
+    order: 141
     face_id: c82
     name: "ロビン"
     tag_ids:
@@ -853,9 +853,9 @@
       - giji
       - immoral
       - young
--   _id: c48
+-   _id: c41
     order: 225
-    face_id: c48
+    face_id: c41
     name: "ビアンカ"
     tag_ids:
       - giji
@@ -1795,11 +1795,11 @@
 #########################
 # 2013-06-20 update
 
--   _id: w48
-    face_id: w48
+-   _id: w41
+    face_id: w41
     name: "直円"
     comment: "和算復活月間"
-    order: 90048
+    order: 90041
     tag_ids:
       - shoji
 
@@ -2460,6 +2460,135 @@
       - shoji
 
 #########################
+# 2018-06-15 学園もの！
+
+-   _id: t41
+    name: アオ
+    comment: ""
+    order: 30041
+    tag_ids:
+      - travel
+
+-   _id: t42
+    name: レン
+    comment: ""
+    order: 30042
+    tag_ids:
+      - travel
+
+-   _id: t43
+    name: こころ
+    comment: ""
+    order: 30043
+    tag_ids:
+      - travel
+
+-   _id: t44
+    name: ナツミ
+    comment: ""
+    order: 30044
+    tag_ids:
+      - travel
+
+-   _id: t45
+    name: クロエ
+    comment: ""
+    order: 30018.1  # 聖戦士はみんなここ
+    tag_ids:
+      - travel
+
+-   _id: t46
+    name: サダミツ
+    comment: ""
+    order: 30046
+    tag_ids:
+      - travel
+
+-   _id: t47
+    name: ノッカ
+    comment: ""
+    order: 30047
+    tag_ids:
+      - travel
+
+-   _id: t48
+    name: Ａ
+    comment: ""
+    order: 30048
+    tag_ids:
+      - travel
+
+-   _id: t49
+    name: Ａ
+    comment: ""
+    order: 30049
+    tag_ids:
+      - travel
+
+-   _id: t50
+    name: ヨスガ
+    comment: ""
+    order: 30050
+    tag_ids:
+      - travel
+
+-   _id: t51
+    name: エニシ
+    comment: ""
+    order: 30051
+    tag_ids:
+      - travel
+
+-   _id: t52
+    name: ニトカ
+    comment: ""
+    order: 30052
+    tag_ids:
+      - travel
+
+-   _id: t53
+    name: ツヅラ
+    comment: ""
+    order: 30053
+    tag_ids:
+      - travel
+
+-   _id: t54
+    name: ウツギ
+    comment: ""
+    order: 30054
+    tag_ids:
+      - travel
+
+-   _id: t55
+    name: セイカ
+    comment: ""
+    order: 30055
+    tag_ids:
+      - travel
+
+-   _id: t56
+    name: ヤスリ
+    comment: ""
+    order: 30056
+    tag_ids:
+      - travel
+
+-   _id: t57
+    name: はのん
+    comment: ""
+    order: 30057
+    tag_ids:
+      - travel
+
+-   _id: t58
+    name: シンイチ
+    comment: ""
+    order: 30058
+    tag_ids:
+      - travel
+
+#########################
 # xxxx-xx-xx update
 # 名前案
-#   see giji-nuxt yaml\
+#   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2525
