@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.5.0"
+ruby "2.5.1"
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 gem "nokogiri", ">= 1.8.1"
@@ -8,7 +8,7 @@ gem "nokogiri", ">= 1.8.1"
 gem 'rails', '5.1.4'
 gem 'erubis'
 
-gem 'sqlite3', :group => [:development, :test]
+# gem 'sqlite3', :group => [:development, :test]
 group :production do
   gem 'rails_12factor'
 end
