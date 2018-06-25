@@ -82,3 +82,6 @@ chr_job:
 
   - face_id: mad11
     job: 乱痴気
+
+  - face_id: mad12
+    job: 自由滑落

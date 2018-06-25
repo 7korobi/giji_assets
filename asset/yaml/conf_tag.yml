@@ -91,6 +91,11 @@ elder:
     - school
     - ririnra
 
+pair:
+  name: =おそろ=
+  long: お揃いのキャラクター
+  chr_set_ids:
+    - all
 
 river:
   name: -運河-

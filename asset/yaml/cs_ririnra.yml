@@ -473,3 +473,6 @@ chr_job:
 
   - face_id: c125
     job: 下働き
+
+  - face_id: c126
+    job: 姉妹
