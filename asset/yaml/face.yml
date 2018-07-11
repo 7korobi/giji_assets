@@ -2358,6 +2358,79 @@
       - travel
 
 #########################
+# 2018-07-11
+
+-   _id: f000
+    name: ロゴス
+    comment: ""
+    order: 60000
+    tag_ids:
+      - fable
+
+-   _id: f1
+    name: ヨグラージ
+    comment: "凡ての哺乳類からの敬意をこめて。"
+    order: 60001
+    tag_ids:
+      - fable
+
+-   _id: f2
+    name: アーサー
+    comment: "シリアスなりゅうきへい。コーラに乗るといい。"
+    order: 60002
+    tag_ids:
+      - fable
+
+-   _id: f3
+    name: ロバート
+    comment: "使役されたりする、楽園ではない感を出したいな。という肩書。"
+    order: 60003
+    tag_ids:
+      - fable
+
+-   _id: f4
+    name: ハラフ
+    comment: "エジプト人名 犬なので、不動産業をやらせたかった。"
+    order: 60004
+    tag_ids:
+      - fable
+
+-   _id: f5
+    name: コーラ
+    comment: "植物の実とそこから作る炭酸飲料 オークションにかけると高値が付きそうな命に見えるので。"
+    order: 60005
+    tag_ids:
+      - fable
+
+-   _id: f6
+    name: タイム
+    comment: "一応鸚鵡の産地パプワニューギニア人名 伝令的なところを考えていて、こやつは文字通りの飛ぶ脚なのでは、と。タイムリミット指定をする（速達）と高い運び賃がとれる職業なので。"
+    order: 60006
+    tag_ids:
+      - fable
+
+-   _id: f7
+    name: タプル
+    comment: "幾何学、音楽用語でまとめたかった。 こいつには、？？？なんだこれ？？？と思ってほしい。"
+    order: 60007
+    tag_ids:
+      - fable
+
+-   _id: f8
+    name: ソランジュ
+    comment: "（肩書）思春期の少女の身振り、態度又はユーモア"
+    order: 60008
+    tag_ids:
+      - fable
+
+-   _id: f9
+    name: ヘリンヘイモ
+    comment: フィンランド人名　品物を経る魔法、というのをやらせたかった。
+    order: 60009
+    tag_ids:
+      - fable
+
+#########################
 # xxxx-xx-xx update
 # 名前案
 #   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2591

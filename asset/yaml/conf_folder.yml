@@ -20,6 +20,7 @@ PERL_DEFAULT:
       - time_t48
       - time_t49
       - ger
+      - fable
       - animal
       - school
       - changed

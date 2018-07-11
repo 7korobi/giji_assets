@@ -48,6 +48,14 @@ asia:
     - all
     - ger
 
+fable:
+  name: 幻日世界
+  long: 「幻日世界」のキャラクター
+  tag_id: all
+  chr_set_ids:
+    - all
+    - fable
+
 marchen:
   name: 狂騒議事
   long: 「狂騒議事」のキャラクター

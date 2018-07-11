@@ -1,0 +1,56 @@
+chr_set:
+  _id: fable
+  admin: 混沌の海の寝返り
+  maker: 日輪の煌めき
+  caption: エクスパンション・セット「幻日世界」
+
+chr_npc:
+  - caption: エクスパンション・セット「幻日世界」
+    csid: fable
+    face_id: f000
+    say_0: |-
+      おはよう。熾火の子供達。
+      希望の朝はまだだけれど、マナとなり、パンとなる日輪の朝がきたよ。
+      さあ、戦をよそう。
+      吾と汝とわかちあい、育み、創り、愛して生きよう。
+
+    say_1: |-
+      汝は大嵐を起こそうとしている。
+      希望はその箱にはもうないのだ。
+
+      よしなさい。黄昏よりも昏き者よ。
+
+      だが、それでも。
+      信じて待てば、かならず――
+
+chr_job:
+  - face_id: f000
+    job: 日輪代理
+
+  - face_id: f1
+    job: 酪農家
+
+  - face_id: f2
+    job: 竜騎兵
+
+  - face_id: f3
+    job: 三等兵
+
+  - face_id: f4
+    job: 測量座
+
+  - face_id: f5
+    job: 宝珠
+
+  - face_id: f6
+    job: 飛脚座
+
+  - face_id: f7
+    job: 八元ʃ∫干渉
+
+  - face_id: f8
+    job: キンジン
+
+  - face_id: f9
+    job: 類感呪術師
+
