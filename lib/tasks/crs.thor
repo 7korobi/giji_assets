@@ -68,7 +68,7 @@ class Crs < Thor
       result = result.gsub(/[✡ʃ]/) do |chr|
         "&#x#{chr.ord.to_s(16)};"
       end
-      result = result.gsub(/[—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/) do |chr|
+      result = result.gsub(/[―—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/) do |chr|
         chr + '\\'
       end
       return result
