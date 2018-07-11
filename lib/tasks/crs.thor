@@ -12,6 +12,7 @@ class Crs < Thor
       CS_RIRINRA,
       CS_WA,
       CS_SF,
+      CS_FABLE,
       CS_GER,
       CS_MAD,
       CS_TIME,
