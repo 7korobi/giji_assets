@@ -55,3 +55,21 @@ chr_job:
   - face_id: f9
     job: 類感呪術師
 
+  - face_id: f10
+    job: 食通虹蛇
+
+  - face_id: f11
+    job: アララー伯
+
+  - face_id: f12
+    job: 鉄騎兵
+
+  - face_id: fw01
+    job: 尸解仙道
+
+  - face_id: fw02
+    job: 奏楽神
+
+  - face_id: fw03
+    job: 護法善隊
+

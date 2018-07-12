@@ -2431,6 +2431,51 @@
       - fable
 
 #########################
+# 2018-07-12
+
+-   _id: f10
+    name: ンゴティエク
+    comment: アフリカ人名  虹を肩書にいれたかったところと神話の虹蛇から。
+    order: 60010
+    tag_ids:
+      - fable
+
+-   _id: f11
+    name: D.バルベルデ
+    comment: スペイン人名  領地をもった貴族であってほしいので、龍伝承のある土地に封じた。
+    order: 60011
+    tag_ids:
+      - fable
+
+-   _id: f12
+    name: ソルフリッツィ
+    comment: イタリア人名
+    order: 60013
+    tag_ids:
+      - fable
+
+-   _id: fw01
+    name: ツェン
+    comment: 中国人名から。
+    order: 61001
+    tag_ids:
+      - fable
+
+-   _id: fw02
+    name: ディ♪ジアン
+    comment: 帝江（ていこう di4jiang1 ディジアン）から。
+    order: 61002
+    tag_ids:
+      - fable
+
+-   _id: fw03
+    name: ヤツデ
+    comment: 
+    order: 61003
+    tag_ids:
+      - fable
+
+#########################
 # xxxx-xx-xx update
 # 名前案
 #   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2591
