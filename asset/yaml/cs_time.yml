@@ -278,3 +278,6 @@ chr_job:
 
   - face_id: t63
     job: 朝茶会
+
+  - face_id: t64
+    job: 食養会
