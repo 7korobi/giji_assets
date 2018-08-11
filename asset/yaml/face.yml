@@ -1693,7 +1693,7 @@
 -   _id: c112
     name: "ニコラス"
     comment: "！？"
-    order: 128
+    order: 112
     tag_ids:
       - giji
       - elegant
@@ -1726,7 +1726,7 @@
 -   _id: c114
     name: "モンド"
     comment: "８８件のご応募、ありがとう。そして、ありがとう。"
-    order: 131
+    order: 114
     tag_ids:
       - giji
       - government
@@ -1765,7 +1765,7 @@
 -   _id: c115
     name: "マリオ"
     comment: "じつは、牧場育ちらしいよ。"
-    order: 132
+    order: 115
     tag_ids:
       - giji
       - guild
@@ -2519,4 +2519,4 @@
 #########################
 # xxxx-xx-xx update
 # 名前案
-#   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2591
+#   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2742
