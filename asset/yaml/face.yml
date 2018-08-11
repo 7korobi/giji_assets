@@ -2476,6 +2476,39 @@
       - fable
 
 #########################
+# 2018-08-11
+
+-   _id: c127
+    name: ザーゴ
+    comment: 
+    order: 127
+    tag_ids:
+      - giji
+      - young
+      - guild
+
+-   _id: t61
+    name: ムギタ
+    comment: 
+    order: 30061
+    tag_ids:
+      - travel
+
+-   _id: t62
+    name: ヘイタロウ
+    comment: 
+    order: 30062
+    tag_ids:
+      - travel
+
+-   _id: t63
+    name: ソウスケ
+    comment: 
+    order: 30063
+    tag_ids:
+      - travel
+
+#########################
 # xxxx-xx-xx update
 # 名前案
 #   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2591

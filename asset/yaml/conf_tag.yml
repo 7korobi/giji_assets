@@ -100,7 +100,7 @@ elder:
     - ririnra
 
 pair:
-  name: =おそろ=
+  name: =双対=
   long: お揃いのキャラクター
   chr_set_ids:
     - all
