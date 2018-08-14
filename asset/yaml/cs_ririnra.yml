@@ -479,3 +479,9 @@ chr_job:
 
   - face_id: c127
     job: 銀行屋
+
+  - face_id: c128
+    job: 一日乞食
+
+  - face_id: c129
+    job: 奴隷運び

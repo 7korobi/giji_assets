@@ -2515,8 +2515,63 @@
     tag_ids:
       - travel
 
+#########################
+# 2018-08-15
+
+-   _id: t65
+    name: カコ
+    comment: 
+    order: 30065
+    tag_ids:
+      - travel
+
+-   _id: t66
+    name: ココア
+    comment: 
+    order: 30066
+    tag_ids:
+      - travel
+
+-   _id: t67
+    name: マコト
+    comment: 
+    order: 30067
+    tag_ids:
+      - travel
+
+-   _id: t68
+    name: ワカナ
+    comment: 
+    order: 30068
+    tag_ids:
+      - travel
+
+-   _id: t69
+    name: ヤマト
+    comment: 
+    order: 30069
+    tag_ids:
+      - travel
+
+-   _id: c128
+    name: ペトラ
+    comment: 
+    order: 128
+    tag_ids:
+      - giji
+      - young
+      - ecclesia
+
+-   _id: c129
+    name: ヌヴィル
+    comment: 
+    order: 129
+    tag_ids:
+      - giji
+      - middle
+      - immoral
 
 #########################
 # xxxx-xx-xx update
 # 名前案
-#   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2742
+#   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2799

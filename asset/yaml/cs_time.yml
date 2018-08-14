@@ -281,3 +281,19 @@ chr_job:
 
   - face_id: t64
     job: 食養会
+
+  - face_id: t65
+    job: 啓明結社
+
+  - face_id: t66
+    job: 更なる前進
+
+  - face_id: t67
+    job: 領事裁判所
+
+  - face_id: t68
+    job: 天文学会
+
+  - face_id: t69
+    job: 校庭番長
+
