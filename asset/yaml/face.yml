@@ -2572,6 +2572,51 @@
       - immoral
 
 #########################
+# 2018-09-04
+
+-   _id: t70
+    name: ニジノ
+    comment:
+    order: 30070
+    tag_ids:
+      - travel
+
+-   _id: t71
+    name: ワカバヤシ
+    comment: ズッコケ時間旅行記から。
+    order: 30071
+    tag_ids:
+      - travel
+
+-   _id: t72
+    name: カガ
+    comment: 推理小説の主人公から
+    order: 30072
+    tag_ids:
+      - travel
+
+-   _id: t73
+    name: ワタル
+    comment: 
+    order: 30073
+    tag_ids:
+      - travel
+
+-   _id: t74
+    name: フウタ
+    comment: カミナリに対して風っぽく
+    order: 30074
+    tag_ids:
+      - travel
+
+-   _id: t75
+    name: ルリ
+    comment: 日本酒「瑠璃色の海」
+    order: 30069
+    tag_ids:
+      - travel
+
+#########################
 # xxxx-xx-xx update
 # 名前案
-#   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2799
+#   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2845

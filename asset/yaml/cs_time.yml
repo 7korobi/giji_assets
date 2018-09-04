@@ -297,3 +297,20 @@ chr_job:
   - face_id: t69
     job: 校庭番長
 
+  - face_id: t70
+    job: ラプター
+
+  - face_id: t71
+    job: 月光学会
+
+  - face_id: t72
+    job: 公安部
+
+  - face_id: t73
+    job: 会堂長老会
+
+  - face_id: t74
+    job: カミナリ族
+
+  - face_id: t75
+    job: 珊瑚宮連邦
