@@ -2612,7 +2612,7 @@
 -   _id: t75
     name: ルリ
     comment: 日本酒「瑠璃色の海」
-    order: 30069
+    order: 30075
     tag_ids:
       - travel
 
