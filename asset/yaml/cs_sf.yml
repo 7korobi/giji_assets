@@ -155,4 +155,6 @@ chr_job:
     job: "執行隊"
   - face_id: sf038
     job: "複眼レフ"
+  - face_id: sf039
+    job: "秘術販売"
 

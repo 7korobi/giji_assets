@@ -161,9 +161,9 @@ chr_job:
   - face_id: w48
     job: "和算家"
 
-  - _id: w49
-    face_id: w49
+  - face_id: w49
     job: "抜荷"
+
   - face_id: w50
     job: "半の目"
 
@@ -181,3 +181,10 @@ chr_job:
 
   - face_id: w55
     job: 丑の刻参り
+
+  - face_id: w56
+    job: 御免株
+
+  - face_id: w57
+    job: 陰陽師
+
