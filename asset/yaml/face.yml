@@ -2669,6 +2669,29 @@
       - stratos
 
 #########################
+# 2019-01-15
+
+-   _id: c130
+    name: ジャーディン
+    comment: 
+    order: 130
+    tag_ids:
+      - giji
+      - young
+      - government
+      - elegant
+
+-   _id: c131
+    name: グスタフ
+    comment: 
+    order: 131
+    tag_ids:
+      - giji
+      - middle
+      - farm
+
+
+#########################
 # xxxx-xx-xx update
 # 名前案
 #   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2895

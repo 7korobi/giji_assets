@@ -485,3 +485,10 @@ chr_job:
 
   - face_id: c129
     job: 奴隷運び
+
+  - face_id: c130
+    job: 弁務官
+
+  - face_id: c131
+    job: 山師
+
