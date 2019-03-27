@@ -40,7 +40,7 @@ class Crs < Thor
     ([CS_ALL] + chr_sets).map do |cs|
       faces = cs.chr_job.map {|job| FACE.find {|f| f._id == job.face_id } }.compact
       cs.chr_npc.map do |npc|
-        {csid: npc.csid, set: cs.chr_set, chr_jobs: cs.chr_job, npc: npc, faces: faces }
+        { csid: npc.csid, set: cs.chr_set, chr_jobs: cs.chr_job, npc: npc, faces: faces }
       end
     end.flatten.each do | params |
       CrsCreate.new.activate(Hashie::Mash.new params)
