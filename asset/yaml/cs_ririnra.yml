@@ -492,3 +492,11 @@ chr_job:
   - face_id: c131
     job: 山師
 
+  - face_id: c132
+    job: 皮鞣工
+
+  - face_id: c133
+    job: 徴税団
+
+  - face_id: c134
+    job: 干拓民

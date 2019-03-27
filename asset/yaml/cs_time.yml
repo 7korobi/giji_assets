@@ -314,3 +314,30 @@ chr_job:
 
   - face_id: t75
     job: 珊瑚宮連邦
+
+  - face_id: t76
+    job: R団
+
+  - face_id: t77
+    job: 俺に気がある
+
+  - face_id: t78
+    job: 諸葛八卦村
+
+  - face_id: t79
+    job: 超心理学会
+
+  - face_id: t80
+    job: EO LLC
+
+  - face_id: t81
+    job: 太陽神殿
+
+  - face_id: t82
+    job: 子ども食堂
+
+  - face_id: t83
+    job: ニビル星
+
+  - face_id: t84
+    job: 黒い取引先

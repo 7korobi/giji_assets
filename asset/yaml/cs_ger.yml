@@ -49,3 +49,5 @@ chr_job:
   - face_id: g08
     job: "馬鹿"
 
+  - face_id: g09
+    job: 炉の番

@@ -70,6 +70,18 @@ chr_job:
   - face_id: f14
     job: 炎天の雷光
 
+  - face_id: f15
+    job: 憑依呪術師
+
+  - face_id: f16
+    job: 鉄騎従兵
+
+  - face_id: f17
+    job: 鳳凰の実
+
+  - face_id: f18
+    job: 精留醸造
+
   - face_id: fw01
     job: 尸解仙道
 
@@ -85,3 +97,5 @@ chr_job:
   - face_id: fw05
     job: 羽化昇天道
 
+  - face_id: fw06
+    job: 経凛々
