@@ -500,3 +500,9 @@ chr_job:
 
   - face_id: c134
     job: 干拓民
+
+  - face_id: c135
+    job: 迷い人
+
+  - face_id: c136
+    job: 剪毛工

@@ -2826,6 +2826,49 @@
       - travel
 
 #########################
+# 2019-04-04
+
+-   _id: c135
+    name: ヘザー
+    comment: 
+    order: 135
+    tag_ids:
+      - giji
+      - young
+      - river
+
+-   _id: c136
+    name: レナータ
+    comment: 
+    order: 136
+    tag_ids:
+      - giji
+      - young
+      - river
+
+-   _id: t85
+    name: レイ
+    comment: 由来：綾波レイ
+    order: 30085
+    tag_ids:
+      - travel
+
+-   _id: t86
+    name: Dr.コトリン
+    comment: 由来：プログラム言語 kotlin
+    order: 30086
+    tag_ids:
+      - travel
+
+
+-   _id: t87
+    name: ミサ
+    comment: 由来：弥 海砂
+    order: 30087
+    tag_ids:
+      - travel
+
+#########################
 # xxxx-xx-xx update
 # 名前案
-#   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L2895
+#   see https://github.com/7korobi/giji-fire/blob/master/yaml/chr_face.yml#L3095

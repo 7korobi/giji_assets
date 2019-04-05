@@ -341,3 +341,15 @@ chr_job:
 
   - face_id: t84
     job: 黒い取引先
+
+  - face_id: t85
+    job: CC
+    comment: 由来：2001/12/22 体細胞クローン猫誕生
+
+  - face_id: t86
+    job: 人工知能研
+    comment: 由来：人工知能研究所（MIT, つくば大学, ドワンゴなど）
+
+  - face_id: t87
+    job: 白菊会
+    comment: 由来：白菊遺族会。篤志献体組織の白菊会でもまあ。よし。
