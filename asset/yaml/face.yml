@@ -2847,8 +2847,8 @@
       - river
 
 -   _id: t85
-    name: レイ
-    comment: 由来：綾波レイ
+    name: ミサ
+    comment: 由来：弥 海砂
     order: 30085
     tag_ids:
       - travel
@@ -2860,10 +2860,9 @@
     tag_ids:
       - travel
 
-
 -   _id: t87
-    name: ミサ
-    comment: 由来：弥 海砂
+    name: レイ
+    comment: 由来：綾波レイ
     order: 30087
     tag_ids:
       - travel
