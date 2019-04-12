@@ -99,7 +99,6 @@
     order: 12
     name: "バーナバス"
     tag_ids:
-      - school
       - giji
       - servant
       - road
