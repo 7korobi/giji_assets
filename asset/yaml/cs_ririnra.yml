@@ -512,3 +512,6 @@ chr_job:
 
   - face_id: c138
     job: 代執筆
+
+  - face_id: c139
+    job: 優等生
