@@ -146,7 +146,13 @@ class Crs < Thor
       }
       @orders.each do |face|
         face.tag_ids.each do |tag|
-          next unless CONF_TAG[tag].chr_set_ids.any? {|csid| @csid[csid] }
+          unless CONF_TAG[tag]
+            p "#{tag} is not defined."
+            next
+          end
+          unless CONF_TAG[tag].chr_set_ids.any? {|csid| @csid[csid] }
+            next
+          end
           @tag_names[tag] = CONF_TAG[tag].name
           @chr_orders[tag] = (@chr_orders[tag] || []) + [face.face_id]
         end
