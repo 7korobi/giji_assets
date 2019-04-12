@@ -115,7 +115,6 @@
     order: 14
     name: "トニー"
     tag_ids:
-      - animal
       - giji
       - road
       - servant
@@ -124,7 +123,6 @@
     order: 15
     name: "ドナルド"
     tag_ids:
-      - animal
       - giji
       - immoral
       - young
@@ -132,7 +130,6 @@
     order: 16
     name: "カルヴィン"
     tag_ids:
-      - animal
       - giji
       - elegant
       - office
@@ -141,7 +138,6 @@
     order: 17
     name: "ゾーイ"
     tag_ids:
-      - animal
       - travel
       - giji
       - farm
@@ -237,7 +233,6 @@
     order: 29
     name: "ノーリーン"
     tag_ids:
-      - animal
       - giji
       - servant
       - middle
@@ -301,7 +296,6 @@
     order: 38
     name: "アルフレッド"
     tag_ids:
-      - animal
       - giji
       - government
       - middle
@@ -404,7 +398,6 @@
     name: "メアリー"
     order: 55
     tag_ids:
-      - animal
       - giji
       - market
       - road
@@ -428,7 +421,6 @@
     order: 59
     name: "キャサリン"
     tag_ids:
-      - animal
       - giji
       - medical
       - young
@@ -495,7 +487,6 @@
     order: 71
     name: "スティーブン"
     tag_ids:
-      - animal
       - giji
       - medical
       - middle
