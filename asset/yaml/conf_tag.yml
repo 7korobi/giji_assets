@@ -105,13 +105,19 @@ pair:
   chr_set_ids:
     - all
 
+
+student:
+  label: -学徒-
+  long: 学園で学ぶ人
+  chr_set_ids:
+    - time
+
+
 river:
   name: -運河-
   long: 往く人来る人休む人
   chr_set_ids:
     - all
-    - animal
-    - school
     - ririnra
 
 road:
@@ -119,8 +125,6 @@ road:
   long: 往く人来る人休む人
   chr_set_ids:
     - all
-    - animal
-    - school
     - ririnra
 
 immoral:
@@ -128,8 +132,6 @@ immoral:
   long: 街灯の裏の背徳達
   chr_set_ids:
     - all
-    - animal
-    - school
     - ririnra
 
 
@@ -138,8 +140,13 @@ guild:
   long: 商人と職人の集うギルド
   chr_set_ids:
     - all
-    - animal
-    - school
+    - ririnra
+
+office:
+  label: -事務所-
+  long: 帳簿と写本と印刷と
+  chr_set_ids:
+    - all
     - ririnra
 
 elegant:
@@ -147,8 +154,6 @@ elegant:
   long: 瀟洒な館の舞踏会
   chr_set_ids:
     - all
-    - animal
-    - school
     - ririnra
 
 ecclesia:
@@ -156,8 +161,6 @@ ecclesia:
   long: 信仰と道徳と学識の源泉
   chr_set_ids:
     - all
-    - animal
-    - school
     - ririnra
 
 
@@ -166,8 +169,6 @@ medical:
   long: 病苦毒霊と戦う砦
   chr_set_ids:
     - all
-    - animal
-    - school
     - ririnra
 
 market:
@@ -175,8 +176,6 @@ market:
   long: 芸の極みに華が咲く
   chr_set_ids:
     - all
-    - animal
-    - school
     - ririnra
 
 apartment:
@@ -184,8 +183,6 @@ apartment:
   long: 窓から外を眺めると
   chr_set_ids:
     - all
-    - animal
-    - school
     - ririnra
 
 servant:
@@ -193,8 +190,6 @@ servant:
   long: 良家を支えるスタッフ
   chr_set_ids:
     - all
-    - animal
-    - school
     - ririnra
 
 farm:
@@ -202,8 +197,6 @@ farm:
   long: 森に接する田畑
   chr_set_ids:
     - all
-    - animal
-    - school
     - ririnra
 
 government:
@@ -211,8 +204,6 @@ government:
   long: 所領を治める権能者
   chr_set_ids:
     - all
-    - animal
-    - school
     - ririnra
 
 god:

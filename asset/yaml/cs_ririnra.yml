@@ -506,3 +506,9 @@ chr_job:
 
   - face_id: c136
     job: 剪毛工
+
+  - face_id: c137
+    job: 甲板員
+
+  - face_id: c138
+    job: 代執筆
