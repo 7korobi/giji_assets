@@ -107,7 +107,7 @@ pair:
 
 
 student:
-  label: -学徒-
+  name: -学徒-
   long: 学園で学ぶ人
   chr_set_ids:
     - time
@@ -143,7 +143,7 @@ guild:
     - ririnra
 
 office:
-  label: -事務所-
+  name: -事務所-
   long: 帳簿と写本と印刷と
   chr_set_ids:
     - all
