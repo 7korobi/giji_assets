@@ -82,6 +82,10 @@ chr_job:
   - face_id: f18
     job: 精留醸造
 
+  - face_id: f20
+    job: 仲買呪術師
+    comment: 仲買人、だけだと議事標準には各店舗があるし、モノにならないので、呪術師にしてみた。
+
   - face_id: fw01
     job: 尸解仙道
 

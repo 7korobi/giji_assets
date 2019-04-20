@@ -357,3 +357,7 @@ chr_job:
   - face_id: t88
     job: 倫理委員会
     comment: 字面のパワーに惚れて。いちおう由来：臨床研究の審査機関
+
+  - face_id: t89
+    job: 時間貯蓄銀行
+    comment: 由来：ミヒャエル・エンデの児童文学
