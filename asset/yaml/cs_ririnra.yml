@@ -515,3 +515,9 @@ chr_job:
 
   - face_id: c139
     job: 優等生
+
+  - face_id: c140
+    job: 隊商卸
+
+  - face_id: c141
+    job: 泥炭採り

@@ -157,4 +157,6 @@ chr_job:
     job: "複眼レフ"
   - face_id: sf039
     job: "秘術販売"
+  - face_id: sf040
+    job: "電鍍技師"
 

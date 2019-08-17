@@ -86,6 +86,21 @@ chr_job:
     job: 仲買呪術師
     comment: 仲買人、だけだと議事標準には各店舗があるし、モノにならないので、呪術師にしてみた。
 
+  - face_id: f21
+    job: 刻字座
+
+  - face_id: f22
+    job: 道祖神
+
+  - face_id: f23
+    job: 雲水
+
+  - face_id: f24
+    job: 血吸茸
+
+  - face_id: f25
+    job: 傍観
+
   - face_id: fw01
     job: 尸解仙道
 

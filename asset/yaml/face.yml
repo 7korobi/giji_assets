@@ -2975,4 +2975,112 @@
       - fable
 
 #########################
+# 2019-08-17
+
+
+-   _id: f21
+    name: ヴェルヌイユ
+    comment: フランス人名から。
+    order: 60021
+    tag_ids:
+      - fable
+
+-   _id: f22
+    name: オグン
+    comment: アフリカの神様。ヴ―ドゥー教ではグーという。
+    order: 60022
+    tag_ids:
+      - fable
+
+-   _id: f23
+    name: ハロ
+    comment: Halo effectから。親しみのもてる名前にもなるし。
+    order: 60023
+    tag_ids:
+      - fable
+
+-   _id: f24
+    name: ギロチン
+    comment: 弱い麻痺毒があるが、豚肉のような食感の茸。洞窟の天井などに子実体を形成し、内部にかつての犠牲者から収集した爪牙を収納している。超音波を発する性質があり、表面の柔毛で反響定位を行うとされる。
+    order: 60024
+    tag_ids:
+      - fable
+
+-   _id: f25
+    name: ワヤン
+    comment: ワヤン・クリッ（ト）から。
+    order: 60025
+    tag_ids:
+      - fable
+
+-   _id: t91
+    name: ウエダ
+    comment: 成南高校の上田健二から。
+    order: 30091
+    tag_ids:
+      - travel
+
+-   _id: t92
+    name: マナ
+    comment: 奇跡、霊的な力（ハワイ語）から。
+    order: 30092
+    tag_ids:
+      - travel
+
+-   _id: t93
+    name: ネコ元帥
+    comment: バンドメン組んでみた。Holy Ghost!から。
+    order: 30093
+    tag_ids:
+      - travel
+
+-   _id: t94
+    name: ニシ
+    comment: バンドメン組んでみた。Holy Ghost!から。
+    order: 30094
+    tag_ids:
+      - travel
+
+-   _id: t95
+    name: ピックマン
+    comment: バンドメン組んでみた。Holy Ghost!から。
+    order: 30095
+    tag_ids:
+      - travel
+
+-   _id: c140
+    name: アルサラーン
+    order: 140
+    tag_ids:
+      - giji
+      - middle
+      - road
+      - river
+
+-   _id: c141
+    name: ユンカー
+    order: 141
+    tag_ids:
+      - giji
+      - young
+      - farm
+      - kid
+
+-   _id: sf040
+    name: ペサハ
+    comment: おまつり
+    order: 80040
+    tag_ids:
+      - stratos
+
+-   _id: w58
+    name: 千早
+    comment: 源氏名から。
+    order: 90058
+    tag_ids:
+      - shoji
+
+
+
+#########################
 # xxxx-xx-xx update
