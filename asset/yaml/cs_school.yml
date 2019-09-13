@@ -263,81 +263,81 @@ chr_job:
   - face_id: c83
     job: "放送部"
 
-  - face_id: c99
-    job: "不登校児"
-
-  - face_id: c86
-    job: "柔道部"
-
-  - face_id: c94
-    job: PTA会長
-
-  - face_id: c92
-    job: "テニス部"
-
-  - face_id: c90
-    job: "ラグビー部"
-
-  - face_id: c95
-    job: "人体模型"
-
-  - face_id: c97
-    job: "駐在さん"
-
-  - face_id: c100
-    job: "サッカー部"
-
-  - face_id: c106
-    job: "水泳部顧問"
-
-  - face_id: c89
-    job: "新任教師"
-
-  - face_id: c91
-    job: "緑のおばさん"
-
-  - face_id: c93
-    job: "書道部"
-
-  - face_id: c107
-    job: "前理事長"
+  - face_id: c84
+    job: "講師"
 
   - face_id: c85
     job: "おてんば"
 
-  - face_id: c105
-    job: "弓道部"
-
-  - face_id: c96
-    job: "助教授"
-
-  - face_id: c98
-    job: "教授"
-
-  - face_id: c101
-    job: "園芸部"
-
-  - face_id: c104
-    job: "剣道部"
-
-  - face_id: c108
-    job: "無線部"
-
-  - face_id: c88
-    job: "栄養士"
-
-  - face_id: c84
-    job: "講師"
-
-  - face_id: c109
-    job: "占い研究会"
-
-  - face_id: c102
-    job: "前校長"
+  - face_id: c86
+    job: "柔道部"
 
   - face_id: c87
     job: "天文部"
 
+  - face_id: c88
+    job: "栄養士"
+
+  - face_id: c89
+    job: "新任教師"
+
+  - face_id: c90
+    job: "ラグビー部"
+
+  - face_id: c91
+    job: "緑のおばさん"
+
+  - face_id: c92
+    job: "テニス部"
+
+  - face_id: c93
+    job: "書道部"
+
+  - face_id: c94
+    job: PTA会長
+
+  - face_id: c95
+    job: "人体模型"
+
+  - face_id: c96
+    job: "助教授"
+
+  - face_id: c97
+    job: "駐在さん"
+
+  - face_id: c98
+    job: "教授"
+
+  - face_id: c99
+    job: "不登校児"
+
+  - face_id: c100
+    job: "サッカー部"
+
+  - face_id: c101
+    job: "園芸部"
+
+  - face_id: c102
+    job: "前校長"
+
   - face_id: c103
     job: "オカルト同好会"
+
+  - face_id: c104
+    job: "剣道部"
+
+  - face_id: c105
+    job: "弓道部"
+
+  - face_id: c106
+    job: "水泳部顧問"
+
+  - face_id: c107
+    job: "前理事長"
+
+  - face_id: c108
+    job: "無線部"
+
+  - face_id: c109
+    job: "占い研究会"
 

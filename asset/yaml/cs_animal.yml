@@ -264,81 +264,81 @@ chr_job:
   - face_id: c83
     job: "いそぎんちゃく"
 
-  - face_id: c99
-    job: "しんかいぎょ"
-
-  - face_id: c86
-    job: "かも"
-
-  - face_id: c94
-    job: "あかまむし"
-
-  - face_id: c92
-    job: "さば"
-
-  - face_id: c90
-    job: "さい"
-
-  - face_id: c95
-    job: "やもり"
-
-  - face_id: c97
-    job: "しぇぱーど"
-
-  - face_id: c100
-    job: "びーばー"
-
-  - face_id: c106
-    job: "まんぼう"
-
-  - face_id: c89
-    job: "かば"
-
-  - face_id: c91
-    job: "あるぱか"
-
-  - face_id: c93
-    job: "わらいかわせみ"
-
-  - face_id: c107
-    job: "いぼいのしし"
+  - face_id: c84
+    job: "しろへび"
 
   - face_id: c85
     job: "かみつきがめ"
 
-  - face_id: c105
-    job: "うみねこ"
-
-  - face_id: c96
-    job: "せあかごけぐも"
-
-  - face_id: c98
-    job: "はしびろこう"
-
-  - face_id: c101
-    job: "すずらん"
-
-  - face_id: c104
-    job: "みいら"
-
-  - face_id: c108
-    job: "ぶろっこりー"
-
-  - face_id: c88
-    job: "ゆでたまご"
-
-  - face_id: c84
-    job: "しろへび"
-
-  - face_id: c109
-    job: "しろちゃとら"
-
-  - face_id: c102
-    job: "さんた"
+  - face_id: c86
+    job: "かも"
 
   - face_id: c87
     job: "りゅう"
 
+  - face_id: c88
+    job: "ゆでたまご"
+
+  - face_id: c89
+    job: "かば"
+
+  - face_id: c90
+    job: "さい"
+
+  - face_id: c91
+    job: "あるぱか"
+
+  - face_id: c92
+    job: "さば"
+
+  - face_id: c93
+    job: "わらいかわせみ"
+
+  - face_id: c94
+    job: "あかまむし"
+
+  - face_id: c95
+    job: "やもり"
+
+  - face_id: c96
+    job: "せあかごけぐも"
+
+  - face_id: c97
+    job: "しぇぱーど"
+
+  - face_id: c98
+    job: "はしびろこう"
+
+  - face_id: c99
+    job: "しんかいぎょ"
+
+  - face_id: c100
+    job: "びーばー"
+
+  - face_id: c101
+    job: "すずらん"
+
+  - face_id: c102
+    job: "さんた"
+
   - face_id: c103
     job: "おうむがい"
+
+  - face_id: c104
+    job: "みいら"
+
+  - face_id: c105
+    job: "うみねこ"
+
+  - face_id: c106
+    job: "まんぼう"
+
+  - face_id: c107
+    job: "いぼいのしし"
+
+  - face_id: c108
+    job: "ぶろっこりー"
+
+  - face_id: c109
+    job: "しろちゃとら"
 
