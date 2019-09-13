@@ -527,3 +527,6 @@ chr_job:
 
   - face_id: c143
     job: 家庭教師
+
+  - face_id: c144
+    job: 檣楼観測

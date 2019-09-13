@@ -3087,6 +3087,63 @@
     tag_ids:
       - shoji
 
+#########################
+# 2019-08-24
+
+-   _id: c142
+    name: ウィレム
+    order: 142
+    tag_ids:
+      - giji
+      - young
+      - kid
+      - farm
+      - river
+      - ecclesia
+
+-   _id: c143
+    name: ボイド
+    order: 143
+    tag_ids:
+      - giji
+      - elder
+      - servant
+
+-   _id: f26
+    name: ビジリア
+    order: 60026
+    tag_ids:
+      - fable
+
+#########################
+# 2019-09/13
+
+-   _id: t96
+    name: バラダギ
+    order: 30096
+    tag_ids:
+      - travel
+
+-   _id: c144
+    name: ピリ
+    order: 144
+    tag_ids:
+      - giji
+      - young
+      - river
+
+-   _id: w59
+    name: 沙羅
+    comment: 沙羅双樹の花の色
+    order: 90059
+    tag_ids:
+      - shoji
+
+-   _id: t97
+    name: サラ
+    order: 30097
+    tag_ids:
+      - travel
 
 
 #########################
