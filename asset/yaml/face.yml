@@ -3145,6 +3145,38 @@
     tag_ids:
       - travel
 
+#########################
+# 2019-09/26
+
+-   _id: f30
+    name: チャルケ
+    order: 60030
+    tag_ids:
+      - fable
+
+-   _id: f29
+    name: ポピン
+    order: 60029
+    tag_ids:
+      - fable
+
+-   _id: f28
+    name: ガルム
+    order: 60028
+    tag_ids:
+      - fable
+
+-   _id: f27
+    name: キランディ
+    order: 60027
+    tag_ids:
+      - fable
+
+-   _id: t98
+    name: ハルミチ
+    order: 30098
+    tag_ids:
+      - travel
 
 #########################
 # xxxx-xx-xx update
