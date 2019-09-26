@@ -157,6 +157,18 @@ chr_job:
   - face_id: f26
     job: 飢奢髑髏
 
+  - face_id: f27
+    job: 歌舞伎座
+
+  - face_id: f28
+    job: 辣醤醸造
+
+  - face_id: f29
+    job: 琺瑯座
+
+  - face_id: f30
+    job: ぬっぺっぽう
+
   - face_id: fw01
     job: 尸解仙道
 
