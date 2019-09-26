@@ -16,11 +16,17 @@ PERL_DEFAULT:
       - mad
       - mad_mad05
       - time
+      - time_t21
       - time_t44
       - time_t48
+      - time_t48_wash
       - time_t49
+      - time_t49_wash
       - ger
       - fable
+      - fable_f1
+      - fable_f8
+      - fable_f14
       - animal
       - school
       - changed
@@ -30,6 +36,7 @@ PERL_DEFAULT:
       - SF_sf032
       - wa
       - wa_w23
+      - wa_w51
 
       # SFが大文字なのは、従来との互換性を保つため。たぶん変更不能。
     path: &GIJI_PATH

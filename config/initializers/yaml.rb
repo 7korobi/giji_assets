@@ -34,7 +34,7 @@ Kernel.constants.grep(/^CS_/).each do |const|
 
   data.chr_set.chr_set_id = id
   data.chr_npc.each do |o|
-    o._id = "#{id}_#{o.face_id}"
+    o._id ||= "#{id}_#{o.face_id}"
     o.chr_set_id = id
   end
   data.chr_job.each do |o|

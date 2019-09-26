@@ -26,7 +26,7 @@ chr_npc:
 
 
   - caption: エクスパンション・セット「幻日世界」（ヨグラージ）
-    csid: fable
+    csid: fable_f1
     face_id: f1
     say_0: |-
       週で１００だよ。うちで働くならそのくらいはね。
@@ -42,7 +42,7 @@ chr_npc:
       自分の仔じゃなくてもいい、ともかく、抱けるだけ連れて走んなさい！
 
   - caption: エクスパンション・セット「幻日世界」（ソランジュ）
-    csid: fable
+    csid: fable_f8
     face_id: f8
     say_0: |-
       ふーんまーつ、ふーんまーつ、水車屋さん♪
@@ -60,7 +60,7 @@ chr_npc:
       いっぱいは用意できなかったけれど、素敵に膨らむといいなあ。
 
   - caption: エクスパンション・セット「幻日世界」（インティJr）
-    csid: fable
+    csid: fable_f14
     face_id: f14
     say_0: |-
       どうよ、吾輩最強の奥義、飛行機投げの威力。
