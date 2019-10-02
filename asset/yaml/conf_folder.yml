@@ -27,6 +27,7 @@ PERL_DEFAULT:
       - fable_f1
       - fable_f8
       - fable_f14
+      - fable_f4
       - animal
       - school
       - changed
