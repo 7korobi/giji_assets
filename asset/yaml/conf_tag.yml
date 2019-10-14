@@ -63,6 +63,71 @@ marchen:
     - all
     - mad
 
+
+explorism:
+  name: ~求道~
+  long: 至尊の高みに至る道
+  chr_set_ids:
+    - all
+    - time
+
+commercism:
+  name: ~収益~
+  long: 利益を大きく育てる
+  chr_set_ids:
+    - all
+    - time
+
+faith:
+  name: ~信仰~
+  long: 照らされる宗門
+  chr_set_ids:
+    - all
+    - time
+
+activitism:
+  name: ~余暇~
+  long: 特別な時間
+  chr_set_ids:
+    - all
+    - time
+
+militalism:
+  name: ~武力~
+  long: 屈服しない力
+  chr_set_ids:
+    - all
+    - time
+
+rulerism:
+  name: ~支配~
+  long: まとまった世界を統治する
+  chr_set_ids:
+    - all
+    - time
+
+anarchism:
+  name: ~反政~
+  long: 世界を革命するために
+  chr_set_ids:
+    - all
+    - time
+
+artism:
+  name: ~表現~
+  long: 表現からの反応
+  chr_set_ids:
+    - all
+    - time
+
+policism:
+  name: ~保安~
+  long: 安全を保つ仕事
+  chr_set_ids:
+    - all
+    - time
+
+
 kid:
   name: (児童)
   long: 児童のキャラクター
@@ -99,29 +164,8 @@ elder:
     - school
     - ririnra
 
-pair:
-  name: =双対=
-  long: お揃いのキャラクター
-  chr_set_ids:
-    - all
-
-
-student:
-  name: -学徒-
-  long: 学園で学ぶ人
-  chr_set_ids:
-    - time
-
-
 river:
   name: -運河-
-  long: 往く人来る人休む人
-  chr_set_ids:
-    - all
-    - ririnra
-
-road:
-  name: -往来-
   long: 往く人来る人休む人
   chr_set_ids:
     - all
@@ -134,10 +178,30 @@ immoral:
     - all
     - ririnra
 
+road:
+  name: -往来-
+  long: 往く人来る人休む人
+  chr_set_ids:
+    - all
+    - ririnra
+
+servant:
+  name: -使用人-
+  long: 良家を支えるスタッフ
+  chr_set_ids:
+    - all
+    - ririnra
 
 guild:
   name: -商工会-
   long: 商人と職人の集うギルド
+  chr_set_ids:
+    - all
+    - ririnra
+
+ecclesia:
+  name: -公教会-
+  long: 信仰と道徳と学識の源泉
   chr_set_ids:
     - all
     - ririnra
@@ -156,17 +220,16 @@ elegant:
     - all
     - ririnra
 
-ecclesia:
-  name: -公教会-
-  long: 信仰と道徳と学識の源泉
+medical:
+  name: -施療院-
+  long: 病苦毒霊と戦う砦
   chr_set_ids:
     - all
     - ririnra
 
-
-medical:
-  name: -施療院-
-  long: 病苦毒霊と戦う砦
+farm:
+  name: -森の農場-
+  long: 森に接する田畑
   chr_set_ids:
     - all
     - ririnra
@@ -181,20 +244,6 @@ market:
 apartment:
   name: -自室の窓-
   long: 窓から外を眺めると
-  chr_set_ids:
-    - all
-    - ririnra
-
-servant:
-  name: -使用人-
-  long: 良家を支えるスタッフ
-  chr_set_ids:
-    - all
-    - ririnra
-
-farm:
-  name: -森の農場-
-  long: 森に接する田畑
   chr_set_ids:
     - all
     - ririnra

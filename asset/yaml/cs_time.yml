@@ -404,56 +404,42 @@ chr_job:
 
   - face_id: t85
     job: 白菊会
-    comment: 由来：白菊遺族会。篤志献体組織の白菊会でもまあ。よし。
 
   - face_id: t86
     job: 人工知能研
-    comment: 由来：人工知能研究所（MIT, つくば大学, ドワンゴなど）
 
   - face_id: t87
     job: CC
-    comment: 由来：2001/12/22 体細胞クローン猫誕生
 
   - face_id: t88
     job: 倫理委員会
-    comment: 字面のパワーに惚れて。いちおう由来：臨床研究の審査機関
 
   - face_id: t89
     job: 時間貯蓄銀行
-    comment: 由来：ミヒャエル・エンデの児童文学
 
   - face_id: t90
     job: ASIOS
-    comment: 由来：超常現象の懐疑的調査のための会
 
   - face_id: t91
     job: 鬼面党
-    comment: 由来：関東連合内部のグループ
 
   - face_id: t92
     job: 綿津見教会
-    comment: 海神（わたつみ）が「大きな宗教」に改宗した感じで。大八洲国でも天照狼の子らが仏道に帰依したっていうし。
 
   - face_id: t93
     job: Holy Arkham!
-    comment: M大日本校では、３年時にマサチューセッツ州にある本校に留学する制度があり、彼等は将来のブロードウェイを夢見るのだ。
 
   - face_id: t94
     job: Holy Arkham!
-    comment: M大日本校では、３年時にマサチューセッツ州にある本校に留学する制度があり、彼等は将来のブロードウェイを夢見るのだ。
 
   - face_id: t95
     job: Holy Arkham!
-    comment: M大日本校では、３年時にマサチューセッツ州にある本校に留学する制度があり、彼等は将来のブロードウェイを夢見るのだ。
 
   - face_id: t96
     job: 護国聖獣
-    comment: かつてゴジラと戦った護国三聖獣、婆羅護吽、最珠羅、魏怒羅にあやかって。婆羅陀魏山神は三聖獣ほど強力ではない気持ちで。
 
   - face_id: t97
     job: 陀羅尼
-    comment: 「記憶して忘れない。」という意味の言葉。
 
   - face_id: t98
     job: 卐黒帝會卐
-    comment: 関東連合 BLACK 卐 EMPEROR から。

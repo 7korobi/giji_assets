@@ -4,6 +4,8 @@
     name: "ボリス"
     order: 1
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - ecclesia
@@ -12,6 +14,8 @@
     order: 2
     name: "コリーン"
     tag_ids:
+      - animal
+      - school
       - giji
       - market
       - young
@@ -19,6 +23,8 @@
     order: 3
     name: "キャロライナ"
     tag_ids:
+      - animal
+      - school
       - giji
       - servant
       - road
@@ -29,6 +35,8 @@
     order: 4
     name: "ダン"
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - middle
@@ -36,6 +44,8 @@
     order: 5
     name: "ゼルダ"
     tag_ids:
+      - animal
+      - school
       - giji
       - government
       - farm
@@ -45,6 +55,8 @@
     order: 6
     name: "フランシスカ"
     tag_ids:
+      - animal
+      - school
       - giji
       - market
       - young
@@ -52,6 +64,8 @@
     order: 8
     name: "ディーン"
     tag_ids:
+      - animal
+      - school
       - giji
       - government
       - office
@@ -60,6 +74,8 @@
     order: 8.1
     name: "ミッシェル"
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - servant
@@ -68,6 +84,8 @@
     order: 8.2
     name: "モニカ"
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - young
@@ -75,15 +93,20 @@
     order: 9
     name: "ヒロシ"
     tag_ids:
+      - animal
+      - school
       - giji
       - immoral
-      - travel
       - river
       - middle
+      - travel
+      - faith
 -   _id: c55
     order: 10
     name: "パピヨン"
     tag_ids:
+      - animal
+      - school
       - giji
       - apartment
       - elegant
@@ -92,6 +115,8 @@
     order: 11
     name: "イアン"
     tag_ids:
+      - animal
+      - school
       - giji
       - office
       - young
@@ -99,6 +124,7 @@
     order: 12
     name: "バーナバス"
     tag_ids:
+      - school
       - giji
       - servant
       - road
@@ -107,6 +133,8 @@
     order: 900.127
     name: "マリアンヌ"
     tag_ids:
+      - animal
+      - school
       - giji
       - market
       - medical
@@ -115,6 +143,8 @@
     order: 14
     name: "トニー"
     tag_ids:
+      - animal
+      - school
       - giji
       - road
       - servant
@@ -123,6 +153,8 @@
     order: 15
     name: "ドナルド"
     tag_ids:
+      - animal
+      - school
       - giji
       - immoral
       - young
@@ -130,6 +162,8 @@
     order: 16
     name: "カルヴィン"
     tag_ids:
+      - animal
+      - school
       - giji
       - elegant
       - office
@@ -138,15 +172,21 @@
     order: 17
     name: "ゾーイ"
     tag_ids:
-      - travel
+      - animal
+      - school
       - giji
       - farm
       - apartment
       - kid
+      - travel
+      - commercism
+      - militalism
 -   _id: c70
     order: 18
     name: "パティ"
     tag_ids:
+      - animal
+      - school
       - giji
       - servant
       - apartment
@@ -155,6 +195,8 @@
     order: 19
     name: "ゴドウィン"
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - market
@@ -163,6 +205,8 @@
     order: 20
     name: "ティモシー"
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - elder
@@ -170,15 +214,18 @@
     order: 21
     name: "ヤニク"
     tag_ids:
+      - animal
+      - school
       - giji
       - immoral
       - river
       - young
-      - pair
 -   _id: c58
     order: 22
     name: "ブルーノ"
     tag_ids:
+      - animal
+      - school
       - giji
       - ecclesia
       - middle
@@ -187,6 +234,8 @@
     order: 23
     name: "ユリシーズ"
     tag_ids:
+      - animal
+      - school
       - giji
       - market
       - middle
@@ -195,6 +244,8 @@
     order: 24
     name: "シビル"
     tag_ids:
+      - animal
+      - school
       - giji
       - servant
       - guild
@@ -203,6 +254,8 @@
     order: 25
     name: "ハワード"
     tag_ids:
+      - animal
+      - school
       - giji
       - servant
       - elder
@@ -211,6 +264,8 @@
     order: 26
     name: "ズリエル"
     tag_ids:
+      - animal
+      - school
       - giji
       - immoral
       - middle
@@ -218,6 +273,8 @@
     order: 27
     name: "ムパムピス"
     tag_ids:
+      - animal
+      - school
       - giji
       - ecclesia
       - young
@@ -225,6 +282,8 @@
     order: 28
     name: "ツェツィーリヤ"
     tag_ids:
+      - animal
+      - school
       - giji
       - ecclesia
       - young
@@ -233,6 +292,8 @@
     order: 29
     name: "ノーリーン"
     tag_ids:
+      - animal
+      - school
       - giji
       - servant
       - middle
@@ -241,6 +302,8 @@
     order: 30
     name: "ゲイル"
     tag_ids:
+      - animal
+      - school
       - giji
       - office
       - medical
@@ -250,6 +313,8 @@
     order: 31
     name: "レティーシャ"
     tag_ids:
+      - animal
+      - school
       - giji
       - ecclesia
       - kid
@@ -257,6 +322,8 @@
     order: 33
     name: "ラルフ"
     tag_ids:
+      - animal
+      - school
       - giji
       - servant
       - young
@@ -264,38 +331,44 @@
     order: 34
     name: "セシル"
     tag_ids:
+      - animal
+      - school
       - giji
       - market
       - young
-      - pair
 -   _id: c75
     order: 35
     name: "ビリー"
     tag_ids:
+      - animal
+      - school
       - giji
       - market
       - middle
-      - pair
 -   _id: c32
     order: 36
     name: "オスカー"
     tag_ids:
+      - animal
+      - school
       - giji
       - apartment
       - kid
-      - pair
 -   _id: c33
     order: 37
     name: "ホリー"
     tag_ids:
+      - animal
+      - school
       - giji
       - apartment
       - kid
-      - pair
 -   _id: c02
     order: 38
     name: "アルフレッド"
     tag_ids:
+      - animal
+      - school
       - giji
       - government
       - middle
@@ -304,6 +377,8 @@
     order: 39
     name: "クリストファー"
     tag_ids:
+      - animal
+      - school
       - giji
       - servant
       - guild
@@ -313,6 +388,8 @@
     order: 41
     name: "ナタリア"
     tag_ids:
+      - animal
+      - school
       - giji
       - government
       - apartment
@@ -321,6 +398,8 @@
     order: 42
     name: "マーゴ"
     tag_ids:
+      - animal
+      - school
       - giji
 #      - elegant
       - government
@@ -330,6 +409,8 @@
     order: 43
     name: "ヌマタロウ"
     tag_ids:
+      - animal
+      - school
       - giji
       - river
       - farm
@@ -338,6 +419,8 @@
     order: 44
     name: "チャールズ"
     tag_ids:
+      - animal
+      - school
       - giji
       - ecclesia
       - middle
@@ -346,6 +429,8 @@
     name: "ケイト"
     order: 47
     tag_ids:
+      - animal
+      - school
       - giji
       - apartment
       - young
@@ -353,6 +438,8 @@
     order: 48
     name: "ヨアヒム"
     tag_ids:
+      - animal
+      - school
       - giji
       - market
       - immoral
@@ -363,6 +450,8 @@
     order: 49
     name: "フィリップ"
     tag_ids:
+      - animal
+      - school
       - giji
       - road
       - river
@@ -372,6 +461,8 @@
     order: 50
     name: "ニール"
     tag_ids:
+      - animal
+      - school
       - giji
       - farm
       - guild
@@ -381,6 +472,8 @@
     order: 52
     name: "ギリアン"
     tag_ids:
+      - animal
+      - school
       - giji
       - medical
       - ecclesia
@@ -389,6 +482,8 @@
     order: 53
     name: "ヨーランダ"
     tag_ids:
+      - animal
+      - school
       - giji
       - medical
       - ecclesia
@@ -398,6 +493,8 @@
     name: "メアリー"
     order: 55
     tag_ids:
+      - animal
+      - school
       - giji
       - market
       - road
@@ -406,6 +503,8 @@
     order: 56
     name: "ギネス"
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - market
@@ -414,6 +513,8 @@
     order: 57
     name: "ピッパ"
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - young
@@ -421,6 +522,8 @@
     order: 59
     name: "キャサリン"
     tag_ids:
+      - animal
+      - school
       - giji
       - medical
       - young
@@ -428,6 +531,8 @@
     order: 60
     name: "ワット"
     tag_ids:
+      - animal
+      - school
       - giji
       - farm
       - middle
@@ -435,6 +540,8 @@
     order: 61
     name: "ヴェラ"
     tag_ids:
+      - animal
+      - school
       - giji
       - immoral
       - river
@@ -443,6 +550,8 @@
     order: 62
     name: "ロミオ"
     tag_ids:
+      - animal
+      - school
       - giji
       - medical
       - elder
@@ -450,6 +559,8 @@
     order: 63
     name: "エマ"
     tag_ids:
+      - animal
+      - school
       - giji
       - medical
       - elder
@@ -457,6 +568,8 @@
     order: 65
     name: "リンダ"
     tag_ids:
+      - animal
+      - school
       - giji
       - farm
       - young
@@ -464,6 +577,8 @@
     order: 66
     name: "ベネット"
     tag_ids:
+      - animal
+      - school
       - giji
       - office
       - young
@@ -471,6 +586,8 @@
     order: 67
     name: "タバサ"
     tag_ids:
+      - animal
+      - school
       - giji
       - immoral
       - market
@@ -479,6 +596,8 @@
     order: 70
     name: "ノックス"
     tag_ids:
+      - animal
+      - school
       - giji
       - road
       - farm
@@ -487,6 +606,8 @@
     order: 71
     name: "スティーブン"
     tag_ids:
+      - animal
+      - school
       - giji
       - medical
       - middle
@@ -494,6 +615,8 @@
     order: 72
     name: "ガストン"
     tag_ids:
+      - animal
+      - school
       - giji
       - farm
       - middle
@@ -501,6 +624,8 @@
     order: 73
     name: "ウェーズリー"
     tag_ids:
+      - animal
+      - school
       - giji
       - government
       - road
@@ -509,6 +634,8 @@
     order: 75
     name: "ザック"
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - medical
@@ -517,6 +644,8 @@
     order: 77
     name: "ルーカス"
     tag_ids:
+      - animal
+      - school
       - giji
       - elegant
       - young
@@ -524,6 +653,8 @@
     order: 79
     name: "グロリア"
     tag_ids:
+      - animal
+      - school
       - giji
       - elegant
       - young
@@ -531,6 +662,8 @@
     order: 81
     name: "ヴェスパタイン"
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - young
@@ -538,6 +671,8 @@
     order: 900.195
     name: "ローズマリー"
     tag_ids:
+      - animal
+      - school
       - giji
       - immoral
       - market
@@ -546,15 +681,18 @@
     order: 21.1
     name: "ペラジー"
     tag_ids:
+      - animal
+      - school
       - giji
       - ecclesia
       - river
       - young
-      - pair
 -   _id: c80
     order: 87
     name: "テッド"
     tag_ids:
+      - animal
+      - school
       - giji
       - road
       - young
@@ -563,6 +701,8 @@
     comment: 2011/12/11
     order: 89
     tag_ids:
+      - animal
+      - school
       - giji
       - government
       - ecclesia
@@ -573,6 +713,8 @@
     comment: 2011/12/11
     order: 91
     tag_ids:
+      - animal
+      - school
       - giji
       - office
       - road
@@ -582,6 +724,8 @@
     comment: 2011/12/14 超常現象はあるんだ…
     order: 93
     tag_ids:
+      - animal
+      - school
       - giji
       - government
       - river
@@ -592,6 +736,8 @@
     comment: 2011/12/29 この髭はぜったいワックス使ってる。
     order: 95
     tag_ids:
+      - animal
+      - school
       - giji
 #      - elegant
       - immoral
@@ -602,6 +748,8 @@
     comment: 2012/12/30 スポーツ系中学生くらいに見える
     order: 97
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - young
@@ -610,6 +758,8 @@
     comment: 2011/12/30 美人さん♪
     order: 99
     tag_ids:
+      - animal
+      - school
       - giji
       - servant
       - apartment
@@ -619,6 +769,8 @@
     comment: 2011/12/06
     order: 125.2
     tag_ids:
+      - animal
+      - school
       - giji
       - government
       - river
@@ -629,6 +781,8 @@
     order: 125.8
     comment: 2011/12/05
     tag_ids:
+      - animal
+      - school
       - giji
       - servant
       - market
@@ -638,6 +792,8 @@
     comment: 2011/12/06
     order: 900.128
     tag_ids:
+      - animal
+      - school
       - giji
       - apartment
       - young
@@ -646,6 +802,8 @@
     order: 900.129
     comment: 2011/12/05
     tag_ids:
+      - animal
+      - school
       - giji
       - apartment
       - middle
@@ -654,6 +812,8 @@
     order: 900.130
     comment: 2011/12/05
     tag_ids:
+      - animal
+      - school
       - giji
       - road
       - servant
@@ -663,6 +823,8 @@
     name: "ドロシー"
     order: 900.143
     tag_ids:
+      - animal
+      - school
       - giji
       - river
       - servant
@@ -672,6 +834,8 @@
     name: "セレスト"
     order: 900.144
     tag_ids:
+      - animal
+      - school
       - giji
       - river
       - servant
@@ -681,6 +845,8 @@
     name: "ベッキー"
     order: 900.145
     tag_ids:
+      - animal
+      - school
       - giji
       - river
       - servant
@@ -689,6 +855,8 @@
     order: 900.150
     name: "ネイサン"
     tag_ids:
+      - animal
+      - school
       - giji
       - market
       - middle
@@ -696,6 +864,8 @@
     order: 900.148
     name: "ロビン"
     tag_ids:
+      - animal
+      - school
       - giji
       - servant
       - kid
@@ -705,6 +875,8 @@
     comment: 2011/12/11
     order: 900.170
     tag_ids:
+      - animal
+      - school
       - giji
       - elegant
       - immoral
@@ -714,6 +886,8 @@
     order: 900.185
     name: "ヘクター"
     tag_ids:
+      - animal
+      - school
       - giji
       - immoral
       - middle
@@ -721,6 +895,8 @@
     order: 900.190
     name: "サイラス"
     tag_ids:
+      - animal
+      - school
       - giji
       - medical
       - guild
@@ -730,23 +906,27 @@
     order: 900.200
     name: "ソフィア"
     tag_ids:
+      - animal
+      - school
       - giji
       - guild
       - office
       - young
-      - pair
 -   _id: c76
     order: 900.202
     name: "ジョージ"
     tag_ids:
+      - animal
+      - school
       - giji
       - apartment
       - kid
-      - pair
 -   _id: c60
     order: 900.197
     name: "ポーチュラカ"
     tag_ids:
+      - animal
+      - school
       - giji
       - elegant
       - kid
@@ -755,6 +935,8 @@
     order: 900.217
     comment: 2011/12/05
     tag_ids:
+      - animal
+      - school
       - giji
       - elegant
       - medical
@@ -763,6 +945,8 @@
     order: 900.222
     name: "プリシラ"
     tag_ids:
+      - animal
+      - school
       - giji
       - immoral
       - young
@@ -770,6 +954,8 @@
     order: 900.228
     name: "ビアンカ"
     tag_ids:
+      - animal
+      - school
       - giji
       - elegant
       - middle
@@ -779,6 +965,8 @@
     order: 900.233
     comment: 2011/12/05
     tag_ids:
+      - animal
+      - school
       - giji
       - immoral
       - middle
@@ -787,14 +975,19 @@
     name: "アイリス"
     tag_ids:
       - marchen
+      - animal
+      - school
       - giji
       - road
       - office
       - medical
+      - young
 -   _id: c31
     order: 900.250
     name: "ネル"
     tag_ids:
+      - animal
+      - school
       - giji
       - office
       - young
@@ -802,11 +995,12 @@
     order: 900.260
     name: "サイモン"
     tag_ids:
+      - animal
+      - school
       - giji
       - apartment
       - young
       - middle
-      - pair
 -   order: 10001
     name: "露蝶"
     comment: "中国女性名"
@@ -873,33 +1067,39 @@
     _id: t01
     tag_ids:
       - travel
-      - student
+      - rulerism
+      - commercism
 -   name: "リッキィ"
     comment: "夏への扉"
     order: 30002
     _id: t02
     tag_ids:
       - travel
-      - student
+      - explorism
+      - faith
 -   name: "ミナカタ"
     comment: "ー仁ー"
     order: 900.156
     _id: t03
     tag_ids:
       - travel
+      - faith
 -   name: "カイル"
     comment: "サラ・コナー・クロニクルズ"
     order: 30004
     _id: t04
     tag_ids:
       - travel
-      - student
+      - artism
+      - explorism
+      - militalism
 -   name: "ジェニファー"
     comment: "バック・トゥ・ザ・フューチャー"
     order: 30005
     _id: t05
     tag_ids:
       - travel
+      - activitism
 -   _id: m99
     order: 70000.01
     name: "パルック"
@@ -987,13 +1187,11 @@
     order: 70012
     tag_ids:
       - myth
-      - pair
 -   _id: m11
     order: 70011
     name: "ライトニング"
     tag_ids:
       - myth
-      - pair
 -   _id: m13
     order: 70000.12
     name: "ミケ"
@@ -1088,14 +1286,12 @@
     _id: sf18
     tag_ids:
       - stratos
-      - pair
 -   order: 80015
     name: "参休"
     comment:
     _id: sf19
     tag_ids:
       - stratos
-      - pair
 -   order: 80016
     name: "クリスマス"
     comment:
@@ -1273,7 +1469,6 @@
     name: "朝顔"
     tag_ids:
       - shoji
-      - pair
 -   _id: w43
     order: 90029
     name: "春松"
@@ -1284,7 +1479,6 @@
     name: "夕顔"
     tag_ids:
       - shoji
-      - pair
 -   _id: w40
     order: 90031
     name: "朧"
@@ -1418,7 +1612,9 @@
     order: 30006
     tag_ids:
       - travel
-      - student
+      - artism
+      - activitism
+      - anarchism
 
 -   _id: t07
     name: "アカリ"
@@ -1426,7 +1622,8 @@
     order: 30019
     tag_ids:
       - travel
-      - student
+      - policism
+      - activitism
 
 -   _id: t08
     name: "ミルフィ"
@@ -1434,7 +1631,8 @@
     order: 900.224
     tag_ids:
       - travel
-      - student
+      - anarchism
+      - activitism
 
 -   _id: t09
     name: "ゴロウ"
@@ -1442,6 +1640,8 @@
     order: 30009
     tag_ids:
       - travel
+      - rulerism
+      - anarchism
 
 -   _id: t10
     name: "トレイル"
@@ -1449,7 +1649,8 @@
     order: 30010
     tag_ids:
       - travel
-      - student
+      - rulerism
+      - commercism
 
 -   _id: t11
     name: "マドカ"
@@ -1457,7 +1658,8 @@
     order: 30019
     tag_ids:
       - travel
-      - student
+      - anarchism
+      - activitism
 
 -   _id: t12
     name: "フランク"
@@ -1465,6 +1667,7 @@
     order: 30012
     tag_ids:
       - travel
+      - anarchism
 
 -   _id: t13
     name: "ジャニス"
@@ -1472,6 +1675,8 @@
     order: 30013
     tag_ids:
       - travel
+      - policism
+      - militalism
 
 #########################
 # 2012-12-31 update
@@ -1480,6 +1685,8 @@
     name: "シメオン"
     order: 82
     tag_ids:
+      - animal
+      - school
       - giji
       - ecclesia
       - young
@@ -1488,6 +1695,8 @@
     name: "ヒュー"
     order: 89
     tag_ids:
+      - animal
+      - school
       - giji
       - medical
       - young
@@ -1496,6 +1705,8 @@
     name: "ワンダ"
     order: 90
     tag_ids:
+      - animal
+      - school
       - giji
       - river
       - guild
@@ -1505,6 +1716,8 @@
     comment: "年末カウントダウン♪"
     order: 91
     tag_ids:
+      - animal
+      - school
       - giji
       - farm
       - young
@@ -1514,6 +1727,8 @@
     comment: "年末カウントダウン♪"
     order: 900.180
     tag_ids:
+      - animal
+      - school
       - giji
       - apartment
       - young
@@ -1522,6 +1737,8 @@
     name: "ウォーレン"
     order: 900.155
     tag_ids:
+      - animal
+      - school
       - giji
       - market
       - elder
@@ -1530,6 +1747,8 @@
     comment: "年末カウントダウン♪"
     order: 900.205
     tag_ids:
+      - animal
+      - school
       - giji
       - elegant
       - middle
@@ -1539,10 +1758,11 @@
     name: "ナンシー"
     order: 900.234
     tag_ids:
+      - animal
+      - school
       - giji
       - apartment
       - young
-      - pair
 
 #########################
 # 2013-06-14 update
@@ -1553,7 +1773,7 @@
     order: 30014
     tag_ids:
       - travel
-      - student
+      - activitism
 
 -   _id: t15
     name: "ガーディ"
@@ -1561,7 +1781,7 @@
     order: 30015
     tag_ids:
       - travel
-      - student
+      - policism
 
 
 #########################
@@ -1587,6 +1807,7 @@
     order: 30016
     tag_ids:
       - travel
+      - policism
 
 
 #########################
@@ -1623,7 +1844,8 @@
     order: 30018
     tag_ids:
       - travel
-      - student
+      - policism
+      - explorism
 
 -   _id: t18
     name: "マユミ"
@@ -1631,7 +1853,8 @@
     order: 30018
     tag_ids:
       - travel
-      - student
+      - explorism
+      - faith
 
 
 #########################
@@ -1652,7 +1875,8 @@
     order: 30017
     tag_ids:
       - travel
-      - student
+      - faith
+      - militalism
 
 
 #########################
@@ -1719,7 +1943,6 @@
     order: 30022
     tag_ids:
       - travel
-      - student
 
 #########################
 # 2014-08-23 update
@@ -1757,7 +1980,6 @@
     order: 70019
     tag_ids:
       - myth
-      - pair
 
 -   _id: m20
     name: "ショコラ"
@@ -1765,7 +1987,6 @@
     order: 70020
     tag_ids:
       - myth
-      - pair
 
 #########################
 # 2014-12-11 update
@@ -1787,7 +2008,8 @@
     order: 30019
     tag_ids:
       - travel
-      - student
+      - rulerism
+      - faith
 
 -   _id: t22
     name: "ケイイチ"
@@ -1795,7 +2017,8 @@
     order: 30021
     tag_ids:
       - travel
-      - student
+      - policism
+      - militalism
 
 -   _id: w53
     name: "おもん"
@@ -1900,7 +2123,8 @@
     order: 30023
     tag_ids:
       - travel
-      - student
+      - activitism
+      - militalism
 
 -   _id: t24
     name: "キルロイ"
@@ -1908,7 +2132,7 @@
     order: 30024
     tag_ids:
       - travel
-      - student
+      - explorism
 
 -   _id: t25
     name: "ミサキ"
@@ -1916,7 +2140,8 @@
     order: 30025
     tag_ids:
       - travel
-      - student
+      - anarchism
+      - commercism
 
 -   _id: t26
     name: "アツタネ"
@@ -1924,6 +2149,9 @@
     order: 30026
     tag_ids:
       - travel
+      - faith
+      - explorism
+      - rulerism
 
 -   _id: t27
     name: "みょんこ"
@@ -1931,6 +2159,8 @@
     order: 30027
     tag_ids:
       - travel
+      - artism
+      - commercism
 
 -   _id: t28
     name: "リツ"
@@ -1938,7 +2168,7 @@
     order: 30028
     tag_ids:
       - travel
-      - student
+      - militalism
 
 -   _id: t29
     name: "ヒナコ"
@@ -1946,7 +2176,7 @@
     order: 30020
     tag_ids:
       - travel
-      - student
+      - activitism
 
 -   _id: t30
     name: "ワタヌキ"
@@ -1954,6 +2184,8 @@
     order: 30030
     tag_ids:
       - travel
+      - explorism
+      - militalism
 
 -   _id: t31
     name: "ホウイチ"
@@ -1961,7 +2193,8 @@
     order: 900.158
     tag_ids:
       - travel
-      - student
+      - rulerism
+      - commercism
 
 -   _id: t32
     name: "トヨタ"
@@ -1969,6 +2202,7 @@
     order: 30032
     tag_ids:
       - travel
+      - policism
 
 -   _id: t33
     name: "エツコ"
@@ -1976,6 +2210,8 @@
     order: 30033
     tag_ids:
       - travel
+      - anarchism
+      - commercism
 
 -   _id: t34
     name: "ドン"
@@ -1983,6 +2219,8 @@
     order: 17.1
     tag_ids:
       - travel
+      - militalism
+      - commercism
 
 #########################
 # 2015-04-30 update
@@ -2045,6 +2283,8 @@
     order: 900.208
     tag_ids:
       - travel
+      - anarchism
+      - commercism
 
 -   _id: c121
     name: ブッカ
@@ -2128,7 +2368,9 @@
     order: 30036
     tag_ids:
       - travel
-      - student
+      - rulerism
+      - policism
+      - anarchism
 
 -   _id: t37
     name: "シュンタロ"
@@ -2136,7 +2378,7 @@
     order: 30009  # 素顔的なこだわり
     tag_ids:
       - travel
-      - student
+      - anarchism
 
 -   _id: t38
     name: "スズキ"
@@ -2144,6 +2386,7 @@
     order: 30038
     tag_ids:
       - travel
+      - activitism
 
 -   _id: t39
     name: "ガモウ"
@@ -2151,7 +2394,9 @@
     order: 30018.1  # 聖戦士はみんなここ
     tag_ids:
       - travel
-      - student
+      - explorism
+      - faith
+      - commercism
 
 #########################
 # 2018-03-24 update
@@ -2199,6 +2444,8 @@
     order: 30039
     tag_ids:
       - travel
+      - activitism
+      - commercism
 
 -   _id: w54
     name: 舷之丈
@@ -2216,7 +2463,8 @@
     order: 30041
     tag_ids:
       - travel
-      - student
+      - artism
+      - activitism
 
 -   _id: t42
     name: レン
@@ -2224,7 +2472,7 @@
     order: 30042
     tag_ids:
       - travel
-      - student
+      - faith
 
 -   _id: t43
     name: こころ
@@ -2232,7 +2480,7 @@
     order: 30043
     tag_ids:
       - travel
-      - student
+      - activitism
 
 -   _id: t44
     name: ナツミ
@@ -2240,7 +2488,9 @@
     order: 30044
     tag_ids:
       - travel
-      - student
+      - artism
+      - explorism
+      - militalism
 
 -   _id: t45
     name: クロエ
@@ -2248,7 +2498,8 @@
     order: 30018.1  # 聖戦士はみんなここ
     tag_ids:
       - travel
-      - student
+      - explorism
+      - artism
 
 -   _id: t46
     name: サダミツ
@@ -2256,7 +2507,8 @@
     order: 30046
     tag_ids:
       - travel
-      - student
+      - faith
+      - explorism
 
 -   _id: t47
     name: ノッカ
@@ -2264,7 +2516,8 @@
     order: 30047
     tag_ids:
       - travel
-      - student
+      - faith
+      - artism
 
 -   _id: t48
     name: Ａ
@@ -2272,7 +2525,7 @@
     order: 30048
     tag_ids:
       - travel
-      - student
+      - activitism
 
 -   _id: t49
     name: Ａ
@@ -2280,7 +2533,7 @@
     order: 30049
     tag_ids:
       - travel
-      - student
+      - activitism
 
 -   _id: t50
     name: ヨスガ
@@ -2288,8 +2541,8 @@
     order: 30050
     tag_ids:
       - travel
-      - student
-      - pair
+      - artism
+      - explorism
 
 -   _id: t51
     name: エニシ
@@ -2297,8 +2550,8 @@
     order: 30051
     tag_ids:
       - travel
-      - student
-      - pair
+      - artism
+      - explorism
 
 -   _id: t52
     name: ニトカ
@@ -2306,7 +2559,8 @@
     order: 30052
     tag_ids:
       - travel
-      - student
+      - artism
+      - explorism
 
 -   _id: t53
     name: ツヅラ
@@ -2314,6 +2568,8 @@
     order: 900.160
     tag_ids:
       - travel
+      - anarchism
+      - militalism
 
 -   _id: t54
     name: ウツギ
@@ -2321,7 +2577,8 @@
     order: 30054
     tag_ids:
       - travel
-      - student
+      - faith
+      - explorism
 
 -   _id: t55
     name: セイカ
@@ -2329,7 +2586,8 @@
     order: 30055
     tag_ids:
       - travel
-      - student
+      - faith
+      - militalism
 
 -   _id: t56
     name: ヤスリ
@@ -2337,7 +2595,8 @@
     order: 30056
     tag_ids:
       - travel
-      - student
+      - faith
+      - explorism
 
 -   _id: t57
     name: はのん
@@ -2345,7 +2604,9 @@
     order: 30057
     tag_ids:
       - travel
-      - student
+      - faith
+      - rulerism
+      - commercism
 
 -   _id: t58
     name: シンイチ
@@ -2353,7 +2614,9 @@
     order: 30058
     tag_ids:
       - travel
-      - student
+      - anarchism
+      - militalism
+      - faith
 
 #########################
 # 2018-06-23 
@@ -2388,7 +2651,7 @@
     order: 30059
     tag_ids:
       - travel
-      - student
+      - rulerism
 
 -   _id: t60
     name: タツミ
@@ -2396,6 +2659,9 @@
     order: 30060
     tag_ids:
       - travel
+      - artism
+      - explorism
+      - militalism
 
 #########################
 # 2018-07-11
@@ -2533,7 +2799,8 @@
     order: 30061
     tag_ids:
       - travel
-      - student
+      - anarchism
+      - militalism
 
 -   _id: t62
     name: ヘイタロウ
@@ -2541,7 +2808,8 @@
     order: 30062
     tag_ids:
       - travel
-      - student
+      - rulerism
+      - activitism
 
 -   _id: t63
     name: ソウスケ
@@ -2549,6 +2817,8 @@
     order: 30063
     tag_ids:
       - travel
+      - activitism
+      - commercism
 
 -   _id: t64
     name: ユエ
@@ -2556,6 +2826,8 @@
     order: 30064
     tag_ids:
       - travel
+      - activitism
+      - commercism
 
 #########################
 # 2018-08-15
@@ -2566,6 +2838,8 @@
     order: 30065
     tag_ids:
       - travel
+      - faith
+      - rulerism
 
 -   _id: t66
     name: ココア
@@ -2573,6 +2847,8 @@
     order: 30066
     tag_ids:
       - travel
+      - faith
+      - explorism
 
 -   _id: t67
     name: マコト
@@ -2580,6 +2856,7 @@
     order: 30067
     tag_ids:
       - travel
+      - rulerism
 
 -   _id: t68
     name: ワカナ
@@ -2587,7 +2864,7 @@
     order: 30068
     tag_ids:
       - travel
-      - student
+      - explorism
 
 -   _id: t69
     name: ヤマト
@@ -2595,7 +2872,8 @@
     order: 30069
     tag_ids:
       - travel
-      - student
+      - rulerism
+      - militalism
 
 -   _id: c128
     name: ペトラ
@@ -2624,7 +2902,8 @@
     order: 30070
     tag_ids:
       - travel
-      - student
+      - artism
+      - militalism
 
 -   _id: t71
     name: ワカバヤシ
@@ -2632,7 +2911,8 @@
     order: 30071
     tag_ids:
       - travel
-      - student
+      - explorism
+      - commercism
 
 -   _id: t72
     name: カガ
@@ -2640,6 +2920,7 @@
     order: 30072
     tag_ids:
       - travel
+      - policism
 
 -   _id: t73
     name: ワタル
@@ -2647,7 +2928,8 @@
     order: 30073
     tag_ids:
       - travel
-      - student
+      - faith
+      - rulerism
 
 -   _id: t74
     name: フウタ
@@ -2655,7 +2937,7 @@
     order: 30074
     tag_ids:
       - travel
-      - student
+      - explorism
 
 -   _id: t75
     name: ルリ
@@ -2663,7 +2945,7 @@
     order: 30075
     tag_ids:
       - travel
-      - student
+      - rulerism
 
 #########################
 # 2018-10-19
@@ -2818,7 +3100,8 @@
     order: 30076
     tag_ids:
       - travel
-      - student
+      - rulerism
+      - commercism
 
 -   _id: t77
     name: ヨーコ
@@ -2826,6 +3109,7 @@
     order: 30077
     tag_ids:
       - travel
+      - activitism
 
 -   _id: t78
     name: ヤン
@@ -2833,6 +3117,8 @@
     order: 30078
     tag_ids:
       - travel
+      - explorism
+      - commercism
 
 -   _id: t79
     name: ヒイラギ
@@ -2840,7 +3126,7 @@
     order: 30079
     tag_ids:
       - travel
-      - student
+      - explorism
 
 -   _id: t80
     name: ナオシゲ
@@ -2848,6 +3134,8 @@
     order: 30080
     tag_ids:
       - travel
+      - militalism
+      - commercism
 
 -   _id: t81
     name: ケント
@@ -2855,7 +3143,7 @@
     order: 30081
     tag_ids:
       - travel
-      - student
+      - faith
 
 -   _id: t82
     name: サガタ
@@ -2863,6 +3151,8 @@
     order: 30082
     tag_ids:
       - travel
+      - activitism
+      - commercism
 
 -   _id: t83
     name: キョウスケ
@@ -2870,7 +3160,7 @@
     order: 30083
     tag_ids:
       - travel
-      - student
+      - faith
 
 -   _id: t84
     name: アリババ
@@ -2878,6 +3168,7 @@
     order: 30084
     tag_ids:
       - travel
+      - commercism
 
 #########################
 # 2019-04-04
@@ -2907,6 +3198,7 @@
     order: 30085
     tag_ids:
       - travel
+      - activitism
 
 -   _id: t86
     name: Dr.コトリン
@@ -2914,6 +3206,7 @@
     order: 30086
     tag_ids:
       - travel
+      - explorism
 
 -   _id: t87
     name: レイ
@@ -2921,6 +3214,8 @@
     order: 30087
     tag_ids:
       - travel
+      - anarchism
+      - commercism
 
 #########################
 # 2019-04-12
@@ -2955,7 +3250,8 @@
     order: 30088
     tag_ids:
       - travel
-      - student
+      - policism
+      - activitism
 
 #########################
 # 2019-04-21
@@ -2966,6 +3262,7 @@
     order: 30089
     tag_ids:
       - travel
+      - commercism
 
 -   _id: f20
     name: ジェルマン
@@ -3019,6 +3316,8 @@
     order: 30091
     tag_ids:
       - travel
+      - explorism
+      - policism
 
 -   _id: t91
     name: ウエダ
@@ -3026,6 +3325,8 @@
     order: 30091
     tag_ids:
       - travel
+      - anarchism
+      - militalism
 
 -   _id: t92
     name: マナ
@@ -3033,6 +3334,8 @@
     order: 30092
     tag_ids:
       - travel
+      - faith
+      - rulerism
 
 -   _id: t93
     name: ネコ元帥
@@ -3040,6 +3343,8 @@
     order: 30093
     tag_ids:
       - travel
+      - artism
+      - commercism
 
 -   _id: t94
     name: ニシ
@@ -3047,6 +3352,8 @@
     order: 30094
     tag_ids:
       - travel
+      - artism
+      - commercism
 
 -   _id: t95
     name: ピックマン
@@ -3054,6 +3361,8 @@
     order: 30095
     tag_ids:
       - travel
+      - artism
+      - commercism
 
 -   _id: c140
     name: アルサラーン
@@ -3123,6 +3432,8 @@
     order: 30096
     tag_ids:
       - travel
+      - activitism
+      - militalism
 
 -   _id: c144
     name: ピリ
@@ -3144,6 +3455,7 @@
     order: 30097
     tag_ids:
       - travel
+      - faith
 
 #########################
 # 2019-09-26
@@ -3177,6 +3489,8 @@
     order: 30098
     tag_ids:
       - travel
+      - anarchism
+      - militalism
 
 #########################
 # 2019-10-01
@@ -3198,6 +3512,7 @@
     order: 60033
     tag_ids:
       - fable
+
 
 #########################
 # xxxx-xx-xx update
