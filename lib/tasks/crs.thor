@@ -1,5 +1,15 @@
 # -*- coding: utf-8 -*-
 
+# hiragana to katakana for utf-8
+def to_katakana(src)
+  src
+  .gsub("わ゙","ヷ")
+  .gsub("い゙","ヸ")
+  .gsub("え゙","ヹ")
+  .gsub("を゙","ヺ")
+  .tr("ぁ-ゖゝゞゟ","ァ-ヶヽヾヿ")
+end
+
 class Crs < Thor
   desc "create", "create config to other server"
   def create
@@ -128,9 +138,8 @@ class Crs < Thor
 
       faces = params.faces
       faces.each do |face|
-        face.name = face.name
+        face.q_name = to_katakana(face.name.gsub(/^[†Dr.]*/,""))
         job = job_groups[face.face_id].first
-
         [:job].each do |col|
           face[col] = job[col]
         end
@@ -142,23 +151,29 @@ class Crs < Thor
         "all" => CONF_TAG.all.name
       }
       @chr_orders = {
-        "all" => @orders.map(&:face_id)
+        "all" => faces.map(&:face_id)
       }
-      @orders.each do |face|
-        face.tag_ids.each do |tag|
-          unless CONF_TAG[tag]
-            p "#{tag} is not defined."
-            next
-          end
-          unless CONF_TAG[tag].chr_set_ids.any? {|csid| @csid[csid] }
-            next
-          end
-          @tag_names[tag] = CONF_TAG[tag].name
-          @chr_orders[tag] = (@chr_orders[tag] || []) + [face.face_id]
+      faces.each do |face|
+        face.tag_ids.each do |tag_id|
+          next unless CONF_TAG[tag_id]
+          next unless CONF_TAG[tag_id].chr_set_ids.any? {|csid| @csid[csid] }
+          @tag_names[tag_id]  ||= CONF_TAG[tag_id].name
+          @chr_orders[tag_id] ||= []
+          @chr_orders[tag_id].push face.face_id
         end
       end
-      @tag_order = CONF_TAG.keys.select {|tag| @chr_orders[tag] }
+      @tag_order = CONF_TAG.keys.select {|tag_id| @chr_orders[tag_id] }
       @tag_order.shift if @csid != "all"
+
+      @chr_orders.each do |tag_id, list|
+        @chr_orders[tag_id] =
+          case CONF_TAG[tag_id][:face_sort][0]
+          when 'face.order'
+            faces.sort_by{|o| o.order }.map(&:face_id) & list
+          when 'face.q.head'
+            faces.sort_by{|o| o.q_name }.map(&:face_id) & list
+          end
+      end
 
       @rhtml_content = "./asset/sow/crs.pl.erb"
       result = to_s

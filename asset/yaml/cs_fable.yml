@@ -197,6 +197,18 @@ chr_job:
   - face_id: f32
     job: 彩鞄座
 
+  - face_id: f33
+    job: 網鉱座
+
+  - face_id: f34
+    job: 浮穴沫媛
+
+  - face_id: f35
+    job: 質草座
+
+  - face_id: f36
+    job: ランタン
+
   - face_id: fw01
     job: 尸解仙道
 

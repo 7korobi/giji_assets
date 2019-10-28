@@ -530,3 +530,9 @@ chr_job:
 
   - face_id: c144
     job: 檣楼観測
+
+  - face_id: c145
+    job: 助産婦
+
+  - face_id: c146
+    job: 異本商
