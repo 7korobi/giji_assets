@@ -3549,12 +3549,30 @@
   - fable
 - _id: fw07
   name: コアトリクエ
-  order: 60033
+  order: 61007
   tag_ids:
   - fable
 
 #########################
 # 2019-10-30
+
+- _id: c145
+  name: メリッサ
+  order: 145
+  tag_ids:
+  - giji
+  - young
+  - river
+  - G_m_w
+
+- _id: c146
+  name: ヘイ
+  order: 146
+  tag_ids:
+  - giji
+  - young
+  - office
+  - G_n_h
 
 - _id: f33
   name: ボルドーン
@@ -3580,23 +3598,29 @@
   tag_ids:
   - fable
 
-- _id: c145
-  name: メリッサ
-  order: 145
+- _id: fw08
+  name: オモヒカヌ
+  order: 61008
   tag_ids:
-  - giji
-  - young
-  - river
-  - G_m_w
+  - fable
 
-- _id: c146
-  name: ヘイ
-  order: 146
+- _id: t99
+  name: オトサカ
+  order: 30099
   tag_ids:
-  - giji
-  - young
-  - office
-  - G_n_h
+  - travel
+  - commercism
+  - artism
+  - T_a_k
+
+- _id: t100
+  name: ヌタハラ
+  order: 30100
+  tag_ids:
+  - travel
+  - faith
+  - anarchism
+  - T_s_n
 
 
 #########################

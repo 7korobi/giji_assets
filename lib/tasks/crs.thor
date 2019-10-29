@@ -1,14 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# hiragana to katakana for utf-8
-def to_katakana(src)
-  src
-  .gsub("わ゙","ヷ")
-  .gsub("い゙","ヸ")
-  .gsub("え゙","ヹ")
-  .gsub("を゙","ヺ")
-  .tr("ぁ-ゖゝゞゟ","ァ-ヶヽヾヿ")
-end
 
 class Crs < Thor
   desc "create", "create config to other server"
@@ -75,7 +66,8 @@ class Crs < Thor
     def to_s
       render_exec
       result = @content_for_layout
-      result = result.gsub(/[✡ʃ卐]/) do |chr|
+      result = result.gsub( /[〜～]/, '～' )
+      result = result.gsub( /[✡ʃ卐]/ ) do |chr|
         "&#x#{chr.ord.to_s(16)};"
       end
       result = result.gsub(/[―—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/) do |chr|
@@ -125,6 +117,16 @@ class Crs < Thor
   end
 
   class CrsCreate < WebHtml
+    # hiragana to katakana for utf-8
+    def to_katakana(src)
+      src
+      .gsub("わ゙","ヷ")
+      .gsub("い゙","ヸ")
+      .gsub("え゙","ヹ")
+      .gsub("を゙","ヺ")
+      .tr("ぁ-ゖゝゞゟ","ァ-ヶヽヾヿ")
+    end
+
     def activate( params )
       @csid   = params.csid
       @chrset = params.set
@@ -136,7 +138,7 @@ class Crs < Thor
       jobs  = params.chr_jobs
       job_groups = jobs.group_by(&:face_id)
 
-      faces = params.faces
+      faces = params.faces.sort_by(&:order)
       faces.each do |face|
         face.q_name = to_katakana(face.name.gsub(/^[†Dr.]*/,""))
         job = job_groups[face.face_id].first

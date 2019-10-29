@@ -229,3 +229,7 @@ chr_job:
 
   - face_id: fw07
     job: 恩賜神
+
+  - face_id: fw08
+    job: 後神
+
