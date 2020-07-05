@@ -22,6 +22,7 @@ PERL_DEFAULT:
       - time_t48_wash
       - time_t49
       - time_t49_wash
+      - time_t80
       - ger
       - fable
       - fable_f1
@@ -35,6 +36,7 @@ PERL_DEFAULT:
       - SF
       - SF_sf10
       - SF_sf032
+      - SF_sf041
       - wa
       - wa_w23
       - wa_w51
