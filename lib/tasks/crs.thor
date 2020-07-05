@@ -8,6 +8,8 @@ class Crs < Thor
     require './lib/rsync'
     require 'erubis'
 
+    print "\n---\n"
+
     # chr set create.
     chr_sets = [
       CS_RIRINRA,
@@ -49,6 +51,8 @@ class Crs < Thor
 
     # tag create.
     TagCreate.new.activate
+
+    print "\n---\n"
 
     rsync = Giji::RSync.new
     rsync.each do |folder, protocol, set|
@@ -97,6 +101,8 @@ class Crs < Thor
       @rhtml_ultimate_out = "/www/giji_log/ultimate/rs/tag.pl"
       @rhtml_cabala_out   = "/www/giji_log/cabala/rs/tag.pl"
       @rhtml_lobby_out    = "/www/giji_log/lobby/rs/tag.pl"
+
+      print "  tag"
 
       File.open(@rhtml_src_testbed_out ,'w:sjis:utf-8'){|f| f.write( result ) }
       File.open(@rhtml_src_cabala_out  ,'w:sjis:utf-8'){|f| f.write( result ) }
@@ -179,6 +185,8 @@ class Crs < Thor
 
       @rhtml_content = "./asset/sow/crs.pl.erb"
       result = to_s
+
+      print "  #{@csid}"
 
       @rhtml_src_testbed_out = "/www/sow-giji/show-fix/rs/crs_" + @csid +".pl"
       @rhtml_src_angular_out = "/www/sow-giji/show-fix/rs/crs_" + @csid +".pl"

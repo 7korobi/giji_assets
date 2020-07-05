@@ -3622,6 +3622,17 @@
   - anarchism
   - T_s_n
 
+#########################
+# 2020-07-05
+
+- _id: sf041
+  name: 地球
+  comment: 
+  order: 80041
+  tag_ids:
+  - stratos
+
 
 #########################
 # xxxx-xx-xx update
+
