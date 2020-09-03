@@ -51,7 +51,7 @@
     "mochify": "^2.14.3",
     "node-bourbon": "~4.2.3",
     "node-neat": "~1.7.2",
-    "node-sass": "~3.4.2",
+    "node-sass": "~4.14.1",
     "sinon": "^1.17.2",
     "uglifyify": "^3.0.1",
     "vinyl-buffer": "^1.0.0",
