@@ -44,7 +44,7 @@
     "lodash": "^4.0.0",
     "memory-record": "*",
     "merge-stream": "~1.0.0",
-    "mithril": "^0.2.0",
+    "mithril": "^2.0.4",
     "mithril-canvas": "*",
     "mithril-giji": "*",
     "mocha": "^2.3.4",
