@@ -31,3 +31,7 @@ public/images/sow
 public/MagicTouch
 test/
 vendor/cache
+
+dist
+src/config/live.yml
+src/config/service_account.yml

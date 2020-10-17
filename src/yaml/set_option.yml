@@ -1,0 +1,28 @@
+
+select-role:
+  label: 役職希望
+  help: 役職希望を受け付ける
+
+random-target:
+  label: ランダム
+  help: 投票・能力の対象に「ランダム」を含める
+
+seq-event:
+  label: 整列事件
+  help: 事件が順序どおりに発生する
+
+show-id:
+  label: ID公開
+  help: ユーザーIDを公開する
+
+entrust:
+  label: 委任投票
+  help: 委任投票をする
+
+undead-talk:
+  label: 死後の会話
+  help: 狼・妖精と死者との間で、会話ができる
+
+aiming-talk:
+  label: 内緒話
+  help: ふたりだけの内緒話をすることができる

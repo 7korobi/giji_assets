@@ -1,0 +1,774 @@
+tarot:
+  jester:
+    name: Jester
+    label: 愚者
+    hebrew: א
+
+  magus:
+    name: Magus
+    label: 魔術師
+    hebrew: ב
+
+  popess:
+    name: Popess
+    label: 女教皇
+    hebrew: ג
+
+  empress:
+    name: Empress
+    label: 女帝
+    hebrew: ד
+
+  emperor:
+    name: Emperor
+    label: 皇帝
+    hebrew: צ
+
+  pope:
+    name: Pope
+    label: 教皇
+    hebrew: ו
+
+  lovers:
+    name: Lovers
+    label: 恋人
+    hebrew: ז
+
+  chariot:
+    name: Chariot
+    label: 戦車
+    hebrew: ח
+
+  justice:
+    name: Justice
+    label: 正義
+    hebrew: ל
+
+  hermit:
+    name: Hermit
+    label: 隠者
+    hebrew: י
+
+  wheel:
+    name: Wheel of Fortune
+    label: 運命の輪
+    hebrew: כ
+
+  fortitude:
+    name: Fortitude
+    label: 剛毅
+    hebrew: ט
+
+  hanged:
+    name: Hanged Man
+    label: 吊られ人
+    hebrew: מ
+
+  death:
+    name: Death
+    label: 死神
+    hebrew: נ
+
+  temperance:
+    name: Temperance
+    label: 節制
+    hebrew: ס
+
+  devil:
+    name: Devil
+    label: 悪魔
+    hebrew: ע
+
+  tower:
+    name: Tower
+    label: 塔
+    hebrew: פ
+
+  star:
+    name: Star
+    label: 星
+    hebrew: ה
+
+  moon:
+    name: Moon
+    label: 月
+    hebrew: ק
+
+  sun:
+    name: Sun
+    label: 太陽
+    hebrew: ר
+
+  judgement:
+    name: Judgement
+    label: 審判
+    hebrew: ש
+
+  world:
+    name: World
+    label: 世界
+    hebrew: ת
+
+
+
+zodiac:
+  Aries:
+    types: [IAU]
+    symbol: ♈
+    label: 白羊宮
+    hebrew: פ
+    ratio: 441.395
+
+  Taurus:
+    types: [IAU]
+    symbol: ♉
+    label: 金牛宮
+    hebrew: א
+    ratio: 797.249
+
+  Gemini:
+    types: [IAU]
+    symbol: ♊️
+    label: 双児宮
+    hebrew: ב
+    ratio: 513.761
+
+  Cancer:
+    types: [IAU]
+    name: Cancer
+    symbol: ♋️
+    label: 巨蟹宮
+    hebrew: ג
+    ratio: 505.872
+
+  Leo:
+    types: [IAU]
+    symbol: ♌
+    label: 獅子宮
+    hebrew: ד
+    ratio: 946.964
+
+  Virgo:
+    types: [IAU]
+    symbol: ️♍️
+    label: 処女宮
+    hebrew: ה
+    ratio: 1294.428
+
+  Libra:
+    types: [IAU]
+    symbol: ♎️
+    label: 天秤宮
+    hebrew: ו
+    ratio: 538.052
+
+  Scorpius:
+    types: [IAU]
+    symbol: ♏️
+    label: 天蝎宮
+    hebrew: י
+
+  Sagittarius:
+    types: [IAU]
+    symbol: ♐️
+    label: 人馬宮
+    hebrew: כ
+    ratio: 867.432
+
+  Capricorn:
+    types: [IAU]
+    name: Capricorn
+    symbol: ♑️
+    label: 磨羯宮
+    hebrew: ל
+    ratio: 497.783
+
+  Aquarius:
+    types: [IAU]
+    symbol: ♒️
+    label: 宝瓶宮
+    hebrew: מ
+    ratio: 979.854
+
+  Pisces:
+    types: [IAU]
+    symbol: ♓️
+    label: 双魚宮
+    hebrew: ס
+    ratio: 889.417
+
+  Ophiuchus:
+    types: [IAU]
+    symbol: ⛎
+    label: 蛇遣座
+    hebrew: ""
+    ratio: 948.340
+
+Ptolemaic:
+  Andromeda:
+    types: [IAU]
+    label: アンドロメダ座
+    ratio: 722.278
+  Aquila:
+    types: [IAU]
+    label: 鷲座
+    ratio: 652.473
+  Ara:
+    types: [IAU]
+    label: 祭壇座
+    ratio: 237.057
+  Auriga:
+    types: [IAU]
+    label: 御者座
+    ratio: 657.438
+  Bootes:
+    types: [IAU]
+    label: 牛飼座
+    ratio: 906.831
+  Canis Major:
+    types: [IAU]
+    label: 大犬座
+    ratio: 380.118
+  Canis Minor:
+    types: [IAU]
+    label: 小犬座
+    ratio: 183.367
+  Cassiopeia:
+    types: [IAU]
+    label: カシオペヤ座
+    ratio: 598.407
+  Centaurus:
+    types: [IAU]
+    label: ケンタウルス座
+    ratio: 1060.422
+  Cepheus:
+    types: [IAU]
+    label: ケフェウス座
+    ratio: 587.787
+  Cetus:
+    types: [IAU]
+    label: 鯨座
+    ratio: 1231.411
+  Corona Australis:
+    types: [IAU]
+    label: 南の冠座
+    ratio: 127.696
+  Corona Borealis:
+    types: [IAU]
+    label: 冠座
+    ratio: 178.710
+  Corvus:
+    types: [IAU]
+    label: 烏座
+    ratio: 183.801
+  Crater:
+    types: [IAU]
+    label: 杯座
+    ratio: 282.398
+  Cygnus:
+    types: [IAU]
+    label: 白鳥座
+    ratio: 803.983
+  Delphinus:
+    types: [IAU]
+    label: イルカ座
+    ratio: 188.549
+  Draco:
+    types: [IAU]
+    label: 竜座
+    ratio: 1082.952
+  Equuleus:
+    types: [IAU]
+    label: 仔馬座
+    ratio: 71.641
+  Eridanus:
+    types: [IAU]
+    label: エリダヌス座
+    ratio: 1137.919
+  Hercules:
+    types: [IAU]
+    label: ヘラクレス座
+    ratio: 1225.148
+  Hydra:
+    types: [IAU]
+    label: 海蛇座
+    ratio: 1302.844
+  Lepus:
+    types: [IAU]
+    label: 兎座
+    ratio: 290.291
+  Lupus:
+    types: [IAU]
+    label: 狼座
+    ratio: 333.683
+  Lyra:
+    types: [IAU]
+    label: 琴座
+    ratio: 286.476
+  Orion:
+    types: [IAU]
+    label: オリオン座
+    ratio: 594.997
+  Pegasus:
+    types: [IAU]
+    label: ペガスス座
+    ratio: 1120.794
+  Perseus:
+    types: [IAU]
+    label: ペルセウス座
+    ratio: 614.997
+  Piscis Austrinus:
+    types: [IAU]
+    label: 南の魚座
+    ratio: 245.375
+  Sagitta:
+    types: [IAU]
+    label: 矢座
+    ratio: 79.932
+  Serpens:
+    types: [IAU]
+    label: 蛇座
+    ratio: 636.928
+  Triangulum:
+    types: [IAU]
+    label: 三角座
+    ratio: 131.847
+  Ursa Major:
+    types: [IAU]
+    label: 大熊座
+    ratio: 1279.660
+  Ursa Minor:
+    types: [IAU]
+    label: 小熊座
+    ratio: 255.864
+
+Lacaille:
+  Antlia:
+    types: [IAU]
+    label: ポンプ座
+    ratio: 238.901
+  Caelum:
+    types: [IAU]
+    label: 彫刻具座
+    ratio: 124.865
+  Carina:
+    types: [IAU]
+    label: 竜骨座
+    ratio: 494.184
+  Circinus:
+    types: [IAU]
+    label: コンパス座
+    ratio: 93.353
+  Fornax:
+    types: [IAU]
+    label: 炉座
+    ratio: 397.502
+  Horologium:
+    types: [IAU]
+    label: 時計座
+    ratio: 248.885
+  Mensa:
+    types: [IAU]
+    label: テーブル山座
+    ratio: 153.484
+  Microscopium:
+    types: [IAU]
+    label: 顕微鏡座
+    ratio: 209.513
+  Norma:
+    types: [IAU]
+    label: 定規座
+    ratio: 165.290
+  Octans:
+    types: [IAU]
+    label: 八分儀座
+    ratio: 291.045
+  Pictor:
+    types: [IAU]
+    label: 画架座
+    ratio: 246.739
+  Puppis:
+    types: [IAU]
+    label: 艫座
+    ratio: 673.434
+  Pyxis:
+    types: [IAU]
+    label: 羅針盤座
+    ratio: 220.833
+  Reticulum:
+    types: [IAU]
+    label: レチクル座
+    ratio: 113.936
+  Sculptor:
+    types: [IAU]
+    label: 彫刻室座
+    ratio: 474.764
+  Telescopium:
+    types: [IAU]
+    label: 望遠鏡座
+    ratio: 251.512
+  Vela:
+    types: [IAU]
+    label: 帆座
+    ratio: 499.649
+
+Bayer:
+  Apus:
+    types: [IAU]
+    label: 風鳥座
+    ratio: 206.327
+  Chamaeleon:
+    types: [IAU]
+    label: カメレオン座
+    ratio: 131.592
+  Coma Berenices:
+    types: [IAU]
+    label: 髪の毛座
+    ratio: 386.475
+  Dorado:
+    types: [IAU]
+    label: 旗魚座
+    ratio: 179.173
+  Grus:
+    types: [IAU]
+    label: 鶴座
+    ratio: 365.513
+  Hydrus:
+    types: [IAU]
+    label: 水蛇座
+    ratio: 243.035
+  Indus:
+    types: [IAU]
+    label: インディアン座
+    ratio: 294.006
+  Musca:
+    types: [IAU]
+    label: 蝿座
+    ratio: 138.355
+  Pavo:
+    types: [IAU]
+    label: 孔雀座
+    ratio: 377.666
+  Phoenix:
+    types: [IAU]
+    label: 鳳凰座
+    ratio: 469.319
+  Triangulum Australe:
+    types: [IAU]
+    label: 南の三角座
+    ratio: 109.978
+  Tucana:
+    types: [IAU]
+    label: 巨嘴鳥座
+    ratio: 294.557
+  Volans:
+    types: [IAU]
+    label: 飛魚座
+    ratio: 141.354
+
+
+Plancius:
+  Camelopardalis:
+    types: [IAU]
+    label: 長頸鹿座
+    ratio: 756.828
+  Columba:
+    types: [IAU]
+    label: 鳩座
+    ratio: 270.184
+  Crux:
+    types: [IAU]
+    label: 南十字座
+    ratio: 68.447
+  Monoceros:
+    types: [IAU]
+    label: 一角獣座
+    ratio: 481.569
+
+Hevelius:
+  Canes Venatici:
+    types: [IAU]
+    label: 猟犬座
+    ratio: 465.194
+  Lacerta:
+    types: [IAU]
+    label: 蜥蜴座
+    ratio: 200.688
+  Leo Minor:
+    types: [IAU]
+    label: 小獅子座
+    ratio: 231.956
+  Lynx:
+    types: [IAU]
+    label: 山猫座
+    ratio: 545.386
+  Scutum:
+    types: [IAU]
+    label: 盾座
+    ratio: 109.114
+  Sextans:
+    types: [IAU]
+    label: 六分儀座
+    ratio: 313.515
+  Vulpecula:
+    types: [IAU]
+    label: 小狐座
+    ratio: 268.165
+
+planet:
+  sun:
+    symbol: ☉
+    label: 太陽
+
+  mercury:
+    symbol: ☿
+    label: 水星
+
+  venus:
+    symbol: ♀
+    label: 金星
+
+  earth:
+    symbol: 🜨
+    label: 地球
+
+  moon:
+    symbol: ☾
+    label: 月
+
+  mars:
+    symbol: ♂
+    label: 火星
+
+  jupiter:
+    symbol: ♃
+    label: 木星
+
+  saturn:
+    symbol: ♄
+    label: 土星
+
+  uranus:
+    symbol: ⛢
+    label: 天王星
+
+  neptune:
+    symbol: ♆
+    label: 海王星
+
+  pluto:
+    symbol: ♇
+    label: 冥王星
+
+  ceres:
+    symbol: ⚳
+    label: ケレス
+
+  pallas:
+    symbol: ⚴
+    label: パラス
+
+  juno:
+    symbol: ⚵
+    label: ジュノー
+
+  vesta:
+    symbol: ⚶
+    label: ヴェスタ
+
+  chiron:
+    symbol: ⚷
+    label: キロン
+
+  lilith:
+    symbol: ⚸
+    label: リリス
+
+  dragonhead:
+    symbol: ☊
+    label: 羅睺
+
+  dragontail:
+    symbol: ☋
+    label: 計都
+
+  comet:
+    symbol: ☄
+    label: 彗星
+
+chess:
+  White King:
+    ratio: 1
+    symbol: ♔
+    label: 白王
+
+  White Queen:
+    ratio: 1
+    symbol: ♕
+    label: 白妃
+
+  White Rook:
+    ratio: 2
+    symbol: ♖
+    label: 白塔
+  
+  White Bishop:
+    ratio: 2
+    symbol: ♗
+    label: 白僧
+  
+  White Knight:
+    ratio: 2
+    symbol: ♘
+    label: 白騎
+
+  White Pawn:
+    ratio: 8
+    symbol: ♙
+    label: 白兵
+
+  Black King:
+    ratio: 1
+    symbol: ♚
+    label: 黒王
+
+  Black Queen:
+    ratio: 1
+    symbol: ♛
+    label: 黒妃
+
+  Black Rook:
+    ratio: 2
+    symbol: ♜
+    label: 黒塔
+  
+  Black Bishop:
+    ratio: 2
+    symbol: ♝
+    label: 黒僧
+  
+  Black Knight:
+    ratio: 2
+    symbol: ♞
+    label: 黒騎
+
+  Black Pawn:
+    ratio: 8
+    symbol: ♟
+    label: 黒兵
+
+weather:
+  fine:
+    ratio: 8
+    symbol: ☀
+    label: 晴天
+
+  partly:
+    ratio: 8
+    symbol: 🌤️
+    label: 曇晴
+
+  cloudy:
+    ratio: 8
+    symbol: ☁
+    label: 曇天
+
+  fog:
+    ratio: 1
+    symbol: 🌁
+    label: 霧中
+
+  rainy:
+    ratio: 8
+    symbol: ☂
+    label: 降雨
+
+  outrain:
+    ratio: 8
+    symbol: 🌂
+    label: 雨後
+
+  shower:
+    ratio: 8
+    symbol: ☔
+    label: 俄雨
+
+  thunder:
+    ratio: 1
+    symbol: ⚡
+    label: 落雷
+
+  twister:
+    ratio: 1
+    symbol: 🌪
+    label: 竜巻
+
+  thunderstorm:
+    ratio: 1
+    symbol: ⛈️
+    label: 雷雨
+
+  rainbow:
+    ratio: 2
+    symbol: 🌈
+    label: 虹天
+
+coin:
+  front:
+    ratio: 500
+    label: 表
+  back:
+    ratio: 500
+    label: 裏
+  stand:
+    ratio: 1
+    label: 立った
+
+eto10:
+  甲:
+    name: きのえ
+  乙:
+    name: きのと
+  丙:
+    name: ひのえ
+  丁:
+    name: ひのと
+  戊:
+    name: つちのえ
+  己:
+    name: つちのと
+  庚:
+    name: かのえ
+  辛:
+    name: かのと
+  壬:
+    name: みずのえ
+  癸:
+    name: みずのと
+
+eto12:
+  子:
+    name: ね
+  丑:
+    name: うし
+  寅:
+    name: とら
+  卯:
+    name: う
+  辰:
+    name: たつ
+  巳:
+    name: み
+  午:
+    name: うま
+  未:
+    name: ひつじ
+  申:
+    name: さる
+  酉:
+    name: とり
+  戌:
+    name: いぬ
+  亥:
+    name: い
+

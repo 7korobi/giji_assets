@@ -1,0 +1,162 @@
+giji:
+  label: 人狼議事
+  long: 「人狼議事」のキャラクター
+  head: 人狼議事
+  tag_id: all
+  chr_set_id: ririnra
+  face_sort: [ face.order, asc ]
+  order: 1000
+
+G_a_k:
+  label: あ〜こ
+  long: 「人狼議事」の名前が あ、か 行のキャラクター名簿
+  head: 人狼議事
+  tag_id: giji
+  chr_set_id: ririnra
+  face_sort: [ face.q.head, asc ]
+  order: 1001
+
+G_s_t:
+  label: さ〜と
+  long: 「人狼議事」の名前が さ、た 行のキャラクター名簿
+  head: 人狼議事
+  tag_id: giji
+  chr_set_id: ririnra
+  face_sort: [ face.q.head, asc ]
+  order: 1002
+
+G_n_h:
+  label: な〜ほ
+  long: 「人狼議事」の名前が な、は 行のキャラクター名簿
+  head: 人狼議事
+  tag_id: giji
+  chr_set_id: ririnra
+  face_sort: [ face.q.head, asc ]
+  order: 1003
+
+G_m_w:
+  label: ま〜を
+  long: 「人狼議事」の名前が ま、や、ら、わ 行のキャラクター名簿
+  head: 人狼議事
+  tag_id: giji
+  chr_set_id: ririnra
+  face_sort: [ face.q.head, asc ]
+  order: 1004
+
+
+
+travel:
+  label: 帰還者議事
+  long: 「帰還者議事」のキャラクター
+  head: 帰還者議事
+  tag_id: all
+  chr_set_id: time
+  face_sort: [ face.order, asc ]
+  order: 2000
+
+T_a_k:
+  label: あ〜こ
+  long: 「帰還者議事」の名前が あ、か 行のキャラクター名簿
+  head: 帰還者議事
+  tag_id: travel
+  chr_set_id: time
+  face_sort: [ face.q.head, asc ]
+  order: 2001
+
+T_s_n:
+  label: さ〜の
+  long: 「帰還者議事」の名前が さ、た、な 行のキャラクター名簿
+  head: 帰還者議事
+  tag_id: travel
+  chr_set_id: time
+  face_sort: [ face.q.head, asc ]
+  order: 2002
+
+T_h_w:
+  label: は〜を
+  long: 「帰還者議事」の名前が は、ま、や、ら、わ 行のキャラクター名簿
+  head: 帰還者議事
+  tag_id: travel
+  chr_set_id: time
+  face_sort: [ face.q.head, asc ]
+  order: 2003
+
+all:
+  label: すべて
+  long: 「人狼議事 ちゃんぷる」のキャラクター
+  chr_set_id: all
+  face_sort: [ face.order, asc ]
+  order: 0
+
+animal:
+  label: うきうきサバンナ
+  long: 「うきうきサバンナ」のキャラクター
+  head: エキスパンション・セット
+  tag_id: all
+  chr_set_id: animal
+  face_sort: [ face.order, asc ]
+  order: 4001
+
+
+school:
+  label: 私立七転学園
+  long: 「私立七転学園」のキャラクター
+  head: エキスパンション・セット
+  tag_id: all
+  chr_set_id: school
+  face_sort: [ face.order, asc ]
+  order: 4002
+
+shoji:
+  label: てやんでえ
+  long: 「和の国てやんでえ」のキャラクター
+  head: エキスパンション・セット
+  tag_id: all
+  chr_set_id: wa
+  face_sort: [ face.order, asc ]
+  order: 3001
+
+stratos:
+  label: 明後日への道標
+  long: 「明後日への道標」のキャラクター
+  head: エキスパンション・セット
+  tag_id: all
+  chr_set_id: sf
+  face_sort: [ face.order, asc ]
+  order: 3002
+
+fable:
+  label: 幻日世界
+  long: 「幻日世界」のキャラクター
+  head: エキスパンション・セット
+  tag_id: all
+  chr_set_id: fable
+  face_sort: [ face.order, asc ]
+  order: 3003
+
+myth:
+  label: はおうのひろば
+  long: 「はおうのひろば」のキャラクター
+  head: エキスパンション・セット
+  tag_id: all
+  chr_set_id: changed
+  face_sort: [ face.order, asc ]
+  order: 3004
+
+marchen:
+  label: 狂騒議事
+  long: 「狂騒議事」のキャラクター
+  head: エキスパンション・セット
+  tag_id: all
+  chr_set_id: mad
+  face_sort: [ face.order, asc ]
+  order: 3005
+
+asia:
+  label: 大陸議事
+  long: 「大陸議事」のキャラクター
+  head: エキスパンション・セット
+  tag_id: all
+  chr_set_id: ger
+  face_sort: [ face.order, asc ]
+  order: 3006

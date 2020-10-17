@@ -1,0 +1,30 @@
+  nothing:
+    label: 普通の日
+  aprilfool:
+    label: 四月馬鹿
+  turnfink:
+    label: 二重スパイ
+  turnfairy:
+    label: 妖精の輪
+  eclipse:
+    label: 日蝕
+  cointoss:
+    label: Sir Cointoss
+  force:
+    label: 影響力
+  miracle:
+    label: 奇跡
+  prophecy:
+    label: 聖者のお告げ
+  clamor:
+    label: 不満
+  fire:
+    label: 熱意
+  nightmare:
+    label: 悪夢
+  ghost:
+    label: 亡霊
+  escape:
+    label: 逃亡
+  seance:
+    label: 降霊会

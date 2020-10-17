@@ -2,10 +2,10 @@ chr_set:
   _id: wa
   admin: "闇の呟き"
   maker: "稲荷のお告げ"
-  caption: "和の国てやんでえ"
+  label: "和の国てやんでえ"
 
 chr_npc:
-  - caption: "和の国てやんでえ"
+  - label: "和の国てやんでえ"
     csid: wa
     face_id: w17
     say_0: |-
@@ -13,7 +13,7 @@ chr_npc:
     say_1: |-
       逃げろ。逃げろ！　おまえらだけでも逃げろ。
 
-  - caption: "和の国てやんでえ（仁右衛門）"
+  - label: "和の国てやんでえ（仁右衛門）"
     csid: wa_w23
     face_id: w23
     say_0: |-
@@ -21,7 +21,7 @@ chr_npc:
     say_1: |-
       やっぱり人狼は実在するんだヨ！　うっひょひょーい！
 
-  - caption: "和の国てやんでえ（鬼丞）"
+  - label: "和の国てやんでえ（鬼丞）"
     csid: wa_w51
     face_id: w51
     say_0: |-

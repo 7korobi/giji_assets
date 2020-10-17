@@ -1,0 +1,181 @@
+secret:
+  label: 詳細は黒幕だけが知っています。
+  disabled: true
+  role_ids_list: []
+
+ultimate:
+  label: アルティメット
+  disabled: true
+  role_ids_list: []
+
+lover:
+  label: 恋愛天使
+  disabled: true
+  role_ids_list: []
+
+hamster:
+  label: ハムスター
+  disabled: true
+  role_ids_list: []
+
+random:
+  label: ランダム
+  disabled: true
+  role_ids_list: []
+
+custom:
+  label: 自由設定
+  role_ids_list: []
+
+default:
+  label: 標準
+  role_ids_list: [null, null, null, null
+    , [ villager, villager, seer, wolf ] # 4
+    , [ villager, villager, seer, wolf, villager ] # 5
+    , [ villager, villager, seer, wolf, villager, villager ] # 6
+    , [ villager, villager, seer, wolf, villager, villager, villager ] # 7
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard ] # 8
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, villager ] # 9
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, possess, medium ] # 10
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, possess, medium, villager ] # 11
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, fanatic, medium, villager, villager ] # 12
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, possess, medium, villager, possess, stigma ] # 13
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, possess, medium, villager, possess, stigma, villager ] # 14
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, wisper,  medium, villager, villager, villager, villager, villager ] # 15
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, possess, medium, villager, possess, fm, fm, villager, villager ] # 16
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, possess, medium, villager, possess, fm, fm, villager, villager, villager ] # 17
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, possess, medium, villager, possess, fm, fm, villager, villager, villager, villager ] # 18
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, possess, medium, villager, possess, fm, fm, villager, villager, villager, villager, villager ] # 19
+    , [ villager, villager, seer, wolf, villager, villager, decide, wolf, guard, possess, medium, villager, possess, fm, fm, villager, villager, villager, villager, villager, villager ] # 20
+  ]
+
+mistery:
+  label: 深い霧の夜
+  role_ids_list: [null, null, null, null
+    , [ villager, villager, seer,  lonewolf ] # 4
+    , [ villager, villager, seer,  lonewolf,        alchemist ] # 5
+    , [ villager, villager, guard, lonewolf,        alchemist, possess ] # 6
+    , [ villager, villager, guard, lonewolf,        alchemist, decide, possess, fan ] # 7
+    , [ villager, villager, guard, wolf, wolf,      alchemist, decide, aura, doctor ] # 8
+    , [ villager, villager, guard, wolf, wolf,      alchemist, decide, aura, doctor, villager ] # 9
+    , [ villager, villager, guard, wolf, childwolf, alchemist, decide, aura, doctor, villager, villager ] # 10
+    , [ villager, villager, guard, wolf, childwolf, alchemist, decide, aura, doctor, villager, seer, villager ] # 11
+    , [ villager, villager, guard, wolf, childwolf, alchemist, decide, aura, doctor, villager, seer, hunter, villager ] # 12
+    , [ villager, villager, guard, wolf, childwolf, alchemist, decide, aura, doctor, villager, seer, hunter, medium, jammer ] # 13
+    , [ villager, villager, guard, wolf, childwolf, alchemist, decide, aura, doctor, villager, seer, hunter, medium, jammer, alchemist ] # 14
+    , [ villager, villager, guard, wolf, childwolf, alchemist, decide, aura, doctor, villager, seer, hunter, medium, jammer, curse, witch ] # 15
+    , [ villager, villager, guard, wolf, childwolf, alchemist, decide, aura, doctor, villager, seer, hunter, medium, jammer, curse, witch, wolf ] # 16
+    , [ villager, villager, guard, wolf, childwolf, alchemist, decide, aura, doctor, villager, seer, hunter, medium, jammer, curse, witch, wolf, girl ] # 17
+    , [ villager, villager, guard, wolf, childwolf, alchemist, decide, aura, doctor, villager, seer, hunter, medium, jammer, curse, witch, wolf, girl, fan ] # 18
+    , [ villager, villager, guard, wolf, childwolf, alchemist, decide, aura, doctor, villager, seer, hunter, medium, jammer, curse, witch, wolf, girl, fan, guru ] # 19
+    , [ villager, villager, guard, wolf, childwolf, alchemist, decide, aura, doctor, villager, seer, hunter, medium, jammer, curse, witch, wolf, girl, fan, guru, alchemist ] # 20
+  ]
+
+test1st:
+  label: 人狼審問試験壱型
+  role_ids_list: [null, null, null, null
+    , [ villager, villager, seer, wolf ] # 4
+    , [ villager, villager, seer, wolf, villager ] # 5
+    , [ villager, villager, seer, wolf, villager, villager ] # 6
+    , [ villager, villager, seer, wolf, villager, villager, villager ] # 7
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf ] # 8
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium ] # 9
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess ] # 10
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard ] # 11
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager ] # 12
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, stigma, possess ] # 13
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, stigma, possess, villager ] # 14
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, stigma, villager, wolf, villager ] # 15
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, stigma, villager, wolf, villager, stigma ] # 16
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, stigma, villager, wolf, villager, stigma, villager ] # 17
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, stigma, villager, wolf, villager, stigma, villager, villager ] # 18
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, stigma, villager, wolf, villager, villager, fm, fm, possess ] # 19
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, stigma, villager, wolf, villager, villager, fm, fm, possess, villager ] # 20
+  ]
+
+test2nd:
+  label: 人狼審問試験弐型
+  role_ids_list: [null, null, null, null
+    , [ villager, villager, seer, wolf ] # 4
+    , [ villager, villager, seer, wolf, villager ] # 5
+    , [ villager, villager, seer, wolf, villager, villager ] # 6
+    , [ villager, villager, seer, wolf, villager, villager, villager ] # 7
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf ] # 8
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium ] # 9
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, fanatic ] # 10
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, fanatic, guard ] # 11
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, fanatic, guard, villager ] # 12
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, fanatic, guard, villager, villager ] # 13
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, fanatic, guard, villager, villager, villager ] # 14
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, fanatic, guard, villager, villager, villager, villager ] # 15
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, fanatic, guard, villager, villager, wolf, fm, fm ] # 16
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, fanatic, guard, villager, villager, wolf, fm, fm, villager ] # 17
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, fanatic, guard, villager, villager, wolf, fm, fm, villager, villager ] # 18
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, fanatic, guard, villager, villager, wolf, fm, fm, villager, villager, villager ] # 19
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, fanatic, guard, villager, villager, wolf, fm, fm, villager, villager, villager, villager ] # 20
+  ]
+
+wbbs_c:
+  label: 人狼BBS-C国
+  role_ids_list: [null, null, null, null
+    , [ villager, villager, seer, wolf ] # 4
+    , [ villager, villager, seer, wolf, villager ] # 5
+    , [ villager, villager, seer, wolf, villager, villager ] # 6
+    , [ villager, villager, seer, wolf, villager, villager, villager ] # 7
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf ] # 8
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium ] # 9
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, wisper ] # 10
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, wisper, guard ] # 11
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, wisper, guard, villager ] # 12
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, wisper, guard, villager, villager ] # 13
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, wisper, guard, villager, villager, villager ] # 14
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, wisper, guard, villager, villager, wolf, villager ] # 15
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, wisper, guard, villager, villager, wolf, fm, fm ] # 16
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, wisper, guard, villager, villager, wolf, fm, fm, villager ] # 17
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, wisper, guard, villager, villager, wolf, fm, fm, villager, villager ] # 18
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, wisper, guard, villager, villager, wolf, fm, fm, villager, villager, villager ] # 19
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, wisper, guard, villager, villager, wolf, fm, fm, villager, villager, villager, villager ] # 20
+  ]
+wbbs_f:
+  label: 人狼BBS-F国
+  role_ids_list: [null, null, null, null
+    , [ villager, villager, seer, wolf ] # 4
+    , [ villager, villager, seer, wolf, villager ] # 5
+    , [ villager, villager, seer, wolf, villager, villager ] # 6
+    , [ villager, villager, seer, wolf, villager, villager, villager ] # 7
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf ] # 8
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium ] # 9
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess ] # 10
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard ] # 11
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager ] # 12
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, villager ] # 13
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, villager, villager ] # 14
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, villager, wolf, villager ] # 15
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, villager, wolf, fm, fm ] # 16
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, villager, wolf, fm, fm, villager ] # 17
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, villager, wolf, fm, fm, villager, villager ] # 18
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, villager, wolf, fm, fm, villager, villager, villager ] # 19
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, villager, wolf, fm, fm, villager, villager, villager, villager ] # 20
+  ]
+
+wbbs_g:
+  label: 人狼BBS-G国
+  role_ids_list: [null, null, null, null
+    , [ villager, villager, seer, wolf ] # 4
+    , [ villager, villager, seer, wolf, villager ] # 5
+    , [ villager, villager, seer, wolf, villager, villager ] # 6
+    , [ villager, villager, seer, wolf, villager, villager, villager ] # 7
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf ] # 8
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium ] # 9
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess ] # 10
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard ] # 11
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager ] # 12
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, wolf ] # 13
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, wolf, villager ] # 14
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, wolf, villager, villager ] # 15
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, wolf, villager, villager, villager ] # 16
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, wolf, villager, villager, villager, villager ] # 17
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, wolf, villager, villager, villager, villager, villager ] # 18
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, wolf, villager, villager, villager, villager, villager, villager ] # 19
+    , [ villager, villager, seer, wolf, villager, villager, villager, wolf, medium, possess, guard, villager, wolf, villager, villager, villager, villager, villager, villager, villager ] # 20
+  ]

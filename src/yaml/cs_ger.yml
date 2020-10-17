@@ -2,10 +2,10 @@ chr_set:
   _id: ger
   admin: "闇の呟き"
   maker: "馬頭琴の調"
-  caption: "エクスパンション・セット「大陸議事」"
+  label: "エクスパンション・セット「大陸議事」"
 
 chr_npc:
-  - caption: "エクスパンション・セット「大陸議事」"
+  - label: "エクスパンション・セット「大陸議事」"
     csid: ger
     face_id: g03
     say_0: |-
@@ -51,3 +51,4 @@ chr_job:
 
   - face_id: g09
     job: 炉の番
+    comment: 末っ子なのです。モンゴルの末子相続制度では、オッチギン（火の王子、炉の番人）と呼ばれる。
