@@ -1,0 +1,51 @@
+#export {
+  border-collapse: separate;
+  border-spacing: 3px;
+  padding: 40px 0;
+  display: grid;
+  justify-content: center;
+  grid-template-areas: ". . .";
+  grid-gap: 0 4px;
+}
+
+.welcome-btns {
+  text-align: center;
+  background-color: rgba(64, 82, 80, 0.8);
+}
+
+.welcome-links {
+  white-space: pre;
+  padding: 0.5ex;
+  background-color: rgba(23, 47, 31, 0.4);
+}
+
+.col4 {
+  grid-column: 1/4;
+}
+
+.cap {
+  border-radius: 9px 9px 0 0;
+}
+
+.shoe {
+  border-radius: 0 0 9px 9px;
+  padding: 0.5ex;
+}
+
+#welcome {
+  object-fit: cover;
+  background-size: cover;
+}
+
+h1 {
+  height: 140px;
+  text-align: center;
+  transform-origin: center bottom;
+  line-height: 140px;
+}
+h1 a {
+  background: transparent !important;
+  white-space: pre;
+  font-size: 55px;
+  line-height: 55px;
+}

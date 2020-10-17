@@ -675,6 +675,8 @@ CRAZY:
       BASEDIR_CGIERR: http://crazy-crazy.sakura.ne.jp//crazy
       NAME_HOME:      人狼議事 crazy<br>- Role Play braid -
       MAX_VILLAGES:   2
+      ENABLED_VMAKE:  0
+
     path:
       <<: *SIMPLE_PATH
       DIR_LIB:  ./lib
