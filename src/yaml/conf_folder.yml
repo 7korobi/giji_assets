@@ -388,6 +388,40 @@ ALLSTAR_OLD:
       DIR_VIL:  ../jksy/data/vil
     pl:  /www/giji_log/allstar/config.pl
 
+ALLSTAR:
+  folder: ALLSTAR
+  nation: "人狼議事大乱闘:AllStar"
+  vid_code: A
+
+  server: jinro.jksy.org
+  oldlog:   /~nanakorobi?cmd=oldlog&rowall=on
+  livelog:  /~nanakorobi?cmd=rss
+  info_url: /~nanakorobi?ua=mb&vid=%s&cmd=vinfo
+  epi_url:  /~nanakorobi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+
+  story:
+    evil: EVIL
+    role_play: false
+
+  config:
+    <<: *config_all
+    enable:
+      <<: *enable
+      ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
+      ENABLED_AIMING: [0, "1:対象を指定した発言（内緒話）を含める"]
+    cfg:
+      <<: *cfg_braid
+      RULE:           ALLSTAR
+      URL_SW:         http://jinro.jksy.org/~nanakorobi
+      BASEDIR_CGIERR: http://jinro.jksy.org//~nanakorobi
+      NAME_HOME:      人狼議事 大乱闘All☆Star
+      MAX_VILLAGES:   4
+      TIMEOUT_ENTRY:  3
+      TIMEOUT_SCRAP: 10
+      ENABLED_VMAKE:  0
+    path:
+      <<: *SIMPLE_PATH
+    pl:  /www/giji_log/jksy/config.pl
 
 ULTIMATE:
   folder: ULTIMATE
@@ -719,42 +753,44 @@ CABALA:
       <<: *SIMPLE_PATH
     pl:  /www/giji_log/cafe/config.pl
 
+DAIS:
+  folder: DAIS
+  nation: "人狼議事RP:Dais"
+  vid_code: D
 
-ALLSTAR:
-  folder: ALLSTAR
-  nation: "人狼議事大乱闘:AllStar"
-  vid_code: A
-
-  server: jinro.jksy.org
-  oldlog:   /~nanakorobi?cmd=oldlog&rowall=on
-  livelog:  /~nanakorobi?cmd=rss
-  info_url: /~nanakorobi?ua=mb&vid=%s&cmd=vinfo
-  epi_url:  /~nanakorobi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
+  server: dais.nazo.cc
+  oldlog:   /sow.cgi?cmd=oldlog&rowall=on
+  livelog:  /sow.cgi?cmd=rss
+  info_url: /sow.cgi?\ua=mb&vid=%s&cmd=vinfo
+  epi_url:  /sow.cgi?ua=mb&vid=%s&turn=%s&move=page&pageno=1&row=50
 
   story:
-    evil: EVIL
-    role_play: false
+    evil: WOLF
+    role_play: true
 
   config:
-    <<: *config_all
+    <<: *config_braid
+    saycnt:
+      - infinity
     enable:
-      <<: *enable
-      ENABLED_UNDEAD: [1, "1:幽界トーク村を設定可能"]
-      ENABLED_AIMING: [0, "1:対象を指定した発言（内緒話）を含める"]
+      <<: *enable_braid
+      ENABLED_AIMING: [1, "1:対象を指定した発言（内緒話）を含める"]
     cfg:
       <<: *cfg_braid
-      RULE:           ALLSTAR
-      URL_SW:         http://jinro.jksy.org/~nanakorobi
-      BASEDIR_CGIERR: http://jinro.jksy.org//~nanakorobi
-      NAME_HOME:      人狼議事 大乱闘All☆Star
-      MAX_VILLAGES:   4
-      TIMEOUT_ENTRY:  3
-      TIMEOUT_SCRAP: 10
+      URL_SW:         http://dais.nazo.cc/
+      BASEDIR_CGIERR: http://dais.nazo.cc//
+      NAME_HOME:      人狼議事 Dais -
+      MAX_VILLAGES:   2
       ENABLED_VMAKE:  0
+
     path:
       <<: *SIMPLE_PATH
-    pl:  /www/giji_log/jksy/config.pl
-
+      DIR_LIB:  ./lib
+      DIR_HTML: ./html
+      DIR_RS:   ./rs
+      DIR_VIL:  ./data/vil
+      DIR_USER: ./data/user
+    pl:  /www/giji_log/dais/config.pl
 
 LOBBY_OLD:
   folder: LOBBY_OLD

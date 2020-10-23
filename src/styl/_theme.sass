@@ -1,0 +1,360 @@
+@import "./_theme_data"
+
+@mixin Glowing($a, $blur, $col)
+  $b: 0 - $a
+  text-shadow: 0 0 0.5px $col, $a $a $blur $col, 0 $a $blur $col, $b $a $blur $col, $a 0 $blur $col, $b 0 $blur $col, $a $b $blur $col, 0 $b $blur $col, $b $b $blur $col
+
+@mixin Marker($size, $col)
+  background:  linear-gradient(transparent $size, $col 0)
+
+@function fix($col, $SS, $LL)
+  $_col: saturate( $col, $SS )
+  @if 0 == $LL
+    @return $_col
+  @if 0 < $LL
+    @return lighten( $_col, $LL )
+  @if $LL < 0
+    @return darken( $_col, -$LL )
+
+
+@mixin palette($theme_id, $type, $idx)
+  @each $key, $bgTheme in map-get( $themes, $theme_id )
+    +palette_single($bgTheme, $type, $idx, $key)
+
+@function palette_bg($type, $idx, $key)
+  @return nth( map-get( $bgs, "#{$type}#{$key}"), $idx )
+
+@function palette_pen($type, $idx, $key)
+  @return nth( map-get( $pens, "#{$type}#{$key}"), $idx )
+
+@mixin palette_single($bgTheme, $type, $idx, $key)
+  $btn:  nth( map-get( $btns  ,"#{$type}#{$key}" ), $idx )
+  $grad: nth( map-get( $grads ,"#{$type}#{$key}" ), $idx )
+  $bg:   nth( map-get( $bgs   ,"#{$type}#{$key}" ), $idx )
+  $edge: nth( map-get( $edges ,"#{$type}#{$key}" ), $idx )
+  $line: nth( map-get( $lines ,"#{$type}#{$key}" ), $idx )
+  $pen:  nth( map-get( $pens  ,"#{$type}#{$key}" ), $idx )
+  $bold: nth( map-get( $bolds ,"#{$type}#{$key}" ), $idx )
+
+  $themeName: 'bubble'
+
+  $dd:   map-get( $hues_d, $key )
+
+  $emboss: $edge
+  $focus:  fix($edge, 0, -10)
+
+  $offG: fix($grad, 20, -10)
+  $onG:  fix($grad, 20,  10)
+
+  $bgHi: $btn
+  $off:  fix($bgHi, 20, -10)
+  $on:   fix($bgHi, 20,  10)
+
+  $baloon: $bg
+  $hide:   mix($bg, $bold, 50%)
+
+  $shade:  0
+  $mono_url: ""
+  @if white == $bold
+    $shade: fix($bg,  0, -15)
+    $mono_url: url("/images/bg/grid-w.png")
+  @if black == $bold
+    $shade: fix($bg,  0,  15)
+    $mono_url: url("/images/bg/grid-b.png")
+  @if 'G' == $type
+    $off: transparent
+
+  @each $theme in $bgTheme
+    .#{$theme}
+      color:            $pen
+      background-color: $bg
+      border-color:     $edge
+      text-emphasis-color:   $line
+      text-decoration-color: $line
+
+      pre,
+      .text.mono
+        background-image: $mono_url
+
+      .text.head:first-line
+        color: $bold
+
+      &.baloon
+        border-color: $baloon
+
+      hr,
+      hr:after,
+      hr:before,
+        border-color: $emboss
+
+      hr.stripe
+      	background-image: linear-gradient(-70deg,transparent 35%,$emboss 45%, $emboss 55%,transparent 65%)
+
+      .col2,
+      .col3,
+      .colX,
+      .col_wide,
+      .col_narrow,
+      .column,
+        column-rule-color: $emboss
+
+      blockquote
+        border-color: $edge
+      
+      // SVG
+      rect.cluster,
+      .cluster > rect,
+        stroke: $shade
+
+      rect.pen,
+      .pen > rect,
+        fill:  $off
+        stroke: $on
+
+      rect.path,
+      .path > rect,
+        fill:  $off
+        stroke: $line
+
+      .edgePath
+        > circle,
+        > path.fill,
+          fill: $line
+          &:focus-within,
+            fill: $focus
+        > path.path
+          stroke: $line
+          &:focus-within,
+            stroke: $focus
+
+      text.pen,
+      text.pen > tspan,
+      text.path,
+      text.path > tspan,
+        fill: $pen
+
+      ul[data-checked=true],
+      ul[data-checked=false],
+        pointer-events: none
+        > li::before
+          color: #777
+
+    fieldset
+      body &.#{$theme},
+      .#{$theme} &,
+        color:            $pen
+        border-color:     $edge
+
+    input,
+    select,
+      body &.#{$theme},
+      .#{$theme} &,
+        color:            $pen
+        background-color: $off
+        border-color:     $edge
+
+    textarea
+      body &.#{$theme},
+      .#{$theme} &,
+        color:            $pen
+        background-color: $bg
+        border-color:     $edge
+
+    [data-ruby]:before,
+      body &.#{$theme},
+      .#{$theme} &,
+        color: $bold
+
+    b,
+    em,
+    strong,
+    th,
+    rt,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+      body &.#{$theme},
+      .#{$theme} &,
+        color: $bold
+
+    h1,
+    h2,
+      body &.#{$theme},
+      .#{$theme} &,
+        +Glowing(2.0px, 1.5px, $shade)
+
+    h3,
+    h4,
+      body &.#{$theme},
+      .#{$theme} &,
+        +Glowing(1.5px, 1.0px, $shade)
+
+    h5,
+    h6,
+      body &.#{$theme},
+      .#{$theme} &,
+        +Glowing(1.0px, 0.5px, $shade)
+
+    label.btn,
+    label,
+    label[title],
+    label[cite],
+      body &.#{$theme},
+      .#{$theme} &,
+        background-color: $bgHi
+        color: $bold 
+
+    .ban,
+    .trix-dialog,
+    abbr.btn,
+    abbr,
+    abbr[title],
+    abbr[cite],
+      body &.#{$theme},
+      .#{$theme} &,
+        background-color: $emboss
+        color: $bg
+
+    .note
+      body &.#{$theme},
+      .#{$theme} &,
+        color: $hide
+        border-color: $off
+
+    legend,
+      body &.#{$theme},
+      .#{$theme} &,
+        background-color: $bgHi
+        color: $hide
+
+    del,
+    .warn,
+    .name,
+    .date,
+      body &.#{$theme},
+      .#{$theme} &,
+        color: $hide
+
+    input[type=checkbox],
+    input[type=radio],
+      body &.#{$theme},
+      .#{$theme} &,
+        color: $pen
+        Marker(40%, $off)
+
+    [title],
+    [data-tooltip],
+      body &.#{$theme}:before,
+      .#{$theme} &:before,
+        background-color: $bgHi
+        border-color: $off
+      body &.#{$theme}:after,
+      .#{$theme} &:after,
+        text-shadow: none
+        color: $pen
+        background-color: $bgHi
+        border-color: $off
+
+    .bar
+      body &.#{$theme},
+      .#{$theme} &,
+        text-shadow: none
+        color: $emboss
+        background-color: $bg
+
+    input[type=submit],
+    input[type=button],
+    button,
+    .btn,
+    [href],
+      body &.#{$theme},
+      .#{$theme} &,
+        color: $pen
+        border-color:     $off
+        background-color: $off
+
+        &:link
+          color: $pen
+
+        &.visited,
+        &:visited,
+          color: $pen
+
+        &.contain
+          color: $bold
+
+        &.nuxt-link-exact-active,
+        &.active,
+        &.trix-active,
+        &:active,
+        &:checked,
+          background: linear-gradient( 30deg, $onG, $on, $onG )
+
+    .name,
+    .btn,
+    .label,
+    a,
+    [href],
+      body &.#{$theme},
+      .#{$theme} &,
+        sup, sub, .badge
+          background-color: $emboss
+          color: $bg
+
+    kbd,
+    code,
+      body &.#{$theme},
+      .#{$theme} &,
+        color: $pen
+        background-color: $bgHi
+
+    [title],
+    [cite],
+      body &.#{$theme},
+      .#{$theme} &,
+        color: $bold
+
+    // focus setting
+    ::hover,
+    ::focus-within,
+    .hover,
+    .focus,
+      body &.#{$theme},
+      .#{$theme} &,
+        border-color: $focus
+
+    body th.#{$theme},
+    .#{$theme} th,
+      border-color: $focus
+
+    input,
+    select,
+    textarea,
+    fieldset,
+      body .focus &.#{$theme},
+      .#{$theme}.focus &,
+        border-color: $focus
+
+      hr,
+      hr:after,
+        border-color: $focus
+
+      .col2,
+      .col3,
+        column-rule-color: $focus
+
+    .#{$theme},
+      rect.move,
+      .move > rect,
+        stroke: $focus
+
+    // bold setting
+    .point,
+      body &.#{$theme},
+      .#{$theme} &,
+        border-color: $bold
+
+

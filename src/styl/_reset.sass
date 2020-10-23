@@ -1,0 +1,47 @@
+
+[hidden]
+  display: none !important
+
+[disabled]
+  cursor: not-allowed
+
+::focus::not(::focus-visible)
+    outline: none
+
+body
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+  -webkit-overflow-scrolling: touch
+  -webkit-touch-callout: none
+  text-size-adjust: 100%
+  user-select: none
+
+  font-variant-numeric: tabular-nums
+  font-feature-settings: "palt"
+  font-smooth: antialiased
+  font-kerning: normal
+  text-align: left
+  overflow-x: hidden
+
+  word-break: normal
+  word-wrap: break-word
+  overflow-wrap: break-word
+  vertical-align: baseline
+
+
+article,
+.text,
+  cursor: text
+  user-select: text
+  white-space: pre-wrap
+  overflow: visible
+  width: 100%
+
+label,
+abbr,
+[href],
+[cite],
+.btn,
+.label,
+  white-space: nowrap
+  cursor: pointer
+  user-select: auto

@@ -1,0 +1,105 @@
+body :not(button)[title]:after
+  content: attr(title)
+
+[data-tooltip]:after
+  content: attr(data-tooltip)
+
+body :not(button)[title],
+[data-tooltip],
+  position: relative
+
+  &:after
+    z-index: 99998
+
+  &:before
+    z-index: 99999
+
+  &:after,
+  &:before,
+    // Position
+    position: absolute
+
+    // Hide it by default
+    display: none
+    opacity: 0
+    height: 0
+    overflow: visible
+
+  &:after
+    // Content
+    height: auto
+    text-align: left
+    white-space: pre
+    font-style: normal
+    font-weight: normal
+    border-radius: 8px
+    padding: 5px
+
+  &:before
+    content: ''
+    width: 0
+    height: 0
+    border-radius: 6px
+
+body :not(button)[title],
+.tooltip-bottom,
+.tooltip-right,
+.tooltip-left,
+.tooltip-top,
+  &.tap,
+  &:hover,
+  &:focus-within,
+    &:after,
+      display: block
+      opacity: 1
+      border: 0.5px solid
+    &:before,
+      display: block
+      opacity: 1
+      width:  12px
+      height: 12px
+
+// Bottom
+.tooltip-bottom
+  &:after,
+    top: calc( 85% + 12px )
+    left: 0
+  &:before,
+    top: calc( 85% +  6px )
+    left: 15px
+    border-top: 0.5px solid
+
+// Top
+body :not(button)[title],
+.tooltip-top,
+  &:after,
+    top: auto
+    bottom: calc( 85% + 12px )
+    left: 0
+  &:before,
+    top: auto
+    bottom: calc( 85% +  6px )
+    left: 15px
+    border-bottom: 0.5px solid
+
+// Right
+.tooltip-right
+  &:after,
+    left: calc( 100% + 6px )
+    top: 0
+  &:before,
+    left: calc( 100% )
+    top: 7px
+    border-left: 0.5px solid
+
+// Left
+.tooltip-left
+  &:after,
+    left: auto
+    right: calc( 100% + 6px )
+    top: 0
+  &:before,
+    left: auto
+    right: calc( 100% )
+    top: 7px
+    border-right: 0.5px solid

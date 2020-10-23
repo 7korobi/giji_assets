@@ -1,0 +1,424 @@
+
+@each $weight in 300 400 500 700
+  @font-face
+    font-family: 'Fira Code WEB'
+    font-style: normal
+    font-display: swap
+    font-weight: $weight
+    src: url('https://giji.f5.si/font/FiraCode-#{ $weight }.woff2') format('woff2')
+
+@each $weight in 200 300 400 500 600 700 900
+  @font-face
+    font-family: 'Noto Serif JP'
+    font-style: normal
+    font-display: swap
+    font-weight: $weight
+    src: url('https://giji.f5.si/font/NotoSerifJP-#{ $weight }.woff2') format('woff2')
+
+@each $weight in 100 300 350 400 500 700 900
+  @font-face
+    font-family: 'Noto Sans JP'
+    font-style: normal
+    font-display: swap
+    font-weight: $weight
+    src: url('https://giji.f5.si/font/NotoSansJP-#{ $weight }.woff2') format('woff2')
+
+@font-face
+  font-family: "mplus-1m"
+  font-style: normal
+  font-display: swap
+  font-weight: 400
+  src: url("https://giji.f5.si/font/circle-mplus-1m-regular.woff2") format("woff2")
+
+
+.goth-S,
+.goth-M,
+.goth-L,
+  body,
+  b,
+  th,
+  input,
+  button,
+  textarea,
+  [title]:after,
+  [data-tooltip]:after,
+    font-weight: 400
+    font-family: 'Noto Sans CJK JP', 'Noto Sans JP', sans-serif
+
+.press,
+.novel,
+.large,
+  body,
+  b,
+  th,
+  input,
+  button,
+  textarea,
+  [title]:after,
+  [data-tooltip]:after,
+    font-weight: 600
+    font-family: 'Noto Serif CJK JP', 'Noto Serif JP', serif
+
+
+sup
+  font-variant-position: super
+  font-feature-settings: "sups"
+
+sub
+  font-variant-position: sub
+  font-feature-settings: "subs"
+
+body,
+input,
+button,
+select,
+textarea,
+  line-height: 1.5em
+  font-size: 1.0rem
+
+
+.text
+  img.mark
+    max-height: 1.5em
+
+.fine,
+.date,
+  line-height: 1.2em
+  img.mark
+    max-height: 1.2em
+
+sup,
+sub,
+.potofs.fine,
+.chrblank,
+.chrblank a,
+.chrblank p,
+.chrblank time,
+  line-height: 1.1em
+  img.mark
+    max-height: 1.1em
+
+[title]:after
+[data-tooltip]:after
+  font-size: 1.0rem
+
+[data-ruby]
+  line-height: 2.0em
+  &:before
+    top: -4.0ex
+    font-size:  0.5em
+
+hr
+  padding: 0.1em 0 0 0
+  height:  0.4em
+
+hr:before,
+hr:after,
+  height: 0.12em
+hr:before
+  border-width: 0.08em 0 0 0
+hr:after
+  border-width: 0 0 0.08em 0
+
+hr.stripe
+  background-size: 0.4em 0.6em
+
+sup
+  vertical-align:   0.5em
+sub
+  vertical-align:  -0.5em
+
+table
+  border-spacing: 0.15em
+
+input[type=number],
+.w1,
+  max-width: 3em
+  width: 99%
+
+input[type=time],
+.w2
+  max-width: 6em
+  width: 99%
+
+.w3
+  max-width: 9em
+  width: 99%
+
+.w4
+  max-width: 12em
+  width: 99%
+
+.w5
+  max-width: 15em
+  width: 99%
+
+.w6
+  max-width: 18em
+  width: 99%
+
+.w7
+  max-width: 21em
+  width: 99%
+
+.w8
+  max-width: 24em
+  width: 99%
+
+.w9
+  max-width: 27em
+  width: 99%
+
+input[type=checkbox],
+input[type=radio],
+input[type=button],
+input[type=image],
+input[type=reset],
+input[type=submit],
+[href],
+[cite],
+button,
+a,
+  border-radius: 0.3em
+
+  form &,
+  .form &,
+    padding: 0 0.1em
+
+  .toastframe .icons &,
+  .sideframe .icons &,
+    padding: 0.1em 0
+
+input[type=time],
+input[type=number],
+input[type=color],
+textarea,
+select,
+pre,
+kbd,
+code,
+time,
+th,
+td,
+.note,
+.btn,
+.banner div,
+.copyright p,
+  border-radius: 0.3em
+
+  form &,
+  .form &,
+    padding: 0 0.1em
+
+  .toastframe .icons &,
+  .sideframe .icons &,
+    padding: 0.1em 0
+
+
+// multi-column
+.contentframe
+  .col2,
+  .col3,
+  .colX,
+  .col_wide,
+  .col_narrow,
+  .column,
+    column-rule-width: 0.1em
+    column-gap:  0.5em
+
+  .talk > .chat,
+  .post > .chat,
+    .column,
+    .col2,
+      columns: 2 12em
+
+    .col3
+      columns: 3  8em
+
+  .report > .chat
+    .col2
+      columns: 2 17em
+
+    .column,
+    .col3,
+      columns: 3 11em
+
+.fullframe
+  .col_wide
+    column-width: 17em
+  .col_narrow,
+  .column,
+  .colX,
+    column-width: 11em
+
+.contentframe,
+.fullframe,
+  .chat
+    padding: 0 0.2em 0 0.3em
+    .mono
+      background-size: auto 2em
+
+.chat
+  .focus,
+  .point,
+    border: 0.1em dotted
+
+
+  thead,
+  tfoot,
+    th,
+    td,
+      border-width: 0.1em
+      border-style: dashed
+  th
+      border-width: 0.1em
+      border-style: dashed
+
+input,
+select,
+button,
+[href],
+[cite],
+.btn,
+  line-height: 1.7em
+  .focus &,
+  &:hover,
+    border-radius: 0.3em
+
+abbr,
+fieldset,
+legend,
+label,
+abbr,
+q,
+.label,
+  border-radius: 0.75em
+  padding: 0 0.3em
+
+.banner
+  height:         1.5em 
+  margin-bottom: -1.5em
+
+
+.name,
+.label,
+.btn,
+a,
+[href],
+  sup,
+  sub,
+  .badge,
+    border-radius: 0.75em
+    padding: 0     0.2em
+    margin: -0.05em 0.05em
+
+h1, h2, h3, h4, h5, h6,
+  line-height: 1.0em
+  img.mark
+    max-height: 1.0em
+
+h1,
+  font-size: 2.50rem
+h2,
+  font-size: 1.88rem
+h3,
+  font-size: 1.50rem
+h4,
+  font-size: 1.25rem
+h5,
+  font-size: 1.00rem
+h6,
+  font-size: 0.83rem
+
+@mixin font($small_px, $base, $zoom)
+  $small: ($small_px / $base) * 1rem
+
+  $gap:   $zoom *  24px
+  $sideC: $zoom * 132px
+  $side2: $zoom *  80px
+  $side3: $zoom * 150px
+
+  $center: 28 * $base + $sideC
+  $half: ( $center + $gap ) / 2
+
+  $limit1: $center / 0.9
+  $limit2: $center + 2 * ( $gap + $side2 )
+  $limit3: $center + 2 * ( $gap + $side3 )
+
+
+  font-size: $base
+  .fine,
+  .date,
+    font-size: $small
+    .links,
+    textarea,
+    button,
+    dfn,
+    p,
+      font-size: $small
+
+  .summaryframe
+    .stable
+      width: $side3
+
+  //  .impose:hover
+  //    width: "calc( 50vw + %s )" % $half
+
+  @media screen and (min-width: $limit3)
+    &
+      .summaryframe
+        width: calc( 50vw - #{ $half })
+
+      .limit3-ng
+        display: none
+
+  @media screen and (max-width: $limit3)
+    &
+      .summaryframe
+        width: $side3
+
+      .limit3-ok
+        display: none
+
+  @media screen and (min-width: $limit2)
+    &
+      .banner
+        left:  $center + 15px
+        width: calc( 50vw - #{ $half + 6px })
+      .toastframe,
+      .sideframe,
+        width: calc( 50vw - #{ $half })
+
+      .limit2-ng
+        display: none
+
+  @media screen and (max-width: $limit2)
+    &
+      .banner
+        display: none
+      .toastframe,
+      .sideframe,
+        width: $side2
+
+      .limit2-ok
+        display: none
+
+  @media screen and (min-width: $limit1)
+    &
+      .writeframe,
+      .outframe,
+        .contentframe
+          width: $center
+
+      .limit1-ng
+        display: none
+
+  @media screen and (max-width: $limit1)
+    &
+      .writeframe,
+      .outframe,
+        .contentframe
+          width: 90vw
+
+      .limit1-ok
+        display: none

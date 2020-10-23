@@ -1149,8 +1149,11 @@ function deployToolTip() {
   }
 }
 
-$(window).resize(eventResize)
-$(window).scroll(eventFixFilter)
-$(window).unload(writeCookieFilter)
-$(document).ready(deployToolTip)
-window.onorientationchange = fixWidth
+document.addEventListener('ready', deployToolTip)
+
+window.addEventListener('resize', eventResize)
+window.addEventListener('scroll', eventFixFilter)
+window.addEventListener('unload', writeCookieFilter)
+window.addEventListener('orientationchange', fixWidth)
+
+

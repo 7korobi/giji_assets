@@ -7,7 +7,9 @@ const template = path.join(__dirname, '../../src/index-sample.html')
 const postcss = {
   loader: 'postcss-loader',
   options: {
-    plugins: [Autoprefixer({})]
+    postcssOptions: {
+      plugins: [Autoprefixer({})]
+    },
   },
 }
 
@@ -20,7 +22,6 @@ const file = {
 
 module.exports = {
   target: 'node',
-  devtool: 'hidden-source-map',
   entry: {
     sow: path.join(__dirname, '../sow.tsx'),
   },

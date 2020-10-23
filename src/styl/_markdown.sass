@@ -1,0 +1,406 @@
+[data-ruby]
+  position: relative
+  white-space: nowrap
+
+[data-ruby]:before
+  content: attr(data-ruby)
+  position: absolute
+  left:  0
+  right: 0
+  margin: auto
+  text-align: center
+  -webkit-text-emphasis: none
+  text-emphasis: none
+
+[data-ruby]:before,
+rt,
+  text-shadow: none
+  font-variant-east-asian: ruby full-width simplified
+
+abbr[title],
+del,
+  text-decoration: none
+
+em
+  -webkit-text-emphasis: sesame
+  text-emphasis: sesame
+  font-style: normal
+
+s
+  text-decoration-style: double
+u,
+ins,
+  text-decoration-style: wavy
+
+tt,
+code,
+kbd,
+samp,
+pre,
+.text.mono,
+  font-weight: 400
+  font-family: 'Fira Code', 'Fira Code WEB', 'Noto Sans Mono CJK JP', 'Mgen+ 1mn', 'mplus-1m', monospace
+  font-variant-numeric: tabular-nums slashed-zero
+  font-feature-settings: "halt"
+
+select,
+[cite],
+  font-weight: 400
+  font-family: 'Noto Sans CJK JP', 'Noto Sans JP', sans-serif
+
+.btn,
+[href],
+  sup, sub, .badge
+    font-weight: 700
+    font-family: 'Noto Sans CJK JP', 'Noto Sans JP', sans-serif
+
+h1, h2, h3, h4, h5, h6,
+[data-ruby]:before,
+rt,
+button,
+strong,
+.bold,
+.text.head:first-line,
+  font-weight: 700
+  font-family: 'Noto Sans CJK JP', 'Noto Sans JP', sans-serif
+
+hr
+  clear: both
+  display: block
+  margin:  0
+  margin-before: 0
+  margin-after:  0
+  border: none
+
+hr:before,
+hr:after,
+  content: ""
+  clear: both
+  display: block
+  margin:  0
+  padding: 0
+
+hr:before
+  border-style: solid none none none
+
+hr:after
+  border-style: none none dashed none
+
+hr.footnote:before
+  border-style: dashed none none none
+
+hr.footnote:after
+  border-style: none none solid none
+
+hr.blank,
+hr.stripe,
+  border: none
+  &::before,
+  &::after,
+    border: none
+
+
+hr.section,
+  border-style: solid none solid none
+  &::before,
+    border: none
+  &::after,
+    content: '§'
+    padding: 0 1ex
+    top:      -2ex
+    position: relative
+    border: none
+
+hr.invisible_hr
+  display: none
+
+[cite]
+  white-space: nowrap
+  b
+    font-size: 0.5em
+    display: inline-block
+    transform: scale( 1, 2.5)
+    padding: 0 0 0.5em 0
+
+h1, h2, h3, h4, h5, h6,
+  box-sizing: border-box
+  display: block
+  column-span: all
+  transform: scale( 1, 0.8)
+  transform-origin: center center
+  margin: 0
+
+b,
+p,
+  margin:  0
+  padding: 0
+
+blockquote
+  margin: 0
+  padding: 0  0.5ex 0  0.5ex
+  border-style: none solid none solid
+  border-width: 0 0.5ex 0 0.5ex
+
+ol, ul,
+  margin:  0
+  padding: 0
+  padding-left: 1em
+  margin-left: 1em
+
+strong
+  display: inline
+
+pre
+  max-width: 100%
+  margin: 0 -2px
+  white-space: pre-wrap
+  column-span: all
+  justify-content: center
+  display: block
+
+a,
+b,
+em,
+abbr,
+strong,
+kbd,
+code,
+time,
+select,
+button,
+time,
+  border-width: 0
+
+q:not([title]):before,
+q:not([title]):after,
+  content: ''
+
+.btns
+  text-align: center
+  span
+    margin: 0 6px
+
+.tb-btn
+  a,
+  button,
+  .btn,
+    writing-mode: tb-rl
+    sup,
+    sub,
+    .badge,
+      writing-mode: lr-tb
+      float: inline-end
+
+a
+  text-decoration: none
+
+input[type=time],
+input[type=number],
+input[type=checkbox],
+input[type=radio],
+input[type=color],
+input[type=submit],
+input[type=button],
+input[type=image],
+input[type=reset],
+[href],
+[cite],
+a,
+b,
+abbr,
+kbd,
+code,
+time,
+select,
+button,
+textarea,
+fieldset,
+.btn,
+  box-sizing: border-box
+  text-rendering: auto
+  align-items: flex-start
+
+input[type=time],
+input[type=number],
+input[type=checkbox],
+input[type=radio],
+input[type=color],
+input[type=submit],
+input[type=button],
+input[type=image],
+input[type=reset],
+[href],
+a,
+abbr,
+kbd,
+code,
+time,
+select,
+button,
+textarea,
+.note,
+.btn,
+  border-style: solid
+
+fieldset,
+  border-style: double
+
+textarea
+  border: 0.5px solid
+
+input,
+select,
+button,
+[href],
+.btn,
+  border: 0.5px solid
+  .date &
+    border: 0
+
+  .focus &
+    transition-property: border-radius, border-color
+    transition-duration: 1s
+
+  &:hover
+    animation: border-hover .4s ease-in-out infinite normal
+
+  &:focus-within
+    animation: border-hover  1s ease-in-out infinite normal
+
+input,
+select,
+button,
+textarea,
+  user-select: auto
+
+p,
+.left,
+.l,
+  text-align: justify
+
+center,
+.center,
+.c,
+  text-align: center
+
+nav,
+.right,
+.r,
+  text-align: right
+
+.pull-left
+  float: left
+.pull-right
+  float: right
+
+.banner
+  position: relative
+  white-space: pre
+  div
+    article
+      overflow: hidden
+
+legend
+  text-shadow: none
+
+.label,
+label,
+abbr,
+  text-align: center
+  text-shadow: none
+
+.name,
+.btn,
+[href],
+  sup,
+  sub,
+  .badge,
+    text-align: center
+    text-shadow: none
+
+sup,
+sub,
+  text-align: center
+
+// multi-column
+.col2,
+.col3,
+.colX,
+.col_wide,
+.col_narrow,
+.column,
+  column-rule-style: dashed
+  table
+    width: 100%
+    tbody
+      width: 100%
+      tr
+        td
+          padding: 0
+
+// SVG section
+rect.box,
+.box > rect,
+  cursor: pointer
+  fill: black
+  stroke: black
+
+rect.chr,
+.chr > rect,
+  stroke-width: 1px
+  fill: #444844   // palette_bg('I',0, BROAD)
+  stroke: black
+
+rect.pen,
+.pen > rect,
+  stroke-width: 1px
+
+rect.cluster,
+.cluster > rect,
+  cursor: pointer
+  stroke-width: 9px
+  fill: transparent
+
+rect.move,
+.move > rect,
+  cursor: pointer
+  stroke-width: 1px
+  fill: none
+
+rect.icon,
+.icon > rect,
+rect.point,
+.point > rect,
+  cursor: pointer
+  fill: none
+  stroke: none
+
+rect.hide,
+.hide > rect,
+  cursor: pointer
+  fill:   transparent
+  stroke: transparent
+
+.edgePath
+  > path.path
+    fill: none
+    stroke-linecap: round
+    stroke-linejoin: round
+    &.hide
+      stroke: none
+      stroke-width: 0
+    &.wide
+      stroke-width: 6px
+    &.solid
+      stroke-width: 3px
+    &.dotted
+      stroke-width: 6px
+      stroke-dasharray: 0, 12px
+
+#svg-marker-arrow-end > path,
+#svg-marker-arrow-start > path,
+  stroke-width: 1px
+  stroke-dasharray: 1px, 0
+#svg-marker-cross > path
+  stroke-width: 2px
+  stroke-dasharray: 1px, 0

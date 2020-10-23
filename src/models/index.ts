@@ -9,16 +9,16 @@ import './chr'
 // import './activity'
 // import './workflow'
 
-// import './potof'
-// import './card'
+import './potof'
+import './card'
 
 import './folder'
 
 // import './book'
 // import './part'
-// import './phase'
+import './phase'
 // import './section'
-// import './chat'
+import './chat'
 
 // import './sheet'
 

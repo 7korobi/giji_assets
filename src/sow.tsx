@@ -1,18 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import $ from 'jquery'
+
 import { chrImgChange } from './lib/teapot'
 import { Welcome } from './lib/welcome'
-import './lib/welcome.css'
+import './lib/welcome.scss'
 
 require('./models')
+
+Object.assign(window, { $, chrImgChange })
 require('./lib/tooltip')
 
-Object.assign(window, { chrImgChange })
+document.querySelector('h1#top')!.outerHTML = `<div id="top" />`
 
 ReactDOM.render(
   <React.StrictMode>
-    <Welcome>
-    </Welcome>
+    <Welcome />
   </React.StrictMode>,
-  document.querySelector('h1#top')
+  document.querySelector('#top')
 )
