@@ -1155,5 +1155,3 @@ window.addEventListener('resize', eventResize)
 window.addEventListener('scroll', eventFixFilter)
 window.addEventListener('unload', writeCookieFilter)
 window.addEventListener('orientationchange', fixWidth)
-
-

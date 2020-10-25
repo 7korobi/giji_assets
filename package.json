@@ -6,6 +6,7 @@
   "private": true,
   "dependencies": {
     "jquery": "^3.5.1",
+    "lodash": "^4.17.20",
     "memory-orm": "0.6.9",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -35,6 +36,7 @@
   },
   "scripts": {
     "jest": "jest -u --config config/node/jest.js --rootDir .",
+    "type": "tsc -p . --noemit",
     "test": "run-s jest",
     "format": "prettier --no-semi --single-quote --print-width 100 --write \"src/**/*.{ts,tsx,js,jsx,json,md}\"",
     "start": "webpack-dev-server --open --config src/config/webpack.sow.js",

@@ -8,7 +8,7 @@ const postcss = {
   loader: 'postcss-loader',
   options: {
     postcssOptions: {
-      plugins: [Autoprefixer({})]
+      plugins: [Autoprefixer({})],
     },
   },
 }
@@ -44,11 +44,11 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader', postcss]
+        use: ['style-loader', 'css-loader', postcss],
       },
       {
         test: /\.(scss|sass)$/i,
-        use: ['style-loader', 'css-loader', postcss, 'sass-loader']
+        use: ['style-loader', 'css-loader', postcss, 'sass-loader'],
       },
       {
         test: /\.yml$/i,
@@ -68,7 +68,5 @@ module.exports = {
     extensions: ['.js', '.ts', '.tsx', '.json'],
   },
   externals: [],
-  plugins: [
-    new HTMLPlugin({ template }),
-  ]
+  plugins: [new HTMLPlugin({ template })],
 }
