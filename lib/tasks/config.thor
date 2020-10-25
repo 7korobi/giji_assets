@@ -132,6 +132,8 @@ class Config < Thor
       rsync.each do |folder, protocol, set|
         next unless yield(set['files'])
         rsync.put(protocol, set, '_info.pl', :lsow, :config)
+        rsync.put(protocol, set, 'html/html_pc.pl', :lsow, :config)
+        rsync.put(protocol, set, 'html/html_index.pl', :lsow, :config)
       end
 
       rsync.each do |folder, protocol, set|

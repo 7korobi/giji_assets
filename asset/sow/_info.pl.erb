@@ -10,29 +10,9 @@ sub OutHTMLStateInfo {
   my $sow = shift;
   my $cfg   = $sow->{'cfg'};
 
-  if( 'LOBBY' eq $cfg->{'RULE'} ){
-    print <<"_HTML_";
+  print <<"_HTML_";
 <div class="message_filter" logs="top_info"></div>
 _HTML_
-  }
-
-  if( 'CIEL' eq $cfg->{'RULE'} ){
-    print <<"_HTML_";
-<div class="message_filter" logs="top_info"></div>
-_HTML_
-  }
-
-  if( 'PERJURY' eq $cfg->{'RULE'} ){
-    print <<"_HTML_";
-<div class="message_filter" logs="top_info"></div>
-_HTML_
-  }
-
-  if( 'CABALA' eq $cfg->{'RULE'} ){
-    print <<"_HTML_";
-<div class="message_filter" logs="top_info"></div>
-_HTML_
-  }
 }
 
 1;

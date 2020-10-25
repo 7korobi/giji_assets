@@ -27,7 +27,7 @@ class Crs < Thor
       CS_ALL,
     ]
 
-    FACE.each do |face|
+    CHR_FACE.each do |face|
       face.face_id = face._id
     end
 
@@ -41,7 +41,7 @@ class Crs < Thor
     CS_ALL.chr_job = (chr_jobs_hash.values.flatten).uniq {|o| o.face_id }.reject {|o| rejects.member? o.face_id }
 
     ([CS_ALL] + chr_sets).map do |cs|
-      faces = cs.chr_job.map {|job| FACE.find {|f| f._id == job.face_id } }.compact
+      faces = cs.chr_job.map {|job| CHR_FACE.find {|f| f._id == job.face_id } }.compact
       cs.chr_npc.map do |npc|
         { csid: npc.csid, set: cs.chr_set, chr_jobs: cs.chr_job, npc: npc, faces: faces }
       end
