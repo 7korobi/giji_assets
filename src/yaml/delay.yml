@@ -1,9 +1,0 @@
-largo:      10000
-grave:      25000
-msg_delete: 25000
-msg_minute: 60000
-
-presto:    50
-animato:  200
-andante:  800
-lento:   3200

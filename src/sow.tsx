@@ -4,9 +4,10 @@ import $ from 'jquery'
 
 import { chrImgChange } from './lib/teapot'
 import { Welcome } from './lib/welcome'
-import './lib/welcome.scss'
+import '../../giji/app/css/sow.css'
 
-require('./models')
+import '../../giji/app/models'
+import '../../giji/app/models/_define'
 
 Object.assign(window, { $, chrImgChange })
 require('./lib/tooltip')

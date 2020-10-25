@@ -1,6 +1,6 @@
 import React from 'react'
 
-const { url } = require('../config/live.yml')
+const { url } = require('../../../giji/config/yaml/live.yml')
 
 function CTalk() {
   return (
