@@ -21,7 +21,6 @@ const file = {
 }
 
 module.exports = {
-  target: 'node',
   entry: {
     sow: path.join(__dirname, '../sow.tsx'),
   },
@@ -48,7 +47,7 @@ module.exports = {
         use: ['style-loader', 'css-loader', postcss]
       },
       {
-        test: /\.scss$/i,
+        test: /\.(scss|sass)$/i,
         use: ['style-loader', 'css-loader', postcss, 'sass-loader']
       },
       {

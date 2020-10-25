@@ -98,7 +98,7 @@ class Config < Thor
 
       @perl_change = -> s { s.to_s.gsub(/[—ソЫⅨ㎇噂浬欺圭構蚕十申曾箪貼能表暴予禄兔喀媾彌拿杤歃濬畚秉綵臀藹觸軆鐔饅鷭偆砡纊犾](?!\\)/){ $& + '\\' }}
 
-      CONF_FOLDER.each_pair do |folder,cfg|
+      SOW_FOLDER.each_pair do |folder,cfg|
         config           = cfg['config']                || next
         rhtml_config_out = config['pl']                 || next
         chk_rp           = cfg.dig 'story', 'role_play' || next
@@ -107,8 +107,8 @@ class Config < Thor
 
         @rhtml_content,@maxsize,@saycnt_orders,@games,@csids,@trsids,@path,@cfg,@enable,@is_angular = [config['erb'], config['maxsize'], config['saycnt'], config['game'], config['csid'], config['trsid'], config['path'], config['cfg'], config['enable'], config['is_angular']]
         @saycnt_data = @saycnt_orders.map do |name|
-          data = CONF_SAY[name]
-          data = CONF_SAY["#{name}_braid"] if chk_rp
+          data = SOW_SAY[name]
+          data = SOW_SAY["#{name}_braid"] if chk_rp
           txt = "my %saycnt_#{name} = (\n"
           data.each do |key, val|
             txt += "#{key} => #{val.inspect},\n"
@@ -116,7 +116,7 @@ class Config < Thor
           txt += ");\n\n"
           txt
         end
-        @ratings = CONF_RATING
+        @ratings = SOW_RATING
         @ratings[:default][:alt] = config['cd_default']
         @rating_list = @ratings.keys() - ['alert']
 
@@ -135,9 +135,9 @@ class Config < Thor
       end
 
       rsync.each do |folder, protocol, set|
-        next unless CONF_FOLDER[folder]  &&  CONF_FOLDER[folder][:config]
+        next unless SOW_FOLDER[folder]  &&  SOW_FOLDER[folder][:config]
         next unless yield(set['files'])
-        rhtml_config_out = CONF_FOLDER[folder][:config][:pl]
+        rhtml_config_out = SOW_FOLDER[folder][:config][:pl]
         rsync.put(protocol, set, 'config.pl', :ldata, :config)
       end
 

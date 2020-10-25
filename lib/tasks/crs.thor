@@ -88,7 +88,7 @@ class Crs < Thor
 
   class TagCreate < WebHtml
     def activate
-      @tags = CONF_TAG
+      @tags = SOW_TAG
 
       @rhtml_content = "./asset/sow/tag.pl.erb"
       result = to_s
@@ -156,26 +156,26 @@ class Crs < Thor
       @orders = faces.sort_by(&:order)
       @lists  = faces.sort_by(&:_id)
       @tag_names = {
-        "all" => CONF_TAG.all.name
+        "all" => SOW_TAG.all.name
       }
       @chr_orders = {
         "all" => faces.map(&:face_id)
       }
       faces.each do |face|
         face.tag_ids.each do |tag_id|
-          next unless CONF_TAG[tag_id]
-          next unless CONF_TAG[tag_id].chr_set_ids.any? {|csid| @csid[csid] }
-          @tag_names[tag_id]  ||= CONF_TAG[tag_id].name
+          next unless SOW_TAG[tag_id]
+          next unless SOW_TAG[tag_id].chr_set_ids.any? {|csid| @csid[csid] }
+          @tag_names[tag_id]  ||= SOW_TAG[tag_id].name
           @chr_orders[tag_id] ||= []
           @chr_orders[tag_id].push face.face_id
         end
       end
-      @tag_order = CONF_TAG.keys.select {|tag_id| @chr_orders[tag_id] }
+      @tag_order = SOW_TAG.keys.select {|tag_id| @chr_orders[tag_id] }
       @tag_order.shift if @csid != "all"
 
       @chr_orders.each do |tag_id, list|
         @chr_orders[tag_id] =
-          case CONF_TAG[tag_id][:face_sort][0]
+          case SOW_TAG[tag_id][:face_sort][0]
           when 'face.order'
             faces.sort_by{|o| o.order }.map(&:face_id) & list
           when 'face.q.head'

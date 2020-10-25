@@ -13,7 +13,6 @@ config/database.yml
 config/mongoid.yml
 config/omni_auth.yml
 config/deploy
-config/yaml
 config/initializers/secret.rb
 public/assets-master/*.gz
 public/images/15girls
@@ -33,5 +32,3 @@ test/
 vendor/cache
 
 dist
-src/config/live.yml
-src/config/service_account.yml
