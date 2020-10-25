@@ -11,6 +11,11 @@ import { Welcome } from './lib/welcome'
 import '../../giji/app/models'
 import '../../giji/app/models/_define'
 
+import { PlanApi, StoryApi } from './lib/fetch'
+
+PlanApi()
+StoryApi()
+
 Object.assign(window, { $, chrImgChange, Query })
 require('./lib/tooltip')
 
