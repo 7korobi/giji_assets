@@ -15,9 +15,9 @@ import format from 'date-fns/format'
 import locale from 'date-fns/locale/ja'
 
 import { PlanApi, StoryApi } from './fetch'
-import { Chat } from '../../../giji/app/models/chat'
-import { ShowBits } from '../../../giji/app/lib/dic'
-const { url } = require('../../../giji/config/yaml/live.yml')
+import { Chat } from '../../vendor/giji/app/models/chat'
+import { ShowBits } from '../../vendor/giji/app/lib/dic'
+const { url } = require('../../vendor/giji/config/yaml/live.yml')
 
 type BtnProps<T> = {
   state: [T, (val: T) => void]
@@ -88,7 +88,7 @@ function Chats({ list }: { list: Chat[] }) {
         const Tag = chat[o.show]
         const key = o.id
         const { potof, log, write_at } = o
-        return <Tag {...{ key, potof, log, write_at }} />
+        return <Tag {...({ key, potof, log, write_at } as any)} />
       })}
     </>
   )
@@ -108,7 +108,6 @@ function Btn<T>({ state, as, children }: BtnProps<T>) {
 }
 
 function Export() {
-  usePoll(PlanApi, store, {}, '10m', '1.0.0')
   usePoll(StoryApi, store, {}, '6h', '1.0.0')
 
   const [shows, setShows, ChkShow] = useBits(ShowBits, 0)
@@ -193,14 +192,14 @@ function Export() {
 }
 
 const [defaultCSS, defaultTheme, defaultSize] =
-  location.search.match(/css=(ririnra|cinema|night|star|wa)(|480|800)/) || []
+  location.search.match(/css=(ririnra|cinema|night|star|wa)(480|800|)/) || []
 
 function BtnsSow() {
   const stateTheme = useState<'ririnra' | 'cinema' | 'night' | 'star' | 'wa'>(
     (defaultTheme || 'cinema') as any
   )
   const stateSize = useState<'' | '480' | '800'>(
-    defaultSize || defaultTheme === 'ririnra' ? '' : '800'
+    (defaultSize || (defaultTheme === 'ririnra' ? '' : '800')) as any
   )
   const theme = stateTheme[0]
   let size = stateSize[0]
@@ -209,7 +208,7 @@ function BtnsSow() {
   return (
     <div className="btns">
       <span className="width">
-      <Btn state={stateSize} as="480">
+        <Btn state={stateSize} as="480">
           480
         </Btn>
         <Btn state={stateSize} as="800">
@@ -260,9 +259,10 @@ export function Welcome() {
   // outframe  outframe_navimode
   // contentframe  contentframe_navileft
 
-  const chats = Query.phases.find('BRAID-top-0-0')!.chats.list
-  const folder =
-    Query.folders.where({ hostname: location.hostname }).list.head || Query.folders.find('DAIS')
+  const folder = Query.folders.where({ hostname: location.hostname }).list.head
+  const chats = (
+    Query.phases.where({ folder_id: folder.id }).list.head || Query.phases.find('BRAID-top-0-0')
+  ).chats.list
 
   return (
     <div>

@@ -29,6 +29,6 @@ public/images/portrate_sf++
 public/images/sow
 public/MagicTouch
 test/
-vendor/cache
+vendor
 
 dist

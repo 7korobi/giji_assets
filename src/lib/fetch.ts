@@ -1,8 +1,8 @@
 import { Query, Set, State } from 'memory-orm'
 import { DATUM } from 'memory-orm/lib/type'
 
-import { SowTurn, SowVillagePlan } from '../../../giji/app/models/sow'
-import { SowVillage } from '../../../giji/app/models/sow_village'
+import { SowTurn, SowVillagePlan } from '../../vendor/giji/app/models/sow'
+import { SowVillage } from '../../vendor/giji/app/models/sow_village'
 
 export async function PlanApi() {
   const res = await fetch('https://giji-api.duckdns.org/api/plan/progress')

@@ -5,6 +5,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "date-fns": "^2.16.1",
     "jquery": "^3.5.1",
     "lodash": "^4.17.20",
     "memory-orm": "0.6.9",
@@ -16,7 +17,7 @@
   "devDependencies": {
     "@types/jquery": "^3.5.3",
     "@types/lodash": "^4.14.162",
-    "@types/node": "^14.14.2",
+    "@types/node": "^14.14.5",
     "autoprefixer": "^10.0.1",
     "css-loader": "^5.0.0",
     "html-webpack-plugin": "^4.5.0",
@@ -29,7 +30,7 @@
     "sass-loader": "^10.0.4",
     "style-loader": "^2.0.0",
     "ts-loader": "^8.0.7",
-    "webpack": "^5.2.0",
+    "webpack": "^5.3.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "yaml-loader": "^0.6.0"
@@ -40,8 +41,11 @@
     "test": "run-s jest",
     "format": "prettier --no-semi --single-quote --print-width 100 --write \"src/**/*.{ts,tsx,js,jsx,json,md}\"",
     "start": "webpack-dev-server --open --config src/config/webpack.sow.js",
-    "make": "run-s make_all",
+    "make": "run-s make_vendor make_all",
     "make_all": "run-p -n make:*",
+    "make_vendor": "run-p -n make_vendor:*",
+    "make_vendor:giji-app": "rsync -ac --delete ../giji/app/ ./vendor/giji/app/",
+    "make_vendor:giji-config": "rsync -ac --delete ../giji/config/ ./vendor/giji/config/",
     "make:sow": "webpack --mode production --config src/config/webpack.sow.js",
     "deploy:aws": "aws s3 sync dist s3://giji-assets/javascripts --acl public-read --exclude '*.html'",
     "dec": "run-s dec:*",

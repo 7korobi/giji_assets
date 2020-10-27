@@ -1,4 +1,4 @@
-import '../../giji/app/css/sow.css'
+import '../vendor/giji/app/css/sow.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -8,14 +8,15 @@ import { Query } from 'memory-orm'
 import { chrImgChange } from './lib/teapot'
 import { Welcome } from './lib/welcome'
 
-import '../../giji/app/models'
-import '../../giji/app/models/_define'
+import '../vendor/giji/app/models'
+import '../vendor/giji/app/models/_define'
 
 import { PlanApi, StoryApi } from './lib/fetch'
 
 PlanApi()
 StoryApi()
 
+console.log(Query)
 Object.assign(window, { $, chrImgChange, Query })
 require('./lib/tooltip')
 
