@@ -225,6 +225,7 @@ table.say.SAY .memoright,
 .GSAY .msg,
 .GSAY .memoleft,
 .GSAY .memoright,
+.mes_grave .action,
 .mes_grave .memoleft,
 .mes_grave .memoright,
 .mes_grave .msg {
