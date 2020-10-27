@@ -63,6 +63,10 @@ div:hover > i,
   white-space: nowrap;
 }
 
+.filmend {
+  margin: -11px 0 0 -8px;
+}
+
 .outframe {
   margin: 0px auto 0px auto;
   padding: 0px;
