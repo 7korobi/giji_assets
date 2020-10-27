@@ -35,3 +35,13 @@
 #navi_page .paragraph {
   border-width: 0 0 2ex 0;
 }
+
+tr.say .msg {
+  margin: 0 3px 4px 3px;
+  padding: 0px 4px;
+}
+
+.action,
+.action_nom {
+  padding: 4px 8px 4px 4px;
+}

@@ -86,8 +86,8 @@ div:hover > i,
 .outframe .row_all {
   padding: 0 0 0 16px;
 }
-.outframe .mes_maker,
-.outframe .mes_admin,
+.outframe .mes_maker .guide,
+.outframe .mes_admin .guide,
 .outframe .info,
 .outframe .infosp,
 .outframe .infowolf,
@@ -101,8 +101,8 @@ div:hover > i,
 .outframe_navimode .row_all {
   padding: 0 0 0 11px;
 }
-.outframe_navimode .mes_maker,
-.outframe_navimode .mes_admin,
+.outframe_navimode .mes_maker .guide,
+.outframe_navimode .mes_admin .guide,
 .outframe_navimode .info,
 .outframe_navimode .infosp,
 .outframe_navimode .infowolf,
@@ -275,33 +275,30 @@ div:hover > i,
   font-weight: bold;
 }
 
-.MAKER .action,
 .MAKER .guide,
-.ADMIN .action,
 .ADMIN .guide,
-.mes_maker .action,
 .mes_maker .guide,
-.mes_admin .action,
 .mes_admin .guide {
-  margin: 0 0 0 6px;
+  margin: 0;
   padding: 0;
 }
 
-.mes_undef .action,
-.mes_queue .action,
-.mes_del .action,
-.mes_nom .action,
-.mes_think .action,
-.mes_wolf .action,
-.mes_grave .action,
-.mes_sympa .action,
-.mes_pixi .action,
-.mes_mob .action,
-.mes_anonymous .action,
-.action_nom {
-  margin: 0 0 4px 96px;
-  padding: 4px 12px 0 11px;
+.mes_maker .guide h3,
+.mes_maker .guide h3 {
+  margin: 4px;
 }
+
+.mes_maker .guide p,
+.mes_maker .guide p {
+  margin: 4px 12px 4px 4px;
+}
+
+.action,
+.action_nom {
+  margin: 0 0 4px 97px;
+  border-width: 2px 0 2px 15px;
+}
+
 
 .mes_text,
 .mes_text_report,
@@ -345,14 +342,14 @@ div:hover > i,
   width: 90px;
 }
 
-.say {
+tr.say {
   vertical-align: middle;
 }
 
-.say .chrblank,
 .drag_head .badge,
-.say img {
-  margin-left: 9px;
+tr.say .img .chrblank,
+tr.say .img img {
+  margin-left: 7.5px;
 }
 
 .log .badge {
@@ -367,12 +364,17 @@ div:hover > i,
   width: 72px;
 }
 
-.say .field {
-  width: 100%;
+tr.say {
+  width: 580px;
 }
-.say .msg {
-  margin: 0 3px 4px 3px;
-  padding: 0px 4px;
+tr.say .img {
+  width: 104px;
+}
+tr.say .field {
+  width: 350px;
+}
+.msg h3 {
+  width: 332px;
 }
 .msg p {
   width: 332px;

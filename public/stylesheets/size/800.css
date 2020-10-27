@@ -333,7 +333,7 @@ div:hover > i,
   width: 90px;
 }
 
-.say {
+tr.say {
   vertical-align: middle;
 }
 
