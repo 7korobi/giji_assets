@@ -138,8 +138,8 @@ class Crs < Thor
       @chrset = params.set
       @chrnpc = params.npc
 
-      @chrnpc.say_0 = @chrnpc.say_0.gsub("\n","<br>").inspect
-      @chrnpc.say_1 = @chrnpc.say_1.gsub("\n","<br>").inspect
+      @chrnpc.say_0 = @chrnpc.say_0.gsub("\n","<br>").gsub("<strong>","<b>").gsub("</strong>","</b>").inspect
+      @chrnpc.say_1 = @chrnpc.say_1.gsub("\n","<br>").gsub("<strong>","<b>").gsub("</strong>","</b>").inspect
 
       jobs  = params.chr_jobs
       job_groups = jobs.group_by(&:face_id)
