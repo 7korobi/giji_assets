@@ -1,6 +1,6 @@
 @charset "Shift_JIS";
-@import url("size/800box.css");
-@import url("theme/sow.css");
+@import url('size/800box.css');
+@import url('theme/sow.css');
 
 /* GROBAL --------------------*/
 .msg p {

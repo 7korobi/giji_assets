@@ -1,5 +1,5 @@
-@import url("./color.black.css");
-@import url("../application.css");
+@import url('./color.black.css');
+@import url('../application.css');
 
 /* GROBAL --------------------*/
 .handler,
@@ -14,12 +14,13 @@ body {
   background: #114;
 }
 
-
 p {
   margin: 0px;
   padding: 0px;
 }
-div, form, td {
+div,
+form,
+td {
   margin: 0px;
   padding: 0px;
 }
@@ -28,15 +29,15 @@ textarea {
   font-family: monospace;
 }
 
-textarea, input, select {
+textarea,
+input,
+select {
   color: #000;
 }
 
 a {
   text-decoration: none;
 }
-
-
 
 h1 {
   text-align: left;
@@ -54,29 +55,30 @@ h3 {
   background: #024;
 }
 
-strong { }
+strong {
+}
 
-.board{
+.board {
   background-color: #100;
   border: 1px solid #1b7;
 }
-.choice .board{
+.choice .board {
   background-color: #100;
   border-top: 3px double #1b7;
 }
-.choice .board th{
+.choice .board th {
   border-bottom: 1px dashed #448;
 }
-.choice .board td{
-  border-top:  1px dashed #448;
-  border-left: 1px solid  #1b7;
+.choice .board td {
+  border-top: 1px dashed #448;
+  border-left: 1px solid #1b7;
 }
 .choice {
   background-color: #224;
   border-bottom: 1px solid #448 !important;
 }
 .no_choice {
-  border-bottom:1px dashed #448;
+  border-bottom: 1px dashed #448;
 }
 
 /* OTHERS --------------------*/
@@ -102,27 +104,25 @@ strong { }
   text-align: right;
 }
 
-
-
 /* ƒqƒ“ƒgEà–¾‘ ----------*/
-.tips{
+.tips {
   padding: 0px 8px;
 }
 
 .vindex {
   background-color: #100;
-  border-top   : 3px double #1b7 !important;
-  border-bottom: 1px solid  #1b7 !important;
+  border-top: 3px double #1b7 !important;
+  border-bottom: 1px solid #1b7 !important;
   border-collapse: collapse; /* CSS2? */
 }
 
-.vindex td,.vindex th{
+.vindex td,
+.vindex th {
   margin: 0px;
   padding: 1px;
-  border-top  : 1px solid  #224;
-  border-left : 1px dashed #224;
+  border-top: 1px solid #224;
+  border-left: 1px dashed #224;
   border-right: 1px dashed #224;
-
 }
 
 /* ‘ºì¬‰æ–Ê ----------*/
@@ -172,7 +172,6 @@ strong { }
   clear: left;
 }
 
-
 /* BODY FRAME --------------------*/
 
 /* ŠO˜g ----------*/
@@ -221,10 +220,10 @@ strong { }
 /* ƒtƒBƒ‹ƒ^‚Ì’†g ----------*/
 .insayfilter {
   text-align: left;
-  border-width: 0 ;
+  border-width: 0;
 }
 .insayfilter .paragraph {
-  border-width: 0 ;
+  border-width: 0;
   background: #114;
 }
 
@@ -242,36 +241,36 @@ strong { }
 }
 
 .sayfilter_content .head,
-.sayfilter_caption_enable    {
+.sayfilter_caption_enable {
   font-weight: normal;
-  margin: 3px 0 0 0 ;
+  margin: 3px 0 0 0;
   padding: 1px;
   background: #044;
 }
 .sayfilter_caption_disenable {
   font-weight: normal;
-  margin: 3px 0 0 0 ;
+  margin: 3px 0 0 0;
   background-color: #444;
 }
 
 /* ƒtƒBƒ‹ƒ^‘I‘ð—“˜g----------*/
-.sayfilter_content_enable    ,
-.sayfilter_content_disenable ,
-.sayfilter_content           ,
-#lumpfilter ,
+.sayfilter_content_enable,
+.sayfilter_content_disenable,
+.sayfilter_content,
+#lumpfilter,
 #lumpfilter input {
-  margin: 1px 0 0 0 ;
+  margin: 1px 0 0 0;
   font-weight: normal;
 }
 
 /* ƒtƒBƒ‹ƒ^‘I‘ð—“i—LŒøŽžj----------*/
-.sayfilter_content_enable    {
-  margin: 1px 0 0 0 ;
+.sayfilter_content_enable {
+  margin: 1px 0 0 0;
   background: #225;
   width: 100%;
 }
 .sayfilter_content_disenable {
-  margin: 1px 0 0 0 ;
+  margin: 1px 0 0 0;
   background: #444;
   width: 100%;
 }
@@ -281,9 +280,9 @@ strong { }
 }
 
 /* ƒtƒBƒ‹ƒ^ˆêŠ‡‘€ì—pƒ{ƒ^ƒ“ ----------*/
-.sayfilter_button_mestype ,
+.sayfilter_button_mestype,
 .sayfilter_button_lump {
-  margin: 1px 0 0 0 ;
+  margin: 1px 0 0 0;
   background: #225;
   text-align: center;
 }
@@ -297,10 +296,10 @@ strong { }
 /* ƒy[ƒWƒŠƒ“ƒN ----------*/
 /* ”ñƒƒOƒCƒ“Žž’ˆÓ•\Ž¦ ----------*/
 /* ‘S•\Ž¦ƒŠƒ“ƒN ----------*/
-.turnnavi    ,
-.pagenavi    ,
-.infonologin ,
-.row_all     {
+.turnnavi,
+.pagenavi,
+.infonologin,
+.row_all {
   color: #ccf;
   background-color: #100;
   font-weight: bold;
@@ -316,13 +315,14 @@ strong { }
 .INFONOM,
 .INFOSP,
 .INFOWOLF,
-.mes_maker ,
-.mes_admin ,
-.info      ,
-.infosp    ,
-.infowolf  ,
-.caution   {
-  border-width: 2px 0; border-style: dashed none;
+.mes_maker,
+.mes_admin,
+.info,
+.infosp,
+.infowolf,
+.caution {
+  border-width: 2px 0;
+  border-style: dashed none;
 }
 .MAKER,
 .mes_maker {
@@ -360,7 +360,8 @@ strong { }
 /* ƒAƒNƒVƒ‡ƒ“ ------------*/
 .action_nom,
 .action {
-  border-width: 2px 0 2px 10px; border-style: dashed none dashed solid ;
+  border-width: 2px 0 2px 18px;
+  border-style: dashed none dashed solid;
 }
 /* ‚µ‚¨‚è ----------------*/
 .TSAY .action .mes_date,
@@ -370,7 +371,8 @@ strong { }
 
 /* ƒƒ‚ ----------*/
 .memo {
-  border-color: #720;  color: #ddf;
+  border-color: #720;
+  color: #ddf;
   border-width: 0;
 }
 /* ƒƒ‚‚Ì¶‘¤ ----------*/
@@ -391,43 +393,44 @@ strong { }
   border-bottom: 1px dashed;
 }
 /* ”­Œ¾ŠÖŒW‹¤’Ê ------*/
-.msg{
-  border-width: 0 0 1px 4px; border-style: solid solid ;
+.msg {
+  border-width: 0 0 1px 4px;
+  border-style: solid solid;
 }
 
 /* ’Êí”­Œ¾ ------*/
 /* ”­Œ¾“ü—Í—“i‹¤’Êj ---*/
-.formpl_commit ,
-.formpl_undef  ,
-.formpl_vil      ,
-.formpl_seer     ,
-.formpl_medium   ,
-.formpl_guard    ,
-.formpl_fm       ,
-.formpl_stigma   ,
-.formpl_sympathy ,
-.formpl_love     ,
-.formpl_wolf     ,
-.formpl_possess  ,
-.formpl_fanatic  ,
-.formpl_cpossess ,
-.formpl_cwolf    ,
-.formpl_intwolf  ,
-.formpl_pixi     ,
+.formpl_commit,
+.formpl_undef,
+.formpl_vil,
+.formpl_seer,
+.formpl_medium,
+.formpl_guard,
+.formpl_fm,
+.formpl_stigma,
+.formpl_sympathy,
+.formpl_love,
+.formpl_wolf,
+.formpl_possess,
+.formpl_fanatic,
+.formpl_cpossess,
+.formpl_cwolf,
+.formpl_intwolf,
+.formpl_pixi,
 .formpl_trickster,
-.formpl_hamster  ,
-.formpl_werebat  ,
-.formpl_gm       ,
-.WIN_NONE    ,
-.WIN_HUMAN   ,
-.WIN_DISH    ,
+.formpl_hamster,
+.formpl_werebat,
+.formpl_gm,
+.WIN_NONE,
+.WIN_HUMAN,
+.WIN_DISH,
 .WIN_LONEWOLF,
-.WIN_PIXI    ,
-.WIN_GURU    ,
-.WIN_HATER   ,
-.WIN_LOVER   ,
-.WIN_WOLF    ,
-.WIN_EVIL    {
+.WIN_PIXI,
+.WIN_GURU,
+.WIN_HATER,
+.WIN_LOVER,
+.WIN_WOLF,
+.WIN_EVIL {
   background-color: #114;
 }
 .formpl_gm {
@@ -435,7 +438,6 @@ strong { }
   color: #ffa;
   background-color: #100;
 }
-
 
 /* bug-fix */
 .btn {

@@ -1,26 +1,31 @@
-@import url("./color.whitebox.css");
-@import url("../application.css");
+@import url('./color.whitebox.css');
+@import url('../application.css');
 
 table.SAY {
   border-collapse: separate;
 }
-
 
 /* 通常発言 ------*/
 .MSAY,
 .SAY,
 .QUEUE,
 .mes_nom {
-  color: #000;  background: #553; } /*木欄色*/
+  color: #000;
+  background: #553;
+} /*木欄色*/
 
-.INFONOM,  .info      {  color: #000;  background: #553;  }
+.INFONOM,
+.info {
+  color: #000;
+  background: #553;
+}
 
 .formpl_common,
 .formpl_common .msg {
   border-color: #720;
 }
-.formpl_gm ,
-.formpl_gm  textarea{
+.formpl_gm,
+.formpl_gm textarea {
   border-color: #660;
   color: #ffa;
   background-color: #000;
@@ -30,35 +35,60 @@ table.SAY {
   border: 1px solid #442;
 }
 
-.DELETED, .mes_del,
-.QUE, .mes_que,
-.SAY, .mes_nom,
-.TSAY, .mes_think,
-.VSAY, .mes_mob,
-.WSAY, .mes_wolf,
-.SPSAY, .mes_sympa,
-.BSAY, .XSAY, .mes_bat, .mes_pixi,
-.GSAY, .mes_grave {
+.DELETED,
+.mes_del,
+.QUE,
+.mes_que,
+.SAY,
+.mes_nom,
+.TSAY,
+.mes_think,
+.VSAY,
+.mes_mob,
+.WSAY,
+.mes_wolf,
+.SPSAY,
+.mes_sympa,
+.BSAY,
+.XSAY,
+.mes_bat,
+.mes_pixi,
+.GSAY,
+.mes_grave {
   margin: 0px 8px 16px 8px;
   padding: 1px;
 }
 
-.INFONOM, .info,
-.INFOSP, .infosp,
-.INFOWOLF, .infowolf,
-.DELETED, .mes_del,
-.QUE, .mes_que,
-.SAY, .mes_nom,
-.TSAY, .mes_think,
-.VSAY, .mes_mob,
-.WSAY, .mes_wolf,
-.SPSAY, .mes_sympa,
-.BSAY, .XSAY, .mes_bat, .mes_pixi,
+.INFONOM,
+.info,
+.INFOSP,
+.infosp,
+.INFOWOLF,
+.infowolf,
+.DELETED,
+.mes_del,
+.QUE,
+.mes_que,
+.SAY,
+.mes_nom,
+.TSAY,
+.mes_think,
+.VSAY,
+.mes_mob,
+.WSAY,
+.mes_wolf,
+.SPSAY,
+.mes_sympa,
+.BSAY,
+.XSAY,
+.mes_bat,
+.mes_pixi,
 .caution {
   border: 1px solid white;
 }
 
-.GSAY, .mes_grave {
+.GSAY,
+.mes_grave {
   border-top: 3px solid #eee;
   border-left: 3px solid #eee;
   border-bottom: 3px solid #aaa;
@@ -91,7 +121,9 @@ p {
   margin: 0px;
   padding: 0px;
 }
-div, form, td {
+div,
+form,
+td {
   margin: 0px;
   padding: 0px;
 }
@@ -100,15 +132,15 @@ textarea {
   font-family: monospace;
 }
 
-textarea, input, select {
+textarea,
+input,
+select {
   color: #000;
 }
 
 a {
   text-decoration: none;
 }
-
-
 
 h1 {
   margin: 0px 0px 10px 0px;
@@ -137,33 +169,31 @@ h3 {
   padding: 2px 8px 2px 8px;
 }
 
-strong { }
+strong {
+}
 
-
-
-.board{
+.board {
   background-color: #000;
   border: 1px solid #ffc;
 }
-.choice .board{
+.choice .board {
   background-color: #000;
   border-top: 3px double #ffc;
 }
-.choice .board th{
+.choice .board th {
   border-bottom: 1px dashed #ffc;
 }
-.choice .board td{
-  border-top:  1px dashed #ffc;
-  border-left: 1px solid  #ffc;
+.choice .board td {
+  border-top: 1px dashed #ffc;
+  border-left: 1px solid #ffc;
 }
 .choice {
   background-color: #444;
   border-bottom: 1px solid #444 !important;
 }
 .no_choice {
-  border-bottom:1px dashed #ffc;
+  border-bottom: 1px dashed #ffc;
 }
-
 
 .commitbutton {
   text-align: center;
@@ -183,9 +213,7 @@ strong { }
   text-align: right;
 }
 
-
-
-.tips{
+.tips {
   padding: 0px 8px;
 }
 
@@ -195,13 +223,13 @@ strong { }
   border-collapse: collapse;
 }
 
-.vindex td,.vindex th{
+.vindex td,
+.vindex th {
   margin: 0px;
   padding: 1px;
   border: 1px solid #ffc;
   border-left: 1px dashed #ffc;
   border-right: 1px dashed #ffc;
-
 }
 
 .form_vmake {
@@ -244,13 +272,10 @@ strong { }
   clear: left;
 }
 
-
-
 .outframe {
   color: #fff;
   background: #000;
 }
-
 
 .previewsafety {
   color: #000000;
@@ -271,7 +296,6 @@ strong { }
   float: right;
 }
 
-
 .sayfilter {
   border: 2px dashed #000;
   color: #000;
@@ -288,11 +312,11 @@ strong { }
 
 .insayfilter {
   text-align: left;
-  border-width: 0 ;
+  border-width: 0;
   background: #556;
 }
 .insayfilter .paragraph {
-  border-width: 0 ;
+  border-width: 0;
 }
 .sayfilter_heading {
   border: solid #fff;
@@ -300,14 +324,13 @@ strong { }
   color: #fff;
   background: #458;
   font-weight: bold;
-  margin: 3px 0 0 0 ;
+  margin: 3px 0 0 0;
 }
 
 .sayfilter_button {
   float: right;
   display: none;
 }
-
 
 .sayfilter_content .head,
 .sayfilter_caption_enable {
@@ -316,7 +339,7 @@ strong { }
   color: #fff;
   background: #458;
   font-weight: normal;
-  margin: 3px 0 0 0 ;
+  margin: 3px 0 0 0;
   padding: 1px;
 }
 
@@ -333,22 +356,21 @@ strong { }
   border: solid #fff;
   border-width: 1px 0px 1px 0px;
   font-weight: normal;
-  margin: 3px 0 0 0 ;
+  margin: 3px 0 0 0;
 }
 .sayfilter_button_lump {
   text-align: center;
   color: #fff;
   background: #008;
-  margin: 1px 0 0 0 ;
+  margin: 1px 0 0 0;
 }
 
-
-.sayfilter_content_enable    ,
-.sayfilter_content_disenable ,
-.sayfilter_content           ,
-#lumpfilter ,
+.sayfilter_content_enable,
+.sayfilter_content_disenable,
+.sayfilter_content,
+#lumpfilter,
 #lumpfilter input {
-  margin: 1px 0 0 0 ;
+  margin: 1px 0 0 0;
   font-weight: normal;
 }
 
@@ -360,19 +382,17 @@ strong { }
   margin: 0px;
   text-align: right;
 }
-.turnnavi    ,
-.pagenavi    ,
-.row_all     {
+.turnnavi,
+.pagenavi,
+.row_all {
   color: #999;
   background-color: #000;
   font-weight: bold;
 }
 
-
 .viewform {
   text-align: right;
 }
-
 
 .mes_chrimg {
   padding: 1px;
@@ -381,15 +401,17 @@ strong { }
 }
 
 .say {
-  border-width: 1px; border-style: solid;
+  border-width: 1px;
+  border-style: solid;
 }
 
-.field, .say img {
-  margin:  0;
+.field,
+.say img {
+  margin: 0;
   padding: 12px 8px 12px 10px;
 }
 .action {
-  margin:  0px;
+  margin: 0px;
   padding: 4px;
 }
 
@@ -419,7 +441,6 @@ strong { }
   background: #556;
 }
 
-
 .cautiontext {
   font-weight: bold;
   color: #f44;
@@ -427,18 +448,19 @@ strong { }
 
 .action_nom,
 .action {
-  border-width: 1px; border-style: solid;
+  border-width: 1px;
+  border-style: solid;
   border-color: #663;
 }
 .mes_think .action,
 .action_bm {
-  border-width: 1px; border-style: solid;
+  border-width: 1px;
+  border-style: solid;
   border-color: #663;
 }
 .mes_think .action .mes_date {
   display: none;
 }
-
 
 .memo {
   color: #fff;
@@ -464,9 +486,10 @@ strong { }
   background: transparent;
 }
 
-.msg{
-  border-width: 0px; border-style: none;
-  margin:  2px;
+.msg {
+  border-width: 0px;
+  border-style: none;
+  margin: 2px;
   padding: 4px;
 }
 
@@ -484,7 +507,7 @@ strong { }
 
 .formpl_chrimg {
   text-align: center;
-  border: 1px solid #554433
+  border: 1px solid #554433;
   vertical-align: middle;
 }
 
@@ -492,15 +515,15 @@ img {
   border-style: none;
 }
 
-.mes_que   ,
-.mes_del   ,
-.mes_nom   ,
-.mes_mob   ,
-.mes_think ,
-.mes_sympa ,
-.mes_bat   ,
-.mes_pixi  ,
-.mes_wolf  ,
+.mes_que,
+.mes_del,
+.mes_nom,
+.mes_mob,
+.mes_think,
+.mes_sympa,
+.mes_bat,
+.mes_pixi,
+.mes_wolf,
 .mes_grave {
   margin: 0px 8px 16px 8px;
   padding: 1px;
@@ -511,12 +534,12 @@ img {
   border: 1px solid #442;
 }
 
-
-.info      ,
-.infosp    ,
-.infowolf  ,
-.caution   {
-  border-width: 1px; border-style: solid;
+.info,
+.infosp,
+.infowolf,
+.caution {
+  border-width: 1px;
+  border-style: solid;
 }
 
 .caution {
@@ -527,9 +550,8 @@ img {
   color: #aaa;
 }
 
-
-.info ,
-.infosp ,
+.info,
+.infosp,
 .infowolf {
   border-color: #663;
 }
@@ -537,7 +559,6 @@ img {
 .mes_think .action .mes_date {
   display: none;
 }
-
 
 /* bug-fix */
 .btn {

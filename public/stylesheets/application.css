@@ -2,7 +2,7 @@
 .toppage .paragraph,
 .accordion dt,
 .accordion dd {
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .board {
@@ -11,7 +11,7 @@
 }
 
 hr.invisible_hr {
-	display: none;
+  display: none;
 }
 .formpl_gm,
 .img img {
@@ -31,13 +31,14 @@ div.mark,
 .paragraph,
 .footnote,
 .config_item,
-.MAKER, .mes_admin,
-.ADMIN, .mes_maker,
+.MAKER,
+.mes_admin,
+.ADMIN,
+.mes_maker,
 .mesname,
 .action,
 li,
-p
- {
+p {
   text-align: left;
 }
 
@@ -53,7 +54,7 @@ body {
   text-align: center;
 }
 
-input[type="number"],
+input[type='number'],
 #checklist,
 #buttons,
 .css_changer,
@@ -70,7 +71,6 @@ address * {
   text-align: right;
 }
 
-
 .INFONOM,
 .INFOSP,
 .INFOWOLF,
@@ -79,8 +79,8 @@ address * {
 .info,
 .infosp,
 .infowolf,
-.mes_maker,
-.mes_admin,
+.mes_maker .guide,
+.mes_admin .guide,
 .caution,
 .action_bm,
 .turnnavi,
@@ -90,6 +90,10 @@ address * {
   margin-bottom: 6px;
 }
 
+.mes_maker,
+.mes_admin {
+  margin-bottom: 6px;
+}
 
 .mes_maker,
 .MAKER .action,
@@ -113,24 +117,26 @@ address * {
   color: #666 !important;
 }
 
-.mes_maker,
+.mes_maker .action,
+.mes_maker .guide,
 .MAKER .msg,
 .MAKER .action,
-.MAKER.guide ,
-.mes_admin,
+.MAKER.guide,
+.mes_admin .action,
+.mes_admin .guide,
 .ADMIN .msg,
 .ADMIN .action,
 .ADMIN.guide {
   background: #000 !important;
 }
 
-.mes_text ,
-.mes_text_report ,
-.mes_text_monospace ,
-.memoleft ,
+.mes_text,
+.mes_text_report,
+.mes_text_monospace,
+.memoleft,
 .memoright {
-  word-wrap:  break-word !important;
-  word-break: break-all  !important;
+  word-wrap: break-word !important;
+  word-break: break-all !important;
   overflow-y: hidden;
   overflow-x: auto;
 }
@@ -138,9 +144,9 @@ address * {
 .text em,
 .mes_text em,
 .mes_text_report em,
-.mes_text_monospace em{
+.mes_text_monospace em {
   opacity: 0.7;
-  font-style:  normal;
+  font-style: normal;
 }
 
 .text,
@@ -153,7 +159,7 @@ address * {
 }
 
 .head:first-line,
-.mes_text_report:first-line{
+.mes_text_report:first-line {
   font-weight: bold !important;
 }
 
@@ -163,44 +169,46 @@ address * {
   font-family: monospace !important;
 }
 
-
 form.login input {
-    width: 12ex
+  width: 12ex;
 }
 
 form.login label {
-    display: inline
+  display: inline;
 }
 
 .form_vmake label {
-    display: inline
+  display: inline;
 }
 
-.form_vmake input[name^=cnt], .form_vmake input.input-tiny {
-    width: 2.5ex;
-    height: 2.0em
+.form_vmake input[name^='cnt'],
+.form_vmake input.input-tiny {
+  width: 2.5ex;
+  height: 2em;
 }
 
-.form_vmake input[type=password] {
-    width: 10em
+.form_vmake input[type='password'] {
+  width: 10em;
 }
 
-fieldset.action_type select, .formpl_content textarea, .formpl_actiontext {
-    width: 96%
+fieldset.action_type select,
+.formpl_content textarea,
+.formpl_actiontext {
+  width: 96%;
 }
 
 .formpl_content label {
-    display: inline
+  display: inline;
 }
 
 .formpl_action legend {
-    margin-bottom: 0
+  margin-bottom: 0;
 }
 
-
-#clipboard, #cliptext, .action_type, .action_type legend {
-    font-size: smaller;
-    line-height: 1em
+#clipboard,
+#cliptext,
+.action_type,
+.action_type legend {
+  font-size: smaller;
+  line-height: 1em;
 }
-
-

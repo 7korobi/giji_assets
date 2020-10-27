@@ -1,197 +1,195 @@
 @charset "Shift_JIS";
-@import url("480.css");
+@import url('480.css');
 
 /* GROBAL --------------------*/
 
-.handler{
+.handler {
   opacity: 0.1 !important;
 }
 
 .img img {
-          transform-origin: 150% 0%;
-       -o-transform-origin: 150% 0%;
-     -moz-transform-origin: 150% 0%;
+  transform-origin: 150% 0%;
+  -o-transform-origin: 150% 0%;
+  -moz-transform-origin: 150% 0%;
   -webkit-transform-origin: 150% 0%;
-          transform: rotate( 0 ) ;
-       -o-transform: rotate( 0 ) ;
-     -moz-transform: rotate( 0 ) ;
-  -webkit-transform: rotate( 0 ) ;
-          transition: all 1s linear 0;
-       -o-transition: all 1s linear 0;
-      -ms-transition: all 1s linear 0;
-     -moz-transition: all 1s linear 0;
+  transform: rotate(0);
+  -o-transform: rotate(0);
+  -moz-transform: rotate(0);
+  -webkit-transform: rotate(0);
+  transition: all 1s linear 0;
+  -o-transition: all 1s linear 0;
+  -ms-transition: all 1s linear 0;
+  -moz-transition: all 1s linear 0;
   -webkit-transition: all 1s linear 0;
 }
 
-.img img:hover{
-          transform: rotate( 10deg ) ;
-       -o-transform: rotate( 10deg ) ;
-     -moz-transform: rotate( 10deg ) ;
-  -webkit-transform: rotate( 10deg ) ;
+.img img:hover {
+  transform: rotate(10deg);
+  -o-transform: rotate(10deg);
+  -moz-transform: rotate(10deg);
+  -webkit-transform: rotate(10deg);
 }
 
 h2 {
-  margin:  6px 0 0 0;
+  margin: 6px 0 0 0;
 }
 
 h3 {
-  margin:  6px 0 0 0;
+  margin: 6px 0 0 0;
 }
 /* BODY FRAME --------------------*/
 .vindex {
   margin: 6px 8px;
   width: 96%;
 }
-/* ƒtƒBƒ‹ƒ^‚Ì’†g ----------*/
-.insayfilter table{
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½Ì’ï¿½ï¿½g ----------*/
+.insayfilter table {
   border-width: 0;
 }
-.insayfilter .types div
-{
+.insayfilter .types div {
   font-size: 100%;
 }
 
 .sayfilter_heading {
   padding: 0 0 0 8px;
 }
-.insayfilter
-{
+.insayfilter {
   overflow: visible;
-  margin:  0 0 6px 0;
+  margin: 0 0 6px 0;
   padding: 0;
 }
 
 /* BLOCK --------------------*/
 
-/* ’i—‘S”Ê ----------*/
+/* ï¿½iï¿½ï¿½ï¿½Sï¿½ï¿½ ----------*/
 .paragraph {
   padding: 0 0 0 8px;
 }
 
-/* ‘S•\¦ƒŠƒ“ƒN ----------*/
+/* ï¿½Sï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½N ----------*/
 .row_all {
   padding: 0px 16px;
   font-weight: bold;
 }
 
-/* •\¦s”E•\¦‡˜•ÏXƒtƒH[ƒ€ ----------*/
-/* ”­Œ¾‚Ì“ú•t ----------*/
+/* ï¿½\ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Eï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏXï¿½tï¿½Hï¿½[ï¿½ï¿½ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ì“ï¿½ï¿½t ----------*/
 
 /* FORM PLAYER --------------------*/
 
-/* ”­Œ¾“ü—Í—“‚ÌŠO˜g ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í—ï¿½ï¿½ÌŠOï¿½g ----------*/
 .formpl_frame {
   margin: 0px 0px 12px 0px;
 }
 
-/* ”­Œ¾“ü—Í—“‚Ì€–Ú ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í—ï¿½ï¿½Ìï¿½ï¿½ï¿½ ----------*/
 .formpl_content {
   padding: 4px;
 }
 
-/* ƒAƒNƒVƒ‡ƒ““ü—Í—“ ----------*/
+/* ï¿½Aï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í—ï¿½ ----------*/
 .formpl_action {
   padding: 4px;
 }
 
-/* ”­Œ¾Ò–¼ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ò–ï¿½ ----------*/
 .MAKER,
 .ACTION,
 .INFONOM,
 .INFOSP,
 .INFOWOLF,
 .TSAY .action,
-.mes_maker ,
-.mes_admin ,
-.info      ,
-.infosp    ,
-.infowolf  ,
-.caution   ,
+.mes_maker,
+.mes_admin,
+.info,
+.infosp,
+.infowolf,
+.caution,
 .mes_think .action,
 .action_bm {
   margin: 0px 8px 16px 8px;
   padding: 4px;
 }
 
-/* ƒAƒNƒVƒ‡ƒ“ ------------*/ 
-.action_nom, 
+/* ï¿½Aï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ ------------*/
+.action_nom,
 .action {
   margin: 0 0 6px 107px;
-  padding: 4px 8px 4px 8px; 
+  padding: 4px 8px 4px 8px;
 }
 
 .inframe .message_filter {
   width: 460px;
-  display:block;
+  display: block;
 }
-/* ƒƒ‚ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ ----------*/
 .memo {
   margin: 0px 12px 16px 12px;
   padding: 1px;
 }
-/* ”­Œ¾ŠÖŒW‹¤’Ê ------*/
-.img{
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ÖŒWï¿½ï¿½ï¿½ï¿½ ------*/
+.img {
   vertical-align: top;
   padding: 0 0 6px 0;
 }
-.img img{
-          transform-origin: 150% 0%;
-       -o-transform-origin: 150% 0%;
-     -moz-transform-origin: 150% 0%;
+.img img {
+  transform-origin: 150% 0%;
+  -o-transform-origin: 150% 0%;
+  -moz-transform-origin: 150% 0%;
   -webkit-transform-origin: 150% 0%;
-          transform: rotate( 10deg ) ;
-       -o-transform: rotate( 10deg ) ;
-     -moz-transform: rotate( 10deg ) ;
-  -webkit-transform: rotate( 10deg ) ;
+  transform: rotate(10deg);
+  -o-transform: rotate(10deg);
+  -moz-transform: rotate(10deg);
+  -webkit-transform: rotate(10deg);
 }
 
 .say .chrblank,
 .say .chrblank {
   width: 80px;
 }
-.say .msg{
+.say .msg {
   margin: 0 4px 6px 0px;
   padding: 0 4px 0 0;
 }
 
-/* ”­Œ¾“ü—Í—“i‹¤’Êj ---*/ 
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í—ï¿½ï¿½iï¿½ï¿½ï¿½Êj ---*/
 .formpl_common {
   margin: 0px 8px 16px 8px;
   padding: 4px;
   border-style: solid;
   border-width: 1px;
 }
-.formpl_commit ,
-.formpl_undef  ,
-.formpl_vil      ,
-.formpl_seer     ,
-.formpl_medium   ,
-.formpl_guard    ,
-.formpl_fm       ,
-.formpl_stigma   ,
-.formpl_sympathy ,
-.formpl_love     ,
-.formpl_wolf     ,
-.formpl_possess  ,
-.formpl_fanatic  ,
-.formpl_cpossess ,
-.formpl_cwolf    ,
-.formpl_intwolf  ,
-.formpl_pixi     ,
+.formpl_commit,
+.formpl_undef,
+.formpl_vil,
+.formpl_seer,
+.formpl_medium,
+.formpl_guard,
+.formpl_fm,
+.formpl_stigma,
+.formpl_sympathy,
+.formpl_love,
+.formpl_wolf,
+.formpl_possess,
+.formpl_fanatic,
+.formpl_cpossess,
+.formpl_cwolf,
+.formpl_intwolf,
+.formpl_pixi,
 .formpl_trickster,
-.formpl_hamster  ,
-.formpl_werebat  ,
-.formpl_gm       ,
-.WIN_NONE    ,
-.WIN_HUMAN   ,
-.WIN_DISH    ,
+.formpl_hamster,
+.formpl_werebat,
+.formpl_gm,
+.WIN_NONE,
+.WIN_HUMAN,
+.WIN_DISH,
 .WIN_LONEWOLF,
-.WIN_PIXI    ,
-.WIN_GURU    ,
-.WIN_HATER   ,
-.WIN_LOVER   ,
-.WIN_WOLF    ,
-.WIN_EVIL    {
+.WIN_PIXI,
+.WIN_GURU,
+.WIN_HATER,
+.WIN_LOVER,
+.WIN_WOLF,
+.WIN_EVIL {
   padding: 4px 0px;
   border-style: double none;
   border-width: 3px 0;

@@ -1,5 +1,5 @@
 @charset "Shift_JIS";
-@import url("480.css");
+@import url('480.css');
 
 /* GROBAL --------------------*/
 
@@ -15,50 +15,48 @@ h3 {
   margin: 3px 0;
   width: 100%;
 }
-/* ƒtƒBƒ‹ƒ^‚Ì’†g ----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½Ì’ï¿½ï¿½g ----------*/
 
 .sayfilter_heading {
   padding: 0px;
 }
 
-/* ’i—‘S”Ê ----------*/
+/* ï¿½iï¿½ï¿½ï¿½Sï¿½ï¿½ ----------*/
 .paragraph {
   padding: 0px;
 }
 
-
-/* ”­Œ¾“ü—Í—“‚ÌŠO˜g ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í—ï¿½ï¿½ÌŠOï¿½g ----------*/
 .formpl_frame {
   margin: 0px;
 }
 
-/* ƒAƒNƒVƒ‡ƒ““ü—Í—“ ----------*/
+/* ï¿½Aï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í—ï¿½ ----------*/
 .formpl_action {
   padding: 0;
 }
 
-/* ƒAƒNƒVƒ‡ƒ“ ------------*/
+/* ï¿½Aï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ ------------*/
 .action_nom,
 .action {
   margin: 0 0 4px 99px;
   padding: 4px 12px 0 9px;
 }
 
-
-/* ƒƒ‚ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ ----------*/
 .memo {
   margin: 0px;
   padding: 4px 0;
 }
-/* ”­Œ¾ŠÖŒW‹¤’Ê ------*/
-.say .img{
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ÖŒWï¿½ï¿½ï¿½ï¿½ ------*/
+.say .img {
   padding: 0 0 4px 0;
 }
 
-.say .field{
-  width:350px;
+.say .field {
+  width: 350px;
 }
-.say .msg{
+.say .msg {
   margin: 0 3px 4px 3px;
   padding: 0px 4px;
 }

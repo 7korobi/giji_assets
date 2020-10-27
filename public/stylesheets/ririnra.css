@@ -1,8 +1,8 @@
 @charset "Shift_JIS";
-@import url("theme/cinema.css");
-@import url("size/800.css");
+@import url('theme/cinema.css');
+@import url('size/800.css');
 
-/* ƒtƒBƒ‹ƒ^‚ğ¶‚É”z’u‚µ‚½‚ÌŠO˜g ----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½É”zï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌŠOï¿½g ----------*/
 .outframe_navimode {
   width: 764px;
 }
@@ -12,62 +12,63 @@ h1 {
   padding: 0px;
 }
 
-/* ƒtƒBƒ‹ƒ^‚Ì’†g ----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½Ì’ï¿½ï¿½g ----------*/
 .insayfilter .paragraph {
   margin: 6px 0 0 0;
-
 }
 
-/* ƒtƒBƒ‹ƒ^i‰º”z’uj----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½iï¿½ï¿½ï¿½zï¿½uï¿½ï¿½ï¿½j----------*/
 .sayfilter {
   border-width: 0;
 }
 
-/* ƒtƒBƒ‹ƒ^‚ÌŒ©o‚µ ----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½ÌŒï¿½ï¿½oï¿½ï¿½ ----------*/
 .sayfilter_heading {
   margin: 0px 8px;
   padding: 2px;
   background: #bb9;
-
 }
 
-.sayfilter_caption_enable    ,
+.sayfilter_caption_enable,
 .sayfilter_caption_disenable {
-  border-width: 1px 0 0 0 ; border-style: solid ; border-color: #000;
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  border-color: #000;
   background: #bb9;
 }
 
-/* ƒtƒBƒ‹ƒ^‘I‘ğ—“˜g----------*/
-.sayfilter_content ,#lumpfilter ,#lumpfilter input {
-  border-width: 1px 0 0 0 ; border-style: dotted ; border-color: #000;
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½Iï¿½ğ—“˜g----------*/
+.sayfilter_content,
+#lumpfilter,
+#lumpfilter input {
+  border-width: 1px 0 0 0;
+  border-style: dotted;
+  border-color: #000;
   background: #cb9;
 }
 
-/* ƒtƒBƒ‹ƒ^‘I‘ğ—“i—LŒøj----------*/
-.sayfilter_content_enable    ,
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½Iï¿½ğ—“iï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½j----------*/
+.sayfilter_content_enable,
 .sayfilter_content_disenable {
   border-width: 0;
 }
 
-
-
-.turnnavi    ,
-.pagenavi    ,
-.infonologin ,
-.row_all     {
+.turnnavi,
+.pagenavi,
+.infonologin,
+.row_all {
   background-color: #002;
 }
 
-
 /* IMAGE AND TEXT LAYOUT --------------------*/
 
-/* ”­Œ¾‚ÌƒLƒƒƒ‰‰æ‘œ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ÌƒLï¿½ï¿½ï¿½ï¿½ï¿½æ‘œ ----------*/
 .say img {
   margin: 0 0 0 15px;
 }
 
-/* ”­Œ¾“ü—Í—“‚ÌƒLƒƒƒ‰‰æ‘œ ----------*/
-/* ”­Œ¾‚Ì•¶Í•”•ªi“™•j----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í—ï¿½ï¿½ÌƒLï¿½ï¿½ï¿½ï¿½ï¿½æ‘œ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ì•ï¿½ï¿½Í•ï¿½ï¿½ï¿½ï¿½iï¿½ï¿½ï¿½ï¿½ï¿½j----------*/
 .mes_text_monospace {
   layout-grid: both loose 0 0;
   font-family: monospace;
@@ -85,17 +86,12 @@ h1 {
 #contentframe form,
 #contentframe p,
 #contentframe table,
-.msg
-{
+.msg {
   border-style: none;
 }
 
 .action_nom,
-.action    {
+.action {
   border-style: none;
   margin: 5px 0 5px 0;
 }
-
-
-
-

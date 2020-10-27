@@ -1,18 +1,18 @@
-@import url("theme/cinema.css");
-@import url("size/800baloon.css");
+@import url('theme/cinema.css');
+@import url('size/800baloon.css');
 
 .outframe .drag,
 .outframe_navimode .drag {
-  background-image: url("../images/bg/background580.png");
+  background-image: url('../images/bg/background580.png');
   background-position: -1px 0;
 }
 .outframe {
-  background-image: url("../images/bg/background580.png");
+  background-image: url('../images/bg/background580.png');
   background-position: center;
 }
 
 .outframe_navimode {
-  background-image: url("../images/bg/background770.png");
+  background-image: url('../images/bg/background770.png');
   background-position: center;
 }
 
@@ -21,11 +21,11 @@
   background-repeat: repeat-y;
   background-attachment: fixed;
   border-right: 3px double #863;
-  border-left : 3px double #863;
+  border-left: 3px double #863;
 }
 
 .sayfilterleft {
-  border-left : 3px double #863;
+  border-left: 3px double #863;
 }
 
 /*
@@ -45,9 +45,17 @@
   background: transparent;
 }
 
-
-.action_nom,
-.action {
-  padding: 4px 12px 4px 20px;
-  margin-left:  107px;
+.mes_undef .action,
+.mes_queue .action,
+.mes_del .action,
+.mes_nom .action,
+.mes_think .action,
+.mes_wolf .action,
+.mes_grave .action,
+.mes_sympa .action,
+.mes_pixi .action,
+.mes_mob .action,
+.mes_anonymous .action,
+.action_nom {
+  margin-left: 107px;
 }

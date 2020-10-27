@@ -1,36 +1,48 @@
-@import url("common.css");
+@import url('common.css');
 
 h2 {
-  font-size:   21px;
+  font-size: 21px;
   line-height: 32px;
 }
 
-
-
-
-
-input, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"], 
-select, 
+input,
+input[type='text'],
+input[type='password'],
+input[type='datetime'],
+input[type='datetime-local'],
+input[type='date'],
+input[type='month'],
+input[type='time'],
+input[type='week'],
+input[type='number'],
+input[type='email'],
+input[type='url'],
+input[type='search'],
+input[type='tel'],
+input[type='color'],
+select,
 textarea,
-.input-append *, .input-append .add-on,
-.input-prepend *, .input-prepend .add-on,
+.input-append *,
+.input-append .add-on,
+.input-prepend *,
+.input-prepend .add-on,
 .uneditable-input,
-body, 
-h3, 
+body,
+h3,
 h3 *,
 h4,
 li,
-label, 
-button, 
-.inframe, 
+label,
+button,
+.inframe,
 .text,
 .memoleft,
 .mes_text,
 .mes_text_report,
 .mes_text_monospace,
 .btn {
-  font-size:   16px;
-  line-height: 1.40em;
+  font-size: 16px;
+  line-height: 1.4em;
 }
 
 #tab .paragraph td {
@@ -39,24 +51,24 @@ button,
 
 .mes_date,
 #tab textarea {
-  font-size:   15px;
-  line-height: 1.10em;
+  font-size: 15px;
+  line-height: 1.1em;
 }
 
 .tips,
 .note {
-  font-size:   14px;
-  line-height: 1.00em;
+  font-size: 14px;
+  line-height: 1em;
 }
 
 .board td a,
 .board td,
 .board th {
-  font-size:   14px;
-  text-align:  1.20em;
-  line-height: 1.50em;
+  font-size: 14px;
+  text-align: 1.2em;
+  line-height: 1.5em;
 }
 
 .mesname {
-  line-height: 1.80em;
+  line-height: 1.8em;
 }

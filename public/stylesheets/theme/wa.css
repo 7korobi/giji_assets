@@ -1,5 +1,5 @@
-@import url("./color.white.css");
-@import url("../application.css");
+@import url('./color.white.css');
+@import url('../application.css');
 
 /* GROBAL --------------------*/
 .handler,
@@ -7,7 +7,7 @@ body {
   margin: 0px;
   padding: 0px;
   color: #ccf;
-  background-image: url("../../images/bg/nagatanienn.png");
+  background-image: url('../../images/bg/nagatanienn.png');
   background-repeat: repeat;
   background-position: center;
 }
@@ -16,7 +16,9 @@ p {
   margin: 0px;
   padding: 0px;
 }
-div, form, td {
+div,
+form,
+td {
   margin: 0px;
   padding: 0px;
 }
@@ -25,15 +27,15 @@ textarea {
   font-family: monospace;
 }
 
-textarea, input, select {
+textarea,
+input,
+select {
   color: #000;
 }
 
 a {
   text-decoration: none;
 }
-
-
 
 h1 {
   text-align: left;
@@ -50,58 +52,57 @@ h3 {
   background: #224;
 }
 
-strong { }
+strong {
+}
 
-.board{
+.board {
   background-color: #002;
   border: 1px solid #765;
 }
-.choice .board{
+.choice .board {
   background-color: #002;
   border-top: 3px double #765;
 }
-.choice .board th{
+.choice .board th {
   border-bottom: 1px dashed #765;
 }
-.choice .board td{
-  border-top:  1px dashed #765;
-  border-left: 1px solid  #765;
+.choice .board td {
+  border-top: 1px dashed #765;
+  border-left: 1px solid #765;
 }
 .choice {
   background-color: #224;
   border-bottom: 1px solid #224 !important;
 }
 .no_choice {
-  border-bottom:1px dashed #765;
+  border-bottom: 1px dashed #765;
 }
 
 /* OTHERS --------------------*/
-/* ‘ºŠJnEXVƒ{ƒ^ƒ“ ----------*/
+/* ï¿½ï¿½ï¿½Jï¿½nï¿½Eï¿½Xï¿½Vï¿½{ï¿½^ï¿½ï¿½ ----------*/
 .commitbutton {
   text-align: center;
 }
 
-/* ”­Œ¾“P‰ñ—“ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Pï¿½ï¿½ ----------*/
 .saycancelframe {
   text-align: center;
 }
 
-/* ”­Œ¾“P‰ñƒ{ƒ^ƒ“ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Pï¿½ï¿½{ï¿½^ï¿½ï¿½ ----------*/
 .saycancelbutton {
   font-size: smaller;
 }
 
-/* u–ß‚évƒŠƒ“ƒN ----------*/
+/* ï¿½uï¿½ß‚ï¿½vï¿½ï¿½ï¿½ï¿½ï¿½N ----------*/
 .return {
   margin: 0px;
   padding: 0px 0px 8px 0px;
   text-align: right;
 }
 
-
-
-/* ƒqƒ“ƒgEà–¾‘ ----------*/
-.tips{
+/* ï¿½qï¿½ï¿½ï¿½gï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ----------*/
+.tips {
   padding: 0px 8px;
 }
 
@@ -111,16 +112,16 @@ strong { }
   border-collapse: collapse; /* CSS2? */
 }
 
-.vindex td,.vindex th{
+.vindex td,
+.vindex th {
   margin: 0px;
   padding: 1px;
   border: 1px solid #765;
   border-left: 1px dashed #765;
   border-right: 1px dashed #765;
-
 }
 
-/* ‘ºì¬‰æ–Ê ----------*/
+/* ï¿½ï¿½ï¿½ì¬ï¿½ï¿½ï¿½ ----------*/
 .form_vmake {
   margin: 0px;
   padding: 4px 0px;
@@ -131,61 +132,60 @@ strong { }
   border-bottom: 3px double #720;
 }
 
-/* ‘ºì¬E•ÒWƒ{ƒ^ƒ“ ----------*/
+/* ï¿½ï¿½ï¿½ì¬ï¿½Eï¿½ÒWï¿½{ï¿½^ï¿½ï¿½ ----------*/
 .exevmake {
   text-align: center;
 }
 
-/* ’i‘giƒ‰ƒxƒ‹j ----------*/
+/* ï¿½iï¿½gï¿½iï¿½ï¿½ï¿½xï¿½ï¿½ï¿½j ----------*/
 .multicolumn_label {
   display: block;
   float: left;
   text-align: right;
 }
 
-/* ’i‘gi¶”z’uj ----------*/
+/* ï¿½iï¿½gï¿½iï¿½ï¿½ï¿½zï¿½uï¿½j ----------*/
 .multicolumn_left {
   display: block;
   float: left;
 }
 
-/* ’i‘gi‰E”z’uj ----------*/
+/* ï¿½iï¿½gï¿½iï¿½Eï¿½zï¿½uï¿½j ----------*/
 .multicolumn_right {
   display: block;
   float: left;
 }
 
-/* ’i‘gi–ğŠ„“ü—Í—“j ----------*/
+/* ï¿½iï¿½gï¿½iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í—ï¿½ï¿½j ----------*/
 .multicolumn_role {
   width: 100%;
   color: #000;
   font-size: smaller;
 }
 
-/* ’i‘gi‰üsj ----------*/
+/* ï¿½iï¿½gï¿½iï¿½ï¿½ï¿½sï¿½j ----------*/
 .multicolumn_clear {
   clear: left;
 }
 
-
 /* BODY FRAME --------------------*/
 
-/* ŠO˜g ----------*/
+/* ï¿½Oï¿½g ----------*/
 .outframe {
-  background-image: url("../../images/bg/nagatanienn.png");
+  background-image: url('../../images/bg/nagatanienn.png');
   background-repeat: repeat;
   background-position: center;
 }
 
-/* Œë”š–h~ƒ`ƒFƒbƒN—“ ----------*/
+/* ï¿½ë”šï¿½hï¿½~ï¿½`ï¿½Fï¿½bï¿½Nï¿½ï¿½ ----------*/
 .previewsafety {
   color: #000000;
   background: #a55;
 }
 
-/* ƒtƒBƒ‹ƒ^‚ğ¶‚É”z’u‚µ‚½‚ÌŠO˜g ----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½É”zï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌŠOï¿½g ----------*/
 .outframe_navimode {
-  background-image: url("../../images/bg/nagatanienn.png");
+  background-image: url('../../images/bg/nagatanienn.png');
   background-repeat: repeat;
   background-position: center;
 }
@@ -194,43 +194,44 @@ strong { }
   text-align: left;
 }
 
-/* ƒtƒBƒ‹ƒ^‚ğ¶‚É”z’u‚µ‚½‚Ì“à˜g ----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½É”zï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì“ï¿½ï¿½g ----------*/
 .contentframe_navileft {
   background: #000;
   text-align: left;
   float: right;
 }
 
-/* “à˜g‚Ì’†giƒ^ƒCƒgƒ‹‰æ‘œ‚ÍŠÜ‚Ü‚È‚¢j ----------*/
+/* ï¿½ï¿½ï¿½gï¿½Ì’ï¿½ï¿½gï¿½iï¿½^ï¿½Cï¿½gï¿½ï¿½ï¿½æ‘œï¿½ÍŠÜ‚Ü‚È‚ï¿½ï¿½j ----------*/
 .inframe,
 .inframe .memo {
 }
 
 /* SAY FILTER --------------------*/
 
-/* ƒtƒBƒ‹ƒ^i‰º”z’uj----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½iï¿½ï¿½ï¿½zï¿½uï¿½ï¿½ï¿½j----------*/
 .sayfilter {
   text-align: center;
   color: #000;
 }
 
-/* ƒtƒBƒ‹ƒ^i¶”z’uj----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½iï¿½ï¿½ï¿½zï¿½uï¿½ï¿½ï¿½j----------*/
 .sayfilterleft {
   text-align: left;
   color: #000;
   float: left;
 }
 
-/* ƒtƒBƒ‹ƒ^‚Ì’†g ----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½Ì’ï¿½ï¿½g ----------*/
 .insayfilter {
   text-align: left;
 }
 #insayfilter .paragraph,
-#notepad     .paragraph,
-#navi_page   .paragraph {
-  border-style: solid ; border-color: #a96;
+#notepad .paragraph,
+#navi_page .paragraph {
+  border-style: solid;
+  border-color: #a96;
 }
-/* ƒtƒBƒ‹ƒ^‚ÌŒ©o‚µ ----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½ÌŒï¿½ï¿½oï¿½ï¿½ ----------*/
 .sayfilter_heading {
   border: none;
   font-weight: bold;
@@ -238,34 +239,36 @@ strong { }
   background: #a96;
 }
 
-/* ƒtƒBƒ‹ƒ^ŒÅ’èE”z’uƒ{ƒ^ƒ“ ----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½Å’ï¿½Eï¿½zï¿½uï¿½{ï¿½^ï¿½ï¿½ ----------*/
 .sayfilter_button {
   float: right;
   display: none;
 }
 
 .sayfilter_content .head,
-.sayfilter_caption_enable    ,
+.sayfilter_caption_enable,
 .sayfilter_caption_disenable {
   font-weight: normal;
   margin: 0;
   padding: 1px;
-  border-width: 1px 0 0 0 ; border-style: solid ; border-color: #000;
+  border-width: 1px 0 0 0;
+  border-style: solid;
+  border-color: #000;
   background: #cc7;
 }
 
-/* ƒtƒBƒ‹ƒ^‘I‘ğ—“˜g----------*/
-.sayfilter_content_enable    ,
-.sayfilter_content_disenable ,
-.sayfilter_content           ,
-#lumpfilter ,
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½Iï¿½ğ—“˜g----------*/
+.sayfilter_content_enable,
+.sayfilter_content_disenable,
+.sayfilter_content,
+#lumpfilter,
 #lumpfilter input {
   font-weight: normal;
   background: #ddb;
 }
 
-/* ƒtƒBƒ‹ƒ^‘I‘ğ—“i—LŒøj----------*/
-.sayfilter_content_enable    ,
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½Iï¿½ğ—“iï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½j----------*/
+.sayfilter_content_enable,
 .sayfilter_content_disenable {
   border-width: 0;
   width: 100%;
@@ -275,38 +278,40 @@ strong { }
   display: none;
 }
 
-/* ƒtƒBƒ‹ƒ^ˆêŠ‡‘€ì—pƒ{ƒ^ƒ“ ----------*/
-.sayfilter_button_mestype ,
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½êŠ‡ï¿½ï¿½ï¿½ï¿½pï¿½{ï¿½^ï¿½ï¿½ ----------*/
+.sayfilter_button_mestype,
 .sayfilter_button_lump {
   text-align: center;
 }
 
-/* ƒƒOƒCƒ“—“ ----------*/
+/* ï¿½ï¿½ï¿½Oï¿½Cï¿½ï¿½ï¿½ï¿½ ----------*/
 .login {
   margin: 0px;
   text-align: right;
 }
-/* “ú•tƒŠƒ“ƒN ----------*/
-/* ƒy[ƒWƒŠƒ“ƒN ----------*/
-/* ”ñƒƒOƒCƒ“’ˆÓ•\¦ ----------*/
-/* ‘S•\¦ƒŠƒ“ƒN ----------*/
-.turnnavi    ,
-.pagenavi    ,
-.infonologin ,
-.row_all     {
+/* ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½ï¿½ï¿½N ----------*/
+/* ï¿½yï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½N ----------*/
+/* ï¿½ñƒƒOï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó•\ï¿½ï¿½ ----------*/
+/* ï¿½Sï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½N ----------*/
+.turnnavi,
+.pagenavi,
+.infonologin,
+.row_all {
   color: #ccf;
   background-color: #002;
   font-weight: bold;
 }
 
-/* •\¦s”E•\¦‡˜•ÏXƒtƒH[ƒ€ ----------*/
+/* ï¿½\ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½Eï¿½\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏXï¿½tï¿½Hï¿½[ï¿½ï¿½ ----------*/
 .viewform {
   text-align: right;
 }
 
-/* ”­Œ¾‚ÌƒLƒƒƒ‰‰æ‘œ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ÌƒLï¿½ï¿½ï¿½ï¿½ï¿½æ‘œ ----------*/
 .say img {
-  border-width: 2px 0 2px 0 ; border-style: solid ; border-color: #300;
+  border-width: 2px 0 2px 0;
+  border-style: solid;
+  border-color: #300;
 }
 
 .MAKER,
@@ -314,13 +319,14 @@ strong { }
 .INFONOM,
 .INFOSP,
 .INFOWOLF,
-.mes_maker ,
-.mes_admin ,
-.info      ,
-.infosp    ,
-.infowolf  ,
-.caution   {
-  border-width: 3px 0; border-style: double none;
+.mes_maker,
+.mes_admin,
+.info,
+.infosp,
+.infowolf,
+.caution {
+  border-width: 3px 0;
+  border-style: double none;
 }
 .MAKER,
 .mes_maker {
@@ -334,54 +340,57 @@ strong { }
 .INFONOM,
 .INFOSP,
 .INFOWOLF,
-.info ,
+.info,
 .infosp,
 .infowolf {
   border-color: #444;
 }
-/* ŒxE’ˆÓ•\¦ --------*/
+/* ï¿½xï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½Ó•\ï¿½ï¿½ --------*/
 .caution {
-  border-color: #ccc;}
+  border-color: #ccc;
+}
 
-/* ƒAƒNƒVƒ‡ƒ“ ------------*/
+/* ï¿½Aï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ ------------*/
 .action_nom,
 .action {
-  border-width: 2px 0 2px 10px; border-style: solid none solid solid ; border-color: #222;
+  border-width: 2px 0 2px 18px;
+  border-style: solid none solid solid;
+  border-color: #222;
 }
-/* ‚µ‚¨‚è ----------------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ----------------*/
 .TSAY .action .mes_date,
 .mes_think .action .mes_date {
   display: none;
 }
 
-/* ƒƒ‚ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ ----------*/
 .memo {
   border-color: #720;
   color: #000;
 }
-/* ƒƒ‚‚Ì¶‘¤ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ ----------*/
 .memoleft {
   border-color: #444;
 }
-/* ƒƒ‚‚Ì‰E‘¤ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ì‰Eï¿½ï¿½ ----------*/
 .memoright {
   background: #cb8;
   border-color: #444;
 }
 
-/* ”­Œ¾Ò–¼ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ò–ï¿½ ----------*/
 .mesname {
   font-weight: bold;
   border-bottom: 1px dashed #444;
   background: transparent;
 }
 
-/* ”­Œ¾ŠÖŒW‹¤’Ê ------*/
-.msg{
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ÖŒWï¿½ï¿½ï¿½ï¿½ ------*/
+.msg {
   border-right: solid 4px #222;
 }
 
-/* ’Êí”­Œ¾ ------*/
+/* ï¿½Êí”­ï¿½ï¿½ ------*/
 .MSAY .action,
 .MSAY .msg,
 .MSAY .memoleft,
@@ -396,19 +405,20 @@ TABLE.SAY .msg,
 .mes_nom .action,
 .mes_nom .memoleft,
 .mes_nom .memoright,
-.mes_nom .msg{
-  color: #000;  background: #ba7; } /*–Ø—“F*/
+.mes_nom .msg {
+  color: #000;
+  background: #ba7;
+} /*ï¿½Ø—ï¿½ï¿½F*/
 .formpl_common,
 .formpl_common .msg {
   border-color: #720;
 }
-.formpl_gm ,
-.formpl_gm  textarea{
+.formpl_gm,
+.formpl_gm textarea {
   border-color: #720;
   color: #ffa;
   background-color: #002;
 }
-
 
 /* bug-fix */
 .btn {
@@ -422,6 +432,3 @@ TABLE.SAY .msg,
 .btn-inverse {
   color: #fff !important;
 }
-
-
-

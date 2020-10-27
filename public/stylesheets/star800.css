@@ -1,54 +1,59 @@
 @charset "Shift_JIS";
-@import url("theme/star.css");
-@import url("size/800baloon.css");
+@import url('theme/star.css');
+@import url('size/800baloon.css');
 
-/* ŠO˜g ----------*/
+/* ï¿½Oï¿½g ----------*/
 .outframe {
   border-right: 3px double #1b7;
-  border-left : 3px double #1b7;
+  border-left: 3px double #1b7;
 }
 
-/* ƒtƒBƒ‹ƒ^‚ğ¶‚É”z’u‚µ‚½‚ÌŠO˜g ----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½É”zï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÌŠOï¿½g ----------*/
 .outframe_navimode {
   border-right: 3px double #1b7;
-  border-left:  3px double #114;
+  border-left: 3px double #114;
 }
 
-/* ƒtƒBƒ‹ƒ^i¶”z’uj----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½iï¿½ï¿½ï¿½zï¿½uï¿½ï¿½ï¿½j----------*/
 .sayfilterleft {
 }
 
 .contentframe {
-  background-image: url("../images/bg/star580.png");
+  background-image: url('../images/bg/star580.png');
   background-repeat: repeat-y;
   background-attachment: fixed;
   background-position: center;
 }
 
-/* ƒtƒBƒ‹ƒ^‚ğ¶‚É”z’u‚µ‚½‚Ì“à˜g ----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½É”zï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì“ï¿½ï¿½g ----------*/
 .drag,
 .contentframe_navileft {
-  background-image: url("../images/bg/star770.png");
+  background-image: url('../images/bg/star770.png');
   background-repeat: repeat-y;
   background-attachment: fixed;
   background-position: center;
 }
 
-/* ŠO˜g ----------*/
-.outframe ,
+/* ï¿½Oï¿½g ----------*/
+.outframe,
 .outframe_navimode {
-  background-image: url("../images/bg/jupiter.png");
+  background-image: url('../images/bg/jupiter.png');
   background-position: center top;
 }
 
-/* IMAGE AND TEXT LAYOUT --------------------*/
-
-/* ”­Œ¾‚ÌƒLƒƒƒ‰‰æ‘œ ----------*/
-
-.action_nom,
-.action {
-  padding: 4px 12px 4px 10px;
+.mes_undef .action,
+.mes_queue .action,
+.mes_del .action,
+.mes_nom .action,
+.mes_think .action,
+.mes_wolf .action,
+.mes_grave .action,
+.mes_sympa .action,
+.mes_pixi .action,
+.mes_mob .action,
+.mes_anonymous .action,
+.action_nom {
   margin-left: 132px;
   border-width: 0 0 1px 4px;
-  border-style: solid solid ;
+  border-style: solid solid;
 }

@@ -1,20 +1,20 @@
 @charset "Shift_JIS";
-@import url("800.css");
+@import url('800.css');
 
 /* BODY FRAME --------------------*/
 .vindex {
   margin: 6px 0;
   width: 100%;
 }
-/* ‘ºŒš‚Äl”­Œ¾ ----------*/
-/* ŠÇ—l”­Œ¾ ----------*/
-/* ƒƒ‚ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Älï¿½ï¿½ï¿½ï¿½ ----------*/
+/* ï¿½Ç—ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ ----------*/
 .memo {
   margin: 0px;
   padding: 4px 0;
 }
 
-.say .msg{
+.say .msg {
   margin: 0 4px 6px 12px;
   padding: 0 4px;
 }

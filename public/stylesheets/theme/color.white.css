@@ -1,15 +1,22 @@
-@import url("../application.css");
+@import url('../application.css');
 
 body {
   color: #ccc;
 }
 
-b{
+b {
   color: #004;
   font-weight: inherit;
 }
 
-.message_filter a{
+.message_filter .mes_maker a {
+  color: #844;
+}
+.message_filter .mes_admin a {
+  color: #666;
+}
+
+.message_filter a {
   color: #004;
 }
 
@@ -80,23 +87,23 @@ h3 {
   color: #ffa;
 }
 
-/* ƒtƒBƒ‹ƒ^¬Œ©o‚µiL‚°‚½j----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½iï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½j----------*/
 .sayfilter_caption_enable {
   color: #000;
 }
 
-/* ƒtƒBƒ‹ƒ^¬Œ©o‚µiô‚ñ‚¾j----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½oï¿½ï¿½ï¿½iï¿½ï¿½ñ‚¾ï¿½ï¿½j----------*/
 .sayfilter_caption_disenable {
   color: #888;
 }
 
-/* ƒtƒBƒ‹ƒ^‘I‘ğ—“i—LŒøj----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½Iï¿½ğ—“iï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½j----------*/
 .sayfilter_button_lump,
 .sayfilter_content_enable {
   color: #000;
 }
 
-/* ƒtƒBƒ‹ƒ^‘I‘ğ—“i–³Œøj----------*/
+/* ï¿½tï¿½Bï¿½ï¿½ï¿½^ï¿½Iï¿½ğ—“iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½j----------*/
 .sayfilter_content_disenable {
   color: #888;
 }
@@ -107,40 +114,58 @@ h3 {
   border-width: 2px 0 2px 0;
 }
 
-.mes_text_monospace{
-  background-image: url("../../images/bg/grid.gif");
+.mes_text_monospace {
+  background-image: url('../../images/bg/grid.gif');
 }
 
-/* ‚â‚ñ‚í‚è’ˆÓ•\¦ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½è’ï¿½Ó•\ï¿½ï¿½ ----------*/
 .infotext {
   color: #999;
 }
 
-/* ŒxE’ˆÓ‚·‚é•”•ªiƒCƒ“ƒ‰ƒCƒ“j ----------*/
+/* ï¿½xï¿½ï¿½ï¿½Eï¿½ï¿½ï¿½Ó‚ï¿½ï¿½é•”ï¿½ï¿½ï¿½iï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½j ----------*/
 .cautiontext {
   font-weight: bold;
   color: #f44;
 }
 
-/* ”­Œ¾‚Ì“ú•t ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Ì“ï¿½ï¿½t ----------*/
 .mes_date {
   color: #442;
 }
 
-.INFONOM,  .info      {  color: #000;  background: #a97;  }
-.INFOSP,   .infosp    {  color: #440;  background: #a97;  }
-.INFOWOLF, .infowolf  {  color: #440;  background: #a55;  }
-.caution   {  color: #000;  background: #666;  }
-.action_nom,
-.action    {  color: #000;  background: #cb8;  }
+.INFONOM,
+.info {
+  color: #000;
+  background: #a97;
+}
+.INFOSP,
+.infosp {
+  color: #440;
+  background: #a97;
+}
+.INFOWOLF,
+.infowolf {
+  color: #440;
+  background: #a55;
+}
+.caution {
+  color: #000;
+  background: #666;
+}
+
 .TSAY .action,
 .mes_think .action,
-.action_bm {  color: #000;  background: #cb8;  font-weight: bold; }
+.action_bm {
+  color: #000;
+  background: #a98;
+  font-weight: bold;
+}
 
-/* íœÏ‚İ”­Œ¾ ----------*/
+/* ï¿½íœï¿½Ï‚İ”ï¿½ï¿½ï¿½ ----------*/
 .DELETED .img,
 .DELETEDADMIN .img,
-.mes_del .img{
+.mes_del .img {
   opacity: 0.25;
 }
 .DELETED .action,
@@ -152,9 +177,11 @@ h3 {
 .mes_del .action,
 .mes_del .memoleft,
 .mes_del .memoright,
-.mes_del .msg{
-  color: #aaa;  background: #666;}
-/* –¢Šm’è”­Œ¾ ----------*/
+.mes_del .msg {
+  color: #aaa;
+  background: #666;
+}
+
 .QUE .action,
 .QUE .msg,
 .QUE .memoleft,
@@ -162,9 +189,25 @@ h3 {
 .mes_que .action,
 .mes_que .memoleft,
 .mes_que .memoright,
-.mes_que .msg{
-  color: #664;  background: #cb8; border: none; }
-/* “Æ‚èŒ¾ ----------*/
+.mes_que .msg {
+  color: #664;
+  background: #cb8;
+  border: none;
+}
+
+table.say.SAY .action,
+table.say.SAY .msg,
+table.say.SAY .memoleft,
+table.say.SAY .memoright,
+.mes_nom .action,
+.mes_nom .memoleft,
+.mes_nom .memoright,
+.mes_nom .msg,
+.action_nom {
+  color: #000;
+  background: #cb8;
+}
+
 .TSAY .action,
 .TSAY .msg,
 .TSAY .memoleft,
@@ -172,20 +215,24 @@ h3 {
 .mes_think .action,
 .mes_think .memoleft,
 .mes_think .memoright,
-.mes_think .msg{
-  color: #000;  background: #a98;} /*’ƒ‘l*/
+.mes_think .msg {
+  color: #000;
+  background: #a98;
+} /*ï¿½ï¿½ï¿½l*/
 
-/* €Ò‚Ì‚¤‚ß‚« ----------*/
+/* ï¿½ï¿½ï¿½Ò‚Ì‚ï¿½ï¿½ß‚ï¿½ ----------*/
 .GSAY .action,
 .GSAY .msg,
 .GSAY .memoleft,
 .GSAY .memoright,
 .mes_grave .memoleft,
 .mes_grave .memoright,
-.mes_grave .msg{
-  color: #000;  background: #bbd;} /*‹óF*/
+.mes_grave .msg {
+  color: #000;
+  background: #bbd;
+} /*ï¿½ï¿½F*/
 
-/* Œ©•¨l ------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½l ------*/
 .VSAY .action,
 .VSAY .msg,
 .VSAY .memoleft,
@@ -193,9 +240,11 @@ h3 {
 .mes_mob .action,
 .mes_mob .memoleft,
 .mes_mob .memoright,
-.mes_mob .msg{
-  color: #000;  background: #ca6; } /*YF*/
-/* š‘‚« ----------*/
+.mes_mob .msg {
+  color: #000;
+  background: #ca6;
+} /*ï¿½Yï¿½F*/
+/* ï¿½ï¿½ï¿½ï¿½ ----------*/
 .WSAY .action,
 .WSAY .msg,
 .WSAY .memoleft,
@@ -203,9 +252,11 @@ h3 {
 .mes_wolf .action,
 .mes_wolf .memoleft,
 .mes_wolf .memoright,
-.mes_wolf .msg{
-  color: #000;  background: #a55; } /*gŠC˜V’ƒ*/
-/* ‹¤–Â ----------*/
+.mes_wolf .msg {
+  color: #000;
+  background: #a55;
+} /*ï¿½gï¿½Cï¿½Vï¿½ï¿½*/
+/* ï¿½ï¿½ï¿½ï¿½ ----------*/
 .SPSAY .action,
 .SPSAY .msg,
 .SPSAY .memoleft,
@@ -217,9 +268,11 @@ h3 {
 .mes_sympa .action,
 .mes_sympa .memoleft,
 .mes_sympa .memoright,
-.mes_sympa .msg{
-  color: #000;  background: #dcb; } /*”–Š`*/
-/* ”O˜b ----------*/
+.mes_sympa .msg {
+  color: #000;
+  background: #dcb;
+} /*ï¿½ï¿½ï¿½`*/
+/* ï¿½Oï¿½b ----------*/
 .BSAY .action,
 .BSAY .msg,
 .BSAY .memoleft,
@@ -228,52 +281,53 @@ h3 {
 .XSAY .msg,
 .XSAY .memoleft,
 .XSAY .memoright,
-.mes_bat  .msg ,
+.mes_bat .msg,
 .mes_pixi .action,
 .mes_pixi .memoleft,
 .mes_pixi .memoright,
 .mes_pixi .msg {
-  color: #000;  background: #9a7;  }
+  color: #000;
+  background: #9a7;
+}
 
-
-/* ”­Œ¾“ü—Í—“i‹¤’Êj ---*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í—ï¿½ï¿½iï¿½ï¿½ï¿½Êj ---*/
 .formpl_common {
   border-color: #664;
 }
-.formpl_common .msg ,
-.formpl_common textarea ,
-.formpl_commit ,
-.formpl_commit textarea ,
-.formpl_undef  ,
-.formpl_undef  textarea ,
-.formpl_vil      textarea,
-.formpl_seer     textarea,
-.formpl_medium   textarea,
-.formpl_guard    textarea,
-.formpl_fm       textarea,
-.formpl_stigma   textarea,
-.formpl_sympathy textarea{
+.formpl_common .msg,
+.formpl_common textarea,
+.formpl_commit,
+.formpl_commit textarea,
+.formpl_undef,
+.formpl_undef textarea,
+.formpl_vil textarea,
+.formpl_seer textarea,
+.formpl_medium textarea,
+.formpl_guard textarea,
+.formpl_fm textarea,
+.formpl_stigma textarea,
+.formpl_sympathy textarea {
   border-color: #664;
   color: #330;
   background: #cb8;
 }
-.formpl_vil      ,
-.formpl_seer     ,
-.formpl_medium   ,
-.formpl_guard    ,
-.formpl_fm       ,
-.formpl_stigma   ,
-.formpl_sympathy ,
-.WIN_NONE        ,
-.WIN_HUMAN       ,
-.WIN_DISH        {
+.formpl_vil,
+.formpl_seer,
+.formpl_medium,
+.formpl_guard,
+.formpl_fm,
+.formpl_stigma,
+.formpl_sympathy,
+.WIN_NONE,
+.WIN_HUMAN,
+.WIN_DISH {
   border-color: #664;
   color: #330;
   background: #a97;
 }
-.WIN_LONEWOLF ,
-.WIN_PIXI     ,
-.WIN_GURU     {
+.WIN_LONEWOLF,
+.WIN_PIXI,
+.WIN_GURU {
   border-color: #664;
   color: #226;
   background: #a9d;
@@ -283,57 +337,57 @@ h3 {
   color: #444;
   background: #aaa;
 }
-.formpl_love ,
+.formpl_love,
 .formpl_love textarea,
-.WIN_LOVER   {
+.WIN_LOVER {
   border-color: #664;
   color: #654;
   background: #dcb;
 }
-.formpl_wolf     ,
-.formpl_wolf     textarea,
-.formpl_possess  ,
-.formpl_possess  textarea,
-.formpl_fanatic  ,
-.formpl_fanatic  textarea,
-.formpl_cpossess ,
+.formpl_wolf,
+.formpl_wolf textarea,
+.formpl_possess,
+.formpl_possess textarea,
+.formpl_fanatic,
+.formpl_fanatic textarea,
+.formpl_cpossess,
 .formpl_cpossess textarea,
-.formpl_cwolf    ,
-.formpl_cwolf    textarea,
-.formpl_intwolf  ,
-.formpl_intwolf  textarea,
+.formpl_cwolf,
+.formpl_cwolf textarea,
+.formpl_intwolf,
+.formpl_intwolf textarea,
 .WIN_WOLF {
   border-color: #833;
   color: #600;
   background: #a55;
 }
 .formpl_pixi,
-.formpl_pixi     textarea,
+.formpl_pixi textarea,
 .formpl_trickster,
-.formpl_hamster  ,
-.formpl_werebat  ,
-.formpl_werebat  textarea,
+.formpl_hamster,
+.formpl_werebat,
+.formpl_werebat textarea,
 .WIN_EVIL {
   border-color: #460;
   color: #130;
   background: #9a7;
 }
 
-textarea, input, select {
+textarea,
+input,
+select {
   color: #000;
 }
 
-.WIN_NONE     a ,
-.WIN_HUMAN    a ,
-.WIN_DISH     a ,
-.WIN_LONEWOLF a ,
-.WIN_PIXI     a ,
-.WIN_GURU     a ,
-.WIN_HATER    a ,
-.WIN_LOVER    a ,
-.WIN_WOLF     a ,
-.WIN_EVIL     a {
+.WIN_NONE a,
+.WIN_HUMAN a,
+.WIN_DISH a,
+.WIN_LONEWOLF a,
+.WIN_PIXI a,
+.WIN_GURU a,
+.WIN_HATER a,
+.WIN_LOVER a,
+.WIN_WOLF a,
+.WIN_EVIL a {
   color: #111;
 }
-
-

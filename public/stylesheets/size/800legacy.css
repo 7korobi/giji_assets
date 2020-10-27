@@ -1,5 +1,5 @@
 @charset "Shift_JIS";
-@import url("800.css");
+@import url('800.css');
 
 /* GROBAL --------------------*/
 h2,
@@ -13,41 +13,41 @@ h3 {
   margin: 6px 8px;
   width: 96%;
 }
-/* ‘ºŒš‚Äl”­Œ¾ ----------*/
-/* ŠÇ—l”­Œ¾ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½Älï¿½ï¿½ï¿½ï¿½ ----------*/
+/* ï¿½Ç—ï¿½ï¿½lï¿½ï¿½ï¿½ï¿½ ----------*/
 .MAKER,
 .ACTION,
 .INFONOM,
 .INFOSP,
 .INFOWOLF,
 .TSAY .action,
-.mes_maker ,
-.mes_admin ,
-.info      ,
-.infosp    ,
-.infowolf  ,
-.caution   ,
+.mes_maker,
+.mes_admin,
+.info,
+.infosp,
+.infowolf,
+.caution,
 .mes_think .action,
 .action_bm {
   margin: 0px 8px 16px 8px;
   padding: 4px;
 }
 
-/* ƒAƒNƒVƒ‡ƒ“ ------------*/ 
-.action_nom, 
+/* ï¿½Aï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ ------------*/
+.action_nom,
 .action {
-  padding: 4px 8px 4px 8px; 
+  padding: 4px 8px 4px 8px;
 }
-/* ƒƒ‚ ----------*/
+/* ï¿½ï¿½ï¿½ï¿½ ----------*/
 .memo {
   margin: 0px 12px 16px 12px;
   padding: 1px;
 }
-/* ”­Œ¾ŠÖŒW‹¤’Ê ------*/
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ÖŒWï¿½ï¿½ï¿½ï¿½ ------*/
 .message_filter {
 }
 .message_filter table {
-  width:562px;
+  width: 562px;
 }
 .say .chrblank {
   width: 90px;
@@ -61,11 +61,11 @@ h3 {
   margin: 0 0 6px 0;
   padding: 0;
 }
-.say .msg{
+.say .msg {
   margin: 4px 4px 0 0;
   padding: 0;
 }
-/* ”­Œ¾“ü—Í—“i‹¤’Êj ---*/ 
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í—ï¿½ï¿½iï¿½ï¿½ï¿½Êj ---*/
 .formpl_common {
   width: 100%;
   margin: 0px 8px 16px 8px;
@@ -74,9 +74,8 @@ h3 {
   border-width: 1px;
 }
 
-/* ’i—‘S”Ê ----------*/
+/* ï¿½iï¿½ï¿½ï¿½Sï¿½ï¿½ ----------*/
 .paragraph {
   margin: 0px;
   padding: 0 6px 0 8px;
 }
-

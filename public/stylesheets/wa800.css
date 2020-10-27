@@ -1,19 +1,19 @@
-@import url("theme/wa.css");
-@import url("size/800baloon.css");
+@import url('theme/wa.css');
+@import url('size/800baloon.css');
 
 .contentframe .drag,
 .contentframe_navileft .drag {
-  background-image: url("../images/bg/karakusa580.png");
+  background-image: url('../images/bg/karakusa580.png');
   background-position: -1px 0;
 }
 
 .contentframe {
-  background-image: url("../images/bg/karakusa580.png");
+  background-image: url('../images/bg/karakusa580.png');
   background-position: center;
 }
 
 .contentframe_navileft {
-  background-image: url("../images/bg/karakusa770.png");
+  background-image: url('../images/bg/karakusa770.png');
   background-position: center;
 }
 
@@ -24,11 +24,10 @@
   background-position: center;
 }
 
-
 .sayfilter_heading {
   margin: 6px 0 0 0;
-  border-top    :  2px solid #863;
-  border-bottom :  2px solid #863;
+  border-top: 2px solid #863;
+  border-bottom: 2px solid #863;
 }
 
 .insayfilter {
@@ -37,24 +36,31 @@
 }
 .insayfilter .paragraph {
   margin: 0;
-  padding: 0 8px;  
+  padding: 0 8px;
 }
 
 #insayfilter,
 #notepad,
 #navi_page {
-  border-bottom :  2px solid #863;
+  border-bottom: 2px solid #863;
 }
 #insayfilter .paragraph,
-#notepad     .paragraph,
-#navi_page   .paragraph {
+#notepad .paragraph,
+#navi_page .paragraph {
   border-width: 0 0 2ex 0;
 }
 
-
-.action_nom,
-.action {
-  padding: 4px 12px 4px 18px;
-  margin-left:  109px;
+.mes_undef .action,
+.mes_queue .action,
+.mes_del .action,
+.mes_nom .action,
+.mes_think .action,
+.mes_wolf .action,
+.mes_grave .action,
+.mes_sympa .action,
+.mes_pixi .action,
+.mes_mob .action,
+.mes_anonymous .action,
+.action_nom {
+  margin-left: 109px;
 }
-
