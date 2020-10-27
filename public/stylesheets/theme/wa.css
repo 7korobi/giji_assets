@@ -319,8 +319,8 @@ strong {
 .INFONOM,
 .INFOSP,
 .INFOWOLF,
-.mes_maker,
-.mes_admin,
+.mes_maker .guide,
+.mes_admin .guide,
 .info,
 .infosp,
 .infowolf,
@@ -329,11 +329,11 @@ strong {
   border-style: double none;
 }
 .MAKER,
-.mes_maker {
+.mes_maker .guide {
   border-color: #720;
 }
 .ADMIN,
-.mes_admin {
+.mes_admin .guide {
   border-color: #720;
 }
 
@@ -350,10 +350,8 @@ strong {
   border-color: #ccc;
 }
 
-/* �A�N�V���� ------------*/
 .action_nom,
 .action {
-  border-width: 2px 0 2px 18px;
   border-style: solid none solid solid;
   border-color: #222;
 }

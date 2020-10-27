@@ -45,17 +45,9 @@
   background: transparent;
 }
 
-.mes_undef .action,
-.mes_queue .action,
-.mes_del .action,
-.mes_nom .action,
-.mes_think .action,
-.mes_wolf .action,
-.mes_grave .action,
-.mes_sympa .action,
-.mes_pixi .action,
-.mes_mob .action,
-.mes_anonymous .action,
+.action,
 .action_nom {
   margin-left: 107px;
+  padding: 4px 12px 4px 4px;
 }
+

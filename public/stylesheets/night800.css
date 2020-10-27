@@ -34,19 +34,13 @@
   background-position: center top;
 }
 
-.mes_undef .action,
-.mes_queue .action,
-.mes_del .action,
-.mes_nom .action,
-.mes_think .action,
-.mes_wolf .action,
-.mes_grave .action,
-.mes_sympa .action,
-.mes_pixi .action,
-.mes_mob .action,
-.mes_anonymous .action,
+.action,
 .action_nom {
-  margin-left: 132px;
-  border-width: 0 0 1px 4px;
-  border-style: solid solid;
+  margin-left: 107px;
+  padding: 4px 8px 4px 8px;
+}
+
+tr.say .msg {
+  margin: 0 4px 6px 7px;
+  padding: 0 0 0 8px;
 }

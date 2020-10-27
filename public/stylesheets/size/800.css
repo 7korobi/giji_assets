@@ -291,7 +291,7 @@ div:hover > i,
 .action,
 .action_nom {
   margin: 0 0 6px 107px;
-  padding: 4px 12px 4px 4px;
+  border-width: 2px 0 2px 18px;
 }
 
 .mes_text,
@@ -364,9 +364,12 @@ tr.say .img {
 tr.say .field {
   width: 464px;
 }
-.say .msg {
+tr.say .msg {
   margin: 0 4px 6px 12px;
   padding: 0 4px;
+}
+.msg h3 {
+  width: 433px;
 }
 .msg p {
   width: 433px;

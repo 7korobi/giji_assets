@@ -139,14 +139,14 @@ h3 {
 .action_nom,
 .action {
   color: #ddf;
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.66);
   border-color: #999 #ddf;
 }
 .TSAY .action,
 .mes_think .action,
 .action_bm {
   color: #cb8;
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.66);
   border-color: #333 #999;
   font-weight: bold;
 }
@@ -191,7 +191,7 @@ h3 {
 .mes_nom .memoright,
 .mes_nom .msg {
   color: #ddf;
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.66);
   border-color: #999 #ddf;
 }
 
@@ -210,7 +210,7 @@ h3 {
 .mes_del .memoright,
 .mes_del .msg {
   color: #444;
-  background-color: rgba(40, 40, 40, 0.33);
+  background-color: rgba(40, 40, 40, 0.66);
   border-color: #222 #444;
 }
 /* ���m�蔭�� ----------*/
@@ -221,7 +221,7 @@ h3 {
 .mes_que .memoright,
 .mes_que .msg {
   color: #aaa;
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.66);
   border-color: #555 #aaa;
   border: none;
 }
@@ -233,7 +233,7 @@ h3 {
 .mes_think .memoright,
 .mes_think .msg {
   color: #996;
-  background-color: rgba(0, 0, 60, 0.33);
+  background-color: rgba(0, 0, 60, 0.66);
   border-color: #554 #996;
 } /*���l*/
 
@@ -245,7 +245,7 @@ h3 {
 .mes_grave .memoright,
 .mes_grave .msg {
   color: #99f;
-  background-color: rgba(30, 30, 0, 0.33);
+  background-color: rgba(30, 30, 0, 0.66);
   border-color: #335 #99f;
 } /*��F*/
 
@@ -257,7 +257,7 @@ h3 {
 .mes_mob .memoright,
 .mes_mob .msg {
   color: #ffb;
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.66);
   border-color: #999 #ddf;
 } /*�Y�F*/
 /* ���� ----------*/
@@ -268,7 +268,7 @@ h3 {
 .mes_wolf .memoright,
 .mes_wolf .msg {
   color: #f78;
-  background-color: rgba(0, 30, 30, 0.33);
+  background-color: rgba(0, 30, 30, 0.66);
   border-color: #944 #f78;
 } /*�g�C�V��*/
 /* ���� ----------*/
@@ -281,7 +281,7 @@ h3 {
 .mes_sympa .memoright,
 .mes_sympa .msg {
   color: #fca;
-  background-color: rgba(20, 40, 50, 0.33);
+  background-color: rgba(20, 40, 50, 0.66);
   border-color: #865 #fca;
 } /*���`*/
 /* �O�b ----------*/
@@ -295,7 +295,7 @@ h3 {
 .mes_pixi .memoright,
 .mes_pixi .msg {
   color: #9f9;
-  background-color: rgba(30, 0, 30, 0.33);
+  background-color: rgba(30, 0, 30, 0.66);
   border-color: #583 #9f9;
 }
 
@@ -308,7 +308,7 @@ h3 {
 .formpl_undef {
   border-color: #999 #ddf;
   color: #ddf;
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.66);
 }
 .formpl_vil,
 .formpl_seer,
@@ -322,25 +322,25 @@ h3 {
 .WIN_DISH {
   border-color: #554 #997;
   color: #997;
-  background-color: rgba(0, 0, 0, 0.33);
+  background-color: rgba(0, 0, 0, 0.66);
 }
 .WIN_LONEWOLF,
 .WIN_PIXI,
 .WIN_GURU {
   border-color: #554 #997;
   color: #997;
-  background-color: rgba(0, 0, 70, 0.33);
+  background-color: rgba(0, 0, 70, 0.66);
 }
 .WIN_HATER {
   border-color: #555 #aaa;
   color: #aaa;
-  background-color: rgba(50, 50, 50, 0.33);
+  background-color: rgba(50, 50, 50, 0.66);
 }
 .formpl_love,
 .WIN_LOVER {
   border-color: #766 #dcb;
   color: #dcb;
-  background-color: rgba(20, 40, 50, 0.33);
+  background-color: rgba(20, 40, 50, 0.66);
 }
 .formpl_wolf,
 .formpl_possess,
@@ -351,7 +351,7 @@ h3 {
 .WIN_WOLF {
   border-color: #823 #f45;
   color: #f45;
-  background-color: rgba(0, 30, 30, 0.33);
+  background-color: rgba(0, 30, 30, 0.66);
 }
 .formpl_pixi,
 .formpl_trickster,
@@ -360,7 +360,7 @@ h3 {
 .WIN_EVIL {
   border-color: #380 #6f0;
   color: #6f0;
-  background-color: rgba(30, 0, 30, 0.33);
+  background-color: rgba(30, 0, 30, 0.66);
 }
 
 .WIN_NONE a,

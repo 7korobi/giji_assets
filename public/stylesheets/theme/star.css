@@ -315,8 +315,8 @@ strong {
 .INFONOM,
 .INFOSP,
 .INFOWOLF,
-.mes_maker,
-.mes_admin,
+.mes_maker .guide,
+.mes_admin .guide,
 .info,
 .infosp,
 .infowolf,
@@ -325,11 +325,11 @@ strong {
   border-style: dashed none;
 }
 .MAKER,
-.mes_maker {
+.mes_maker .guide{
   border-color: #468;
 }
 .ADMIN,
-.mes_admin {
+.mes_admin .guide{
   border-color: #468;
 }
 
@@ -357,11 +357,9 @@ strong {
   background-color: #111;
 }
 
-/* ƒAƒNƒVƒ‡ƒ“ ------------*/
 .action_nom,
 .action {
-  border-width: 2px 0 2px 18px;
-  border-style: dashed none dashed solid;
+  border-style: dashed none solid solid;
 }
 /* ‚µ‚¨‚è ----------------*/
 .TSAY .action .mes_date,

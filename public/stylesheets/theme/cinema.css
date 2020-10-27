@@ -376,10 +376,8 @@ strong {
   border-color: #ccc;
 }
 
-/* ?A?N?V???? ------------*/
 .action_nom,
 .action {
-  border-width: 2px 0 2px 18px;
   border-style: dashed none dashed solid;
   border-color: #663;
 }
