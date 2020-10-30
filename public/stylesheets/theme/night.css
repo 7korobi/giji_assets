@@ -394,15 +394,3 @@ strong {
   background-color: #100;
 }
 
-/* bug-fix */
-.btn {
-  color: #333 !important;
-}
-.btn-primary,
-.btn-info,
-.btn-success,
-.btn-warning,
-.btn-danger,
-.btn-inverse {
-  color: #fff !important;
-}

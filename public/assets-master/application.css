@@ -28330,7 +28330,7 @@ TABLE.talk > TR > TD > .msg {
 .cinema-theme .mes_text_monospace,
 .wa-theme .mono,
 .wa-theme .mes_text_monospace {
-  background: url('../images/bg/grid.gif');
+  background-image: url('http://s3-ap-northeast-1.amazonaws.com/giji-assets/images/bg/grid-b.png');
 }
 
 .cinema-theme .drag,

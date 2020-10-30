@@ -12,6 +12,7 @@ import '../vendor/giji/app/models'
 import '../vendor/giji/app/models/_define'
 
 import { PlanApi, StoryApi } from './lib/fetch'
+import { Address } from './lib/address'
 
 PlanApi()
 StoryApi()
@@ -27,4 +28,13 @@ ReactDOM.render(
     <Welcome />
   </React.StrictMode>,
   document.querySelector('#top')
+)
+
+document.querySelector('address')!.outerHTML = `<address/>`
+
+ReactDOM.render(
+  <React.StrictMode>
+    <Address />
+  </React.StrictMode>,
+  document.querySelector('address')
 )

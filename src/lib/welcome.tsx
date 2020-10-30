@@ -1,111 +1,20 @@
 import { Query, State } from 'memory-orm'
-import React, { ReactNode, useEffect, useRef, useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import { useBits } from 'react-petit-hooks/lib/element'
 import { usePoll } from 'react-petit-hooks/lib/poll'
-import { useRelativeTick } from 'react-petit-hooks/lib/timer'
-import {
-  Tempo,
-  to_msec,
-  to_relative_time_distance,
-  to_tempo_bare,
-} from 'react-petit-hooks/lib/time'
 import { __BROWSER__ } from 'react-petit-hooks/lib/device'
 
-import format from 'date-fns/format'
-import locale from 'date-fns/locale/ja'
-
 import { PlanApi, StoryApi } from './fetch'
-import { Chat } from '../../vendor/giji/app/models/chat'
 import { ShowBits } from '../../vendor/giji/app/lib/dic'
+import { BtnsSow } from './btns-sow'
+import { Chats } from './chat-sow'
+import { Btn } from './btn'
 const { url } = require('../../vendor/giji/config/yaml/live.yml')
-
-type BtnProps<T> = {
-  state: [T, (val: T) => void]
-  as: T
-  children: ReactNode
-}
 
 function store(meta: any) {
   State.store(meta)
 }
 
-function Time({ since }: { since: number }) {
-  const [text, timer] = useRelativeTick(since, {
-    limit: '1y',
-    format: (since: number) => format(since, 'yyyy/MM/dd(EE)頃', { locale }),
-  })
-  return <time>{text}</time>
-}
-
-const chat = {
-  report(o: Chat) {
-    return <></>
-  },
-  talk(o: Chat) {
-    const { face_id, job } = o.potof
-    const img_url = `http://s3-ap-northeast-1.amazonaws.com/giji-assets/images/portrate/${face_id}.jpg`
-    return (
-      <table className="mes_nom">
-        <tbody>
-          <tr className="say">
-            <td className="img">
-              <img src={img_url} width="90" height="130" alt="" />
-            </td>
-            <td className="field">
-              <div className="msg">
-                <h3 className="mesname">{job}</h3>
-                <p className="mes_text" dangerouslySetInnerHTML={{ __html: o.log }} />
-                <p className="mes_date">
-                  <Time since={o.write_at} />
-                </p>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    )
-  },
-
-  post(o: Chat) {
-    return (
-      <div className="mes_nom">
-        <div className="action">
-          <p dangerouslySetInnerHTML={{ __html: o.log }} />
-          <p className="mes_date">
-            <Time since={o.write_at} />
-          </p>
-          <hr className="invisible_hr" />
-        </div>
-      </div>
-    )
-  },
-}
-
-function Chats({ list }: { list: Chat[] }) {
-  return (
-    <>
-      {list.map((o) => {
-        const Tag = chat[o.show]
-        const key = o.id
-        const { potof, log, write_at } = o
-        return <Tag {...({ key, potof, log, write_at } as any)} />
-      })}
-    </>
-  )
-}
-
-function Btn<T>({ state, as, children }: BtnProps<T>) {
-  const mode = state[0] === as ? 'active' : ''
-  return (
-    <a className={`btn ${mode}`} onClick={onClick}>
-      {children}
-    </a>
-  )
-
-  function onClick() {
-    state[1](as)
-  }
-}
 
 function Export() {
   usePoll(StoryApi, store, {}, '6h', '1.0.0')
@@ -191,65 +100,7 @@ function Export() {
   }
 }
 
-const [defaultCSS, defaultTheme, defaultSize] =
-  location.search.match(/css=(ririnra|cinema|night|star|wa)(480|800|)/) || []
-
-function BtnsSow() {
-  const stateTheme = useState<'ririnra' | 'cinema' | 'night' | 'star' | 'wa'>(
-    (defaultTheme || 'cinema') as any
-  )
-  const stateSize = useState<'' | '480' | '800'>(
-    (defaultSize || (defaultTheme === 'ririnra' ? '' : '800')) as any
-  )
-  const theme = stateTheme[0]
-  let size = stateSize[0]
-
-  useEffect(onStyle, [theme, size])
-  return (
-    <div className="btns">
-      <span className="width">
-        <Btn state={stateSize} as="480">
-          480
-        </Btn>
-        <Btn state={stateSize} as="800">
-          800
-        </Btn>
-      </span>
-      <span className="theme">
-        <Btn state={stateTheme} as="ririnra">
-          漆黒
-        </Btn>
-        <Btn state={stateTheme} as="cinema">
-          煉瓦
-        </Btn>
-        <Btn state={stateTheme} as="night">
-          闇夜
-        </Btn>
-        <Btn state={stateTheme} as="star">
-          蒼穹
-        </Btn>
-        <Btn state={stateTheme} as="wa">
-          和の国
-        </Btn>
-      </span>
-      <span className="theme">
-        <a href="sow.cgi?ua=mb">携帯</a>
-      </span>
-    </div>
-  )
-
-  function onStyle() {
-    if ('ririnra' === theme) {
-      size = ''
-    } else {
-      if (!size) size = '800'
-    }
-    const cssParam = `css=${theme}${size}`
-    if (!location.search.includes(cssParam)) {
-      location.search = cssParam
-    }
-  }
-}
+const [defaultVid, vid] = location.search.match(/vid=(\d+)/) || []
 
 export function Welcome() {
   const style = {
@@ -259,7 +110,7 @@ export function Welcome() {
   // outframe  outframe_navimode
   // contentframe  contentframe_navileft
 
-  const folder = Query.folders.where({ hostname: location.hostname }).list.head
+  const folder = Query.folders.where({ hostname: location.hostname }).list.head || Query.folders.find("DAIS")
   const chats = (
     Query.phases.where({ folder_id: folder.id }).list.head || Query.phases.find('BRAID-top-0-0')
   ).chats.list
@@ -267,7 +118,7 @@ export function Welcome() {
   return (
     <div>
       <div id="welcome" style={style}>
-        <Export />
+        { !vid && <Export />}
         <h1 className="title-bar">{folder?.title}</h1>
         <BtnsSow />
 

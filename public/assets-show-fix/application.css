@@ -9162,7 +9162,7 @@ h6 {
 /* line 203, /Users/7korobi/Dropbox/www/giji_rails/app/assets/stylesheets/lib/message.css.scss */
 .white .mono,
 .white .mes_text_monospace {
-  background-image: url("../images/bg/grid.gif");
+  background-image: url('http://s3-ap-northeast-1.amazonaws.com/giji-assets/images/bg/grid-b.png');
 }
 /* line 208, /Users/7korobi/Dropbox/www/giji_rails/app/assets/stylesheets/lib/message.css.scss */
 .white .drag,
