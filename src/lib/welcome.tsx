@@ -19,6 +19,8 @@ export function Welcome() {
   // outframe  outframe_navimode
   // contentframe  contentframe_navileft
 
+  const toppage = location.href.replace(location.search, "")
+
   const isFull = !(vid || cmd)
   const isSimple = !isFull
   console.log({ cmd, vid, isFull, isSimple })
@@ -32,7 +34,10 @@ export function Welcome() {
     <div>
       <div id="welcome" style={style}>
         {isSimple || <Export />}
-        <h1 className="title-bar">{folder?.title}</h1>
+        <h1 className="title-bar">
+          <a dangerouslySetInnerHTML={{__html: folder?.title }} href={toppage}>
+          </a>
+        </h1>
         <BtnsSow />
 
         <div className="filmline"></div>

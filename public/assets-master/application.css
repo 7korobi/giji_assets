@@ -24691,7 +24691,7 @@ TABLE.talk > TR > TD > .msg {
 .night-theme .mes_text_monospace,
 .star-theme .mono,
 .star-theme .mes_text_monospace {
-  background: url('../images/bg/grid_blue.svg');
+  background-image: url('http://s3-ap-northeast-1.amazonaws.com/giji-assets/images/bg/grid-w.png');
 }
 
 .moon-theme .drag,
