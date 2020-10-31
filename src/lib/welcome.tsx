@@ -8,8 +8,6 @@ import { Chats } from './chat-sow'
 import { Export } from './export'
 
 const { url } = require('../../vendor/giji/config/yaml/live.yml')
-const [defaultVid, vid] = location.search.match(/vid=(\d+)/) || []
-const [defaultCmd, cmd] = location.search.match(/cmd=(\w+)/) || []
 
 export function Welcome() {
   const style = {
@@ -19,11 +17,10 @@ export function Welcome() {
   // outframe  outframe_navimode
   // contentframe  contentframe_navileft
 
-  const toppage = location.href.replace(location.search, "")
+  const toppage = location.href.replace(location.search, '').replace(location.hash, '')
 
-  const isFull = !(vid || cmd)
-  const isSimple = !isFull
-  console.log({ cmd, vid, isFull, isSimple })
+  const isSimple = !document.title.match(/トップページ/)
+  const isFull = !isSimple
   const folder =
     Query.folders.where({ hostname: location.hostname }).list.head || Query.folders.find('DAIS')
   const chats = (
@@ -35,8 +32,7 @@ export function Welcome() {
       <div id="welcome" style={style}>
         {isSimple || <Export />}
         <h1 className="title-bar">
-          <a dangerouslySetInnerHTML={{__html: folder?.title }} href={toppage}>
-          </a>
+          <a dangerouslySetInnerHTML={{ __html: folder?.title }} href={toppage}></a>
         </h1>
         <BtnsSow />
 

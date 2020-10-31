@@ -9,15 +9,12 @@ const [defaultCSS, defaultTheme, defaultSize] = location.search.match(cssRegexp)
 const body = document.body
 const link_css: HTMLLinkElement = document.querySelector('[title][rel=stylesheet]') as any
 
-type SOW_CSS = [
-  'ririnra' | 'cinema' | 'night' | 'star' | 'wa',
-  '' | '480' | '800',
-]
+type SOW_CSS = ['ririnra' | 'cinema' | 'night' | 'star' | 'wa', '' | '480' | '800']
 
 export function BtnsSow() {
-  let [[theme, size], setCss] = useLocalStorage<SOW_CSS>('css', ['cinema','800'])
-  const stateSize: [SOW_CSS[1],typeof setSize] = [size, setSize]
-  const stateTheme: [SOW_CSS[0],typeof setTheme] = [theme, setTheme]
+  let [[theme, size], setCss] = useLocalStorage<SOW_CSS>('css', ['cinema', '800'])
+  const stateSize: [SOW_CSS[1], typeof setSize] = [size, setSize]
+  const stateTheme: [SOW_CSS[0], typeof setTheme] = [theme, setTheme]
 
   useEffect(onStyle, [theme, size])
   return (
@@ -59,8 +56,12 @@ export function BtnsSow() {
     link_css.href = `http://s3-ap-northeast-1.amazonaws.com/giji-assets/stylesheets/${theme}${size}.css`
   }
 
-  function setTheme(theme: SOW_CSS[0]) { hitCss(theme, size) }
-  function setSize(size: SOW_CSS[1]) { hitCss(theme, size)}
+  function setTheme(theme: SOW_CSS[0]) {
+    hitCss(theme, size)
+  }
+  function setSize(size: SOW_CSS[1]) {
+    hitCss(theme, size)
+  }
   function hitCss(theme: SOW_CSS[0], size: SOW_CSS[1]) {
     if ('ririnra' === theme) {
       size = ''
