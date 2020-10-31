@@ -86,6 +86,7 @@ h3 {
 
 .mes_text_monospace {
   background-image: url('http://s3-ap-northeast-1.amazonaws.com/giji-assets/images/bg/grid-w.png');
+  background-size: auto 2em;
 }
 
 /* ����蒍�ӕ\�� ----------*/

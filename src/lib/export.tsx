@@ -78,6 +78,7 @@ export function Export() {
       case 'progress':
         const { href, max_vils } = Query.folders.find(folder_id)!
         const vils = max_vils ? `${max_vils}村:` : ``
+
         return (
           <p>
             {vils}

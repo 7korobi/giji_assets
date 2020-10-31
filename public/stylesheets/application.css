@@ -37,6 +37,10 @@ div.mark,
 .mes_maker,
 .mesname,
 .action,
+dl,
+dd,
+ul,
+ol,
 li,
 p {
   text-align: left;

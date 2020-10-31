@@ -17,15 +17,21 @@ export function Welcome() {
   // outframe  outframe_navimode
   // contentframe  contentframe_navileft
 
-  const toppage = location.href.replace(location.search, '').replace(location.hash, '')
-
-  const isSimple = !document.title.match(/トップページ/)
-  const isFull = !isSimple
   const folder =
-    Query.folders.where({ hostname: location.hostname }).list.head || Query.folders.find('DAIS')
+    Query.folders.where((o)=> o.match(location.href) ).list.head || Query.folders.find('DAIS')
+
+  const isSimple = !document.title.match(/トップページ|終了済みの村の一覧/)
+  const isFull = !isSimple
+  const { isOldLog } = folder
+
   const chats = (
     Query.phases.where({ folder_id: folder.id }).list.head || Query.phases.find('BRAID-top-0-0')
   ).chats.list
+
+  let toppage = location.href.replace(location.search, '').replace(location.hash, '')
+  if (isOldLog) {
+    toppage += "?cmd=oldlog"
+  } 
 
   return (
     <div>
@@ -46,7 +52,7 @@ export function Welcome() {
           </div>
         </div>
       </div>
-      {isSimple || (
+      {isSimple || isOldLog || (
         <div className="outframe">
           <div className="contentframe">
             <div className="inframe">

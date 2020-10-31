@@ -9163,6 +9163,7 @@ h6 {
 .white .mono,
 .white .mes_text_monospace {
   background-image: url('http://s3-ap-northeast-1.amazonaws.com/giji-assets/images/bg/grid-b.png');
+  background-size: auto 2em;
 }
 /* line 208, /Users/7korobi/Dropbox/www/giji_rails/app/assets/stylesheets/lib/message.css.scss */
 .white .drag,
