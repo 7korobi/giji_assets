@@ -18,11 +18,11 @@ export function Welcome() {
   // contentframe  contentframe_navileft
 
   const folder =
-    Query.folders.where((o)=> o.match(location.href) ).list.head || Query.folders.find('DAIS')
+    Query.folders.where((o) => o.match(location.href)).list.head || Query.folders.find('DAIS')
 
   const isTop = !!document.title.match(/トップページ/)
   const isOldLog = !!document.title.match(/終了済みの村の一覧/)
-  const isFull = (isTop || isOldLog)
+  const isFull = isTop || isOldLog
 
   const chats = (
     Query.phases.where({ folder_id: folder.id }).list.head || Query.phases.find('BRAID-top-0-0')
@@ -30,8 +30,8 @@ export function Welcome() {
 
   let toppage = location.href.replace(location.search, '').replace(location.hash, '')
   if (folder.isOldLog) {
-    toppage += "?cmd=oldlog"
-  } 
+    toppage += '?cmd=oldlog'
+  }
 
   return (
     <div>

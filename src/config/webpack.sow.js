@@ -35,12 +35,23 @@ module.exports = {
       },
       {
         test: /\.tsx?$/i,
-        use: {
-          loader: 'ts-loader',
-          options: {
-            transpileOnly: true,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              plugins: [
+                '@babel/plugin-proposal-optional-chaining',
+                '@babel/plugin-proposal-nullish-coalescing-operator',
+              ],
+            },
           },
-        },
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
       },
       {
         test: /\.css$/i,

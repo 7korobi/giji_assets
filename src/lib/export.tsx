@@ -92,8 +92,7 @@ export function Export() {
         return <></>
     }
     function count(mode_id: 'prologue' | 'progress') {
-      const { mode } = Query.sow_villages.reduce
-      const data = mode && mode[mode_id] && mode[mode_id][folder_id]
+      const data = Query.sow_villages.reduce.mode?.[mode_id]?.[folder_id]
 
       if (data) {
         const { count } = data
