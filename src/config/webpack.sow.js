@@ -13,6 +13,14 @@ const postcss = {
   },
 }
 
+const css = {
+  loader: 'css-loader',
+  options: {
+    url: false,
+    sourceMap: true,
+  }
+}
+
 const file = {
   loader: 'file-loader',
   options: {
@@ -55,11 +63,11 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader', postcss],
+        use: ['style-loader', css, postcss],
       },
       {
         test: /\.(scss|sass)$/i,
-        use: ['style-loader', 'css-loader', postcss, 'sass-loader'],
+        use: ['style-loader', css, postcss, 'sass-loader'],
       },
     ],
   },

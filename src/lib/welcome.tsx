@@ -1,13 +1,20 @@
 import { Query } from 'memory-orm'
 
 import React from 'react'
-import { __BROWSER__ } from 'react-petit-hooks/lib/device'
+import { isAndroid, isIOS, isPC } from 'react-petit-hooks/lib/device'
 
 import { BtnsSow } from './btns-sow'
 import { Chats } from './chat-sow'
 import { Export } from './export'
 
 import { url } from '../../vendor/giji/config/json/live.json'
+
+const classList: string[] = []
+if (isAndroid) classList.push('android')
+if (isIOS) classList.push('ios')
+if (isPC) classList.push('pc')
+
+document.documentElement.className = classList.join(" ")
 
 export function Welcome() {
   const style = {
