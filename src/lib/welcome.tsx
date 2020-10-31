@@ -7,7 +7,7 @@ import { BtnsSow } from './btns-sow'
 import { Chats } from './chat-sow'
 import { Export } from './export'
 
-const { url } = require('../../vendor/giji/config/yaml/live.yml')
+import { url } from '../../vendor/giji/config/json/live.json'
 
 export function Welcome() {
   const style = {

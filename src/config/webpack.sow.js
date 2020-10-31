@@ -50,18 +50,6 @@ module.exports = {
         test: /\.(scss|sass)$/i,
         use: ['style-loader', 'css-loader', postcss, 'sass-loader'],
       },
-      {
-        test: /\.yml$/i,
-        use: [
-          'json-loader',
-          {
-            loader: 'yaml-loader',
-            options: {
-              merge: true,
-            },
-          },
-        ],
-      },
     ],
   },
   resolve: {
