@@ -17,7 +17,6 @@ import { Address } from './lib/address'
 PlanApi()
 StoryApi()
 
-console.log(Query)
 Object.assign(window, { $, chrImgChange, Query })
 require('./lib/tooltip')
 

@@ -325,11 +325,11 @@ strong {
   border-style: dashed none;
 }
 .MAKER,
-.mes_maker .guide{
+.mes_maker .guide {
   border-color: #468;
 }
 .ADMIN,
-.mes_admin .guide{
+.mes_admin .guide {
   border-color: #468;
 }
 
@@ -436,4 +436,3 @@ strong {
   color: #ffa;
   background-color: #100;
 }
-

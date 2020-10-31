@@ -19,4 +19,3 @@ export function Btn<T>({ state, as, children }: BtnProps<T>) {
     state[1](as)
   }
 }
-
