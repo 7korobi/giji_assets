@@ -100,7 +100,7 @@ module Giji
 
       when 'ssh'
         option = '-t'
-        port  = set[:options][:port] || 22
+        port = set.dig(:options,:port) || 22
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|--exclude='*#{name}'|
         end.join(' ')
@@ -133,7 +133,7 @@ module Giji
         puts %Q|#{lpath}\tput to #{open}:#{rpath}\n|
 
         option = ''
-        port  = set[:options][:port] || 22
+        port = set.dig(:options,:port) || 22
         excludes = %w[.svn-base .svn .bak].map do|name|
           %Q|--exclude='*#{name}'|
         end.join(' ')
