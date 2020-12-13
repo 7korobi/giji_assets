@@ -55,8 +55,9 @@ sub GetConfig {
 		'あっぱれ、うっかりアイコン by 小由流',
 		'人狼議事キャラセット by りりんら',
 		'管理<code> sol・la</code><code><a tabindex="-1" href="mailto:7korobi@gmail.com">ななころび</a></code>',
-		'<code style="display:inline-block;">下記の場所以外では、人狼議事内キャラチップ<br>の利用を許諾しておりません。ご了承ください。</code>',
-		'<code style="text-align: left; display: inline-block;">議事総合トップ',
+		'<div class="copyright"><p>下記の場所以外では、人狼議事内キャラチップ',
+		'の利用を許諾しておりません。ご了承ください。',
+		'</p></div><div class="copyright"><p>議事総合トップ',
 		'人狼議事lobby',
 		'人狼議事morphe',
 		'人狼議事cafe',
@@ -64,11 +65,11 @@ sub GetConfig {
 		'人狼議事xebec',
 		'人狼議事crazy',
 		'人狼議事ciel',
-		'',
 		'SoyBean',
 		'Sangria',
+		'@hello_giji',
 		'@7korobi',
-		'</code>',
+		'</p></div>',
 	);
 
 	my %css_star480 = (
@@ -264,14 +265,14 @@ sub GetConfig {
 		'assets-<%= @is_angular %>/base.js',
 		'assets-<%= @is_angular %>/sow.js',
 		'assets-<%= @is_angular %>/boot.js',
-		'sow.js',
+		'javascripts/sow.js',
 	);
 	my @file_js_vil = (
 		'assets-<%= @is_angular %>/data.js',
 		'assets-<%= @is_angular %>/base.js',
 		'assets-<%= @is_angular %>/sow.js',
 		'assets-<%= @is_angular %>/boot.js',
-		'sow.js',
+		'javascripts/sow.js',
 	);
 <%	else	%>
 	my @file_js = (

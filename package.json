@@ -54,6 +54,7 @@
     "deploy_all": "run-p -n deploy:*",
     "deploy:aws-js": "aws s3 sync dist s3://giji-assets/javascripts --acl public-read --exclude '*.html'",
     "deploy:aws-css": "aws s3 sync public/stylesheets s3://giji-assets/stylesheets --acl public-read --exclude '*.html'",
+    "deploy:aws-ciel-js": "aws s3 sync public/assets-show-fix s3://giji-assets/assets-show-fix --acl public-read --exclude '*.html'",
     "dec": "run-s dec:*",
     "dec:1_jsfy": "decaffeinate --use-cs2 --use-js-modules --loose-js-modules --safe-import-function-identifiers --loose src/models/",
     "dec:2_modern": "decaffeinate --modernize-js src/models/",
