@@ -36,20 +36,6 @@ win.mount \#sow_auth, ->
   view: ->
     m.component doc.component.sow_auth, Url.prop
 
-win.mount \#head_navi, ->
-    controller: ->
-    view: ->
-      m ".paragraph",
-        m ".left_image"
-        m ".right_image"
-        m.component doc.component.header
-
-win.mount \#headline, ->
-    controller: ->
-    view: ->
-      m ".choice",
-        m.component doc.component.header
-
 
 if gon?.potofs?
   win.mount \#sayfilter, (dom)->
